@@ -1,5 +1,5 @@
 {
-  "name": "ZulipDesktop",
+  "name": "Zulip",
   "productName": "ZulipDesktop",
   "version": "0.0.1",
   "description": "Zulip Desktop App",
@@ -10,14 +10,12 @@
     "email": "svnitakash@gmail.com",
     "url": "http://akashnimare.in"
   },
+  "main": "app/index.js",
   "scripts": {
     "test": "xo",
     "start": "electron .",
     "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all"
   },
-  "files": [
-    "index.js",
-  ],
   "keywords": [
     "Zulip",
     "Group Chat app",
@@ -26,13 +24,14 @@
     "electron"
   ],
   "dependencies": {
-    "electron-debug": "^1.0.0"
+    "electron-debug": "^1.0.0",
+    "electron-dl": "^0.2.0"
   },
   "devDependencies": {
     "devtron": "^1.1.0",
     "electron-packager": "^7.0.0",
-    "electron-prebuilt": "^1.0.1",
-    "xo": "^0.15.0"
+    "electron-prebuilt": "^1.2.2",
+    "xo": "*"
   },
   "xo": {
     "esnext": true,
