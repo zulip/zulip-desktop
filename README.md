@@ -1,5 +1,5 @@
 Zulip Desktop Client
 
 #Installation
-> npm install
+> npm install <br>
 > npm start
