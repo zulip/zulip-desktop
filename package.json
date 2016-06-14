@@ -4,7 +4,13 @@
   "version": "0.0.1",
   "description": "Zulip Desktop App",
   "license": "MIT",
-  "repository": "https://github.com/akashnimare/zulip-desktop",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akashnimare/zulip-desktop.git"
+  },
+  "bugs": {
+    "url": "https://github.com/akashnimare/zulip-desktop/issues"
+  },
   "author": {
     "name": "Akash Nimare",
     "email": "svnitakash@gmail.com",
@@ -15,6 +21,11 @@
     "test": "xo",
     "start": "electron .",
     "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all"
+  },
+  "linuxPackageInfo": {
+    "categories": "Chat;GTK;InstantMessaging;GNOME",
+    "genericName": "Zulip Desktop Client for Linux",
+    "section": "misc"
   },
   "keywords": [
     "Zulip",
