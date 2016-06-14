@@ -29,7 +29,7 @@ function createMainWindow() {
 		autoHideMenuBar: true
 	});
 
-	win.loadURL('https://zulip.tabbott.net/login/');
+	win.loadURL('https://zulip.com/login');
 	win.on('closed', onClosed);
 	return win;
 }

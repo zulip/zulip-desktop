@@ -1,7 +1,7 @@
 'use strict';
 const path = require('path');
 const electron = require('electron');
-const app = electron.app;
+const {app, shell} = require('electron');
 let tray = null;
 
 exports.create = win => {
@@ -19,7 +19,20 @@ exports.create = win => {
 		}
 	};
 
+	const reload = () => {
+		win.reload();
+	};
+
 	const contextMenu = electron.Menu.buildFromTemplate([
+		{
+			label: 'About',
+			click() {
+				shell.openExternal('https://github.com/akashnimare/zulip-desktop');
+			}
+		},
+		{
+			type: 'separator'
+		},
 		{
 			label: 'Toggle',
 			click() {
@@ -30,7 +43,16 @@ exports.create = win => {
 			type: 'separator'
 		},
 		{
-			label: 'Quit Zulip',
+			label: 'Reload',
+			click() {
+				reload();
+			}
+		},
+		{
+			type: 'separator'
+		},
+		{
+			label: 'Quit',
 			click() {
 				app.quit();
 			}
