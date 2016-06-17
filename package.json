@@ -6,15 +6,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/akashnimare/zulip-desktop.git"
+    "url": "https://github.com/zulip/zulip-electron.git"
   },
   "bugs": {
-    "url": "https://github.com/akashnimare/zulip-desktop/issues"
-  },
-  "author": {
-    "name": "Akash Nimare",
-    "email": "svnitakash@gmail.com",
-    "url": "http://akashnimare.in"
+    "url": "https://github.com/zulip/zulip-electron/issues"
   },
   "main": "app/index.js",
   "scripts": {
@@ -22,15 +17,9 @@
     "start": "electron .",
     "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all"
   },
-  "linuxPackageInfo": {
-    "categories": "Chat;GTK;InstantMessaging;GNOME",
-    "genericName": "Zulip Desktop Client for Linux",
-    "section": "misc"
-  },
   "keywords": [
     "Zulip",
     "Group Chat app",
-    "Dropbox",
     "electron-app",
     "electron"
   ],
@@ -39,9 +28,9 @@
     "electron-dl": "^0.2.0"
   },
   "devDependencies": {
-    "devtron": "^1.1.0",
     "electron-packager": "^7.0.0",
     "electron-prebuilt": "^1.2.2",
+    "devtron": "^1.1.0",
     "xo": "*"
   },
   "xo": {
