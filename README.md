@@ -10,5 +10,20 @@ multi-account.
 
 ## Installation
 
-> npm install <br>
-> npm start
+Clone the source locally:
+
+```sh
+$ git clone https://github.com/zulip/zulip-electron
+$ cd zulip-electron
+```
+
+Install project dependencies:
+
+```sh
+$ npm install
+```
+Start the App
+
+```sh
+$ npm start
+```
