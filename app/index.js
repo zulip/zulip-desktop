@@ -1,7 +1,7 @@
 'use strict';
 const path = require('path');
 const electron = require('electron');
-const app = electron.app;
+const {app, shell} = require('electron');
 const tray = require('./tray');
 
 // adds debug features like hotkeys for triggering dev tools and reload
@@ -49,4 +49,11 @@ app.on('activate', () => {
 app.on('ready', () => {
 	mainWindow = createMainWindow();
 	tray.create(mainWindow);
+
+	const page = mainWindow.webContents;
+
+	page.on('new-window', (e, url) => {
+		e.preventDefault();
+		electron.shell.openExternal(url);
+	});
 });

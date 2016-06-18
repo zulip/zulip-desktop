@@ -2,6 +2,7 @@
 const path = require('path');
 const electron = require('electron');
 const {app, shell} = require('electron');
+
 let tray = null;
 
 exports.create = win => {
