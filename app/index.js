@@ -24,13 +24,19 @@ function createMainWindow() {
 		height: 600,
 		icon: process.platform === 'linux' && path.join(__dirname, 'resources/Icon.png'),
 		minWidth: 800,
-		minHeight: 600,
-		titleBarStyle: 'hidden-inset',
-		autoHideMenuBar: true
+		minHeight: 600
+		// titleBarStyle: 'hidden-inset',
+		// autoHideMenuBar: true
 	});
 
-	win.loadURL('https://zulip.com/login');
+	win.loadURL('https://zulip.tabbott.net');
 	win.on('closed', onClosed);
+	win.setTitle('Zulip');
+	
+	win.on('page-title-updated',(e) => {
+	e.preventDefault();
+	});
+
 	return win;
 }
 
@@ -51,9 +57,12 @@ app.on('ready', () => {
 	tray.create(mainWindow);
 
 	const page = mainWindow.webContents;
-
+	// page.setTitle("Zulip");
 	page.on('new-window', (e, url) => {
 		e.preventDefault();
 		electron.shell.openExternal(url);
 	});
+
+
 });
+
