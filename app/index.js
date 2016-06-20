@@ -25,11 +25,9 @@ function createMainWindow() {
 		icon: process.platform === 'linux' && path.join(__dirname, 'resources/Icon.png'),
 		minWidth: 800,
 		minHeight: 600
-		// titleBarStyle: 'hidden-inset',
-		// autoHideMenuBar: true
 	});
 
-	win.loadURL('https://zulip.tabbott.net');
+	win.loadURL('https://zulip.com/login');
 	win.on('closed', onClosed);
 	win.setTitle('Zulip');
 	
@@ -57,7 +55,6 @@ app.on('ready', () => {
 	tray.create(mainWindow);
 
 	const page = mainWindow.webContents;
-	// page.setTitle("Zulip");
 	page.on('new-window', (e, url) => {
 		e.preventDefault();
 		electron.shell.openExternal(url);
