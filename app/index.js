@@ -70,7 +70,7 @@ app.on('ready', () => {
         }
         if (linkIsInternal(targetUrl, url)) {
         	event.preventDefault();
-            return 	mainWindow.loadURL(url);;
+			return mainWindow.loadURL(url);
         }
         event.preventDefault();
         electron.shell.openExternal(url);
