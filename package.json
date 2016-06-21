@@ -25,12 +25,14 @@
   ],
   "dependencies": {
     "electron-debug": "^1.0.0",
-    "electron-dl": "^0.2.0"
+    "electron-dl": "^0.2.0",
+    "wurl": "^2.1.0"
   },
   "devDependencies": {
+    "devtron": "^1.1.0",
     "electron-packager": "^7.0.0",
     "electron-prebuilt": "^1.2.2",
-    "devtron": "^1.1.0",
+    "wurl": "^2.1.0",
     "xo": "*"
   },
   "xo": {

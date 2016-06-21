@@ -3,9 +3,15 @@ const path = require('path');
 const electron = require('electron');
 const {app, shell} = require('electron');
 const tray = require('./tray');
+const link = require ('./link_helper');
+
+const {linkIsInternal} = link;
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
+
+// Load this url in main window
+const targetUrl = "https://zulip.com/login"
 
 // prevent window being garbage collected
 let mainWindow;
@@ -27,9 +33,10 @@ function createMainWindow() {
 		minHeight: 600
 	});
 
-	win.loadURL('https://zulip.com/login');
+	win.loadURL(targetUrl);
 	win.on('closed', onClosed);
 	win.setTitle('Zulip');
+	// This will stop page to update it's title
 	
 	win.on('page-title-updated',(e) => {
 	e.preventDefault();
@@ -55,11 +62,17 @@ app.on('ready', () => {
 	tray.create(mainWindow);
 
 	const page = mainWindow.webContents;
-	page.on('new-window', (e, url) => {
-		e.preventDefault();
-		electron.shell.openExternal(url);
-	});
 
-
+    page.on('new-window', (event, url) => {
+        if (mainWindow.useDefaultWindowBehaviour) {
+            mainWindow.useDefaultWindowBehaviour = false;
+            return;
+        }
+        if (linkIsInternal(targetUrl, url)) {
+        	event.preventDefault();
+            return 	mainWindow.loadURL(url);;
+        }
+        event.preventDefault();
+        electron.shell.openExternal(url);
+    });
 });
-
