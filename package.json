@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/zulip/zulip-electron/issues"
   },
-  "main": "app/index.js",
+  "main": "app/main/index.js",
   "scripts": {
     "test": "xo",
     "start": "electron .",

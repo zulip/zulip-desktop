@@ -5,6 +5,7 @@ const {app, shell} = require('electron');
 const tray = require('./tray');
 const link = require ('./link_helper');
 
+
 const {linkIsInternal} = link;
 
 // adds debug features like hotkeys for triggering dev tools and reload
@@ -28,7 +29,7 @@ function createMainWindow() {
 		title: 'Zulip',
 		width: 1000,
 		height: 600,
-		icon: process.platform === 'linux' && path.join(__dirname, 'resources/Icon.png'),
+		icon: process.platform === 'linux' && path.join(__dirname, '../resources/Icon.png'),
 		minWidth: 800,
 		minHeight: 600
 	});
@@ -36,9 +37,9 @@ function createMainWindow() {
 	win.loadURL(targetUrl);
 	win.on('closed', onClosed);
 	win.setTitle('Zulip');
-	// This will stop page to update it's title
-	
-	win.on('page-title-updated',(e) => {
+
+	// stop page to update it's title
+	win.on('page-title-updated', (e) => {
 	e.preventDefault();
 	});
 
