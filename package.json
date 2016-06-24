@@ -26,7 +26,8 @@
   "dependencies": {
     "electron-debug": "^1.0.0",
     "electron-dl": "^0.2.0",
-    "wurl": "^2.1.0"
+    "wurl": "^2.1.0",
+    "node-json-db": "^0.7.2"
   },
   "devDependencies": {
     "devtron": "^1.1.0",

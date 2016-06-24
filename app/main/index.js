@@ -12,7 +12,8 @@ const {linkIsInternal} = link;
 require('electron-debug')();
 
 // Load this url in main window
-const targetUrl = "https://zulip.com/login"
+const targetUrl = 'file://' + path.join(__dirname, '../renderer', 'index.html');
+
 
 // prevent window being garbage collected
 let mainWindow;
