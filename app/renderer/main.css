@@ -1,28 +1,61 @@
-body {
-	background: #6BB6C7;
+.dialog-widget.background {
+    background: #6BB6C7 !important;
 }
-
-.about {
-	margin-top: 50px;
+.dialog-widget .title {
+    font-size: 18px !important;
+    font-family: Tahoma, Arial, sans-serif !important;
 }
-
-.left {
-	position: absolute;
-	top:89%;
-	left:76%;
+.dialog-widget input {
+    font-size: 14px !important;
+    font-family: monospace !important;
 }
-
-.about p {
-	font-size: 20px;
-	color: rgba(0, 0, 0, 0.62);
+.dialog-widget.prompt {
+    padding: 15px 15px 20px 15px !important;
 }
-
-.about img {
-	width:160px;
+.cancel {
+    display: none !important;
 }
-
-.detail {
-	text-align: left;
-	margin-left: 35%;
+.dialog-widget .ok {
+    margin-left: 20% !important;
 }
-
+.dialog-widget .ok,
+.dialog-widget .cancel {
+    color: #ffffff !important;
+    padding: 16px !important;
+    width: 167px !important;
+    font-size: 13px !important;
+    background-color: #458C9C !important;
+}
+.dialog-widget input {
+    padding: 8px !important;
+    border: solid 1px #ccc;
+    margin: 15px 5px 5px 5px !important;
+    width: 271px !important;
+    height: 30px !important;
+    font-size: 15px !important;
+}
+.dialog-widget .title {
+    font-size: 19px !important;
+    font-family: Tahoma, Arial, sans-serif !important;
+    padding-bottom: 5px !important;
+}
+.dialog-widget.prompt {
+    position: fixed;
+    left: calc(50% - 160px);
+    width: 300px !important;
+    top: calc(50% - 115px);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    color: black;
+    padding: 15px 10px 15px 10px !important;
+}
+.dialog-widget.prompt {
+    padding: 20px 25px 20px 25px !important;
+}
+.dialog-widget .divider {
+    border-top: none !important;
+    padding: 0;
+    margin-top: 25px !important;
+}
+button {
+    cursor: pointer !important;
+}
