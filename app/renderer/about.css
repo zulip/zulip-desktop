@@ -1,0 +1,27 @@
+body {
+	background: #6BB6C7;
+}
+
+.about {
+	margin-top: 50px;
+}
+
+.left {
+	position: absolute;
+	top:89%;
+	left:76%;
+}
+
+.about p {
+	font-size: 20px;
+	color: rgba(0, 0, 0, 0.62);
+}
+
+.about img {
+	width:160px;
+}
+
+.detail {
+	text-align: left;
+	margin-left: 35%;
+}
