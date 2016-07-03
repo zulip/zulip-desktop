@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/pref.css">
+	</head>
+	<body>
+		<div class="close" id="close-button">Close</div>
+		<div class="form">
+			<form onsubmit="addDomain(); return false">
+				<input id="url" type="text" placeholder="zulip.example.com">
+				<button type="submit" id="main" value="Submit" onclick="addDomain();">Add</button>
+			</form>
+			<p id="urladded"><p>
+			</div>
+			<script src="js/pref.js"></script>
+		</body>
+	</html>

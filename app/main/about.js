@@ -1,6 +1,6 @@
 'use strict';
-const electron = require('electron');
 const path = require('path');
+const electron = require('electron');
 
 
 let aboutWindow;
@@ -18,7 +18,7 @@ function createAboutWindow() {
         center: true,
         fullscreen: false,
         fullscreenable: false,
-		resizable: false   
+		resizable: false
     })
     const aboutURL = 'file://' + path.join(__dirname, '../renderer', 'about.html');
     aboutwin.loadURL(aboutURL);
@@ -26,9 +26,9 @@ function createAboutWindow() {
 
     // stop page to update it's title
     aboutwin.on('page-title-updated', (e) => {
-	e.preventDefault();
+	   e.preventDefault();
 	});
-	
+
     return aboutwin;
 }
 

@@ -4,10 +4,13 @@ const electron = require('electron');
 const app = require('electron').app;
 const {shell} = require('electron');
 const about = require ('./about');
+const domain = require ('./domain');
 const { createAboutWindow, onClosed } = about;
+const { createdomainWindow } = domain;
 
 let tray = null;
 let aboutWindow;
+let domainWindow;
 
 exports.create = win => {
 	if (process.platform === 'darwin' || tray) {
@@ -33,11 +36,25 @@ exports.create = win => {
 		aboutWindow.show();
 	};
 
+	const addDomain = () => {
+		domainWindow = createdomainWindow();
+		domainWindow.show();
+	};
+
 	const contextMenu = electron.Menu.buildFromTemplate([
 		{
 			label: 'About',
 			click() {
 				About();
+			}
+		},
+		{
+			type: 'separator'
+		},
+		{
+			label: 'Add new domain',
+			click() {
+				addDomain();
 			}
 		},
 		{

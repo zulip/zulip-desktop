@@ -2,18 +2,17 @@
 const path = require('path');
 const electron = require('electron');
 const {app, shell} = require('electron');
+const ipc = require('electron').ipcMain;
+
 const tray = require('./tray');
 const link = require ('./link_helper');
-
-
 const {linkIsInternal} = link;
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 
 // Load this url in main window
-const targetUrl = 'file://' + path.join(__dirname, '../renderer', 'index.html');
-
+const targetUrl = 'file://' + path.join(__dirname, '../renderer', 'index.html'); 
 
 // prevent window being garbage collected
 let mainWindow;
@@ -77,4 +76,8 @@ app.on('ready', () => {
         event.preventDefault();
         electron.shell.openExternal(url);
     });
+});
+
+ipc.on('new-domain', function (e, domain) {
+	mainWindow.loadURL(domain);
 });
