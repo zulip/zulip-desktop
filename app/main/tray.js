@@ -12,12 +12,12 @@ let tray = null;
 let aboutWindow;
 let domainWindow;
 
+const iconPath = path.join(__dirname, '../resources', 'Icon.png');
+
 exports.create = win => {
 	if (process.platform === 'darwin' || tray) {
 		return;
 	}
-
-	const iconPath = path.join(__dirname, '../resources', 'Icon.png');
 
 	const toggleWin = () => {
 		if (win.isVisible()) {
