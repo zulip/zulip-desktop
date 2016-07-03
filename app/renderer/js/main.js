@@ -1,7 +1,7 @@
 		window.onload = function getURL() {
 
 			const JsonDB = require('node-json-db');
-		    const dialogs = require('dialogs');
+			const dialogs = require('dialogs')()
 		    const db = new JsonDB("domain", true, true);
 		    const data = db.getData("/");
 

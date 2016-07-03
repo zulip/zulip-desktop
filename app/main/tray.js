@@ -52,7 +52,7 @@ exports.create = win => {
 			type: 'separator'
 		},
 		{
-			label: 'Add new domain',
+			label: 'Change domain',
 			click() {
 				addDomain();
 			}
