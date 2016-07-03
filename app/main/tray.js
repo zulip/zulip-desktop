@@ -12,7 +12,13 @@ let tray = null;
 let aboutWindow;
 let domainWindow;
 
-const iconPath = path.join(__dirname, '../resources', 'Icon.png');
+const APP_ICON = path.join(__dirname, '../resources', 'Icon');
+
+const iconPath = () => {
+  return process.platform === 'win32'
+    ? APP_ICON + '.ico'
+    : APP_ICON + '.png'
+};
 
 exports.create = win => {
 
@@ -83,7 +89,7 @@ exports.create = win => {
 		}
 	]);
 
-	tray = new electron.Tray(iconPath);
+	tray = new electron.Tray(iconPath());
 	tray.setToolTip(`${app.getName()}`);
 	tray.setContextMenu(contextMenu);
 	tray.on('click', toggleWin);
