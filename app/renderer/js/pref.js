@@ -11,7 +11,10 @@ function addDomain() {
         const ipcRenderer = require('electron').ipcRenderer;
         const JsonDB = require('node-json-db');
         const db = new JsonDB('domain', true, true);
-        const newDomain = document.getElementById('url').value;
+        let newDomain = document.getElementById('url').value;
+        
+        newDomain = newDomain.replace(/^https?:\/\//,'')
+        
         const domain = 'https://' + newDomain;
 
         document.getElementById('urladded').innerHTML = newDomain + '  Added';

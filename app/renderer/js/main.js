@@ -9,6 +9,7 @@
 		        window.location.href = 'https://' + data["domain"];
 		    } else {
 		        dialogs.prompt('Enter the URL for your Zulip server', function(url) {
+		        	url = url.replace(/^https?:\/\//,'')
 		            db.push("/domain", url);
 		            window.location.href = 'https://' + url ;
 		        })
