@@ -55,7 +55,7 @@ exports.create = win => {
 			type: 'separator'
 		},
 		{
-			label: 'Change domain',
+			label: 'Change Zulip server',
 			click() {
 				addDomain();
 			}
