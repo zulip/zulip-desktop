@@ -11,11 +11,20 @@ const {linkIsInternal} = link;
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 
-// Load this url in main window
-const targetUrl = 'file://' + path.join(__dirname, '../renderer', 'index.html'); 
-
 // prevent window being garbage collected
 let mainWindow;
+
+// Load this url in main window
+const targetUrl = 'file://' + path.join(__dirname, '../renderer', 'index.html');
+
+const APP_ICON = path.join(__dirname, '../resources', 'Icon');
+
+const iconPath = () => {
+  return process.platform === 'win32'
+    ? APP_ICON + '.ico'
+    : APP_ICON + '.png'
+};
+
 
 function onClosed() {
 	// dereference the window
@@ -29,7 +38,7 @@ function createMainWindow() {
 		title: 'Zulip',
 		width: 1000,
 		height: 600,
-		icon: process.platform === 'linux' && path.join(__dirname, '../resources/Icon.png'),
+		icon: iconPath(),
 		minWidth: 800,
 		minHeight: 600
 	});
