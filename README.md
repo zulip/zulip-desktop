@@ -1,4 +1,4 @@
-# Zulip Electron Desktop Client
+# Zulip Desktop Client
 
 This is an experimental replacement for the [Zulip Desktop
 app](https://github.com/zulip/zulip-desktop) implemented in
