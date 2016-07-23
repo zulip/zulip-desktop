@@ -7,7 +7,6 @@
 
 		    if (data["domain"] !== undefined) {
 		        window.location.href = data["domain"];
-
 		    } else {
 
 		        dialogs.prompt('Enter the URL for your Zulip server', function(url) {

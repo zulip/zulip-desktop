@@ -25,7 +25,7 @@
   ],
   "dependencies": {
     "dialogs": "1.1.14",
-    "electron-context-menu": "^0.3.1",
+    "electron-context-menu": "0.4.0",
     "electron-debug": "^1.0.0",
     "electron-dl": "^0.2.0",
     "node-json-db": "^0.7.2",

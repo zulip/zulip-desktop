@@ -22,7 +22,7 @@ function addDomain() {
         request(checkDomain, function (error, response, body) {
             if (!error && response.statusCode !== 404) {
                 document.getElementById('urladded').innerHTML = newDomain + '  Added';
-                db.push('/domain', newDomain);
+                db.push('/domain', domain);
                 ipcRenderer.send('new-domain', domain);
             }
             else{
