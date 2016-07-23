@@ -6,10 +6,10 @@
 		    const data = db.getData("/");
 
 		    if (data["domain"] !== undefined) {
-		        window.location.href = 'https://' + data["domain"];
+		        window.location.href = data["domain"];
 
 		    } else {
-		    	
+
 		        dialogs.prompt('Enter the URL for your Zulip server', function(url) {
 
 		        	let newurl = 'https://' + url.replace(/^https?:\/\//,'')
