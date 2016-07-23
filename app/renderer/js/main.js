@@ -1,5 +1,5 @@
 		window.onload = function getURL() {
-
+			const request = require('request');
 			const JsonDB = require('node-json-db');
 			const dialogs = require('dialogs')()
 		    const db = new JsonDB("domain", true, true);
@@ -7,11 +7,24 @@
 
 		    if (data["domain"] !== undefined) {
 		        window.location.href = 'https://' + data["domain"];
+
 		    } else {
+		    	
 		        dialogs.prompt('Enter the URL for your Zulip server', function(url) {
-		        	newurl = url.replace(/^https?:\/\//,'')
-		            db.push("/domain", newurl);
-		            window.location.href = 'https://' + newurl ;
+
+		        	let newurl = 'https://' + url.replace(/^https?:\/\//,'')
+		        	let checkURL = newurl + '/static/audio/zulip.ogg';
+
+		        	request(checkURL, function (error, response, body) {
+		        		if (!error && response.statusCode !== 404) {
+		        			    db.push("/domain", newurl);
+		        			    window.location.href = newurl ;
+		        		}
+		        		else {
+		        			dialogs.alert('Not valid url');
+		        			console.log("Not valid url");
+		        		}
+		        	})
 		        })
 		    }
 
