@@ -18,7 +18,14 @@ let mainWindow;
 
 // Load this url in main window
 const targetUrl = 'file://' + path.join(__dirname, '../renderer', 'index.html');
-let targetLink = data["domain"] || '';
+// let targetLink = data["domain"] || '';
+
+let targetLink = function () {
+	if (data["domain"] !== undefined) {
+		return data["domain"]
+	}
+}
+
 
 const APP_ICON = path.join(__dirname, '../resources', 'Icon');
 

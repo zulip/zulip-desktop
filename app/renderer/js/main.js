@@ -1,6 +1,7 @@
 		window.onload = function getURL() {
 			const request = require('request');
 			const JsonDB = require('node-json-db');
+			const ipcRenderer = require('electron').ipcRenderer;
 			const dialogs = require('dialogs')()
 		    const db = new JsonDB("domain", true, true);
 		    const data = db.getData("/");
@@ -17,6 +18,7 @@
 		        	request(checkURL, function (error, response, body) {
 		        		if (!error && response.statusCode !== 404) {
 		        			    db.push("/domain", newurl);
+		        			    ipcRenderer.send('new-domain', newurl);
 		        			    window.location.href = newurl ;
 		        		}
 		        		else {
