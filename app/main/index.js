@@ -18,6 +18,7 @@ let mainWindow;
 
 // Load this url in main window
 const targetUrl = 'file://' + path.join(__dirname, '../renderer', 'index.html');
+let targetLink = data["domain"] || '';
 
 const APP_ICON = path.join(__dirname, '../resources', 'Icon');
 
@@ -80,7 +81,7 @@ app.on('ready', () => {
             mainWindow.useDefaultWindowBehaviour = false;
             return;
         }
-        if (linkIsInternal(targetUrl, url)) {
+        if (linkIsInternal(targetLink, url)) {
         	event.preventDefault();
 			return mainWindow.loadURL(url);
         }
@@ -91,4 +92,5 @@ app.on('ready', () => {
 
 ipc.on('new-domain', function (e, domain) {
 	mainWindow.loadURL(domain);
+	targetLink = domain;
 });
