@@ -3,28 +3,33 @@ const path = require('path');
 const electron = require('electron');
 const {app, shell} = require('electron');
 const ipc = require('electron').ipcMain;
-
 const tray = require('./tray');
 const link = require ('./link_helper');
 const {linkIsInternal} = link;
+
+const JsonDB = require('node-json-db');
+const db = new JsonDB("domain", true, true);
+const data = db.getData("/");
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 require('electron-context-menu')();
 
-
 // prevent window being garbage collected
 let mainWindow;
+let targetLink;
 
 // Load this url in main window
 const targetUrl = 'file://' + path.join(__dirname, '../renderer', 'index.html');
-// let targetLink = data["domain"] || '';
 
-let targetLink = function () {
+
+function checkWindowURL() {
 	if (data["domain"] !== undefined) {
 		return data["domain"]
 	}
+	return targetLink
 }
+
 
 
 const APP_ICON = path.join(__dirname, '../resources', 'Icon');
@@ -91,7 +96,7 @@ app.on('ready', () => {
             mainWindow.useDefaultWindowBehaviour = false;
             return;
         }
-        if (linkIsInternal(targetLink, url)) {
+        if (linkIsInternal(checkWindowURL(), url)) {
         	event.preventDefault();
 			return mainWindow.loadURL(url);
         }
