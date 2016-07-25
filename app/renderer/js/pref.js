@@ -12,8 +12,9 @@ function addDomain() {
         const ipcRenderer = require('electron').ipcRenderer;
         const JsonDB = require('node-json-db');
         const db = new JsonDB('domain', true, true);
-        let newDomain = document.getElementById('url').value;
-        
+        document.getElementById('main').innerHTML = 'Checking...'    
+
+        let newDomain = document.getElementById('url').value;        
         newDomain = newDomain.replace(/^https?:\/\//,'')
         
         const domain = 'https://' + newDomain;
@@ -21,14 +22,14 @@ function addDomain() {
 
         request(checkDomain, function (error, response, body) {
             if (!error && response.statusCode !== 404) {
+                document.getElementById('main').innerHTML = 'Add' 
                 document.getElementById('urladded').innerHTML = newDomain + '  Added';
                 db.push('/domain', domain);
                 ipcRenderer.send('new-domain', domain);
             }
-            else{
+            else {
+                document.getElementById('main').innerHTML = 'Add' 
                 document.getElementById('urladded').innerHTML = "Not a vaild Zulip server";
             }
         })
-
-
 }
