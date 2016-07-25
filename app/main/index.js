@@ -65,6 +65,9 @@ function createMainWindow() {
 	return win;
 }
 
+// TODO
+app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
+
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
 		app.quit();
