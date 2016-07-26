@@ -20,7 +20,7 @@ function addDomain() {
         const domain = 'https://' + newDomain;
         const checkDomain = domain + '/static/audio/zulip.ogg';
 
-        request(checkDomain, function (error, response, body) {
+        request({uri: checkDomain, strictSSL: false}, function (error, response, body) {
             if (!error && response.statusCode !== 404) {
                 document.getElementById('main').innerHTML = 'Add' 
                 document.getElementById('urladded').innerHTML = newDomain + '  Added';
