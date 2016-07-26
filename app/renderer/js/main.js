@@ -15,7 +15,7 @@
 		        	let newurl = 'https://' + url.replace(/^https?:\/\//,'')
 		        	let checkURL = newurl + '/static/audio/zulip.ogg';
 
-		        	request(checkURL, function (error, response, body) {
+		        	request({uri: checkURL, strictSSL: false}, function (error, response, body) {
 		        		if (!error && response.statusCode !== 404) {
 		        			    db.push("/domain", newurl);
 		        			    ipcRenderer.send('new-domain', newurl);
