@@ -7,6 +7,7 @@ const tray = require('./tray');
 const link = require ('./link_helper');
 const {linkIsInternal} = link;
 
+const electronLocalshortcut = require('electron-localshortcut');
 const JsonDB = require('node-json-db');
 const db = new JsonDB("domain", true, true);
 const data = db.getData("/");
@@ -66,6 +67,11 @@ function createMainWindow() {
 	win.on('page-title-updated', (e) => {
 	e.preventDefault();
 	});
+
+	// TODO - use global shortcut instead
+	electronLocalshortcut.register(win, 'CommandOrControl+R', () => {
+	   win.reload();
+	 });
 
 	return win;
 }
