@@ -30,7 +30,8 @@
     "electron-dl": "^0.2.0",
     "dialogs": "1.1.14",
     "node-json-db": "^0.7.2",
-    "wurl": "^2.1.0"
+    "wurl": "^2.1.0",
+    "request": "^2.74.0"
   },
   "devDependencies": {
     "devtron": "^1.1.0",
