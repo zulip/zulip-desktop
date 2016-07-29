@@ -130,6 +130,20 @@ app.on('ready', () => {
 	tray.create(mainWindow);
 
 	const page = mainWindow.webContents;
+	
+	// let's find out back keycode
+	const back = () => {
+		if (process.platform !== 'darwin') {
+			return 'Backspace'
+		}
+		return 'Delete'
+	};
+
+	electronLocalshortcut.register(mainWindow, back(), () => {
+		if (page.canGoBack()) {
+			page.goBack();
+		}
+	 });
 
     page.on('new-window', (event, url) => {
         if (mainWindow.useDefaultWindowBehaviour) {
