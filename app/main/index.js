@@ -132,14 +132,14 @@ app.on('ready', () => {
 	const page = mainWindow.webContents;
 	
 	// let's find out back keycode
-	const back = () => {
-		if (process.platform !== 'darwin') {
-			return 'Backspace'
-		}
-		return 'Delete'
-	};
+	// const back = () => {
+	// 	if (process.platform !== 'darwin') {
+	// 		return 'Backspace'
+	// 	}
+	// 	return 'Delete'
+	// };
 
-	electronLocalshortcut.register(mainWindow, back(), () => {
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
 		if (page.canGoBack()) {
 			page.goBack();
 		}
