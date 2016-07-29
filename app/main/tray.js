@@ -22,13 +22,15 @@ const iconPath = () => {
 
 exports.create = win => {
 
-	const toggleWin = () => {
-		if (win.isVisible()) {
-			win.hide();
-		} else {
-			win.show();
-		}
-	};
+
+	// Noone is using this feature. so let's hold it for now.
+	// const toggleWin = () => {
+	// 	if (win.isVisible()) {
+	// 		win.hide();
+	// 	} else {
+	// 		win.show();
+	// 	}
+	// };
 
 	const reload = () => {
 		win.reload();
@@ -64,15 +66,6 @@ exports.create = win => {
 			type: 'separator'
 		},
 		{
-			label: 'Toggle',
-			click() {
-				toggleWin();
-			}
-		},
-		{
-			type: 'separator'
-		},
-		{
 			label: 'Reload',
 			click() {
 				reload();
@@ -92,5 +85,4 @@ exports.create = win => {
 	tray = new electron.Tray(iconPath());
 	tray.setToolTip(`${app.getName()}`);
 	tray.setContextMenu(contextMenu);
-	tray.on('click', toggleWin);
 };
