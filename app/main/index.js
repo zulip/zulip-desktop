@@ -139,7 +139,7 @@ app.on('ready', () => {
 	// 	return 'Delete'
 	// };
 
-	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+Left', () => {
 		if (page.canGoBack()) {
 			page.goBack();
 		}
