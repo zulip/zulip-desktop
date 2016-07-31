@@ -19,6 +19,10 @@ require('electron-context-menu')();
 
 const conf = new Configstore("Zulip-Desktop");
 
+// spellchecker enabled
+const SpellChecker = require('simple-spellchecker');
+let myDictionary = null;
+
 // prevent window being garbage collected
 let mainWindow;
 let targetLink;
@@ -55,7 +59,12 @@ function createMainWindow() {
 		height: conf.get('height') || 600,
 		icon: iconPath(),
 		minWidth: 600,
-		minHeight: 400
+		minHeight: 400,
+		webPreferences: {
+			preload: path.join(__dirname, 'preload.js'),
+			nodeIntegration: true,
+			plugins: true
+		}
 	});
 
 	win.loadURL(targetUrl);
@@ -138,6 +147,22 @@ app.on('ready', () => {
 	// 	}
 	// 	return 'Delete'
 	// };
+
+	// Add spellcheck dictionary
+	SpellChecker.getDictionary("en-US", "./node_modules/simple-spellchecker/dict", function(err, result) {
+	    if(!err) {
+	        myDictionary = result;
+	    }
+	});
+
+	// Define function for consult the dictionary.
+	ipc.on('checkspell', function(event, word) {
+	    var res = null;
+	    if(myDictionary != null && word != null) {
+	        res = myDictionary.spellCheck(word);
+	    }
+	    event.returnValue = res;
+	});
 
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+Left', () => {
 		if (page.canGoBack()) {
