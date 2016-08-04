@@ -170,6 +170,19 @@ app.on('ready', () => {
 		}
 	 });
 
+
+    electronLocalshortcut.register(mainWindow, 'CommandOrControl+=', () => {
+    	page.executeJavaScript('zoomIn()');
+	});
+
+    electronLocalshortcut.register(mainWindow, 'CommandOrControl+-', () => {
+		page.executeJavaScript('zoomOut()');
+    });
+
+   	electronLocalshortcut.register(mainWindow, 'CommandOrControl+0', () => {
+		page.executeJavaScript('zoomActualSize()');
+	});
+    
     page.on('new-window', (event, url) => {
         if (mainWindow.useDefaultWindowBehaviour) {
             mainWindow.useDefaultWindowBehaviour = false;
