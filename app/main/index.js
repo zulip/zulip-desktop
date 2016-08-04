@@ -71,7 +71,7 @@ function createMainWindow() {
 	win.on('closed', onClosed);
 	win.setTitle('Zulip');
 
-	// Let's save browser window position 
+	// Let's save browser window position
 	if (conf.get('x') || conf.get('y')) {
 	  win.setPosition(conf.get('x'), conf.get('y'));
 	}
@@ -111,10 +111,7 @@ function createMainWindow() {
 	e.preventDefault();
 	});
 
-	// TODO - use global shortcut instead
-	electronLocalshortcut.register(win, 'CommandOrControl+R', () => {
-	   win.reload();
-	 });
+
 
 	return win;
 }
@@ -139,14 +136,6 @@ app.on('ready', () => {
 	tray.create(mainWindow);
 
 	const page = mainWindow.webContents;
-	
-	// let's find out back keycode
-	// const back = () => {
-	// 	if (process.platform !== 'darwin') {
-	// 		return 'Backspace'
-	// 	}
-	// 	return 'Delete'
-	// };
 
 	// Add spellcheck dictionary
 	SpellChecker.getDictionary("en-US", "./node_modules/simple-spellchecker/dict", function(err, result) {
@@ -164,12 +153,18 @@ app.on('ready', () => {
 	    event.returnValue = res;
 	});
 
-	electronLocalshortcut.register(mainWindow, 'CommandOrControl+Left', () => {
+
+	// TODO - use global shortcut instead
+
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
+	   mainWindow.reload();
+	 });
+
+	electronLocalshortcut.register(mainWindow, 'Alt+Left', () => {
 		if (page.canGoBack()) {
 			page.goBack();
 		}
 	 });
-
 
     electronLocalshortcut.register(mainWindow, 'CommandOrControl+=', () => {
     	page.executeJavaScript('zoomIn()');
@@ -182,7 +177,7 @@ app.on('ready', () => {
    	electronLocalshortcut.register(mainWindow, 'CommandOrControl+0', () => {
 		page.executeJavaScript('zoomActualSize()');
 	});
-    
+
     page.on('new-window', (event, url) => {
         if (mainWindow.useDefaultWindowBehaviour) {
             mainWindow.useDefaultWindowBehaviour = false;
