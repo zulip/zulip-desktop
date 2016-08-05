@@ -51,6 +51,22 @@ function onClosed() {
 	mainWindow = null;
 }
 
+function updateDockBadge(title) {
+
+	if (title.indexOf('Zulip') === -1) {
+		return;
+	}
+
+	let messageCount = (/\(([0-9]+)\)/).exec(title);
+	messageCount = messageCount ? Number(messageCount[1]) : 0;
+
+	console.log(messageCount);
+
+	if (process.platform === 'darwin') {
+		app.setBadgeCount(messageCount);
+	}
+}
+
 function createMainWindow() {
 	const win = new electron.BrowserWindow({
 		// This settings needs to be saved in config
@@ -107,11 +123,10 @@ function createMainWindow() {
 	});
 
 	// stop page to update it's title
-	win.on('page-title-updated', (e) => {
+	win.on('page-title-updated', (e,title) => {
 	e.preventDefault();
+	updateDockBadge(title);
 	});
-
-
 
 	return win;
 }

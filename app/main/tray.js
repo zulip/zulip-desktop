@@ -23,7 +23,7 @@ const iconPath = () => {
 exports.create = win => {
 
 
-	// Noone is using this feature. so let's hold it for now.
+	// Noone is using this feature. so let's hide it for now.
 	// const toggleWin = () => {
 	// 	if (win.isVisible()) {
 	// 		win.hide();
@@ -86,3 +86,4 @@ exports.create = win => {
 	tray.setToolTip(`${app.getName()}`);
 	tray.setContextMenu(contextMenu);
 };
+
