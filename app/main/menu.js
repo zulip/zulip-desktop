@@ -195,6 +195,26 @@ const otherTpl = [
     label: 'File',
     submenu: [
       {
+        label: 'Change Zulip Server',
+        accelerator: 'Ctrl+,',
+        click() {
+          addDomain();
+        }
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Keyboard shortcuts',
+        accelerator: 'Ctrl+K',
+        click() {
+          sendAction('shortcut');
+        }
+      },
+      {
+        type: 'separator'
+      },
+      {
         label: 'Log Out',
         click() {
           sendAction('log-out');
@@ -240,17 +260,8 @@ const otherTpl = [
       },
       {
         role: 'selectall'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        label: 'Change Zulip Server',
-        accelerator: 'Ctrl+,',
-        click() {
-          addDomain();
-        }
       }
+
     ]
   },
   {
