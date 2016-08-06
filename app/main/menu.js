@@ -89,6 +89,13 @@ const darwinTpl = [
         }
       },
       {
+        label: 'Keyboard shortcuts',
+        accelerator: 'Cmd+K',
+        click() {
+          sendAction('shortcut');
+        }
+      },
+      {
         type: 'separator'
       },
       {

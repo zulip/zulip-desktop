@@ -46,3 +46,11 @@ ipcRenderer.on('log-out', () => {
 	const nodes = document.querySelectorAll('.dropdown-menu li:last-child a');
 	nodes[nodes.length - 1].click();
 });
+
+ipcRenderer.on('shortcut', () => {
+	// create the menu for the below
+	document.querySelector('.dropdown-toggle').click();
+
+	const nodes = document.querySelectorAll('.dropdown-menu li:nth-child(4) a');
+	nodes[nodes.length - 1].click();
+});
