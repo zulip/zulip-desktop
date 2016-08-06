@@ -3,14 +3,9 @@ const path = require('path');
 const electron = require('electron');
 const app = require('electron').app;
 const {shell} = require('electron');
-const about = require ('./about');
-const domain = require ('./domain');
-const { createAboutWindow, onClosed } = about;
-const { createdomainWindow } = domain;
+const { addDomain, About } = require('./windowmanager');
 
 let tray = null;
-let aboutWindow;
-let domainWindow;
 
 const APP_ICON = path.join(__dirname, '../resources', 'Icon');
 
@@ -21,7 +16,6 @@ const iconPath = () => {
 };
 
 exports.create = win => {
-
 
 	// Noone is using this feature. so let's hide it for now.
 	// const toggleWin = () => {
@@ -34,16 +28,6 @@ exports.create = win => {
 
 	const reload = () => {
 		win.reload();
-	};
-
-	const About = () => {
-		aboutWindow = createAboutWindow();
-		aboutWindow.show();
-	};
-
-	const addDomain = () => {
-		domainWindow = createdomainWindow();
-		domainWindow.show();
 	};
 
 	const contextMenu = electron.Menu.buildFromTemplate([
