@@ -16,11 +16,10 @@ Clone the source locally:
 $ git clone https://github.com/zulip/zulip-electron
 $ cd zulip-electron
 ```
-
-Use your package manager to install `npm`.
-
 If you're on Debian or Ubuntu, you'll also need to install
 `nodejs-legacy`:
+
+Use your package manager to install `npm`.
 
 ```sh
 $ sudo apt-get install npm nodejs-legacy
