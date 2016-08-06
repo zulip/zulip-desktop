@@ -46,8 +46,11 @@ const helpSubmenu = [
   {
     label: `${appName} Website`,
     click() {
-      shell.openExternal('https://github.com/zulip/zulip-electron');
+      shell.openExternal('https://zulip.org');
     }
+  },
+  {
+    label: `${app.getName()} - ${app.getVersion()}`,
   },
   {
     label: 'Report an Issue...',
@@ -67,7 +70,7 @@ ${process.platform} ${process.arch} ${os.release()}`;
 const darwinTpl = [
 
   {
-    label: 'Zulip',
+    label: `${app.getName()}`,
     submenu: [
       {
         label: 'About',
