@@ -38,3 +38,11 @@ ipcRenderer.on('zoomOut', () => {
 ipcRenderer.on('zoomActualSize', () => {
 	zoomActualSize();
 });
+
+ipcRenderer.on('log-out', () => {
+	// create the menu for the below
+	document.querySelector('.dropdown-toggle').click();
+
+	const nodes = document.querySelectorAll('.dropdown-menu li:last-child a');
+	nodes[nodes.length - 1].click();
+});
