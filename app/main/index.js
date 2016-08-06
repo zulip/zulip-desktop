@@ -168,9 +168,7 @@ app.on('ready', () => {
 	    event.returnValue = res;
 	});
 
-
 	// TODO - use global shortcut instead
-
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
 	   mainWindow.reload();
 	 });
@@ -182,15 +180,15 @@ app.on('ready', () => {
 	 });
 
     electronLocalshortcut.register(mainWindow, 'CommandOrControl+=', () => {
-    	page.executeJavaScript('zoomIn()');
+    	page.send('zoomIn');
 	});
 
     electronLocalshortcut.register(mainWindow, 'CommandOrControl+-', () => {
-		page.executeJavaScript('zoomOut()');
+		page.send('zoomOut');
     });
 
    	electronLocalshortcut.register(mainWindow, 'CommandOrControl+0', () => {
-		page.executeJavaScript('zoomActualSize()');
+		page.send('zoomActualSize');
 	});
 
     page.on('new-window', (event, url) => {

@@ -14,14 +14,27 @@ webFrame.setSpellCheckProvider("en-US", false, {
 
 // Handle zooming functionality
 
-window.zoomIn = function () {
+const zoomIn = () => {
   webFrame.setZoomFactor(webFrame.getZoomFactor() + 0.1);
 };
 
-window.zoomOut = function () {
+const zoomOut = () => {
   webFrame.setZoomFactor(webFrame.getZoomFactor() - 0.1);
 };
 
-window.zoomActualSize = function() {
+const zoomActualSize = () => {
   webFrame.setZoomFactor(1);
 };
+
+// Get zooming actions from main process
+ipcRenderer.on('zoomIn', () => {
+	zoomIn();
+});
+
+ipcRenderer.on('zoomOut', () => {
+	zoomOut();
+});
+
+ipcRenderer.on('zoomActualSize', () => {
+	zoomActualSize();
+});
