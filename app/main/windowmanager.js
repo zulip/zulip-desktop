@@ -15,9 +15,9 @@ function onClosed() {
 function createdomainWindow() {
     const domainwin = new electron.BrowserWindow({
         frame: false,
-        height: 200,
+        height: 300,
         resizable: false,
-        width: 300
+        width: 400
     })
     const domainURL = 'file://' + path.join(__dirname, '../renderer', 'pref.html');
     domainwin.loadURL(domainURL);

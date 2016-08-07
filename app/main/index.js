@@ -62,7 +62,7 @@ function updateDockBadge(title) {
 	messageCount = messageCount ? Number(messageCount[1]) : 0;
 
 	if (process.platform === 'darwin') {
-		app.setBadgeCount(messageCount);
+		app.setBadgeCount(messageCount)
 	}
 }
 
