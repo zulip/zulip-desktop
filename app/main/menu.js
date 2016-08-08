@@ -73,7 +73,7 @@ const darwinTpl = [
     label: `${app.getName()}`,
     submenu: [
       {
-        label: 'About',
+        label: 'Zulip desktop',
         click() {
           About();
         }
@@ -194,6 +194,15 @@ const otherTpl = [
   {
     label: 'File',
     submenu: [
+      {
+        label: 'Zulip desktop',
+        click() {
+          About();
+        }
+      },
+      {
+        type: 'separator'
+      },
       {
         label: 'Change Zulip Server',
         accelerator: 'Ctrl+,',
