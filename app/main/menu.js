@@ -84,15 +84,15 @@ const darwinTpl = [
       {
         label: 'Change Zulip Server',
         accelerator: 'Cmd+,',
-        click() {
-          addDomain();
+        click(item, focusedWindow) {
+          if(focusedWindow) addDomain();
         }
       },
       {
         label: 'Keyboard shortcuts',
         accelerator: 'Cmd+K',
-        click() {
-          sendAction('shortcut');
+        click(item, focusedWindow) {
+          if(focusedWindow) sendAction('shortcut');
         }
       },
       {
@@ -100,8 +100,8 @@ const darwinTpl = [
       },
       {
         label: 'Log Out',
-        click() {
-          sendAction('log-out');
+        click(item, focusedWindow) {
+          if(focusedWindow) sendAction('log-out');
         }
       },
       {
@@ -206,8 +206,8 @@ const otherTpl = [
       {
         label: 'Change Zulip Server',
         accelerator: 'Ctrl+,',
-        click() {
-          addDomain();
+        click(item, focusedWindow) {
+          if(focusedWindow) addDomain();
         }
       },
       {
@@ -216,8 +216,8 @@ const otherTpl = [
       {
         label: 'Keyboard shortcuts',
         accelerator: 'Ctrl+K',
-        click() {
-          sendAction('shortcut');
+        click(item, focusedWindow) {
+          if(focusedWindow) sendAction('shortcut');
         }
       },
       {
@@ -225,8 +225,8 @@ const otherTpl = [
       },
       {
         label: 'Log Out',
-        click() {
-          sendAction('log-out');
+        click(item, focusedWindow) {
+          if(focusedWindow) sendAction('log-out');
         }
       },
       {

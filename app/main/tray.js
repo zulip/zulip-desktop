@@ -39,8 +39,8 @@ exports.create = win => {
 		},
 		{
 			label: 'Change Zulip server',
-			click() {
-				addDomain();
+			click(item, focusedWindow) {
+				if(focusedWindow) addDomain();
 			}
 		},
 		{
