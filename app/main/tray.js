@@ -4,6 +4,7 @@ const electron = require('electron');
 const app = require('electron').app;
 const {shell} = require('electron');
 const { addDomain, About } = require('./windowmanager');
+const BrowserWindow = electron.BrowserWindow;
 
 let tray = null;
 
@@ -25,11 +26,7 @@ exports.create = win => {
 	// 		win.show();
 	// 	}
 	// };
-
-	const reload = () => {
-		win.reload();
-	};
-
+	
 	const contextMenu = electron.Menu.buildFromTemplate([
 		{
 			label: 'About',
@@ -51,8 +48,8 @@ exports.create = win => {
 		},
 		{
 			label: 'Reload',
-			click() {
-				reload();
+			click (item, focusedWindow) {
+			  if (focusedWindow) focusedWindow.reload()
 			}
 		},
 		{
