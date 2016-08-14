@@ -5,14 +5,10 @@ const {app, shell} = require('electron');
 const electronLocalshortcut = require('electron-localshortcut');
 const ipc = require('electron').ipcMain;
 const Configstore = require('configstore');
-const JsonDB = require('node-json-db');
 const tray = require('./tray');
 const appMenu = require('./menu');
 const link = require ('./link_helper');
 const {linkIsInternal} = link;
-
-const db = new JsonDB("domain", true, true);
-const data = db.getData("/");
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
@@ -32,8 +28,8 @@ let targetLink;
 const targetUrl = 'file://' + path.join(__dirname, '../renderer', 'index.html');
 
 function checkWindowURL() {
-	if (data["domain"] !== undefined) {
-		return data["domain"]
+	if (conf.get("domain") !== undefined) {
+		return conf.get("domain")
 	}
 	return targetLink
 }
@@ -206,6 +202,12 @@ app.on('ready', () => {
 });
 
 ipc.on('new-domain', function (e, domain) {
+  conf.set('domain', domain);
 	mainWindow.loadURL(domain);
 	targetLink = domain;
 });
+
+ipc.on('get-domain', function(e, domain) {
+  e.returnValue = conf.get("domain");
+});
+
