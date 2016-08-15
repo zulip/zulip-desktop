@@ -1,27 +1,28 @@
 'use strict';
 const path = require('path');
 const electron = require('electron');
-const {app, shell} = require('electron');
+const {app} = require('electron');
 const electronLocalshortcut = require('electron-localshortcut');
 const ipc = require('electron').ipcMain;
 const Configstore = require('configstore');
 const JsonDB = require('node-json-db');
+const SpellChecker = require('simple-spellchecker');
 const tray = require('./tray');
 const appMenu = require('./menu');
-const link = require ('./link_helper');
+const link = require('./link-helper');
+
 const {linkIsInternal} = link;
 
-const db = new JsonDB("domain", true, true);
-const data = db.getData("/");
+const db = new JsonDB('domain', true, true);
+const data = db.getData('/');
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 require('electron-context-menu')();
 
-const conf = new Configstore("Zulip-Desktop");
+const conf = new Configstore('Zulip-Desktop');
 
 // spellchecker enabled
-const SpellChecker = require('simple-spellchecker');
 let myDictionary = null;
 
 // prevent window being garbage collected
@@ -32,18 +33,16 @@ let targetLink;
 const targetUrl = 'file://' + path.join(__dirname, '../renderer', 'index.html');
 
 function checkWindowURL() {
-	if (data["domain"] !== undefined) {
-		return data["domain"]
+	if (data.domain !== undefined) {
+		return data.domain;
 	}
-	return targetLink
+	return targetLink;
 }
 
 const APP_ICON = path.join(__dirname, '../resources', 'Icon');
 
 const iconPath = () => {
-  return process.platform === 'win32'
-    ? APP_ICON + '.ico'
-    : APP_ICON + '.png'
+	return APP_ICON + (process.platform === 'win32' ? '.ico' : '.png');
 };
 
 function onClosed() {
@@ -53,7 +52,6 @@ function onClosed() {
 }
 
 function updateDockBadge(title) {
-
 	if (title.indexOf('Zulip') === -1) {
 		return;
 	}
@@ -62,7 +60,7 @@ function updateDockBadge(title) {
 	messageCount = messageCount ? Number(messageCount[1]) : 0;
 
 	if (process.platform === 'darwin') {
-		app.setBadgeCount(messageCount)
+		app.setBadgeCount(messageCount);
 	}
 }
 
@@ -88,49 +86,49 @@ function createMainWindow() {
 
 	// Let's save browser window position
 	if (conf.get('x') || conf.get('y')) {
-	  win.setPosition(conf.get('x'), conf.get('y'));
+		win.setPosition(conf.get('x'), conf.get('y'));
 	}
 
 	if (conf.get('maximize')) {
-	  win.maximize();
+		win.maximize();
 	}
 
 	// Handle sizing events so we can persist them.
-	win.on('maximize', function (event) {
-	  conf.set('maximize', true);
+	win.on('maximize', () => {
+		conf.set('maximize', true);
 	});
 
-	win.on('unmaximize', function (event) {
-	  conf.set('maximize', false);
+	win.on('unmaximize', () => {
+		conf.set('maximize', false);
 	});
 
-	win.on('resize', function (event) {
-	  var size = this.getSize();
-	  conf.set({
-	    width: size[0],
-	    height: size[1]
-	  });
+	win.on('resize', () => {
+		const size = this.getSize();
+		conf.set({
+			width: size[0],
+			height: size[1]
+		});
 	});
 
 	// on osx it's 'moved'
-	win.on('move', function (event) {
-	  var pos = this.getPosition();
-	  conf.set({
-	    x: pos[0],
-	    y: pos[1]
-	  });
+	win.on('move', () => {
+		const pos = this.getPosition();
+		conf.set({
+			x: pos[0],
+			y: pos[1]
+		});
 	});
 
 	// stop page to update it's title
-	win.on('page-title-updated', (e,title) => {
-	e.preventDefault();
-	updateDockBadge(title);
+	win.on('page-title-updated', (e, title) => {
+		e.preventDefault();
+		updateDockBadge(title);
 	});
 
 	return win;
 }
 
-// TODO
+// TODO: fix certificate errors
 app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 
 app.on('window-all-closed', () => {
@@ -153,59 +151,57 @@ app.on('ready', () => {
 	const page = mainWindow.webContents;
 
 	// Add spellcheck dictionary
-	SpellChecker.getDictionary("en-US", "./node_modules/simple-spellchecker/dict", function(err, result) {
-	    if(!err) {
-	        myDictionary = result;
-	    }
+	SpellChecker.getDictionary('en-US', './node_modules/simple-spellchecker/dict', (err, result) => {
+		if (!err) {
+			myDictionary = result;
+		}
 	});
 
 	// Define function for consult the dictionary.
-	ipc.on('checkspell', function(event, word) {
-	    var res = null;
-	    if(myDictionary != null && word != null) {
-	        res = myDictionary.spellCheck(word);
-	    }
-	    event.returnValue = res;
+	ipc.on('checkspell', (event, word) => {
+		if (myDictionary !== null && word !== null) {
+			event.returnValue = myDictionary.spellCheck(word);
+		}
 	});
 
 	// TODO - use global shortcut instead
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
-	   mainWindow.reload();
-	 });
+		mainWindow.reload();
+	});
 
 	electronLocalshortcut.register(mainWindow, 'Alt+Left', () => {
 		if (page.canGoBack()) {
 			page.goBack();
 		}
-	 });
-
-    electronLocalshortcut.register(mainWindow, 'CommandOrControl+=', () => {
-    	page.send('zoomIn');
 	});
 
-    electronLocalshortcut.register(mainWindow, 'CommandOrControl+-', () => {
-		page.send('zoomOut');
-    });
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+=', () => {
+		page.send('zoomIn');
+	});
 
-   	electronLocalshortcut.register(mainWindow, 'CommandOrControl+0', () => {
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+-', () => {
+		page.send('zoomOut');
+	});
+
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+0', () => {
 		page.send('zoomActualSize');
 	});
 
-    page.on('new-window', (event, url) => {
-        if (mainWindow.useDefaultWindowBehaviour) {
-            mainWindow.useDefaultWindowBehaviour = false;
-            return;
-        }
-        if (linkIsInternal(checkWindowURL(), url)) {
-        	event.preventDefault();
+	page.on('new-window', (event, url) => {
+		if (mainWindow.useDefaultWindowBehaviour) {
+			mainWindow.useDefaultWindowBehaviour = false;
+			return;
+		}
+		if (linkIsInternal(checkWindowURL(), url)) {
+			event.preventDefault();
 			return mainWindow.loadURL(url);
-        }
-        event.preventDefault();
-        electron.shell.openExternal(url);
-    });
+		}
+		event.preventDefault();
+		electron.shell.openExternal(url);
+	});
 });
 
-ipc.on('new-domain', function (e, domain) {
+ipc.on('new-domain', (e, domain) => {
 	mainWindow.loadURL(domain);
 	targetLink = domain;
 });
