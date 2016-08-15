@@ -208,6 +208,6 @@ ipc.on('new-domain', function (e, domain) {
 });
 
 ipc.on('get-domain', function(e, domain) {
-  e.returnValue = conf.get("domain");
+  e.returnValue = conf.get("domain") || 'example.zulipchat.com';
 });
 
