@@ -23,18 +23,20 @@ function addDomain() {
         const domain = 'https://' + newDomain;
         const checkDomain = domain + '/static/audio/zulip.ogg';
 
+// Dialog box for the user to switch realms.
+
         request(checkDomain, function (error, response, body) {
             if (!error && response.statusCode !== 404) {
                 document.getElementById('pic').style.display ='none';
-                document.getElementById('main').innerHTML = 'Add'
-                document.getElementById('urladded').innerHTML = newDomain + '  Added';
+                document.getElementById('main').innerHTML = 'Switch'
+                document.getElementById('urladded').innerHTML = 'Switched to ' + newDomain;
                 db.push('/domain', domain);
                 ipcRenderer.send('new-domain', domain);
             }
             else {
                 document.getElementById('pic').style.display ='none';
-                document.getElementById('main').innerHTML = 'Add'
-                document.getElementById('urladded').innerHTML = "Not a vaild Zulip server";
+                document.getElementById('main').innerHTML = 'Switch'
+                document.getElementById('urladded').innerHTML = "Not a valid Zulip server.";
             }
         })
 }
