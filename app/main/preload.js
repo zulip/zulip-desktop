@@ -1,29 +1,28 @@
 'use strict';
-const electron = require('electron');
 const ipcRenderer = require('electron').ipcRenderer;
 const webFrame = require('electron').webFrame;
 
 // Implement spellcheck using electron api
 
-webFrame.setSpellCheckProvider("en-US", false, {
-    spellCheck: function(text) {
-        var res = ipcRenderer.sendSync('checkspell', text);
-        return res != null? res : true;
-    }
+webFrame.setSpellCheckProvider('en-US', false, {
+	spellCheck: text => {
+		const res = ipcRenderer.sendSync('checkspell', text);
+		return res === null ? true : res;
+	}
 });
 
 // Handle zooming functionality
 
 const zoomIn = () => {
-  webFrame.setZoomFactor(webFrame.getZoomFactor() + 0.1);
+	webFrame.setZoomFactor(webFrame.getZoomFactor() + 0.1);
 };
 
 const zoomOut = () => {
-  webFrame.setZoomFactor(webFrame.getZoomFactor() - 0.1);
+	webFrame.setZoomFactor(webFrame.getZoomFactor() - 0.1);
 };
 
 const zoomActualSize = () => {
-  webFrame.setZoomFactor(1);
+	webFrame.setZoomFactor(1);
 };
 
 // Get zooming actions from main process
