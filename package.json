@@ -15,7 +15,8 @@
   "scripts": {
     "test": "xo",
     "start": "electron .",
-    "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all"
+    "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all",
+    "build-osx": "electron-packager . --out=dist --platform=darwin --arch=x64 --app-version=$npm_package_version --asar --overwrite"
   },
   "keywords": [
     "Zulip",
@@ -30,7 +31,6 @@
     "electron-debug": "^1.0.0",
     "electron-dl": "^0.2.0",
     "electron-localshortcut": "^0.6.1",
-    "node-json-db": "^0.7.2",
     "request": "^2.74.0",
     "simple-spellchecker": "^0.9.0",
     "wurl": "^2.1.0"

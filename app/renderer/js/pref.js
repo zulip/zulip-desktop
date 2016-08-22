@@ -12,8 +12,6 @@ function addDomain() {
 
         const request = require('request');
         const ipcRenderer = require('electron').ipcRenderer;
-        const JsonDB = require('node-json-db');
-        const db = new JsonDB('domain', true, true);
         document.getElementById('main').innerHTML = 'checking...'
         document.getElementById('pic').style.display ='block';
 
@@ -28,7 +26,6 @@ function addDomain() {
                 document.getElementById('pic').style.display ='none';
                 document.getElementById('main').innerHTML = 'Add'
                 document.getElementById('urladded').innerHTML = newDomain + '  Added';
-                db.push('/domain', domain);
                 ipcRenderer.send('new-domain', domain);
             }
             else {
