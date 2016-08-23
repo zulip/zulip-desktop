@@ -169,9 +169,15 @@ app.on('ready', () => {
 		mainWindow.reload();
 	});
 
-	electronLocalshortcut.register(mainWindow, 'Alt+Left', () => {
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
 		if (page.canGoBack()) {
 			page.goBack();
+		}
+	});
+
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+]', () => {
+		if (page.canGoForward()) {
+			page.goForward();
 		}
 	});
 
