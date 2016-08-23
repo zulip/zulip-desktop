@@ -1,7 +1,7 @@
 'use strict';
 const {remote} = require('electron');
 
-document.getElementById('close-bu	on').addEventListener('click', () => {
+document.getElementById('close-button').addEventListener('click', () => {
 	const window = remote.getCurrentWindow();
 	window.close();
 });
