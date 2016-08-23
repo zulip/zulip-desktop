@@ -54,7 +54,8 @@ const helpSubmenu = [
 		}
 	},
 	{
-		label: `${app.getName()} - ${app.getVersion()}`
+		label: `${appName + 'Desktop'} - ${app.getVersion()}`,
+		enabled: false
 	},
 	{
 		label: 'Report an Issue...',
