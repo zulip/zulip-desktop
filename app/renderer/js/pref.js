@@ -6,8 +6,6 @@ document.getElementById('close-button').addEventListener('click', () => {
 	window.close();
 });
 
-// document.getElementById('pic').style.display ='block';
-
 // eslint-disable-next-line no-unused-vars
 function addDomain() {
 	const request = require('request');
