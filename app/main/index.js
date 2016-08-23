@@ -128,7 +128,7 @@ function createMainWindow() {
 	return win;
 }
 
-// TODO: fix certificate errors
+// TODO - fix certificate errors
 app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 
 app.on('window-all-closed', () => {

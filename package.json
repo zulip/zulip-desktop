@@ -44,6 +44,15 @@
   },
   "xo": {
     "esnext": true,
+    "overrides":[
+    {
+      "files": "app/main/*.js",
+      "rules": {
+        "max-lines": ["warn", 350],
+        "no-warning-comments": 0
+      }
+    }
+    ],
     "envs": [
       "node",
       "browser"
