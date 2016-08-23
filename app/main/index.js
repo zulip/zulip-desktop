@@ -102,7 +102,7 @@ function createMainWindow() {
 		conf.set('maximize', false);
 	});
 
-	win.on('resize', () => {
+	win.on('resize', function () {
 		const size = this.getSize();
 		conf.set({
 			width: size[0],
@@ -111,7 +111,7 @@ function createMainWindow() {
 	});
 
 	// on osx it's 'moved'
-	win.on('move', () => {
+	win.on('move', function () {
 		const pos = this.getPosition();
 		conf.set({
 			x: pos[0],
