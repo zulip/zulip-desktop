@@ -30,11 +30,35 @@ const viewSubmenu = [
 		}
 	},
 	{
-		label: 'Toggle Developer Tools',
-		accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+		type: 'separator'
+	},
+	{
+		role: 'togglefullscreen'
+	},
+	{
+		label: 'Zoom In',
+		accelerator: 'CommandOrControl+=',
 		click(item, focusedWindow) {
 			if (focusedWindow) {
-				focusedWindow.webContents.toggleDevTools();
+				sendAction('zoomIn');
+			}
+		}
+	},
+	{
+		label: 'Zoom Out',
+		accelerator: 'CommandOrControl+-',
+		click(item, focusedWindow) {
+			if (focusedWindow) {
+				sendAction('zoomOut');
+			}
+		}
+	},
+	{
+		label: 'Actual Size',
+		accelerator: 'CommandOrControl+0',
+		click(item, focusedWindow) {
+			if (focusedWindow) {
+				sendAction('zoomActualSize');
 			}
 		}
 	},
@@ -42,7 +66,13 @@ const viewSubmenu = [
 		type: 'separator'
 	},
 	{
-		role: 'togglefullscreen'
+		label: 'Toggle Developer Tools',
+		accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+		click(item, focusedWindow) {
+			if (focusedWindow) {
+				focusedWindow.webContents.toggleDevTools();
+			}
+		}
 	}
 ];
 

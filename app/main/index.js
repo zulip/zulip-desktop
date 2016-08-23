@@ -181,17 +181,17 @@ app.on('ready', () => {
 		}
 	});
 
-	electronLocalshortcut.register(mainWindow, 'CommandOrControl+=', () => {
-		page.send('zoomIn');
-	});
+	// electronLocalshortcut.register(mainWindow, 'CommandOrControl+=', () => {
+	// 	page.send('zoomIn');
+	// });
 
-	electronLocalshortcut.register(mainWindow, 'CommandOrControl+-', () => {
-		page.send('zoomOut');
-	});
+	// electronLocalshortcut.register(mainWindow, 'CommandOrControl+-', () => {
+	// 	page.send('zoomOut');
+	// });
 
-	electronLocalshortcut.register(mainWindow, 'CommandOrControl+0', () => {
-		page.send('zoomActualSize');
-	});
+	// electronLocalshortcut.register(mainWindow, 'CommandOrControl+0', () => {
+	// 	page.send('zoomActualSize');
+	// });
 
 	page.on('new-window', (event, url) => {
 		if (mainWindow.useDefaultWindowBehaviour) {
