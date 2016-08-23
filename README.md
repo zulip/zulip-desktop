@@ -6,7 +6,7 @@ app](https://github.com/zulip/zulip-desktop) implemented in
 
 The goal is to achieve feature-compatibility with the old desktop app
 and then start adding cool features like easy support for
-multi-account.
+multi-account, auto-updates etc.
 
 ## Installation
 
@@ -35,3 +35,15 @@ Start the app:
 ```sh
 $ npm start
 ```
+## Features
+
+- [x] Native Notifications
+- [x] Spell Checker
+- [x] Keyboard Shortcuts
+- Default shortcuts - <kbd>cmdOrctrl + k </kbd>
+- Change Zulip Server: <kbd>cmdOrctrl + ,</kbd>
+- Back: <kbd>cmdOrctrl + [</kbd>
+- Forward: <kbd>cmdOrctrl + ]</kbd>
+- [ ] OSX/Win/Linux installer
+- [ ] Launch on OS startup
+- [ ] Automatic Updates
