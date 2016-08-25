@@ -35,6 +35,13 @@ Start the app:
 ```sh
 $ npm start
 ```
+
+Start and watch changes  
+
+```sh
+$ npm run watch
+```
+
 ## Features
 
 - [x] Native Notifications

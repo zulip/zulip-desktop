@@ -15,6 +15,7 @@
   "scripts": {
     "test": "xo",
     "start": "electron .",
+    "watch": "gulp dev",
     "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all"
   },
   "keywords": [
