@@ -47,3 +47,7 @@ $ npm start
 - [ ] OSX/Win/Linux installer
 - [ ] Launch on OS startup
 - [ ] Automatic Updates
+
+## Contributing
+
+Please see CONTRIBUTING.md.
