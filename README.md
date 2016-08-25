@@ -48,6 +48,9 @@ $ npm start
 - [ ] Launch on OS startup
 - [ ] Automatic Updates
 
-## Contributing
+## Contribute
 
-Please see [CONTRIBUTING.md](./CONTRIBUTING.md).
+If you want to contribute please make sure to read [our documentation about contributing](./CONTRIBUTING.md) first.
+
+* [Issue Tracker](https://github.com/zulip/zulip-electron/issues)
+* [Source Code](https://github.com/zulip/zulip-electron/)
