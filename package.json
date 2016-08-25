@@ -1,7 +1,7 @@
 {
   "name": "Zulip-desktop",
   "productName": "Zulip",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Zulip Desktop App",
   "license": "MIT",
   "repository": {
@@ -26,7 +26,6 @@
   "dependencies": {
     "configstore": "^2.0.0",
     "dialogs": "1.1.14",
-    "electron": "^1.3.3",
     "electron-context-menu": "0.4.0",
     "electron-debug": "^1.0.0",
     "electron-dl": "^0.2.0",
@@ -39,7 +38,7 @@
   "devDependencies": {
     "devtron": "^1.1.0",
     "electron-packager": "^7.0.0",
-    "electron-prebuilt": "^1.2.2",
+    "electron": "^1.3.3",
     "xo": "*"
   },
   "xo": {
