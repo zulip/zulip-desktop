@@ -50,4 +50,4 @@ $ npm start
 
 ## Contributing
 
-Please see CONTRIBUTING.md.
+Please see [CONTRIBUTING.md](./CONTRIBUTING.md).
