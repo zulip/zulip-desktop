@@ -1,5 +1,5 @@
 {
-  "name": "Zulip-desktop",
+  "name": "Zulip-Desktop",
   "productName": "Zulip",
   "version": "0.1.4",
   "description": "Zulip Desktop App",
@@ -15,7 +15,7 @@
   "scripts": {
     "test": "xo",
     "start": "electron .",
-    "watch": "gulp dev",
+    "dev": "gulp dev",
     "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all"
   },
   "keywords": [

@@ -39,7 +39,7 @@ $ npm start
 Start and watch changes  
 
 ```sh
-$ npm run watch
+$ npm run dev
 ```
 
 ## Features
