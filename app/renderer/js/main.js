@@ -1,34 +1,30 @@
-window.onload = function getURL() {
+// eslint-disable-next-line no-unused-vars
+function addDomain() {
 	const request = require('request');
-	const JsonDB = require('node-json-db');
 	const ipcRenderer = require('electron').ipcRenderer;
-	const dialogs = require('dialogs')();
+	const JsonDB = require('node-json-db');
 
 	const db = new JsonDB('domain', true, true);
-	const data = db.getData('/');
+	// const data = db.getData('/');
 
-	if (data.domain) {
-		window.location.href = data.domain;
-	} else {
-		dialogs.prompt('Enter the URL for your Zulip server', url => {
-			const newurl = 'https://' + url.replace(/^https?:\/\//, '');
-			const checkURL = newurl + '/static/audio/zulip.ogg';
+	document.getElementById('main').innerHTML = 'checking...';
 
-			request(checkURL, (error, response) => {
-				if (!error && response.statusCode !== 404) {
-					db.push('/domain', newurl);
-					ipcRenderer.send('new-domain', newurl);
-					window.location.href = newurl;
-				} else {
-					dialogs.alert('Not valid url');
-					console.log('Not valid url');
-				}
-			});
-		});
-	}
+	let newDomain = document.getElementById('url').value;
+	newDomain = newDomain.replace(/^https?:\/\//, '');
 
-	const getInput = document.getElementsByTagName('input')[0];
+	const domain = 'https://' + newDomain;
+	const checkDomain = domain + '/static/audio/zulip.ogg';
 
-	getInput.setAttribute('placeholder', 'zulip.example.com'); // add placeholder
-	getInput.setAttribute('spellcheck', 'false'); // no spellcheck for form
-};
+	request(checkDomain, (error, response) => {
+		if (!error && response.statusCode !== 404) {
+			document.getElementById('main').innerHTML = 'Connect';
+			db.push('/domain', domain);
+			ipcRenderer.send('new-domain', domain);
+			// window.location.href = domain;
+		} else {
+			document.getElementById('main').innerHTML = 'Connect';
+			document.getElementById('server-status').innerHTML = 'Not a vaild Zulip Server.';
+		}
+	});
+}
+

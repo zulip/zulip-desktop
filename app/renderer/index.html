@@ -1,10 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-	<link rel="stylesheet" href="css/main.css">
-	</head>
-	<body>
-		<script src="js/main.js"></script>
-	</body>
+<html lang="en" class="responsive desktop">
+  <!--<![endif]-->
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Login - Zulip</title>
+    <link rel="stylesheet" href="css/main.css" type="text/css" media="screen">
+    <script type="text/javascript">
+    const JsonDB = require('node-json-db');
+    const db = new JsonDB('domain', true, true);
+    const data = db.getData('/');
+
+    if (data.domain) {
+        window.location.href = data.domain;
+    }
+    </script>
+    <script>require('electron-connect').client.create()</script>
+  </head>
+  <body class="container-layout">
+    <div class="section-main">
+      <header>
+        <div class="container">
+          <img src="../resources/zulip.png" id="logo"/>
+        </div>
+      </header>
+      <hr>
+      <section class="content">
+        <section class="server">
+          <div class="container">
+            <h1>Login to Zulip Server</h1>
+            <form id="frm-signInForm" class="form-large" onsubmit="addDomain(); return false">
+              <fieldset>
+                <div class="control-group control-required">
+                  <div class="control-field">
+                    <input type="text" id="url"  autofocus="autofocus" spellcheck="false" placeholder="zulip.tabbott.net">
+                  </div>
+                </div>
+                <div class="control-group">
+                  <div class="control-submit">
+                    <button type="submit" id="main" class="btn-primary btn-large" value="Submit" onclick="addDomain();">Connect</button>
+                  </div>
+                </div>
+                <p id="server-status"><p>
+              </fieldset>
+            </form>
+          </div>
+        </section>
+      </section>
+    </div>
+    <script src="js/main.js"></script>
+  </body>
 </html>

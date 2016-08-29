@@ -1,61 +1,375 @@
-.dialog-widget.background {
-    background: #6BB6C7 !important;
+@charset "UTF-8";
+header,
+section {
+    display: block
 }
-.dialog-widget .title {
-    font-size: 18px !important;
-    font-family: Tahoma, Arial, sans-serif !important;
+html {
+    font-size: 100%;
+    overflow-y: scroll;
+    -webkit-text-size-adjust: 100%;
 }
-.dialog-widget input {
-    font-size: 14px !important;
-    font-family: monospace !important;
+html,
+button,
+input {
+    font-family: "Helvetica Neue", Arial, sans-serif
 }
-.dialog-widget.prompt {
-    padding: 15px 15px 20px 15px !important;
+html,
+body {
+    height: 100%;
+    margin: 0
 }
-.cancel {
-    display: none !important;
+img {
+    border: 0;
+    -ms-interpolation-mode: bicubic
 }
-.dialog-widget .ok {
-    margin-left: 20% !important;
+img {
+    vertical-align: middle
 }
-.dialog-widget .ok,
-.dialog-widget .cancel {
-    color: #ffffff !important;
-    padding: 16px !important;
-    width: 167px !important;
-    font-size: 13px !important;
-    background-color: #458C9C !important;
+form {
+    margin: 0
 }
-.dialog-widget input {
-    padding: 8px !important;
-    border: solid 1px #ccc;
-    margin: 15px 5px 5px 5px !important;
-    width: 271px !important;
-    height: 30px !important;
-    font-size: 15px !important;
+fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0
 }
-.dialog-widget .title {
-    font-size: 19px !important;
-    font-family: Tahoma, Arial, sans-serif !important;
-    padding-bottom: 5px !important;
+button,
+input {
+    font-size: 100%;
+    margin: 0;
+    vertical-align: baseline;
+    box-sizing: content-box;
+    -webkit-box-sizing: content-box
 }
-.dialog-widget.prompt {
-    position: fixed;
-    left: calc(50% - 160px);
-    width: 300px !important;
-    top: calc(50% - 115px);
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-    color: black;
-    padding: 15px 10px 15px 10px !important;
-}
-.dialog-widget.prompt {
-    padding: 20px 25px 20px 25px !important;
-}
-.dialog-widget .divider {
-    border-top: none !important;
-    padding: 0;
-    margin-top: 25px !important;
+button,
+input {
+    line-height: normal
 }
 button {
-    cursor: pointer !important;
+    cursor: pointer;
+    -webkit-appearance: button;
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0
+}
+hr {
+    display: none
+}
+img {
+    max-width: 100%
+}
+h1 {
+    color: #111;
+    line-height: 1em;
+    font-weight: 400;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    text-rendering: optimizelegibility;
+    -webkit-text-stroke: none
+}
+h1 {
+    margin: 0 0 35px
+}
+
+body.container-layout header #logo {
+    position: relative;
+    display: inline-block;
+    vertical-align: top
+}
+body.container-layout header #logo {
+    width: 50px;
+    height: 50px;
+    background-position: -790px 0
+}
+button[type=submit] {
+    text-decoration: none;
+    display: inline-block;
+    vertical-align: top;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    position: relative;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size-adjust: auto;
+    vertical-align: bottom;
+    background-color: #e6eaef;
+    border: 2px solid #e6eaef;
+    color: #96a0ac;
+    font-size: 20px;
+    line-height: 26px;
+    padding: 6px 17px
+}
+.desktop button[type=submit] {
+    -webkit-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out
+}
+.desktop button[type=submit]:hover {
+    background-color: #eff2f5;
+    border: 2px solid #eff2f5;
+    color: #96a0ac
+}
+button[type=submit]:focus {
+    outline: 0
+}
+button[type=submit].btn-primary {
+    background-color: #20b36c;
+    border: 2px solid #20b36c;
+    color: #fff
+}
+.desktop button[type=submit].btn-primary:hover {
+    background-color: #39ca83;
+    border: 2px solid #39ca83;
+    color: #fff
+}
+button[type=submit].btn-primary:focus {
+    outline: 0
+}
+button[type=submit].btn-large {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 20px;
+    line-height: 26px;
+    padding: 12px 30px
+}
+input[type=text] {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: 200;
+    display: inline-block;
+    vertical-align: top;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    background-color: #fff;
+    border: 1px solid #cad0d7;
+    color: #000;
+    font-size: 18px;
+    line-height: 26px;
+    height: 42px;
+    padding: 10px 10px
+}
+.desktop input[type=text]:hover {
+    background-color: #fff;
+    border-color: #bbc3cc;
+    color: #111
+}
+input[type=text]:focus {
+    background-color: #fff;
+    border-color: #20b36c!important;
+    color: #000;
+    outline: 0
+}
+input[type=text]::-webkit-input-placeholder {
+    color: #8e959e
+}
+input[type=text]::-moz-placeholder {
+    color: #8e959e
+}
+input[type=text]:-ms-input-placeholder {
+    color: #8e959e
+}
+.form-large input[type=text] {
+    font-size: 18px;
+    line-height: 26px;
+    height: 54px;
+    padding: 12px 15px
+}
+.control-group {
+    margin-top: 40px
+}
+h1 {
+    white-space: normal;
+    word-break: break-all;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto
+}
+.section-main {
+    position: relative
+}
+body {
+    color: #111;
+    font-size: 18px;
+    line-height: 24px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background: #edf1f3;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box
+}
+.desktop body {
+    padding-top: 116px
+}
+body.container-layout {
+    padding: 0!important;
+    background-color: #E6EAEF
+}
+header {
+    z-index: 800;
+    border-bottom: 1px solid #dae0e7;
+    background: rgba(255, 255, 255, .97);
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%
+}
+header .container {
+    position: relative
+}
+.desktop header {
+    position: fixed
+}
+ header .container {
+    position: relative;
+    height: 75px
+}
+.container-layout header {
+    position: relative;
+    border: 0;
+    background: 0 0;
+    padding: 30px 0
+}
+.container-layout header .container {
+    height: auto
+}
+header #logo {
+    display: block;
+    text-indent: -9999px
+}
+
+ header #logo {
+    position: absolute!important;
+    top: 50%;
+    left: 10px;
+    -webkit-transform: translate(0, -50%);
+    transform: translate(0, -50%)
+}
+body.container-layout header #logo {
+    position: relative!important;
+    top: 0;
+    left: 0;
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+    margin: 0 auto;
+    display: block
+}
+.content {
+    padding-bottom: 40px;
+    overflow: hidden
+}
+.container-layout .content {
+    max-width: 660px;
+    margin: 0 auto
+}
+.content .server {
+    position: relative;
+    margin: 0 10px
+}
+.content .server .container {
+    background: #fff;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 50px 0 0;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    position: relative;
+    z-index: 10;
+    max-width: 580px
+}
+.content .server h1 {
+    text-align: center;
+    padding: 0 10%
+}
+.content .server h1 {
+    font-size: 2.4em;
+    line-height: 1.2em;
+    margin-bottom: 10px
+}
+.content .server fieldset {
+    padding: 25px 10% 80px 39px;
+    position: relative
+}
+.content .server fieldset .control-group .control-field input {
+    width: 100%
+}
+.content .server button {
+    width: 100%
+}
+@media screen and (min-width: 749px) {
+    input[type=text] {
+        width: 60%
+    }
+}
+@media screen and (min-width: 1071px) {
+    h1 {
+        font-size: 3.2em;
+        line-height: 1.3em
+    }
+}
+.container {
+    width: 1070px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.container:before,
+.container:after {
+    content: "";
+    display: table
+}
+.container:after {
+    clear: both
+}
+.responsive .container {
+    max-width: 1070px;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.responsive .container:before,
+.responsive .container:after {
+    content: "";
+    display: table
+}
+.responsive .container:after {
+    clear: both
+}
+@media screen and (max-width: 480px) {
+    .responsive h1 {
+        font-size: 1.7em;
+        line-height: 1.3em
+    }
+}
+@media screen and (min-width: 481px) and (max-width: 640px) {
+    .responsive h1 {
+        font-size: 1.9em;
+        line-height: 1.3em
+    }
+}
+@media screen and (min-width: 641px) and (max-width: 748px) {
+    .responsive h1 {
+        font-size: 2.2em;
+        line-height: 1.3em
+    }
+}
+@media screen and (max-width: 748px) {
+    .responsive input[type=text] {
+        width: 100%
+    }
+}
+@media screen and (min-width: 749px) and (max-width: 1070px) {
+    .responsive h1 {
+        font-size: 2.6em;
+        line-height: 1.3em
+    }
+}
+#server-status {
+    text-align: center;
+    color: #c71212;
 }
