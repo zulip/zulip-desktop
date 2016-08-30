@@ -1,7 +1,7 @@
 {
   "name": "Zulip-Desktop",
   "productName": "Zulip",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Zulip Desktop App",
   "license": "MIT",
   "repository": {
@@ -16,6 +16,7 @@
     "test": "xo",
     "start": "electron .",
     "dev": "gulp dev",
+    "build:osx": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --ignore=^app/resources --ignore=domain.json --overwrite --platform=darwin --arch=x64",
     "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all"
   },
   "keywords": [
