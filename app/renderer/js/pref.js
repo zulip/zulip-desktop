@@ -1,11 +1,17 @@
 'use strict';
 const {remote} = require('electron');
 
+const prefWindow = remote.getCurrentWindow();
+
 document.getElementById('close-button').addEventListener('click', () => {
-	const window = remote.getCurrentWindow();
-	window.close();
+	prefWindow.close();
 });
 
+document.addEventListener('keydown', event => {
+	if (event.key === 'Escape' || event.keyCode === 27) {
+		prefWindow.close();
+	}
+});
 // eslint-disable-next-line no-unused-vars
 function addDomain() {
 	const request = require('request');
