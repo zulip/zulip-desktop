@@ -13,7 +13,7 @@ const link = require('./link-helper');
 
 const {linkIsInternal} = link;
 
-const db = new JsonDB('domain', true, true);
+const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 const data = db.getData('/');
 
 // adds debug features like hotkeys for triggering dev tools and reload

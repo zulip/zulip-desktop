@@ -17,8 +17,9 @@ function addDomain() {
 	const request = require('request');
 	const ipcRenderer = require('electron').ipcRenderer;
 	const JsonDB = require('node-json-db');
+	const {app} = require('electron').remote;
 
-	const db = new JsonDB('domain', true, true);
+	const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 	document.getElementById('main').innerHTML = 'checking...';
 	document.getElementById('pic').style.display = 'block';
 
