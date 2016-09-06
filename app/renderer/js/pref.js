@@ -39,7 +39,7 @@ function addDomain() {
 		} else {
 			document.getElementById('pic').style.display = 'none';
 			document.getElementById('main').innerHTML = 'Switch';
-			document.getElementById('urladded').innerHTML = 'Not a vaild Zulip server.';
+			document.getElementById('urladded').innerHTML = 'Not a vaild Zulip Server.';
 		}
 	});
 }
