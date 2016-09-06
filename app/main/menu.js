@@ -119,10 +119,8 @@ const darwinTpl = [
 			{
 				label: 'Change Zulip Server',
 				accelerator: 'Cmd+,',
-				click(item, focusedWindow) {
-					if (focusedWindow) {
-						addDomain();
-					}
+				click() {
+					addDomain();
 				}
 			},
 			{
@@ -247,10 +245,8 @@ const otherTpl = [
 			{
 				label: 'Change Zulip Server',
 				accelerator: 'Ctrl+,',
-				click(item, focusedWindow) {
-					if (focusedWindow) {
-						addDomain();
-					}
+				click() {
+					addDomain();
 				}
 			},
 			{
