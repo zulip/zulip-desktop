@@ -210,15 +210,15 @@ app.on('ready', () => {
 });
 
 ipc.on('new-domain', (e, domain) => {
-	//mainWindow.loadURL(domain);
+	// mainWindow.loadURL(domain);
 	if (!mainWindow) {
-	 	mainWindow = createMainWindow();
-	 	mainWindow.loadURL(domain);
-	 } else if (mainWindow.isMinimized()){
-	 	mainWindow.loadURL(domain);
-	 	mainWindow.show();
-	 } else {
-	 	mainWindow.loadURL(domain);
-	 }
+		mainWindow = createMainWindow();
+		mainWindow.loadURL(domain);
+	} else if (mainWindow.isMinimized()) {
+		mainWindow.loadURL(domain);
+		mainWindow.show();
+	} else {
+		mainWindow.loadURL(domain);
+	}
 	targetLink = domain;
 });
