@@ -77,7 +77,7 @@ function createMainWindow() {
 			preload: path.join(__dirname, 'preload.js'),
 			nodeIntegration: true,
 			plugins: true,
-			webSecurity: false
+			allowDisplayingInsecureContent: true
 		}
 	});
 
