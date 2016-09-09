@@ -9,9 +9,7 @@ const JsonDB = require('node-json-db');
 const SpellChecker = require('simple-spellchecker');
 const tray = require('./tray');
 const appMenu = require('./menu');
-const link = require('./link-helper');
-
-const {linkIsInternal} = link;
+const {linkIsInternal, skipImages} = require('./link-helper');
 
 const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 const data = db.getData('/');
@@ -196,11 +194,7 @@ app.on('ready', () => {
 	// });
 
 	page.on('new-window', (event, url) => {
-		if (mainWindow.useDefaultWindowBehaviour) {
-			mainWindow.useDefaultWindowBehaviour = false;
-			return;
-		}
-		if (linkIsInternal(checkWindowURL(), url)) {
+		if (linkIsInternal(checkWindowURL(), url) && url.match(skipImages) === null) {
 			event.preventDefault();
 			return mainWindow.loadURL(url);
 		}

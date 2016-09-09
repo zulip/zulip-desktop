@@ -7,6 +7,9 @@ function linkIsInternal(currentUrl, newUrl) {
 	return currentDomain === newDomain;
 }
 
+// We'll be needing this to open images in default browser
+const skipImages = '.jpg|.gif|.png|.jpeg|.JPG|.PNG';
+
 exports = module.exports = {
-	linkIsInternal
+	linkIsInternal, skipImages
 };
