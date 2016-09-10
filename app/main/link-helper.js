@@ -2,8 +2,8 @@ const wurl = require('wurl');
 
 // Check link if it's internal/external
 function linkIsInternal(currentUrl, newUrl) {
-	const currentDomain = wurl('domain', currentUrl);
-	const newDomain = wurl('domain', newUrl);
+	const currentDomain = wurl('hostname', currentUrl);
+	const newDomain = wurl('hostname', newUrl);
 	return currentDomain === newDomain;
 }
 
