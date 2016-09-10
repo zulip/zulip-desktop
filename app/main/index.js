@@ -30,6 +30,20 @@ let targetLink;
 // Load this url in main window
 const targetUrl = 'file://' + path.join(__dirname, '../renderer', 'index.html');
 
+const isAlreadyRunning = app.makeSingleInstance(() => {
+	if (mainWindow) {
+		if (mainWindow.isMinimized()) {
+			mainWindow.restore();
+		}
+
+		mainWindow.show();
+	}
+});
+
+if (isAlreadyRunning) {
+	app.quit();
+}
+
 function checkWindowURL() {
 	if (data.domain !== undefined) {
 		return data.domain;
