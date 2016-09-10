@@ -1,5 +1,6 @@
 'use strict';
 const gulp = require('gulp');
+const mocha = require('gulp-mocha');
 const electron = require('electron-connect').server.create({
 	verbose: true
 });
@@ -27,4 +28,8 @@ gulp.task('reload:renderer', done => {
 	done();
 });
 
-gulp.task('default', ['dev']);
+gulp.task('test', () => {
+	return gulp.src('tests/index.js').pipe(mocha());
+});
+
+gulp.task('default', ['dev', 'test']);
