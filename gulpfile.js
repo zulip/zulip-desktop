@@ -28,6 +28,7 @@ gulp.task('reload:renderer', done => {
 	done();
 });
 
+// Test app using mocha+spectron
 gulp.task('test', () => {
 	return gulp.src('tests/index.js').pipe(mocha());
 });
