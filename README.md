@@ -1,4 +1,4 @@
-# Zulip Desktop Client
+# Zulip Desktop Client <a href="https://travis-ci.org/zulip/zulip-electron"><img  src="https://travis-ci.org/zulip/zulip-electron.svg?branch=master" alt="Build status" /></a>
 
 This is an experimental replacement for the [Zulip Desktop
 app](https://github.com/zulip/zulip-desktop) implemented in
