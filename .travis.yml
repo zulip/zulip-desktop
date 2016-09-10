@@ -12,5 +12,9 @@ before_install:
 - npm install -g gulp
 - npm install
 
+cache:
+  directories:
+    - node_modules
+
 script:
 - npm run travis
