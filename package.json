@@ -26,14 +26,12 @@
     "electron"
   ],
   "dependencies": {
-    "assert": "^1.4.1",
     "configstore": "^2.0.0",
     "dialogs": "1.1.14",
     "electron-context-menu": "0.4.0",
     "electron-debug": "^1.0.0",
     "electron-dl": "^0.2.0",
     "electron-localshortcut": "^0.6.1",
-    "gulp-mocha": "^3.0.1",
     "node-json-db": "^0.7.2",
     "request": "^2.74.0",
     "simple-spellchecker": "^0.9.0",
@@ -42,6 +40,8 @@
   "devDependencies": {
     "devtron": "^1.1.0",
     "electron": "1.3.3",
+    "assert": "^1.4.1",
+    "gulp-mocha": "^3.0.1",
     "electron-connect": "^0.4.6",
     "electron-packager": "^7.0.0",
     "gulp": "^3.9.1",

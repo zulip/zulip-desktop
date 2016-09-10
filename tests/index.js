@@ -1,4 +1,3 @@
-/* eslint semi: ["error", "never"]*/
 const assert = require('assert')
 const Application = require('spectron').Application
 
