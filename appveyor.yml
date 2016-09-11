@@ -1,0 +1,22 @@
+version: build{build}
+
+platform:
+  - x64
+os: Previous Visual Studio 2015
+
+cache:
+  - node_modules
+  
+install:
+  - ps: Install-Product node 6 x64
+  - git reset --hard HEAD
+  - npm install npm -g
+  - node --version
+  - npm --version
+  - python --version
+  - npm install
+  - npm install -g gulp
+  - npm prune
+
+test_script:
+  - npm run test
