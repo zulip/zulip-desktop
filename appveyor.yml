@@ -16,7 +16,6 @@ install:
   - python --version
   - npm install
   - npm install -g gulp
-  - npm prune
-
+  
 test_script:
   - npm run test
