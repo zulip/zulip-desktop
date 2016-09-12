@@ -197,23 +197,11 @@ app.on('ready', () => {
 		}
 	});
 
-	// electronLocalshortcut.register(mainWindow, 'CommandOrControl+=', () => {
-	// 	page.send('zoomIn');
-	// });
-
-	// electronLocalshortcut.register(mainWindow, 'CommandOrControl+-', () => {
-	// 	page.send('zoomOut');
-	// });
-
-	// electronLocalshortcut.register(mainWindow, 'CommandOrControl+0', () => {
-	// 	page.send('zoomActualSize');
-	// });
-	
 	page.on('dom-ready', () => {
 		page.insertCSS(fs.readFileSync(path.join(__dirname, 'preload.css'), 'utf8'));
 		mainWindow.show();
 	});
-	
+
 	page.on('new-window', (event, url) => {
 		if (linkIsInternal(checkWindowURL(), url) && url.match(skipImages) === null) {
 			event.preventDefault();
