@@ -65,7 +65,7 @@
     ],
     "ignore": [
       "tests/*.js"
-     ],
+    ],
     "envs": [
       "node",
       "browser",

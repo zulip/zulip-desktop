@@ -7,12 +7,16 @@
 	<body>
 	<div class="about">
 		<center><img src="../resources/zulip.png"></center>
-		<center><p class="detail"> Version : 0.0.1 </p>
+		<center><p class="detail" id="version"> Version : ?.?.? </p>
 		<center><p class="detail"> License : Apache </p>
 		<center><p class="detail"> Maintainer : Zulip </p>
 		<p class="left"><a class="bug" onclick="linkInBrowser()" href="#">Found bug?</a></p>
 	</div>
 	<script>
+
+	const app = require('electron').remote.app;
+	const version_tag = document.getElementById('version');
+	version_tag.innerHTML = ' Version : ' + app.getVersion() + ' ';
 
 	function linkInBrowser(event) {
 
