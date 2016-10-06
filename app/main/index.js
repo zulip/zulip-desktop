@@ -29,7 +29,16 @@ let mainWindow;
 let targetLink;
 
 // Load this url in main window
-const targetUrl = 'file://' + path.join(__dirname, '../renderer', 'index.html');
+const staticURL = 'file://' + path.join(__dirname, '../renderer', 'index.html');
+
+const targetURL = function() {
+	if (data.domain !== undefined) {
+		return data.domain
+	}
+	else {
+		return staticURL
+	}
+}
 
 const isAlreadyRunning = app.makeSingleInstance(() => {
 	if (mainWindow) {
@@ -90,13 +99,13 @@ function createMainWindow() {
 		minHeight: 400,
 		webPreferences: {
 			preload: path.join(__dirname, 'preload.js'),
-			nodeIntegration: true,
 			plugins: true,
-			allowDisplayingInsecureContent: true
-		}
+			allowDisplayingInsecureContent: true,
+			nodeIntegration: false,
+		},
 	});
 
-	win.loadURL(targetUrl);
+	win.loadURL(targetURL());
 	win.on('closed', onClosed);
 	win.setTitle('Zulip');
 

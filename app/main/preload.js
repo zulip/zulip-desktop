@@ -53,3 +53,5 @@ ipcRenderer.on('shortcut', () => {
 	const nodes = document.querySelectorAll('.dropdown-menu li:nth-child(4) a');
 	nodes[nodes.length - 1].click();
 });
+
+require('./domain');

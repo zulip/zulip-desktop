@@ -6,17 +6,6 @@
     <meta name="viewport" content="width=device-width">
     <title>Login - Zulip</title>
     <link rel="stylesheet" href="css/main.css" type="text/css" media="screen">
-    <script type="text/javascript">
-    const JsonDB = require('node-json-db');
-    const {app} = require('electron').remote;
-    const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
-    const data = db.getData('/');
-
-    if (data.domain) {
-        window.location.href = data.domain;
-    }
-    </script>
-    <script>require('electron-connect').client.create()</script>
   </head>
   <body class="container-layout">
     <div class="section-main">
@@ -49,6 +38,5 @@
         </section>
       </section>
     </div>
-    <script src="js/main.js"></script>
   </body>
 </html>
