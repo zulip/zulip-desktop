@@ -59,7 +59,8 @@
             "warn",
             350
           ],
-          "no-warning-comments": 0
+          "no-warning-comments": 0,
+          "no-else-return": 0
         }
       }
     ],

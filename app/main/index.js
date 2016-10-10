@@ -31,14 +31,13 @@ let targetLink;
 // Load this url in main window
 const staticURL = 'file://' + path.join(__dirname, '../renderer', 'index.html');
 
-const targetURL = function() {
-	if (data.domain !== undefined) {
-		return data.domain
+const targetURL = function () {
+	if (data.domain === undefined) {
+		return staticURL;
+	} else {
+		return data.domain;
 	}
-	else {
-		return staticURL
-	}
-}
+};
 
 const isAlreadyRunning = app.makeSingleInstance(() => {
 	if (mainWindow) {
@@ -101,8 +100,8 @@ function createMainWindow() {
 			preload: path.join(__dirname, 'preload.js'),
 			plugins: true,
 			allowDisplayingInsecureContent: true,
-			nodeIntegration: false,
-		},
+			nodeIntegration: false
+		}
 	});
 
 	win.loadURL(targetURL());

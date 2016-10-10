@@ -6,7 +6,6 @@ const ipcRenderer = require('electron').ipcRenderer;
 const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 const data = db.getData('/');
 
-
 console.log(data.domain);
 
 // if (data.domain && window.location.href.indexOf(data.domain) === -1) {
@@ -15,7 +14,6 @@ console.log(data.domain);
 // require('electron-connect').client.create();
 
 window.addDomain = function () {
-
 	document.getElementById('main').innerHTML = 'checking...';
 
 	let newDomain = document.getElementById('url').value;
@@ -32,7 +30,7 @@ window.addDomain = function () {
 		} else {
 			document.getElementById('main').innerHTML = 'Connect';
 			document.getElementById('server-status').innerHTML = 'Not a vaild Zulip Server.';
-		};
+		}
 	});
-}
+};
 
