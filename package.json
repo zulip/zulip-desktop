@@ -1,7 +1,7 @@
 {
   "name": "Zulip-Desktop",
   "productName": "Zulip",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Zulip Desktop App",
   "license": "MIT",
   "repository": {

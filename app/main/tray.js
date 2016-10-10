@@ -13,14 +13,6 @@ const iconPath = () => {
 };
 
 exports.create = () => {
-	// Noone is using this feature. so let's hide it for now.
-	// const toggleWin = () => {
-	// 	if (win.isVisible()) {
-	// 		win.hide();
-	// 	} else {
-	// 		win.show();
-	// 	}
-	// };
 	const contextMenu = electron.Menu.buildFromTemplate([
 		{
 			label: 'About',
