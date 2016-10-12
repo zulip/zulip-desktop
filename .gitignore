@@ -1,7 +1,7 @@
 node_modules
 npm-debug.log
 domain.json
-
+yarn.lock
 
 // osx garbage
 *.DS_Store
