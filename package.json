@@ -26,6 +26,24 @@
     "mac": {
       "category": "public.app-category.productivity"
     },
+    "dmg": {
+      "background": "build/background.tiff",
+      "icon": "build/icon.icns",
+      "iconSize": 128,
+      "contents": [
+        {
+          "x": 355,
+          "y": 125,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 155,
+          "y": 125,
+          "type": "file"
+        }
+      ]
+    },
     "win": {
       "iconUrl": "https://raw.githubusercontent.com/zulip/zulip-electron/master/app/resources/Icon.ico"
     }
