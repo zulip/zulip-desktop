@@ -29,17 +29,17 @@
     "dmg": {
       "background": "build/background.tiff",
       "icon": "build/icon.icns",
-      "iconSize": 128,
+      "iconSize": 64,
       "contents": [
         {
-          "x": 355,
-          "y": 125,
+          "x": 260,
+          "y": 150,
           "type": "link",
           "path": "/Applications"
         },
         {
-          "x": 155,
-          "y": 125,
+          "x": 80,
+          "y": 150,
           "type": "file"
         }
       ]
