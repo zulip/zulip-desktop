@@ -62,7 +62,8 @@ function checkWindowURL() {
 
 const APP_ICON = path.join(__dirname, '../resources', 'Icon');
 
-const spellDict = path.join(__dirname, '../../node_modules/simple-spellchecker/dict');
+const spellDict = path.join(__dirname, '../node_modules/simple-spellchecker/dict');
+
 
 const iconPath = () => {
 	return APP_ICON + (process.platform === 'win32' ? '.ico' : '.png');

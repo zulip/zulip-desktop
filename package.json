@@ -1,7 +1,7 @@
 {
   "name": "Zulip-Desktop",
   "productName": "Zulip",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Zulip Desktop App",
   "license": "MIT",
   "repository": {
@@ -11,14 +11,24 @@
   "bugs": {
     "url": "https://github.com/zulip/zulip-electron/issues"
   },
-  "main": "app/main/index.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electron ./app/main",
+    "postinstall": "install-app-deps",
     "test": "gulp test && xo",
     "dev": "gulp dev",
-    "build:osx": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --icon=app/resources/Icon.icns --overwrite --platform=darwin --arch=x64",
-    "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all",
+    "pack": "build --dir",
+    "dist": "build",
     "travis": "cd ./scripts && ./travis-build-test.sh"
+  },
+  "build": {
+    "appId": "dev.zulip",
+    "asar": "true",
+    "mac": {
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "iconUrl": "https://raw.githubusercontent.com/zulip/zulip-electron/master/app/resources/Icon.ico"
+    }
   },
   "keywords": [
     "Zulip",
@@ -26,26 +36,15 @@
     "electron-app",
     "electron"
   ],
-  "dependencies": {
-    "configstore": "^2.0.0",
-    "dialogs": "1.1.14",
-    "electron-context-menu": "0.4.0",
-    "electron-debug": "^1.0.0",
-    "electron-dl": "^0.2.0",
-    "electron-localshortcut": "^0.6.1",
-    "node-json-db": "^0.7.2",
-    "request": "^2.74.0",
-    "simple-spellchecker": "^0.9.0",
-    "wurl": "^2.1.0"
-  },
   "devDependencies": {
+    "assert": "^1.4.1",
     "devtron": "^1.1.0",
     "electron": "1.4.3",
-    "assert": "^1.4.1",
-    "gulp-mocha": "^3.0.1",
+    "electron-builder": "^7.14.1",
     "electron-connect": "^0.4.6",
     "electron-packager": "^7.0.0",
     "gulp": "^3.9.1",
+    "gulp-mocha": "^3.0.1",
     "spectron": "^3.3.0",
     "xo": "*"
   },
