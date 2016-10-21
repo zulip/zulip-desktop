@@ -2,6 +2,7 @@ node_modules
 npm-debug.log
 domain.json
 dist
+config.gypi
 
 // osx garbage
 *.DS_Store
