@@ -27,7 +27,7 @@
       "category": "public.app-category.productivity"
     },
     "dmg": {
-      "background": "build/bg.png",
+      "background": "build/appdmg.png",
       "icon": "build/icon.icns",
       "iconSize": 128,
       "contents": [
