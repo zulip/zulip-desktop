@@ -46,9 +46,8 @@ envSetup()
 		workingDir="."
 	fi
 
-	# Set name of upstreamRemote and startingBranch
+	# Set name of upstreamRemote
 	cd $workingDir
-	startingBranch=`git branch | grep \* | cut -d ' ' -f 2`
 	git remote -v | grep "github\.com.zulip.zulip-electron.git (fetch)" > /dev/null 2>&1
 	if [ $? -eq 0 ]
 	then
@@ -65,13 +64,12 @@ gitCheckout()
 {
 	git fetch $upstreamRemote
 	git checkout $myBranch
-	git pull --rebase $upstreamRemote master
+	git rebase $upstreamRemote/master
 	if [ $? -gt 0 ]
 	then
 		echo "Stashing uncommitted changes and doing a new git pull"
 		git stash && requirePop=1
-		git pull --rebase $upstreamRemote master
-
+		git rebase $upstreamRemote/master
 	fi
 }
 
@@ -90,7 +88,7 @@ npmUpgradeStart()
 cleanUp()
 {
 	# Switch back to branch we started on
-	git checkout $startingBranch
+	git checkout -
 
 	# Pop if we stashed
 	if [ $requirePop -eq 1 ]
