@@ -1,7 +1,7 @@
 {
   "name": "Zulip-Desktop",
   "productName": "Zulip",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Zulip Desktop App",
   "license": "MIT",
   "repository": {
@@ -16,7 +16,7 @@
     "start": "electron .",
     "test": "gulp test && xo",
     "dev": "gulp dev",
-    "build:osx": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --icon=app/resources/Icon.icns --overwrite --platform=darwin --arch=x64",
+    "build:osx": "electron-packager . --out=dist --app-version=$npm_package_version --icon=app/resources/Icon.icns --overwrite --platform=darwin --arch=x64",
     "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all",
     "travis": "cd ./scripts && ./travis-build-test.sh"
   },
@@ -44,7 +44,7 @@
     "assert": "^1.4.1",
     "gulp-mocha": "^3.0.1",
     "electron-connect": "^0.4.6",
-    "electron-packager": "^7.0.0",
+    "electron-packager": "8.2.0",
     "gulp": "^3.9.1",
     "spectron": "^3.3.0",
     "xo": "*"
