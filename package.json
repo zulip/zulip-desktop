@@ -58,7 +58,7 @@
     "assert": "^1.4.1",
     "devtron": "^1.1.0",
     "electron": "1.4.3",
-    "electron-builder": "^7.14.1",
+    "electron-builder": "8.5.2",
     "electron-connect": "^0.4.6",
     "electron-packager": "^7.0.0",
     "gulp": "^3.9.1",
