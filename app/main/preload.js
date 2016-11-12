@@ -45,4 +45,8 @@ ipcRenderer.on('shortcut', () => {
 });
 
 require('./domain');
-require('./spellchecker');
+
+// To prevent failing this script on linux we need to load it after the document loaded
+document.addEventListener('DOMContentLoaded', function () {
+	require('./spellchecker');
+});
