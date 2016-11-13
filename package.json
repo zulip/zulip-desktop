@@ -4,6 +4,11 @@
   "version": "0.5.0",
   "description": "Zulip Desktop App",
   "license": "MIT",
+  "email":"<svnitakash@gmail.com>",
+  "author": {
+    "name": "Akash Nimare",
+    "email": "svnitakash@gmail.com"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/zulip/zulip-electron.git"
@@ -17,7 +22,7 @@
     "test": "gulp test && xo",
     "dev": "gulp dev",
     "pack": "build --dir",
-    "dist": "build",
+    "dist": "build --linux",
     "travis": "cd ./scripts && ./travis-build-test.sh"
   },
   "build": {
@@ -25,6 +30,16 @@
     "asar": "true",
     "mac": {
       "category": "public.app-category.productivity"
+    },
+    "linux" : {
+      "category": "productivity",
+      "packageCategory": "",
+      "synopsis": "<Zulip-Desktop App>",
+      "arch" : 64,
+      "target" : ["deb", "AppImage"],
+      "version" : "0.5.0",
+      "title" : "Zulip-Desktop",
+      "maintainer": "Akash Nimare <svnitakash@gmail.com>"
     },
     "dmg": {
       "background": "build/appdmg.png",
