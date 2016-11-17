@@ -3,7 +3,7 @@
   "productName": "Zulip",
   "version": "0.5.0",
   "description": "Zulip Desktop App",
-  "license": "MIT",
+  "license": "Apache V2.0",
   "email":"<svnitakash@gmail.com>",
   "author": {
     "name": "Akash Nimare",
@@ -76,7 +76,6 @@
     "electron": "1.4.3",
     "electron-builder": "8.5.2",
     "electron-connect": "^0.4.6",
-    "electron-packager": "^7.0.0",
     "gulp": "^3.9.1",
     "gulp-mocha": "^3.0.1",
     "spectron": "^3.3.0",
