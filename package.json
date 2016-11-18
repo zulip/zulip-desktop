@@ -32,10 +32,10 @@
       "category": "public.app-category.productivity"
     },
     "linux" : {
-      "category": "productivity",
-      "packageCategory": "",
+      "category": "GNOME;GTK;Network;InstantMessaging",
+      "packageCategory": "devel",
       "synopsis": "Zulip-Desktop App",
-      "description": "Zulip Desktop App",
+      "description": "Zulip Desktop Client for Linux",
       "arch" : 64,
       "target" : ["deb", "AppImage"],
       "version" : "0.5.0",
