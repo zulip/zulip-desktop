@@ -1,15 +1,5 @@
 'use strict';
 const ipcRenderer = require('electron').ipcRenderer;
-const webFrame = require('electron').webFrame;
-
-// Implement spellcheck using electron api
-
-webFrame.setSpellCheckProvider('en-US', false, {
-	spellCheck: text => {
-		const res = ipcRenderer.sendSync('checkspell', text);
-		return res === null ? true : res;
-	}
-});
 
 // Handle zooming functionality
 
@@ -55,3 +45,8 @@ ipcRenderer.on('shortcut', () => {
 });
 
 require('./domain');
+
+// To prevent failing this script on linux we need to load it after the document loaded
+document.addEventListener('DOMContentLoaded', function () {
+	require('./spellchecker');
+});

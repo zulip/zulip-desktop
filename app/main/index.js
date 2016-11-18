@@ -7,7 +7,6 @@ const electronLocalshortcut = require('electron-localshortcut');
 const ipc = require('electron').ipcMain;
 const Configstore = require('configstore');
 const JsonDB = require('node-json-db');
-const SpellChecker = require('simple-spellchecker');
 const tray = require('./tray');
 const appMenu = require('./menu');
 const {linkIsInternal, skipImages} = require('./link-helper');
@@ -17,12 +16,9 @@ const data = db.getData('/');
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
-require('electron-context-menu')();
 
 const conf = new Configstore('Zulip-Desktop');
 
-// spellchecker enabled
-let myDictionary = null;
 
 // prevent window being garbage collected
 let mainWindow;
@@ -61,9 +57,6 @@ function checkWindowURL() {
 }
 
 const APP_ICON = path.join(__dirname, '../resources', 'Icon');
-
-const spellDict = path.join(__dirname, '../node_modules/simple-spellchecker/dict');
-
 
 const iconPath = () => {
 	return APP_ICON + (process.platform === 'win32' ? '.ico' : '.png');
@@ -174,20 +167,6 @@ app.on('ready', () => {
 	tray.create(mainWindow);
 
 	const page = mainWindow.webContents;
-
-	// Add spellcheck dictionary
-	SpellChecker.getDictionary('en-US', spellDict, (err, result) => {
-		if (!err) {
-			myDictionary = result;
-		}
-	});
-
-	// Define function for consult the dictionary.
-	ipc.on('checkspell', (event, word) => {
-		if (myDictionary !== null && word !== null) {
-			event.returnValue = myDictionary.spellCheck(word);
-		}
-	});
 
 	// TODO - use global shortcut instead
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
