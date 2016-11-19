@@ -68,6 +68,16 @@ You can create Windows installer only when running on Windows, the same is true 
 - [ ] Launch on OS startup
 - [ ] Automatic Updates
 
+### Keyboard shortcuts
+
+Description            | Keys
+-----------------------| -----------------------
+Default shortcuts      | <kbd>Cmd/Ctrl</kbd> <kbd>k</kbd>
+Change Zulip Server    | <kbd>Cmd/Ctrl</kbd> <kbd>,</kbd>
+Back                   | <kbd>Cmd/Ctrl</kbd> <kbd>[</kbd>
+Forward                | <kbd>Cmd/Ctrl</kbd> <kbd>]</kbd>
+
+
 ## Contribute
 
 If you want to contribute please make sure to read [our documentation about contributing](./CONTRIBUTING.md) first.
