@@ -3,7 +3,7 @@
   "productName": "Zulip",
   "version": "0.5.1",
   "description": "Zulip Desktop App",
-  "license": "Apache V2.0",
+  "license": "MIT",
   "email":"<svnitakash@gmail.com>",
   "author": {
     "name": "Akash Nimare",
@@ -32,8 +32,6 @@
       "category": "public.app-category.productivity"
     },
     "linux" : {
-      "category": "GNOME;GTK;Network;InstantMessaging",
-      "packageCategory": "devel",
       "synopsis": "Zulip-Desktop App",
       "description": "Zulip Desktop Client for Linux",
       "arch" : 64,
@@ -73,6 +71,7 @@
   "devDependencies": {
     "assert": "^1.4.1",
     "devtron": "^1.1.0",
+    "electron-builder": "*",
     "electron": "1.4.7",
     "electron-connect": "^0.4.6",
     "gulp": "^3.9.1",

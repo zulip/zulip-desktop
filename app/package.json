@@ -1,10 +1,14 @@
 {
   "name": "Zulip-Desktop",
   "productName": "Zulip",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Zulip Desktop App",
   "license": "MIT",
-  "author":"Zulip Inc",
+  "email":"<svnitakash@gmail.com>",
+  "author": {
+    "name": "Akash Nimare",
+    "email": "svnitakash@gmail.com"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/zulip/zulip-electron.git"
