@@ -3,7 +3,7 @@
   "productName": "Zulip",
   "version": "0.5.1",
   "description": "Zulip Desktop App",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "email":"<svnitakash@gmail.com>",
   "author": {
     "name": "Akash Nimare",
