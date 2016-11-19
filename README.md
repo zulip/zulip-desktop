@@ -57,9 +57,9 @@ You can create Windows installer only when running on Windows, the same is true 
 
 ## Features
 
-#### [x] Native Notifications
-#### [x] SpellChecker
-#### Keyboard shortcuts
+- [x] Native Notifications
+- [x] SpellChecker
+- [x] Keyboard shortcuts
 
 Description            | Keys
 -----------------------| -----------------------
@@ -67,9 +67,10 @@ Default shortcuts      | <kbd>Cmd/Ctrl</kbd> <kbd>k</kbd>
 Change Zulip Server    | <kbd>Cmd/Ctrl</kbd> <kbd>,</kbd>
 Back                   | <kbd>Cmd/Ctrl</kbd> <kbd>[</kbd>
 Forward                | <kbd>Cmd/Ctrl</kbd> <kbd>]</kbd>
-#### [ ] OSX/Win/Linux installer
-#### [ ] Launch on OS startup
-#### [ ] Automatic Updates
+
+- [ ] OSX/Win/Linux installer
+- [ ] Launch on OS startup
+- [ ] Automatic Updates
 
 ## Contribute
 
