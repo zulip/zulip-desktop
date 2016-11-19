@@ -59,7 +59,8 @@
       ]
     },
     "win": {
-      "iconUrl": "https://raw.githubusercontent.com/zulip/zulip-electron/master/app/resources/Icon.ico"
+      "target": "nsis",
+      "icon": "build/icon.ico"
     }
   },
   "keywords": [
