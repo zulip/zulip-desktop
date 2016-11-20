@@ -35,6 +35,8 @@
     },
     "linux" : {
       "synopsis": "Zulip Desktop App",
+      "category": "",
+      "packageCategory": "",
       "description": "Zulip Desktop Client for Linux",
       "arch" : 64,
       "target" : ["deb", "AppImage"],
