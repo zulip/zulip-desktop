@@ -26,7 +26,7 @@
     "travis": "cd ./scripts && ./travis-build-test.sh"
   },
   "build": {
-    "appId": "dev.zulip",
+    "appId": "org.zulip.zulip-electron",
     "asar": "true",
     "mac": {
       "category": "public.app-category.productivity"
