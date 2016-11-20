@@ -1,10 +1,11 @@
 {
-  "name": "Zulip-Desktop",
+  "name": "zulip",
   "productName": "Zulip",
   "version": "0.5.1",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
   "email":"<svnitakash@gmail.com>",
+  "copyright": "©2016 Kandra Labs, Inc.",
   "author": {
     "name": "Akash Nimare",
     "email": "svnitakash@gmail.com"
@@ -28,16 +29,18 @@
   "build": {
     "appId": "org.zulip.zulip-electron",
     "asar": "true",
+    "copyright": "©2016 Kandra Labs, Inc.",
     "mac": {
       "category": "public.app-category.productivity"
     },
     "linux" : {
-      "synopsis": "Zulip-Desktop App",
+      "synopsis": "Zulip Desktop App",
       "description": "Zulip Desktop Client for Linux",
       "arch" : 64,
       "target" : ["deb", "AppImage"],
-      "version" : "0.5.0",
-      "title" : "Zulip-Desktop",
+      "version" : "0.5.1",
+      "title" : "Zulip",
+      "license": "Apache-2.0",
       "maintainer": "Akash Nimare <svnitakash@gmail.com>"
     },
     "dmg": {
@@ -64,10 +67,12 @@
     }
   },
   "keywords": [
-    "Zulip",
-    "Group Chat app",
-    "electron-app",
-    "electron"
+  	"Zulip",
+  	"Group Chat app",
+  	"electron-app",
+  	"electron",
+  	"Desktop app",
+  	"InstantMessaging"
   ],
   "devDependencies": {
     "assert": "^1.4.1",

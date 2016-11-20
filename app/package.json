@@ -1,10 +1,11 @@
 {
-  "name": "Zulip-Desktop",
+  "name": "zulip",
   "productName": "Zulip",
   "version": "0.5.1",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
   "email":"<svnitakash@gmail.com>",
+  "copyright": "©2016 Kandra Labs, Inc.",
   "author": {
     "name": "Akash Nimare",
     "email": "svnitakash@gmail.com"
@@ -21,7 +22,9 @@
     "Zulip",
     "Group Chat app",
     "electron-app",
-    "electron"
+    "electron",
+    "Desktop app",
+    "InstantMessaging"
   ],
   "dependencies": {
     "configstore": "^2.0.0",
