@@ -68,7 +68,7 @@ Change Zulip Server    | <kbd>Cmd/Ctrl</kbd> <kbd>,</kbd>
 Back                   | <kbd>Cmd/Ctrl</kbd> <kbd>[</kbd>
 Forward                | <kbd>Cmd/Ctrl</kbd> <kbd>]</kbd>
 
-- [ ] OSX/Win/Linux installer
+- [x] OSX/Win/Linux installer
 - [ ] Launch on OS startup
 - [ ] Automatic Updates
 
