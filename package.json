@@ -30,6 +30,7 @@
     "appId": "org.zulip.zulip-electron",
     "asar": "true",
     "files": [
+      "**/*",
       "!node_modules/@paulcbetts/cld/deps/cld${/*}"
     ],
     "copyright": "©2016 Kandra Labs, Inc.",
