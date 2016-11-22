@@ -42,7 +42,6 @@
       "category": "",
       "packageCategory": "",
       "description": "Zulip Desktop Client for Linux",
-      "arch" : 64,
       "target" : ["deb", "AppImage"],
       "version" : "0.5.1",
       "title" : "Zulip",
