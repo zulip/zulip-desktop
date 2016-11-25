@@ -40,7 +40,7 @@
     "linux" : {
       "synopsis": "Zulip Desktop App",
       "category": "",
-      "packageCategory": "",
+      "packageCategory": "GNOME;GTK;Network;InstantMessaging",
       "description": "Zulip Desktop Client for Linux",
       "target" : ["deb", "AppImage"],
       "version" : "0.5.1",
