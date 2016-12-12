@@ -6,7 +6,7 @@ const {addDomain, about} = require('./windowmanager');
 
 let tray = null;
 
-const APP_ICON = path.join(__dirname, '../resources', 'Icon');
+const APP_ICON = path.join(__dirname, '../resources', 'tray');
 
 const iconPath = () => {
 	return APP_ICON + (process.platform === 'win32' ? '.ico' : '.png');
