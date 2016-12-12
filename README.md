@@ -11,6 +11,15 @@ The goal is to achieve feature-compatibility with the old desktop app
 and then start adding cool features like easy support for
 multi-account, auto-updates etc.
 
+## Prerequisites
+* node >= v6.3.1
+* npm >= 3.10.3
+* If you're on Debian or Ubuntu, you'll also need to install
+`nodejs-legacy`:
+```sh
+$ sudo apt-get install nodejs-legacy
+```
+
 ## Installation
 
 Clone the source locally:
@@ -18,14 +27,6 @@ Clone the source locally:
 ```sh
 $ git clone https://github.com/zulip/zulip-electron
 $ cd zulip-electron
-```
-If you're on Debian or Ubuntu, you'll also need to install
-`nodejs-legacy`:
-
-Use your package manager to install `npm`.
-
-```sh
-$ sudo apt-get install npm nodejs-legacy
 ```
 
 Install project dependencies:
