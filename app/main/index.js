@@ -7,6 +7,7 @@ const electronLocalshortcut = require('electron-localshortcut');
 const ipc = require('electron').ipcMain;
 const Configstore = require('configstore');
 const JsonDB = require('node-json-db');
+const isDev = require('electron-is-dev');
 const tray = require('./tray');
 const appMenu = require('./menu');
 const {linkIsInternal, skipImages} = require('./link-helper');
@@ -201,7 +202,7 @@ app.on('ready', () => {
 
 
 	page.once("did-frame-finish-load", () => {
-	  if (process.platform === 'darwin') {
+	  if (process.platform === 'darwin' && !isDev) {
 	  	// Initate auto-updates
 	  	appUpdater()
 	  }
