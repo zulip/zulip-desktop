@@ -10,6 +10,7 @@ const JsonDB = require('node-json-db');
 const tray = require('./tray');
 const appMenu = require('./menu');
 const {linkIsInternal, skipImages} = require('./link-helper');
+const { appUpdater } = require('./autoupdater')
 
 const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 const data = db.getData('/');
@@ -18,7 +19,6 @@ const data = db.getData('/');
 require('electron-debug')();
 
 const conf = new Configstore('Zulip-Desktop');
-
 
 // prevent window being garbage collected
 let mainWindow;
@@ -198,6 +198,15 @@ app.on('ready', () => {
 		event.preventDefault();
 		electron.shell.openExternal(url);
 	});
+
+
+	page.once("did-frame-finish-load", () => {
+	  if (process.platform === 'darwin') {
+	  	// Initate auto-updates
+	  	appUpdater()
+	  }
+	})
+
 });
 
 ipc.on('new-domain', (e, domain) => {
