@@ -210,6 +210,11 @@ app.on('ready', () => {
 
 });
 
+app.on('window-all-closed' || 'will-quit', () => {
+	// unregister all the shortcuts so that they don't interfare with other apps
+	electronLocalshortcut.unregisterAll(mainWindow);
+});
+
 ipc.on('new-domain', (e, domain) => {
 	// mainWindow.loadURL(domain);
 	if (!mainWindow) {
