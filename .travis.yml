@@ -1,12 +1,12 @@
-language: node_js
+sudo: required
 
 os:
 - osx
 - linux
-sudo: required
 
+language: node_js
 node_js:
-  - 'node'
+- '6'
 
 before_install:
 - npm install -g gulp
@@ -14,7 +14,10 @@ before_install:
 
 cache:
   directories:
-    - node_modules
+  - node_modules
+  - app/node_modules
+  - $HOME/.electron
+  - $HOME/.cache
 
 script:
 - npm run travis

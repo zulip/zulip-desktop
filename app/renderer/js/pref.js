@@ -1,4 +1,5 @@
 'use strict';
+// eslint-disable-next-line import/no-extraneous-dependencies
 const {remote} = require('electron');
 
 const prefWindow = remote.getCurrentWindow();
@@ -15,8 +16,10 @@ document.addEventListener('keydown', event => {
 // eslint-disable-next-line no-unused-vars
 function addDomain() {
 	const request = require('request');
+	// eslint-disable-next-line import/no-extraneous-dependencies
 	const ipcRenderer = require('electron').ipcRenderer;
 	const JsonDB = require('node-json-db');
+	// eslint-disable-next-line import/no-extraneous-dependencies
 	const {app} = require('electron').remote;
 
 	const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
