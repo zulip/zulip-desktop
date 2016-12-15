@@ -29,7 +29,7 @@ function appUpdater() {
 		// Ask user to update the app
 		dialog.showMessageBox({
 			type: 'question',
-			buttons: ['Install and Relaunch', 'Cancel'],
+			buttons: ['Install and Relaunch', 'Later'],
 			defaultId: 0,
 			message: 'A new version of ' + app.getName() + ' has been downloaded',
 			detail: message
