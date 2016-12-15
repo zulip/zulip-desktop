@@ -3,15 +3,15 @@ const path = require('path');
 const fs = require('fs');
 const electron = require('electron');
 const {app} = require('electron');
-const electronLocalshortcut = require('electron-localshortcut');
 const ipc = require('electron').ipcMain;
+const electronLocalshortcut = require('electron-localshortcut');
 const Configstore = require('configstore');
 const JsonDB = require('node-json-db');
 const isDev = require('electron-is-dev');
 const tray = require('./tray');
 const appMenu = require('./menu');
 const {linkIsInternal, skipImages} = require('./link-helper');
-const { appUpdater } = require('./autoupdater')
+const {appUpdater} = require('./autoupdater');
 
 const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 const data = db.getData('/');
@@ -31,9 +31,8 @@ const staticURL = 'file://' + path.join(__dirname, '../renderer', 'index.html');
 const targetURL = function () {
 	if (data.domain === undefined) {
 		return staticURL;
-	} else {
-		return data.domain;
 	}
+	return data.domain;
 };
 
 const isAlreadyRunning = app.makeSingleInstance(() => {
@@ -200,14 +199,12 @@ app.on('ready', () => {
 		electron.shell.openExternal(url);
 	});
 
-
-	page.once("did-frame-finish-load", () => {
-	  if (process.platform === 'darwin' && !isDev) {
-	  	// Initate auto-updates
-	  	appUpdater()
-	  }
-	})
-
+	page.once('did-frame-finish-load', () => {
+		if (process.platform === 'darwin' && !isDev) {
+			// Initate auto-updates
+			appUpdater();
+		}
+	});
 });
 
 app.on('window-all-closed' || 'will-quit', () => {

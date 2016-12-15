@@ -1,6 +1,6 @@
 'use strict';
 const ipcRenderer = require('electron').ipcRenderer;
-
+const {webFrame} = require('electron');
 // Handle zooming functionality
 
 const zoomIn = () => {
@@ -44,9 +44,9 @@ ipcRenderer.on('shortcut', () => {
 	nodes[nodes.length - 1].click();
 });
 
-require('./domain');
-
 // To prevent failing this script on linux we need to load it after the document loaded
-document.addEventListener('DOMContentLoaded', function () {
-	require('./spellchecker');
+document.addEventListener('DOMContentLoaded', () => {
+	require('./spellchecker')();
 });
+
+require('./domain')();

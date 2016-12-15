@@ -1,7 +1,7 @@
-const JsonDB = require('node-json-db');
 const {app} = require('electron').remote;
-const request = require('request');
 const ipcRenderer = require('electron').ipcRenderer;
+const JsonDB = require('node-json-db');
+const request = require('request');
 
 const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 const data = db.getData('/');

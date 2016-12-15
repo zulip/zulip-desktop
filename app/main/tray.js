@@ -10,7 +10,7 @@ const APP_ICON = path.join(__dirname, '../resources/tray', 'tray');
 
 const iconPath = () => {
 	if (process.platform === 'linux') {
-		return APP_ICON + 'linux.png'
+		return APP_ICON + 'linux.png';
 	}
 	return APP_ICON + (process.platform === 'win32' ? 'win.ico' : 'osx.png');
 };
