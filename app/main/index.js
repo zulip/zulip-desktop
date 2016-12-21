@@ -16,6 +16,9 @@ const {appUpdater} = require('./autoupdater');
 const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 const data = db.getData('/');
 
+if (require('electron-squirrel-startup')) return;
+
+
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 
@@ -199,8 +202,12 @@ app.on('ready', () => {
 		electron.shell.openExternal(url);
 	});
 
+function isWinLinux() {
+	if(process.platform === 'darwin' || 'win32')
+		return;
+}
 	page.once('did-frame-finish-load', () => {
-		if (process.platform === 'darwin' && !isDev) {
+		if (isWinLinux && !isDev) {
 			// Initate auto-updates
 			appUpdater();
 		}
