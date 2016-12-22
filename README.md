@@ -70,8 +70,7 @@ Back                   | <kbd>Cmd/Ctrl</kbd> <kbd>[</kbd>
 Forward                | <kbd>Cmd/Ctrl</kbd> <kbd>]</kbd>
 
 - [x] OSX/Win/Linux installer
-- [ ] Launch on OS startup
-- [ ] Automatic Updates
+- [x] Automatic Updates (macOS)
 
 ## Contribute
 
