@@ -16,6 +16,11 @@ const {appUpdater} = require('./autoupdater');
 const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 const data = db.getData('/');
 
+// Handling squirrel.windows events on windows
+if (require('electron-squirrel-startup')) {
+	app.quit();
+}
+
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 
@@ -54,6 +59,10 @@ function checkWindowURL() {
 		return data.domain;
 	}
 	return targetLink;
+}
+
+function isWindowsOrmacOS() {
+	return process.platform === 'darwin' || process.platform === 'win32';
 }
 
 const APP_ICON = path.join(__dirname, '../resources', 'Icon');
@@ -202,8 +211,9 @@ app.on('ready', () => {
 	});
 
 	page.once('did-frame-finish-load', () => {
-		if (process.platform === 'darwin' && !isDev) {
-			// Initate auto-updates
+		const checkOS = isWindowsOrmacOS();
+		if (checkOS && !isDev) {
+			// Initate auto-updates on macOs and windows
 			appUpdater();
 		}
 	});
