@@ -67,7 +67,7 @@
       ]
     },
     "win": {
-      "target": "nsis",
+      "target": "squirrel",
       "icon": "build/icon.ico"
     }
   },
