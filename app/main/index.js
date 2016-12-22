@@ -150,6 +150,8 @@ function createMainWindow() {
 app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 
 app.on('window-all-closed', () => {
+	// unregister all the shortcuts so that they don't interfare with other apps
+	electronLocalshortcut.unregisterAll(mainWindow);
 	if (process.platform !== 'darwin') {
 		app.quit();
 	}
@@ -207,7 +209,7 @@ app.on('ready', () => {
 	});
 });
 
-app.on('window-all-closed' || 'will-quit', () => {
+app.on('will-quit', () => {
 	// unregister all the shortcuts so that they don't interfare with other apps
 	electronLocalshortcut.unregisterAll(mainWindow);
 });
