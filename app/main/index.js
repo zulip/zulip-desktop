@@ -16,8 +16,10 @@ const {appUpdater} = require('./autoupdater');
 const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 const data = db.getData('/');
 
-// eslint-disable-next-line wrap-life
-if (require('electron-squirrel-startup')) return;
+// Handling squirrel.windows events on windows
+if (require('electron-squirrel-startup')) {
+	app.quit();
+}
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
@@ -59,7 +61,7 @@ function checkWindowURL() {
 	return targetLink;
 }
 
-function isWindowsOrmacOS () {
+function isWindowsOrmacOS() {
 	return process.platform === 'darwin' || process.platform === 'win32';
 }
 
@@ -205,7 +207,6 @@ app.on('ready', () => {
 		event.preventDefault();
 		electron.shell.openExternal(url);
 	});
-
 
 	page.once('did-frame-finish-load', () => {
 		const checkOS = isWindowsOrmacOS();
