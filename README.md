@@ -60,6 +60,8 @@ You can create Windows installer only when running on Windows, the same is true 
 
 - [x] Native Notifications
 - [x] SpellChecker
+- [x] OSX/Win/Linux installer
+- [x] Automatic Updates (macOS)
 - [x] Keyboard shortcuts
 
 Description            | Keys
@@ -69,8 +71,6 @@ Change Zulip Server    | <kbd>Cmd/Ctrl</kbd> <kbd>,</kbd>
 Back                   | <kbd>Cmd/Ctrl</kbd> <kbd>[</kbd>
 Forward                | <kbd>Cmd/Ctrl</kbd> <kbd>]</kbd>
 
-- [x] OSX/Win/Linux installer
-- [x] Automatic Updates (macOS)
 
 ## Contribute
 
