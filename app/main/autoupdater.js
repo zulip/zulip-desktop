@@ -11,6 +11,8 @@ function appUpdater() {
 	autoUpdater.setFeedURL(updaterFeedURL);
 
 	// Log whats happening
+	// TODO send autoUpdater events to renderer so that we could
+	// it could console log in developer tools
 	autoUpdater.on('error', err => console.log(err));
 	autoUpdater.on('checking-for-update', () => console.log('checking-for-update'));
 	autoUpdater.on('update-available', () => console.log('update-available'));

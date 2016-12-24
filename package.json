@@ -43,7 +43,7 @@
       "packageCategory": "GNOME;GTK;Network;InstantMessaging",
       "description": "Zulip Desktop Client for Linux",
       "target" : ["deb", "AppImage"],
-      "version" : "0.5.1",
+      "version" : "0.5.3",
       "title" : "Zulip",
       "license": "Apache-2.0",
       "maintainer": "Akash Nimare <svnitakash@gmail.com>"
