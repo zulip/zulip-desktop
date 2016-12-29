@@ -61,7 +61,7 @@ You can create Windows installer only when running on Windows, the same is true 
 - [x] Native Notifications
 - [x] SpellChecker
 - [x] OSX/Win/Linux installer
-- [x] Automatic Updates (macOS)
+- [x] Automatic Updates (macOS/Windows)
 - [x] Keyboard shortcuts
 
 Description            | Keys
