@@ -74,11 +74,11 @@ gitCheckout()
 }
 
 # }}}
-# {{{ npmUpgradeStart()
+# {{{ npmInstallStart()
 
-npmUpgradeStart()
+npmInstallStart()
 {
-	npm upgrade
+	npm install
 	npm start &
 }
 
@@ -105,5 +105,5 @@ cleanUp()
 
 envSetup $*
 gitCheckout
-npmUpgradeStart
+npmInstallStart
 cleanUp
