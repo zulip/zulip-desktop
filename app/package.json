@@ -37,7 +37,7 @@
     "electron-localshortcut": "^0.6.1",
     "node-json-db": "^0.7.2",
     "request": "^2.74.0",
-    "electron-spellchecker": "0.7.1",
+    "electron-spellchecker": "0.7.0",
     "wurl": "^2.1.0"
   }
 }
