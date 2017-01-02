@@ -1,8 +1,11 @@
 'use strict';
 const ipcRenderer = require('electron').ipcRenderer;
 const {webFrame} = require('electron');
-// Handle zooming functionality
+const {spellChecker} = require('./spellchecker');
 
+require('./domain');
+
+// handle zooming functionality
 const zoomIn = () => {
 	webFrame.setZoomFactor(webFrame.getZoomFactor() + 0.1);
 };
@@ -15,7 +18,7 @@ const zoomActualSize = () => {
 	webFrame.setZoomFactor(1);
 };
 
-// Get zooming actions from main process
+// get zooming actions from main process
 ipcRenderer.on('zoomIn', () => {
 	zoomIn();
 });
@@ -46,7 +49,6 @@ ipcRenderer.on('shortcut', () => {
 
 // To prevent failing this script on linux we need to load it after the document loaded
 document.addEventListener('DOMContentLoaded', () => {
-	require('./spellchecker');
+	// init spellchecker
+	spellChecker();
 });
-
-require('./domain');
