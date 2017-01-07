@@ -3,6 +3,7 @@ const ipcRenderer = require('electron').ipcRenderer;
 const {webFrame} = require('electron');
 const {spellChecker} = require('./spellchecker');
 
+// eslint-disable-next-line import/no-unassigned-import
 require('./domain');
 
 // handle zooming functionality

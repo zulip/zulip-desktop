@@ -98,7 +98,7 @@
         "rules": {
           "max-lines": [
             "warn",
-            350
+            500
           ],
           "no-warning-comments": 0,
           "no-else-return": 0,
