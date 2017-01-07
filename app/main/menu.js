@@ -93,13 +93,7 @@ const helpSubmenu = [
 	{
 		label: `${appName + 'Desktop'} - ${app.getVersion()}`,
 		enabled: false
-	},
-	{
-		label: 'Clear Cache',
-		click() {
-			clearCache();
-		}
-	},
+	},	
 	{
 		label: 'Report an Issue...',
 		click() {
@@ -147,6 +141,12 @@ const darwinTpl = [
 			},
 			{
 				type: 'separator'
+			},
+			{
+				label: 'Clear Cache',
+				click() {
+					clearCache();
+				}
 			},
 			{
 				label: 'Log Out',
@@ -276,6 +276,12 @@ const otherTpl = [
 			},
 			{
 				type: 'separator'
+			},
+			{
+				label: 'Clear Cache',
+				click() {
+					clearCache();
+				}
 			},
 			{
 				label: 'Log Out',
