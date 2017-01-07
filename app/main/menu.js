@@ -1,7 +1,9 @@
 'use strict';
 const os = require('os');
 const electron = require('electron');
+
 const {dialog} = require('electron');
+
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const shell = electron.shell;
@@ -22,8 +24,8 @@ function sendAction(action) {
 function clearCache() {
 	const win = BrowserWindow.getAllWindows()[0];
 	const ses = win.webContents.session;
-	ses.clearCache(function(){
-		dialog.showMessageBox({type:"info",buttons:[], message: "Cache cleared!"});
+	ses.clearCache(() => {
+		dialog.showMessageBox({type: 'info', buttons: [], message: 'Cache cleared!'});
 	});
 }
 
@@ -93,7 +95,7 @@ const helpSubmenu = [
 	{
 		label: `${appName + 'Desktop'} - ${app.getVersion()}`,
 		enabled: false
-	},	
+	},
 	{
 		label: 'Report an Issue...',
 		click() {
@@ -332,7 +334,6 @@ const otherTpl = [
 			{
 				role: 'selectall'
 			}
-
 		]
 	},
 	{
