@@ -2,6 +2,8 @@
 const os = require('os');
 const electron = require('electron');
 
+const {dialog} = require('electron');
+
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const shell = electron.shell;
@@ -17,6 +19,14 @@ function sendAction(action) {
 	}
 
 	win.webContents.send(action);
+}
+
+function clearCache() {
+	const win = BrowserWindow.getAllWindows()[0];
+	const ses = win.webContents.session;
+	ses.clearCache(() => {
+		dialog.showMessageBox({type: 'info', buttons: [], message: 'Cache cleared!'});
+	});
 }
 
 const viewSubmenu = [
@@ -133,6 +143,12 @@ const darwinTpl = [
 			},
 			{
 				type: 'separator'
+			},
+			{
+				label: 'Clear Cache',
+				click() {
+					clearCache();
+				}
 			},
 			{
 				label: 'Log Out',
@@ -264,6 +280,12 @@ const otherTpl = [
 				type: 'separator'
 			},
 			{
+				label: 'Clear Cache',
+				click() {
+					clearCache();
+				}
+			},
+			{
 				label: 'Log Out',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
@@ -312,7 +334,6 @@ const otherTpl = [
 			{
 				role: 'selectall'
 			}
-
 		]
 	},
 	{
