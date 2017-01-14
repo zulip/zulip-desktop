@@ -42,7 +42,7 @@ function addDomain() {
 		} else {
 			document.getElementById('pic').style.display = 'none';
 			document.getElementById('main').innerHTML = 'Switch';
-			document.getElementById('urladded').innerHTML = 'Not a vaild Zulip Server.';
+			document.getElementById('urladded').innerHTML = 'Not a valid Zulip Server.';
 		}
 	});
 }
