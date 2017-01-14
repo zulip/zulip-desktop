@@ -152,6 +152,7 @@ const darwinTpl = [
 			},
 			{
 				label: 'Log Out',
+				accelerator: 'Cmd+L',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						sendAction('log-out');
@@ -287,6 +288,7 @@ const otherTpl = [
 			},
 			{
 				label: 'Log Out',
+				accelerator: 'Ctrl+L',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						sendAction('log-out');
