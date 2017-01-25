@@ -3,6 +3,9 @@ const ipcRenderer = require('electron').ipcRenderer;
 const {webFrame} = require('electron');
 const {spellChecker} = require('./spellchecker');
 
+// enable swipe back/forward navigation on macOS
+require('./macos-swipe-navigation.js').register();
+
 // eslint-disable-next-line import/no-unassigned-import
 require('./domain');
 

@@ -112,7 +112,8 @@
       }
     ],
     "ignore": [
-      "tests/*.js"
+      "tests/*.js",
+      "app/main/macos-swipe-navigation.js"
     ],
     "envs": [
       "node",
