@@ -14,10 +14,10 @@ multi-account, auto-updates etc.
 ## Prerequisites
 * node >= v6.3.1
 * npm >= 3.10.3
-* If you're on Debian or Ubuntu, you'll also need to install
-`nodejs-legacy`:
+* python (v2.7.x recommended)
+* If you're on Debian or Ubuntu, you'll need to install following packages:
 ```sh
-$ sudo apt-get install nodejs-legacy
+$ sudo apt-get install nodejs-legacy build-essential libxext-dev libxtst-dev libxkbfile-dev
 ```
 
 ## Installation
