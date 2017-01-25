@@ -68,7 +68,8 @@
     },
     "win": {
       "target": "squirrel",
-      "icon": "build/icon.ico"
+      "icon": "build/icon.ico",
+      "iconUrl": "https://raw.githubusercontent.com/zulip/zulip-electron/master/build/icon.ico"
     },
     "squirrelWindows" : {
       "iconUrl": "https://raw.githubusercontent.com/zulip/zulip-electron/master/build/icon.ico"
