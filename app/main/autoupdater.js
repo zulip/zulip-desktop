@@ -1,6 +1,7 @@
 'use strict';
 const os = require('os');
-const {app, autoUpdater, dialog} = require('electron');
+const {app, dialog} = require('electron');
+const { autoUpdater } = require('electron-updater');
 
 const version = app.getVersion();
 const platform = os.platform() + '_' + os.arch();  // usually returns darwin_64
