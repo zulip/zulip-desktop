@@ -1,15 +1,15 @@
 'use strict';
 const os = require('os');
 const {app, dialog} = require('electron');
-const { autoUpdater } = require('electron-updater');
+const {autoUpdater} = require('electron-updater');
 
-const version = app.getVersion();
-const platform = os.platform() + '_' + os.arch();  // usually returns darwin_64
-
-const updaterFeedURL = 'http://zulipdesktop.herokuapp.com/update/' + platform + '/' + version;
+// We don't need to call all of these since it's automatically handled by electron-updater
+//const version = app.getVersion();
+//const platform = os.platform() + '_' + os.arch();  // usually returns darwin_64
+//const updaterFeedURL = 'http://zulipdesktop.herokuapp.com/update/' + platform + '/' + version;
 
 function appUpdater() {
-	autoUpdater.setFeedURL(updaterFeedURL);
+	//autoUpdater.setFeedURL(updaterFeedURL);
 
 	// Log whats happening
 	// TODO send autoUpdater events to renderer so that we could
