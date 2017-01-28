@@ -16,10 +16,11 @@ const {appUpdater} = require('./autoupdater');
 const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 const data = db.getData('/');
 
-// Handling squirrel.windows events on windows
+/* Handling squirrel.windows events on windows
+Update - Not needed for NSIS
 if (require('electron-squirrel-startup')) {
 	app.quit();
-}
+} */
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();

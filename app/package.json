@@ -28,7 +28,6 @@
   ],
   "dependencies": {
     "electron-is-dev": "0.1.2",
-    "electron-squirrel-startup": "1.0.0",
     "electron-updater": "1.2.0",
     "configstore": "2.1.0",
     "dialogs": "1.1.14",
