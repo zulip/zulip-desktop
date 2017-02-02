@@ -29,6 +29,7 @@
   "dependencies": {
     "electron-is-dev": "0.1.2",
     "electron-updater": "1.2.0",
+    "electron-log": "1.3.0",
     "configstore": "2.1.0",
     "dialogs": "1.1.14",
     "electron-debug": "1.1.0",
