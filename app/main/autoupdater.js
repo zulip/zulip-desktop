@@ -25,7 +25,7 @@ function appUpdater() {
 	*/
 
 	// Ask the user if update is available
-	autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+	autoUpdater.on('update-downloaded', (event, info) => {
 		let message = app.getName() + ' ' + releaseName + ' is now available. It will be installed the next time you restart the application.';
 		if (releaseNotes) {
 			const splitNotes = releaseNotes.split(/[^\r]\n/);

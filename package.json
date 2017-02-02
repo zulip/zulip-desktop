@@ -70,6 +70,10 @@
       "target": "nsis",
       "icon": "build/icon.ico",
       "iconUrl": "https://raw.githubusercontent.com/zulip/zulip-electron/master/build/icon.ico"
+    },
+    "nsis": {
+      "perMachine": true,
+      "oneClick": false
     }
   },
   "keywords": [
