@@ -1,7 +1,7 @@
 'use strict';
 // const os = require('os');
 const {app, dialog} = require('electron');
-const {autoUpdater} = require('electron-updater').autoUpdater;
+const {autoUpdater} = require('electron-updater');
 
 // We don't need to call all of these since it's automatically handled by electron-updater
 // const version = app.getVersion();
