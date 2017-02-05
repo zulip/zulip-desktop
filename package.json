@@ -1,7 +1,7 @@
 {
   "name": "zulip",
   "productName": "Zulip",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
   "email":"<svnitakash@gmail.com>",
@@ -43,7 +43,7 @@
       "packageCategory": "GNOME;GTK;Network;InstantMessaging",
       "description": "Zulip Desktop Client for Linux",
       "target" : ["deb", "AppImage"],
-      "version" : "0.5.5",
+      "version" : "0.5.6",
       "title" : "Zulip",
       "license": "Apache-2.0",
       "maintainer": "Akash Nimare <svnitakash@gmail.com>"
@@ -67,12 +67,13 @@
       ]
     },
     "win": {
-      "target": "squirrel",
+      "target": "nsis",
       "icon": "build/icon.ico",
       "iconUrl": "https://raw.githubusercontent.com/zulip/zulip-electron/master/build/icon.ico"
     },
-    "squirrelWindows" : {
-      "iconUrl": "https://raw.githubusercontent.com/zulip/zulip-electron/master/build/icon.ico"
+    "nsis": {
+      "perMachine": true,
+      "oneClick": false
     }
   },
   "keywords": [
@@ -86,8 +87,7 @@
   "devDependencies": {
     "assert": "^1.4.1",
     "devtron": "^1.1.0",
-    "electron-builder": "11.5.1",
-    "electron-builder-squirrel-windows": "11.5.0",
+    "electron-builder": "12.2.0",
     "electron": "1.4.7",
     "electron-connect": "^0.4.6",
     "gulp": "^3.9.1",
