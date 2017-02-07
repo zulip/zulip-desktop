@@ -26,21 +26,21 @@ function appUpdater() {
 
 	// Ask the user if update is available
 	autoUpdater.on('update-downloaded', (event, info) => {
-		let message = app.getName() + ' ' + info.releaseName + ' is now available. It will be installed the next time you restart the application.';
-		if (info.releaseNotes) {
-			const splitNotes = info.releaseNotes.split(/[^\r]\n/);
-			message += '\n\nRelease notes:\n';
-			splitNotes.forEach(notes => {
-				message += notes + '\n\n';
-			});
-		}
+		// let message = app.getName() + ' ' + info.releaseName + ' is now available. It will be installed the next time you restart the application.';
+		// if (info.releaseNotes) {
+			// const splitNotes = info.releaseNotes.split(/[^\r]\n/);
+			// message += '\n\nRelease notes:\n';
+			// splitNotes.forEach(notes => {
+				// message += notes + '\n\n';
+			// });
+		// }
 		// Ask user to update the app
 		dialog.showMessageBox({
 			type: 'question',
 			buttons: ['Install and Relaunch', 'Later'],
 			defaultId: 0,
 			message: 'A new version of ' + app.getName() + ' has been downloaded',
-			detail: message
+			detail: 'It will be installed the next time you restart the application'
 		}, response => {
 			if (response === 0) {
 				setTimeout(() => autoUpdater.quitAndInstall(), 1);
