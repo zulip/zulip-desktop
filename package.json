@@ -87,7 +87,7 @@
   "devDependencies": {
     "assert": "^1.4.1",
     "devtron": "^1.1.0",
-    "electron-builder": "12.3.1",
+    "electron-builder": "13.0.1",
     "electron": "1.4.7",
     "electron-connect": "^0.4.6",
     "gulp": "^3.9.1",
