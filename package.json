@@ -24,6 +24,7 @@
     "dev": "gulp dev",
     "pack": "build --dir",
     "dist": "build",
+    "build:win": "build --win nsis-web --ia32 --x64",
     "travis": "cd ./scripts && ./travis-build-test.sh"
   },
   "build": {
