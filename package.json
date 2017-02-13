@@ -33,7 +33,7 @@
       "**/*",
       "!node_modules/@paulcbetts/cld/deps/cld${/*}"
     ],
-    "copyright": "©2016 Kandra Labs, Inc.",
+    "copyright": "©2017 Kandra Labs, Inc.",
     "mac": {
       "category": "public.app-category.productivity"
     },
