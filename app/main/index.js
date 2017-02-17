@@ -102,7 +102,11 @@ function createMainWindow() {
 		}
 	});
 
-	win.loadURL(targetURL());
+	win.loadURL(targetURL(),
+	{
+		// setting userAgent so that server-side code can identify the desktop app
+		userAgent: 'ZulipElectron/0.5.8'
+	});
 	win.on('closed', onClosed);
 	win.setTitle('Zulip');
 
