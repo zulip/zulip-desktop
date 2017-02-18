@@ -15,6 +15,7 @@ function appUpdater() {
 	*/
 
 	// Ask the user if update is available
+	// eslint-disable-next-line no-unused-vars
 	autoUpdater.on('update-downloaded', (event, info) => {
 		// let message = app.getName() + ' ' + info.releaseName + ' is now available. It will be installed the next time you restart the application.';
 		// if (info.releaseNotes) {
