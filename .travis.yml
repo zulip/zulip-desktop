@@ -5,6 +5,14 @@ os:
 - osx
 - linux
 
+addons:
+  apt:
+    packages:
+    - build-essential
+    - libxext-dev
+    - libxtst-dev
+    - libxkbfile-dev
+
 language: node_js
 node_js:
 - '6'
