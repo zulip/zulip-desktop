@@ -22,7 +22,7 @@ require('electron-debug')();
 const conf = new Configstore('Zulip-Desktop');
 
 // setting userAgent so that server-side code can identify the desktop app
-const isUserAgent = 'ZulipElectron/' + app.getVersion() + '_' + process.platform;
+const isUserAgent = 'ZulipElectron/' + app.getVersion() + ' ' + process.platform;
 
 // prevent window being garbage collected
 let mainWindow;
