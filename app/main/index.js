@@ -1,6 +1,7 @@
 'use strict';
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 const electron = require('electron');
 const {app} = require('electron');
 const ipc = require('electron').ipcMain;
@@ -21,8 +22,24 @@ require('electron-debug')();
 
 const conf = new Configstore('Zulip-Desktop');
 
+function userOS() {
+	if (os.platform() === 'darwin') {
+		return 'Mac';
+	}
+	if (os.platform() === 'linux') {
+		return 'Linux';
+	}
+	if (os.platform() === 'win32' || os.platform() === 'win64') {
+		if (parseFloat(os.release()) < 6.2) {
+			return 'Windows 7';
+		} else {
+			return 'Windows 10';
+		}
+	}
+}
+
 // setting userAgent so that server-side code can identify the desktop app
-const isUserAgent = 'ZulipElectron/' + app.getVersion() + ' ' + process.platform;
+const isUserAgent = 'ZulipElectron/' + app.getVersion() + ' ' + userOS();
 
 // prevent window being garbage collected
 let mainWindow;
