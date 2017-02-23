@@ -88,8 +88,8 @@
   "devDependencies": {
     "assert": "^1.4.1",
     "devtron": "^1.1.0",
-    "electron-builder": "13.9.0",
-    "electron": "1.4.7",
+    "electron-builder": "14.1.1",
+    "electron": "1.4.15",
     "electron-connect": "^0.4.6",
     "gulp": "^3.9.1",
     "gulp-mocha": "^3.0.1",
