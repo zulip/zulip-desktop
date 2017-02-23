@@ -124,7 +124,7 @@ function createMainWindow() {
 
 	win.loadURL(targetURL(),
 		{
-			userAgent: isUserAgent
+			userAgent: isUserAgent + ' ' + win.webContents.getUserAgent()
 		});
 	win.on('closed', onClosed);
 	win.setTitle('Zulip');
