@@ -45,13 +45,14 @@ ipcRenderer.on('log-out', () => {
 
 ipcRenderer.on('shortcut', () => {
 	// create the menu for the below
-	const node = document.querySelector('a[data-overlay-trigger=keyboard-shortcuts]')
-	//additional check
-	if (node.text.trim().toLowerCase() === "keyboard shortcuts")
+	const node = document.querySelector('a[data-overlay-trigger=keyboard-shortcuts]');
+	// additional check
+	if (node.text.trim().toLowerCase() === 'keyboard shortcuts') {
 		node.click();
-	else // atleast click the dropdown
+	} else {
+		// atleast click the dropdown
 		document.querySelector('.dropdown-toggle').click();
-	
+	}
 });
 
 // To prevent failing this script on linux we need to load it after the document loaded
