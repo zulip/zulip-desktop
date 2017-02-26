@@ -5,6 +5,7 @@ const os = require('os');
 const electron = require('electron');
 const {app} = require('electron');
 const ipc = require('electron').ipcMain;
+const {dialog} = require('electron');
 const electronLocalshortcut = require('electron-localshortcut');
 const Configstore = require('configstore');
 const JsonDB = require('node-json-db');
@@ -55,6 +56,32 @@ const targetURL = function () {
 	return data.domain;
 };
 
+function checkConnectivity() {
+	return dialog.showMessageBox({
+		title: 'Internet connection problem',
+		message: 'No internet available! Try again?',
+		type: 'warning',
+		buttons: ['Try again', 'Close'],
+		defaultId: 0
+	}, index => {
+		if (index === 0) {
+			mainWindow.webContents.reload();
+		}
+		if (index === 1) {
+			app.quit();
+		}
+	});
+}
+
+function checkConnection() {
+	mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
+		if (errorDescription === 'ERR_INTERNET_DISCONNECTED' || errorDescription === 'ERR_PROXY_CONNECTION_FAILED') {
+			console.log('Error Description:' + errorDescription);
+			checkConnectivity();
+		}
+	});
+}
+
 const isAlreadyRunning = app.makeSingleInstance(() => {
 	if (mainWindow) {
 		if (mainWindow.isMinimized()) {
@@ -87,8 +114,8 @@ const iconPath = () => {
 };
 
 function onClosed() {
-	// dereference the window
-	// for multiple windows store them in an array
+	// Dereference the window
+	// For multiple windows, store them in an array
 	mainWindow = null;
 }
 
@@ -231,10 +258,11 @@ app.on('ready', () => {
 	page.once('did-frame-finish-load', () => {
 		const checkOS = isWindowsOrmacOS();
 		if (checkOS && !isDev) {
-			// Initate auto-updates on macOs and windows
+			// Initate auto-updates on MacOS and Windows
 			appUpdater();
 		}
 	});
+	checkConnection();
 });
 
 app.on('will-quit', () => {
