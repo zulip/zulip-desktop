@@ -74,6 +74,7 @@ function checkConnectivity() {
 }
 
 function checkConnection() {
+	// eslint-disable-next-line no-unused-vars
 	mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
 		if (errorDescription === 'ERR_INTERNET_DISCONNECTED' || errorDescription === 'ERR_PROXY_CONNECTION_FAILED') {
 			console.log('Error Description:' + errorDescription);
