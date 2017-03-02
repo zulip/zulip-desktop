@@ -24,7 +24,6 @@ window.prefDomain = function () {
 
 	const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 	document.getElementById('main').innerHTML = 'Checking...';
-	// document.getElementById('pic').style.display = 'block';
 
 	let newDomain = document.getElementById('url').value;
 	newDomain = newDomain.replace(/^https?:\/\//, '');
@@ -34,13 +33,11 @@ window.prefDomain = function () {
 
 	request(checkDomain, (error, response) => {
 		if (!error && response.statusCode !== 404) {
-			// document.getElementById('pic').style.display = 'none';
 			document.getElementById('main').innerHTML = 'Switch';
 			document.getElementById('urladded').innerHTML = 'Switched to ' + newDomain;
 			db.push('/domain', domain);
 			ipcRenderer.send('new-domain', domain);
 		} else {
-			// document.getElementById('pic').style.display = 'none';
 			document.getElementById('main').innerHTML = 'Switch';
 			document.getElementById('urladded').innerHTML = 'Not a valid Zulip Server.';
 		}
