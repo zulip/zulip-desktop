@@ -23,23 +23,26 @@ window.prefDomain = function () {
 	const {app} = require('electron').remote;
 
 	const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
-	document.getElementById('main').innerHTML = 'Checking...';
 
 	let newDomain = document.getElementById('url').value;
 	newDomain = newDomain.replace(/^https?:\/\//, '');
 
 	const domain = 'https://' + newDomain;
 	const checkDomain = domain + '/static/audio/zulip.ogg';
-
-	request(checkDomain, (error, response) => {
-		if (!error && response.statusCode !== 404) {
-			document.getElementById('main').innerHTML = 'Switch';
-			document.getElementById('urladded').innerHTML = 'Switched to ' + newDomain;
-			db.push('/domain', domain);
-			ipcRenderer.send('new-domain', domain);
-		} else {
-			document.getElementById('main').innerHTML = 'Switch';
-			document.getElementById('urladded').innerHTML = 'Not a valid Zulip Server.';
-		}
-	});
-}
+	if (newDomain === '') {
+		document.getElementById('urladded').innerHTML = 'Please input a value';
+	} else {
+		document.getElementById('main').innerHTML = 'Checking...';
+		request(checkDomain, (error, response) => {
+			if (!error && response.statusCode !== 404) {
+				document.getElementById('main').innerHTML = 'Switch';
+				document.getElementById('urladded').innerHTML = 'Switched to ' + newDomain;
+				db.push('/domain', domain);
+				ipcRenderer.send('new-domain', domain);
+			} else {
+				document.getElementById('main').innerHTML = 'Switch';
+				document.getElementById('urladded').innerHTML = 'Not a valid Zulip Server.';
+			}
+		});
+	}
+};
