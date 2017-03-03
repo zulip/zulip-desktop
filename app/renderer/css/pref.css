@@ -72,12 +72,3 @@ button:focus {
     left: 25%;
     text-align: center;
 }
-
-#pic {
-width: 20px;
-left: 36%;
-margin-left: 4px;
-top: 63%;
-display: none;
-position: absolute;
-}
