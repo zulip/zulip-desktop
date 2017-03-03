@@ -48,12 +48,12 @@ window.prefDomain = function () {
 						ipcRenderer.send('new-domain', domain);
 					} else {
 						document.getElementById('main').innerHTML = 'Switch';
-						document.getElementById('urladded').innerHTML = 'Not a valid Zulip Server.';
+						document.getElementById('urladded').innerHTML = 'Not a valid Zulip Local Server.';
 
 					}
 				} else {
 					document.getElementById('main').innerHTML = 'Switch';
-					document.getElementById('urladded').innerHTML = 'Not a valid Zulip Server.';
+					document.getElementById('urladded').innerHTML = 'Not a valid Zulip Local Server.';
 				}
 			});
 		} else {
