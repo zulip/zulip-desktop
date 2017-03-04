@@ -8,6 +8,7 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const shell = electron.shell;
 const appName = app.getName();
+const tray = require('./tray');
 
 const {addDomain, about} = require('./windowmanager');
 
@@ -73,6 +74,12 @@ const viewSubmenu = [
 	},
 	{
 		type: 'separator'
+	},
+	{
+		label: 'Toggle Tray Icon',
+		click(item, focusedWindow) {
+			tray.toggle();
+		}
 	},
 	{
 		label: 'Toggle Developer Tools',

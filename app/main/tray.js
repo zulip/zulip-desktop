@@ -15,7 +15,7 @@ const iconPath = () => {
 	return APP_ICON + (process.platform === 'win32' ? 'win.ico' : 'osx.png');
 };
 
-exports.create = () => {
+const createHandler = () => {
 	const contextMenu = electron.Menu.buildFromTemplate([
 		{
 			label: 'About',
@@ -59,3 +59,23 @@ exports.create = () => {
 	tray.setContextMenu(contextMenu);
 };
 
+const destroyHandler = () => {
+	tray.destroy();
+	if (tray.isDestroyed()){
+		tray = null;
+	} else {
+		throw 'Tray icon not properly destroyed.'
+	}
+}
+
+const toggleHandler = () => {
+	if (tray) {
+		destroyHandler();
+	} else {
+		createHandler();
+	}
+}
+
+exports.create = createHandler;
+exports.destroy = destroyHandler;
+exports.toggle = toggleHandler;
