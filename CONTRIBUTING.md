@@ -2,11 +2,14 @@
 
 Thanks for taking the time to contribute!
 
-The following is a set of guidelines for contributing to zulip-electron. These are just guidelines, not rules, use your best judgment and feel free to propose changes to this document in a pull request.
+The following is a set of guidelines for contributing to zulip-electron. These are just guidelines, not rules, use your best judgement and feel free to propose changes to this document in a pull request.
 
 ## Getting Started
 
 Zulip-Desktop app is built on top of [Electron](http://electron.atom.io/). If you are new to Electron please head over to [this](http://jlord.us/essential-electron/) great article.
+
+## Chat
+Feel free to reach us out at [Zulip-Chat](https://chat.zulip.org) in the 'electron' section.
 
 ## Issue
 Ensure the bug was not already reported by searching on GitHub under [Issues](https://github.com/zulip/zulip-electron/issues). If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/zulip/zulip-electron/issues/new). Please pay attention to following points while opening an issue.
