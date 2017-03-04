@@ -19,22 +19,18 @@ window.addDomain = function () {
 		document.getElementById('main').innerHTML = 'Checking...';
 		if (newDomain.indexOf('localhost:') >= 0) {
 			const domain = 'http://' + newDomain;
-			request(domain, (error, response, body) => {
-				console.log(response);
-				if (!error && response.statusCode === 200) {
-					if (response.headers.server === 'WSGIServer/0.1 Python/2.7.6' && (body.indexOf('Zulip Dev') || body.indexOf('zulip.com'))) {
-						document.getElementById('main').innerHTML = 'Connect';
-						db.push('/domain', domain);
-						ipcRenderer.send('new-domain', domain);
-					} else {
-						document.getElementById('main').innerHTML = 'Connect';
-						document.getElementById('server-status').innerHTML = 'Not a valid Zulip Local Server.';
-					}
+			const checkDomain = domain + '/static/audio/zulip.ogg';
+			request(checkDomain, (error, response) => {
+				if (!error && response.statusCode !== 404) {
+					document.getElementById('main').innerHTML = 'Connect';
+					db.push('/domain', domain);
+					ipcRenderer.send('new-domain', domain);
 				} else {
 					document.getElementById('main').innerHTML = 'Connect';
 					document.getElementById('server-status').innerHTML = 'Not a valid Zulip Local Server.';
 				}
 			});
+			//	});
 		} else {
 			const domain = 'https://' + newDomain;
 			const checkDomain = domain + '/static/audio/zulip.ogg';
