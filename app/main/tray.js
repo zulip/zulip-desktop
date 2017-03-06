@@ -61,12 +61,12 @@ const createHandler = () => {
 
 const destroyHandler = () => {
 	tray.destroy();
-	if (tray.isDestroyed()){
+	if (tray.isDestroyed()) {
 		tray = null;
 	} else {
-		throw 'Tray icon not properly destroyed.'
+		throw new Error('Tray icon not properly destroyed.');
 	}
-}
+};
 
 const toggleHandler = () => {
 	if (tray) {
@@ -74,7 +74,7 @@ const toggleHandler = () => {
 	} else {
 		createHandler();
 	}
-}
+};
 
 exports.create = createHandler;
 exports.destroy = destroyHandler;

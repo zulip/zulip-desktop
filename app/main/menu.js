@@ -78,7 +78,9 @@ const viewSubmenu = [
 	{
 		label: 'Toggle Tray Icon',
 		click(item, focusedWindow) {
-			tray.toggle();
+			if (focusedWindow) {
+				tray.toggle();
+			}
 		}
 	},
 	{
