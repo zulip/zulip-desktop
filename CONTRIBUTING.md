@@ -23,13 +23,9 @@ you want to do Google Summer of Code).
 * Zulip also has a [blog](https://blog.zulip.org/) and
   [twitter account](https://twitter.com/zuliposs).
 
-* Last but not least, we use [GitHub](https://github.com/zulip/zulip)
-to track Zulip-related issues (and store our code, of course).
-Anybody with a GitHub account should be able to create Issues there
-pertaining to bugs or enhancement requests.  We also use Pull Requests
-as our primary mechanism to receive code contributions.
+* The whole zulip documentation such as development environment, setting up with zulip project, testing, code of conduct can be read [here](https://zulip.readthedocs.io).
 
-The Zulip community has a [Code of Conduct](https://zulip.readthedocs.io/en/latest/code-of-conduct.html).
+* If you have any questions regarding zulip-electron, zulip-electron desktop app is available. Still if you want to access it through browser, head over [here](https://chat.zulip.org/#narrow/stream/electron).
 
 ## Issue
 Ensure the bug was not already reported by searching on GitHub under [Issues](https://github.com/zulip/zulip-electron/issues). If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/zulip/zulip-electron/issues/new). Please pay attention to following points while opening an issue.
