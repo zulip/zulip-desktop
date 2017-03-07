@@ -221,7 +221,7 @@ app.on('activate', () => {
 app.on('ready', () => {
 	electron.Menu.setApplicationMenu(appMenu);
 	mainWindow = createMainWindow();
-	tray.create(mainWindow);
+	tray.create();
 
 	const page = mainWindow.webContents;
 
