@@ -148,12 +148,12 @@ function createMainWindow() {
 			allowDisplayingInsecureContent: true,
 			nodeIntegration: false
 		},
-		show:false
+		show: false
 	});
 
 	win.once('ready-to-show', () => {
 		win.show();
-	})
+	});
 	win.loadURL(targetURL(),
 		{
 			userAgent: isUserAgent + ' ' + win.webContents.getUserAgent()

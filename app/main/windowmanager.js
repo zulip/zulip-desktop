@@ -34,22 +34,20 @@ function createdomainWindow() {
 
 	return domainwin;
 }
-
 // Call this window onClick addDomain in tray
 function addDomain() {
 	domainWindow = createdomainWindow();
 	domainWindow.once('ready-to-show', () => {
 		domainWindow.show();
 	});
-
-
-		setTimeout(() => {
-			if (domainWindow!=null) {if (!domainWindow.isDestroyed()) domainWindow.destroy()}
-		}, 15000);
-
-
+	setTimeout(() => {
+		if (domainWindow !== null) {
+			if (!domainWindow.isDestroyed()) {
+				domainWindow.destroy();
+			}
+		}
+	}, 15000);
 }
-
 // About window
 function createAboutWindow() {
 	const aboutwin = new electron.BrowserWindow({
@@ -81,7 +79,7 @@ function about() {
 	aboutWindow = createAboutWindow();
 	aboutWindow.once('ready-to-show', () => {
 		aboutWindow.show();
-	})
+	});
 }
 
 exports = module.exports = {
