@@ -60,7 +60,6 @@ window.prefDomain = function () {
 					db.push('/domain', domain);
 					ipcRenderer.send('new-domain', domain);
 				} else {
-					document.getElementById('pic').style.display = 'none';
 					document.getElementById('main').innerHTML = 'Switch';
 					document.getElementById('urladded').innerHTML = 'Not a valid Zulip Server.';
 				}
