@@ -147,13 +147,18 @@ function createMainWindow() {
 			plugins: true,
 			allowDisplayingInsecureContent: true,
 			nodeIntegration: false
-		}
+		},
+		show: false
 	});
 
+	win.once('ready-to-show', () => {
+		win.show();
+	});
 	win.loadURL(targetURL(),
 		{
 			userAgent: isUserAgent + ' ' + win.webContents.getUserAgent()
 		});
+
 	win.on('closed', onClosed);
 	win.setTitle('Zulip');
 

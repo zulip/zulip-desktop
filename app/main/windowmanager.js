@@ -2,6 +2,11 @@
 const path = require('path');
 const electron = require('electron');
 
+const APP_ICON = path.join(__dirname, '../resources', 'Icon');
+
+const iconPath = () => {
+	return APP_ICON + (process.platform === 'win32' ? '.ico' : '.png');
+};
 let domainWindow;
 let aboutWindow;
 
@@ -14,10 +19,14 @@ function onClosed() {
 // Change Zulip server Window
 function createdomainWindow() {
 	const domainwin = new electron.BrowserWindow({
+		title: 'Switch Server',
 		frame: false,
 		height: 300,
 		resizable: false,
-		width: 400
+		width: 400,
+		show: false,
+		icon: iconPath()
+
 	});
 	const domainURL = 'file://' + path.join(__dirname, '../renderer', 'pref.html');
 	domainwin.loadURL(domainURL);
@@ -25,13 +34,20 @@ function createdomainWindow() {
 
 	return domainwin;
 }
-
 // Call this window onClick addDomain in tray
 function addDomain() {
 	domainWindow = createdomainWindow();
-	domainWindow.show();
+	domainWindow.once('ready-to-show', () => {
+		domainWindow.show();
+	});
+	setTimeout(() => {
+		if (domainWindow !== null) {
+			if (!domainWindow.isDestroyed()) {
+				domainWindow.destroy();
+			}
+		}
+	}, 15000);
 }
-
 // About window
 function createAboutWindow() {
 	const aboutwin = new electron.BrowserWindow({
@@ -61,9 +77,12 @@ function createAboutWindow() {
 // Call this onClick About in tray
 function about() {
 	aboutWindow = createAboutWindow();
-	aboutWindow.show();
+	aboutWindow.once('ready-to-show', () => {
+		aboutWindow.show();
+	});
 }
 
 exports = module.exports = {
-	addDomain, about
+	addDomain,
+	about
 };
