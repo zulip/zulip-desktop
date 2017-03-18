@@ -62,7 +62,7 @@ const targetURL = function () {
 function server_error(targetURL) {
 	if (targetURL.indexOf('localhost:') < 0 && data.domain) {
 		var req = https.request(targetURL + '/static/audio/zulip.ogg', (res) => {
-			console.log('Server statusCode:', res.statusCode);
+			console.log('Server StatusCode:', res.statusCode);
 			console.log('You are connected to:', res.req._headers.host);
 			if (res.statusCode >= 500 && res.statusCode <= 599) {
 				return dialog.showErrorBox('SERVER IS DOWN!', 'We are getting a ' + res.statusCode + ' error status from the server ' + res.req._headers.host + '. Please try again after some time or you may switch server.')
@@ -77,7 +77,7 @@ function server_error(targetURL) {
 		req.end();
 	} else if (data.domain) {
 		var req = http.request(targetURL + '/static/audio/zulip.ogg', (res) => {
-			console.log('statusCode:', res.statusCode);
+			console.log('Server StatusCode:', res.statusCode);
 			console.log('You are connected to:', res.req._headers.host);
 
 		});
@@ -326,6 +326,7 @@ ipc.on('new-domain', (e, domain) => {
 		mainWindow.show();
 	} else {
 		mainWindow.loadURL(domain);
+		server_error(domain);
 	}
 	targetLink = domain;
 });
