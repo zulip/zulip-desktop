@@ -14,7 +14,7 @@ const JsonDB = require('node-json-db');
 const isDev = require('electron-is-dev');
 const tray = require('./tray');
 const appMenu = require('./menu');
-const {linkIsInternal,skipImages} = require('./link-helper');
+const {linkIsInternal, skipImages} = require('./link-helper');
 const {appUpdater} = require('./autoupdater');
 
 const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
