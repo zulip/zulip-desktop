@@ -1,6 +1,4 @@
-const {
-	app
-} = require('electron').remote;
+const {app} = require('electron').remote;
 const ipcRenderer = require('electron').ipcRenderer;
 const JsonDB = require('node-json-db');
 const request = require('request');

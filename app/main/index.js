@@ -3,13 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const electron = require('electron');
-const {
-	app
-} = require('electron');
+const {app} = require('electron');
 const ipc = require('electron').ipcMain;
-const {
-	dialog
-} = require('electron');
+const {dialog} = require('electron');
 const https = require('https');
 const http = require('http');
 const electronLocalshortcut = require('electron-localshortcut');
@@ -18,13 +14,8 @@ const JsonDB = require('node-json-db');
 const isDev = require('electron-is-dev');
 const tray = require('./tray');
 const appMenu = require('./menu');
-const {
-	linkIsInternal,
-	skipImages
-} = require('./link-helper');
-const {
-	appUpdater
-} = require('./autoupdater');
+const {linkIsInternal,skipImages} = require('./link-helper');
+const {appUpdater} = require('./autoupdater');
 
 const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 const data = db.getData('/');
