@@ -3,12 +3,12 @@ const ipcRenderer = require('electron').ipcRenderer;
 const {webFrame} = require('electron');
 const {spellChecker} = require('./spellchecker');
 
-const _setImmediate = setImmediate
-const _clearImmediate = clearImmediate
+const _setImmediate = setImmediate;
+const _clearImmediate = clearImmediate;
 process.once('loaded', () => {
-  global.setImmediate = _setImmediate
-  global.clearImmediate = _clearImmediate
-})
+	global.setImmediate = _setImmediate;
+	global.clearImmediate = _clearImmediate;
+});
 
 // enable swipe back/forward navigation on macOS
 require('./macos-swipe-navigation.js').register();
