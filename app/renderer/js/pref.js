@@ -1,8 +1,6 @@
 'use strict';
 // eslint-disable-next-line import/no-extraneous-dependencies
-const {
-	remote
-} = require('electron');
+const {remote} = require('electron');
 
 const prefWindow = remote.getCurrentWindow();
 

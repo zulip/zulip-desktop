@@ -6,6 +6,8 @@ const electron = require('electron');
 const {app} = require('electron');
 const ipc = require('electron').ipcMain;
 const {dialog} = require('electron');
+const https = require('https');
+const http = require('http');
 const electronLocalshortcut = require('electron-localshortcut');
 const Configstore = require('configstore');
 const JsonDB = require('node-json-db');
@@ -55,6 +57,31 @@ const targetURL = function () {
 	}
 	return data.domain;
 };
+
+function serverError(targetURL) {
+	if (targetURL.indexOf('localhost:') < 0 && data.domain) {
+		const req = https.request(targetURL + '/static/audio/zulip.ogg', res => {
+			console.log('Server StatusCode:', res.statusCode);
+			console.log('You are connected to:', res.req._headers.host);
+			if (res.statusCode >= 500 && res.statusCode <= 599) {
+				return dialog.showErrorBox('SERVER IS DOWN!', 'We are getting a ' + res.statusCode + ' error status from the server ' + res.req._headers.host + '. Please try again after some time or you may switch server.');
+			}
+		});
+		req.on('error', e => {
+			console.error(e);
+		});
+		req.end();
+	} else if (data.domain) {
+		const req = http.request(targetURL + '/static/audio/zulip.ogg', res => {
+			console.log('Server StatusCode:', res.statusCode);
+			console.log('You are connected to:', res.req._headers.host);
+		});
+		req.on('error', e => {
+			console.error(e);
+		});
+		req.end();
+	}
+}
 
 function checkConnectivity() {
 	return dialog.showMessageBox({
@@ -154,10 +181,12 @@ function createMainWindow() {
 	win.once('ready-to-show', () => {
 		win.show();
 	});
-	win.loadURL(targetURL(),
-		{
-			userAgent: isUserAgent + ' ' + win.webContents.getUserAgent()
-		});
+
+	serverError(targetURL());
+
+	win.loadURL(targetURL(), {
+		userAgent: isUserAgent + ' ' + win.webContents.getUserAgent()
+	});
 
 	win.on('closed', onClosed);
 	win.setTitle('Zulip');
@@ -286,6 +315,7 @@ ipc.on('new-domain', (e, domain) => {
 		mainWindow.show();
 	} else {
 		mainWindow.loadURL(domain);
+		serverError(domain);
 	}
 	targetLink = domain;
 });
