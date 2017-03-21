@@ -17,7 +17,6 @@ const iconPath = () => {
 };
 
 app.on('web-contents-created', (e, wb) => {
-	setTimeout(() => {
 		setInterval(() => {
 			// If to handle error if wb is destroyed before 7 seconds
 			if (wb !== null) {
@@ -39,8 +38,6 @@ app.on('web-contents-created', (e, wb) => {
 			}
 
 		}, 500);//setInterval updates unread every 0.5 seconds
-
-	}, 7000); //delay so that the functions starts after webpage is completely loaded
 
 });
 
