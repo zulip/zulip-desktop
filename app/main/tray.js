@@ -26,7 +26,6 @@ app.on('web-contents-created', (e, wb) => {
 					wb.executeJavaScript("document.querySelector('#streams_header')", res => {
 				// If to handle error if wb is destroyed before entering this block and res to check it's a zulip chat web page
 						if (res !== null && wb !== null) {
-							console.log("I am inside");
 							wb.executeJavaScript("document.querySelector('.value').innerText", result => {
 							//If to check if value class has no innerHTML
 								if (result.length)
@@ -91,7 +90,15 @@ const createHandler = () => {
 	]);
 
 	tray = new electron.Tray(iconPath());
-	tray.setToolTip(`${app.getName()}`);
+	//tray.setToolTip(`${app.getName()}`);
+	setInterval(() => {
+		if (unread != 0) {
+			tray.setToolTip(unread + ' unread messages');
+		} else {
+			tray.setToolTip('No unread messages');
+		}
+
+	}, 500) //updates tooltip every 0.5 second
 	tray.setContextMenu(contextMenu);
 };
 
