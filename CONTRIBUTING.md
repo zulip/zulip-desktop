@@ -2,14 +2,22 @@
 
 Thanks for taking the time to contribute!
 
-The following is a set of guidelines for contributing to zulip-electron. These are just guidelines, not rules, use your best judgment and feel free to propose changes to this document in a pull request.
+The following is a set of guidelines for contributing to zulip-electron. These are just guidelines, not rules, use your best judgement and feel free to propose changes to this document in a pull request.
 
 ## Getting Started
 
 Zulip-Desktop app is built on top of [Electron](http://electron.atom.io/). If you are new to Electron please head over to [this](http://jlord.us/essential-electron/) great article.
 
+## Community
+
+* The whole zulip documentation such as development environment, setting up with zulip project, testing, code of conduct can be read [here](https://zulip.readthedocs.io).
+
+* If you have any questions regarding zulip-electron, open an [issue](https://github.com/zulip/zulip-electron/issues/new/) or ask it [here](https://chat.zulip.org/#narrow/stream/electron).
+
 ## Issue
 Ensure the bug was not already reported by searching on GitHub under [Issues](https://github.com/zulip/zulip-electron/issues). If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/zulip/zulip-electron/issues/new). Please pay attention to following points while opening an issue.
+
+The [Zulipbot](https://github.com/zulip/zulipbot) helps to claim the issue by commenting the following in the comment section: "**@zulipbot** claim". **@zulipbot** will assign you to the issue and label the issue as **in progress**. For more details, check out [**@zulipbot**](https://github.com/zulip/zulipbot).
 
 ### Does it happen on web browsers? (especially Chrome)
 Zulip-Desktop is based on Electron, which integrates the Chrome engine within a standalone application.
