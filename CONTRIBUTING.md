@@ -10,22 +10,9 @@ Zulip-Desktop app is built on top of [Electron](http://electron.atom.io/). If yo
 
 ## Community
 
-* We have
-[a public mailing list](https://groups.google.com/forum/#!forum/zulip-devel)
-that is currently pretty low traffic because most discussions happen
-in our public Zulip instance.  We use it to announce Zulip developer
-community gatherings and ask for feedback on major technical or design
-decisions.  It has several hundred subscribers, so you can use it to
-ask questions about features or possible bugs, but please don't use it
-ask for generic help getting started as a contributor (e.g. because
-you want to do Google Summer of Code).
-
-* Zulip also has a [blog](https://blog.zulip.org/) and
-  [twitter account](https://twitter.com/zuliposs).
-
 * The whole zulip documentation such as development environment, setting up with zulip project, testing, code of conduct can be read [here](https://zulip.readthedocs.io).
 
-* If you have any questions regarding zulip-electron, zulip-electron desktop app is available. Still if you want to access it through browser, head over [here](https://chat.zulip.org/#narrow/stream/electron).
+* If you have any questions regarding zulip-electron, open an [issue](https://github.com/zulip/zulip-electron/issues/new/) or ask it [here](https://chat.zulip.org/#narrow/stream/electron).
 
 ## Issue
 Ensure the bug was not already reported by searching on GitHub under [Issues](https://github.com/zulip/zulip-electron/issues). If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/zulip/zulip-electron/issues/new). Please pay attention to following points while opening an issue.
