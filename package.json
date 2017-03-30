@@ -40,7 +40,6 @@
       "category": "public.app-category.productivity"
     },
     "linux": {
-      "synopsis": "Zulip Desktop App",
       "category": "",
       "packageCategory": "GNOME;GTK;Network;InstantMessaging",
       "description": "Zulip Desktop Client for Linux",
@@ -48,10 +47,10 @@
         "deb",
         "AppImage"
       ],
-      "version": "0.5.8",
-      "title": "Zulip",
-      "license": "Apache-2.0",
       "maintainer": "Akash Nimare <svnitakash@gmail.com>"
+    },
+    "deb": {
+      "synopsis": "Zulip Desktop App"
     },
     "dmg": {
       "background": "build/appdmg.png",
