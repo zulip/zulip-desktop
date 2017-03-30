@@ -30,7 +30,7 @@
   },
   "build": {
     "appId": "org.zulip.zulip-electron",
-    "asar": "true",
+    "asar": true,
     "files": [
       "**/*",
       "!node_modules/@paulcbetts/cld/deps/cld${/*}"
@@ -73,9 +73,8 @@
     },
     "win": {
       "target": "nsis",
-      "icon": "build/icon.ico",
-      "iconUrl": "https://raw.githubusercontent.com/zulip/zulip-electron/master/build/icon.ico"
-    },
+      "icon": "build/icon.ico"
+      },
     "nsis": {
       "perMachine": true,
       "oneClick": false
