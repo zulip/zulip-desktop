@@ -28,6 +28,7 @@
   ],
   "dependencies": {
     "configstore": "2.1.0",
+    "electron-config":"0.2.1",
     "electron-debug": "1.1.0",
     "electron-is-dev": "0.1.2",
     "electron-localshortcut": "1.0.0",
