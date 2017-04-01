@@ -10,9 +10,6 @@ process.once('loaded', () => {
 	global.clearImmediate = _clearImmediate;
 });
 
-// enable swipe back/forward navigation on macOS
-require('./macos-swipe-navigation.js').register();
-
 // eslint-disable-next-line import/no-unassigned-import
 require('./domain');
 
