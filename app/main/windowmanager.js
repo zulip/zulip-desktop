@@ -1,6 +1,7 @@
 'use strict';
 const path = require('path');
 const electron = require('electron');
+const ipc = require('electron').ipcMain;
 
 const APP_ICON = path.join(__dirname, '../resources', 'Icon');
 
@@ -81,5 +82,14 @@ function about() {
 		aboutWindow.show();
 	});
 }
+
+ipc.on('trayabout', event => {
+	about();
+});
+
+ipc.on('traychangeserver', event => {
+	addDomain();
+});
+
 
 exports = module.exports = {addDomain, about};

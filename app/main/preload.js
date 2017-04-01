@@ -13,6 +13,9 @@ process.once('loaded', () => {
 // eslint-disable-next-line import/no-unassigned-import
 require('./domain');
 
+//Calling Tray.js in renderer process everytime app window loads
+require('../renderer/js/Tray.js');
+
 // handle zooming functionality
 const zoomIn = () => {
 	webFrame.setZoomFactor(webFrame.getZoomFactor() + 0.1);

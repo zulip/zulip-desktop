@@ -91,7 +91,6 @@ window.renderNativeImage = function(arg) {
 	}
 
 window.createTray = function ()  {
-	console.log("CreateTray was called");
 	window.tray = new Tray(iconPath());
 	const contextMenu = Menu.buildFromTemplate([{
 			label: 'About',
@@ -146,14 +145,15 @@ ipcRenderer.on('destroytray', event => {
 ipcRenderer.on('tray', (event, arg) => {
 
 	if (arg === 0) {
-		console.log("message count is zero.");
+	//console.log("message count is zero.");
 		window.tray.setImage(iconPath());
+                  window.tray.setToolTip('No unread messages')
 
 	} else {
 		renderNativeImage(arg).then((image) => {
 			unread = arg;
 			window.tray.setImage(image);
-			window.tray.setToolTip(arg + 'unread messages')
+			window.tray.setToolTip(arg + ' unread messages')
 		})
 	}
 

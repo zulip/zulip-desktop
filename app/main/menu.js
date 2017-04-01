@@ -36,6 +36,7 @@ const viewSubmenu = [
 		click(item, focusedWindow) {
 			if (focusedWindow) {
 				focusedWindow.reload();
+				focusedWindow.webContents.send('destroytray');
 			}
 		}
 	},
@@ -79,7 +80,7 @@ const viewSubmenu = [
 		label: 'Toggle Tray Icon',
 		click(item, focusedWindow) {
 			if (focusedWindow) {
-				tray.toggle();
+				focusedWindow.webContents.send('toggletray');
 			}
 		}
 	},

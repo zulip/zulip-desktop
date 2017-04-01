@@ -96,6 +96,7 @@ function checkConnectivity() {
 	}, index => {
 		if (index === 0) {
 			mainWindow.webContents.reload();
+			mainWindow.webContents.send('destroytray');
 		}
 		if (index === 1) {
 			app.quit();
@@ -161,6 +162,8 @@ function updateDockBadge(title) {
 	if (process.platform === 'darwin') {
 		app.setBadgeCount(messageCount);
 	}
+         mainWindow.webContents.send('tray', messageCount);
+
 }
 
 function createMainWindow() {
@@ -235,6 +238,12 @@ function createMainWindow() {
 		updateDockBadge(title);
 	});
 
+         //To destroy tray icon when navigate to a new URL
+	win.webContents.on('will-navigate', (e, url) => {
+		// console.log(url);
+		win.webContents.send('destroytray');
+   	});
+
 	return win;
 }
 
@@ -258,13 +267,14 @@ app.on('activate', () => {
 app.on('ready', () => {
 	electron.Menu.setApplicationMenu(appMenu);
 	mainWindow = createMainWindow();
-	tray.create();
+	//tray.create();
 
 	const page = mainWindow.webContents;
 
 	// TODO - use global shortcut instead
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
 		mainWindow.reload();
+		mainWindow.webContents.send('destroytray');
 	});
 
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
@@ -313,10 +323,13 @@ ipc.on('new-domain', (e, domain) => {
 	if (!mainWindow) {
 		mainWindow = createMainWindow();
 		mainWindow.loadURL(domain);
+		mainWindow.webContents.send('destroytray');
 	} else if (mainWindow.isMinimized()) {
+		mainWindow.webContents.send('destroytray');
 		mainWindow.loadURL(domain);
 		mainWindow.show();
 	} else {
+		mainWindow.webContents.send('destroytray');
 		mainWindow.loadURL(domain);
 		serverError(domain);
 	}
