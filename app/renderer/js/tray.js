@@ -125,11 +125,9 @@ const createTray = function () {
 	{
 		label: 'Reload',
 		click(item, focusedWindow) {
-			if (focusedWindow) {
-				focusedWindow.reload();
+				remote.getCurrentWindow().reload();
 				window.tray.destroy();
 			}
-		}
 	},
 	{
 		type: 'separator'
