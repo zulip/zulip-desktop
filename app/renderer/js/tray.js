@@ -15,7 +15,22 @@ const iconPath = () => {
 	}
 	return APP_ICON + (process.platform === 'win32' ? 'win.ico' : 'osx.png');
 };
-//  Deafult config for Icon we might make it OS specific if needed
+
+let unread = 0;
+
+const trayIconSize = () => {
+	switch (process.platform) {
+		case 'darwin':
+			return 40;
+		case 'win32':
+			return 100;
+		case 'linux':
+			return 100;
+		default: return 80;
+	}
+};
+
+//  Default config for Icon we might make it OS specific if needed like the size
 const config = {
 	pixelRatio: window.devicePixelRatio,
 	unreadCount: 0,
@@ -24,7 +39,7 @@ const config = {
 	readColor: '#000000',
 	unreadBackgroundColor: '#B9FEEA',
 	readBackgroundColor: '#B9FEEA',
-	size: 100,
+	size: trayIconSize(),
 	thick: process.platform === 'win32'
 };
 
@@ -142,10 +157,12 @@ ipcRenderer.on('destroytray', event => {
 
 ipcRenderer.on('tray', (event, arg) => {
 	if (arg === 0) {
+		unread = arg;
 		// Message Count // console.log("message count is zero.");
 		window.tray.setImage(iconPath());
 		window.tray.setToolTip('No unread messages');
 	} else {
+		unread = arg;
 		renderNativeImage(arg).then(image => {
 			window.tray.setImage(image);
 			window.tray.setToolTip(arg + ' unread messages');
@@ -161,7 +178,11 @@ ipcRenderer.on('toggletray', event => {
 				window.tray = null;
 			}
 		} else {
-			window.createTray();
+			createTray();
+			renderNativeImage(unread).then(image => {
+				window.tray.setImage(image);
+				window.tray.setToolTip(unread + ' unread messages');
+			});
 		}
 	}
 });
