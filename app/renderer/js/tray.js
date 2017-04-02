@@ -65,7 +65,7 @@ const renderCanvas = function (arg) {
 		ctx.fillStyle = backgroundColor;
 		ctx.fill();
 		ctx.lineWidth = SIZE / (config.thick ? 10 : 20);
-		ctx.strokeStyle = color;
+		ctx.strokeStyle = backgroundColor;
 		ctx.stroke();
 		// Count or Icon
 		if (HAS_COUNT) {
