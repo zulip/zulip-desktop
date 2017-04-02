@@ -12,11 +12,11 @@ process.once('loaded', () => {
 
 // eslint-disable-next-line import/no-unassigned-import
 require('./domain');
+// eslint-disable-next-line import/no-unassigned-import
+require('../renderer/js/tray.js');
+// Calling Tray.js in renderer process everytime app window loads
 
-//Calling Tray.js in renderer process everytime app window loads
-require('../renderer/js/Tray.js');
-
-// handle zooming functionality
+// Handle zooming functionality
 const zoomIn = () => {
 	webFrame.setZoomFactor(webFrame.getZoomFactor() + 0.1);
 };
@@ -29,7 +29,7 @@ const zoomActualSize = () => {
 	webFrame.setZoomFactor(1);
 };
 
-// get zooming actions from main process
+// Get zooming actions from main process
 ipcRenderer.on('zoomIn', () => {
 	zoomIn();
 });
@@ -43,7 +43,7 @@ ipcRenderer.on('zoomActualSize', () => {
 });
 
 ipcRenderer.on('log-out', () => {
-	// create the menu for the below
+	// Create the menu for the below
 	document.querySelector('.dropdown-toggle').click();
 
 	const nodes = document.querySelectorAll('.dropdown-menu li:last-child a');
@@ -51,19 +51,19 @@ ipcRenderer.on('log-out', () => {
 });
 
 ipcRenderer.on('shortcut', () => {
-	// create the menu for the below
+	// Create the menu for the below
 	const node = document.querySelector('a[data-overlay-trigger=keyboard-shortcuts]');
-	// additional check
+	// Additional check
 	if (node.text.trim().toLowerCase() === 'keyboard shortcuts') {
 		node.click();
 	} else {
-		// atleast click the dropdown
+		// Atleast click the dropdown
 		document.querySelector('.dropdown-toggle').click();
 	}
 });
 
 // To prevent failing this script on linux we need to load it after the document loaded
 document.addEventListener('DOMContentLoaded', () => {
-	// init spellchecker
+	// Init spellchecker
 	spellChecker();
 });

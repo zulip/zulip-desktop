@@ -8,7 +8,7 @@ function appUpdater() {
 	log.transports.file.level = 'info';
 	autoUpdater.logger = log;
 	/*
-	autoUpdater.on('error', err => log.info(err));
+	AutoUpdater.on('error', err => log.info(err));
 	autoUpdater.on('checking-for-update', () => log.info('checking-for-update'));
 	autoUpdater.on('update-available', () => log.info('update-available'));
 	autoUpdater.on('update-not-available', () => log.info('update-not-available'));
@@ -17,7 +17,7 @@ function appUpdater() {
 	// Ask the user if update is available
 	// eslint-disable-next-line no-unused-vars
 	autoUpdater.on('update-downloaded', (event, info) => {
-		// let message = app.getName() + ' ' + info.releaseName + ' is now available. It will be installed the next time you restart the application.';
+		// Let message = app.getName() + ' ' + info.releaseName + ' is now available. It will be installed the next time you restart the application.';
 		// if (info.releaseNotes) {
 			// const splitNotes = info.releaseNotes.split(/[^\r]\n/);
 			// message += '\n\nRelease notes:\n';
@@ -38,10 +38,10 @@ function appUpdater() {
 			}
 		});
 	});
-	// init for updates
+	// Init for updates
 	autoUpdater.checkForUpdates();
 }
 
-exports = module.exports = {
+module.exports = {
 	appUpdater
 };

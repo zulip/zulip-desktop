@@ -8,7 +8,7 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const shell = electron.shell;
 const appName = app.getName();
-const tray = require('./tray');
+//	Const tray = require('./tray');
 
 const {addDomain, about} = require('./windowmanager');
 

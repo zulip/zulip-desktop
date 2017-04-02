@@ -12,7 +12,7 @@ let domainWindow;
 let aboutWindow;
 
 function onClosed() {
-	// dereference the window
+	// Dereference the window
 	domainWindow = null;
 	aboutWindow = null;
 }
@@ -65,7 +65,7 @@ function createAboutWindow() {
 	aboutwin.loadURL(aboutURL);
 	aboutwin.on('closed', onClosed);
 
-	// stop page to update it's title
+	// Stop page to update it's title
 	aboutwin.on('page-title-updated', e => {
 		e.preventDefault();
 	});
@@ -84,12 +84,14 @@ function about() {
 }
 
 ipc.on('trayabout', event => {
-	about();
+	if (event) {
+		about();
+	}
 });
 
 ipc.on('traychangeserver', event => {
-	addDomain();
+	if (event) {
+		addDomain();
+	}
 });
-
-
-exports = module.exports = {addDomain, about};
+module.exports = {addDomain, about};
