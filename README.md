@@ -5,7 +5,7 @@
 
 This is an experimental replacement for the [Zulip Desktop
 app](https://github.com/zulip/zulip-desktop) implemented in
-[Electron](http://electron.atom.io/).
+[Electron](http://electron.atom.io/).eeee
 
 The goal is to achieve feature-compatibility with the old desktop app
 and then start adding cool features like easy support for
@@ -13,11 +13,13 @@ multi-account, auto-updates etc.
 
 ## Prerequisites
 * node >= v6.3.1
-* npm >= 3.10.3
+> Use [nvm](https://github.com/creationix/nvm) to install the current stable version of node
+
+
 * python (v2.7.x recommended)
 * If you're on Debian or Ubuntu, you'll need to install following packages:
 ```sh
-$ sudo apt-get install nodejs-legacy build-essential libxext-dev libxtst-dev libxkbfile-dev
+$ sudo apt-get install build-essential libxext-dev libxtst-dev libxkbfile-dev
 ```
 
 ## Installation
