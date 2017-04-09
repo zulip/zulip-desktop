@@ -9,7 +9,6 @@ const {dialog} = require('electron');
 const https = require('https');
 const http = require('http');
 const electronLocalshortcut = require('electron-localshortcut');
-// Not using // const Configstore = require('configstore');
 const Configstore = require('electron-config');
 const JsonDB = require('node-json-db');
 const isDev = require('electron-is-dev');
@@ -24,7 +23,6 @@ const data = db.getData('/');
 // Adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 
-// Const conf = new Configstore('Zulip-Desktop');
 const conf = new Configstore();
 
 function userOS() {
