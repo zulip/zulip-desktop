@@ -22,6 +22,6 @@ function spellChecker() {
 	});
 }
 
-exports = module.exports = {
+module.exports = {
 	spellChecker
 };

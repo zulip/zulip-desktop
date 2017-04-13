@@ -109,6 +109,7 @@
             500
           ],
           "no-warning-comments": 0,
+          "capitalized-comments": 0,
           "no-else-return": 0,
           "import/no-unresolved": 0,
           "import/no-extraneous-dependencies": 0

@@ -82,4 +82,7 @@ function about() {
 	});
 }
 
-exports = module.exports = {addDomain, about};
+module.exports = {
+	addDomain,
+	about
+};

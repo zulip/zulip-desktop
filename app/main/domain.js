@@ -4,7 +4,6 @@ const JsonDB = require('node-json-db');
 const request = require('request');
 
 const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
-const data = db.getData('/');
 
 window.addDomain = function () {
 	const el = sel => {
