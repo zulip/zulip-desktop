@@ -11,5 +11,6 @@ function linkIsInternal(currentUrl, newUrl) {
 const skipImages = '.jpg|.gif|.png|.jpeg|.JPG|.PNG';
 
 module.exports = {
-	linkIsInternal, skipImages
+	linkIsInternal,
+	skipImages
 };

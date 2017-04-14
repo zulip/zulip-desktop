@@ -83,6 +83,7 @@ function about() {
 	});
 }
 
+
 ipc.on('trayabout', event => {
 	if (event) {
 		about();
@@ -94,4 +95,8 @@ ipc.on('traychangeserver', event => {
 		addDomain();
 	}
 });
-module.exports = {addDomain, about};
+module.exports = {
+  addDomain, 
+  about
+};
+
