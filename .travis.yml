@@ -21,6 +21,13 @@ before_install:
 - npm install -g gulp
 - npm install
 
+cache:
+  directories:
+  - node_modules
+  - app/node_modules
+  - $HOME/.electron
+  - $HOME/.cache
+
 script:
 - npm run travis
 notifications:
