@@ -3,9 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const electron = require('electron');
-const { app } = require('electron');
+const {app} = require('electron');
 const ipc = require('electron').ipcMain;
-const { dialog } = require('electron');
+const {dialog} = require('electron');
 const https = require('https');
 const http = require('http');
 const electronLocalshortcut = require('electron-localshortcut');
@@ -13,8 +13,8 @@ const Configstore = require('electron-config');
 const JsonDB = require('node-json-db');
 const isDev = require('electron-is-dev');
 const appMenu = require('./menu');
-const { linkIsInternal, skipImages } = require('./link-helper');
-const { appUpdater } = require('./autoupdater');
+const {linkIsInternal, skipImages} = require('./link-helper');
+const {appUpdater} = require('./autoupdater');
 
 const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 const data = db.getData('/');
@@ -67,14 +67,13 @@ function serverError(targetURL) {
 			}
 		});
 		req.on('error', e => {
-		 if (e.toString().indexOf('Error: self signed certificate') >= 0) {
-			 var url = targetURL.replace(/^https?:\/\//, '');
-			 console.log('Server StatusCode:', 200);
-			 console.log('You are connected to:', url);
-		 } else {
-		 	console.error(e);
-		 }
-
+			if (e.toString().indexOf('Error: self signed certificate') >= 0) {
+				const url = targetURL.replace(/^https?:\/\//, '');
+				console.log('Server StatusCode:', 200);
+				console.log('You are connected to:', url);
+			} else {
+				console.error(e);
+			}
 		});
 		req.end();
 	} else if (data.domain) {
@@ -256,30 +255,29 @@ function createMainWindow() {
 
 // For self-signed certificate
 ipc.on('certificate-err', (e, domain) => {
-	var detail = `URL: ${domain} \n Error: Self-Signed Certificate`;
-	dialog.showMessageBox( mainWindow, {
-							 title: 'Certificate error',
-							 message: `Do you trust certificate from ${domain}?`,
-							 detail: detail,
-							 type: 'warning',
-							 buttons: [
-									 'Yes',
-									 'No'
-							 ],
-							 cancelId: 1
-					 }, (response) => {
-							 if (response === 0) {
-								 db.push("/certifiedURL", [{domain:domain}], false);
-								 db.push('/domain', domain);
-								 mainWindow.loadURL(domain);
-							 }
-
-  });
+	const detail = `URL: ${domain} \n Error: Self-Signed Certificate`;
+	dialog.showMessageBox(mainWindow, {
+		title: 'Certificate error',
+		message: `Do you trust certificate from ${domain}?`,
+		// eslint-disable-next-line object-shorthand
+		detail: detail,
+		type: 'warning',
+		buttons: ['Yes', 'No'],
+		cancelId: 1
+		// eslint-disable-next-line object-shorthand
+	}, response => {
+		if (response === 0) {
+			// eslint-disable-next-line object-shorthand
+			db.push('/certifiedURL', [{domain: domain}], false);
+			db.push('/domain', domain);
+			mainWindow.loadURL(domain);
+		}
+	});
 });
-
+// eslint-disable-next-line max-params
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
-		event.preventDefault();
-		callback(true);
+	event.preventDefault();
+	callback(true);
 });
 
 app.on('window-all-closed', () => {

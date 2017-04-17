@@ -20,25 +20,21 @@ window.prefDomain = function () {
 	const ipcRenderer = require('electron').ipcRenderer;
 	const JsonDB = require('node-json-db');
 	// eslint-disable-next-line import/no-extraneous-dependencies
-	const {
-		app
-	} = require('electron').remote;
+	const {app} = require('electron').remote;
 
 	const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 
-	let URL_List = db.getData('/certifiedURL');
+	const UrlList = db.getData('/certifiedURL');
 
-	let URL_Length = URL_List.length;
+	const UrlLength = UrlList.length;
 
 	const checkURL = domain => {
-
-		for ( var i = 0; i < URL_Length; i++) {
-			if (URL_List[i].domain === domain);
-			return true;
-			break;
+		for (let i = 0; i < UrlLength; i++) {
+			if (UrlList[i].domain === domain) {
+				return true;
+			}
 		}
 		return false;
-
 	};
 
 	let newDomain = document.getElementById('url').value;
@@ -73,18 +69,16 @@ window.prefDomain = function () {
 					db.push('/domain', domain);
 					ipcRenderer.send('new-domain', domain);
 				} else if (error.toString().indexOf('Error: self signed certificate') >= 0) {
-					if(checkURL(domain)) {
+					if (checkURL(domain)) {
 						document.getElementById('main').innerHTML = 'Switch';
 						document.getElementById('urladded').innerHTML = 'Switched to ' + newDomain;
 						db.push('/domain', domain);
 						ipcRenderer.send('new-domain', domain);
-				 } else {
-					 document.getElementById('main').innerHTML = 'Switch';
-					 ipcRenderer.send('certificate-err', domain);
-				 }
-
-				}
-				 else {
+					} else {
+						document.getElementById('main').innerHTML = 'Switch';
+						ipcRenderer.send('certificate-err', domain);
+					}
+				} else {
 					document.getElementById('main').innerHTML = 'Switch';
 					document.getElementById('urladded').innerHTML = 'Not a valid Zulip Server.';
 				}
