@@ -171,7 +171,7 @@ function createMainWindow() {
 		minWidth: 600,
 		minHeight: 400,
 		webPreferences: {
-			preload: path.join(__dirname, 'preload.js'),
+			preload: path.join(__dirname, '../renderer/js/preload.js'),
 			plugins: true,
 			allowDisplayingInsecureContent: true,
 			nodeIntegration: false
@@ -286,7 +286,7 @@ app.on('ready', () => {
 	});
 
 	page.on('dom-ready', () => {
-		page.insertCSS(fs.readFileSync(path.join(__dirname, 'preload.css'), 'utf8'));
+		page.insertCSS(fs.readFileSync(path.join(__dirname, '../renderer/css/preload.css'), 'utf8'));
 		mainWindow.show();
 	});
 
