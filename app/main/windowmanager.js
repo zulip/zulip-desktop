@@ -1,6 +1,7 @@
 'use strict';
 const path = require('path');
 const electron = require('electron');
+const ipc = require('electron').ipcMain;
 
 const APP_ICON = path.join(__dirname, '../resources', 'Icon');
 
@@ -11,7 +12,7 @@ let domainWindow;
 let aboutWindow;
 
 function onClosed() {
-	// dereference the window
+	// Dereference the window
 	domainWindow = null;
 	aboutWindow = null;
 }
@@ -64,7 +65,7 @@ function createAboutWindow() {
 	aboutwin.loadURL(aboutURL);
 	aboutwin.on('closed', onClosed);
 
-	// stop page to update it's title
+	// Stop page to update it's title
 	aboutwin.on('page-title-updated', e => {
 		e.preventDefault();
 	});
@@ -82,6 +83,17 @@ function about() {
 	});
 }
 
+ipc.on('trayabout', event => {
+	if (event) {
+		about();
+	}
+});
+
+ipc.on('traychangeserver', event => {
+	if (event) {
+		addDomain();
+	}
+});
 module.exports = {
 	addDomain,
 	about

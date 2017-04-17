@@ -12,7 +12,7 @@ const electronLocalshortcut = require('electron-localshortcut');
 const Configstore = require('electron-config');
 const JsonDB = require('node-json-db');
 const isDev = require('electron-is-dev');
-const tray = require('./tray');
+// Not using now //const tray = require('./tray');
 const appMenu = require('./menu');
 const {linkIsInternal, skipImages} = require('./link-helper');
 const {appUpdater} = require('./autoupdater');
@@ -20,7 +20,7 @@ const {appUpdater} = require('./autoupdater');
 const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 const data = db.getData('/');
 
-// adds debug features like hotkeys for triggering dev tools and reload
+// Adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 
 const conf = new Configstore();
@@ -41,10 +41,10 @@ function userOS() {
 	}
 }
 
-// setting userAgent so that server-side code can identify the desktop app
+// Setting userAgent so that server-side code can identify the desktop app
 const isUserAgent = 'ZulipElectron/' + app.getVersion() + ' ' + userOS();
 
-// prevent window being garbage collected
+// Prevent window being garbage collected
 let mainWindow;
 let targetLink;
 
@@ -93,6 +93,7 @@ function checkConnectivity() {
 	}, index => {
 		if (index === 0) {
 			mainWindow.webContents.reload();
+			mainWindow.webContents.send('destroytray');
 		}
 		if (index === 1) {
 			app.quit();
@@ -158,6 +159,7 @@ function updateDockBadge(title) {
 	if (process.platform === 'darwin') {
 		app.setBadgeCount(messageCount);
 	}
+	mainWindow.webContents.send('tray', messageCount);
 }
 
 function createMainWindow() {
@@ -217,7 +219,7 @@ function createMainWindow() {
 		});
 	});
 
-	// on osx it's 'moved'
+	// On osx it's 'moved'
 	win.on('move', function () {
 		const pos = this.getPosition();
 		conf.set({
@@ -226,10 +228,17 @@ function createMainWindow() {
 		});
 	});
 
-	// stop page to update it's title
+	// Stop page to update it's title
 	win.on('page-title-updated', (e, title) => {
 		e.preventDefault();
 		updateDockBadge(title);
+	});
+
+         //  To destroy tray icon when navigate to a new URL
+	win.webContents.on('will-navigate', e => {
+		if (e) {
+			win.webContents.send('destroytray');
+		}
 	});
 
 	return win;
@@ -239,7 +248,7 @@ function createMainWindow() {
 app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 
 app.on('window-all-closed', () => {
-	// unregister all the shortcuts so that they don't interfare with other apps
+	// Unregister all the shortcuts so that they don't interfare with other apps
 	electronLocalshortcut.unregisterAll(mainWindow);
 	if (process.platform !== 'darwin') {
 		app.quit();
@@ -255,13 +264,14 @@ app.on('activate', () => {
 app.on('ready', () => {
 	electron.Menu.setApplicationMenu(appMenu);
 	mainWindow = createMainWindow();
-	tray.create();
+	// Not using for now // tray.create();
 
 	const page = mainWindow.webContents;
 
 	// TODO - use global shortcut instead
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
 		mainWindow.reload();
+		mainWindow.webContents.send('destroytray');
 	});
 
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
@@ -301,19 +311,22 @@ app.on('ready', () => {
 });
 
 app.on('will-quit', () => {
-	// unregister all the shortcuts so that they don't interfare with other apps
+	// Unregister all the shortcuts so that they don't interfare with other apps
 	electronLocalshortcut.unregisterAll(mainWindow);
 });
 
 ipc.on('new-domain', (e, domain) => {
-	// mainWindow.loadURL(domain);
+	// MainWindow.loadURL(domain);
 	if (!mainWindow) {
 		mainWindow = createMainWindow();
 		mainWindow.loadURL(domain);
+		mainWindow.webContents.send('destroytray');
 	} else if (mainWindow.isMinimized()) {
+		mainWindow.webContents.send('destroytray');
 		mainWindow.loadURL(domain);
 		mainWindow.show();
 	} else {
+		mainWindow.webContents.send('destroytray');
 		mainWindow.loadURL(domain);
 		serverError(domain);
 	}
