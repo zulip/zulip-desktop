@@ -248,10 +248,31 @@ function createMainWindow() {
 // app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 
 // For self-signed certificate
+ipc.on('certificate-err', (e, domain) => {
+	var detail = `URL: ${domain} \n Error: Self-Signed Certificate`;
+	dialog.showMessageBox( mainWindow, {
+							 title: 'Certificate error',
+							 message: `Do you trust certificate from ${domain}?`,
+							 detail: detail,
+							 type: 'warning',
+							 buttons: [
+									 'Yes',
+									 'No'
+							 ],
+							 cancelId: 1
+					 }, (response) => {
+							 if (response === 0) {
+								 db.push("/certifiedURL", [{domain:domain}], false);
+								 db.push('/domain', domain);
+								 mainWindow.loadURL(domain);
+							 }
+
+  });
+});
+
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
-	console.log("warning: ", url, " certificate-error");
-		event.preventDefault()
-		callback(true)
+		event.preventDefault();
+		callback(true);
 });
 
 app.on('window-all-closed', () => {
