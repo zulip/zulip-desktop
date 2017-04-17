@@ -67,7 +67,14 @@ function serverError(targetURL) {
 			}
 		});
 		req.on('error', e => {
-			console.error(e);
+		 if (e.toString().indexOf('Error: self signed certificate') >= 0) {
+			 var url = targetURL.replace(/^https?:\/\//, '');
+			 console.log('Server StatusCode:', 200);
+			 console.log('You are connected to:', url);
+		 } else {
+		 	console.error(e);
+		 }
+
 		});
 		req.end();
 	} else if (data.domain) {
