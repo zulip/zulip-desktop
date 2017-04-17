@@ -3,9 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const electron = require('electron');
-const {app} = require('electron');
+const { app } = require('electron');
 const ipc = require('electron').ipcMain;
-const {dialog} = require('electron');
+const { dialog } = require('electron');
 const https = require('https');
 const http = require('http');
 const electronLocalshortcut = require('electron-localshortcut');
@@ -13,8 +13,8 @@ const Configstore = require('electron-config');
 const JsonDB = require('node-json-db');
 const isDev = require('electron-is-dev');
 const appMenu = require('./menu');
-const {linkIsInternal, skipImages} = require('./link-helper');
-const {appUpdater} = require('./autoupdater');
+const { linkIsInternal, skipImages } = require('./link-helper');
+const { appUpdater } = require('./autoupdater');
 
 const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 const data = db.getData('/');
@@ -233,7 +233,7 @@ function createMainWindow() {
 		updateDockBadge(title);
 	});
 
-         //  To destroy tray icon when navigate to a new URL
+	//  To destroy tray icon when navigate to a new URL
 	win.webContents.on('will-navigate', e => {
 		if (e) {
 			win.webContents.send('destroytray');
@@ -244,7 +244,15 @@ function createMainWindow() {
 }
 
 // TODO - fix certificate errors
-app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
+
+// app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
+
+// For self-signed certificate
+app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
+	console.log("warning: ", url, " certificate-error");
+		event.preventDefault()
+		callback(true)
+});
 
 app.on('window-all-closed', () => {
 	// Unregister all the shortcuts so that they don't interfare with other apps
