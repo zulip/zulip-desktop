@@ -12,7 +12,6 @@ const electronLocalshortcut = require('electron-localshortcut');
 const Configstore = require('electron-config');
 const JsonDB = require('node-json-db');
 const isDev = require('electron-is-dev');
-// Not using now //const tray = require('./tray');
 const appMenu = require('./menu');
 const {linkIsInternal, skipImages} = require('./link-helper');
 const {appUpdater} = require('./autoupdater');
