@@ -73,7 +73,7 @@
     "win": {
       "target": "nsis",
       "icon": "build/icon.ico"
-      },
+    },
     "nsis": {
       "perMachine": true,
       "oneClick": false

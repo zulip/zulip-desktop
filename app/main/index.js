@@ -54,10 +54,14 @@ const targetURL = function () {
 	if (data.domain === undefined) {
 		return staticURL;
 	}
+	// TODO: Use new main window
+	return 'file://' + path.join(__dirname, '../renderer', 'main.html');
 	return data.domain;
 };
 
 function serverError(targetURL) {
+	// TODO: disabled
+	return;
 	if (targetURL.indexOf('localhost:') < 0 && data.domain) {
 		const req = https.request(targetURL + '/static/audio/zulip.ogg', res => {
 			console.log('Server StatusCode:', res.statusCode);
@@ -184,11 +188,12 @@ function createMainWindow() {
 		icon: iconPath(),
 		minWidth: 600,
 		minHeight: 400,
+		titleBarStyle: 'hidden-inset',
 		webPreferences: {
 			preload: path.join(__dirname, '../renderer/js/preload.js'),
 			plugins: true,
 			allowDisplayingInsecureContent: true,
-			nodeIntegration: false
+			nodeIntegration: true
 		},
 		show: false
 	});
