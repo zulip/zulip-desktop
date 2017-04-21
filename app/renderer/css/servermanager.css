@@ -10,7 +10,7 @@ html, body {
 
 #sidebar {
     background: #222c31;
-    width: 88px;
+    width: 80px;
     padding: 40px 0 20px 0;
     justify-content: space-between;
     display: flex;
@@ -19,7 +19,7 @@ html, body {
 }
 
 #webview {
-    width: 100%;
+    flex-grow: 1;
 }
 
 .action-button {
@@ -43,23 +43,25 @@ html, body {
 
 .server-button {
     position: relative;
-    margin: 5px 0 5px 6px;
+    margin: 5px 0;
 }
 
 .server-button.active::before{
     content: "";
-    background: #43bba6;
-    border-radius: 3px;
-    width: 6px;
+    background: #fff;
+    border-radius: 0 3px 3px 0;
+    width: 4px;
     position: absolute;
-    height: 6px;
-    left: -12px;
-    top: 25px;
+    height: 44px;
+    left: -18px;
+    top: 5px;
 }
 
 .server-button .server-name{
     background: #a4d3c4;
-    border-radius: 22px;
+    background-image: url(https://chat.zulip.org/static/images/logo/zulip-icon-128x128.271d0f6a0ca2.png);
+    background-size: 100%;
+    border-radius: 4px;
     width: 44px;
     height: 44px;
     position: relative;
@@ -71,16 +73,9 @@ html, body {
     color: #194a2b;
     text-align: center;
     overflow: hidden;
-
+    opacity: 0.6;
 }
 
-.server-button.active .server-ring {
-    background: #43bba6;
-    border-radius: 24px;
-    width: 48px;
-    height: 48px;
-    position: absolute;
-    left: -2px;
-    top: 3px;
-    z-index: 10;
+.server-button.active .server-name{
+    opacity: 1;
 }
