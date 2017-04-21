@@ -190,7 +190,6 @@ function createMainWindow() {
 		minHeight: 400,
 		titleBarStyle: 'hidden-inset',
 		webPreferences: {
-			preload: path.join(__dirname, '../renderer/js/preload.js'),
 			plugins: true,
 			allowDisplayingInsecureContent: true,
 			nodeIntegration: true
