@@ -24,19 +24,6 @@ window.prefDomain = function () {
 
 	const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 
-	const UrlList = db.getData('/certifiedURL');
-
-	const UrlLength = UrlList.length;
-
-	const checkURL = domain => {
-		for (let i = 0; i < UrlLength; i++) {
-			if (UrlList[i].domain === domain) {
-				return true;
-			}
-		}
-		return false;
-	};
-
 	let newDomain = document.getElementById('url').value;
 	newDomain = newDomain.replace(/^https?:\/\//, '');
 	newDomain = newDomain.replace(/^http?:\/\//, '');
@@ -69,15 +56,9 @@ window.prefDomain = function () {
 					db.push('/domain', domain);
 					ipcRenderer.send('new-domain', domain);
 				} else if (error.toString().indexOf('Error: self signed certificate') >= 0) {
-					if (checkURL(domain)) {
-						document.getElementById('main').innerHTML = 'Switch';
-						document.getElementById('urladded').innerHTML = 'Switched to ' + newDomain;
-						db.push('/domain', domain);
-						ipcRenderer.send('new-domain', domain);
-					} else {
-						document.getElementById('main').innerHTML = 'Switch';
-						ipcRenderer.send('certificate-err', domain);
-					}
+					document.getElementById('main').innerHTML = 'Switch';
+					ipcRenderer.send('certificate-err', domain);
+					document.getElementById('urladded').innerHTML = 'Switched to ' + newDomain;
 				} else {
 					document.getElementById('main').innerHTML = 'Switch';
 					document.getElementById('urladded').innerHTML = 'Not a valid Zulip Server.';

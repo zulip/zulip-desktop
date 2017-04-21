@@ -268,7 +268,6 @@ ipc.on('certificate-err', (e, domain) => {
 	}, response => {
 		if (response === 0) {
 			// eslint-disable-next-line object-shorthand
-			db.push('/certifiedURL', [{domain: domain}], false);
 			db.push('/domain', domain);
 			mainWindow.loadURL(domain);
 		}
