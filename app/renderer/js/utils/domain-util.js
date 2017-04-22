@@ -15,10 +15,14 @@ class DomainUtil {
     addDomain() {
         const servers = {
             url: 'https://chat.zulip.org',
-            alias: 'Zulip 2',
-            avatar: 'https://chat.zulip.org/static/images/logo/zulip-icon-128x128.271d0f6a0ca2.png'
+            alias: 'Zulip 2333',
+            icon: 'https://chat.zulip.org/static/images/logo/zulip-icon-128x128.271d0f6a0ca2.png'
         }
-        db.push("/domains[]", servers, true);
+        this.db.push("/domains[]", servers, true);
+    }
+
+    removeDomains() {
+        this.db.delete("/domains");
     }
 }
 
