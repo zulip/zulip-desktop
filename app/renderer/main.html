@@ -10,17 +10,7 @@
   <body>
     <div id="content">
       <div id="sidebar">
-        <div id="servers-container">
-          <div class="server-button">
-            <div class="server-name"></div>
-          </div>
-          <div class="server-button active">
-            <div class="server-name" style="background-image: url(https://chat.zulip.org/static/images/logo/zulip-icon-128x128.271d0f6a0ca2.png);"></div>
-          </div>
-          <div class="server-button">
-            <div class="server-name"></div>
-          </div>
-        </div>
+        <div id="servers-container"></div>
         <div id="actions-container">
           <div class="action-button" id="add-action">
             <i class="material-icons md-48">add_circle</i>
@@ -30,7 +20,6 @@
           </div>
         </div>
       </div>
-      <webview id="webview" src="https://chat.zulip.org" disablewebsecurity webpreferences="allowRunningInsecureContent, javascript=yes">/>
     </div>
   </body>
   <script src="js/main.js"></script>  

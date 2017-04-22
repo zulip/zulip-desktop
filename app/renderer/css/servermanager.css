@@ -6,6 +6,9 @@ html, body {
 #content {
     display: flex;
     height: 100%;
+    background: #eee url(../img/loading.gif) no-repeat;
+    background-size: 60px 60px;
+    background-position: center;
 }
 
 #sidebar {
@@ -32,8 +35,12 @@ html, body {
 .action-button i {
     color: #6c8592;
     font-size: 28px;
+    cursor: default;
 }
 
+.action-button:hover i {
+    color: #98a9b3;
+}
 
 #servers-container {
     display: flex;
@@ -75,6 +82,20 @@ html, body {
     opacity: 0.6;
 }
 
+.server-button .server-name:hover{
+    opacity: 0.8;
+}
+
 .server-button.active .server-name{
     opacity: 1;
+}
+
+#webview {
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+#webview.loading {
+    opacity: 0;
+    transition: opacity 0.3s;
 }
