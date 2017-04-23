@@ -4,7 +4,7 @@ const path = require("path");
 const DomainUtil = require(path.resolve(('app/renderer/js/utils/domain-util.js')));
 class ServerManagerView {
 	constructor() {
-		this.$serversContainer = document.getElementById('servers-container');
+		this.$tabsContainer = document.getElementById('tabs-container');
 
 		const $actionsContainer = document.getElementById('actions-container');
 		this.$addServerButton = $actionsContainer.querySelector('#add-action');
@@ -12,46 +12,38 @@ class ServerManagerView {
         this.$content = document.getElementById('content');
 
         this.isLoading = false;
+        this.settingsTabIndex = -1;
 	}
 
 	init() {
 		this.domainUtil = new DomainUtil();
-		this.initServers();
+		this.initTabs();
+        this.initActions();
 	}
 
-	initServers() {
+	initTabs() {
 		const servers = this.domainUtil.getDomains();
 		for (let server of servers) {
-			this.initServer(server);
+			this.initTab(server);
 		}
-
-        const $firstServerButton = this.$serversContainer.firstChild;
-		$firstServerButton.classList.add('active');
-        this.$activeServerButton = $firstServerButton;
-        this.initWebView($firstServerButton.getAttribute('domain'));
+        
+        this.activateTab(0);
 	}
 
-	initServer(server) {
+	initTab(tab) {
 		const {
 			alias,
 			url
-		} = server;
-		const icon = server.icon || 'https://chat.zulip.org/static/images/logo/zulip-icon-128x128.271d0f6a0ca2.png';
-		const serverButtonTemplate = `
-                <div class="server-button" domain="${url}">
-                    <div class="server-name" style="background-image: url(${icon});"></div>
+		} = tab;
+		const icon = tab.icon || 'https://chat.zulip.org/static/images/logo/zulip-icon-128x128.271d0f6a0ca2.png';
+        const tabTemplate = tab.template || `
+                <div class="tab" domain="${url}">
+                    <div class="server-tab" style="background-image: url(${icon});"></div>
                 </div>`;
-		const $serverButton = this.__insert_node(serverButtonTemplate);
-		this.$serversContainer.appendChild($serverButton);
-		$serverButton.addEventListener('click', () => {
-            if (this.isLoading || this.$activeServerButton == $serverButton) return;
-
-            this.$activeServerButton.classList.remove('active');
-            $serverButton.classList.add('active');
-            const url = $serverButton.getAttribute('domain');
-            this.$activeServerButton = $serverButton;
-            this.startLoading(url);
-		});
+		const $tab = this.__insert_node(tabTemplate);
+        const index = this.$tabsContainer.childNodes.length;
+		this.$tabsContainer.appendChild($tab);        
+		$tab.addEventListener('click', this.activateTab.bind(this, index));
 	}
 
     initWebView(url) {
@@ -79,18 +71,62 @@ class ServerManagerView {
     endLoading() {
         this.isLoading = false;
         this.$webView.classList.remove('loading');
+        this.$webView.openDevTools();        
     }
 
 	initActions() {
-
+        this.$addServerButton.addEventListener('click', this.openSettings.bind(this));
 	}
 
 	addServer() {
-
+        
 	}
 
     openSettings() {
+        if (this.settingsTabIndex != -1) {
+            this.activateTab(this.settingsTabIndex);
+            return;
+        }
+        const url = 'file:///' + path.resolve(('app/renderer/preference.html'));
+        console.log(url);
+        const settingsTabTemplate = `
+                <div class="tab" domain="${url}">
+                    <div class="server-tab settings-tab">
+                        <i class="material-icons md-48">settings</i>
+                    </div>
+                </div>`;
+		this.initTab({
+            alias: 'Settings',
+			url: url,
+            template: settingsTabTemplate
+        });
+
+        this.settingsTabIndex = this.$tabsContainer.childNodes.length - 1;
+        this.activateTab(this.settingsTabIndex);
+    }
+
+    activateTab(index) {
+        if (this.isLoading) return;
         
+        const $tab = this.$tabsContainer.childNodes[index];
+
+        if (this.$activeTab) {
+            if (this.$activeTab == $tab) {
+                return;
+            } else {
+                this.$activeTab.classList.remove('active');
+            }
+        }
+
+		$tab.classList.add('active');
+        this.$activeTab = $tab;
+
+        const domain = $tab.getAttribute('domain');
+        if (this.$webView){
+            this.startLoading(domain);
+        } else {
+            this.initWebView(domain);
+        }
     }
 
     __insert_node(html) {
