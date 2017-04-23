@@ -1,6 +1,7 @@
 html, body {
     height: 100%;
     margin: 0;
+    cursor: default;    
 }
 
 #content {
@@ -35,25 +36,24 @@ html, body {
 .action-button i {
     color: #6c8592;
     font-size: 28px;
-    cursor: default;
 }
 
 .action-button:hover i {
     color: #98a9b3;
 }
 
-#servers-container {
+#tabs-container {
     display: flex;
     align-items: center;
     flex-direction: column;
 }
 
-.server-button {
+.tab {
     position: relative;
     margin: 5px 0;
 }
 
-.server-button.active::before{
+.tab.active::before{
     content: "";
     background: #fff;
     border-radius: 0 3px 3px 0;
@@ -64,7 +64,7 @@ html, body {
     top: 5px;
 }
 
-.server-button .server-name{
+.tab .server-tab{
     background: #a4d3c4;
     background-size: 100%;
     border-radius: 4px;
@@ -74,7 +74,7 @@ html, body {
     margin: 5px 0;
     z-index: 11;
     line-height: 44px;
-    font-size: 24px;
+    font-size: 32px;
     font-family: sans-serif;
     color: #194a2b;
     text-align: center;
@@ -82,11 +82,20 @@ html, body {
     opacity: 0.6;
 }
 
-.server-button .server-name:hover{
+.tab .server-tab:hover{
     opacity: 0.8;
 }
 
-.server-button.active .server-name{
+.tab .settings-tab{
+    background: #eee;
+}
+
+.tab .settings-tab i{
+    font-size: 28px;
+    line-height: 44px;
+}
+
+.tab.active .server-tab{
     opacity: 1;
 }
 
