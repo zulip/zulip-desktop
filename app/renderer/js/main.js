@@ -13,6 +13,7 @@ class ServerManagerView {
 
         this.isLoading = false;
         this.settingsTabIndex = -1;
+        this.activeTabIndex = -1;
 	}
 
 	init() {
@@ -33,9 +34,9 @@ class ServerManagerView {
 	initTab(tab) {
 		const {
 			alias,
-			url
+			url,
+            icon
 		} = tab;
-		const icon = tab.icon || 'https://chat.zulip.org/static/images/logo/zulip-icon-128x128.271d0f6a0ca2.png';
         const tabTemplate = tab.template || `
                 <div class="tab" domain="${url}">
                     <div class="server-tab" style="background-image: url(${icon});"></div>
@@ -46,32 +47,42 @@ class ServerManagerView {
 		$tab.addEventListener('click', this.activateTab.bind(this, index));
 	}
 
-    initWebView(url) {
+    initWebView(url, index, nodeIntegration = false) {
         const webViewTemplate = `
             <webview 
-                id="webview"
+                id="webview-${index}"
                 class="loading"
-                src="${url}" 
-                disablewebsecurity 
+                src="${url}"
+                ${nodeIntegration? 'nodeIntegration': ''}
+                disablewebsecurity
                 preload="js/preload.js"
                 webpreferences="allowRunningInsecureContent, javascript=yes">
             </webview>
         `;
-        this.$webView = this.__insert_node(webViewTemplate);
-		this.$content.appendChild(this.$webView);
-        this.$webView.addEventListener('dom-ready', this.endLoading.bind(this));
-    }
-
-    startLoading(url) {
-        this.$webView.loadURL(url);
+        const $webView = this.__insert_node(webViewTemplate);
+		this.$content.appendChild($webView);
         this.isLoading = true;
-        this.$webView.classList.add('loading');
+        $webView.addEventListener('dom-ready', this.endLoading.bind(this, index));
     }
 
-    endLoading() {
+    startLoading(url, index) {
+        const $activeWebView = document.getElementById(`webview-${this.activeTabIndex}`);
+        if ($activeWebView) {
+            $activeWebView.classList.add('disabled');
+        }
+        const $webView = document.getElementById(`webview-${index}`);
+        if (!$webView) {
+            this.initWebView(url, index, this.settingsTabIndex == index);
+        } else {
+            $webView.classList.remove('disabled');
+        }
+    }
+
+    endLoading(index) {
+        const $webView = document.getElementById(`webview-${index}`);
         this.isLoading = false;
-        this.$webView.classList.remove('loading');
-        this.$webView.openDevTools();        
+        $webView.classList.remove('loading');
+        // $webView.openDevTools();
     }
 
 	initActions() {
@@ -107,32 +118,31 @@ class ServerManagerView {
 
     activateTab(index) {
         if (this.isLoading) return;
-        
-        const $tab = this.$tabsContainer.childNodes[index];
 
-        if (this.$activeTab) {
-            if (this.$activeTab == $tab) {
+        if (this.activeTabIndex != -1) {
+            if (this.activeTabIndex == index) {
                 return;
             } else {
-                this.$activeTab.classList.remove('active');
+                this.__get_tab_at(this.activeTabIndex).classList.remove('active');
             }
         }
 
+        const $tab = this.__get_tab_at(index);
 		$tab.classList.add('active');
-        this.$activeTab = $tab;
 
         const domain = $tab.getAttribute('domain');
-        if (this.$webView){
-            this.startLoading(domain);
-        } else {
-            this.initWebView(domain);
-        }
+        this.startLoading(domain, index);
+        this.activeTabIndex = index;
     }
 
     __insert_node(html) {
         let wrapper= document.createElement('div');
         wrapper.innerHTML= html;
         return wrapper.firstElementChild;
+    }
+
+    __get_tab_at(index) {
+        return this.$tabsContainer.childNodes[index];
     }
 }
 

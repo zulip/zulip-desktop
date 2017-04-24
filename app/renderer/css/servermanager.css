@@ -99,12 +99,17 @@ html, body {
     opacity: 1;
 }
 
-#webview {
+webview {
     opacity: 1;
+    transition: opacity 0.3s;
+    flex-grow: 1;
+}
+
+webview.loading {
+    opacity: 0;
     transition: opacity 0.3s;
 }
 
-#webview.loading {
-    opacity: 0;
-    transition: opacity 0.3s;
+webview.disabled {
+    display: none;
 }
