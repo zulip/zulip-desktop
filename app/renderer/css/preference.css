@@ -55,6 +55,7 @@ html, body {
     width: 100%;
     display: flex;
     padding: 30px;
+    overflow-y: scroll;
 }
 
 .server-info-container {
@@ -103,6 +104,7 @@ img.server-info-icon {
     border-bottom: #ddd 1px solid;
     outline-width: 0;
     background: transparent;
+    max-width: 500px;
 }
 
 .server-info-value:focus {
@@ -115,6 +117,7 @@ img.server-info-icon {
     color: #235d3a;
     vertical-align: middle;
     margin: 10px 0;
+    flex-wrap: wrap;
 }
 
 .action {
@@ -146,10 +149,14 @@ img.server-info-icon {
 
 .server-info.active {
     background: #ecf4ef;
-    padding: 20px;
 }
 
 .server-info {
     display: flex;
-    margin: 20px 0;
+    padding: 10px;
+    margin: 10px 0 10px 0;
+}
+
+.hidden {
+    display: none;
 }
