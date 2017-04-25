@@ -82,7 +82,7 @@ class ServerManagerView {
         const $webView = document.getElementById(`webview-${index}`);
         this.isLoading = false;
         $webView.classList.remove('loading');
-        // $webView.openDevTools();
+        $webView.openDevTools();
     }
 
 	initActions() {
