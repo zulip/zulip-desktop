@@ -48,49 +48,7 @@ let mainWindow;
 let targetLink;
 
 // Load this url in main window
-const staticURL = 'file://' + path.join(__dirname, '../renderer', 'index.html');
-
-const targetURL = function () {
-	if (data.domain === undefined) {
-		return staticURL;
-	}
-	// TODO: Use new main window
-	return 'file://' + path.join(__dirname, '../renderer', 'main.html');
-	return data.domain;
-};
-
-function serverError(targetURL) {
-	// TODO: disabled
-	return;
-	if (targetURL.indexOf('localhost:') < 0 && data.domain) {
-		const req = https.request(targetURL + '/static/audio/zulip.ogg', res => {
-			console.log('Server StatusCode:', res.statusCode);
-			console.log('You are connected to:', res.req._headers.host);
-			if (res.statusCode >= 500 && res.statusCode <= 599) {
-				return dialog.showErrorBox('SERVER IS DOWN!', 'We are getting a ' + res.statusCode + ' error status from the server ' + res.req._headers.host + '. Please try again after some time or you may switch server.');
-			}
-		});
-		req.on('error', e => {
-			if (e.toString().indexOf('Error: self signed certificate') >= 0) {
-				const url = targetURL.replace(/^https?:\/\//, '');
-				console.log('Server StatusCode:', 200);
-				console.log('You are connected to:', url);
-			} else {
-				console.error(e);
-			}
-		});
-		req.end();
-	} else if (data.domain) {
-		const req = http.request(targetURL + '/static/audio/zulip.ogg', res => {
-			console.log('Server StatusCode:', res.statusCode);
-			console.log('You are connected to:', res.req._headers.host);
-		});
-		req.on('error', e => {
-			console.error(e);
-		});
-		req.end();
-	}
-}
+const mainURL = 'file://' + path.join(__dirname, '../renderer', 'main.html');
 
 function checkConnectivity() {
 	return dialog.showMessageBox({
@@ -117,6 +75,7 @@ const connectivityERR = [
 	'ERR_NAME_NOT_RESOLVED'
 ];
 
+// TODO
 function checkConnection() {
 	// eslint-disable-next-line no-unused-vars
 	mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
@@ -140,13 +99,6 @@ const isAlreadyRunning = app.makeSingleInstance(() => {
 
 if (isAlreadyRunning) {
 	app.quit();
-}
-
-function checkWindowURL() {
-	if (data.domain !== undefined) {
-		return data.domain;
-	}
-	return targetLink;
 }
 
 function isWindowsOrmacOS() {
@@ -201,9 +153,7 @@ function createMainWindow() {
 		win.show();
 	});
 
-	serverError(targetURL());
-
-	win.loadURL(targetURL(), {
+	win.loadURL(mainURL, {
 		userAgent: isUserAgent + ' ' + win.webContents.getUserAgent()
 	});
 
@@ -314,34 +264,20 @@ app.on('ready', () => {
 
 	// TODO - use global shortcut instead
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
-		mainWindow.reload();
-		mainWindow.webContents.send('destroytray');
+		page.send('reload');
+		// page.send('destroytray');
 	});
 
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
-		if (page.canGoBack()) {
-			page.goBack();
-		}
+		page.send('back');
 	});
 
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+]', () => {
-		if (page.canGoForward()) {
-			page.goForward();
-		}
+		page.send('forward');
 	});
-
+	
 	page.on('dom-ready', () => {
-		page.insertCSS(fs.readFileSync(path.join(__dirname, '../renderer/css/preload.css'), 'utf8'));
 		mainWindow.show();
-	});
-
-	page.on('new-window', (event, url) => {
-		if (linkIsInternal(checkWindowURL(), url) && url.match(skipImages) === null) {
-			event.preventDefault();
-			return mainWindow.loadURL(url);
-		}
-		event.preventDefault();
-		electron.shell.openExternal(url);
 	});
 
 	page.once('did-frame-finish-load', () => {
@@ -361,22 +297,4 @@ app.on('ready', () => {
 app.on('will-quit', () => {
 	// Unregister all the shortcuts so that they don't interfare with other apps
 	electronLocalshortcut.unregisterAll(mainWindow);
-});
-
-ipc.on('new-domain', (e, domain) => {
-	// MainWindow.loadURL(domain);
-	if (!mainWindow) {
-		mainWindow = createMainWindow();
-		mainWindow.loadURL(domain);
-		mainWindow.webContents.send('destroytray');
-	} else if (mainWindow.isMinimized()) {
-		mainWindow.webContents.send('destroytray');
-		mainWindow.loadURL(domain);
-		mainWindow.show();
-	} else {
-		mainWindow.webContents.send('destroytray');
-		mainWindow.loadURL(domain);
-		serverError(domain);
-	}
-	targetLink = domain;
 });
