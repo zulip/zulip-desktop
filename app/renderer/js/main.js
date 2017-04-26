@@ -2,6 +2,10 @@
 
 const path = require("path");
 const DomainUtil = require(path.resolve(('app/renderer/js/utils/domain-util.js')));
+const { linkIsInternal, skipImages } = require(path.resolve(('app/main/link-helper')));
+const { shell, ipcRenderer } = require('electron');
+require(path.resolve(('app/renderer/js/tray.js')));
+
 class ServerManagerView {
 	constructor() {
 		this.$tabsContainer = document.getElementById('tabs-container');
@@ -20,6 +24,7 @@ class ServerManagerView {
 		this.domainUtil = new DomainUtil();
 		this.initTabs();
         this.initActions();
+        this.registerIpcs();
 	}
 
 	initTabs() {
@@ -67,6 +72,7 @@ class ServerManagerView {
 		this.$content.appendChild($webView);
         this.isLoading = true;
         $webView.addEventListener('dom-ready', this.endLoading.bind(this, index));
+        this.registerListeners($webView);        
     }
 
     startLoading(url, index) {
@@ -86,7 +92,6 @@ class ServerManagerView {
         const $webView = document.getElementById(`webview-${index}`);
         this.isLoading = false;
         $webView.classList.remove('loading');
-        $webView.openDevTools();
     }
 
 	initActions() {
@@ -144,6 +149,39 @@ class ServerManagerView {
 
     __get_tab_at(index) {
         return this.$tabsContainer.childNodes[index];
+    }
+
+    registerListeners($webView) {
+        $webView.addEventListener('new-window', (event) => {
+            const {url} = event;
+            const domainPrefix = this.domainUtil.getDomain(this.activeTabIndex).url;
+            if (linkIsInternal(domainPrefix, url) && url.match(skipImages) === null) {
+                event.preventDefault();
+                return $webView.loadURL(url);
+            }
+            event.preventDefault();
+            shell.openExternal(url);
+        });
+    }
+    
+    registerIpcs() {
+        const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
+
+        ipcRenderer.on('reload', () => {
+            activeWebview.reload();
+        });
+
+        ipcRenderer.on('back', () => {
+    		if (activeWebview.canGoBack()) {
+                activeWebview.goBack();
+            }
+        });
+
+        ipcRenderer.on('forward', () => {
+            if (activeWebview.canGoForward()) {
+                activeWebview.goForward();
+            }
+        });
     }
 }
 

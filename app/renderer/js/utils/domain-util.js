@@ -13,6 +13,10 @@ class DomainUtil {
         return this.db.getData('/domains');
     }
 
+    getDomain(index) {
+        return this.db.getData(`/domains[${index}]`);
+    }
+
     addDomain(server) {
         server.icon = server.icon || 'https://chat.zulip.org/static/images/logo/zulip-icon-128x128.271d0f6a0ca2.png';
         this.db.push("/domains[]", server, true);
@@ -38,7 +42,13 @@ class DomainUtil {
             request(checkDomain, (error, response) => {
                 if (!error && response.statusCode !== 404) {
                     res(domain);
-                } else {
+                } else if (error.toString().indexOf('Error: self signed certificate') >= 0) {
+                    if (window.confirm(`Do you trust certificate from ${domain}?`)) {
+                        res(domain);
+                    } else {
+                        rej('Untrusted Certificate.');
+                    }
+  				} else {
                     rej('Not a valid Zulip server');
                 }
             });
