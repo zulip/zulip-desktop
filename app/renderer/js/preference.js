@@ -16,12 +16,14 @@ class PreferenceView {
     }
 
     initServers() {
-        this.$serverInfoContainer.innerHTML = '';
-        this.initNewServerForm();
         const servers = this.domainUtil.getDomains();
-		for (let i in servers) {
-			this.initServer(servers[i], i);
-		}
+        this.$serverInfoContainer.innerHTML = servers.length? '': 'Add your first server to get started!';
+
+        this.initNewServerForm();
+        
+        for (let i in servers) {
+            this.initServer(servers[i], i);
+        }
     }
 
     initServer(server, index) {
@@ -61,6 +63,7 @@ class PreferenceView {
         document.getElementById(`delete-server-action-${index}`).addEventListener('click', () => {
             this.domainUtil.removeDomain(index);
             this.initServers();
+            alert('Success. Reload to apply changes.')
         });
     }
 
@@ -113,6 +116,7 @@ class PreferenceView {
                 this.$newServerForm.classList.add('hidden');
 
                 this.initServers();
+                alert('Success. Reload to apply changes.')
             }, (errorMessage) => {
                 alert(errorMessage);
             });

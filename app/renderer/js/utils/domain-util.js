@@ -15,7 +15,7 @@ class DomainUtil {
 
     addDomain(server) {
         server.icon = server.icon || 'https://chat.zulip.org/static/images/logo/zulip-icon-128x128.271d0f6a0ca2.png';
-        this.db.push("/domains[]", servers, true);
+        this.db.push("/domains[]", server, true);
     }
 
     removeDomains() {

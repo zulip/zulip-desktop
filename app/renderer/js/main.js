@@ -24,11 +24,15 @@ class ServerManagerView {
 
 	initTabs() {
 		const servers = this.domainUtil.getDomains();
-		for (let server of servers) {
-			this.initTab(server);
-		}
-        
-        this.activateTab(0);
+        if (servers.length) {
+            for (let server of servers) {
+                this.initTab(server);
+            }
+            
+            this.activateTab(0);
+        } else {
+            this.openSettings();
+        }
 	}
 
 	initTab(tab) {
@@ -87,10 +91,7 @@ class ServerManagerView {
 
 	initActions() {
         this.$addServerButton.addEventListener('click', this.openSettings.bind(this));
-	}
-
-	addServer() {
-        
+        this.$settingsButton.addEventListener('click', this.openSettings.bind(this));
 	}
 
     openSettings() {
@@ -99,7 +100,7 @@ class ServerManagerView {
             return;
         }
         const url = 'file:///' + path.resolve(('app/renderer/preference.html'));
-        console.log(url);
+
         const settingsTabTemplate = `
                 <div class="tab" domain="${url}">
                     <div class="server-tab settings-tab">
