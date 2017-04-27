@@ -3,9 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const electron = require('electron');
-const { app } = require('electron');
+const {app} = require('electron');
 const ipc = require('electron').ipcMain;
-const { dialog } = require('electron');
+const {dialog} = require('electron');
 const https = require('https');
 const http = require('http');
 const electronLocalshortcut = require('electron-localshortcut');
@@ -13,8 +13,8 @@ const Configstore = require('electron-config');
 const JsonDB = require('node-json-db');
 const isDev = require('electron-is-dev');
 const appMenu = require('./menu');
-const { linkIsInternal, skipImages } = require('./link-helper');
-const { appUpdater } = require('./autoupdater');
+const {linkIsInternal, skipImages} = require('./link-helper');
+const {appUpdater} = require('./autoupdater');
 
 const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 const data = db.getData('/');
@@ -99,12 +99,20 @@ function checkConnectivity() {
 		}
 	});
 }
+const connectivityERR = [
+	'ERR_INTERNET_DISCONNECTED',
+	'ERR_PROXY_CONNECTION_FAILED',
+	'ERR_CONNECTION_RESET',
+	'ERR_NOT_CONNECTED',
+	'ERR_NAME_NOT_RESOLVED'
+];
 
 function checkConnection() {
 	// eslint-disable-next-line no-unused-vars
 	mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
-		if (errorDescription === 'ERR_INTERNET_DISCONNECTED' || errorDescription === 'ERR_PROXY_CONNECTION_FAILED') {
-			console.log('Error Description:' + errorDescription);
+		const hasConnectivityErr = (connectivityERR.indexOf(errorDescription) >= 0);
+		if (hasConnectivityErr) {
+			console.error('error', errorDescription);
 			checkConnectivity();
 		}
 	});
@@ -248,10 +256,11 @@ function createMainWindow() {
 // app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 
 // For self-signed certificate
+// eslint-disable-next-line max-params
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
-	console.log("warning: ", url, " certificate-error");
-		event.preventDefault()
-		callback(true)
+	console.log('warning: ', url, ' certificate-error');
+	event.preventDefault();
+	callback(true);
 });
 
 app.on('window-all-closed', () => {
