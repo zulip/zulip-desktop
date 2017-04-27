@@ -103,7 +103,7 @@ function checkConnectivity() {
 function checkConnection() {
 	// eslint-disable-next-line no-unused-vars
 	mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
-		if (errorDescription === 'ERR_INTERNET_DISCONNECTED' || errorDescription === 'ERR_PROXY_CONNECTION_FAILED') {
+		if (errorDescription === 'ERR_INTERNET_DISCONNECTED' || errorDescription === 'ERR_PROXY_CONNECTION_FAILED' || errorDescription === 'ERR_CONNECTION_RESET' ) {
 			console.log('Error Description:' + errorDescription);
 			checkConnectivity();
 		}
