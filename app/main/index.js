@@ -67,7 +67,13 @@ function serverError(targetURL) {
 			}
 		});
 		req.on('error', e => {
-			console.error(e);
+			if (e.toString().indexOf('Error: self signed certificate') >= 0) {
+				const url = targetURL.replace(/^https?:\/\//, '');
+				console.log('Server StatusCode:', 200);
+				console.log('You are connected to:', url);
+			} else {
+				console.error(e);
+			}
 		});
 		req.end();
 	} else if (data.domain) {
@@ -256,9 +262,27 @@ function createMainWindow() {
 // app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
 
 // For self-signed certificate
+ipc.on('certificate-err', (e, domain) => {
+	const detail = `URL: ${domain} \n Error: Self-Signed Certificate`;
+	dialog.showMessageBox(mainWindow, {
+		title: 'Certificate error',
+		message: `Do you trust certificate from ${domain}?`,
+		// eslint-disable-next-line object-shorthand
+		detail: detail,
+		type: 'warning',
+		buttons: ['Yes', 'No'],
+		cancelId: 1
+		// eslint-disable-next-line object-shorthand
+	}, response => {
+		if (response === 0) {
+			// eslint-disable-next-line object-shorthand
+			db.push('/domain', domain);
+			mainWindow.loadURL(domain);
+		}
+	});
+});
 // eslint-disable-next-line max-params
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
-	console.log('warning: ', url, ' certificate-error');
 	event.preventDefault();
 	callback(true);
 });

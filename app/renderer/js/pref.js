@@ -20,9 +20,7 @@ window.prefDomain = function () {
 	const ipcRenderer = require('electron').ipcRenderer;
 	const JsonDB = require('node-json-db');
 	// eslint-disable-next-line import/no-extraneous-dependencies
-	const {
-		app
-	} = require('electron').remote;
+	const {app} = require('electron').remote;
 
 	const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 
@@ -57,6 +55,10 @@ window.prefDomain = function () {
 					document.getElementById('urladded').innerHTML = 'Switched to ' + newDomain;
 					db.push('/domain', domain);
 					ipcRenderer.send('new-domain', domain);
+				} else if (error.toString().indexOf('Error: self signed certificate') >= 0) {
+					document.getElementById('main').innerHTML = 'Switch';
+					ipcRenderer.send('certificate-err', domain);
+					document.getElementById('urladded').innerHTML = 'Switched to ' + newDomain;
 				} else {
 					document.getElementById('main').innerHTML = 'Switch';
 					document.getElementById('urladded').innerHTML = 'Not a valid Zulip Server.';

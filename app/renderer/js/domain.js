@@ -59,6 +59,9 @@ window.addDomain = function () {
 					$el.main.innerHTML = 'Connect';
 					db.push('/domain', domain);
 					ipcRenderer.send('new-domain', domain);
+				} else if (error.toString().indexOf('Error: self signed certificate') >= 0) {
+					$el.main.innerHTML = 'Connect';
+					ipcRenderer.send('certificate-err', domain);
 				} else {
 					$el.main.innerHTML = 'Connect';
 					displayError('Not a valid Zulip server');
