@@ -89,11 +89,6 @@ ipc.on('trayabout', event => {
 	}
 });
 
-ipc.on('traychangeserver', event => {
-	if (event) {
-		addDomain();
-	}
-});
 module.exports = {
 	addDomain,
 	about

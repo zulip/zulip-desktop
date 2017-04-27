@@ -3,7 +3,7 @@
 const path = require("path");
 const DomainUtil = require(path.resolve(('app/renderer/js/utils/domain-util.js')));
 const { linkIsInternal, skipImages } = require(path.resolve(('app/main/link-helper')));
-const { shell, ipcRenderer } = require('electron');
+const { shell, ipcRenderer, webFrame } = require('electron');
 require(path.resolve(('app/renderer/js/tray.js')));
 
 class ServerManagerView {
@@ -18,6 +18,7 @@ class ServerManagerView {
         this.isLoading = false;
         this.settingsTabIndex = -1;
         this.activeTabIndex = -1;
+        this.zoomFactors = [];        
 	}
 
 	init() {
@@ -72,7 +73,8 @@ class ServerManagerView {
 		this.$content.appendChild($webView);
         this.isLoading = true;
         $webView.addEventListener('dom-ready', this.endLoading.bind(this, index));
-        this.registerListeners($webView);        
+        this.registerListeners($webView);
+        this.zoomFactors[index] = 1;
     }
 
     startLoading(url, index) {
@@ -165,21 +167,61 @@ class ServerManagerView {
     }
     
     registerIpcs() {
-        const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
 
         ipcRenderer.on('reload', () => {
+            const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
             activeWebview.reload();
         });
 
         ipcRenderer.on('back', () => {
+            const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
     		if (activeWebview.canGoBack()) {
                 activeWebview.goBack();
             }
         });
 
         ipcRenderer.on('forward', () => {
+            const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
             if (activeWebview.canGoForward()) {
                 activeWebview.goForward();
+            }
+        });
+
+        // Handle zooming functionality
+        ipcRenderer.on('zoomIn', () => {
+            const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
+            this.zoomFactors[this.activeTabIndex] += 0.1;
+            activeWebview.setZoomFactor(this.zoomFactors[this.activeTabIndex]);
+        });
+
+        ipcRenderer.on('zoomOut', () => {
+            const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
+            this.zoomFactors[this.activeTabIndex] -= 0.1;
+            activeWebview.setZoomFactor(this.zoomFactors[this.activeTabIndex]);
+        });
+
+        ipcRenderer.on('zoomActualSize', () => {
+            const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
+            this.zoomFactors[this.activeTabIndex] = 1;
+            activeWebview.setZoomFactor(this.zoomFactors[this.activeTabIndex]);
+        });
+
+        ipcRenderer.on('log-out', () => {
+            const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
+            activeWebview.executeJavaScript('logout()');
+        });
+
+        ipcRenderer.on('shortcut', () => {
+            const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
+            activeWebview.executeJavaScript('shortcut()');
+        });
+
+        ipcRenderer.on('open-settings', () => {
+            const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
+            if (this.settingsTabIndex == -1) {
+                this.openSettings();                
+            } else {
+                this.activateTab(this.settingsTabIndex);
             }
         });
     }
