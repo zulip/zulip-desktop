@@ -292,6 +292,10 @@ app.on('ready', () => {
 		mainWindow.webContents.send('destroytray');
 	});
 	checkConnection();
+
+	ipc.on('reload-main', () =>{
+		page.reload();
+	})
 });
 
 app.on('will-quit', () => {
