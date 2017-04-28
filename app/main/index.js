@@ -1,23 +1,15 @@
 'use strict';
 const path = require('path');
-const fs = require('fs');
 const os = require('os');
 const electron = require('electron');
 const {app} = require('electron');
 const ipc = require('electron').ipcMain;
 const {dialog} = require('electron');
-const https = require('https');
-const http = require('http');
 const electronLocalshortcut = require('electron-localshortcut');
 const Configstore = require('electron-config');
-const JsonDB = require('node-json-db');
 const isDev = require('electron-is-dev');
 const appMenu = require('./menu');
-const {linkIsInternal, skipImages} = require('./link-helper');
 const {appUpdater} = require('./autoupdater');
-
-const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
-const data = db.getData('/');
 
 // Adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
@@ -45,7 +37,6 @@ const isUserAgent = 'ZulipElectron/' + app.getVersion() + ' ' + userOS();
 
 // Prevent window being garbage collected
 let mainWindow;
-let targetLink;
 
 // Load this url in main window
 const mainURL = 'file://' + path.join(__dirname, '../renderer', 'main.html');
@@ -211,30 +202,6 @@ function createMainWindow() {
 	return win;
 }
 
-// TODO - fix certificate errors
-
-// app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
-
-// For self-signed certificate
-ipc.on('certificate-err', (e, domain) => {
-	const detail = `URL: ${domain} \n Error: Self-Signed Certificate`;
-	dialog.showMessageBox(mainWindow, {
-		title: 'Certificate error',
-		message: `Do you trust certificate from ${domain}?`,
-		// eslint-disable-next-line object-shorthand
-		detail: detail,
-		type: 'warning',
-		buttons: ['Yes', 'No'],
-		cancelId: 1
-		// eslint-disable-next-line object-shorthand
-	}, response => {
-		if (response === 0) {
-			// eslint-disable-next-line object-shorthand
-			db.push('/domain', domain);
-			mainWindow.loadURL(domain);
-		}
-	});
-});
 // eslint-disable-next-line max-params
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
 	event.preventDefault();
@@ -275,7 +242,7 @@ app.on('ready', () => {
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+]', () => {
 		page.send('forward');
 	});
-	
+
 	page.on('dom-ready', () => {
 		mainWindow.show();
 	});
@@ -289,9 +256,9 @@ app.on('ready', () => {
 	});
 	checkConnection();
 
-	ipc.on('reload-main', () =>{
+	ipc.on('reload-main', () => {
 		page.reload();
-	})
+	});
 });
 
 app.on('will-quit', () => {

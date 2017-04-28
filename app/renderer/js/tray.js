@@ -124,7 +124,7 @@ const createTray = function () {
 		type: 'separator'
 	},
 	{
-		label: 'Change Zulip server',
+		label: 'Manage Zulip servers',
 		click() {
 			sendAction('open-settings');
 		}
@@ -136,7 +136,6 @@ const createTray = function () {
 		label: 'Reload',
 		click() {
 			sendAction('reload');
-			// window.tray.destroy();
 		}
 	},
 	{
