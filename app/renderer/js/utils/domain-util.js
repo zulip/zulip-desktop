@@ -7,6 +7,9 @@ const request = require('request');
 class DomainUtil {
     constructor() {
         this.db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
+        if (!this.getDomains()) {
+            this.db.push("/domains", []);
+        }
     }
 
     getDomains() {
