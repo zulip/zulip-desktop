@@ -288,6 +288,10 @@ app.on('ready', () => {
 		}
 	});
 	checkConnection();
+
+	ipc.on('reload-main', () =>{
+		page.reload();
+	})
 });
 
 app.on('will-quit', () => {

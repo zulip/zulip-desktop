@@ -1,11 +1,13 @@
 'use strict';
 
+const { ipcRenderer } = require('electron');
 const path = require("path");
 const DomainUtil = require(path.resolve(('app/renderer/js/utils/domain-util.js')));
 class PreferenceView {
     constructor() {
         this.$newServerButton = document.getElementById('new-server-action');
         this.$saveServerButton = document.getElementById('save-server-action');
+        this.$reloadServerButton = document.getElementById('reload-server-action');
         this.$serverInfoContainer = document.querySelector('.server-info-container');
     }
 
@@ -64,6 +66,7 @@ class PreferenceView {
             this.domainUtil.removeDomain(index);
             this.initServers();
             alert('Success. Reload to apply changes.')
+            this.$reloadServerButton.classList.remove('hidden');
         });
     }
 
@@ -117,9 +120,13 @@ class PreferenceView {
 
                 this.initServers();
                 alert('Success. Reload to apply changes.')
+                this.$reloadServerButton.classList.remove('hidden');
             }, (errorMessage) => {
                 alert(errorMessage);
             });
+        });
+        this.$reloadServerButton.addEventListener('click', () => {
+            ipcRenderer.send('reload-main');
         });
     }
     __insert_node(html) {
