@@ -1,11 +1,5 @@
 'use strict';
-const ipcRenderer = require('electron').ipcRenderer;
 const {spellChecker} = require('./spellchecker');
-
-process.once('loaded', () => {
-	global.logout = logout;
-	global.shortcut = shortcut;
-});
 
 const logout = () => {
 	// Create the menu for the below
@@ -26,6 +20,11 @@ const shortcut = () => {
 		document.querySelector('.dropdown-toggle').click();
 	}
 };
+
+process.once('loaded', () => {
+	global.logout = logout;
+	global.shortcut = shortcut;
+});
 
 // To prevent failing this script on linux we need to load it after the document loaded
 document.addEventListener('DOMContentLoaded', () => {
