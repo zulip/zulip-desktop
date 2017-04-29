@@ -31,7 +31,7 @@
   },
   "build": {
     "appId": "org.zulip.zulip-electron",
-    "asar": false,
+    "asar": true,
     "files": [
       "**/*",
       "!node_modules/@paulcbetts/cld/deps/cld${/*}"
