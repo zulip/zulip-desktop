@@ -1,11 +1,9 @@
 'use strict';
 
-const path = require('path');
+require(__dirname + '/js/tray.js');
 
-require(path.resolve(('app/renderer/js/tray.js')));
-
-const DomainUtil = require(path.resolve(('app/renderer/js/utils/domain-util.js')));
-const {linkIsInternal, skipImages} = require(path.resolve(('app/main/link-helper')));
+const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
+const {linkIsInternal, skipImages} = require(__dirname + '/../main/link-helper');
 const {shell, ipcRenderer} = require('electron');
 
 class ServerManagerView {
@@ -97,7 +95,6 @@ class ServerManagerView {
 		const $webView = document.getElementById(`webview-${index}`);
 		this.isLoading = false;
 		$webView.classList.remove('loading');
-		$webView.openDevTools();
 	}
 
 	initActions() {
@@ -110,7 +107,7 @@ class ServerManagerView {
 			this.activateTab(this.settingsTabIndex);
 			return;
 		}
-		const url = 'file:///' + path.resolve(('app/renderer/preference.html'));
+		const url = 'file://' + __dirname + '/preference.html';
 
 		const settingsTabTemplate = `
 				<div class="tab" domain="${url}">

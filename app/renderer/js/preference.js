@@ -1,9 +1,8 @@
 'use strict';
 
 const {ipcRenderer} = require('electron');
-const path = require('path');
 
-const DomainUtil = require(path.resolve(('app/renderer/js/utils/domain-util.js')));
+const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
 
 class PreferenceView {
 	constructor() {
