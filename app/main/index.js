@@ -108,20 +108,6 @@ function onClosed() {
 	mainWindow = null;
 }
 
-function updateDockBadge(title) {
-	if (title.indexOf('Zulip') === -1) {
-		return;
-	}
-
-	let messageCount = (/\(([0-9]+)\)/).exec(title);
-	messageCount = messageCount ? Number(messageCount[1]) : 0;
-
-	if (process.platform === 'darwin') {
-		app.setBadgeCount(messageCount);
-	}
-	mainWindow.webContents.send('tray', messageCount);
-}
-
 function createMainWindow() {
 	const win = new electron.BrowserWindow({
 		// This settings needs to be saved in config
@@ -184,12 +170,6 @@ function createMainWindow() {
 			x: pos[0],
 			y: pos[1]
 		});
-	});
-
-	// Stop page to update it's title
-	win.on('page-title-updated', (e, title) => {
-		e.preventDefault();
-		updateDockBadge(title);
 	});
 
 	//  To destroy tray icon when navigate to a new URL
@@ -262,6 +242,13 @@ app.on('ready', () => {
 
 	ipc.on('reload-main', () => {
 		page.reload();
+	});
+
+	ipc.on('update-badge', (event, messageCount) => {
+		if (process.platform === 'darwin') {
+			app.setBadgeCount(messageCount);
+		}
+		page.send('tray', messageCount);
 	});
 });
 

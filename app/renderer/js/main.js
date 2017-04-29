@@ -31,10 +31,12 @@ class ServerManagerView {
 	}
 
 	initTabs() {
+		this.badgeNumberList = [];
 		const servers = this.domainUtil.getDomains();
 		if (servers.length > 0) {
 			for (const server of servers) {
 				this.initTab(server);
+				this.badgeNumberList.push(0);
 			}
 
 			this.activateTab(0);
@@ -74,7 +76,7 @@ class ServerManagerView {
 		this.$content.appendChild($webView);
 		this.isLoading = true;
 		$webView.addEventListener('dom-ready', this.endLoading.bind(this, index));
-		this.registerListeners($webView);
+		this.registerListeners($webView, index);
 		this.zoomFactors[index] = 1;
 	}
 
@@ -95,6 +97,7 @@ class ServerManagerView {
 		const $webView = document.getElementById(`webview-${index}`);
 		this.isLoading = false;
 		$webView.classList.remove('loading');
+		$webView.openDevTools();
 	}
 
 	initActions() {
@@ -156,7 +159,7 @@ class ServerManagerView {
 		return this.$tabsContainer.childNodes[index];
 	}
 
-	registerListeners($webView) {
+	registerListeners($webView, index) {
 		$webView.addEventListener('new-window', event => {
 			const {url} = event;
 			const domainPrefix = this.domainUtil.getDomain(this.activeTabIndex).url;
@@ -166,6 +169,21 @@ class ServerManagerView {
 			}
 			event.preventDefault();
 			shell.openExternal(url);
+		});
+
+		$webView.addEventListener('page-title-updated', event => {
+			const {title} = event;
+			if (title.indexOf('Zulip') === -1) {
+				return;
+			}
+
+			let messageCount = (/\(([0-9]+)\)/).exec(title);
+			messageCount = messageCount ? Number(messageCount[1]) : 0;
+
+			this.badgeNumberList[index] = messageCount;
+			
+			const sum = this.badgeNumberList.reduce((a, b) => {return a + b;}, 0);
+			ipcRenderer.send('update-badge', sum);
 		});
 	}
 
