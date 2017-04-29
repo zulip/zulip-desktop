@@ -4,16 +4,26 @@ const {app} = require('electron').remote;
 const JsonDB = require('node-json-db');
 const request = require('request');
 
+const defaultIconUrl = 'https://chat.zulip.org/static/images/logo/zulip-icon-128x128.271d0f6a0ca2.png';
 class DomainUtil {
 	constructor() {
 		this.db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
-		if (!this.getDomains()) {
-			this.db.push('/domains', []);
+		// Migrate from old schema
+		if (this.db.getData('/').domain) {
+			this.addDomain({
+				alias: 'Zulip',
+				url: this.db.getData('/domain')
+			});
+			this.db.delete('/domain');
 		}
 	}
 
 	getDomains() {
-		return this.db.getData('/domains');
+		if (this.db.getData('/').domains === undefined) {
+			return [];
+		} else {
+			return this.db.getData('/domains');
+		}
 	}
 
 	getDomain(index) {
@@ -21,7 +31,7 @@ class DomainUtil {
 	}
 
 	addDomain(server) {
-		server.icon = server.icon || 'https://chat.zulip.org/static/images/logo/zulip-icon-128x128.271d0f6a0ca2.png';
+		server.icon = server.icon || defaultIconUrl;
 		this.db.push('/domains[]', server, true);
 	}
 
