@@ -181,8 +181,10 @@ class ServerManagerView {
 			messageCount = messageCount ? Number(messageCount[1]) : 0;
 
 			this.badgeNumberList[index] = messageCount;
-			
-			const sum = this.badgeNumberList.reduce((a, b) => {return a + b;}, 0);
+
+			const sum = this.badgeNumberList.reduce((a, b) => {
+				return a + b;
+			}, 0);
 			ipcRenderer.send('update-badge', sum);
 		});
 	}
