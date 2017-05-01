@@ -1,4 +1,4 @@
-# Zulip Desktop Client 
+# Zulip Desktop Client
 [![Build Status](https://travis-ci.org/zulip/zulip-electron.svg?branch=master)](https://travis-ci.org/zulip/zulip-electron)
 [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/zulip/zulip-electron?branch=master&svg=true)](https://ci.appveyor.com/project/akashnimare/zulip-electron/branch/master)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
@@ -12,7 +12,7 @@ and then start adding cool features like easy support for
 multi-account, auto-updates etc.
 
 ## Prerequisites
-* node >= v6.3.1
+* node >= v6.9.4
 > Use [nvm](https://github.com/creationix/nvm) to install the current stable version of node
 
 
@@ -21,6 +21,11 @@ multi-account, auto-updates etc.
 ```sh
 $ sudo apt-get install build-essential libxext-dev libxtst-dev libxkbfile-dev
 ```
+* If you're on Windows, you'll need to install following package as administrator:
+```sh
+C:\Windows\system32> npm install -g windows-build-tools
+```
+
 
 ## Installation
 
