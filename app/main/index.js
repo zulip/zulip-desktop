@@ -347,6 +347,10 @@ app.on('ready', () => {
 			appUpdater();
 		}
 	});
+	electron.powerMonitor.on('resume', () => {
+		mainWindow.reload();
+		mainWindow.webContents.send('destroytray');
+         });
 	checkConnection();
 });
 
