@@ -21,10 +21,14 @@ multi-account, auto-updates etc.
 ```sh
 $ sudo apt-get install build-essential libxext-dev libxtst-dev libxkbfile-dev
 ```
+
 * If you're on Windows, you'll need to install following package as administrator:
 ```sh
 C:\Windows\system32> npm install -g windows-build-tools
 ```
+Note:
+> Computers running on Windows OS may encounter problems when installing the Electron app. As Windows does not come bundled with a C++ compiler, which is needed in NodeJS, the command prompt may throw up an error which states that node-gyp rebuild fails on your system. Hence it is advised a further prerequisite (for Windows users) is to download Visual Studio Community 2015 which contains a C++ compiler using the above command.
+
 
 
 ## Installation
