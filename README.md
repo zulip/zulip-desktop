@@ -64,7 +64,6 @@ You can create Windows installer only when running on Windows, the same is true 
    * [AppImage](https://github.com/zulip/zulip-electron/releases/download/v0.5.10/Zulip-0.5.10-x86_64.AppImage) (Recommended)
       Needs to be [made executable](http://discourse.appimage.org/t/how-to-make-an-appimage-executable/80) after download.
    * [deb](https://github.com/zulip/zulip-electron/releases/download/v0.5.10/Zulip_0.5.10_amd64.deb)
-
 * Windows:
 	* [Installer](https://github.com/zulip/zulip-electron/releases/download/v0.5.10/Zulip.Web.Setup.0.5.10.exe)
 	* Zip
