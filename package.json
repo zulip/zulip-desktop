@@ -45,6 +45,7 @@
       "description": "Zulip Desktop Client for Linux",
       "target": [
         "deb",
+        "zip",
         "AppImage"
       ],
       "maintainer": "Akash Nimare <svnitakash@gmail.com>"
