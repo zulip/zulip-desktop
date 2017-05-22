@@ -91,7 +91,7 @@
     "assert": "1.4.1",
     "devtron": "1.4.0",
     "electron-builder": "16.6.0",
-    "electron": "1.4.15",
+    "electron": "1.6.8",
     "electron-connect": "0.4.8",
     "gulp": "3.9.1",
     "gulp-mocha": "3.0.1",
