@@ -14,7 +14,7 @@ html, body {
 
 #sidebar {
     background: #222c31;
-    width: 80px;
+    width: 50px;
     padding: 40px 0 20px 0;
     justify-content: space-between;
     display: flex;
@@ -59,8 +59,8 @@ html, body {
     border-radius: 0 3px 3px 0;
     width: 4px;
     position: absolute;
-    height: 44px;
-    left: -18px;
+    height: 31px;
+    left: -8px;
     top: 5px;
 }
 
@@ -68,12 +68,12 @@ html, body {
     background: #a4d3c4;
     background-size: 100%;
     border-radius: 4px;
-    width: 44px;
-    height: 44px;
+    width: 31px;
+    height: 31px;
     position: relative;
     margin: 5px 0;
     z-index: 11;
-    line-height: 44px;
+    line-height: 31px;
     font-size: 32px;
     font-family: sans-serif;
     color: #194a2b;
