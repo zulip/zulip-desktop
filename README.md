@@ -57,6 +57,20 @@ It will start the packaging process for operating system you are running this co
 
 You can create Windows installer only when running on Windows, the same is true for Linux and OSX. So to generate all three installers you need all three operating systems.
 
+# Download
+
+* [macOS](https://github.com/zulip/zulip-electron/releases/download/v0.5.10/Zulip-0.5.10.dmg)
+* Linux:
+   * [AppImage](https://github.com/zulip/zulip-electron/releases/download/v0.5.10/Zulip-0.5.10-x86_64.AppImage) (Recommended)
+      Needs to be [made executable](http://discourse.appimage.org/t/how-to-make-an-appimage-executable/80) after download.
+   * [deb](https://github.com/zulip/zulip-electron/releases/download/v0.5.10/Zulip_0.5.10_amd64.deb)
+* Windows:
+	* [Installer](https://github.com/zulip/zulip-electron/releases/download/v0.5.10/Zulip.Web.Setup.0.5.10.exe)
+	* Zip
+		*	[64bit](https://github.com/zulip/zulip-electron/releases/download/v0.5.10/zulip-0.5.10-x64.nsis.7z)
+		*	[32bit](https://github.com/zulip/zulip-electron/releases/download/v0.5.10/zulip-0.5.10-ia32.nsis.7z)	
+
+
 
 ## Features
 

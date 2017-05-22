@@ -117,7 +117,7 @@ function createMainWindow() {
 		icon: iconPath(),
 		minWidth: 600,
 		minHeight: 400,
-		titleBarStyle: 'hidden-inset',
+		// titleBarStyle: 'hidden-inset',
 		webPreferences: {
 			plugins: true,
 			allowDisplayingInsecureContent: true,
@@ -233,6 +233,10 @@ app.on('ready', () => {
 			// Initate auto-updates on MacOS and Windows
 			appUpdater();
 		}
+	});
+	electron.powerMonitor.on('resume', () => {
+		mainWindow.reload();
+		mainWindow.webContents.send('destroytray');
 	});
 	checkConnection();
 

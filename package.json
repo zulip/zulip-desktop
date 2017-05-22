@@ -25,6 +25,7 @@
     "dev": "gulp dev",
     "pack": "build --dir",
     "dist": "build",
+    "mas": "build --mac mas",
     "build:win": "build --win nsis-web --ia32 --x64",
     "travis": "cd ./scripts && ./travis-build-test.sh"
   },
@@ -45,6 +46,7 @@
       "description": "Zulip Desktop Client for Linux",
       "target": [
         "deb",
+        "zip",
         "AppImage"
       ],
       "maintainer": "Akash Nimare <svnitakash@gmail.com>"
@@ -90,7 +92,7 @@
   "devDependencies": {
     "assert": "1.4.1",
     "devtron": "1.4.0",
-    "electron-builder": "16.6.0",
+    "electron-builder": "17.10.0",
     "electron": "1.6.8",
     "electron-connect": "0.4.8",
     "gulp": "3.9.1",
