@@ -71,16 +71,6 @@ class ServerManagerView {
 		const $webView = this.insertNode(webViewTemplate);
 		this.$content.appendChild($webView);
 		this.isLoading = true;
-		$webView.addEventListener('dom-ready', this.endLoading.bind(this, index));
-
-		$webView.addEventListener('dom-ready', () => {
-			// We need to wait until the page title is ready to get badge count
-			setTimeout(() => this.updateBadge(index), 1000);
-		});
-		$webView.addEventListener('dom-ready', () => {
-			$webView.focus()
-		});
-
 		this.registerListeners($webView, index);
 		this.zoomFactors[index] = 1;
 	}
@@ -96,7 +86,7 @@ class ServerManagerView {
 		} else {
 			this.updateBadge(index);
 			$webView.classList.remove('disabled');
-			$webView.focus()
+			$webView.focus();
 		}
 	}
 
@@ -165,13 +155,13 @@ class ServerManagerView {
 		return this.$tabsContainer.childNodes[index];
 	}
 
-	updateBadge (index) {
+	updateBadge(index) {
 		const $activeWebView = document.getElementById(`webview-${index}`);
 		const title = $activeWebView.getTitle();
 		let messageCount = (/\(([0-9]+)\)/).exec(title);
 		messageCount = messageCount ? Number(messageCount[1]) : 0;
 		ipcRenderer.send('update-badge', messageCount);
-  }
+	}
 
 	registerListeners($webView, index) {
 		$webView.addEventListener('new-window', event => {
@@ -184,12 +174,13 @@ class ServerManagerView {
 			event.preventDefault();
 			shell.openExternal(url);
 		});
-
-		$webView.addEventListener('page-title-updated', event => {
-			const {title} = event;
-			if (title.indexOf('Zulip') === -1) {
-				return;
-			}
+		$webView.addEventListener('dom-ready', this.endLoading.bind(this, index));
+		$webView.addEventListener('dom-ready', () => {
+			// We need to wait until the page title is ready to get badge count
+			setTimeout(() => this.updateBadge(index), 1000);
+		});
+		$webView.addEventListener('dom-ready', () => {
+			$webView.focus();
 		});
 	}
 
