@@ -117,6 +117,7 @@ function createMainWindow() {
 		icon: iconPath(),
 		minWidth: 600,
 		minHeight: 400,
+		titleBarStyle: 'hidden-inset',
 		webPreferences: {
 			plugins: true,
 			allowDisplayingInsecureContent: true,

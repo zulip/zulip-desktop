@@ -6,7 +6,6 @@ const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
 const {linkIsInternal, skipImages} = require(__dirname + '/../main/link-helper');
 const {shell, ipcRenderer} = require('electron');
 
-
 class ServerManagerView {
 	constructor() {
 		this.$tabsContainer = document.getElementById('tabs-container');
@@ -73,6 +72,7 @@ class ServerManagerView {
 		this.$content.appendChild($webView);
 		this.isLoading = true;
 		$webView.addEventListener('dom-ready', this.endLoading.bind(this, index));
+
 		$webView.addEventListener('dom-ready', () => {
 			// We need to wait until the page title is ready to get badge count
 			setTimeout(() => this.updateBadge(index), 1000);
@@ -171,7 +171,7 @@ class ServerManagerView {
 		let messageCount = (/\(([0-9]+)\)/).exec(title);
 		messageCount = messageCount ? Number(messageCount[1]) : 0;
 		ipcRenderer.send('update-badge', messageCount);
-}
+  }
 
 	registerListeners($webView, index) {
 		$webView.addEventListener('new-window', event => {
@@ -190,8 +190,6 @@ class ServerManagerView {
 			if (title.indexOf('Zulip') === -1) {
 				return;
 			}
-
-	
 		});
 	}
 
