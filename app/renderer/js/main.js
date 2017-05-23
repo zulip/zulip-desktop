@@ -29,12 +29,10 @@ class ServerManagerView {
 	}
 
 	initTabs() {
-		this.badgeNumberList = [];
 		const servers = this.domainUtil.getDomains();
 		if (servers.length > 0) {
 			for (const server of servers) {
 				this.initTab(server);
-				this.badgeNumberList.push(0);
 			}
 
 			this.activateTab(0);
@@ -74,6 +72,15 @@ class ServerManagerView {
 		this.$content.appendChild($webView);
 		this.isLoading = true;
 		$webView.addEventListener('dom-ready', this.endLoading.bind(this, index));
+
+		$webView.addEventListener('dom-ready', () => {
+			// We need to wait until the page title is ready to get badge count
+			setTimeout(() => this.updateBadge(index), 1000);
+		});
+		$webView.addEventListener('dom-ready', () => {
+			$webView.focus()
+		});
+
 		this.registerListeners($webView, index);
 		this.zoomFactors[index] = 1;
 	}
@@ -87,7 +94,9 @@ class ServerManagerView {
 		if ($webView === null) {
 			this.initWebView(url, index, this.settingsTabIndex === index);
 		} else {
+			this.updateBadge(index);
 			$webView.classList.remove('disabled');
+			$webView.focus()
 		}
 	}
 
@@ -156,6 +165,14 @@ class ServerManagerView {
 		return this.$tabsContainer.childNodes[index];
 	}
 
+	updateBadge (index) {
+		const $activeWebView = document.getElementById(`webview-${index}`);
+		const title = $activeWebView.getTitle();
+		let messageCount = (/\(([0-9]+)\)/).exec(title);
+		messageCount = messageCount ? Number(messageCount[1]) : 0;
+		ipcRenderer.send('update-badge', messageCount);
+  }
+
 	registerListeners($webView, index) {
 		$webView.addEventListener('new-window', event => {
 			const {url} = event;
@@ -173,16 +190,6 @@ class ServerManagerView {
 			if (title.indexOf('Zulip') === -1) {
 				return;
 			}
-
-			let messageCount = (/\(([0-9]+)\)/).exec(title);
-			messageCount = messageCount ? Number(messageCount[1]) : 0;
-
-			this.badgeNumberList[index] = messageCount;
-
-			const sum = this.badgeNumberList.reduce((a, b) => {
-				return a + b;
-			}, 0);
-			ipcRenderer.send('update-badge', sum);
 		});
 	}
 

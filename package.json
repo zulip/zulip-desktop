@@ -19,7 +19,7 @@
     "url": "https://github.com/zulip/zulip-electron/issues"
   },
   "scripts": {
-    "start": "electron app",
+    "start": "electron app --disable-http-cache",
     "postinstall": "install-app-deps",
     "test": "gulp test && xo",
     "dev": "gulp dev",
