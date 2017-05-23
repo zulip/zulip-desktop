@@ -30,12 +30,10 @@ class ServerManagerView {
 	}
 
 	initTabs() {
-		this.badgeNumberList = [];
 		const servers = this.domainUtil.getDomains();
 		if (servers.length > 0) {
 			for (const server of servers) {
 				this.initTab(server);
-				this.badgeNumberList.push(0);
 			}
 
 			this.activateTab(0);
@@ -79,6 +77,10 @@ class ServerManagerView {
 			// We need to wait until the page title is ready to get badge count
 			setTimeout(() => this.updateBadge(index), 1000);
 		});
+		$webView.addEventListener('dom-ready', () => {
+			$webView.focus()
+		});
+
 		this.registerListeners($webView, index);
 		this.zoomFactors[index] = 1;
 	}
@@ -94,6 +96,7 @@ class ServerManagerView {
 		} else {
 			this.updateBadge(index);
 			$webView.classList.remove('disabled');
+			$webView.focus()
 		}
 	}
 
