@@ -1,0 +1,115 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    cursor: default;    
+}
+
+#content {
+    display: flex;
+    height: 100%;
+    background: #eee url(../img/loading.gif) no-repeat;
+    background-size: 60px 60px;
+    background-position: center;
+}
+
+#sidebar {
+    background: #222c31;
+    width: 50px;
+    padding: 40px 0 20px 0;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    -webkit-app-region: drag;
+}
+
+#webview {
+    flex-grow: 1;
+}
+
+.action-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+}
+
+.action-button i {
+    color: #6c8592;
+    font-size: 28px;
+}
+
+.action-button:hover i {
+    color: #98a9b3;
+}
+
+#tabs-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.tab {
+    position: relative;
+    margin: 5px 0;
+}
+
+.tab.active::before{
+    content: "";
+    background: #fff;
+    border-radius: 0 3px 3px 0;
+    width: 4px;
+    position: absolute;
+    height: 31px;
+    left: -8px;
+    top: 5px;
+}
+
+.tab .server-tab{
+    background: #a4d3c4;
+    background-size: 100%;
+    border-radius: 4px;
+    width: 31px;
+    height: 31px;
+    position: relative;
+    margin: 5px 0;
+    z-index: 11;
+    line-height: 31px;
+    font-size: 32px;
+    font-family: sans-serif;
+    color: #194a2b;
+    text-align: center;
+    overflow: hidden;
+    opacity: 0.6;
+}
+
+.tab .server-tab:hover{
+    opacity: 0.8;
+}
+
+.tab .settings-tab{
+    background: #eee;
+}
+
+.tab .settings-tab i{
+    font-size: 28px;
+    line-height: 44px;
+}
+
+.tab.active .server-tab{
+    opacity: 1;
+}
+
+webview {
+    opacity: 1;
+    transition: opacity 0.3s;
+    flex-grow: 1;
+}
+
+webview.loading {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+webview.disabled {
+    display: none;
+}

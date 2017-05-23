@@ -1,0 +1,162 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    cursor: default;
+    font-size: 14px;
+    color: #333;
+    background: #fff;
+}
+
+#content {
+    display: flex;
+    height: 100%;
+    font-family: sans-serif;
+}
+
+#sidebar {
+    width: 80px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+}
+
+#tabs-container {
+    padding: 20px 0;
+}
+
+.tab {
+    padding: 5px 0;
+    color: #999;
+    cursor: pointer;
+}
+
+.tab.active {
+    color: #464e5a;
+    cursor: default;
+    position: relative;
+}
+
+.tab.active::before {
+    background: #464e5a;
+    width: 3px;
+    height: 16px;
+    position: absolute;
+    left: -8px;
+    content: '';
+}
+
+#settings-header {
+    font-size: 22px;
+    color: #5c6166;
+}
+
+#settings-container {
+    width: 100%;
+    display: flex;
+    padding: 30px;
+    overflow-y: scroll;
+}
+
+.server-info-container {
+    margin: 20px 0;
+}
+
+.title {
+    padding: 4px 0 6px 0;
+    font-size: 18px;
+    color: #000;
+}
+
+img.server-info-icon {
+    background: #a4d3c4;
+    background-size: 100%;
+    border-radius: 4px;
+    width: 44px;
+    height: 44px;
+}
+
+.server-info-left {
+    margin-right: 20px;
+}
+
+.server-info-right {
+    flex-grow: 1;
+}
+
+.server-info-row {
+    display: flex;
+    line-height: 26px;
+    height: 40px;
+}
+
+.server-info-key {
+    width: 40px;
+    margin-right: 20px;
+    text-align: right;
+}
+
+.server-info-value {
+    flex-grow: 1;
+    font-size: 14px;
+    height: 24px;
+    border: none;
+    border-bottom: #ddd 1px solid;
+    outline-width: 0;
+    background: transparent;
+    max-width: 500px;
+}
+
+.server-info-value:focus {
+    border-bottom: #b0d8ce 2px solid;
+}
+
+.actions-container {
+    display: flex;
+    font-size: 14px;
+    color: #235d3a;
+    vertical-align: middle;
+    margin: 10px 0;
+    flex-wrap: wrap;
+}
+
+.action {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.action i {
+    margin-right: 5px;
+    font-size: 18px;
+}
+
+.settings-pane {
+    flex-grow: 1;
+}
+
+.action:hover {
+    cursor: pointer;
+}
+
+.action.disabled:hover {
+    cursor: default;
+}
+
+.action.disabled {
+    color: #999;
+}
+
+.server-info.active {
+    background: #ecf4ef;
+}
+
+.server-info {
+    display: flex;
+    padding: 10px;
+    margin: 10px 0 10px 0;
+}
+
+.hidden {
+    display: none;
+}

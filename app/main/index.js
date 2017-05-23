@@ -1,23 +1,15 @@
 'use strict';
 const path = require('path');
-const fs = require('fs');
 const os = require('os');
 const electron = require('electron');
 const {app} = require('electron');
 const ipc = require('electron').ipcMain;
 const {dialog} = require('electron');
-const https = require('https');
-const http = require('http');
 const electronLocalshortcut = require('electron-localshortcut');
 const Configstore = require('electron-config');
-const JsonDB = require('node-json-db');
 const isDev = require('electron-is-dev');
 const appMenu = require('./menu');
-const {linkIsInternal, skipImages} = require('./link-helper');
 const {appUpdater} = require('./autoupdater');
-
-const db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
-const data = db.getData('/');
 
 // Adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
@@ -45,48 +37,9 @@ const isUserAgent = 'ZulipElectron/' + app.getVersion() + ' ' + userOS();
 
 // Prevent window being garbage collected
 let mainWindow;
-let targetLink;
 
 // Load this url in main window
-const staticURL = 'file://' + path.join(__dirname, '../renderer', 'index.html');
-
-const targetURL = function () {
-	if (data.domain === undefined) {
-		return staticURL;
-	}
-	return data.domain;
-};
-
-function serverError(targetURL) {
-	if (targetURL.indexOf('localhost:') < 0 && data.domain) {
-		const req = https.request(targetURL + '/static/audio/zulip.ogg', res => {
-			console.log('Server StatusCode:', res.statusCode);
-			console.log('You are connected to:', res.req._headers.host);
-			if (res.statusCode >= 500 && res.statusCode <= 599) {
-				return dialog.showErrorBox('SERVER IS DOWN!', 'We are getting a ' + res.statusCode + ' error status from the server ' + res.req._headers.host + '. Please try again after some time or you may switch server.');
-			}
-		});
-		req.on('error', e => {
-			if (e.toString().indexOf('Error: self signed certificate') >= 0) {
-				const url = targetURL.replace(/^https?:\/\//, '');
-				console.log('Server StatusCode:', 200);
-				console.log('You are connected to:', url);
-			} else {
-				console.error(e);
-			}
-		});
-		req.end();
-	} else if (data.domain) {
-		const req = http.request(targetURL + '/static/audio/zulip.ogg', res => {
-			console.log('Server StatusCode:', res.statusCode);
-			console.log('You are connected to:', res.req._headers.host);
-		});
-		req.on('error', e => {
-			console.error(e);
-		});
-		req.end();
-	}
-}
+const mainURL = 'file://' + path.join(__dirname, '../renderer', 'main.html');
 
 function checkConnectivity() {
 	return dialog.showMessageBox({
@@ -113,6 +66,7 @@ const connectivityERR = [
 	'ERR_NAME_NOT_RESOLVED'
 ];
 
+// TODO
 function checkConnection() {
 	// eslint-disable-next-line no-unused-vars
 	mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
@@ -138,13 +92,6 @@ if (isAlreadyRunning) {
 	app.quit();
 }
 
-function checkWindowURL() {
-	if (data.domain !== undefined) {
-		return data.domain;
-	}
-	return targetLink;
-}
-
 function isWindowsOrmacOS() {
 	return process.platform === 'darwin' || process.platform === 'win32';
 }
@@ -161,20 +108,6 @@ function onClosed() {
 	mainWindow = null;
 }
 
-function updateDockBadge(title) {
-	if (title.indexOf('Zulip') === -1) {
-		return;
-	}
-
-	let messageCount = (/\(([0-9]+)\)/).exec(title);
-	messageCount = messageCount ? Number(messageCount[1]) : 0;
-
-	if (process.platform === 'darwin') {
-		app.setBadgeCount(messageCount);
-	}
-	mainWindow.webContents.send('tray', messageCount);
-}
-
 function createMainWindow() {
 	const win = new electron.BrowserWindow({
 		// This settings needs to be saved in config
@@ -184,11 +117,11 @@ function createMainWindow() {
 		icon: iconPath(),
 		minWidth: 600,
 		minHeight: 400,
+		titleBarStyle: 'hidden-inset',
 		webPreferences: {
-			preload: path.join(__dirname, '../renderer/js/preload.js'),
 			plugins: true,
 			allowDisplayingInsecureContent: true,
-			nodeIntegration: false
+			nodeIntegration: true
 		},
 		show: false
 	});
@@ -197,9 +130,7 @@ function createMainWindow() {
 		win.show();
 	});
 
-	serverError(targetURL());
-
-	win.loadURL(targetURL(), {
+	win.loadURL(mainURL, {
 		userAgent: isUserAgent + ' ' + win.webContents.getUserAgent()
 	});
 
@@ -241,12 +172,6 @@ function createMainWindow() {
 		});
 	});
 
-	// Stop page to update it's title
-	win.on('page-title-updated', (e, title) => {
-		e.preventDefault();
-		updateDockBadge(title);
-	});
-
 	//  To destroy tray icon when navigate to a new URL
 	win.webContents.on('will-navigate', e => {
 		if (e) {
@@ -257,30 +182,6 @@ function createMainWindow() {
 	return win;
 }
 
-// TODO - fix certificate errors
-
-// app.commandLine.appendSwitch('ignore-certificate-errors', 'true');
-
-// For self-signed certificate
-ipc.on('certificate-err', (e, domain) => {
-	const detail = `URL: ${domain} \n Error: Self-Signed Certificate`;
-	dialog.showMessageBox(mainWindow, {
-		title: 'Certificate error',
-		message: `Do you trust certificate from ${domain}?`,
-		// eslint-disable-next-line object-shorthand
-		detail: detail,
-		type: 'warning',
-		buttons: ['Yes', 'No'],
-		cancelId: 1
-		// eslint-disable-next-line object-shorthand
-	}, response => {
-		if (response === 0) {
-			// eslint-disable-next-line object-shorthand
-			db.push('/domain', domain);
-			mainWindow.loadURL(domain);
-		}
-	});
-});
 // eslint-disable-next-line max-params
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
 	event.preventDefault();
@@ -310,34 +211,20 @@ app.on('ready', () => {
 
 	// TODO - use global shortcut instead
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
-		mainWindow.reload();
-		mainWindow.webContents.send('destroytray');
+		page.send('reload');
+		// page.send('destroytray');
 	});
 
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
-		if (page.canGoBack()) {
-			page.goBack();
-		}
+		page.send('back');
 	});
 
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+]', () => {
-		if (page.canGoForward()) {
-			page.goForward();
-		}
+		page.send('forward');
 	});
 
 	page.on('dom-ready', () => {
-		page.insertCSS(fs.readFileSync(path.join(__dirname, '../renderer/css/preload.css'), 'utf8'));
 		mainWindow.show();
-	});
-
-	page.on('new-window', (event, url) => {
-		if (linkIsInternal(checkWindowURL(), url) && url.match(skipImages) === null) {
-			event.preventDefault();
-			return mainWindow.loadURL(url);
-		}
-		event.preventDefault();
-		electron.shell.openExternal(url);
 	});
 
 	page.once('did-frame-finish-load', () => {
@@ -352,27 +239,20 @@ app.on('ready', () => {
 		mainWindow.webContents.send('destroytray');
 	});
 	checkConnection();
+
+	ipc.on('reload-main', () => {
+		page.reload();
+	});
+
+	ipc.on('update-badge', (event, messageCount) => {
+		if (process.platform === 'darwin') {
+			app.setBadgeCount(messageCount);
+		}
+		page.send('tray', messageCount);
+	});
 });
 
 app.on('will-quit', () => {
 	// Unregister all the shortcuts so that they don't interfare with other apps
 	electronLocalshortcut.unregisterAll(mainWindow);
-});
-
-ipc.on('new-domain', (e, domain) => {
-	// MainWindow.loadURL(domain);
-	if (!mainWindow) {
-		mainWindow = createMainWindow();
-		mainWindow.loadURL(domain);
-		mainWindow.webContents.send('destroytray');
-	} else if (mainWindow.isMinimized()) {
-		mainWindow.webContents.send('destroytray');
-		mainWindow.loadURL(domain);
-		mainWindow.show();
-	} else {
-		mainWindow.webContents.send('destroytray');
-		mainWindow.loadURL(domain);
-		serverError(domain);
-	}
-	targetLink = domain;
 });

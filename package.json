@@ -19,7 +19,7 @@
     "url": "https://github.com/zulip/zulip-electron/issues"
   },
   "scripts": {
-    "start": "electron ./app/main",
+    "start": "electron app --disable-http-cache",
     "postinstall": "install-app-deps",
     "test": "gulp test && xo",
     "dev": "gulp dev",
@@ -75,7 +75,7 @@
     "win": {
       "target": "nsis",
       "icon": "build/icon.ico"
-      },
+    },
     "nsis": {
       "perMachine": true,
       "oneClick": false
@@ -104,7 +104,7 @@
     "esnext": true,
     "overrides": [
       {
-        "files": "app/main/*.js",
+        "files": "app*/**/*.js",
         "rules": {
           "max-lines": [
             "warn",
@@ -113,6 +113,10 @@
           "no-warning-comments": 0,
           "capitalized-comments": 0,
           "no-else-return": 0,
+          "no-path-concat": 0,
+          "no-alert": 0,
+          "guard-for-in": 0,
+          "prefer-promise-reject-errors": 0,
           "import/no-unresolved": 0,
           "import/no-extraneous-dependencies": 0
         }

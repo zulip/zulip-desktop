@@ -8,9 +8,8 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const shell = electron.shell;
 const appName = app.getName();
-//	Const tray = require('./tray');
 
-const {addDomain, about} = require('./windowmanager');
+const {about} = require('./windowmanager');
 
 function sendAction(action) {
 	const win = BrowserWindow.getAllWindows()[0];
@@ -35,8 +34,7 @@ const viewSubmenu = [
 		label: 'Reload',
 		click(item, focusedWindow) {
 			if (focusedWindow) {
-				focusedWindow.reload();
-				focusedWindow.webContents.send('destroytray');
+				sendAction('reload');
 			}
 		}
 	},
@@ -136,10 +134,12 @@ const darwinTpl = [
 				type: 'separator'
 			},
 			{
-				label: 'Change Zulip Server',
+				label: 'Manage Zulip Servers',
 				accelerator: 'Cmd+,',
-				click() {
-					addDomain();
+				click(item, focusedWindow) {
+					if (focusedWindow) {
+						sendAction('open-settings');
+					}
 				}
 			},
 			{
@@ -269,10 +269,12 @@ const otherTpl = [
 				type: 'separator'
 			},
 			{
-				label: 'Change Zulip Server',
+				label: 'Manage Zulip Servers',
 				accelerator: 'Ctrl+,',
-				click() {
-					addDomain();
+				click(item, focusedWindow) {
+					if (focusedWindow) {
+						sendAction('open-settings');
+					}
 				}
 			},
 			{

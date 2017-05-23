@@ -5,7 +5,7 @@ const electron = require('electron');
 
 const {ipcRenderer, remote} = electron;
 
-const {Tray, Menu, nativeImage} = remote;
+const {Tray, Menu, nativeImage, BrowserWindow} = remote;
 
 const APP_ICON = path.join(__dirname, '../../resources/tray', 'tray');
 
@@ -102,6 +102,16 @@ const renderNativeImage = function (arg) {
 		});
 };
 
+function sendAction(action) {
+	const win = BrowserWindow.getAllWindows()[0];
+
+	if (process.platform === 'darwin') {
+		win.restore();
+	}
+
+	win.webContents.send(action);
+}
+
 const createTray = function () {
 	window.tray = new Tray(iconPath());
 	const contextMenu = Menu.buildFromTemplate([{
@@ -114,9 +124,9 @@ const createTray = function () {
 		type: 'separator'
 	},
 	{
-		label: 'Change Zulip server',
+		label: 'Manage Zulip servers',
 		click() {
-			ipcRenderer.send('traychangeserver');
+			sendAction('open-settings');
 		}
 	},
 	{
@@ -125,8 +135,7 @@ const createTray = function () {
 	{
 		label: 'Reload',
 		click() {
-			remote.getCurrentWindow().reload();
-			window.tray.destroy();
+			sendAction('reload');
 		}
 	},
 	{
