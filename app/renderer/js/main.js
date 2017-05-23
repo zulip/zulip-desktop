@@ -6,6 +6,7 @@ const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
 const {linkIsInternal, skipImages} = require(__dirname + '/../main/link-helper');
 const {shell, ipcRenderer} = require('electron');
 
+
 class ServerManagerView {
 	constructor() {
 		this.$tabsContainer = document.getElementById('tabs-container');
@@ -74,6 +75,10 @@ class ServerManagerView {
 		this.$content.appendChild($webView);
 		this.isLoading = true;
 		$webView.addEventListener('dom-ready', this.endLoading.bind(this, index));
+		$webView.addEventListener('dom-ready', () => {
+			// We need to wait until the page title is ready to get badge count
+			setTimeout(() => this.updateBadge(index), 1000);
+		});
 		this.registerListeners($webView, index);
 		this.zoomFactors[index] = 1;
 	}
@@ -87,6 +92,7 @@ class ServerManagerView {
 		if ($webView === null) {
 			this.initWebView(url, index, this.settingsTabIndex === index);
 		} else {
+			this.updateBadge(index);
 			$webView.classList.remove('disabled');
 		}
 	}
@@ -156,6 +162,14 @@ class ServerManagerView {
 		return this.$tabsContainer.childNodes[index];
 	}
 
+	updateBadge (index) {
+		const $activeWebView = document.getElementById(`webview-${index}`);
+		const title = $activeWebView.getTitle();
+		let messageCount = (/\(([0-9]+)\)/).exec(title);
+		messageCount = messageCount ? Number(messageCount[1]) : 0;
+		ipcRenderer.send('update-badge', messageCount);
+}
+
 	registerListeners($webView, index) {
 		$webView.addEventListener('new-window', event => {
 			const {url} = event;
@@ -174,15 +188,7 @@ class ServerManagerView {
 				return;
 			}
 
-			let messageCount = (/\(([0-9]+)\)/).exec(title);
-			messageCount = messageCount ? Number(messageCount[1]) : 0;
-
-			this.badgeNumberList[index] = messageCount;
-
-			const sum = this.badgeNumberList.reduce((a, b) => {
-				return a + b;
-			}, 0);
-			ipcRenderer.send('update-badge', sum);
+	
 		});
 	}
 
