@@ -1,5 +1,11 @@
 const assert = require('assert')
 const Application = require('spectron').Application
+const chai = require('chai')
+const { expect } = chai
+const chaiAsPromised = require('chai-as-promised')
+
+chai.should()
+chai.use(chaiAsPromised)
 
 describe('application launch', function () {
   this.timeout(15000)
@@ -12,6 +18,10 @@ describe('application launch', function () {
     return this.app.start()
   })
 
+  beforeEach(function () {
+    chaiAsPromised.transferPromiseness = this.app.transferPromiseness
+  })
+
   afterEach(function () {
     if (this.app && this.app.isRunning()) {
       return this.app.stop()
@@ -19,9 +29,19 @@ describe('application launch', function () {
   })
 
   it('shows an initial window', function () {
-    return this.app.client.getWindowCount().then(function (count) {
-      assert.equal(count, 2)
-    })
+     return this.app.client.waitUntilWindowLoaded(5000)
+      .getWindowCount().should.eventually.equal(2)
+      .browserWindow.isMinimized().should.eventually.be.false
+      .browserWindow.isDevToolsOpened().should.eventually.be.false
+      .browserWindow.isVisible().should.eventually.be.true
+      .browserWindow.isFocused().should.eventually.be.true
+      .browserWindow.getBounds().should.eventually.have.property('width').and.be.above(0)
+      .browserWindow.getBounds().should.eventually.have.property('height').and.be.above(0)
+  })
+
+  it('sets up a default organization', function () {
+    return this.app.client.waitUntilWindowLoaded(5000)
+      .pause(10000);
   })
 })
 
