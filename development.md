@@ -1,14 +1,20 @@
 # Development guide
 
 ## Prerequisites
-* node >= v6.3.1
-> Use [nvm](https://github.com/creationix/nvm) to install the current stable version of node
 
-* python (v2.7.x recommended)
-* If you're on Debian or Ubuntu, you'll need to install following packages:
+* [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+* [Node.js](https://nodejs.org) >= v6.3.1
+* [node-gyp](https://github.com/nodejs/node-gyp#installation)
+* [python](https://www.python.org/downloads/release/python-2713/) (v2.7.x recommended)
+
+## System specific dependencies
+
+### Linux
+* Install following packages:
 ```sh
 $ sudo apt-get install build-essential libxext-dev libxtst-dev libxkbfile-dev
 ```
+
 ## Installation
 
 Clone the source locally:
