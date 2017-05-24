@@ -66,7 +66,8 @@ class PreferenceView {
 		document.getElementById(`delete-server-action-${index}`).addEventListener('click', () => {
 			this.domainUtil.removeDomain(index);
 			this.initServers();
-			alert('Success. Reload to apply changes.');
+			// alert('Success. Reload to apply changes.');
+			ipcRenderer.send('reload-main');
 			this.$reloadServerButton.classList.remove('hidden');
 		});
 	}
@@ -80,15 +81,15 @@ class PreferenceView {
 					<div class="server-info-right">
 						<div class="server-info-row">
 							<span class="server-info-key">Name</span>
-							<input class="server-info-value" placeholder="(Required)"/>
+							<input id="server-info-name" class="server-info-value" placeholder="(Required)"/>
 						</div>
 						<div class="server-info-row">
 							<span class="server-info-key">Url</span>
-							<input class="server-info-value" placeholder="(Required)"/>
+							<input id="server-info-url" class="server-info-value" placeholder="(Required)"/>
 						</div>
 						<div class="server-info-row">
 							<span class="server-info-key">Icon</span>
-							<input class="server-info-value" placeholder="(Optional)"/>
+							<input id="server-info-icon" class="server-info-value" placeholder="(Optional)"/>
 						</div>
 					</div>
 				</div>
@@ -120,7 +121,8 @@ class PreferenceView {
 				this.$newServerForm.classList.add('hidden');
 
 				this.initServers();
-				alert('Success. Reload to apply changes.');
+				// alert('Success. Reload to apply changes.');
+				ipcRenderer.send('reload-main');
 				this.$reloadServerButton.classList.remove('hidden');
 			}, errorMessage => {
 				alert(errorMessage);
