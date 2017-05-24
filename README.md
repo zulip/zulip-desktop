@@ -1,9 +1,9 @@
-# Zulip Desktop Client 
+# Zulip Desktop Client
 [![Build Status](https://travis-ci.org/zulip/zulip-electron.svg?branch=master)](https://travis-ci.org/zulip/zulip-electron)
 [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/zulip/zulip-electron?branch=master&svg=true)](https://ci.appveyor.com/project/akashnimare/zulip-electron/branch/master)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 
-Desktop client for Zulip. Available for Mac, Linux and Windows. 
+Desktop client for Zulip. Available for Mac, Linux and Windows.
 
 <img src="http://i.imgur.com/bDtK47q.png"/>
 
@@ -11,7 +11,7 @@ Desktop client for Zulip. Available for Mac, Linux and Windows.
 You can download the latest version from the [Releases](https://github.com/zulip/zulip-electron/releases/latest) page.
 
 # Features
-* Multiple Zulip server support
+* Multiple Zulip servers support
 * Native desktop Notifications
 * SpellChecker
 * OSX/Win/Linux installers
@@ -25,7 +25,7 @@ Manage Zulip Servers    | <kbd>Cmd/Ctrl</kbd> <kbd>,</kbd>
 Back                   | <kbd>Cmd/Ctrl</kbd> <kbd>[</kbd>
 Forward                | <kbd>Cmd/Ctrl</kbd> <kbd>]</kbd>
 
-# Development guide 
+# Development guide
 
 ## Prerequisites
 * node >= v6.3.1
@@ -56,7 +56,7 @@ Start the app:
 $ npm start
 ```
 
-Start and watch changes  
+Start and watch changes
 
 ```sh
 $ npm run dev
@@ -74,10 +74,13 @@ You can create Windows installer only when running on Windows, the same is true 
 
 # Contribute
 
-If you want to contribute please make sure to read [our documentation about contributing](docs/CONTRIBUTING.md) first.
+If you want to contribute please make sure to read [our documentation about contributing](./CONTRIBUTING.md) first.
 
 * [Issue Tracker](https://github.com/zulip/zulip-electron/issues)
 * [Source Code](https://github.com/zulip/zulip-electron/)
 
 # Troubleshooting
-If you have any problems running the app please see the [most common issues](docs/troubleshooting.md).
+If you have any problems running the app please see the [most common issues](./troubleshooting.md).
+
+# License
+licensed under [Apache-2.0](./LICENSE)
