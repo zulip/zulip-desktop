@@ -97,6 +97,7 @@
     "electron-connect": "0.4.8",
     "gulp": "3.9.1",
     "gulp-mocha": "3.0.1",
+    "chai-as-promised": "6.0.0",
     "spectron": "3.6.1",
     "xo": "0.18.1"
   },
