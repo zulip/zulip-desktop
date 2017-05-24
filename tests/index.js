@@ -59,29 +59,9 @@ describe('application launch', function () {
 			.pause(500) // Need to pause while server verification takes place
 			.then(() =>  app.browserWindow.reload())
 			.pause(1000)
-			// .then(() => app.browserWindow.click('//*[@id="add-action"]/i'))
 			.then(() => {
-				console.log('got here..', this)
-				app.browserWindow.focus()
-				console.log('got here..')
-				// app.client.pause(2000).click('//*[@id="settings-action"]/i')
-				// app.client.click('//*[@id="settings-action"]/i')
-				// console.log('got here..')
+				// app.browserWindow.focus()
 			})
-			.windowHandles()
-			.then(function (session) {
-				this.window(session.value[0])
-			})
-			.click('//*[@id="settings-action"]/i')
-			//.pause(1000)
-			.windowHandles()
-			.then(function (session) {
-				this.window(session.value[0])
-			})
-			.click('#new-server-action')
-			.setValue('input[id="server-info-name"]', 'Zulip')
-			.setValue('input[id="server-info-url"]', 'chat.zulip.org')
-			.click('#save-server-action')
 	})
 })
 
