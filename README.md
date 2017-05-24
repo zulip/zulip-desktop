@@ -3,13 +3,7 @@
 [![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/zulip/zulip-electron?branch=master&svg=true)](https://ci.appveyor.com/project/akashnimare/zulip-electron/branch/master)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 
-This is an experimental replacement for the [Zulip Desktop
-app](https://github.com/zulip/zulip-desktop) implemented in
-[Electron](http://electron.atom.io/).
-
-The goal is to achieve feature-compatibility with the old desktop app
-and then start adding cool features like easy support for
-multi-account, auto-updates etc.
+Desktop client for Zulip. Available for Mac, Linux and Windows. 
 
 ## Prerequisites
 * node >= v6.3.1
@@ -73,7 +67,7 @@ You can create Windows installer only when running on Windows, the same is true 
 
 
 ## Features
-
+- [x] Multi account support
 - [x] Native Notifications
 - [x] SpellChecker
 - [x] OSX/Win/Linux installer
