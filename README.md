@@ -86,7 +86,10 @@ Forward                | <kbd>Cmd/Ctrl</kbd> <kbd>]</kbd>
 
 ## Contribute
 
-If you want to contribute please make sure to read [our documentation about contributing](./CONTRIBUTING.md) first.
+If you want to contribute please make sure to read [our documentation about contributing](docs/CONTRIBUTING.md) first.
 
 * [Issue Tracker](https://github.com/zulip/zulip-electron/issues)
 * [Source Code](https://github.com/zulip/zulip-electron/)
+
+## Troubleshooting
+If you have any problems running the app please see the [most common issues](docs/troubleshooting.md).
