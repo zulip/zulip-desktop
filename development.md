@@ -10,7 +10,8 @@
 ## System specific dependencies
 
 ### Linux
-* Install following packages:
+
+Install following packages:
 ```sh
 $ sudo apt-get install build-essential libxext-dev libxtst-dev libxkbfile-dev
 ```
