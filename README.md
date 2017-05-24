@@ -4,6 +4,7 @@
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 
 Desktop client for Zulip. Available for Mac, Linux and Windows. 
+<img src="http://i.imgur.com/bDtK47q.png"/>
 
 ## Prerequisites
 * node >= v6.3.1
