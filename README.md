@@ -69,17 +69,17 @@ You can create Windows installer only when running on Windows, the same is true 
 
 
 ## Features
-- [x] Multi account support
-- [x] Native Notifications
-- [x] SpellChecker
-- [x] OSX/Win/Linux installer
-- [x] Automatic Updates (macOS/Windows)
-- [x] Keyboard shortcuts
+* Multiple Zulip server support
+* Native desktop Notifications
+* SpellChecker
+* OSX/Win/Linux installers
+* Automatic Updates (macOS/Windows)
+* Keyboard shortcuts
 
 Description            | Keys
 -----------------------| -----------------------
 Default shortcuts      | <kbd>Cmd/Ctrl</kbd> <kbd>k</kbd>
-Change Zulip Server    | <kbd>Cmd/Ctrl</kbd> <kbd>,</kbd>
+Manage Zulip Servers    | <kbd>Cmd/Ctrl</kbd> <kbd>,</kbd>
 Back                   | <kbd>Cmd/Ctrl</kbd> <kbd>[</kbd>
 Forward                | <kbd>Cmd/Ctrl</kbd> <kbd>]</kbd>
 
