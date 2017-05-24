@@ -1,4 +1,4 @@
-# Development
+# Development guide
 
 ## Prerequisites
 * node >= v6.3.1
