@@ -1,7 +1,7 @@
 html, body {
     height: 100%;
     margin: 0;
-    cursor: default;    
+    cursor: default;
 }
 
 #content {
@@ -59,7 +59,7 @@ html, body {
     border-radius: 0 3px 3px 0;
     width: 4px;
     position: absolute;
-    height: 31px;
+    height: 35px;
     left: -8px;
     top: 5px;
 }
@@ -68,8 +68,8 @@ html, body {
     background: #a4d3c4;
     background-size: 100%;
     border-radius: 4px;
-    width: 31px;
-    height: 31px;
+    width: 35px;
+    height: 35px;
     position: relative;
     margin: 5px 0;
     z-index: 11;
@@ -92,7 +92,7 @@ html, body {
 
 .tab .settings-tab i{
     font-size: 28px;
-    line-height: 44px;
+    line-height: 36px;
 }
 
 .tab.active .server-tab{
