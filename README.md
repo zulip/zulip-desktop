@@ -10,6 +10,21 @@ Desktop client for Zulip. Available for Mac, Linux and Windows.
 # Download
 You can download the latest version from the [Releases](https://github.com/zulip/zulip-electron/releases/latest) page.
 
+# Features
+* Multiple Zulip server support
+* Native desktop Notifications
+* SpellChecker
+* OSX/Win/Linux installers
+* Automatic Updates (macOS/Windows)
+* Keyboard shortcuts
+
+Description            | Keys
+-----------------------| -----------------------
+Default shortcuts      | <kbd>Cmd/Ctrl</kbd> <kbd>k</kbd>
+Manage Zulip Servers    | <kbd>Cmd/Ctrl</kbd> <kbd>,</kbd>
+Back                   | <kbd>Cmd/Ctrl</kbd> <kbd>[</kbd>
+Forward                | <kbd>Cmd/Ctrl</kbd> <kbd>]</kbd>
+
 # Development guide 
 
 ## Prerequisites
@@ -55,22 +70,6 @@ npm run dist
 It will start the packaging process for operating system you are running this command on. Ready for distribution file (e.g. dmg, windows installer, deb package) will be outputted to `dist` directory.
 
 You can create Windows installer only when running on Windows, the same is true for Linux and OSX. So to generate all three installers you need all three operating systems.
-
-
-## Features
-* Multiple Zulip server support
-* Native desktop Notifications
-* SpellChecker
-* OSX/Win/Linux installers
-* Automatic Updates (macOS/Windows)
-* Keyboard shortcuts
-
-Description            | Keys
------------------------| -----------------------
-Default shortcuts      | <kbd>Cmd/Ctrl</kbd> <kbd>k</kbd>
-Manage Zulip Servers    | <kbd>Cmd/Ctrl</kbd> <kbd>,</kbd>
-Back                   | <kbd>Cmd/Ctrl</kbd> <kbd>[</kbd>
-Forward                | <kbd>Cmd/Ctrl</kbd> <kbd>]</kbd>
 
 
 # Contribute
