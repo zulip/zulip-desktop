@@ -10,17 +10,17 @@ Desktop client for Zulip. Available for Mac, Linux and Windows.
 # Download
 You can download the latest version from the [Releases](https://github.com/zulip/zulip-electron/releases/latest) page.
 
+# Development guide 
+
 ## Prerequisites
 * node >= v6.3.1
 > Use [nvm](https://github.com/creationix/nvm) to install the current stable version of node
-
 
 * python (v2.7.x recommended)
 * If you're on Debian or Ubuntu, you'll need to install following packages:
 ```sh
 $ sudo apt-get install build-essential libxext-dev libxtst-dev libxkbfile-dev
 ```
-
 ## Installation
 
 Clone the source locally:
@@ -46,7 +46,7 @@ Start and watch changes
 ```sh
 $ npm run dev
 ```
-# Making a release
+### Making a release
 
 To package app into an installer use command:
 ```
@@ -73,12 +73,12 @@ Back                   | <kbd>Cmd/Ctrl</kbd> <kbd>[</kbd>
 Forward                | <kbd>Cmd/Ctrl</kbd> <kbd>]</kbd>
 
 
-## Contribute
+# Contribute
 
 If you want to contribute please make sure to read [our documentation about contributing](docs/CONTRIBUTING.md) first.
 
 * [Issue Tracker](https://github.com/zulip/zulip-electron/issues)
 * [Source Code](https://github.com/zulip/zulip-electron/)
 
-## Troubleshooting
+# Troubleshooting
 If you have any problems running the app please see the [most common issues](docs/troubleshooting.md).
