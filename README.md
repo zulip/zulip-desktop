@@ -25,7 +25,7 @@ Manage Zulip Servers    | <kbd>Cmd/Ctrl</kbd> <kbd>,</kbd>
 Back                   | <kbd>Cmd/Ctrl</kbd> <kbd>[</kbd>
 Forward                | <kbd>Cmd/Ctrl</kbd> <kbd>]</kbd>
 
-# Development guide
+# Development
 
 ## Prerequisites
 * node >= v6.3.1
@@ -83,4 +83,4 @@ If you want to contribute please make sure to read [our documentation about cont
 If you have any problems running the app please see the [most common issues](./troubleshooting.md).
 
 # License
-licensed under [Apache-2.0](./LICENSE)
+licensed under [Apache-2.0](./LICENSE).
