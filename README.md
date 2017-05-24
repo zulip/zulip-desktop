@@ -39,4 +39,4 @@ If you want to contribute please make sure to read [our documentation about cont
 If you have any problems running the app please see the [most common issues](./troubleshooting.md).
 
 # License
-licensed under [Apache-2.0](./LICENSE).
+Released under the [Apache-2.0](./LICENSE) license.
