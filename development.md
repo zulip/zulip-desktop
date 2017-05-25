@@ -48,9 +48,9 @@ To package app into an installer use command:
 ```
 npm run dist
 ```
-It will start the packaging process for operating system you are running this command on. Ready for distribution file (e.g. dmg, windows installer, deb package) will be outputted to `dist` directory.
+It will start the packaging process for the operating system you are running this command on. The ready for distribution file (e.g. dmg, windows installer, deb package) will be outputted to the `dist` directory.
 
-You can create Windows installer only when running on Windows, the same is true for Linux and OSX. So to generate all three installers you need all three operating systems.
+You can create a Windows installer only when running on Windows and similarly for Linux and OSX. So, to generate all three installers, you will need all three operating systems.
 
 # Troubleshooting
 If you have any problems running the app please see the [most common issues](./troubleshooting.md).
