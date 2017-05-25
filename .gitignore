@@ -7,3 +7,4 @@ config.gypi
 // osx garbage
 *.DS_Store
 .DS_Store
+.idea

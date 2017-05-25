@@ -131,5 +131,8 @@
       "browser",
       "mocha"
     ]
+  },
+  "dependencies": {
+    "chai": "^3.5.0"
   }
 }
