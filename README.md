@@ -11,7 +11,7 @@ Desktop client for Zulip. Available for Mac, Linux and Windows.
 You can download the latest version from the [Releases](https://github.com/zulip/zulip-electron/releases/latest) page.
 
 # Features
-* Multiple Zulip servers support
+* Sign in to multiple teams
 * Native desktop Notifications
 * SpellChecker
 * OSX/Win/Linux installers
