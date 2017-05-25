@@ -52,3 +52,5 @@ It will start the packaging process for operating system you are running this co
 
 You can create Windows installer only when running on Windows, the same is true for Linux and OSX. So to generate all three installers you need all three operating systems.
 
+# Troubleshooting
+If you have any problems running the app please see the [most common issues](./troubleshooting.md).
