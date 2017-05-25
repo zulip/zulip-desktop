@@ -48,15 +48,18 @@ describe('application launch', function () {
 
 		function createOrg (client, name, url, winIndex) {
 			return client
+				// Focus on settings webview
 				.then(switchToWebviewAtIndex.bind(null, self.app.client, winIndex))
-				.pause(1000)
+				.pause(1000) // wait for settings to load
+
+				// Fill settings form
 				.click('#new-server-action')
 				.setValue('input[id="server-info-name"]', name)
 				.setValue('input[id="server-info-url"]', url)
 				.click('#save-server-action')
 				.pause(500) // Need to pause while server verification takes place
 				.then(() =>  app.browserWindow.reload())
-			  .pause(1500)
+			  .pause(1500) // Wait for webview of org to load
 		}
 
 		function switchToWebviewAtIndex(client, index) {
@@ -70,8 +73,7 @@ describe('application launch', function () {
 		return this.app.client.waitUntilWindowLoaded(5000)
 			.then(() => createOrg(self.app.client, 'Zulip 1', 'chat.zulip.org', 1))
 			.then(switchToWebviewAtIndex.bind(null, self.app.client, 0))
-			.click('#add-action > i')
-			.pause(500)
+			.click('#add-action > i').pause(500)
 			.then(switchToWebviewAtIndex.bind(null, self.app.client, 2))
 			.then(() => createOrg(self.app.client, 'Zulip 2', 'chat.zulip.org', 2))
 	})
