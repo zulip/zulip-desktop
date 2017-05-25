@@ -210,7 +210,8 @@ app.on('ready', () => {
 
 	// TODO - use global shortcut instead
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
-		page.send('reload');
+		// page.send('reload');
+		mainWindow.reload();
 		// page.send('destroytray');
 	});
 

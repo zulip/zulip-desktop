@@ -58,7 +58,7 @@ class ServerManagerView {
 
 	initWebView(url, index, nodeIntegration = false) {
 		const webViewTemplate = `
-			<webview 
+			<webview
 				id="webview-${index}"
 				class="loading"
 				src="${url}"
@@ -185,10 +185,10 @@ class ServerManagerView {
 	}
 
 	registerIpcs() {
-		ipcRenderer.on('reload', () => {
-			const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
-			activeWebview.reload();
-		});
+		// ipcRenderer.on('reload', () => {
+		// 	const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
+		// 	activeWebview.reload();
+		// });
 
 		ipcRenderer.on('back', () => {
 			const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
