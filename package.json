@@ -99,7 +99,7 @@
     "gulp-mocha": "3.0.1",
     "chai-as-promised": "6.0.0",
     "chai": "^3.5.0",
-    "spectron": "3.6.1",
+    "spectron": "3.6.4",
     "xo": "0.18.1"
   },
   "xo": {
