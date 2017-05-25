@@ -98,6 +98,7 @@
     "gulp": "3.9.1",
     "gulp-mocha": "3.0.1",
     "chai-as-promised": "6.0.0",
+    "chai": "^3.5.0",
     "spectron": "3.6.1",
     "xo": "0.18.1"
   },
@@ -131,8 +132,5 @@
       "browser",
       "mocha"
     ]
-  },
-  "dependencies": {
-    "chai": "^3.5.0"
   }
 }
