@@ -4,8 +4,9 @@
 
 * [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 * [Node.js](https://nodejs.org) >= v6.3.1
-* [node-gyp](https://github.com/nodejs/node-gyp#installation)
 * [python](https://www.python.org/downloads/release/python-2713/) (v2.7.x recommended)
+* [node-gyp](https://github.com/nodejs/node-gyp#installation)
+
 
 ## System specific dependencies
 
