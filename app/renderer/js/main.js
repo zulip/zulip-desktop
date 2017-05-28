@@ -182,9 +182,6 @@ class ServerManagerView {
 		$webView.addEventListener('dom-ready', () => {
 			$webView.focus();
 		});
-		$webView.addEventListener('focus', () => {
-			console.log('webview focus...', $webView.focus)
-		})
 	}
 
 	registerIpcs() {
@@ -199,7 +196,7 @@ class ServerManagerView {
 				activeWebview.goBack();
 			}
 		});
-		
+
 		ipcRenderer.on('focus', () => {
 			const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
 			activeWebview.focus()
