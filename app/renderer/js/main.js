@@ -197,6 +197,11 @@ class ServerManagerView {
 			}
 		});
 
+		ipcRenderer.on('focus', () => {
+			const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
+			activeWebview.focus()
+		});
+
 		ipcRenderer.on('forward', () => {
 			const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
 			if (activeWebview.canGoForward()) {
