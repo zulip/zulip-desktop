@@ -63,7 +63,8 @@ const connectivityERR = [
 	'ERR_PROXY_CONNECTION_FAILED',
 	'ERR_CONNECTION_RESET',
 	'ERR_NOT_CONNECTED',
-	'ERR_NAME_NOT_RESOLVED'
+	'ERR_NAME_NOT_RESOLVED',
+	'ERR_NETWORK_CHANGED'
 ];
 
 // TODO
@@ -239,6 +240,7 @@ app.on('ready', () => {
 		}
 	});
 	electron.powerMonitor.on('resume', () => {
+		console.log("App resumed from sleep");
 		mainWindow.reload();
 		mainWindow.webContents.send('destroytray');
 	});
