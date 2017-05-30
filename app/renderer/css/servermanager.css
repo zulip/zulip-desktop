@@ -51,10 +51,6 @@ html, body {
     -webkit-app-region: drag;
 }
 
-#webview {
-    flex-grow: 1;
-}
-
 .action-button {
     display: flex;
     flex-direction: column;
@@ -140,5 +136,7 @@ webview.loading {
 }
 
 webview.disabled {
-    display: none;
+    flex: 0 1;
+    height: 0;
+    width: 0;
 }
