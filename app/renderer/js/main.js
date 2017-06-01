@@ -3,6 +3,7 @@
 require(__dirname + '/js/tray.js');
 
 const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
+const SystemUtil = require(__dirname + '/js/utils/system-util.js');
 const {linkIsInternal, skipImages} = require(__dirname + '/../main/link-helper');
 const {shell, ipcRenderer} = require('electron');
 
@@ -23,6 +24,7 @@ class ServerManagerView {
 
 	init() {
 		this.domainUtil = new DomainUtil();
+		this.systemUtil = new SystemUtil();
 		this.initTabs();
 		this.initActions();
 		this.registerIpcs();
@@ -65,6 +67,7 @@ class ServerManagerView {
 				${nodeIntegration ? 'nodeIntegration' : ''}
 				disablewebsecurity
 				preload="js/preload.js"
+				useragent="${this.systemUtil.getUserAgent()}"
 				webpreferences="allowRunningInsecureContent, javascript=yes">
 			</webview>
 		`;
