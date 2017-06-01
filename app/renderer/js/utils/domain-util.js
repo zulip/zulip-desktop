@@ -4,7 +4,7 @@ const {app} = require('electron').remote;
 const JsonDB = require('node-json-db');
 const request = require('request');
 
-const defaultIconUrl = 'https://chat.zulip.org/static/images/logo/zulip-icon-128x128.271d0f6a0ca2.png';
+const defaultIconUrl = __dirname + '../../../../resources/icon.png';
 class DomainUtil {
 	constructor() {
 		this.db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
