@@ -31,7 +31,6 @@ class DomainUtil {
 	}
 
 	addDomain(server) {
-		server.icon = server.icon || defaultIconUrl;
 		this.db.push('/domains[]', server, true);
 	}
 
@@ -48,16 +47,22 @@ class DomainUtil {
 		if (!hasPrefix) {
 			domain = (domain.indexOf('localhost:') >= 0) ? `http://${domain}` : `https://${domain}`;
 		}
-
-		const checkDomain = domain + '/static/audio/zulip.ogg';
+		let server = {};
+		const serverSettingsUrl = domain + '/api/v1/server_settings';
 
 		return new Promise((resolve, reject) => {
-			request(checkDomain, (error, response) => {
+			request(serverSettingsUrl, (error, response) => {
+				const data = JSON.parse(response.body);
+				if (data.hasOwnProperty('realm_icon') && data.realm_icon) {
+					server.icon = (domain + data.realm_icon) || defaultIconUrl;
+					server.url = data.realm_uri;
+					server.alias = data.realm_name;
+				}
 				if (!error && response.statusCode !== 404) {
-					resolve(domain);
+					resolve(server);
 				} else if (error.toString().indexOf('Error: self signed certificate') >= 0) {
 					if (window.confirm(`Do you trust certificate from ${domain}?`)) {
-						resolve(domain);
+						resolve(server);
 					} else {
 						reject('Untrusted Certificate.');
 					}
