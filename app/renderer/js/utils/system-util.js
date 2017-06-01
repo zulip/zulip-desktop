@@ -5,6 +5,17 @@ const {app} = require('electron').remote;
 const os = require('os');
 
 class SystemUtil {
+    constructor() {
+        this.connectivityERR = [
+            'ERR_INTERNET_DISCONNECTED',
+            'ERR_PROXY_CONNECTION_FAILED',
+            'ERR_CONNECTION_RESET',
+            'ERR_NOT_CONNECTED',
+            'ERR_NAME_NOT_RESOLVED',
+            'ERR_NETWORK_CHANGED'
+        ];
+    }
+    
     getOS() {
         if (os.platform() === 'darwin') {
             return 'Mac';

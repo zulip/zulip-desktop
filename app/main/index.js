@@ -3,7 +3,6 @@ const path = require('path');
 const electron = require('electron');
 const {app} = require('electron');
 const ipc = require('electron').ipcMain;
-const {dialog} = require('electron');
 const electronLocalshortcut = require('electron-localshortcut');
 const Configstore = require('electron-config');
 const isDev = require('electron-is-dev');
@@ -22,43 +21,6 @@ let mainWindow;
 
 // Load this url in main window
 const mainURL = 'file://' + path.join(__dirname, '../renderer', 'main.html');
-
-function checkConnectivity() {
-	return dialog.showMessageBox({
-		title: 'Internet connection problem',
-		message: 'No internet available! Try again?',
-		type: 'warning',
-		buttons: ['Try again', 'Close'],
-		defaultId: 0
-	}, index => {
-		if (index === 0) {
-			mainWindow.webContents.reload();
-			mainWindow.webContents.send('destroytray');
-		}
-		if (index === 1) {
-			app.quit();
-		}
-	});
-}
-const connectivityERR = [
-	'ERR_INTERNET_DISCONNECTED',
-	'ERR_PROXY_CONNECTION_FAILED',
-	'ERR_CONNECTION_RESET',
-	'ERR_NOT_CONNECTED',
-	'ERR_NAME_NOT_RESOLVED'
-];
-
-// TODO
-function checkConnection() {
-	// eslint-disable-next-line no-unused-vars
-	mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
-		const hasConnectivityErr = (connectivityERR.indexOf(errorDescription) >= 0);
-		if (hasConnectivityErr) {
-			console.error('error', errorDescription);
-			checkConnectivity();
-		}
-	});
-}
 
 const isAlreadyRunning = app.makeSingleInstance(() => {
 	if (mainWindow) {
@@ -222,7 +184,6 @@ app.on('ready', () => {
 		mainWindow.reload();
 		mainWindow.webContents.send('destroytray');
 	});
-	checkConnection();
 
 	ipc.on('reload-main', () => {
 		page.reload();
