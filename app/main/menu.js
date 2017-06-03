@@ -83,11 +83,20 @@ const viewSubmenu = [
 		}
 	},
 	{
-		label: 'Toggle Developer Tools',
+		label: 'Toggle DevTools for Zulip App',
 		accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
 		click(item, focusedWindow) {
 			if (focusedWindow) {
 				focusedWindow.webContents.toggleDevTools();
+			}
+		}
+	},
+	{
+		label: 'Toggle DevTools for Active Tab',
+		accelerator: process.platform === 'darwin' ? 'Alt+Command+U' : 'Ctrl+Shift+U',
+		click(item, focusedWindow) {
+			if (focusedWindow) {
+				sendAction('tab-devtools');
 			}
 		}
 	}

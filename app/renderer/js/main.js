@@ -280,6 +280,11 @@ class ServerManagerView {
 			activeWebview.executeJavaScript('shortcut()');
 		});
 
+		ipcRenderer.on('tab-devtools', () => {
+			const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
+			activeWebview.openDevTools();
+		});
+
 		ipcRenderer.on('open-settings', () => {
 			if (this.settingsTabIndex === -1) {
 				this.openSettings();
