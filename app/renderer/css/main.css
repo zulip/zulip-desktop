@@ -11,7 +11,7 @@ html, body {
 #content {
     display: flex;
     height: 100%;
-    background: #eee url(../img/loading.gif) no-repeat;
+    background: #eee url(../img/ic_loading.gif) no-repeat;
     background-size: 60px 60px;
     background-position: center;
 }
