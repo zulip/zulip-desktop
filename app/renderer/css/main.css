@@ -1,32 +1,6 @@
-@font-face {
-  font-family: 'Material Icons';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Material Icons'),
-       local('MaterialIcons-Regular'),
-       url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
-}
-
-/* Loading material icons locally */
-
-.material-icons {
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;  /* Preferred icon size */
-  display: inline-block;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
-  /* Support for all WebKit browsers. */
-  -webkit-font-smoothing: antialiased;
-  /* Support for Safari and Chrome. */
-  text-rendering: optimizeLegibility;
-}
-
+/*******************
+ *  General rules  *
+ *******************/
 html, body {
     height: 100%;
     margin: 0;
@@ -51,6 +25,43 @@ html, body {
     -webkit-app-region: drag;
 }
 
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Material Icons'),
+       local('MaterialIcons-Regular'),
+       url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+/*******************
+ *   Left Sidebar  *
+ *******************/
+ #tabs-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  /* Preferred icon size */
+  font-size: 24px;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+}
+
 .action-button {
     display: flex;
     flex-direction: column;
@@ -65,12 +76,6 @@ html, body {
 
 .action-button:hover i {
     color: #98a9b3;
-}
-
-#tabs-container {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
 }
 
 .tab {
@@ -124,6 +129,9 @@ html, body {
     opacity: 1;
 }
 
+/*******************
+ *   Webview Area  *
+ *******************/
 webview {
     opacity: 1;
     transition: opacity 0.3s;
