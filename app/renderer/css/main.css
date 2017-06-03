@@ -139,13 +139,10 @@ webview {
     flex-grow: 1;
 }
 
-webview.loading {
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
 webview.disabled {
     flex: 0 1;
     height: 0;
     width: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
 }
