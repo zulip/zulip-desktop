@@ -14,6 +14,7 @@ class ServerManagerView {
 		this.$tabsContainer = document.getElementById('tabs-container');
 
 		const $actionsContainer = document.getElementById('actions-container');
+		this.$reloadButton = $actionsContainer.querySelector('#reload-action');
 		this.$addServerButton = $actionsContainer.querySelector('#add-action');
 		this.$settingsButton = $actionsContainer.querySelector('#settings-action');
 		this.$content = document.getElementById('content');
@@ -63,6 +64,9 @@ class ServerManagerView {
 	}
 
 	initActions() {
+		this.$reloadButton.addEventListener('click', () => {
+			this.webviews[this.activeTabIndex].reload();
+		});
 		this.$addServerButton.addEventListener('click', this.openSettings.bind(this));
 		this.$settingsButton.addEventListener('click', this.openSettings.bind(this));
 	}
