@@ -3,8 +3,10 @@
 require(__dirname + '/js/tray.js');
 
 const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
+const SystemUtil = require(__dirname + '/js/utils/system-util.js');
 const {linkIsInternal, skipImages} = require(__dirname + '/../main/link-helper');
 const {shell, ipcRenderer} = require('electron');
+const {app, dialog} = require('electron').remote;
 
 class ServerManagerView {
 	constructor() {
@@ -23,6 +25,7 @@ class ServerManagerView {
 
 	init() {
 		this.domainUtil = new DomainUtil();
+		this.systemUtil = new SystemUtil();
 		this.initTabs();
 		this.initActions();
 		this.registerIpcs();
@@ -65,6 +68,7 @@ class ServerManagerView {
 				${nodeIntegration ? 'nodeIntegration' : ''}
 				disablewebsecurity
 				preload="js/preload.js"
+				useragent="${this.systemUtil.getUserAgent()}"
 				webpreferences="allowRunningInsecureContent, javascript=yes">
 			</webview>
 		`;
@@ -181,6 +185,36 @@ class ServerManagerView {
 		});
 		$webView.addEventListener('dom-ready', () => {
 			$webView.focus();
+		});
+
+		// eslint-disable-next-line no-unused-vars
+		$webView.addEventListener('did-fail-load', (event) => {
+			const {errorCode, errorDescription, validatedURL} = event;
+			const hasConnectivityErr = (this.systemUtil.connectivityERR.indexOf(errorDescription) >= 0);
+			if (hasConnectivityErr) {
+				console.error('error', errorDescription);
+				this.checkConnectivity();
+			}
+		});
+	}
+
+	checkConnectivity() {
+		return dialog.showMessageBox({
+			title: 'Internet connection problem',
+			message: 'No internet available! Try again?',
+			type: 'warning',
+			buttons: ['Try again', 'Close'],
+			defaultId: 0
+		}, index => {
+			if (index === 0) {
+				const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
+				activeWebview.reload();
+				ipcRenderer.send('reload');
+				ipcRenderer.send('destroytray');
+			}
+			if (index === 1) {
+				app.quit();
+			}
 		});
 	}
 
