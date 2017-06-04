@@ -120,11 +120,13 @@ class ServerManagerView {
 		this.activeTabIndex = index;
 	}
 
-	updateTitleAndBadge(title, messageCount) {
+	updateTitleAndBadge(title) {
 		let messageCountAll = 0;
-		for (const webview of this.webviews) {
-			messageCountAll += webview.badgeCount;
+		for (let i = 0; i < this.webviews.length; i++) {
+			messageCountAll += this.webviews[i].badgeCount;
+			this.tabs[i].updateBadge(this.webviews[i].badgeCount);
 		}
+
 		ipcRenderer.send('update-badge', {
 			title: title,
 			messageCount: messageCountAll

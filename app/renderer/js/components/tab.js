@@ -20,6 +20,7 @@ class Tab extends BaseComponent {
     template() {
         if (this.type == Tab.SERVER_TAB) {
             return `<div class="tab" domain="${this.url}">
+                        <div class="server-tab-badge"></div>
                         <div class="server-tab" style="background-image: url(${this.icon});"></div>
                     </div>`;
         } else {
@@ -33,9 +34,19 @@ class Tab extends BaseComponent {
 
     init() {
         this.$el = this.generateNodeFromTemplate(this.template());
+        this.$badge = this.$el.getElementsByClassName('server-tab-badge')[0];
 		this.$root.appendChild(this.$el);
 
         this.registerListeners();
+    }
+
+    updateBadge(count) {
+        if (count > 0) {
+            this.$badge.innerHTML = count;
+            this.$badge.classList.add('active');
+        } else {
+            this.$badge.classList.remove('active');
+        }
     }
 
     registerListeners() {

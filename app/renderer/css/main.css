@@ -18,7 +18,7 @@ html, body {
 
 #sidebar {
     background: #222c31;
-    width: 50px;
+    width: 54px;
     padding: 40px 0 20px 0;
     justify-content: space-between;
     display: flex;
@@ -84,7 +84,7 @@ html, body {
     margin: 5px 0;
 }
 
-.tab.active::before{
+.tab.active::before {
     content: "";
     background: #fff;
     border-radius: 0 3px 3px 0;
@@ -95,7 +95,7 @@ html, body {
     top: 5px;
 }
 
-.tab .server-tab{
+.tab .server-tab {
     background: #a4d3c4;
     background-size: 100%;
     border-radius: 4px;
@@ -105,31 +105,50 @@ html, body {
     margin: 5px 0;
     z-index: 11;
     line-height: 31px;
-    font-size: 32px;
-    font-family: sans-serif;
     color: #194a2b;
     text-align: center;
     overflow: hidden;
     opacity: 0.6;
 }
 
-.tab .server-tab:hover{
+.tab .server-tab:hover {
     opacity: 0.8;
 }
 
-.tab .settings-tab{
+.tab .settings-tab {
     background: #eee;
 }
 
-.tab .settings-tab i{
+.tab .settings-tab i {
     font-size: 28px;
     line-height: 36px;
 }
 
-.tab.active .server-tab{
+.tab.active .server-tab {
     opacity: 1;
 }
 
+.tab .server-tab-badge.active {
+    border-radius: 9px;
+    width: 17px;
+    height: 17px;
+    background-color: #f44336;
+    font-size: 12px;
+    font-family: sans-serif;
+    position: absolute;
+    right: -6px;
+    z-index: 15;
+    top: -2px;
+    float: right;
+    color: #fff;
+    text-align: center;
+    line-height: 17px;
+    display: block;
+}
+
+.tab .server-tab-badge {
+    display: none;
+}
 /*******************
  *   Webview Area  *
  *******************/
