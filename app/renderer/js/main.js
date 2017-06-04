@@ -58,7 +58,7 @@ class ServerManagerView {
 			index: index,
 			url: server.url,
 			name: server.alias,
-			onBadgeChange: this.updateBadge.bind(this),
+			onTitleChange: this.updateTitleAndBadge.bind(this),
 			nodeIntegration: false
 		}));
 	}
@@ -93,7 +93,7 @@ class ServerManagerView {
 			index: this.settingsTabIndex,
 			url: url,
 			name: "Settings",
-			onBadgeChange: this.updateBadge.bind(this),
+			onTitleChange: this.updateTitleAndBadge.bind(this),
 			nodeIntegration: true
 		}));
 
@@ -120,8 +120,15 @@ class ServerManagerView {
 		this.activeTabIndex = index;
 	}
 
-	updateBadge(messageCount) {
-		ipcRenderer.send('update-badge', messageCount);
+	updateTitleAndBadge(title, messageCount) {
+		let messageCountAll = 0;
+		for (const webview of this.webviews) {
+			messageCountAll += webview.badgeCount;
+		}
+		ipcRenderer.send('update-badge', {
+			title: title,
+			messageCount: messageCountAll
+		});
 	}
 
 	registerIpcs() {
@@ -147,7 +154,7 @@ class ServerManagerView {
 			});
 		}
 
-		ipcRenderer.on('open-settings', this.openSettings);
+		ipcRenderer.on('open-settings', this.openSettings.bind(this));
 	}
 }
 

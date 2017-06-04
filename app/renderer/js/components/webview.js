@@ -12,7 +12,7 @@ class WebView extends BaseComponent {
 	constructor(params) {
 		super();
 	
-        const {$root, url, index, name, onBadgeChange, nodeIntegration} = params;
+        const {$root, url, index, name, onTitleChange, nodeIntegration} = params;
         this.$root = $root;
         this.index = index;
         this.name = name;
@@ -24,6 +24,7 @@ class WebView extends BaseComponent {
         this.loading = false;
         this.domainUtil = new DomainUtil();
         this.systemUtil = new SystemUtil();
+        this.badgeCount = 0;
 	}
 
 	template() {
@@ -60,6 +61,12 @@ class WebView extends BaseComponent {
             }
 		});
 
+        this.$el.addEventListener('page-title-updated', event => {
+            const {title} = event;
+            this.badgeCount = this.getBadgeCount(title);
+            this.onTitleChange(title);
+		});
+
 		this.$el.addEventListener('dom-ready', this.show.bind(this));
 
         this.$el.addEventListener('did-fail-load', (event) => {
@@ -81,8 +88,7 @@ class WebView extends BaseComponent {
 		});
 	}
 
-    getBadgeCount() {
-        const title = this.$el.getTitle();
+    getBadgeCount(title) {
 		let messageCountInTitle = (/\(([0-9]+)\)/).exec(title);
 		return messageCountInTitle ? Number(messageCountInTitle[1]) : 0;
     }
@@ -91,7 +97,7 @@ class WebView extends BaseComponent {
         this.$el.classList.remove('disabled');
         this.focus()
         this.loading = false;
-        this.onBadgeChange(this.getBadgeCount());
+        this.onTitleChange(this.$el.getTitle());
     }
 
     focus() {
