@@ -42,6 +42,7 @@ class ServerManagerView {
 					index: i,
 					url: server.url,
 					name: server.alias,
+					onBadgeChange: this.updateBadge.bind(this),
 					nodeIntegration: false
 				}))
 			}
@@ -97,15 +98,16 @@ class ServerManagerView {
 			index: this.settingsTabIndex,
 			url: url,
 			name: "Settings",
+			onBadgeChange: this.updateBadge.bind(this),
 			nodeIntegration: true
 		}));
 		this.activateTab(this.settingsTabIndex);		
 	}
 
 	activateTab(index) {
-		// if (this.webviews[index].loading) {
-		// 	return;
-		// }
+		if (this.webviews[index].loading) {
+			return;
+		}
 
 		if (this.activeTabIndex !== -1) {
 			if (this.activeTabIndex === index) {
@@ -133,73 +135,33 @@ class ServerManagerView {
 		return this.$tabsContainer.childNodes[index];
 	}
 
-	updateBadge(index) {
-		const $activeWebView = document.getElementById(`webview-${index}`);
-		const title = $activeWebView.getTitle();
-		let messageCount = (/\(([0-9]+)\)/).exec(title);
-		messageCount = messageCount ? Number(messageCount[1]) : 0;
+	updateBadge(messageCount) {
 		ipcRenderer.send('update-badge', messageCount);
 	}
 
 	registerIpcs() {
-		// ipcRenderer.on('reload', () => {
-		// 	const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
-		// 	activeWebview.reload();
-		// });
+		const webviewListeners = {
+			'webview-reload': 'reload',
+			'back': 'back',
+			'focus': 'focus',
+			'forward': 'forward',
+			'zoomIn': 'zoomIn',
+			'zoomOut': 'zoomOut',
+			'zoomActualSize': 'zoomActualSize',
+			'log-out': 'logOut',
+			'shortcut': 'showShortcut',
+			'tab-devtools': 'openDevTools'
+		}
 
-		ipcRenderer.on('back', () => {
-			const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
-			if (activeWebview.canGoBack()) {
-				activeWebview.goBack();
-			}
-		});
-
-		ipcRenderer.on('focus', () => {
-			const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
-			activeWebview.focus();
-		});
-
-		ipcRenderer.on('forward', () => {
-			const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
-			if (activeWebview.canGoForward()) {
-				activeWebview.goForward();
-			}
-		});
-
-		// Handle zooming functionality
-		ipcRenderer.on('zoomIn', () => {
-			const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
-			this.zoomFactors[this.activeTabIndex] += 0.1;
-			activeWebview.setZoomFactor(this.zoomFactors[this.activeTabIndex]);
-		});
-
-		ipcRenderer.on('zoomOut', () => {
-			const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
-			this.zoomFactors[this.activeTabIndex] -= 0.1;
-			activeWebview.setZoomFactor(this.zoomFactors[this.activeTabIndex]);
-		});
-
-		ipcRenderer.on('zoomActualSize', () => {
-			const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
-			this.zoomFactors[this.activeTabIndex] = 1;
-			activeWebview.setZoomFactor(this.zoomFactors[this.activeTabIndex]);
-		});
-
-		ipcRenderer.on('log-out', () => {
-			const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
-			activeWebview.executeJavaScript('logout()');
-		});
-
-		ipcRenderer.on('shortcut', () => {
-			const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
-			activeWebview.executeJavaScript('shortcut()');
-		});
-
-		ipcRenderer.on('tab-devtools', () => {
-			const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
-			activeWebview.openDevTools();
-		});
-
+		for (const key in webviewListeners) {
+			ipcRenderer.on(key, () => {
+				const activeWebview = this.webviews[this.activeTabIndex];
+				if (activeWebview) {
+					activeWebview[webviewListeners[key]]();
+				}
+			});
+		}
+		
 		ipcRenderer.on('open-settings', () => {
 			if (this.settingsTabIndex === -1) {
 				this.openSettings();
