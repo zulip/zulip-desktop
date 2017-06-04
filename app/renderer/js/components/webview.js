@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const DomainUtil = require(__dirname + '/../utils/domain-util.js');
 const SystemUtil = require(__dirname + '/../utils/system-util.js');

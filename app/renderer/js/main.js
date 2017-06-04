@@ -6,8 +6,8 @@ const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
 const SystemUtil = require(__dirname + '/js/utils/system-util.js');
 const {linkIsInternal, skipImages} = require(__dirname + '/../main/link-helper');
 const {shell, ipcRenderer} = require('electron');
-const {app, dialog} = require('electron').remote;
 const WebView = require(__dirname + '/js/components/webview.js');
+const Tab = require(__dirname + '/js/components/tab.js');
 
 class ServerManagerView {
 	constructor() {
@@ -18,10 +18,10 @@ class ServerManagerView {
 		this.$settingsButton = $actionsContainer.querySelector('#settings-action');
 		this.$content = document.getElementById('content');
 
-		this.isLoading = false;
 		this.settingsTabIndex = -1;
 		this.activeTabIndex = -1;
 		this.webviews = [];
+		this.tabs = [];
 	}
 
 	init() {
@@ -34,38 +34,32 @@ class ServerManagerView {
 	initTabs() {
 		const servers = this.domainUtil.getDomains();
 		if (servers.length > 0) {
-			for (let i = 0; i < servers.length;i++) {
-				const server = servers[i];
-				this.initTab(server);
-				this.webviews.push(new WebView({
-					$root: this.$content,
-					index: i,
-					url: server.url,
-					name: server.alias,
-					onBadgeChange: this.updateBadge.bind(this),
-					nodeIntegration: false
-				}))
+			for (let i = 0; i < servers.length; i++) {
+				this.initServer(servers[i], i)
 			}
-
 			this.activateTab(0);
 		} else {
 			this.openSettings();
 		}
 	}
 
-	initTab(tab) {
-		const {
-			url,
-			icon
-		} = tab;
-		const tabTemplate = tab.template || `
-				<div class="tab" domain="${url}">
-					<div class="server-tab" style="background-image: url(${icon});"></div>
-				</div>`;
-		const $tab = this.insertNode(tabTemplate);
-		const index = this.$tabsContainer.childNodes.length;
-		this.$tabsContainer.appendChild($tab);
-		$tab.addEventListener('click', this.activateTab.bind(this, index));
+	initServer(server, index) {
+		this.tabs.push(new Tab({
+			url: server.url,
+			name: server.alias,
+			icon: server.icon,
+			type: Tab.SERVER_TAB,
+			$root: this.$tabsContainer,
+			onClick: this.activateTab.bind(this, index)
+		}));
+		this.webviews.push(new WebView({
+			$root: this.$content,
+			index: index,
+			url: server.url,
+			name: server.alias,
+			onBadgeChange: this.updateBadge.bind(this),
+			nodeIntegration: false
+		}));
 	}
 
 	initActions() {
@@ -80,19 +74,16 @@ class ServerManagerView {
 		}
 		const url = 'file://' + __dirname + '/preference.html';
 
-		const settingsTabTemplate = `
-				<div class="tab" domain="${url}">
-					<div class="server-tab settings-tab">
-						<i class="material-icons md-48">settings</i>
-					</div>
-				</div>`;
-		this.initTab({
-			alias: 'Settings',
-			url,
-			template: settingsTabTemplate
-		});
-
 		this.settingsTabIndex = this.webviews.length;
+
+		this.tabs.push(new Tab({
+			url: url,
+			name: 'Settings',
+			type: Tab.SETTINGS_TAB,
+			$root: this.$tabsContainer,
+			onClick: this.activateTab.bind(this, this.settingsTabIndex)
+		}));
+
 		this.webviews.push(new WebView({
 			$root: this.$content,
 			index: this.settingsTabIndex,
@@ -101,7 +92,8 @@ class ServerManagerView {
 			onBadgeChange: this.updateBadge.bind(this),
 			nodeIntegration: true
 		}));
-		this.activateTab(this.settingsTabIndex);		
+
+		this.activateTab(this.settingsTabIndex);
 	}
 
 	activateTab(index) {
@@ -113,26 +105,15 @@ class ServerManagerView {
 			if (this.activeTabIndex === index) {
 				return;
 			} else {
-				this.getTabAt(this.activeTabIndex).classList.remove('active');
+				this.tabs[this.activeTabIndex].deactivate();
 				this.webviews[this.activeTabIndex].hide();
 			}
 		}
 
-		const $tab = this.getTabAt(index);
-		$tab.classList.add('active');
+		this.tabs[index].activate();
 
 		this.webviews[index].load();
 		this.activeTabIndex = index;
-	}
-
-	insertNode(html) {
-		const wrapper = document.createElement('div');
-		wrapper.innerHTML = html;
-		return wrapper.firstElementChild;
-	}
-
-	getTabAt(index) {
-		return this.$tabsContainer.childNodes[index];
 	}
 
 	updateBadge(messageCount) {
@@ -161,14 +142,8 @@ class ServerManagerView {
 				}
 			});
 		}
-		
-		ipcRenderer.on('open-settings', () => {
-			if (this.settingsTabIndex === -1) {
-				this.openSettings();
-			} else {
-				this.activateTab(this.settingsTabIndex);
-			}
-		});
+
+		ipcRenderer.on('open-settings', this.openSettings);
 	}
 }
 
