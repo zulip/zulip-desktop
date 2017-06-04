@@ -165,3 +165,7 @@ webview.disabled {
     opacity: 0;
     transition: opacity 0.3s;
 }
+
+webview:focus {
+    outline: 0px solid transparent;
+}
