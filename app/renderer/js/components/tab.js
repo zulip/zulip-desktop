@@ -42,7 +42,9 @@ class Tab extends BaseComponent {
 
     updateBadge(count) {
         if (count > 0) {
-            this.$badge.innerHTML = count;
+			const formattedCount = count > 999? '1K+': count;
+
+            this.$badge.innerHTML = formattedCount;
             this.$badge.classList.add('active');
         } else {
             this.$badge.classList.remove('active');

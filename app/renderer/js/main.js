@@ -123,8 +123,10 @@ class ServerManagerView {
 	updateBadge() {
 		let messageCountAll = 0;
 		for (let i = 0; i < this.webviews.length; i++) {
-			messageCountAll += this.webviews[i].badgeCount;
-			this.tabs[i].updateBadge(this.webviews[i].badgeCount);
+			const count = this.webviews[i].badgeCount;
+			messageCountAll += count;
+
+			this.tabs[i].updateBadge(count);
 		}
 
 		ipcRenderer.send('update-badge', messageCountAll);

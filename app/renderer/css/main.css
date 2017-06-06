@@ -130,10 +130,11 @@ html, body {
 
 .tab .server-tab-badge.active {
     border-radius: 9px;
-    width: 17px;
+    min-width: 11px;
+    padding: 0 3px;
     height: 17px;
     background-color: #f44336;
-    font-size: 12px;
+    font-size: 10px;
     font-family: sans-serif;
     position: absolute;
     right: -6px;
