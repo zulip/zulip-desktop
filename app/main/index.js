@@ -189,12 +189,10 @@ app.on('ready', () => {
 		page.reload();
 	});
 
-	ipc.on('update-badge', (event, params) => {
-		const {title, messageCount} = params;
+	ipc.on('update-badge', (event, messageCount) => {
 		if (process.platform === 'darwin') {
 			app.setBadgeCount(messageCount);
 		}
-		mainWindow.setTitle(title);
 		page.send('tray', messageCount);
 	});
 });

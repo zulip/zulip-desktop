@@ -64,7 +64,7 @@ class WebView extends BaseComponent {
         this.$el.addEventListener('page-title-updated', event => {
             const {title} = event;
             this.badgeCount = this.getBadgeCount(title);
-            this.onTitleChange(title);
+            this.onTitleChange();
 		});
 
 		this.$el.addEventListener('dom-ready', this.show.bind(this));
