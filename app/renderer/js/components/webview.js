@@ -19,7 +19,7 @@ class WebView extends BaseComponent {
         this.url = url;
         this.nodeIntegration = nodeIntegration;
 
-        this.onBadgeChange = onBadgeChange;
+        this.onTitleChange = onTitleChange;
         this.zoomFactor = 1.0;
         this.loading = false;
         this.domainUtil = new DomainUtil();
