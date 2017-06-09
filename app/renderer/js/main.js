@@ -4,9 +4,9 @@ require(__dirname + '/js/tray.js');
 
 const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
 const SystemUtil = require(__dirname + '/js/utils/system-util.js');
-const {linkIsInternal, skipImages} = require(__dirname + '/../main/link-helper');
-const {shell, ipcRenderer} = require('electron');
-const {app, dialog} = require('electron').remote;
+const { linkIsInternal, skipImages } = require(__dirname + '/../main/link-helper');
+const { shell, ipcRenderer } = require('electron');
+const { app, dialog } = require('electron').remote;
 
 class ServerManagerView {
 	constructor() {
@@ -68,7 +68,6 @@ class ServerManagerView {
 				${nodeIntegration ? 'nodeIntegration' : ''}
 				disablewebsecurity
 				preload="js/preload.js"
-				useragent="${this.systemUtil.getUserAgent()}"
 				webpreferences="allowRunningInsecureContent, javascript=yes">
 			</webview>
 		`;
@@ -169,7 +168,7 @@ class ServerManagerView {
 
 	registerListeners($webView, index) {
 		$webView.addEventListener('new-window', event => {
-			const {url} = event;
+			const { url } = event;
 			const domainPrefix = this.domainUtil.getDomain(this.activeTabIndex).url;
 			if (linkIsInternal(domainPrefix, url) && url.match(skipImages) === null) {
 				event.preventDefault();
@@ -186,10 +185,13 @@ class ServerManagerView {
 		$webView.addEventListener('dom-ready', () => {
 			$webView.focus();
 		});
-
+		// Set webview's user-agent
+		$webView.addEventListener('did-start-loading', () => {
+			$webView.setUserAgent(this.systemUtil.getUserAgent() + $webView.getUserAgent());
+		});
 		// eslint-disable-next-line no-unused-vars
 		$webView.addEventListener('did-fail-load', (event) => {
-			const {errorCode, errorDescription, validatedURL} = event;
+			const { errorCode, errorDescription, validatedURL } = event;
 			const hasConnectivityErr = (this.systemUtil.connectivityERR.indexOf(errorDescription) >= 0);
 			if (hasConnectivityErr) {
 				console.error('error', errorDescription);
