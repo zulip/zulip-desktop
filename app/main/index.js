@@ -70,8 +70,8 @@ function createMainWindow() {
 	});
 
 	win.on('focus', () => {
-		win.webContents.send('focus')
-	})
+		win.webContents.send('focus');
+	});
 
 	win.once('ready-to-show', () => {
 		win.show();

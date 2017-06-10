@@ -4,9 +4,9 @@ require(__dirname + '/js/tray.js');
 
 const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
 const SystemUtil = require(__dirname + '/js/utils/system-util.js');
-const { linkIsInternal, skipImages } = require(__dirname + '/../main/link-helper');
-const { shell, ipcRenderer } = require('electron');
-const { app, dialog } = require('electron').remote;
+const {linkIsInternal, skipImages} = require(__dirname + '/../main/link-helper');
+const {shell, ipcRenderer} = require('electron');
+const {app, dialog} = require('electron').remote;
 
 class ServerManagerView {
 	constructor() {
@@ -168,7 +168,7 @@ class ServerManagerView {
 
 	registerListeners($webView, index) {
 		$webView.addEventListener('new-window', event => {
-			const { url } = event;
+			const {url} = event;
 			const domainPrefix = this.domainUtil.getDomain(this.activeTabIndex).url;
 			if (linkIsInternal(domainPrefix, url) && url.match(skipImages) === null) {
 				event.preventDefault();
@@ -189,9 +189,10 @@ class ServerManagerView {
 		$webView.addEventListener('did-start-loading', () => {
 			$webView.setUserAgent(this.systemUtil.getUserAgent() + $webView.getUserAgent());
 		});
-		// eslint-disable-next-line no-unused-vars
+		// eslint-disable-next-line arrow-parens
 		$webView.addEventListener('did-fail-load', (event) => {
-			const { errorCode, errorDescription, validatedURL } = event;
+			// eslint-disable-next-line no-unused-vars
+			const {errorCode, errorDescription, validatedURL} = event;
 			const hasConnectivityErr = (this.systemUtil.connectivityERR.indexOf(errorDescription) >= 0);
 			if (hasConnectivityErr) {
 				console.error('error', errorDescription);
@@ -235,7 +236,7 @@ class ServerManagerView {
 
 		ipcRenderer.on('focus', () => {
 			const activeWebview = document.getElementById(`webview-${this.activeTabIndex}`);
-			activeWebview.focus()
+			activeWebview.focus();
 		});
 
 		ipcRenderer.on('forward', () => {
