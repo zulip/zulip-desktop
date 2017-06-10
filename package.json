@@ -21,7 +21,7 @@
   "scripts": {
     "start": "electron app --disable-http-cache",
     "postinstall": "install-app-deps",
-    "test": "gulp test && xo",
+    "test": "xo",
     "dev": "gulp dev",
     "pack": "build --dir",
     "dist": "build",
