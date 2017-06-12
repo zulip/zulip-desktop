@@ -58,6 +58,7 @@ class ServerManagerView {
 			index: index,
 			url: server.url,
 			name: server.alias,
+			isActive: () => {return index == this.activeTabIndex},
 			onTitleChange: this.updateBadge.bind(this),
 			nodeIntegration: false
 		}));
@@ -93,6 +94,7 @@ class ServerManagerView {
 			index: this.settingsTabIndex,
 			url: url,
 			name: "Settings",
+			isActive: () => {return this.settingsTabIndex == this.activeTabIndex},
 			onTitleChange: this.updateBadge.bind(this),
 			nodeIntegration: true
 		}));
@@ -116,8 +118,8 @@ class ServerManagerView {
 
 		this.tabs[index].activate();
 
-		this.webviews[index].load();
 		this.activeTabIndex = index;
+		this.webviews[index].load();
 	}
 
 	updateBadge() {

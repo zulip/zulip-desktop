@@ -12,7 +12,7 @@ class WebView extends BaseComponent {
 	constructor(params) {
 		super();
 	
-        const {$root, url, index, name, onTitleChange, nodeIntegration} = params;
+        const {$root, url, index, name, isActive, onTitleChange, nodeIntegration} = params;
         this.$root = $root;
         this.index = index;
         this.name = name;
@@ -22,6 +22,7 @@ class WebView extends BaseComponent {
         this.onTitleChange = onTitleChange;
         this.zoomFactor = 1.0;
         this.loading = false;
+		this.isActive = isActive;
         this.domainUtil = new DomainUtil();
         this.systemUtil = new SystemUtil();
         this.badgeCount = 0;
@@ -93,6 +94,9 @@ class WebView extends BaseComponent {
     }
 
     show() {
+		// Do not show WebView if another tab was selected and this tab should be in background.
+		if (!this.isActive()) return;
+
         this.$el.classList.remove('disabled');
         this.focus()
         this.loading = false;
