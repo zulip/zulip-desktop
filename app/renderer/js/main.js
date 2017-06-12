@@ -93,7 +93,7 @@ class ServerManagerView {
 			index: this.settingsTabIndex,
 			url: url,
 			name: "Settings",
-			onTitleChange: this.updateTitleAndBadge.bind(this),
+			onTitleChange: this.updateBadge.bind(this),
 			nodeIntegration: true
 		}));
 

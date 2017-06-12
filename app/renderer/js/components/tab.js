@@ -25,6 +25,7 @@ class Tab extends BaseComponent {
                     </div>`;
         } else {
             return `<div class="tab" domain="${this.url}">
+                        <div class="server-tab-badge"></div>
                         <div class="server-tab settings-tab">
                             <i class="material-icons md-48">settings</i>
                         </div>
