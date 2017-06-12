@@ -44,7 +44,7 @@ class SystemUtil {
 	}
 
 	setUserAgent(webViewUserAgent) {
-		this.userAgent = 'ZulipElectron/' + webViewUserAgent;
+		this.userAgent = 'ZulipElectron/' + app.getVersion() + ' ' + webViewUserAgent;
 	}
 
 	getUserAgent() {
