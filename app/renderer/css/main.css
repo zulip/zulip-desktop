@@ -19,7 +19,7 @@ html, body {
 #sidebar {
     background: #222c31;
     width: 54px;
-    padding: 40px 0 20px 0;
+    padding: 10px 0 20px 0;
     justify-content: space-between;
     display: flex;
     flex-direction: column;
@@ -82,6 +82,7 @@ html, body {
 .tab {
     position: relative;
     margin: 5px 0;
+    cursor: pointer;
 }
 
 .tab.active::before {
