@@ -109,12 +109,12 @@ class PreferenceView {
 			this.$newServerButton.classList.add('hidden');
 		});
 		this.$saveServerButton.addEventListener('click', () => {
-			this.domainUtil.checkDomain(this.$newServerUrl.value).then(domain => {
-				const server = {
-					alias: this.$newServerAlias.value,
-					url: domain,
-					icon: this.$newServerIcon.value
-				};
+			const newServerConf = {
+				alias: this.$newServerAlias.value,
+				url: this.$newServerUrl.value,
+				icon: this.$newServerIcon.value
+			}
+			this.domainUtil.checkDomain(newServerConf).then(server => {				
 				this.domainUtil.addDomain(server);
 				this.$saveServerButton.classList.add('hidden');
 				this.$newServerButton.classList.remove('hidden');

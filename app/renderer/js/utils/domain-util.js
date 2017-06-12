@@ -4,7 +4,7 @@ const {app} = require('electron').remote;
 const JsonDB = require('node-json-db');
 const request = require('request');
 
-const defaultIconUrl = 'https://chat.zulip.org/static/images/logo/zulip-icon-128x128.271d0f6a0ca2.png';
+const defaultIconUrl = __dirname + '../../../../resources/icon.png';
 class DomainUtil {
 	constructor() {
 		this.db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
@@ -31,7 +31,6 @@ class DomainUtil {
 	}
 
 	addDomain(server) {
-		server.icon = server.icon || defaultIconUrl;
 		this.db.push('/domains[]', server, true);
 	}
 
@@ -43,7 +42,10 @@ class DomainUtil {
 		this.db.delete(`/domains[${index}]`);
 	}
 
-	checkDomain(domain) {
+	checkDomain(server) {
+		let domain = server.url;
+		server.icon = server.icon || defaultIconUrl;
+		
 		const hasPrefix = (domain.indexOf('http') === 0);
 		if (!hasPrefix) {
 			domain = (domain.indexOf('localhost:') >= 0) ? `http://${domain}` : `https://${domain}`;
@@ -54,16 +56,44 @@ class DomainUtil {
 		return new Promise((resolve, reject) => {
 			request(checkDomain, (error, response) => {
 				if (!error && response.statusCode !== 404) {
-					resolve(domain);
+					this.getServerSettings(domain).then((serverSettings) => {
+						resolve(serverSettings);
+					}, () => {
+						resolve(server);
+					})
 				} else if (error.toString().indexOf('Error: self signed certificate') >= 0) {
 					if (window.confirm(`Do you trust certificate from ${domain}?`)) {
-						resolve(domain);
+						this.getServerSettings(domain).then((serverSettings) => {
+							resolve(serverSettings);
+						}, () => {
+							resolve(server);
+						})
 					} else {
 						reject('Untrusted Certificate.');
 					}
 				} else {
 					reject('Not a valid Zulip server');
 				}
+			});
+		});
+	}
+
+	getServerSettings(domain) {
+		const serverSettingsUrl = domain + '/api/v1/server_settings';
+		return new Promise((resolve, reject) => {
+			request(serverSettingsUrl, (error, response) => {
+				if (!error && response.statusCode == 200) {
+					const data = JSON.parse(response.body);
+					if (data.hasOwnProperty('realm_icon') && data.realm_icon) {
+						const server = {
+							icon: domain + data.realm_icon,
+							url: data.realm_uri,
+							alias: data.realm_name
+						}
+						resolve(server);
+					}
+				} 
+				reject('Zulip server version < 1.6.');
 			});
 		});
 	}
