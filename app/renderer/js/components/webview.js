@@ -35,7 +35,6 @@ class WebView extends BaseComponent {
                     ${this.nodeIntegration ? 'nodeIntegration' : ''}
                     disablewebsecurity
                     preload="js/preload.js"
-                    useragent="${this.systemUtil.getUserAgent()}"
                     webpreferences="allowRunningInsecureContent, javascript=yes">
                 </webview>`;
     }
@@ -80,7 +79,7 @@ class WebView extends BaseComponent {
 
 		this.$el.addEventListener('did-start-loading', () => {
 			let userAgent = this.systemUtil.getUserAgent();
-			if (!this.systemUtil.getUserAgent()) {
+			if (!userAgent) {
 				this.systemUtil.setUserAgent(this.$el.getUserAgent());
 				userAgent = this.systemUtil.getUserAgent();
 			}
