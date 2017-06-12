@@ -4,8 +4,16 @@ const {app} = require('electron').remote;
 
 const os = require('os');
 
+let instance = null;
+
 class SystemUtil {
 	constructor() {
+		if (instance) {
+			return instance;
+		} else {
+			instance = this;
+		}
+
 		this.connectivityERR = [
 			'ERR_INTERNET_DISCONNECTED',
 			'ERR_PROXY_CONNECTION_FAILED',
@@ -14,6 +22,9 @@ class SystemUtil {
 			'ERR_NAME_NOT_RESOLVED',
 			'ERR_NETWORK_CHANGED'
 		];
+		this.userAgent = null;
+
+		return instance;
 	}
 
 	getOS() {
@@ -32,8 +43,12 @@ class SystemUtil {
 		}
 	}
 
+	setUserAgent(webViewUserAgent) {
+		this.userAgent = 'ZulipElectron/' + app.getVersion() + ' ' + webViewUserAgent;
+	}
+
 	getUserAgent() {
-		return 'ZulipElectron/' + app.getVersion() + ' ' + this.getOS();
+		return this.userAgent;
 	}
 }
 

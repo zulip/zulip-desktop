@@ -187,7 +187,12 @@ class ServerManagerView {
 		});
 		// Set webview's user-agent
 		$webView.addEventListener('did-start-loading', () => {
-			$webView.setUserAgent(this.systemUtil.getUserAgent() + $webView.getUserAgent());
+			let userAgent = this.systemUtil.getUserAgent();
+			if (!this.systemUtil.getUserAgent()) {
+				this.systemUtil.setUserAgent($webView.getUserAgent());
+				userAgent = this.systemUtil.getUserAgent();
+			}
+			$webView.setUserAgent(userAgent);
 		});
 		// eslint-disable-next-line arrow-parens
 		$webView.addEventListener('did-fail-load', (event) => {
