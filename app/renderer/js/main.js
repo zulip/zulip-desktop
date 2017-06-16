@@ -1,11 +1,9 @@
 'use strict';
 
 require(__dirname + '/js/tray.js');
+const {ipcRenderer} = require('electron');
 
 const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
-const SystemUtil = require(__dirname + '/js/utils/system-util.js');
-const {linkIsInternal, skipImages} = require(__dirname + '/../main/link-helper');
-const {shell, ipcRenderer} = require('electron');
 const WebView = require(__dirname + '/js/components/webview.js');
 const Tab = require(__dirname + '/js/components/tab.js');
 
@@ -36,7 +34,7 @@ class ServerManagerView {
 		const servers = this.domainUtil.getDomains();
 		if (servers.length > 0) {
 			for (let i = 0; i < servers.length; i++) {
-				this.initServer(servers[i], i)
+				this.initServer(servers[i], i);
 			}
 			this.activateTab(0);
 		} else {
@@ -55,10 +53,12 @@ class ServerManagerView {
 		}));
 		this.webviews.push(new WebView({
 			$root: this.$content,
-			index: index,
+			index,
 			url: server.url,
 			name: server.alias,
-			isActive: () => {return index == this.activeTabIndex},
+			isActive: () => {
+				return index === this.activeTabIndex;
+			},
 			onTitleChange: this.updateBadge.bind(this),
 			nodeIntegration: false
 		}));
@@ -82,7 +82,7 @@ class ServerManagerView {
 		this.settingsTabIndex = this.webviews.length;
 
 		this.tabs.push(new Tab({
-			url: url,
+			url,
 			name: 'Settings',
 			type: Tab.SETTINGS_TAB,
 			$root: this.$tabsContainer,
@@ -92,9 +92,11 @@ class ServerManagerView {
 		this.webviews.push(new WebView({
 			$root: this.$content,
 			index: this.settingsTabIndex,
-			url: url,
-			name: "Settings",
-			isActive: () => {return this.settingsTabIndex == this.activeTabIndex},
+			url,
+			name: 'Settings',
+			isActive: () => {
+				return this.settingsTabIndex === this.activeTabIndex;
+			},
 			onTitleChange: this.updateBadge.bind(this),
 			nodeIntegration: true
 		}));
@@ -137,16 +139,16 @@ class ServerManagerView {
 	registerIpcs() {
 		const webviewListeners = {
 			'webview-reload': 'reload',
-			'back': 'back',
-			'focus': 'focus',
-			'forward': 'forward',
-			'zoomIn': 'zoomIn',
-			'zoomOut': 'zoomOut',
-			'zoomActualSize': 'zoomActualSize',
+			back: 'back',
+			focus: 'focus',
+			forward: 'forward',
+			zoomIn: 'zoomIn',
+			zoomOut: 'zoomOut',
+			zoomActualSize: 'zoomActualSize',
 			'log-out': 'logOut',
-			'shortcut': 'showShortcut',
+			shortcut: 'showShortcut',
 			'tab-devtools': 'openDevTools'
-		}
+		};
 
 		for (const key in webviewListeners) {
 			ipcRenderer.on(key, () => {
