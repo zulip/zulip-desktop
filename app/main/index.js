@@ -48,12 +48,6 @@ const iconPath = () => {
 	return APP_ICON + (process.platform === 'win32' ? '.ico' : '.png');
 };
 
-// function onClosed() {
-// 	// Dereference the window
-// 	// For multiple windows, store them in an array
-// 	mainWindow = null;
-// }
-
 function createMainWindow() {
 	const win = new electron.BrowserWindow({
 		// This settings needs to be saved in config
@@ -81,7 +75,7 @@ function createMainWindow() {
 
 	win.loadURL(mainURL);
 
-	// win.on('closed', onClosed);
+	// Keep the app running in background on close event
 	win.on('close', e => {
 		if (!isQuitting) {
 			e.preventDefault();
@@ -161,7 +155,6 @@ app.on('activate', () => {
 app.on('ready', () => {
 	electron.Menu.setApplicationMenu(appMenu);
 	mainWindow = createMainWindow();
-	// Not using for now // tray.create();
 
 	const page = mainWindow.webContents;
 
