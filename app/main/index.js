@@ -19,6 +19,8 @@ const conf = new Configstore();
 // Prevent window being garbage collected
 let mainWindow;
 
+let isQuitting = false;
+
 // Load this url in main window
 const mainURL = 'file://' + path.join(__dirname, '../renderer', 'main.html');
 
@@ -45,12 +47,6 @@ const APP_ICON = path.join(__dirname, '../resources', 'Icon');
 const iconPath = () => {
 	return APP_ICON + (process.platform === 'win32' ? '.ico' : '.png');
 };
-
-function onClosed() {
-	// Dereference the window
-	// For multiple windows, store them in an array
-	mainWindow = null;
-}
 
 function createMainWindow() {
 	const win = new electron.BrowserWindow({
@@ -79,7 +75,19 @@ function createMainWindow() {
 
 	win.loadURL(mainURL);
 
-	win.on('closed', onClosed);
+	// Keep the app running in background on close event
+	win.on('close', e => {
+		if (!isQuitting) {
+			e.preventDefault();
+
+			if (process.platform === 'darwin') {
+				app.hide();
+			} else {
+				win.hide();
+			}
+		}
+	});
+
 	win.setTitle('Zulip');
 
 	// Let's save browser window position
@@ -136,9 +144,6 @@ app.on('certificate-error', (event, webContents, url, error, certificate, callba
 app.on('window-all-closed', () => {
 	// Unregister all the shortcuts so that they don't interfare with other apps
 	electronLocalshortcut.unregisterAll(mainWindow);
-	if (process.platform !== 'darwin') {
-		app.quit();
-	}
 });
 
 app.on('activate', () => {
@@ -150,7 +155,6 @@ app.on('activate', () => {
 app.on('ready', () => {
 	electron.Menu.setApplicationMenu(appMenu);
 	mainWindow = createMainWindow();
-	// Not using for now // tray.create();
 
 	const page = mainWindow.webContents;
 
@@ -185,6 +189,14 @@ app.on('ready', () => {
 		mainWindow.webContents.send('destroytray');
 	});
 
+	ipc.on('focus-app', () => {
+		mainWindow.show();
+	});
+
+	ipc.on('quit-app', () => {
+		app.quit();
+	});
+
 	ipc.on('reload-main', () => {
 		page.reload();
 	});
@@ -200,4 +212,8 @@ app.on('ready', () => {
 app.on('will-quit', () => {
 	// Unregister all the shortcuts so that they don't interfare with other apps
 	electronLocalshortcut.unregisterAll(mainWindow);
+});
+
+app.on('before-quit', () => {
+	isQuitting = true;
 });
