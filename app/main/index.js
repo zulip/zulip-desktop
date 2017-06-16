@@ -196,6 +196,14 @@ app.on('ready', () => {
 		mainWindow.webContents.send('destroytray');
 	});
 
+	ipc.on('focus-app', () => {
+		mainWindow.show();
+	});
+
+	ipc.on('quit-app', () => {
+		app.quit();
+	});
+
 	ipc.on('reload-main', () => {
 		page.reload();
 	});
