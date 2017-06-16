@@ -26,4 +26,4 @@ class LinkUtil {
     }
 }
 
-module.exports = LinkUtil;
+module.exports = new LinkUtil();

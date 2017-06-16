@@ -24,14 +24,13 @@ class ServerManagerView {
 	}
 
 	init() {
-		this.domainUtil = new DomainUtil();
 		this.initTabs();
 		this.initActions();
 		this.registerIpcs();
 	}
 
 	initTabs() {
-		const servers = this.domainUtil.getDomains();
+		const servers = DomainUtil.getDomains();
 		if (servers.length > 0) {
 			for (let i = 0; i < servers.length; i++) {
 				this.initServer(servers[i], i);

@@ -23,9 +23,6 @@ class WebView extends BaseComponent {
 		this.zoomFactor = 1.0;
 		this.loading = false;
 		this.isActive = isActive;
-		this.domainUtil = new DomainUtil();
-		this.systemUtil = new SystemUtil();
-		this.linkUtil = new LinkUtil();
 		this.badgeCount = 0;
 	}
 
@@ -51,9 +48,9 @@ class WebView extends BaseComponent {
 	registerListeners() {
 		this.$el.addEventListener('new-window', event => {
 			const {url} = event;
-			const domainPrefix = this.domainUtil.getDomain(this.index).url;
+			const domainPrefix = DomainUtil.getDomain(this.index).url;
 
-			if (this.linkUtil.isInternal(domainPrefix, url)) {
+			if (LinkUtil.isInternal(domainPrefix, url)) {
 				event.preventDefault();
 				this.$el.loadURL(url);
 			} else {
@@ -72,7 +69,7 @@ class WebView extends BaseComponent {
 
 		this.$el.addEventListener('did-fail-load', event => {
 			const {errorDescription} = event;
-			const hasConnectivityErr = (this.systemUtil.connectivityERR.indexOf(errorDescription) >= 0);
+			const hasConnectivityErr = (SystemUtil.connectivityERR.indexOf(errorDescription) >= 0);
 			if (hasConnectivityErr) {
 				console.error('error', errorDescription);
 				this.checkConnectivity();
@@ -80,10 +77,10 @@ class WebView extends BaseComponent {
 		});
 
 		this.$el.addEventListener('did-start-loading', () => {
-			let userAgent = this.systemUtil.getUserAgent();
+			let userAgent = SystemUtil.getUserAgent();
 			if (!userAgent) {
-				this.systemUtil.setUserAgent(this.$el.getUserAgent());
-				userAgent = this.systemUtil.getUserAgent();
+				SystemUtil.setUserAgent(this.$el.getUserAgent());
+				userAgent = SystemUtil.getUserAgent();
 			}
 			this.$el.setUserAgent(userAgent);
 		});

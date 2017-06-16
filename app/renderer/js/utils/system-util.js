@@ -52,4 +52,4 @@ class SystemUtil {
 	}
 }
 
-module.exports = SystemUtil;
+module.exports = new SystemUtil();
