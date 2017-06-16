@@ -1,143 +1,173 @@
-* {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-                 Helvetica, Arial, sans-serif, "Apple Color Emoji",
-                 "Segoe UI Emoji", "Segoe UI Symbol";
-    -webkit-font-smoothing: antialiased;
-    color: #444;
-
-    vertical-align: top;
-}
-
-body {
+/*******************
+ *  General rules  *
+ *******************/
+html, body {
+    height: 100%;
     margin: 0;
-    background-image: url(../img/topography.png);
+    cursor: default;
+    user-select:none;
 }
 
-input,
-button {
-    font-size: 1em;
+#content {
+    display: flex;
+    height: 100%;
+    background: #eee url(../img/ic_loading.gif) no-repeat;
+    background-size: 60px 60px;
+    background-position: center;
 }
 
-header {
-    text-align: center;
-    margin: 0px 0px 30px 0px;
+#sidebar {
+    background: #222c31;
+    width: 54px;
+    padding: 10px 0 20px 0;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    -webkit-app-region: drag;
 }
 
-header img {
-    width: 50px;
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Material Icons'),
+       local('MaterialIcons-Regular'),
+       url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
 }
 
-header h1 {
-    display: inline-block;
-    margin: 10px 0px 10px 10px;
-
-    font-weight: 500;
+/*******************
+ *   Left Sidebar  *
+ *******************/
+ #tabs-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
-
-section.server {
-    display: inline-block;
-    padding: 50px;
-    margin-top: calc(50vh - 135px);
-
-    text-align: left;
-
-    box-shadow: 0px 0px 100px rgba(0,0,0,0.15);
-
-    background-color: #fff;
-
-    animation-name: pulse;
-    animation-duration: 2s;
-    animation-iteration-count: infinite;
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  /* Preferred icon size */
+  font-size: 24px;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
 }
 
-section.shake {
-    animation-name: shake;
-    animation-duration: 0.5s;
-    animation-iteration-count: 1;
+.action-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
 }
 
-form label {
-    display: block;
-
-    font-weight: 600;
-    margin-bottom: 5px;
+.action-button i {
+    color: #6c8592;
+    font-size: 28px;
 }
 
-form input[type=text] {
-    width: 300px;
-    border: 2px solid #ccc;
-    padding: 10px 10px;
-
-    outline: none;
-
-    transition: all 0.2s ease;
+.action-button:hover i {
+    color: #98a9b3;
 }
 
-form input[type=text]:hover,
-form input[type=text]:focus {
-    border-color: #aaa;
-}
-
-form button {
-    padding: 10px 10px;
-
-    background-color: #52c2af;
-    color: #fff;
-
-    border: 2px solid #52c2af;
-    outline: none;
-
+.tab {
+    position: relative;
+    margin: 5px 0;
     cursor: pointer;
-
-    transition: all 0.2s ease;
 }
 
-form button:hover {
-    background-color: #30b09a;
-    border-color: #30b09a;
+.tab.active::before {
+    content: "";
+    background: #fff;
+    border-radius: 0 3px 3px 0;
+    width: 4px;
+    position: absolute;
+    height: 35px;
+    left: -10px;
+    top: 5px;
 }
 
-form button:active {
-    background-color: #14957f;
-    border-color: #14957f;
-}
-
-form #error {
-    margin: 5px 0px 0px;
-
-    font-size: 0.8em;
-    font-weight: 600;
-
-    color: rgb(201, 107, 107);
-
-    opacity: 0;
-    transform: translateY(-10px);
-
-    height: 15px;
-
-    transition: all 0.2s ease;
-}
-
-form #error.show {
-    opacity: 1;
-    transform: translateY(0px);
-}
-
-/* -- generic components -- */
-.center {
+.tab .server-tab {
+    background: #a4d3c4;
+    background-size: 100%;
+    border-radius: 4px;
+    width: 35px;
+    height: 35px;
+    position: relative;
+    margin: 5px 0;
+    z-index: 11;
+    line-height: 31px;
+    color: #194a2b;
     text-align: center;
+    overflow: hidden;
+    opacity: 0.6;
 }
 
-@keyframes pulse {
-    0% { box-shadow: 0px 0px 100px rgba(0,0,0,0.15); }
-    50% { box-shadow: 0px 0px 100px rgba(0,0,0,0.30); }
-    100% { box-shadow: 0px 0px 100px rgba(0,0,0,0.15); }
+.tab .server-tab:hover {
+    opacity: 0.8;
 }
 
-@keyframes shake {
-  10%, 90% { transform: translate3d(-1px, 0, 0); }
-  20%, 80% { transform: translate3d(2px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-  40%, 60% { transform: translate3d(4px, 0, 0); }
+.tab .settings-tab {
+    background: #eee;
+}
+
+.tab .settings-tab i {
+    font-size: 28px;
+    line-height: 36px;
+}
+
+.tab.active .server-tab {
+    opacity: 1;
+}
+
+.tab .server-tab-badge.active {
+    border-radius: 9px;
+    min-width: 11px;
+    padding: 0 3px;
+    height: 17px;
+    background-color: #f44336;
+    font-size: 10px;
+    font-family: sans-serif;
+    position: absolute;
+    right: -6px;
+    z-index: 15;
+    top: -2px;
+    float: right;
+    color: #fff;
+    text-align: center;
+    line-height: 17px;
+    display: block;
+}
+
+.tab .server-tab-badge {
+    display: none;
+}
+/*******************
+ *   Webview Area  *
+ *******************/
+webview {
+    opacity: 1;
+    transition: opacity 0.3s;
+    flex-grow: 1;
+}
+
+webview.disabled {
+    flex: 0 1;
+    height: 0;
+    width: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+webview:focus {
+    outline: 0px solid transparent;
 }
