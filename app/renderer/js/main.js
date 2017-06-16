@@ -103,6 +103,38 @@ class ServerManagerView {
 		this.activateTab(this.settingsTabIndex);
 	}
 
+	openAbout() {
+		if (this.settingsTabIndex !== -1) {
+			this.activateTab(this.settingsTabIndex);
+			return;
+		}
+		const url = 'file://' + __dirname + '/about.html';
+
+		this.settingsTabIndex = this.webviews.length;
+
+		this.tabs.push(new Tab({
+			url,
+			name: 'Settings',
+			type: Tab.SETTINGS_TAB,
+			$root: this.$tabsContainer,
+			onClick: this.activateTab.bind(this, this.settingsTabIndex)
+		}));
+
+		this.webviews.push(new WebView({
+			$root: this.$content,
+			index: this.settingsTabIndex,
+			url,
+			name: 'Settings',
+			isActive: () => {
+				return this.settingsTabIndex === this.activeTabIndex;
+			},
+			onTitleChange: this.updateBadge.bind(this),
+			nodeIntegration: true
+		}));
+
+		this.activateTab(this.settingsTabIndex);
+	}
+
 	activateTab(index) {
 		if (this.webviews[index].loading) {
 			return;

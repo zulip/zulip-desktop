@@ -3,28 +3,22 @@
 const BaseComponent = require(__dirname + '/../components/base.js');
 
 class Tab extends BaseComponent {
-	constructor(params) {
+	constructor(props) {
 		super();
 
-		const {url, icon, name, type, $root, onClick} = params;
-		this.url = url;
-		this.name = name;
-		this.icon = icon;
-		this.type = type;
-		this.$root = $root;
-		this.onClick = onClick;
+		this.props = props;
 
 		this.init();
 	}
 
 	template() {
-		if (this.type === Tab.SERVER_TAB) {
-			return `<div class="tab" domain="${this.url}">
+		if (this.props.type === Tab.SERVER_TAB) {
+			return `<div class="tab" domain="${this.props.url}">
 						<div class="server-tab-badge"></div>
-						<div class="server-tab" style="background-image: url(${this.icon});"></div>
+						<div class="server-tab" style="background-image: url(${this.props.icon});"></div>
 					</div>`;
 		} else {
-			return `<div class="tab" domain="${this.url}">
+			return `<div class="tab" domain="${this.props.url}">
 						<div class="server-tab-badge"></div>
 						<div class="server-tab settings-tab">
 							<i class="material-icons md-48">settings</i>
@@ -36,7 +30,7 @@ class Tab extends BaseComponent {
 	init() {
 		this.$el = this.generateNodeFromTemplate(this.template());
 		this.$badge = this.$el.getElementsByClassName('server-tab-badge')[0];
-		this.$root.appendChild(this.$el);
+		this.props.$root.appendChild(this.$el);
 
 		this.registerListeners();
 	}
@@ -53,7 +47,7 @@ class Tab extends BaseComponent {
 	}
 
 	registerListeners() {
-		this.$el.addEventListener('click', this.onClick);
+		this.$el.addEventListener('click', this.props.onClick);
 	}
 
 	activate() {

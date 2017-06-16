@@ -9,29 +9,22 @@ const {ipcRenderer} = require('electron');
 const BaseComponent = require(__dirname + '/../components/base.js');
 
 class WebView extends BaseComponent {
-	constructor(params) {
+	constructor(props) {
 		super();
 
-		const {$root, url, index, name, isActive, onTitleChange, nodeIntegration} = params;
-		this.$root = $root;
-		this.index = index;
-		this.name = name;
-		this.url = url;
-		this.nodeIntegration = nodeIntegration;
-
-		this.onTitleChange = onTitleChange;
+		this.props = props;
+		
 		this.zoomFactor = 1.0;
 		this.loading = false;
-		this.isActive = isActive;
 		this.badgeCount = 0;
 	}
 
 	template() {
 		return `<webview
-					id="webview-${this.index}"
+					id="webview-${this.props.index}"
 					class="disabled"
-					src="${this.url}"
-					${this.nodeIntegration ? 'nodeIntegration' : ''}
+					src="${this.props.url}"
+					${this.props.nodeIntegration ? 'nodeIntegration' : ''}
 					disablewebsecurity
 					preload="js/preload.js"
 					webpreferences="allowRunningInsecureContent, javascript=yes">
@@ -40,7 +33,7 @@ class WebView extends BaseComponent {
 
 	init() {
 		this.$el = this.generateNodeFromTemplate(this.template());
-		this.$root.appendChild(this.$el);
+		this.props.$root.appendChild(this.$el);
 
 		this.registerListeners();
 	}
@@ -48,7 +41,7 @@ class WebView extends BaseComponent {
 	registerListeners() {
 		this.$el.addEventListener('new-window', event => {
 			const {url} = event;
-			const domainPrefix = DomainUtil.getDomain(this.index).url;
+			const domainPrefix = DomainUtil.getDomain(this.props.index).url;
 
 			if (LinkUtil.isInternal(domainPrefix, url)) {
 				event.preventDefault();
@@ -62,7 +55,7 @@ class WebView extends BaseComponent {
 		this.$el.addEventListener('page-title-updated', event => {
 			const {title} = event;
 			this.badgeCount = this.getBadgeCount(title);
-			this.onTitleChange();
+			this.props.onTitleChange();
 		});
 
 		this.$el.addEventListener('dom-ready', this.show.bind(this));
@@ -93,14 +86,14 @@ class WebView extends BaseComponent {
 
 	show() {
 		// Do not show WebView if another tab was selected and this tab should be in background.
-		if (!this.isActive()) {
+		if (!this.props.isActive()) {
 			return;
 		}
 
 		this.$el.classList.remove('disabled');
 		this.focus();
 		this.loading = false;
-		this.onTitleChange(this.$el.getTitle());
+		this.props.onTitleChange(this.$el.getTitle());
 	}
 
 	focus() {
