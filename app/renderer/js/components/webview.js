@@ -2,7 +2,7 @@
 
 const DomainUtil = require(__dirname + '/../utils/domain-util.js');
 const SystemUtil = require(__dirname + '/../utils/system-util.js');
-const {linkIsInternal, skipImages} = require(__dirname + '/../../../main/link-helper');
+const LinkUtil = require(__dirname + '/../utils/link-util.js');
 const {app, dialog, shell} = require('electron').remote;
 const {ipcRenderer} = require('electron');
 
@@ -25,6 +25,7 @@ class WebView extends BaseComponent {
 		this.isActive = isActive;
 		this.domainUtil = new DomainUtil();
 		this.systemUtil = new SystemUtil();
+		this.linkUtil = new LinkUtil();
 		this.badgeCount = 0;
 	}
 
@@ -52,7 +53,7 @@ class WebView extends BaseComponent {
 			const {url} = event;
 			const domainPrefix = this.domainUtil.getDomain(this.index).url;
 
-			if (linkIsInternal(domainPrefix, url) && url.match(skipImages) === null) {
+			if (this.linkUtil.isInternal(domainPrefix, url)) {
 				event.preventDefault();
 				this.$el.loadURL(url);
 			} else {
