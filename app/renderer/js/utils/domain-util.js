@@ -25,7 +25,7 @@ class DomainUtil {
 			this.db.delete('/domain');
 		}
 
-		return instance;		
+		return instance;
 	}
 
 	getDomains() {

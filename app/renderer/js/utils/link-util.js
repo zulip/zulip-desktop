@@ -15,15 +15,15 @@ class LinkUtil {
 		return instance;
 	}
 
-    isInternal(currentUrl, newUrl) {
-        const currentDomain = wurl('hostname', currentUrl);
-        const newDomain = wurl('hostname', newUrl);
+	isInternal(currentUrl, newUrl) {
+		const currentDomain = wurl('hostname', currentUrl);
+		const newDomain = wurl('hostname', newUrl);
 
-        const skipImages = '.jpg|.gif|.png|.jpeg|.JPG|.PNG';
+		const skipImages = '.jpg|.gif|.png|.jpeg|.JPG|.PNG';
 
-        // We'll be needing this to open images in default browser
-        return (currentDomain === newDomain) || newUrl.match(skipImages);
-    }
+		// We'll be needing this to open images in default browser
+		return (currentDomain === newDomain) || newUrl.match(skipImages);
+	}
 }
 
 module.exports = new LinkUtil();

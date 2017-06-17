@@ -270,8 +270,10 @@ const otherTpl = [
 		submenu: [
 			{
 				label: 'Zulip desktop',
-				click() {
-					about();
+				click(item, focusedWindow) {
+					if (focusedWindow) {
+						sendAction('open-about');
+					}
 				}
 			},
 			{

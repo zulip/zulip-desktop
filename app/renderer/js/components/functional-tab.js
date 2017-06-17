@@ -3,10 +3,6 @@
 const Tab = require(__dirname + '/../components/tab.js');
 
 class FunctionalTab extends Tab {
-	constructor(props) {
-		super(props);
-	}
-
 	template() {
 		return `<div class="tab">
 					<div class="server-tab-badge close-button">
@@ -17,7 +13,7 @@ class FunctionalTab extends Tab {
 					</div>
 				</div>`;
 	}
-	
+
 	init() {
 		this.$el = this.generateNodeFromTemplate(this.template());
 		this.props.$root.appendChild(this.$el);
@@ -37,7 +33,7 @@ class FunctionalTab extends Tab {
 			this.$closeButton.classList.remove('active');
 		});
 
-		this.$closeButton.addEventListener('click', (e) => {
+		this.$closeButton.addEventListener('click', e => {
 			this.props.onDestroy();
 			e.stopPropagation();
 		});

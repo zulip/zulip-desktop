@@ -68,10 +68,9 @@ class ServerManagerView {
 		this.$addServerButton.addEventListener('click', this.openSettings.bind(this));
 		this.$settingsButton.addEventListener('click', this.openSettings.bind(this));
 	}
-	
+
 	openFunctionalTab(tabProps) {
-		const {name, materialIcon, url} = tabProps;
-		if (this.functionalTabs.hasOwnProperty(name)) {
+		if (this.functionalTabs.name) {
 			this.activateTab(this.functionalTabs[name]);
 			return;
 		}
@@ -102,21 +101,21 @@ class ServerManagerView {
 
 	openSettings() {
 		this.openFunctionalTab({
-				name: 'Settings',
-				materialIcon: 'settings',
-				url: `file://${__dirname}/preference.html`
+			name: 'Settings',
+			materialIcon: 'settings',
+			url: `file://${__dirname}/preference.html`
 		});
 	}
 
 	openAbout() {
 		this.openFunctionalTab({
-				name: 'About',
-				materialIcon: 'sentiment_very_satisfied',
-				url: `file://${__dirname}/about.html`
-			});
+			name: 'About',
+			materialIcon: 'sentiment_very_satisfied',
+			url: `file://${__dirname}/about.html`
+		});
 	}
 
-	activateTab(index, hideOldTab=true) {
+	activateTab(index, hideOldTab = true) {
 		if (this.webviews[index].loading) {
 			return;
 		}
@@ -154,10 +153,10 @@ class ServerManagerView {
 	updateBadge() {
 		let messageCountAll = 0;
 		for (let i = 0; i < this.webviews.length; i++) {
-			if (this.tabs[i] && this.tabs[i].hasOwnProperty('updateBadge')) {
+			if (this.tabs[i] && this.tabs[i].updateBadge) {
 				const count = this.webviews[i].badgeCount;
 				messageCountAll += count;
-				this.tabs[i].updateBadge(count);				
+				this.tabs[i].updateBadge(count);
 			}
 		}
 

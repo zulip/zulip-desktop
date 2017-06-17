@@ -13,7 +13,7 @@ class WebView extends BaseComponent {
 		super();
 
 		this.props = props;
-		
+
 		this.zoomFactor = 1.0;
 		this.loading = false;
 		this.badgeCount = 0;
