@@ -151,6 +151,17 @@ html, body {
 .tab .server-tab-badge {
     display: none;
 }
+
+.tab .server-tab-badge.close-button {
+    width: 16px;
+    padding: 0 0 0 1px;
+}
+
+.tab .server-tab-badge.close-button i {
+    font-size: 13px;
+    line-height: 17px;
+}
+
 /*******************
  *   Webview Area  *
  *******************/

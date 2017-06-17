@@ -13,21 +13,9 @@ class Tab extends BaseComponent {
 
 	init() {
 		this.$el = this.generateNodeFromTemplate(this.template());
-		this.$badge = this.$el.getElementsByClassName('server-tab-badge')[0];
 		this.props.$root.appendChild(this.$el);
 
 		this.registerListeners();
-	}
-
-	updateBadge(count) {
-		if (count > 0) {
-			const formattedCount = count > 999 ? '1K+' : count;
-
-			this.$badge.innerHTML = formattedCount;
-			this.$badge.classList.add('active');
-		} else {
-			this.$badge.classList.remove('active');
-		}
 	}
 
 	registerListeners() {

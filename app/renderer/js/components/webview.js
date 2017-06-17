@@ -21,7 +21,6 @@ class WebView extends BaseComponent {
 
 	template() {
 		return `<webview
-					id="webview-${this.props.index}"
 					class="disabled"
 					src="${this.props.url}"
 					${this.props.nodeIntegration ? 'nodeIntegration' : ''}

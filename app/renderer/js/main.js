@@ -81,7 +81,8 @@ class ServerManagerView {
 		this.tabs.push(new FunctionalTab({
 			materialIcon: tabProps.materialIcon,
 			$root: this.$tabsContainer,
-			onClick: this.activateTab.bind(this, this.functionalTabs[name])
+			onClick: this.activateTab.bind(this, this.functionalTabs[name]),
+			onDestroy: this.destroyTab.bind(this, name, this.functionalTabs[name])
 		}));
 
 		this.webviews.push(new WebView({
@@ -115,7 +116,7 @@ class ServerManagerView {
 			});
 	}
 
-	activateTab(index) {
+	activateTab(index, hideOldTab=true) {
 		if (this.webviews[index].loading) {
 			return;
 		}
@@ -123,7 +124,7 @@ class ServerManagerView {
 		if (this.activeTabIndex !== -1) {
 			if (this.activeTabIndex === index) {
 				return;
-			} else {
+			} else if (hideOldTab) {
 				this.tabs[this.activeTabIndex].deactivate();
 				this.webviews[this.activeTabIndex].hide();
 			}
@@ -135,13 +136,29 @@ class ServerManagerView {
 		this.webviews[index].load();
 	}
 
+	destroyTab(name, index) {
+		if (this.webviews[index].loading) {
+			return;
+		}
+
+		this.tabs[index].$el.parentNode.removeChild(this.tabs[index].$el);
+		this.webviews[index].$el.parentNode.removeChild(this.webviews[index].$el);
+
+		delete this.tabs[index];
+		delete this.webviews[index];
+		delete this.functionalTabs[name];
+
+		this.activateTab(0, false);
+	}
+
 	updateBadge() {
 		let messageCountAll = 0;
 		for (let i = 0; i < this.webviews.length; i++) {
-			const count = this.webviews[i].badgeCount;
-			messageCountAll += count;
-
-			this.tabs[i].updateBadge(count);
+			if (this.tabs[i] && this.tabs[i].hasOwnProperty('updateBadge')) {
+				const count = this.webviews[i].badgeCount;
+				messageCountAll += count;
+				this.tabs[i].updateBadge(count);				
+			}
 		}
 
 		ipcRenderer.send('update-badge', messageCountAll);
