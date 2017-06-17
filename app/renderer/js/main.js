@@ -18,6 +18,7 @@ class ServerManagerView {
 		this.$content = document.getElementById('content');
 
 		this.settingsTabIndex = -1;
+		this.aboutTabIndex = -1;
 		this.activeTabIndex = -1;
 		this.webviews = [];
 		this.tabs = [];
@@ -104,35 +105,35 @@ class ServerManagerView {
 	}
 
 	openAbout() {
-		if (this.settingsTabIndex !== -1) {
-			this.activateTab(this.settingsTabIndex);
+		if (this.aboutTabIndex !== -1) {
+			this.activateTab(this.aboutTabIndex);
 			return;
 		}
 		const url = 'file://' + __dirname + '/about.html';
 
-		this.settingsTabIndex = this.webviews.length;
+		this.aboutTabIndex = this.webviews.length;
 
 		this.tabs.push(new Tab({
 			url,
-			name: 'Settings',
+			name: 'About',
 			type: Tab.SETTINGS_TAB,
 			$root: this.$tabsContainer,
-			onClick: this.activateTab.bind(this, this.settingsTabIndex)
+			onClick: this.activateTab.bind(this, this.aboutTabIndex)
 		}));
 
 		this.webviews.push(new WebView({
 			$root: this.$content,
-			index: this.settingsTabIndex,
+			index: this.aboutTabIndex,
 			url,
-			name: 'Settings',
+			name: 'About',
 			isActive: () => {
-				return this.settingsTabIndex === this.activeTabIndex;
+				return this.activeTabIndex === this.aboutTabIndex;
 			},
 			onTitleChange: this.updateBadge.bind(this),
 			nodeIntegration: true
 		}));
 
-		this.activateTab(this.settingsTabIndex);
+		this.activateTab(this.aboutTabIndex);
 	}
 
 	activateTab(index) {
@@ -191,6 +192,7 @@ class ServerManagerView {
 		}
 
 		ipcRenderer.on('open-settings', this.openSettings.bind(this));
+		ipcRenderer.on('open-about', this.openAbout.bind(this));
 	}
 }
 
