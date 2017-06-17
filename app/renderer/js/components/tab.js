@@ -11,22 +11,6 @@ class Tab extends BaseComponent {
 		this.init();
 	}
 
-	template() {
-		if (this.props.type === Tab.SERVER_TAB) {
-			return `<div class="tab" domain="${this.props.url}">
-						<div class="server-tab-badge"></div>
-						<div class="server-tab" style="background-image: url(${this.props.icon});"></div>
-					</div>`;
-		} else {
-			return `<div class="tab" domain="${this.props.url}">
-						<div class="server-tab-badge"></div>
-						<div class="server-tab settings-tab">
-							<i class="material-icons md-48">settings</i>
-						</div>
-					</div>`;
-		}
-	}
-
 	init() {
 		this.$el = this.generateNodeFromTemplate(this.template());
 		this.$badge = this.$el.getElementsByClassName('server-tab-badge')[0];

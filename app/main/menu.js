@@ -9,8 +9,6 @@ const BrowserWindow = electron.BrowserWindow;
 const shell = electron.shell;
 const appName = app.getName();
 
-// const {about} = require('./windowmanager');
-
 function sendAction(action) {
 	const win = BrowserWindow.getAllWindows()[0];
 

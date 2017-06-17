@@ -5,7 +5,8 @@ const {ipcRenderer} = require('electron');
 
 const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
 const WebView = require(__dirname + '/js/components/webview.js');
-const Tab = require(__dirname + '/js/components/tab.js');
+const ServerTab = require(__dirname + '/js/components/server-tab.js');
+const FunctionalTab = require(__dirname + '/js/components/functional-tab.js');
 
 class ServerManagerView {
 	constructor() {
@@ -17,11 +18,10 @@ class ServerManagerView {
 		this.$settingsButton = $actionsContainer.querySelector('#settings-action');
 		this.$content = document.getElementById('content');
 
-		this.settingsTabIndex = -1;
-		this.aboutTabIndex = -1;
 		this.activeTabIndex = -1;
 		this.webviews = [];
 		this.tabs = [];
+		this.functionalTabs = {};
 	}
 
 	init() {
@@ -43,11 +43,8 @@ class ServerManagerView {
 	}
 
 	initServer(server, index) {
-		this.tabs.push(new Tab({
-			url: server.url,
-			name: server.alias,
+		this.tabs.push(new ServerTab({
 			icon: server.icon,
-			type: Tab.SERVER_TAB,
 			$root: this.$tabsContainer,
 			onClick: this.activateTab.bind(this, index)
 		}));
@@ -71,69 +68,51 @@ class ServerManagerView {
 		this.$addServerButton.addEventListener('click', this.openSettings.bind(this));
 		this.$settingsButton.addEventListener('click', this.openSettings.bind(this));
 	}
-
-	openSettings() {
-		if (this.settingsTabIndex !== -1) {
-			this.activateTab(this.settingsTabIndex);
+	
+	openFunctionalTab(tabProps) {
+		const {name, materialIcon, url} = tabProps;
+		if (this.functionalTabs.hasOwnProperty(name)) {
+			this.activateTab(this.functionalTabs[name]);
 			return;
 		}
-		const url = 'file://' + __dirname + '/preference.html';
 
-		this.settingsTabIndex = this.webviews.length;
+		this.functionalTabs[name] = this.webviews.length;
 
-		this.tabs.push(new Tab({
-			url,
-			name: 'Settings',
-			type: Tab.SETTINGS_TAB,
+		this.tabs.push(new FunctionalTab({
+			materialIcon: tabProps.materialIcon,
 			$root: this.$tabsContainer,
-			onClick: this.activateTab.bind(this, this.settingsTabIndex)
+			onClick: this.activateTab.bind(this, this.functionalTabs[name])
 		}));
 
 		this.webviews.push(new WebView({
 			$root: this.$content,
-			index: this.settingsTabIndex,
-			url,
-			name: 'Settings',
+			index: this.functionalTabs[name],
+			url: tabProps.url,
+			name: tabProps.name,
 			isActive: () => {
-				return this.settingsTabIndex === this.activeTabIndex;
+				return this.functionalTabs[name] === this.activeTabIndex;
 			},
 			onTitleChange: this.updateBadge.bind(this),
 			nodeIntegration: true
 		}));
 
-		this.activateTab(this.settingsTabIndex);
+		this.activateTab(this.functionalTabs[name]);
+	}
+
+	openSettings() {
+		this.openFunctionalTab({
+				name: 'Settings',
+				materialIcon: 'settings',
+				url: `file://${__dirname}/preference.html`
+		});
 	}
 
 	openAbout() {
-		if (this.aboutTabIndex !== -1) {
-			this.activateTab(this.aboutTabIndex);
-			return;
-		}
-		const url = 'file://' + __dirname + '/about.html';
-
-		this.aboutTabIndex = this.webviews.length;
-
-		this.tabs.push(new Tab({
-			url,
-			name: 'About',
-			type: Tab.SETTINGS_TAB,
-			$root: this.$tabsContainer,
-			onClick: this.activateTab.bind(this, this.aboutTabIndex)
-		}));
-
-		this.webviews.push(new WebView({
-			$root: this.$content,
-			index: this.aboutTabIndex,
-			url,
-			name: 'About',
-			isActive: () => {
-				return this.activeTabIndex === this.aboutTabIndex;
-			},
-			onTitleChange: this.updateBadge.bind(this),
-			nodeIntegration: true
-		}));
-
-		this.activateTab(this.aboutTabIndex);
+		this.openFunctionalTab({
+				name: 'About',
+				materialIcon: 'sentiment_very_satisfied',
+				url: `file://${__dirname}/about.html`
+			});
 	}
 
 	activateTab(index) {

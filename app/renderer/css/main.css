@@ -116,11 +116,11 @@ html, body {
     opacity: 0.8;
 }
 
-.tab .settings-tab {
+.tab .functional-tab {
     background: #eee;
 }
 
-.tab .settings-tab i {
+.tab .functional-tab i {
     font-size: 28px;
     line-height: 36px;
 }
