@@ -22,7 +22,7 @@ class LinkUtil {
 		const skipImages = '.jpg|.gif|.png|.jpeg|.JPG|.PNG';
 
 		// We'll be needing this to open images in default browser
-		return (currentDomain === newDomain) || newUrl.match(skipImages);
+		return (currentDomain === newDomain) && !newUrl.match(skipImages);
 	}
 }
 
