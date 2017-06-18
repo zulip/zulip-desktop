@@ -6,7 +6,7 @@ const request = require('request');
 
 let instance = null;
 
-const defaultIconUrl = 'https://chat.zulip.org/static/images/logo/zulip-icon-128x128.271d0f6a0ca2.png';
+const defaultIconUrl = __dirname + '../../../img/icon.png';
 class DomainUtil {
 	constructor() {
 		if (instance) {
