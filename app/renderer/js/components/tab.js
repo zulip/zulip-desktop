@@ -7,6 +7,7 @@ class Tab extends BaseComponent {
 		super();
 
 		this.props = props;
+		this.webview = this.props.webview;
 
 		this.init();
 	}
@@ -22,12 +23,23 @@ class Tab extends BaseComponent {
 		this.$el.addEventListener('click', this.props.onClick);
 	}
 
+	isLoading() {
+		return this.webview.isLoading;
+	}
+
 	activate() {
 		this.$el.classList.add('active');
+		this.webview.load();
 	}
 
 	deactivate() {
 		this.$el.classList.remove('active');
+		this.webview.hide();
+	}
+
+	destroy() {
+		this.$el.parentNode.removeChild(this.$el);
+		this.webview.$el.parentNode.removeChild(this.webview.$el);
 	}
 }
 

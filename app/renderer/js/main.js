@@ -19,7 +19,6 @@ class ServerManagerView {
 		this.$content = document.getElementById('content');
 
 		this.activeTabIndex = -1;
-		this.webviews = [];
 		this.tabs = [];
 		this.functionalTabs = {};
 	}
@@ -46,57 +45,56 @@ class ServerManagerView {
 		this.tabs.push(new ServerTab({
 			icon: server.icon,
 			$root: this.$tabsContainer,
-			onClick: this.activateTab.bind(this, index)
-		}));
-		this.webviews.push(new WebView({
-			$root: this.$content,
-			index,
-			url: server.url,
-			name: server.alias,
-			isActive: () => {
-				return index === this.activeTabIndex;
-			},
-			onTitleChange: this.updateBadge.bind(this),
-			nodeIntegration: false
+			onClick: this.activateTab.bind(this, index),
+			webview: new WebView({
+				$root: this.$content,
+				index,
+				url: server.url,
+				name: server.alias,
+				isActive: () => {
+					return index === this.activeTabIndex;
+				},
+				onTitleChange: this.updateBadge.bind(this),
+				nodeIntegration: false
+			})
 		}));
 	}
 
 	initActions() {
 		this.$reloadButton.addEventListener('click', () => {
-			this.webviews[this.activeTabIndex].reload();
+			this.tabs[this.activeTabIndex].webview.reload();
 		});
 		this.$addServerButton.addEventListener('click', this.openSettings.bind(this));
 		this.$settingsButton.addEventListener('click', this.openSettings.bind(this));
 	}
 
 	openFunctionalTab(tabProps) {
-		if (this.functionalTabs.name) {
-			this.activateTab(this.functionalTabs[name]);
+		if (this.functionalTabs[tabProps.name]) {
+			this.activateTab(this.functionalTabs[tabProps.name]);
 			return;
 		}
 
-		this.functionalTabs[name] = this.webviews.length;
+		this.functionalTabs[tabProps.name] = this.tabs.length;
 
 		this.tabs.push(new FunctionalTab({
 			materialIcon: tabProps.materialIcon,
 			$root: this.$tabsContainer,
-			onClick: this.activateTab.bind(this, this.functionalTabs[name]),
-			onDestroy: this.destroyTab.bind(this, name, this.functionalTabs[name])
+			onClick: this.activateTab.bind(this, this.functionalTabs[tabProps.name]),
+			onDestroy: this.destroyTab.bind(this, tabProps.name, this.functionalTabs[tabProps.name]),
+			webview: new WebView({
+				$root: this.$content,
+				index: this.functionalTabs[tabProps.name],
+				url: tabProps.url,
+				name: tabProps.name,
+				isActive: () => {
+					return this.functionalTabs[tabProps.name] === this.activeTabIndex;
+				},
+				onTitleChange: this.updateBadge.bind(this),
+				nodeIntegration: true
+			})
 		}));
 
-		this.webviews.push(new WebView({
-			$root: this.$content,
-			index: this.functionalTabs[name],
-			url: tabProps.url,
-			name: tabProps.name,
-			isActive: () => {
-				return this.functionalTabs[name] === this.activeTabIndex;
-			},
-			onTitleChange: this.updateBadge.bind(this),
-			nodeIntegration: true
-		}));
-
-		this.activateTab(this.functionalTabs[name]);
+		this.activateTab(this.functionalTabs[tabProps.name]);
 	}
 
 	openSettings() {
@@ -116,7 +114,7 @@ class ServerManagerView {
 	}
 
 	activateTab(index, hideOldTab = true) {
-		if (this.webviews[index].loading) {
+		if (this.tabs[index].loading) {
 			return;
 		}
 
@@ -125,26 +123,21 @@ class ServerManagerView {
 				return;
 			} else if (hideOldTab) {
 				this.tabs[this.activeTabIndex].deactivate();
-				this.webviews[this.activeTabIndex].hide();
 			}
 		}
 
-		this.tabs[index].activate();
-
 		this.activeTabIndex = index;
-		this.webviews[index].load();
+		this.tabs[index].activate();
 	}
 
 	destroyTab(name, index) {
-		if (this.webviews[index].loading) {
+		if (this.tabs[index].loading) {
 			return;
 		}
 
-		this.tabs[index].$el.parentNode.removeChild(this.tabs[index].$el);
-		this.webviews[index].$el.parentNode.removeChild(this.webviews[index].$el);
+		this.tabs[index].destroy();
 
 		delete this.tabs[index];
-		delete this.webviews[index];
 		delete this.functionalTabs[name];
 
 		this.activateTab(0, false);
@@ -152,9 +145,9 @@ class ServerManagerView {
 
 	updateBadge() {
 		let messageCountAll = 0;
-		for (let i = 0; i < this.webviews.length; i++) {
+		for (let i = 0; i < this.tabs.length; i++) {
 			if (this.tabs[i] && this.tabs[i].updateBadge) {
-				const count = this.webviews[i].badgeCount;
+				const count = this.tabs[i].webview.badgeCount;
 				messageCountAll += count;
 				this.tabs[i].updateBadge(count);
 			}
@@ -179,7 +172,7 @@ class ServerManagerView {
 
 		for (const key in webviewListeners) {
 			ipcRenderer.on(key, () => {
-				const activeWebview = this.webviews[this.activeTabIndex];
+				const activeWebview = this.tabs[this.activeTabIndex].webview;
 				if (activeWebview) {
 					activeWebview[webviewListeners[key]]();
 				}
