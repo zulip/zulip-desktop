@@ -13,13 +13,12 @@ class PreferenceView {
 	}
 
 	init() {
-		this.domainUtil = new DomainUtil();
 		this.initServers();
 		this.initActions();
 	}
 
 	initServers() {
-		const servers = this.domainUtil.getDomains();
+		const servers = DomainUtil.getDomains();
 		this.$serverInfoContainer.innerHTML = servers.length ? '' : 'Add your first server to get started!';
 
 		this.initNewServerForm();
@@ -64,7 +63,7 @@ class PreferenceView {
 				</div>`;
 		this.$serverInfoContainer.appendChild(this.insertNode(serverInfoTemplate));
 		document.getElementById(`delete-server-action-${index}`).addEventListener('click', () => {
-			this.domainUtil.removeDomain(index);
+			DomainUtil.removeDomain(index);
 			this.initServers();
 			// alert('Success. Reload to apply changes.');
 			ipcRenderer.send('reload-main');
@@ -109,13 +108,13 @@ class PreferenceView {
 			this.$newServerButton.classList.add('hidden');
 		});
 		this.$saveServerButton.addEventListener('click', () => {
-			this.domainUtil.checkDomain(this.$newServerUrl.value).then(domain => {
+			DomainUtil.checkDomain(this.$newServerUrl.value).then(domain => {
 				const server = {
 					alias: this.$newServerAlias.value,
 					url: domain,
 					icon: this.$newServerIcon.value
 				};
-				this.domainUtil.addDomain(server);
+				DomainUtil.addDomain(server);
 				this.$saveServerButton.classList.add('hidden');
 				this.$newServerButton.classList.remove('hidden');
 				this.$newServerForm.classList.add('hidden');

@@ -5,7 +5,8 @@ const {ipcRenderer} = require('electron');
 
 const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
 const WebView = require(__dirname + '/js/components/webview.js');
-const Tab = require(__dirname + '/js/components/tab.js');
+const ServerTab = require(__dirname + '/js/components/server-tab.js');
+const FunctionalTab = require(__dirname + '/js/components/functional-tab.js');
 
 class ServerManagerView {
 	constructor() {
@@ -17,21 +18,19 @@ class ServerManagerView {
 		this.$settingsButton = $actionsContainer.querySelector('#settings-action');
 		this.$content = document.getElementById('content');
 
-		this.settingsTabIndex = -1;
 		this.activeTabIndex = -1;
-		this.webviews = [];
 		this.tabs = [];
+		this.functionalTabs = {};
 	}
 
 	init() {
-		this.domainUtil = new DomainUtil();
 		this.initTabs();
 		this.initActions();
 		this.registerIpcs();
 	}
 
 	initTabs() {
-		const servers = this.domainUtil.getDomains();
+		const servers = DomainUtil.getDomains();
 		if (servers.length > 0) {
 			for (let i = 0; i < servers.length; i++) {
 				this.initServer(servers[i], i);
@@ -43,94 +42,115 @@ class ServerManagerView {
 	}
 
 	initServer(server, index) {
-		this.tabs.push(new Tab({
-			url: server.url,
-			name: server.alias,
+		this.tabs.push(new ServerTab({
 			icon: server.icon,
-			type: Tab.SERVER_TAB,
 			$root: this.$tabsContainer,
-			onClick: this.activateTab.bind(this, index)
-		}));
-		this.webviews.push(new WebView({
-			$root: this.$content,
-			index,
-			url: server.url,
-			name: server.alias,
-			isActive: () => {
-				return index === this.activeTabIndex;
-			},
-			onTitleChange: this.updateBadge.bind(this),
-			nodeIntegration: false
+			onClick: this.activateTab.bind(this, index),
+			webview: new WebView({
+				$root: this.$content,
+				index,
+				url: server.url,
+				name: server.alias,
+				isActive: () => {
+					return index === this.activeTabIndex;
+				},
+				onTitleChange: this.updateBadge.bind(this),
+				nodeIntegration: false
+			})
 		}));
 	}
 
 	initActions() {
 		this.$reloadButton.addEventListener('click', () => {
-			this.webviews[this.activeTabIndex].reload();
+			this.tabs[this.activeTabIndex].webview.reload();
 		});
 		this.$addServerButton.addEventListener('click', this.openSettings.bind(this));
 		this.$settingsButton.addEventListener('click', this.openSettings.bind(this));
 	}
 
-	openSettings() {
-		if (this.settingsTabIndex !== -1) {
-			this.activateTab(this.settingsTabIndex);
+	openFunctionalTab(tabProps) {
+		if (this.functionalTabs[tabProps.name]) {
+			this.activateTab(this.functionalTabs[tabProps.name]);
 			return;
 		}
-		const url = 'file://' + __dirname + '/preference.html';
 
-		this.settingsTabIndex = this.webviews.length;
+		this.functionalTabs[tabProps.name] = this.tabs.length;
 
-		this.tabs.push(new Tab({
-			url,
-			name: 'Settings',
-			type: Tab.SETTINGS_TAB,
+		this.tabs.push(new FunctionalTab({
+			materialIcon: tabProps.materialIcon,
 			$root: this.$tabsContainer,
-			onClick: this.activateTab.bind(this, this.settingsTabIndex)
+			onClick: this.activateTab.bind(this, this.functionalTabs[tabProps.name]),
+			onDestroy: this.destroyTab.bind(this, tabProps.name, this.functionalTabs[tabProps.name]),
+			webview: new WebView({
+				$root: this.$content,
+				index: this.functionalTabs[tabProps.name],
+				url: tabProps.url,
+				name: tabProps.name,
+				isActive: () => {
+					return this.functionalTabs[tabProps.name] === this.activeTabIndex;
+				},
+				onTitleChange: this.updateBadge.bind(this),
+				nodeIntegration: true
+			})
 		}));
 
-		this.webviews.push(new WebView({
-			$root: this.$content,
-			index: this.settingsTabIndex,
-			url,
-			name: 'Settings',
-			isActive: () => {
-				return this.settingsTabIndex === this.activeTabIndex;
-			},
-			onTitleChange: this.updateBadge.bind(this),
-			nodeIntegration: true
-		}));
-
-		this.activateTab(this.settingsTabIndex);
+		this.activateTab(this.functionalTabs[tabProps.name]);
 	}
 
-	activateTab(index) {
-		if (this.webviews[index].loading) {
+	openSettings() {
+		this.openFunctionalTab({
+			name: 'Settings',
+			materialIcon: 'settings',
+			url: `file://${__dirname}/preference.html`
+		});
+	}
+
+	openAbout() {
+		this.openFunctionalTab({
+			name: 'About',
+			materialIcon: 'sentiment_very_satisfied',
+			url: `file://${__dirname}/about.html`
+		});
+	}
+
+	activateTab(index, hideOldTab = true) {
+		if (this.tabs[index].loading) {
 			return;
 		}
 
 		if (this.activeTabIndex !== -1) {
 			if (this.activeTabIndex === index) {
 				return;
-			} else {
+			} else if (hideOldTab) {
 				this.tabs[this.activeTabIndex].deactivate();
-				this.webviews[this.activeTabIndex].hide();
 			}
 		}
 
-		this.tabs[index].activate();
-
 		this.activeTabIndex = index;
-		this.webviews[index].load();
+		this.tabs[index].activate();
+	}
+
+	destroyTab(name, index) {
+		if (this.tabs[index].loading) {
+			return;
+		}
+
+		this.tabs[index].destroy();
+
+		delete this.tabs[index];
+		delete this.functionalTabs[name];
+
+		this.activateTab(0, false);
 	}
 
 	updateBadge() {
 		let messageCountAll = 0;
-		for (let i = 0; i < this.webviews.length; i++) {
-			const count = this.webviews[i].badgeCount;
-			messageCountAll += count;
-
-			this.tabs[i].updateBadge(count);
+		for (let i = 0; i < this.tabs.length; i++) {
+			if (this.tabs[i] && this.tabs[i].updateBadge) {
+				const count = this.tabs[i].webview.badgeCount;
+				messageCountAll += count;
+				this.tabs[i].updateBadge(count);
+			}
 		}
 
 		ipcRenderer.send('update-badge', messageCountAll);
@@ -152,7 +172,7 @@ class ServerManagerView {
 
 		for (const key in webviewListeners) {
 			ipcRenderer.on(key, () => {
-				const activeWebview = this.webviews[this.activeTabIndex];
+				const activeWebview = this.tabs[this.activeTabIndex].webview;
 				if (activeWebview) {
 					activeWebview[webviewListeners[key]]();
 				}
@@ -160,6 +180,7 @@ class ServerManagerView {
 		}
 
 		ipcRenderer.on('open-settings', this.openSettings.bind(this));
+		ipcRenderer.on('open-about', this.openAbout.bind(this));
 	}
 }
 

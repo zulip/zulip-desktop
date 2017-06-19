@@ -4,9 +4,17 @@ const {app} = require('electron').remote;
 const JsonDB = require('node-json-db');
 const request = require('request');
 
-const defaultIconUrl = 'https://chat.zulip.org/static/images/logo/zulip-icon-128x128.271d0f6a0ca2.png';
+let instance = null;
+
+const defaultIconUrl = __dirname + '../../../img/icon.png';
 class DomainUtil {
 	constructor() {
+		if (instance) {
+			return instance;
+		} else {
+			instance = this;
+		}
+
 		this.db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 		// Migrate from old schema
 		if (this.db.getData('/').domain) {
@@ -16,6 +24,8 @@ class DomainUtil {
 			});
 			this.db.delete('/domain');
 		}
+
+		return instance;
 	}
 
 	getDomains() {
@@ -69,4 +79,4 @@ class DomainUtil {
 	}
 }
 
-module.exports = DomainUtil;
+module.exports = new DomainUtil();

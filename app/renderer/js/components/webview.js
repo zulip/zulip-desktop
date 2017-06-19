@@ -2,38 +2,28 @@
 
 const DomainUtil = require(__dirname + '/../utils/domain-util.js');
 const SystemUtil = require(__dirname + '/../utils/system-util.js');
-const {linkIsInternal, skipImages} = require(__dirname + '/../../../main/link-helper');
+const LinkUtil = require(__dirname + '/../utils/link-util.js');
 const {app, dialog, shell} = require('electron').remote;
 const {ipcRenderer} = require('electron');
 
 const BaseComponent = require(__dirname + '/../components/base.js');
 
 class WebView extends BaseComponent {
-	constructor(params) {
+	constructor(props) {
 		super();
 
-		const {$root, url, index, name, isActive, onTitleChange, nodeIntegration} = params;
-		this.$root = $root;
-		this.index = index;
-		this.name = name;
-		this.url = url;
-		this.nodeIntegration = nodeIntegration;
+		this.props = props;
 
-		this.onTitleChange = onTitleChange;
 		this.zoomFactor = 1.0;
 		this.loading = false;
-		this.isActive = isActive;
-		this.domainUtil = new DomainUtil();
-		this.systemUtil = new SystemUtil();
 		this.badgeCount = 0;
 	}
 
 	template() {
 		return `<webview
-					id="webview-${this.index}"
 					class="disabled"
-					src="${this.url}"
-					${this.nodeIntegration ? 'nodeIntegration' : ''}
+					src="${this.props.url}"
+					${this.props.nodeIntegration ? 'nodeIntegration' : ''}
 					disablewebsecurity
 					preload="js/preload.js"
 					webpreferences="allowRunningInsecureContent, javascript=yes">
@@ -42,7 +32,7 @@ class WebView extends BaseComponent {
 
 	init() {
 		this.$el = this.generateNodeFromTemplate(this.template());
-		this.$root.appendChild(this.$el);
+		this.props.$root.appendChild(this.$el);
 
 		this.registerListeners();
 	}
@@ -50,9 +40,9 @@ class WebView extends BaseComponent {
 	registerListeners() {
 		this.$el.addEventListener('new-window', event => {
 			const {url} = event;
-			const domainPrefix = this.domainUtil.getDomain(this.index).url;
+			const domainPrefix = DomainUtil.getDomain(this.props.index).url;
 
-			if (linkIsInternal(domainPrefix, url) && url.match(skipImages) === null) {
+			if (LinkUtil.isInternal(domainPrefix, url)) {
 				event.preventDefault();
 				this.$el.loadURL(url);
 			} else {
@@ -64,14 +54,14 @@ class WebView extends BaseComponent {
 		this.$el.addEventListener('page-title-updated', event => {
 			const {title} = event;
 			this.badgeCount = this.getBadgeCount(title);
-			this.onTitleChange();
+			this.props.onTitleChange();
 		});
 
 		this.$el.addEventListener('dom-ready', this.show.bind(this));
 
 		this.$el.addEventListener('did-fail-load', event => {
 			const {errorDescription} = event;
-			const hasConnectivityErr = (this.systemUtil.connectivityERR.indexOf(errorDescription) >= 0);
+			const hasConnectivityErr = (SystemUtil.connectivityERR.indexOf(errorDescription) >= 0);
 			if (hasConnectivityErr) {
 				console.error('error', errorDescription);
 				this.checkConnectivity();
@@ -79,10 +69,10 @@ class WebView extends BaseComponent {
 		});
 
 		this.$el.addEventListener('did-start-loading', () => {
-			let userAgent = this.systemUtil.getUserAgent();
+			let userAgent = SystemUtil.getUserAgent();
 			if (!userAgent) {
-				this.systemUtil.setUserAgent(this.$el.getUserAgent());
-				userAgent = this.systemUtil.getUserAgent();
+				SystemUtil.setUserAgent(this.$el.getUserAgent());
+				userAgent = SystemUtil.getUserAgent();
 			}
 			this.$el.setUserAgent(userAgent);
 		});
@@ -95,14 +85,14 @@ class WebView extends BaseComponent {
 
 	show() {
 		// Do not show WebView if another tab was selected and this tab should be in background.
-		if (!this.isActive()) {
+		if (!this.props.isActive()) {
 			return;
 		}
 
 		this.$el.classList.remove('disabled');
 		this.focus();
 		this.loading = false;
-		this.onTitleChange(this.$el.getTitle());
+		this.props.onTitleChange(this.$el.getTitle());
 	}
 
 	focus() {

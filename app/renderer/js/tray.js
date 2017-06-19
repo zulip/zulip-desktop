@@ -117,7 +117,7 @@ const createTray = function () {
 	const contextMenu = Menu.buildFromTemplate([{
 		label: 'About',
 		click() {
-			ipcRenderer.send('trayabout');
+			sendAction('open-about');
 		}
 	},
 	{
