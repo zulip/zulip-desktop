@@ -84,7 +84,7 @@ class PreferenceView {
 						</div>
 						<div class="server-info-row">
 							<span class="server-info-key">Url</span>
-							<input id="server-info-url" class="server-info-value" placeholder="(Required)"/>
+							<input id="server-info-url" spellcheck="false" class="server-info-value" placeholder="(Required)"/>
 						</div>
 						<div class="server-info-row">
 							<span class="server-info-key">Icon</span>
