@@ -7,6 +7,7 @@ function appUpdater() {
 	const log = require('electron-log');
 	log.transports.file.level = 'info';
 	autoUpdater.logger = log;
+	autoUpdater.allowPrerelease = false;
 
 	// Ask the user if update is available
 	// eslint-disable-next-line no-unused-vars
