@@ -56,7 +56,7 @@ function createMainWindow() {
 		height: conf.get('height') || 600,
 		icon: iconPath(),
 		minWidth: 600,
-		minHeight: 400,
+		minHeight: 500,
 		webPreferences: {
 			plugins: true,
 			allowDisplayingInsecureContent: true,
