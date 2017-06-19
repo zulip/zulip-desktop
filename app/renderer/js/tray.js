@@ -142,15 +142,6 @@ const createTray = function () {
 		type: 'separator'
 	},
 	{
-		label: 'Reload',
-		click() {
-			sendAction('reload');
-		}
-	},
-	{
-		type: 'separator'
-	},
-	{
 		label: 'Quit',
 		click() {
 			ipcRenderer.send('quit-app');
