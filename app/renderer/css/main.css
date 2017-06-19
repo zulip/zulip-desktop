@@ -19,7 +19,7 @@ html, body {
 #sidebar {
     background: #222c31;
     width: 54px;
-    padding: 10px 0 20px 0;
+    padding: 27px 0 20px 0;
     justify-content: space-between;
     display: flex;
     flex-direction: column;
