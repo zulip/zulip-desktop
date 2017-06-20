@@ -201,6 +201,14 @@ app.on('ready', () => {
 		page.reload();
 	});
 
+	ipc.on('toggle-app', () => {
+		if (mainWindow.isVisible()) {
+			mainWindow.hide();
+		} else {
+			mainWindow.show();
+		}
+	});
+
 	ipc.on('update-badge', (event, messageCount) => {
 		if (process.platform === 'darwin') {
 			app.setBadgeCount(messageCount);
