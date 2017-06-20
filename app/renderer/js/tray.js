@@ -117,6 +117,8 @@ const createTray = function () {
 	const contextMenu = Menu.buildFromTemplate([{
 		label: 'About',
 		click() {
+			// We need to focus the main window first
+		    ipcRenderer.send('focus-app');
 			sendAction('open-about');
 		}
 	},
@@ -135,6 +137,7 @@ const createTray = function () {
 	{
 		label: 'Manage Zulip servers',
 		click() {
+		    ipcRenderer.send('focus-app');
 			sendAction('open-settings');
 		}
 	},
