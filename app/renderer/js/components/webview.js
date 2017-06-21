@@ -64,7 +64,7 @@ class WebView extends BaseComponent {
 			const hasConnectivityErr = (SystemUtil.connectivityERR.indexOf(errorDescription) >= 0);
 			if (hasConnectivityErr) {
 				console.error('error', errorDescription);
-				this.checkConnectivity();
+				this.props.onNetworkError();
 			}
 		});
 
