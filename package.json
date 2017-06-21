@@ -103,6 +103,12 @@
     "xo": "0.18.1"
   },
   "xo": {
+    "parserOptions": {
+      "sourceType": "script",
+      "ecmaFeatures": {
+        "globalReturn": true
+      }
+    },
     "esnext": true,
     "overrides": [
       {
