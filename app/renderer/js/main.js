@@ -198,3 +198,7 @@ window.onload = () => {
 	const serverManagerView = new ServerManagerView();
 	serverManagerView.init();
 };
+
+window.addEventListener('online', () => {
+	ipcRenderer.send('reload-main');
+});
