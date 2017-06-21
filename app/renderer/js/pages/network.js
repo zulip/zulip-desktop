@@ -3,7 +3,7 @@
 const {ipcRenderer} = require('electron');
 
 class NetworkTroubleshootingView {
-	constructor(errorDescription) {
+	constructor() {
 		this.$reconnectButton = document.getElementById('reconnect');
 	}
 
