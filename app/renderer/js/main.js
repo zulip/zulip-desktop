@@ -54,6 +54,7 @@ class ServerManagerView {
 				isActive: () => {
 					return index === this.activeTabIndex;
 				},
+				onNetworkError: this.openNetworkTroubleshooting.bind(this),
 				onTitleChange: this.updateBadge.bind(this),
 				nodeIntegration: false
 			})
@@ -89,6 +90,7 @@ class ServerManagerView {
 				isActive: () => {
 					return this.functionalTabs[tabProps.name] === this.activeTabIndex;
 				},
+				onNetworkError: this.openNetworkTroubleshooting.bind(this),
 				onTitleChange: this.updateBadge.bind(this),
 				nodeIntegration: true
 			})
@@ -110,6 +112,14 @@ class ServerManagerView {
 			name: 'About',
 			materialIcon: 'sentiment_very_satisfied',
 			url: `file://${__dirname}/about.html`
+		});
+	}
+
+	openNetworkTroubleshooting() {
+		this.openFunctionalTab({
+			name: 'Network Troubleshooting',
+			materialIcon: 'network_check',
+			url: `file://${__dirname}/network.html`
 		});
 	}
 
@@ -188,3 +198,7 @@ window.onload = () => {
 	const serverManagerView = new ServerManagerView();
 	serverManagerView.init();
 };
+
+window.addEventListener('online', () => {
+	ipcRenderer.send('reload-main');
+});

@@ -1,0 +1,42 @@
+html, body {
+    margin: 0;
+    cursor: default;
+    font-size: 14px;
+    color: #333;
+    background: #fff;
+    user-select:none;
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    margin: 100px 200px;
+    text-align: center;
+}
+
+#title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+#description {
+    font-size: 16px;
+}
+
+#reconnect {
+    font-size: 16px;
+    background: #009688;
+    color: #fff;
+    width: 84px;
+    height: 32px;
+    border-radius: 5px;
+    line-height: 32px;
+    margin: 20px auto 0;
+    cursor: pointer;
+}
+
+#reconnect:hover {
+    opacity: 0.8;
+}
