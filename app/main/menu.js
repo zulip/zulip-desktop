@@ -322,7 +322,8 @@ const otherTpl = [
 				type: 'separator'
 			},
 			{
-				role: 'quit'
+				role: 'quit',
+				accelerator: 'Ctrl+Q'
 			}
 		]
 	},
