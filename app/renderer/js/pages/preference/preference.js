@@ -3,9 +3,11 @@
 const {ipcRenderer} = require('electron');
 
 const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
+const Nav = require(__dirname + '/js/pages/preference/nav.js');
 
 class PreferenceView {
 	constructor() {
+		this.$sidebarContainer = document.getElementById('sidebar');		
 		this.$newServerButton = document.getElementById('new-server-action');
 		this.$saveServerButton = document.getElementById('save-server-action');
 		this.$reloadServerButton = document.getElementById('reload-server-action');
@@ -13,12 +15,19 @@ class PreferenceView {
 	}
 
 	init() {
+		this.nav = new Nav({
+			$root: this.$sidebarContainer,
+			onItemSelected: this.handleNavigation
+		});
+
+		this.nav.activate('Server');
 		this.initServers();
 		this.initActions();
 	}
 
 	initServers() {
 		const servers = DomainUtil.getDomains();
+		this.$serverInfoContainer.innerHTML = servers.length ? '' : 'Add your first server to get started!';
 		this.$serverInfoContainer.innerHTML = servers.length ? '' : 'Add your first server to get started!';
 
 		this.initNewServerForm();
@@ -131,6 +140,11 @@ class PreferenceView {
 			ipcRenderer.send('reload-main');
 		});
 	}
+
+	handleNavigation(navItem) {
+
+	}
+
 	insertNode(html) {
 		const wrapper = document.createElement('div');
 		wrapper.innerHTML = html;

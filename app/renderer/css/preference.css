@@ -22,23 +22,23 @@ body {
     font-size: 16px;
 }
 
-#tabs-container {
+#nav-container {
     padding: 20px 0;
 }
 
-.tab {
+.nav {
     padding: 5px 0;
     color: #999;
     cursor: pointer;
 }
 
-.tab.active {
+.nav.active {
     color: #464e5a;
     cursor: default;
     position: relative;
 }
 
-.tab.active::before {
+.nav.active::before {
     background: #464e5a;
     width: 3px;
     height: 16px;
