@@ -1,4 +1,5 @@
 'use strict';
+const {ipcRenderer} = require('electron');
 const {spellChecker} = require('./spellchecker');
 
 const logout = () => {
@@ -30,4 +31,9 @@ process.once('loaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
 	// Init spellchecker
 	spellChecker();
+
+	// redirect users to network troubleshooting page
+	document.querySelector('.restart_get_events_button').addEventListener('click', () => {
+		ipcRenderer.send('reload-main');
+	});
 });
