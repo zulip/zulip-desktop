@@ -5,7 +5,7 @@
 
 Desktop client for Zulip. Available for Mac, Linux and Windows.
 
-<img src="http://i.imgur.com/bDtK47q.png"/>
+<img src="http://i.imgur.com/ChzTq4F.png"/>
 
 # Download
 You can download the latest version from the [Releases](https://github.com/zulip/zulip-electron/releases/latest) page.
