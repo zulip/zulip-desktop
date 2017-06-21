@@ -35,7 +35,7 @@ const isAlreadyRunning = app.makeSingleInstance(() => {
 });
 
 if (isAlreadyRunning) {
-	app.quit();
+	return app.quit();
 }
 
 function isWindowsOrmacOS() {
