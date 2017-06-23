@@ -177,6 +177,5 @@ img.server-info-icon {
 }
 
 .save-server-button:hover {
-    background-color: #3fcdb6;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.18);
-}
+    background-color: #32a692;
+ }
