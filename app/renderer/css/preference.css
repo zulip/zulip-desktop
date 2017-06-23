@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     cursor: default;
@@ -159,4 +160,23 @@ img.server-info-icon {
 
 .hidden {
     display: none;
+}
+
+.save-server-button {
+    display: inline-block;
+    cursor: pointer;
+    padding: 7px 14px;
+    background-color: #52c2af;
+    border-radius: 4px;
+    border: 0;
+    font-size: 1em;
+    font-weight: 600;
+    color: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transition: all .2s ease;
+}
+
+.save-server-button:hover {
+    background-color: #3fcdb6;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.18);
 }
