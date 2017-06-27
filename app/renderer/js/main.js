@@ -150,7 +150,10 @@ class ServerManagerView {
 		delete this.tabs[index];
 		delete this.functionalTabs[name];
 
-		this.activateTab(0, false);
+		// Issue #188: If the functional tab was not focused, do not activate another tab.
+		if (this.activeTabIndex == index) {
+			this.activateTab(0, false);
+		}
 	}
 
 	updateBadge() {
