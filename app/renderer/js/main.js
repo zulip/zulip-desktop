@@ -70,7 +70,7 @@ class ServerManagerView {
 	}
 
 	openFunctionalTab(tabProps) {
-		if (this.functionalTabs[tabProps.name]) {
+		if (this.functionalTabs[tabProps.name] !== undefined) {
 			this.activateTab(this.functionalTabs[tabProps.name]);
 			return;
 		}
