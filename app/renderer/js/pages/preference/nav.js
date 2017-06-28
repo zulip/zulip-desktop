@@ -8,7 +8,7 @@ class PreferenceNav extends BaseComponent {
 
 		this.props = props;
 
-		this.navItems = ['General', 'Server'];
+		this.navItems = ['General', 'Servers'];
 
 		this.init();
 	}
@@ -37,7 +37,9 @@ class PreferenceNav extends BaseComponent {
 	registerListeners() {
 		for (let navItem of this.navItems) {
 			const $item = document.getElementById(`nav-${navItem}`);
-			$item.addEventListener('click', this.props.onItemSelected.bind(navItem));
+			$item.addEventListener('click', event => {
+				this.props.onItemSelected(navItem);
+			});
 		}
 	}
 
