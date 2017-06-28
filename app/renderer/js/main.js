@@ -70,7 +70,7 @@ class ServerManagerView {
 	}
 
 	openFunctionalTab(tabProps) {
-		if (this.functionalTabs[tabProps.name]) {
+		if (this.functionalTabs[tabProps.name] !== undefined) {
 			this.activateTab(this.functionalTabs[tabProps.name]);
 			return;
 		}
@@ -150,7 +150,10 @@ class ServerManagerView {
 		delete this.tabs[index];
 		delete this.functionalTabs[name];
 
-		this.activateTab(0, false);
+		// Issue #188: If the functional tab was not focused, do not activate another tab.
+		if (this.activeTabIndex === index) {
+			this.activateTab(0, false);
+		}
 	}
 
 	updateBadge() {
