@@ -162,7 +162,7 @@ app.on('ready', () => {
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
 		// page.send('reload');
 		mainWindow.reload();
-		// page.send('destroytray');
+		page.send('destroytray');
 	});
 
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
