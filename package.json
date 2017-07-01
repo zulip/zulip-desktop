@@ -34,6 +34,7 @@
     "asar": true,
     "files": [
       "**/*",
+      "!docs${/*}",
       "!node_modules/@paulcbetts/cld/deps/cld${/*}"
     ],
     "copyright": "©2017 Kandra Labs, Inc.",
