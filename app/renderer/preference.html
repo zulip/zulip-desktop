@@ -5,40 +5,12 @@
     <meta name="viewport" content="width=device-width">
     <title>Zulip - Settings</title>
     <link rel="stylesheet" href="css/preference.css" type="text/css" media="screen">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
   <body>
     <div id="content">
-      <div id="sidebar">
-        <div id="settings-header">Settings</div>
-        <div id="tabs-container">
-            <div class="tab" id="general-settings">General</div>
-            <div class="tab active" id="server-settings">Servers</div>
-            <div class="tab" id="about-settings">About</div>
-        </div>
-      </div>
-      <div id="settings-container">
-        <div class="settings-pane" id="server-settings-pane">
-            <div class="title">Manage Servers</div>
-            <div class="actions-container">
-                <div class="action" id="new-server-action">
-                    <i class="material-icons">add_box</i>
-                    <span>New Server</span>
-                </div>
-                <div class="action hidden" id="save-server-action">
-                    <button class="save-server-button">Save</button>
-                </div>
-                <div class="action hidden" id="reload-server-action">
-                    <i class="material-icons">refresh</i>
-                    <span>Reload to Apply Changes</span>
-                </div>
-            </div>
-            <div class="server-info-container">
-
-            </div>
-        </div>
-      </div>
+      <div id="sidebar"></div>
+      <div id="settings-container"></div>
     </div>
   </body>
-  <script src="js/pages/preference.js"></script>
+  <script src="js/pages/preference/preference.js"></script>  
 </html>

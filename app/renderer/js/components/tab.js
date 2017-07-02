@@ -43,7 +43,4 @@ class Tab extends BaseComponent {
 	}
 }
 
-Tab.SERVER_TAB = 0;
-Tab.SETTINGS_TAB = 1;
-
 module.exports = Tab;

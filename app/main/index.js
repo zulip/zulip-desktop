@@ -215,6 +215,10 @@ app.on('ready', () => {
 		}
 		page.send('tray', messageCount);
 	});
+
+	ipc.on('forward', (event, listener) => {
+		page.send(listener);
+	});
 });
 
 app.on('will-quit', () => {
