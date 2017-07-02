@@ -193,11 +193,7 @@ img.server-info-icon {
     color: #999;
 }
 
-.server-info.active {
-    background: #ecf4ef;
-}
-
-.server-info {
+.settings-card {
     display: flex;
     padding: 16px 30px;
     margin: 10px 0 20px 0;
@@ -231,4 +227,10 @@ img.server-info-icon {
     color: #9E9E9E;
     background: #FAFAFA;
     border: 1px solid #9E9E9E;
+}
+
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }

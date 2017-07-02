@@ -14,7 +14,7 @@ class ServerInfoForm extends BaseComponent{
 
     template() {
         return `
-            <div class="server-info">
+            <div class="settings-card">
 				<div class="server-info-left">
 					<img class="server-info-icon" src="${this.props.server.icon}"/>
 				</div>
