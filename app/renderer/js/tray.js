@@ -9,6 +9,8 @@ const {Tray, Menu, nativeImage, BrowserWindow} = remote;
 
 const APP_ICON = path.join(__dirname, '../../resources/tray', 'tray');
 
+const ConfigUtil = require(__dirname + '/utils/config-util.js');
+
 const iconPath = () => {
 	if (process.platform === 'linux') {
 		return APP_ICON + 'linux.png';
@@ -83,8 +85,6 @@ const renderCanvas = function (arg) {
 			}
 
 			resolve(canvas);
-		} else {
-			reject(canvas);
 		}
 	});
 };
@@ -161,6 +161,8 @@ const createTray = function () {
 };
 
 ipcRenderer.on('destroytray', event => {
+	if (!window.tray) return;
+
 	window.tray.destroy();
 	if (window.tray.isDestroyed()) {
 		window.tray = null;
@@ -172,6 +174,8 @@ ipcRenderer.on('destroytray', event => {
 });
 
 ipcRenderer.on('tray', (event, arg) => {
+	if (!window.tray) return;
+
 	if (arg === 0) {
 		unread = arg;
 		// Message Count // console.log("message count is zero.");
@@ -186,21 +190,26 @@ ipcRenderer.on('tray', (event, arg) => {
 	}
 });
 
-ipcRenderer.on('toggletray', event => {
-	if (event) {
-		if (window.tray) {
-			window.tray.destroy();
-			if (window.tray.isDestroyed()) {
-				window.tray = null;
-			}
-		} else {
-			createTray();
-			renderNativeImage(unread).then(image => {
-				window.tray.setImage(image);
-				window.tray.setToolTip(unread + ' unread messages');
-			});
+function toggleTray() {
+	console.log(window.tray);
+	if (window.tray) {
+		window.tray.destroy();
+		if (window.tray.isDestroyed()) {
+			window.tray = null;
 		}
+		ConfigUtil.setConfigItem('trayIcon', false);
+	} else {
+		createTray();
+		renderNativeImage(unread).then(image => {
+			window.tray.setImage(image);
+			window.tray.setToolTip(arg + ' unread messages');
+		});
+		ConfigUtil.setConfigItem('trayIcon', true);
 	}
-});
+}
 
-createTray();
+ipcRenderer.on('toggletray', toggleTray);
+
+if (ConfigUtil.getConfigItem('trayIcon', true)) {
+	createTray();
+}
