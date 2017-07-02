@@ -56,7 +56,8 @@ class ServerManagerView {
 				},
 				onNetworkError: this.openNetworkTroubleshooting.bind(this),
 				onTitleChange: this.updateBadge.bind(this),
-				nodeIntegration: false
+				nodeIntegration: false,
+				preload: true
 			})
 		}));
 	}
@@ -92,7 +93,8 @@ class ServerManagerView {
 				},
 				onNetworkError: this.openNetworkTroubleshooting.bind(this),
 				onTitleChange: this.updateBadge.bind(this),
-				nodeIntegration: true
+				nodeIntegration: true,
+				preload: false
 			})
 		}));
 
