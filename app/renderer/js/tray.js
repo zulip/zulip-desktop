@@ -47,7 +47,8 @@ const config = {
 
 const renderCanvas = function (arg) {
 	config.unreadCount = arg;
-	return new Promise((resolve, reject) => {
+
+	return new Promise(resolve => {
 		const SIZE = config.size * config.pixelRatio;
 		const PADDING = SIZE * 0.05;
 		const CENTER = SIZE / 2;
@@ -161,7 +162,9 @@ const createTray = function () {
 };
 
 ipcRenderer.on('destroytray', event => {
-	if (!window.tray) return;
+	if (!window.tray) {
+		return;
+	}
 
 	window.tray.destroy();
 	if (window.tray.isDestroyed()) {
@@ -174,7 +177,9 @@ ipcRenderer.on('destroytray', event => {
 });
 
 ipcRenderer.on('tray', (event, arg) => {
-	if (!window.tray) return;
+	if (!window.tray) {
+		return;
+	}
 
 	if (arg === 0) {
 		unread = arg;
@@ -191,7 +196,6 @@ ipcRenderer.on('tray', (event, arg) => {
 });
 
 function toggleTray() {
-	console.log(window.tray);
 	if (window.tray) {
 		window.tray.destroy();
 		if (window.tray.isDestroyed()) {
@@ -202,7 +206,7 @@ function toggleTray() {
 		createTray();
 		renderNativeImage(unread).then(image => {
 			window.tray.setImage(image);
-			window.tray.setToolTip(arg + ' unread messages');
+			window.tray.setToolTip(unread + ' unread messages');
 		});
 		ConfigUtil.setConfigItem('trayIcon', true);
 	}

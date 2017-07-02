@@ -1,20 +1,17 @@
 'use strict';
 
-const {ipcRenderer} = require('electron');
 const BaseComponent = require(__dirname + '/../../components/base.js');
-
 const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
-const Nav = require(__dirname + '/nav.js');
 
-class ServerInfoForm extends BaseComponent{
+class ServerInfoForm extends BaseComponent {
 	constructor(props) {
-        super();
+		super();
 		this.props = props;
 	}
 
-    template() {
-        return `
-            <div class="settings-card">
+	template() {
+		return `
+			<div class="settings-card">
 				<div class="server-info-left">
 					<img class="server-info-icon" src="${this.props.server.icon}"/>
 				</div>
@@ -40,8 +37,8 @@ class ServerInfoForm extends BaseComponent{
 					</div>
 				</div>
 			</div>
-        `;
-    }
+		`;
+	}
 
 	init() {
 		this.initForm();
@@ -50,14 +47,14 @@ class ServerInfoForm extends BaseComponent{
 
 	initForm() {
 		this.$serverInfoForm = this.generateNodeFromTemplate(this.template());
-        this.$deleteServerButton = this.$serverInfoForm.getElementsByClassName('server-delete-action')[0];
-        this.props.$root.appendChild(this.$serverInfoForm);
-    }
+		this.$deleteServerButton = this.$serverInfoForm.getElementsByClassName('server-delete-action')[0];
+		this.props.$root.appendChild(this.$serverInfoForm);
+	}
 
 	initActions() {
 		this.$deleteServerButton.addEventListener('click', () => {
 			DomainUtil.removeDomain(this.props.index);
-            this.props.onChange(this.props.index);
+			this.props.onChange(this.props.index);
 		});
 	}
 }

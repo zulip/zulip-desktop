@@ -1,17 +1,18 @@
 'use strict';
 
 const {ipcRenderer} = require('electron');
+
 const BaseComponent = require(__dirname + '/../../components/base.js');
 const ConfigUtil = require(__dirname + '/../../utils/config-util.js');
 
-class GeneralSection extends BaseComponent{
+class GeneralSection extends BaseComponent {
 	constructor(props) {
 		super();
 		this.props = props;
 	}
 
-    template() {
-        return `
+	template() {
+		return `
             <div class="settings-pane" id="server-settings-pane">
                 <div class="title">Tray Options</div>
                 <div id="tray-option-settings" class="settings-card">
@@ -21,8 +22,8 @@ class GeneralSection extends BaseComponent{
 					</div>
 				</div>
             </div>
-        `;
-    }
+		`;
+	}
 
 	trayOptionTemplate(trayOption) {
 		if (trayOption) {
@@ -41,27 +42,27 @@ class GeneralSection extends BaseComponent{
 	}
 
 	init() {
-        this.props.$root.innerHTML = this.template();
+		this.props.$root.innerHTML = this.template();
 		this.initTrayOption();
 	}
 
 	initTrayOption() {
 		this.$trayOptionSettings = document.querySelector('#tray-option-settings .setting-control');
 		this.$trayOptionSettings.innerHTML = '';
-		
+
 		const trayOption = ConfigUtil.getConfigItem('trayIcon', true);
 		const $trayOption = this.generateNodeFromTemplate(this.trayOptionTemplate(trayOption));
 		this.$trayOptionSettings.appendChild($trayOption);
 
-		$trayOption.addEventListener('click', event=> {
+		$trayOption.addEventListener('click', () => {
 			const newValue = !ConfigUtil.getConfigItem('trayIcon');
 			ConfigUtil.setConfigItem('trayIcon', newValue);
 			ipcRenderer.send('forward', 'toggletray');
 			this.initTrayOption();
-		})
+		});
 	}
 
-	handleServerInfoChange(index) {
+	handleServerInfoChange() {
 		ipcRenderer.send('reload-main');
 	}
 }

@@ -1,15 +1,15 @@
 'use strict';
 
-const {ipcRenderer} = require('electron');
 const BaseComponent = require(__dirname + '/js/components/base.js');
-
 
 const Nav = require(__dirname + '/js/pages/preference/nav.js');
 const ServersSection = require(__dirname + '/js/pages/preference/servers-section.js');
 const GeneralSection = require(__dirname + '/js/pages/preference/general-section.js');
 
-class PreferenceView {
+class PreferenceView extends BaseComponent {
 	constructor() {
+		super();
+
 		this.$sidebarContainer = document.getElementById('sidebar');
 		this.$settingsContainer = document.getElementById('settings-container');
 	}
@@ -37,8 +37,9 @@ class PreferenceView {
 				});
 				break;
 			}
+			default: break;
 		}
-		this.section.init();		
+		this.section.init();
 	}
 }
 

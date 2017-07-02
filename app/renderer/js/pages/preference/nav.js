@@ -15,7 +15,7 @@ class PreferenceNav extends BaseComponent {
 
 	template() {
 		let navItemsTemplate = '';
-		for (let navItem of this.navItems) {
+		for (const navItem of this.navItems) {
 			navItemsTemplate += `<div class="nav" id="nav-${navItem}">${navItem}</div>`;
 		}
 
@@ -35,16 +35,16 @@ class PreferenceNav extends BaseComponent {
 	}
 
 	registerListeners() {
-		for (let navItem of this.navItems) {
+		for (const navItem of this.navItems) {
 			const $item = document.getElementById(`nav-${navItem}`);
-			$item.addEventListener('click', event => {
+			$item.addEventListener('click', () => {
 				this.props.onItemSelected(navItem);
 			});
 		}
 	}
 
 	select(navItemToSelect) {
-		for (let navItem of this.navItems) {
+		for (const navItem of this.navItems) {
 			if (navItem === navItemToSelect) {
 				this.activate(navItem);
 			} else {
@@ -53,12 +53,12 @@ class PreferenceNav extends BaseComponent {
 		}
 	}
 
-	activate(navItem) { 
+	activate(navItem) {
 		const $item = document.getElementById(`nav-${navItem}`);
 		$item.classList.add('active');
 	}
 
-	deactivate(navItem) { 
+	deactivate(navItem) {
 		const $item = document.getElementById(`nav-${navItem}`);
 		$item.classList.remove('active');
 	}

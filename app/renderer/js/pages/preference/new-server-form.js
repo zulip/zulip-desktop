@@ -1,20 +1,17 @@
 'use strict';
 
-const {ipcRenderer} = require('electron');
 const BaseComponent = require(__dirname + '/../../components/base.js');
-
 const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
-const Nav = require(__dirname + '/nav.js');
 
-class NewServerForm extends BaseComponent{
+class NewServerForm extends BaseComponent {
 	constructor(props) {
-        super();
+		super();
 		this.props = props;
 	}
 
-    template() {
-        return `
-            <div class="server-info" style="border: solid 1px #4CAF50;">
+	template() {
+		return `
+			<div class="server-info" style="border: solid 1px #4CAF50;">
 				<div class="server-info-left">
 					<img class="server-info-icon" src="${__dirname + '../../../../img/icon.png'}"/>
 				</div>
@@ -40,8 +37,8 @@ class NewServerForm extends BaseComponent{
 					</div>
 				</div>
 			</div>
-        `;
-    }
+		`;
+	}
 
 	init() {
 		this.initForm();
@@ -50,14 +47,14 @@ class NewServerForm extends BaseComponent{
 
 	initForm() {
 		this.$newServerForm = this.generateNodeFromTemplate(this.template());
-        this.$saveServerButton = this.$newServerForm.getElementsByClassName('server-save-action')[0];
-        this.props.$root.innerHTML = '';
+		this.$saveServerButton = this.$newServerForm.getElementsByClassName('server-save-action')[0];
+		this.props.$root.innerHTML = '';
 		this.props.$root.appendChild(this.$newServerForm);
 
 		this.$newServerAlias = this.$newServerForm.querySelectorAll('input.server-info-value')[0];
 		this.$newServerUrl = this.$newServerForm.querySelectorAll('input.server-info-value')[1];
 		this.$newServerIcon = this.$newServerForm.querySelectorAll('input.server-info-value')[2];
-    }
+	}
 
 	initActions() {
 		this.$saveServerButton.addEventListener('click', () => {
@@ -69,7 +66,7 @@ class NewServerForm extends BaseComponent{
 				};
 				DomainUtil.addDomain(server);
 
-            	this.props.onChange(this.props.index);
+				this.props.onChange(this.props.index);
 			}, errorMessage => {
 				alert(errorMessage);
 			});

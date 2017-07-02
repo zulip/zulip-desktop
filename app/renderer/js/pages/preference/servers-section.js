@@ -1,34 +1,34 @@
 'use strict';
 
 const {ipcRenderer} = require('electron');
-const BaseComponent = require(__dirname + '/../../components/base.js');
 
+const BaseComponent = require(__dirname + '/../../components/base.js');
 const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
-const Nav = require(__dirname + '/nav.js');
 const ServerInfoForm = require(__dirname + '/server-info-form.js');
 const NewServerForm = require(__dirname + '/new-server-form.js');
 
-class ServersSection {
+class ServersSection extends BaseComponent {
 	constructor(props) {
+		super();
 		this.props = props;
 	}
 
-    template() {
-        return `
-            <div class="settings-pane" id="server-settings-pane">
-                <div class="title">Manage Servers</div>
-                <div class="actions-container">
-                    <div class="action green" id="new-server-action">
-                        <i class="material-icons">add_box</i>
-                        <span>New Server</span>
-                    </div>
+	template() {
+		return `
+			<div class="settings-pane" id="server-settings-pane">
+				<div class="title">Manage Servers</div>
+				<div class="actions-container">
+					<div class="action green" id="new-server-action">
+						<i class="material-icons">add_box</i>
+						<span>New Server</span>
+					</div>
 				</div>
-                <div id="new-server-container" class="hidden"></div>
-                <div class="sub-title">Existing Servers</div>
-                <div id="server-info-container"></div>
-            </div>
-        `;
-    }
+				<div id="new-server-container" class="hidden"></div>
+				<div class="sub-title">Existing Servers</div>
+				<div id="server-info-container"></div>
+			</div>
+		`;
+	}
 
 	init() {
 		this.initServers();
@@ -43,7 +43,7 @@ class ServersSection {
 		this.$serverInfoContainer = document.getElementById('server-info-container');
 		this.$newServerContainer = document.getElementById('new-server-container');
 		this.$newServerButton = document.getElementById('new-server-action');
-		
+
 		this.$serverInfoContainer.innerHTML = servers.length ? '' : 'Add your first server to get started!';
 
 		this.initNewServerForm();
@@ -73,7 +73,7 @@ class ServersSection {
 		});
 	}
 
-	handleServerInfoChange(index) {
+	handleServerInfoChange() {
 		ipcRenderer.send('reload-main');
 	}
 }

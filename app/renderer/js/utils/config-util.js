@@ -17,8 +17,8 @@ class ConfigUtil {
 		return instance;
 	}
 
-	getConfigItem(key, defaultValue=null) {
-		let value = this.db.getData('/')[key];
+	getConfigItem(key, defaultValue = null) {
+		const value = this.db.getData('/')[key];
 		if (value === undefined) {
 			this.setConfigItem(key, value);
 			return defaultValue;
