@@ -21,6 +21,13 @@ class GeneralSection extends BaseComponent {
 						<div class="setting-control"></div>
 					</div>
 				</div>
+				<div class="title">App updates</div>
+                <div id="betaupdate-option-settings" class="settings-card">
+					<div class="setting-row">
+						<div class="setting-description">Get Beta updates</div>
+						<div class="setting-control"></div>
+					</div>
+				</div>
             </div>
 		`;
 	}
@@ -41,9 +48,26 @@ class GeneralSection extends BaseComponent {
 		}
 	}
 
+	updateOptionTemplate(updateOption) {
+		if (updateOption) {
+			return `
+				<div class="action green">
+					<span>On</span>
+				</div>
+			`;
+		} else {
+			return `
+				<div class="action red">
+					<span>Off</span>
+				</div>
+			`;
+		}
+	}
+
 	init() {
 		this.props.$root.innerHTML = this.template();
 		this.initTrayOption();
+		this.initUpdateOption();
 	}
 
 	initTrayOption() {
@@ -59,6 +83,21 @@ class GeneralSection extends BaseComponent {
 			ConfigUtil.setConfigItem('trayIcon', newValue);
 			ipcRenderer.send('forward', 'toggletray');
 			this.initTrayOption();
+		});
+	}
+
+	initUpdateOption() {
+		this.$updateOptionSettings = document.querySelector('#betaupdate-option-settings .setting-control');
+		this.$updateOptionSettings.innerHTML = '';
+
+		const updateOption = ConfigUtil.getConfigItem('BetaUpdate', true);
+		const $updateOption = this.generateNodeFromTemplate(this.updateOptionTemplate(updateOption));
+		this.$updateOptionSettings.appendChild($updateOption);
+
+		$updateOption.addEventListener('click', () => {
+			const newValue = !ConfigUtil.getConfigItem('BetaUpdate');
+			ConfigUtil.setConfigItem('BetaUpdate', newValue);
+			this.initUpdateOption();
 		});
 	}
 
