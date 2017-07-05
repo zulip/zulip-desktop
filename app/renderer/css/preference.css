@@ -87,10 +87,6 @@ body {
     overflow-y: scroll;
 }
 
-#server-info-container {
-    margin: 20px 0;
-}
-
 #new-server-container {
     margin: 20px 0;
     opacity: 1;

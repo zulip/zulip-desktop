@@ -24,7 +24,7 @@ class ServersSection extends BaseComponent {
 					</div>
 				</div>
 				<div id="new-server-container" class="hidden"></div>
-				<div class="sub-title">Existing Servers</div>
+				<div class="sub-title" id="existing-servers"></div>
 				<div id="server-info-container"></div>
 			</div>
 		`;
@@ -41,11 +41,13 @@ class ServersSection extends BaseComponent {
 		const servers = DomainUtil.getDomains();
 		this.props.$root.innerHTML = this.template();
 		this.$serverInfoContainer = document.getElementById('server-info-container');
+		this.$existingServers = document.getElementById('existing-servers');
 		this.$newServerContainer = document.getElementById('new-server-container');
 		this.$newServerButton = document.getElementById('new-server-action');
 
 		this.$serverInfoContainer.innerHTML = servers.length ? '' : 'Add your first server to get started!';
-
+		// Show Existing servers if servers are there otherwise hide it
+		this.$existingServers.innerHTML = servers.length === 0 ? '' : 'Existing servers';
 		this.initNewServerForm();
 
 		for (const i in servers) {
