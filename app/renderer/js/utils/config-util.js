@@ -21,7 +21,7 @@ class ConfigUtil {
 			instance = this;
 		}
 
-		this.db = new JsonDB(app.getPath('userData') + '/config.json', true, true);
+		this.db = new JsonDB(app.getPath('userData') + '/settings.json', true, true);
 		return instance;
 	}
 
