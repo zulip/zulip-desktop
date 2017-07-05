@@ -2,12 +2,15 @@
 const {app, dialog} = require('electron');
 const {autoUpdater} = require('electron-updater');
 
+const ConfigUtil = require('./../renderer/js/utils/config-util.js');
+
 function appUpdater() {
 	// Log whats happening
 	const log = require('electron-log');
 	log.transports.file.level = 'info';
 	autoUpdater.logger = log;
-	autoUpdater.allowPrerelease = false;
+	// Handle auto updates for beta/pre releases
+	autoUpdater.allowPrerelease = ConfigUtil.getConfigItem('betaUpdate') || false;
 
 	// Ask the user if update is available
 	// eslint-disable-next-line no-unused-vars

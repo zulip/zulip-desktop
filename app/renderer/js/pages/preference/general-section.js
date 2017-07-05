@@ -21,12 +21,19 @@ class GeneralSection extends BaseComponent {
 						<div class="setting-control"></div>
 					</div>
 				</div>
+				<div class="title">App updates</div>
+                <div id="betaupdate-option-settings" class="settings-card">
+					<div class="setting-row">
+						<div class="setting-description">Get Beta updates</div>
+						<div class="setting-control"></div>
+					</div>
+				</div>
             </div>
 		`;
 	}
 
-	trayOptionTemplate(trayOption) {
-		if (trayOption) {
+	settingsOptionTemplate(settingOption) {
+		if (settingOption) {
 			return `
 				<div class="action green">
 					<span>On</span>
@@ -41,9 +48,18 @@ class GeneralSection extends BaseComponent {
 		}
 	}
 
+	trayOptionTemplate(trayOption) {
+		this.settingsOptionTemplate(trayOption);
+	}
+
+	updateOptionTemplate(updateOption) {
+		this.settingsOptionTemplate(updateOption);
+	}
+
 	init() {
 		this.props.$root.innerHTML = this.template();
 		this.initTrayOption();
+		this.initUpdateOption();
 	}
 
 	initTrayOption() {
@@ -51,7 +67,7 @@ class GeneralSection extends BaseComponent {
 		this.$trayOptionSettings.innerHTML = '';
 
 		const trayOption = ConfigUtil.getConfigItem('trayIcon', true);
-		const $trayOption = this.generateNodeFromTemplate(this.trayOptionTemplate(trayOption));
+		const $trayOption = this.generateNodeFromTemplate(this.settingsOptionTemplate(trayOption));
 		this.$trayOptionSettings.appendChild($trayOption);
 
 		$trayOption.addEventListener('click', () => {
@@ -59,6 +75,21 @@ class GeneralSection extends BaseComponent {
 			ConfigUtil.setConfigItem('trayIcon', newValue);
 			ipcRenderer.send('forward', 'toggletray');
 			this.initTrayOption();
+		});
+	}
+
+	initUpdateOption() {
+		this.$updateOptionSettings = document.querySelector('#betaupdate-option-settings .setting-control');
+		this.$updateOptionSettings.innerHTML = '';
+
+		const updateOption = ConfigUtil.getConfigItem('betaUpdate', false);
+		const $updateOption = this.generateNodeFromTemplate(this.settingsOptionTemplate(updateOption));
+		this.$updateOptionSettings.appendChild($updateOption);
+
+		$updateOption.addEventListener('click', () => {
+			const newValue = !ConfigUtil.getConfigItem('betaUpdate');
+			ConfigUtil.setConfigItem('betaUpdate', newValue);
+			this.initUpdateOption();
 		});
 	}
 

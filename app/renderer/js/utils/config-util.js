@@ -1,9 +1,17 @@
 'use strict';
 
-const {app} = require('electron').remote;
+const process = require('process');
 const JsonDB = require('node-json-db');
 
 let instance = null;
+let app = null;
+
+/* To make the util runnable in both main and renderer process */
+if (process.type === 'renderer') {
+	app = require('electron').remote.app;
+} else {
+	app = require('electron').app;
+}
 
 class ConfigUtil {
 	constructor() {
@@ -13,14 +21,14 @@ class ConfigUtil {
 			instance = this;
 		}
 
-		this.db = new JsonDB(app.getPath('userData') + '/config.json', true, true);
+		this.reloadDB();
 		return instance;
 	}
 
 	getConfigItem(key, defaultValue = null) {
 		const value = this.db.getData('/')[key];
 		if (value === undefined) {
-			this.setConfigItem(key, value);
+			this.setConfigItem(key, defaultValue);
 			return defaultValue;
 		} else {
 			return value;
@@ -29,10 +37,16 @@ class ConfigUtil {
 
 	setConfigItem(key, value) {
 		this.db.push(`/${key}`, value, true);
+		this.reloadDB();
 	}
 
 	removeConfigItem(key) {
 		this.db.delete(`/${key}`);
+		this.reloadDB();
+	}
+
+	reloadDB() {
+		this.db = new JsonDB(app.getPath('userData') + '/settings.json', true, true);
 	}
 }
 
