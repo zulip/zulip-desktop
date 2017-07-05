@@ -90,13 +90,13 @@ class GeneralSection extends BaseComponent {
 		this.$updateOptionSettings = document.querySelector('#betaupdate-option-settings .setting-control');
 		this.$updateOptionSettings.innerHTML = '';
 
-		const updateOption = ConfigUtil.getConfigItem('BetaUpdate', true);
+		const updateOption = ConfigUtil.getConfigItem('betaUpdate', true);
 		const $updateOption = this.generateNodeFromTemplate(this.updateOptionTemplate(updateOption));
 		this.$updateOptionSettings.appendChild($updateOption);
 
 		$updateOption.addEventListener('click', () => {
-			const newValue = !ConfigUtil.getConfigItem('BetaUpdate');
-			ConfigUtil.setConfigItem('BetaUpdate', newValue);
+			const newValue = !ConfigUtil.getConfigItem('betaUpdate');
+			ConfigUtil.setConfigItem('betaUpdate', newValue);
 			this.initUpdateOption();
 		});
 	}

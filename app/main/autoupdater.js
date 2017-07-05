@@ -10,7 +10,7 @@ function appUpdater() {
 	log.transports.file.level = 'info';
 	autoUpdater.logger = log;
 	// Handle auto updates for beta/pre releases
-	autoUpdater.allowPrerelease = ConfigUtil.getConfigItem('BetaUpdate') || false;
+	autoUpdater.allowPrerelease = ConfigUtil.getConfigItem('betaUpdate') || false;
 
 	// Ask the user if update is available
 	// eslint-disable-next-line no-unused-vars
