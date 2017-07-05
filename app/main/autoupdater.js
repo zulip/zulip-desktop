@@ -9,7 +9,8 @@ function appUpdater() {
 	const log = require('electron-log');
 	log.transports.file.level = 'info';
 	autoUpdater.logger = log;
-	autoUpdater.allowPrerelease = ConfigUtil.getConfigItem('BetaUpdate');
+	// Handle auto updates for beta/pre releases
+	autoUpdater.allowPrerelease = ConfigUtil.getConfigItem('BetaUpdate') || false;
 
 	// Ask the user if update is available
 	// eslint-disable-next-line no-unused-vars
