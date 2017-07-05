@@ -21,7 +21,7 @@ class ConfigUtil {
 			instance = this;
 		}
 
-		this.db = new JsonDB(app.getPath('userData') + '/settings.json', true, true);
+		this.reloadDB();
 		return instance;
 	}
 
@@ -37,10 +37,16 @@ class ConfigUtil {
 
 	setConfigItem(key, value) {
 		this.db.push(`/${key}`, value, true);
+		this.reloadDB();
 	}
 
 	removeConfigItem(key) {
 		this.db.delete(`/${key}`);
+		this.reloadDB();
+	}
+
+	reloadDB() {
+		this.db = new JsonDB(app.getPath('userData') + '/settings.json', true, true);
 	}
 }
 
