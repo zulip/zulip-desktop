@@ -90,7 +90,7 @@ class GeneralSection extends BaseComponent {
 		this.$updateOptionSettings = document.querySelector('#betaupdate-option-settings .setting-control');
 		this.$updateOptionSettings.innerHTML = '';
 
-		const updateOption = ConfigUtil.getConfigItem('betaUpdate', true);
+		const updateOption = ConfigUtil.getConfigItem('betaUpdate', false);
 		const $updateOption = this.generateNodeFromTemplate(this.updateOptionTemplate(updateOption));
 		this.$updateOptionSettings.appendChild($updateOption);
 
