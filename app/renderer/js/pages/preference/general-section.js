@@ -32,8 +32,8 @@ class GeneralSection extends BaseComponent {
 		`;
 	}
 
-	trayOptionTemplate(trayOption) {
-		if (trayOption) {
+	settingsOptionTemplate(settingOption) {
+		if (settingOption) {
 			return `
 				<div class="action green">
 					<span>On</span>
@@ -48,20 +48,12 @@ class GeneralSection extends BaseComponent {
 		}
 	}
 
+	trayOptionTemplate(trayOption) {
+		this.settingsOptionTemplate(trayOption);
+	}
+
 	updateOptionTemplate(updateOption) {
-		if (updateOption) {
-			return `
-				<div class="action green">
-					<span>On</span>
-				</div>
-			`;
-		} else {
-			return `
-				<div class="action red">
-					<span>Off</span>
-				</div>
-			`;
-		}
+		this.settingsOptionTemplate(updateOption);
 	}
 
 	init() {
@@ -75,7 +67,7 @@ class GeneralSection extends BaseComponent {
 		this.$trayOptionSettings.innerHTML = '';
 
 		const trayOption = ConfigUtil.getConfigItem('trayIcon', true);
-		const $trayOption = this.generateNodeFromTemplate(this.trayOptionTemplate(trayOption));
+		const $trayOption = this.generateNodeFromTemplate(this.settingsOptionTemplate(trayOption));
 		this.$trayOptionSettings.appendChild($trayOption);
 
 		$trayOption.addEventListener('click', () => {
@@ -91,7 +83,7 @@ class GeneralSection extends BaseComponent {
 		this.$updateOptionSettings.innerHTML = '';
 
 		const updateOption = ConfigUtil.getConfigItem('betaUpdate', false);
-		const $updateOption = this.generateNodeFromTemplate(this.updateOptionTemplate(updateOption));
+		const $updateOption = this.generateNodeFromTemplate(this.settingsOptionTemplate(updateOption));
 		this.$updateOptionSettings.appendChild($updateOption);
 
 		$updateOption.addEventListener('click', () => {
