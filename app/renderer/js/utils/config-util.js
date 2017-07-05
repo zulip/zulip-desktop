@@ -1,9 +1,17 @@
 'use strict';
 
-const {app} = require('electron').remote;
+const process = require('process');
 const JsonDB = require('node-json-db');
 
 let instance = null;
+let app = null;
+
+/* To make the util runnable in both main and renderer process */
+if (process.type === 'renderer') {
+	app = require('electron').remote.app;
+} else {
+	app = require('electron').app;
+}
 
 class ConfigUtil {
 	constructor() {
