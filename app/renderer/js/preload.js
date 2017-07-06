@@ -1,6 +1,9 @@
 'use strict';
+
 const {ipcRenderer} = require('electron');
 const {spellChecker} = require('./spellchecker');
+// eslint-disable-next-line import/no-unassigned-import
+require('./notification');
 
 const logout = () => {
 	// Create the menu for the below

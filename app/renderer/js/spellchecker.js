@@ -1,3 +1,5 @@
+'use strict';
+
 const {SpellCheckHandler, ContextMenuListener, ContextMenuBuilder} = require('electron-spellchecker');
 
 function spellChecker() {

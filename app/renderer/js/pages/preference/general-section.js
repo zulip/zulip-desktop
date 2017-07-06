@@ -28,6 +28,13 @@ class GeneralSection extends BaseComponent {
 						<div class="setting-control"></div>
 					</div>
 				</div>
+				<div class="title">Desktop Notification</div>
+                <div id="silent-option-settings" class="settings-card">
+					<div class="setting-row">
+						<div class="setting-description">Mute all sounds from Zulip (requires reload)</div>
+						<div class="setting-control"></div>
+					</div>
+				</div>
             </div>
 		`;
 	}
@@ -56,10 +63,15 @@ class GeneralSection extends BaseComponent {
 		this.settingsOptionTemplate(updateOption);
 	}
 
+	silentOptionTemplate(silentOption) {
+		this.settingsOptionTemplate(silentOption);
+	}
+
 	init() {
 		this.props.$root.innerHTML = this.template();
 		this.initTrayOption();
 		this.initUpdateOption();
+		this.initSilentOption();
 	}
 
 	initTrayOption() {
@@ -93,6 +105,20 @@ class GeneralSection extends BaseComponent {
 		});
 	}
 
+	initSilentOption() {
+		this.$silentOptionSettings = document.querySelector('#silent-option-settings .setting-control');
+		this.$silentOptionSettings.innerHTML = '';
+
+		const silentOption = ConfigUtil.getConfigItem('silent', false);
+		const $silentOption = this.generateNodeFromTemplate(this.settingsOptionTemplate(silentOption));
+		this.$silentOptionSettings.appendChild($silentOption);
+
+		$silentOption.addEventListener('click', () => {
+			const newValue = !ConfigUtil.getConfigItem('silent');
+			ConfigUtil.setConfigItem('silent', newValue);
+			this.initSilentOption();
+		});
+	}
 	handleServerInfoChange() {
 		ipcRenderer.send('reload-main');
 	}
