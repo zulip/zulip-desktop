@@ -86,6 +86,9 @@ function createMainWindow() {
 				win.hide();
 			}
 		}
+
+	// Unregister all the shortcuts so that they don't interfare with other apps
+		electronLocalshortcut.unregisterAll(mainWindow);
 	});
 
 	win.setTitle('Zulip');
