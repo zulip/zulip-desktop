@@ -111,7 +111,7 @@ class ServerManagerView {
 			materialIcon: 'settings',
 			url: `file://${__dirname}/preference.html#${nav}`
 		});
-		this.tabs[this.functionalTabs['Settings']].webview.send('switch-settings-nav', nav);		
+		this.tabs[this.functionalTabs.Settings].webview.send('switch-settings-nav', nav);
 	}
 
 	openAbout() {
