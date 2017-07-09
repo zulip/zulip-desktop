@@ -219,7 +219,8 @@ app.on('ready', () => {
 		page.send('tray', messageCount);
 	});
 
-	ipc.on('forward', (event, listener) => {
+	ipc.on('forward-message', (event, listener, ...params) => {
+		console.log(listener, ...params);
 		page.send(listener);
 	});
 });

@@ -143,7 +143,7 @@ const darwinTpl = [
 				type: 'separator'
 			},
 			{
-				label: 'Manage Zulip Servers',
+				label: 'Settings',
 				accelerator: 'Cmd+,',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
@@ -280,7 +280,7 @@ const otherTpl = [
 				type: 'separator'
 			},
 			{
-				label: 'Manage Zulip Servers',
+				label: 'Settings',
 				accelerator: 'Ctrl+,',
 				click(item, focusedWindow) {
 					if (focusedWindow) {

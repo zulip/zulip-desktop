@@ -136,7 +136,7 @@ const createTray = function () {
 		type: 'separator'
 	},
 	{
-		label: 'Manage Zulip servers',
+		label: 'Settings',
 		click() {
 			ipcRenderer.send('focus-app');
 			sendAction('open-settings');

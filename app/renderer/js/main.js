@@ -37,7 +37,7 @@ class ServerManagerView {
 			}
 			this.activateTab(0);
 		} else {
-			this.openSettings();
+			this.openSettings('Servers');
 		}
 	}
 
@@ -66,8 +66,12 @@ class ServerManagerView {
 		this.$reloadButton.addEventListener('click', () => {
 			this.tabs[this.activeTabIndex].webview.reload();
 		});
-		this.$addServerButton.addEventListener('click', this.openSettings.bind(this));
-		this.$settingsButton.addEventListener('click', this.openSettings.bind(this));
+		this.$addServerButton.addEventListener('click', () => {
+			this.openSettings('Servers');
+		});
+		this.$settingsButton.addEventListener('click', () => {
+			this.openSettings('General');
+		});
 	}
 
 	openFunctionalTab(tabProps) {
@@ -101,12 +105,13 @@ class ServerManagerView {
 		this.activateTab(this.functionalTabs[tabProps.name]);
 	}
 
-	openSettings() {
+	openSettings(nav = 'General') {
 		this.openFunctionalTab({
 			name: 'Settings',
 			materialIcon: 'settings',
-			url: `file://${__dirname}/preference.html`
+			url: `file://${__dirname}/preference.html#${nav}`
 		});
+		this.tabs[this.functionalTabs['Settings']].webview.send('switch-settings-nav', nav);		
 	}
 
 	openAbout() {
@@ -194,7 +199,9 @@ class ServerManagerView {
 			});
 		}
 
-		ipcRenderer.on('open-settings', this.openSettings.bind(this));
+		ipcRenderer.on('open-settings', (event, settingNav) => {
+			this.openSettings(settingNav);
+		});
 		ipcRenderer.on('open-about', this.openAbout.bind(this));
 	}
 }
