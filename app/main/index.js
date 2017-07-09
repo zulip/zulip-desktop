@@ -189,7 +189,7 @@ app.on('ready', () => {
 	});
 	electron.powerMonitor.on('resume', () => {
 		mainWindow.reload();
-		mainWindow.webContents.send('destroytray');
+		page.send('destroytray');
 	});
 
 	ipc.on('focus-app', () => {
@@ -202,6 +202,7 @@ app.on('ready', () => {
 
 	ipc.on('reload-main', () => {
 		page.reload();
+		page.send('destroytray');
 	});
 
 	ipc.on('toggle-app', () => {
