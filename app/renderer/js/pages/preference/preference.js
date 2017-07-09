@@ -1,6 +1,7 @@
 'use strict';
 
 const BaseComponent = require(__dirname + '/js/components/base.js');
+const {ipcRenderer} = require('electron');
 
 const Nav = require(__dirname + '/js/pages/preference/nav.js');
 const ServersSection = require(__dirname + '/js/pages/preference/servers-section.js');
@@ -19,7 +20,18 @@ class PreferenceView extends BaseComponent {
 			$root: this.$sidebarContainer,
 			onItemSelected: this.handleNavigation.bind(this)
 		});
-		this.handleNavigation('General');
+
+		this.setDefaultView();
+		this.registerIpcs();
+	}
+
+	setDefaultView() {
+		let nav = 'General';
+		const hasTag = window.location.hash;
+		if (hasTag) {
+			nav = hasTag.substring(1);
+		}
+		this.handleNavigation(nav);
 	}
 
 	handleNavigation(navItem) {
@@ -40,6 +52,13 @@ class PreferenceView extends BaseComponent {
 			default: break;
 		}
 		this.section.init();
+		window.location.hash = `#${navItem}`;
+	}
+
+	registerIpcs() {
+		ipcRenderer.on('switch-settings-nav', (event, navItem) => {
+			this.handleNavigation(navItem);
+		});
 	}
 }
 

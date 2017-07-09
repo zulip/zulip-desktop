@@ -173,6 +173,10 @@ class WebView extends BaseComponent {
 		this.hide();
 		this.$el.reload();
 	}
+
+	send(...param) {
+		this.$el.send(...param);
+	}
 }
 
 module.exports = WebView;
