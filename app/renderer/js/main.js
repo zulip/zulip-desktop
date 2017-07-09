@@ -10,11 +10,11 @@ const FunctionalTab = require(__dirname + '/js/components/functional-tab.js');
 
 class ServerManagerView {
 	constructor() {
+		this.$addServerButton = document.getElementById('add-tab');
 		this.$tabsContainer = document.getElementById('tabs-container');
 
 		const $actionsContainer = document.getElementById('actions-container');
 		this.$reloadButton = $actionsContainer.querySelector('#reload-action');
-		this.$addServerButton = $actionsContainer.querySelector('#add-action');
 		this.$settingsButton = $actionsContainer.querySelector('#settings-action');
 		this.$content = document.getElementById('content');
 

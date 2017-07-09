@@ -162,6 +162,12 @@ html, body {
     line-height: 17px;
 }
 
+#add-tab {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
 /*******************
  *   Webview Area  *
  *******************/
