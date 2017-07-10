@@ -161,21 +161,6 @@ app.on('ready', () => {
 
 	const page = mainWindow.webContents;
 
-	// TODO - use global shortcut instead
-	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
-		// page.send('reload');
-		mainWindow.reload();
-		page.send('destroytray');
-	});
-
-	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
-		page.send('back');
-	});
-
-	electronLocalshortcut.register(mainWindow, 'CommandOrControl+]', () => {
-		page.send('forward');
-	});
-
 	page.on('dom-ready', () => {
 		mainWindow.show();
 	});
@@ -203,6 +188,7 @@ app.on('ready', () => {
 	ipc.on('reload-main', () => {
 		page.reload();
 		page.send('destroytray');
+		electronLocalshortcut.unregisterAll(mainWindow);
 	});
 
 	ipc.on('toggle-app', () => {
