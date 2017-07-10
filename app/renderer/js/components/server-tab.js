@@ -9,7 +9,7 @@ class ServerTab extends Tab {
 	template() {
 		return `<div class="tab">
 					<div class="server-tab-badge"></div>
-					<div class="server-tab" style="background-image: url(${this.props.icon});"></div>
+					<div class="server-tab" style="background-image: url('${this.props.icon}');"></div>
 					<div class="server-tab-shortcut">${this.generateShortcutText()}</div>
 				</div>`;
 	}

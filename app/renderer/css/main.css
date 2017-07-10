@@ -98,7 +98,9 @@ html, body {
 
 .tab .server-tab {
     background: #a4d3c4;
-    background-size: 100%;
+    background-size: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
     border-radius: 4px;
     width: 35px;
     height: 35px;

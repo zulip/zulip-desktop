@@ -107,10 +107,10 @@ body {
 
 img.server-info-icon {
     background: #a4d3c4;
-    background-size: 100%;
     border-radius: 4px;
-    width: 44px;
-    height: 44px;
+    width: 28px;
+    height: 28px;
+    padding: 8px;
 }
 
 .server-info-left {
