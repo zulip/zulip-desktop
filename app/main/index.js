@@ -224,6 +224,13 @@ app.on('ready', () => {
 		console.log(listener, ...params);
 		page.send(listener);
 	});
+
+	ipc.on('register-server-tab-shortcut', (event, index) => {
+		electronLocalshortcut.register(mainWindow, `CommandOrControl+${index}`, () => {
+			// Array index == Shown index - 1
+			page.send('switch-server-tab', index - 1);
+		});
+	});
 });
 
 app.on('will-quit', () => {
