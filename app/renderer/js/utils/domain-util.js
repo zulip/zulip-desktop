@@ -1,10 +1,10 @@
 'use strict';
 
 const {app} = require('electron').remote;
-const JsonDB = require('node-json-db');
-const request = require('request');
 const fs = require('fs');
 const path = require('path');
+const JsonDB = require('node-json-db');
+const request = require('request');
 
 let instance = null;
 
@@ -44,17 +44,17 @@ class DomainUtil {
 	}
 
 	addDomain(server) {
-		return new Promise((res, rej) => {
+		return new Promise(resolve => {
 			if (server.icon) {
-				this.saveServerIcon(server.icon).then((localIconUrl) => {
+				this.saveServerIcon(server.icon).then(localIconUrl => {
 					server.icon = localIconUrl;
 					this.db.push('/domains[]', server, true);
-					res();
+					resolve();
 				});
 			} else {
 				server.icon = defaultIconUrl;
 				this.db.push('/domains[]', server, true);
-				res();
+				resolve();
 			}
 		});
 	}
@@ -96,23 +96,22 @@ class DomainUtil {
 		// The save will always succeed. If url is invalid, downgrade to default icon.
 		const dir = `${app.getPath('userData')}/server-icons`;
 
-		if (!fs.existsSync(dir)){
+		if (!fs.existsSync(dir)) {
 			fs.mkdirSync(dir);
 		}
 
-		return new Promise((res, rej) => {
+		return new Promise(resolve => {
 			const filePath = `${dir}/${new Date().getMilliseconds()}${path.extname(url)}`;
-			let file = fs.createWriteStream(filePath);
+			const file = fs.createWriteStream(filePath);
 			console.log(filePath);
 			try {
-				let req = request(url);
-				req.on('response', response => {
+				request(url).on('response', response => {
 					response.pipe(file);
-					res(filePath);
+					resolve(filePath);
 				});
-			} catch (error) {
-				console.log(error);
-				res(defaultIconUrl);
+			} catch (err) {
+				console.log(err);
+				resolve(defaultIconUrl);
 			}
 		});
 	}
