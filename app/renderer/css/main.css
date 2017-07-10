@@ -81,7 +81,7 @@ html, body {
 
 .tab {
     position: relative;
-    margin: 5px 0;
+    margin: 2px 0;
     cursor: pointer;
 }
 
@@ -166,6 +166,13 @@ html, body {
     display: flex;
     align-items: center;
     flex-direction: column;
+}
+
+.tab .server-tab-shortcut {
+    color: #eee;
+    font-size: 12px;
+    text-align: center;
+    font-family: sans-serif;
 }
 
 /*******************
