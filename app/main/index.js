@@ -138,6 +138,23 @@ function createMainWindow() {
 	return win;
 }
 
+function registerLocalShortcuts(page) {
+	// TODO - use global shortcut instead
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
+		// page.send('reload');
+		mainWindow.reload();
+		page.send('destroytray');
+	});
+
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
+		page.send('back');
+	});
+
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+]', () => {
+		page.send('forward');
+	});
+}
+
 // eslint-disable-next-line max-params
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
 	event.preventDefault();
@@ -160,6 +177,8 @@ app.on('ready', () => {
 	mainWindow = createMainWindow();
 
 	const page = mainWindow.webContents;
+
+	registerLocalShortcuts(page);
 
 	page.on('dom-ready', () => {
 		mainWindow.show();
@@ -189,6 +208,7 @@ app.on('ready', () => {
 		page.reload();
 		page.send('destroytray');
 		electronLocalshortcut.unregisterAll(mainWindow);
+		registerLocalShortcuts(page);
 	});
 
 	ipc.on('toggle-app', () => {
