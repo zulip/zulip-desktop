@@ -106,8 +106,15 @@ class DomainUtil {
 			console.log(filePath);
 			try {
 				request(url).on('response', response => {
+					response.on('error', (err) => {
+						console.log(err);
+						resolve(defaultIconUrl);
+					});
 					response.pipe(file);
 					resolve(filePath);
+				}).on('error', err => {
+					console.log(err);
+					resolve(defaultIconUrl);
 				});
 			} catch (err) {
 				console.log(err);
