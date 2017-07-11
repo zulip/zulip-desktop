@@ -79,8 +79,8 @@ class DomainUtil {
 			request(checkDomain, (error, response) => {
 				if (!error && response.statusCode !== 404) {
 					resolve(domain);
-				} else if (error.toString().indexOf('Error: self signed certificate') >= 0) {
-					if (window.confirm(`Do you trust certificate from ${domain}?`)) {
+				} else if (error.toString().indexOf('Error: self signed certificate') >= 0 || 'Error: unable to verify the first certificate') {
+					if (window.confirm(`Do you trust certificate from ${domain}? \n ${error}`)) {
 						resolve(domain);
 					} else {
 						reject('Untrusted Certificate.');
