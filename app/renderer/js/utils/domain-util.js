@@ -1,12 +1,15 @@
 'use strict';
 
 const {app} = require('electron').remote;
+const fs = require('fs');
+const path = require('path');
 const JsonDB = require('node-json-db');
 const request = require('request');
 
 let instance = null;
 
 const defaultIconUrl = __dirname + '../../../img/icon.png';
+
 class DomainUtil {
 	constructor() {
 		if (instance) {
@@ -41,8 +44,19 @@ class DomainUtil {
 	}
 
 	addDomain(server) {
-		server.icon = server.icon || defaultIconUrl;
-		this.db.push('/domains[]', server, true);
+		return new Promise(resolve => {
+			if (server.icon) {
+				this.saveServerIcon(server.icon).then(localIconUrl => {
+					server.icon = localIconUrl;
+					this.db.push('/domains[]', server, true);
+					resolve();
+				});
+			} else {
+				server.icon = defaultIconUrl;
+				this.db.push('/domains[]', server, true);
+				resolve();
+			}
+		});
 	}
 
 	removeDomains() {
@@ -75,6 +89,37 @@ class DomainUtil {
 					reject('Not a valid Zulip server');
 				}
 			});
+		});
+	}
+
+	saveServerIcon(url) {
+		// The save will always succeed. If url is invalid, downgrade to default icon.
+		const dir = `${app.getPath('userData')}/server-icons`;
+
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync(dir);
+		}
+
+		return new Promise(resolve => {
+			const filePath = `${dir}/${new Date().getMilliseconds()}${path.extname(url)}`;
+			const file = fs.createWriteStream(filePath);
+			try {
+				request(url).on('response', response => {
+					response.on('error', err => {
+						console.log(err);
+						resolve(defaultIconUrl);
+					});
+					response.pipe(file).on('finish', () => {
+						resolve(filePath);
+					});
+				}).on('error', err => {
+					console.log(err);
+					resolve(defaultIconUrl);
+				});
+			} catch (err) {
+				console.log(err);
+				resolve(defaultIconUrl);
+			}
 		});
 	}
 }

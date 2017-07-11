@@ -24,6 +24,7 @@ html, body {
     display: flex;
     flex-direction: column;
     -webkit-app-region: drag;
+    overflow: hidden;
 }
 
 @font-face {
@@ -81,7 +82,7 @@ html, body {
 
 .tab {
     position: relative;
-    margin: 5px 0;
+    margin: 2px 0;
     cursor: pointer;
 }
 
@@ -98,7 +99,9 @@ html, body {
 
 .tab .server-tab {
     background: #a4d3c4;
-    background-size: 100%;
+    background-size: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
     border-radius: 4px;
     width: 35px;
     height: 35px;
@@ -166,6 +169,13 @@ html, body {
     display: flex;
     align-items: center;
     flex-direction: column;
+}
+
+.tab .server-tab-shortcut {
+    color: #eee;
+    font-size: 12px;
+    text-align: center;
+    font-family: sans-serif;
 }
 
 /*******************

@@ -46,6 +46,7 @@ class ServerManagerView {
 			icon: server.icon,
 			$root: this.$tabsContainer,
 			onClick: this.activateTab.bind(this, index),
+			index,
 			webview: new WebView({
 				$root: this.$content,
 				index,
@@ -203,6 +204,9 @@ class ServerManagerView {
 			this.openSettings(settingNav);
 		});
 		ipcRenderer.on('open-about', this.openAbout.bind(this));
+		ipcRenderer.on('switch-server-tab', (event, index) => {
+			this.activateTab(index);
+		});
 	}
 }
 

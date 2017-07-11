@@ -64,9 +64,9 @@ class NewServerForm extends BaseComponent {
 					url: domain,
 					icon: this.$newServerIcon.value
 				};
-				DomainUtil.addDomain(server);
-
-				this.props.onChange(this.props.index);
+				DomainUtil.addDomain(server).then(() => {
+					this.props.onChange(this.props.index);
+				});
 			}, errorMessage => {
 				alert(errorMessage);
 			});
