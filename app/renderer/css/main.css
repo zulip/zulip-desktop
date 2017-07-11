@@ -24,6 +24,7 @@ html, body {
     display: flex;
     flex-direction: column;
     -webkit-app-region: drag;
+    overflow: hidden;
 }
 
 @font-face {

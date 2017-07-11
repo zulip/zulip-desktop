@@ -103,15 +103,15 @@ class DomainUtil {
 		return new Promise(resolve => {
 			const filePath = `${dir}/${new Date().getMilliseconds()}${path.extname(url)}`;
 			const file = fs.createWriteStream(filePath);
-			console.log(filePath);
 			try {
 				request(url).on('response', response => {
-					response.on('error', (err) => {
+					response.on('error', err => {
 						console.log(err);
 						resolve(defaultIconUrl);
 					});
-					response.pipe(file);
-					resolve(filePath);
+					response.pipe(file).on('finish', () => {
+						resolve(filePath);
+					});
 				}).on('error', err => {
 					console.log(err);
 					resolve(defaultIconUrl);

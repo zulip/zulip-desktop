@@ -76,7 +76,7 @@ class ServersSection extends BaseComponent {
 	}
 
 	handleServerInfoChange() {
-		// ipcRenderer.send('reload-main');
+		ipcRenderer.send('reload-main');
 	}
 }
 
