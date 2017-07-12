@@ -104,7 +104,7 @@ const helpSubmenu = [
 	{
 		label: `${appName} Website`,
 		click() {
-			shell.openExternal('https://zulip.org');
+			shell.openExternal('https://zulipchat.com/help/');
 		}
 	},
 	{
