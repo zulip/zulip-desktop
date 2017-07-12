@@ -20,7 +20,7 @@ class ServersSection extends BaseComponent {
 				<div class="actions-container">
 					<div class="action green" id="new-server-action">
 						<i class="material-icons">add_box</i>
-						<span>New Server</span>
+						<span>Add Server</span>
 					</div>
 				</div>
 				<div id="new-server-container" class="hidden"></div>
