@@ -20,9 +20,11 @@ class LinkUtil {
 		const newDomain = wurl('hostname', newUrl);
 
 		const skipImages = '.jpg|.gif|.png|.jpeg|.JPG|.PNG';
+		const skipPages = ['integrations', 'api'];
 
-		// We'll be needing this to open images in default browser
-		return (currentDomain === newDomain) && !newUrl.match(skipImages);
+		const getskipPagesUrl = newUrl.substring(8, newUrl.length);
+
+		return (currentDomain === newDomain) && !newUrl.match(skipImages) && !skipPages.includes(getskipPagesUrl.split('/')[1]);
 	}
 }
 
