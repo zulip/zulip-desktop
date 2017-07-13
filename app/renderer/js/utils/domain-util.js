@@ -77,9 +77,13 @@ class DomainUtil {
 
 		return new Promise((resolve, reject) => {
 			request(checkDomain, (error, response) => {
+				const certsError =
+					['Error: self signed certificate',
+						'Error: unable to verify the first certificate'
+					];
 				if (!error && response.statusCode !== 404) {
 					resolve(domain);
-				} else if (error.toString().indexOf('Error: self signed certificate') >= 0 || 'Error: unable to verify the first certificate') {
+				} else if (certsError.indexOf(error.toString()) >= 0) {
 					if (window.confirm(`Do you trust certificate from ${domain}? \n ${error}`)) {
 						resolve(domain);
 					} else {
