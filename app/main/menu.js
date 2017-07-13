@@ -27,6 +27,27 @@ function clearCache() {
 	});
 }
 
+const historySubmenu = [
+	{
+		label: 'Back',
+		accelerator: process.platform === 'darwin' ? 'Command+[' : 'Alt+Left',
+		click(item, focusedWindow) {
+			if (focusedWindow) {
+				sendAction('back');
+			}
+		}
+	},
+	{
+		label: 'Forward',
+		accelerator: process.platform === 'darwin' ? 'Command+]' : 'Alt+Right',
+		click(item, focusedWindow) {
+			if (focusedWindow) {
+				sendAction('forward');
+			}
+		}
+	}
+];
+
 const viewSubmenu = [
 	{
 		label: 'Reload',
@@ -242,6 +263,10 @@ const darwinTpl = [
 		submenu: viewSubmenu
 	},
 	{
+		label: 'History',
+		submenu: historySubmenu
+	},
+	{
 		role: 'window',
 		submenu: [
 			{
@@ -365,6 +390,10 @@ const otherTpl = [
 	{
 		label: 'View',
 		submenu: viewSubmenu
+	},
+	{
+		label: 'History',
+		submenu: historySubmenu
 	},
 	{
 		role: 'help',

@@ -145,14 +145,6 @@ function registerLocalShortcuts(page) {
 		mainWindow.reload();
 		page.send('destroytray');
 	});
-
-	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
-		page.send('back');
-	});
-
-	electronLocalshortcut.register(mainWindow, 'CommandOrControl+]', () => {
-		page.send('forward');
-	});
 }
 
 // eslint-disable-next-line max-params
