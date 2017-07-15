@@ -30,7 +30,7 @@ function clearCache() {
 const historySubmenu = [
 	{
 		label: 'Back',
-		accelerator: process.platform === 'darwin' ? 'Command+[' : 'Alt+Left',
+		accelerator: process.platform === 'darwin' ? 'Command+Left' : 'Alt+Left',
 		click(item, focusedWindow) {
 			if (focusedWindow) {
 				sendAction('back');
@@ -39,7 +39,7 @@ const historySubmenu = [
 	},
 	{
 		label: 'Forward',
-		accelerator: process.platform === 'darwin' ? 'Command+]' : 'Alt+Right',
+		accelerator: process.platform === 'darwin' ? 'Command+Right' : 'Alt+Right',
 		click(item, focusedWindow) {
 			if (focusedWindow) {
 				sendAction('forward');
