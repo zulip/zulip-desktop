@@ -128,6 +128,10 @@ html, body {
     line-height: 36px;
 }
 
+.tab.functional-tab .server-tab-badge.active {
+    top: 0px;
+}
+
 .tab.active .server-tab {
     opacity: 1;
 }
@@ -143,7 +147,7 @@ html, body {
     position: absolute;
     right: 1px;
     z-index: 15;
-    top: -2px;
+    top: 3px;
     float: right;
     color: #fff;
     text-align: center;
