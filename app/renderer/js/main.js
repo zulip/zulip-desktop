@@ -236,7 +236,6 @@ window.onload = () => {
 	const serverManagerView = new ServerManagerView();
 	serverManagerView.init();
 
-
 	window.addEventListener('online', () => {
 		serverManagerView.reloadView();
 	});
