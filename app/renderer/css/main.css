@@ -82,23 +82,15 @@ html, body {
 
 .tab {
     position: relative;
-    margin: 2px 0;
+    margin: 4px 0;
     cursor: pointer;
-}
-
-.tab.active::before {
-    content: "";
-    background: #fff;
-    border-radius: 0 3px 3px 0;
-    width: 4px;
-    position: absolute;
-    height: 35px;
-    left: -10px;
-    top: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 .tab .server-tab {
-    background: #a4d3c4;
     background-size: 28px;
     background-repeat: no-repeat;
     background-position: center;
@@ -106,7 +98,7 @@ html, body {
     width: 35px;
     height: 35px;
     position: relative;
-    margin: 5px 0;
+    margin: 5px 0 2px 0;
     z-index: 11;
     line-height: 31px;
     color: #194a2b;
@@ -119,11 +111,19 @@ html, body {
     opacity: 0.8;
 }
 
-.tab .functional-tab {
+.tab.functional-tab {
+    height: 46px;
+}
+
+.tab.functional-tab.active{
+    background: #8c9897;
+}
+
+.tab.functional-tab .server-tab{
     background: #eee;
 }
 
-.tab .functional-tab i {
+.tab.functional-tab .server-tab i {
     font-size: 28px;
     line-height: 36px;
 }
@@ -141,7 +141,7 @@ html, body {
     font-size: 10px;
     font-family: sans-serif;
     position: absolute;
-    right: -6px;
+    right: 1px;
     z-index: 15;
     top: -2px;
     float: right;
@@ -157,7 +157,7 @@ html, body {
 
 .tab .server-tab-badge.close-button {
     width: 16px;
-    padding: 0 0 0 1px;
+    padding: 0;
 }
 
 .tab .server-tab-badge.close-button i {
@@ -172,10 +172,19 @@ html, body {
 }
 
 .tab .server-tab-shortcut {
-    color: #eee;
+    color: #648478;
     font-size: 12px;
     text-align: center;
     font-family: sans-serif;
+    margin-bottom: 5px;
+}
+
+.tab.active .server-tab-shortcut {
+    color: #cee2db;
+}
+
+.tab.active {
+    background: #648478;
 }
 
 /*******************
