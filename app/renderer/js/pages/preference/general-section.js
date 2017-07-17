@@ -119,8 +119,9 @@ class GeneralSection extends BaseComponent {
 			this.initSilentOption();
 		});
 	}
+
 	handleServerInfoChange() {
-		ipcRenderer.send('reload-main');
+		ipcRenderer.send('forward-message', 'reload-viewer');
 	}
 }
 
