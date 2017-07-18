@@ -18,7 +18,7 @@ class DomainUtil {
 			instance = this;
 		}
 
-		this.db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
+		this.reloadDB();
 		// Migrate from old schema
 		if (this.db.getData('/').domain) {
 			this.addDomain({
@@ -32,6 +32,7 @@ class DomainUtil {
 	}
 
 	getDomains() {
+		this.reloadDB();
 		if (this.db.getData('/').domains === undefined) {
 			return [];
 		} else {
@@ -40,6 +41,7 @@ class DomainUtil {
 	}
 
 	getDomain(index) {
+		this.reloadDB();
 		return this.db.getData(`/domains[${index}]`);
 	}
 
@@ -49,11 +51,13 @@ class DomainUtil {
 				this.saveServerIcon(server.icon).then(localIconUrl => {
 					server.icon = localIconUrl;
 					this.db.push('/domains[]', server, true);
+					this.reloadDB();
 					resolve();
 				});
 			} else {
 				server.icon = defaultIconUrl;
 				this.db.push('/domains[]', server, true);
+				this.reloadDB();
 				resolve();
 			}
 		});
@@ -61,10 +65,12 @@ class DomainUtil {
 
 	removeDomains() {
 		this.db.delete('/domains');
+		this.reloadDB();
 	}
 
 	removeDomain(index) {
 		this.db.delete(`/domains[${index}]`);
+		this.reloadDB();
 	}
 
 	checkDomain(domain) {
@@ -125,6 +131,10 @@ class DomainUtil {
 				resolve(defaultIconUrl);
 			}
 		});
+	}
+
+	reloadDB() {
+		this.db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
 	}
 }
 

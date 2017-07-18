@@ -51,9 +51,10 @@ const historySubmenu = [
 const viewSubmenu = [
 	{
 		label: 'Reload',
+		accelerator: 'CommandOrControl+R',
 		click(item, focusedWindow) {
 			if (focusedWindow) {
-				sendAction('reload');
+				sendAction('reload-viewer');
 			}
 		}
 	},
