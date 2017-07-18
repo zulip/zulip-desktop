@@ -143,6 +143,14 @@ function registerLocalShortcuts(page) {
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
 		page.send('reload-viewer');
 	});
+	// Also adding these shortcuts because some users might want to use it instead of CMD/Left-Right
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
+		page.send('back');
+	});
+
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+]', () => {
+		page.send('forward');
+	});
 }
 
 // eslint-disable-next-line max-params
