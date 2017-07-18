@@ -15,10 +15,6 @@ class ServerManagerView {
 
 		const $actionsContainer = document.getElementById('actions-container');
 		this.$reloadButton = $actionsContainer.querySelector('#reload-action');
-
-		this.$reloadTooltip = $actionsContainer.querySelector('#reload-tooltip');
-		this.$settingsTooltip = $actionsContainer.querySelector('#setting-tooltip');
-
 		this.$settingsButton = $actionsContainer.querySelector('#settings-action');
 		this.$webviewsContainer = document.getElementById('webviews-container');
 
@@ -72,18 +68,6 @@ class ServerManagerView {
 	initActions() {
 		this.$reloadButton.addEventListener('click', () => {
 			this.tabs[this.activeTabIndex].webview.reload();
-		});
-		this.$reloadButton.addEventListener('mouseover', () => {
-			this.$reloadTooltip.removeAttribute('style');
-		});
-		this.$reloadButton.addEventListener('mouseout', () => {
-			this.$reloadTooltip.style.display = 'none';
-		});
-		this.$settingsButton.addEventListener('mouseover', () => {
-			this.$settingsTooltip.removeAttribute('style');
-		});
-		this.$settingsButton.addEventListener('mouseout', () => {
-			this.$settingsTooltip.style.display = 'none';
 		});
 		this.$addServerButton.addEventListener('click', () => {
 			this.openSettings('Servers');

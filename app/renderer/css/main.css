@@ -1,13 +1,11 @@
 /*******************
  *  General rules  *
  *******************/
-
-html,
-body {
+html, body {
     height: 100%;
     margin: 0;
     cursor: default;
-    user-select: none;
+    user-select:none;
 }
 
 #content {
@@ -30,40 +28,40 @@ body {
 }
 
 @font-face {
-    font-family: 'Material Icons';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Material Icons'), local('MaterialIcons-Regular'), url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Material Icons'),
+       local('MaterialIcons-Regular'),
+       url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
 }
-
 
 /*******************
  *   Left Sidebar  *
  *******************/
-
-#tabs-container {
+ #tabs-container {
     display: flex;
     align-items: center;
     flex-direction: column;
 }
 
 .material-icons {
-    font-family: 'Material Icons';
-    font-weight: normal;
-    font-style: normal;
-    /* Preferred icon size */
-    font-size: 24px;
-    display: inline-block;
-    line-height: 1;
-    text-transform: none;
-    letter-spacing: normal;
-    word-wrap: normal;
-    white-space: nowrap;
-    direction: ltr;
-    /* Support for all WebKit browsers. */
-    -webkit-font-smoothing: antialiased;
-    /* Support for Safari and Chrome. */
-    text-rendering: optimizeLegibility;
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  /* Preferred icon size */
+  font-size: 24px;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
 }
 
 .action-button {
@@ -179,36 +177,6 @@ body {
     text-align: center;
     font-family: sans-serif;
 }
-
-
-/* Tooltip styling */
-
-#reload-tooltip,
-#setting-tooltip {
-    background: #222c31;
-    margin-left: 72px;
-    padding: 10px;
-    position: absolute;
-    margin-top: -3px;
-    z-index: 1000;
-    color: white;
-    border-radius: 4px;
-    text-align: center;
-    width: 55px;
-    height: 15px;
-}
-
-#reload-tooltip:after,
-#setting-tooltip:after {
-    content: " ";
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-    border-right: 8px solid #222c31;
-    position: absolute;
-    top: 10px;
-    right: 75px;
-}
-
 
 /*******************
  *   Webview Area  *
