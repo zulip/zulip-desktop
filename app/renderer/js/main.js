@@ -18,6 +18,9 @@ class ServerManagerView {
 		this.$settingsButton = $actionsContainer.querySelector('#settings-action');
 		this.$webviewsContainer = document.getElementById('webviews-container');
 
+		this.$reloadTooltip = $actionsContainer.querySelector('#reload-tooltip');
+		this.$settingsTooltip = $actionsContainer.querySelector('#setting-tooltip');
+
 		this.activeTabIndex = -1;
 		this.tabs = [];
 		this.functionalTabs = {};
@@ -74,6 +77,18 @@ class ServerManagerView {
 		});
 		this.$settingsButton.addEventListener('click', () => {
 			this.openSettings('General');
+		});
+		this.$reloadButton.addEventListener('mouseover', () => {
+			this.$reloadTooltip.removeAttribute('style');
+		});
+		this.$reloadButton.addEventListener('mouseout', () => {
+			this.$reloadTooltip.style.display = 'none';
+		});
+		this.$settingsButton.addEventListener('mouseover', () => {
+			this.$settingsTooltip.removeAttribute('style');
+		});
+		this.$settingsButton.addEventListener('mouseout', () => {
+			this.$settingsTooltip.style.display = 'none';
 		});
 	}
 
