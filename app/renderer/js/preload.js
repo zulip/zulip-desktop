@@ -37,6 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// redirect users to network troubleshooting page
 	document.querySelector('.restart_get_events_button').addEventListener('click', () => {
-		ipcRenderer.send('reload-main');
+		ipcRenderer.send('forward-message', 'reload-viewer');
 	});
 });
