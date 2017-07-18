@@ -185,13 +185,15 @@ body {
 
 #reload-tooltip,
 #setting-tooltip {
-    background: white;
+    background: #222c31;
     margin-left: 72px;
     padding: 10px;
     position: absolute;
     margin-top: -3px;
     z-index: 1000;
+    color: white;
     border-radius: 4px;
+    text-align: center;
     width: 55px;
     height: 15px;
 }
@@ -201,7 +203,7 @@ body {
     content: " ";
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
-    border-right: 8px solid white;
+    border-right: 8px solid #222c31;
     position: absolute;
     top: 10px;
     right: 75px;
