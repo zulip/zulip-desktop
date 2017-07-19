@@ -44,7 +44,7 @@ class ServerTab extends Tab {
 		if (SystemUtil.getOS() === 'Mac') {
 			cmdKey = '⌘';
 		} else {
-			cmdKey = 'Ctrl';
+			cmdKey = 'Ctrl +';
 		}
 
 		ipcRenderer.send('register-server-tab-shortcut', shownIndex);
