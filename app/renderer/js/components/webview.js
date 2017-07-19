@@ -1,5 +1,8 @@
 'use strict';
 
+const path = require('path');
+const fs = require('fs');
+
 const DomainUtil = require(__dirname + '/../utils/domain-util.js');
 const SystemUtil = require(__dirname + '/../utils/system-util.js');
 const LinkUtil = require(__dirname + '/../utils/link-util.js');
@@ -93,6 +96,8 @@ class WebView extends BaseComponent {
 		this.focus();
 		this.loading = false;
 		this.props.onTitleChange(this.$el.getTitle());
+		// Injecting preload css in webview to override some css rules
+		this.$el.insertCSS(fs.readFileSync(path.join(__dirname, '/../../css/preload.css'), 'utf8'));
 	}
 
 	focus() {
