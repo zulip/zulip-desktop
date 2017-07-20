@@ -19,7 +19,7 @@ const iconPath = () => {
 };
 
 let unread = 0;
-let should_tray_unread_update = true;
+let shouldTrayUnreadUpdate = true;
 
 const trayIconSize = () => {
 	switch (process.platform) {
@@ -178,7 +178,7 @@ ipcRenderer.on('destroytray', event => {
 });
 
 ipcRenderer.on('tray', (event, arg) => {
-	if (!window.tray || should_tray_unread_update == false) {
+	if (!window.tray || shouldTrayUnreadUpdate === false) {
 		return;
 	}
 
@@ -220,26 +220,23 @@ if (ConfigUtil.getConfigItem('trayIcon', true)) {
 }
 
 ipcRenderer.on('toggleunreadTray', (event, arg) => {
-	should_tray_unread_update = arg
+	shouldTrayUnreadUpdate = arg;
 	if (window.tray) {
 		window.tray.destroy();
 		if (window.tray.isDestroyed()) {
 			window.tray = null;
-		
 		}
-		if(arg){
-		should_tray_unread_update = !arg;
-		createTray();
-		renderNativeImage(unread).then(image => {
-			window.tray.setImage(image);
-			window.tray.setToolTip(unread + ' unread messages');
-			})
-		
-		}
-		else{
-		should_tray_unread_update = !arg
-		createTray();
-		window.tray.setImage(iconPath());
+		if (arg) {
+			shouldTrayUnreadUpdate = !arg;
+			createTray();
+			renderNativeImage(unread).then(image => {
+				window.tray.setImage(image);
+				window.tray.setToolTip(unread + ' unread messages');
+			});
+		} else {
+			shouldTrayUnreadUpdate = !arg;
+			createTray();
+			window.tray.setImage(iconPath());
 		}
 	}
-})
+});
