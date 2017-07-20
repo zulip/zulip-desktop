@@ -74,7 +74,7 @@ class GeneralSection extends BaseComponent {
 		this.settingsOptionTemplate(silentOption);
 	}
 
-	trayUnreadOptionTemplate(trayUnreadUpdateOption){
+	trayUnreadOptionTemplate(trayUnreadUpdateOption) {
 		this.settingsOptionTemplate(trayUnreadUpdateOption);
 	}
 
@@ -132,7 +132,7 @@ class GeneralSection extends BaseComponent {
 		});
 	}
 
-	initTrayUnreadOption(){
+	initTrayUnreadOption() {
 		this.$trayUnreadSettings = document.querySelector('#tray-unread-option-settings .setting-control');
 		this.$trayUnreadSettings.innerHTML = '';
 
@@ -145,7 +145,7 @@ class GeneralSection extends BaseComponent {
 			ConfigUtil.setConfigItem('toggle-update-tray', newValue);
 			ipcRenderer.send('tray-unread', newValue);
 			this.initTrayUnreadOption();
-		})
+		});
 	}
 
 	handleServerInfoChange() {
