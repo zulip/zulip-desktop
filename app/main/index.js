@@ -250,3 +250,4 @@ app.on('will-quit', () => {
 app.on('before-quit', () => {
 	isQuitting = true;
 });
+
