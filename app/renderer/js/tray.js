@@ -19,6 +19,7 @@ const iconPath = () => {
 };
 
 let unread = 0;
+let should_tray_unread_update = true;
 
 const trayIconSize = () => {
 	switch (process.platform) {
@@ -177,7 +178,7 @@ ipcRenderer.on('destroytray', event => {
 });
 
 ipcRenderer.on('tray', (event, arg) => {
-	if (!window.tray) {
+	if (!window.tray || should_tray_unread_update == false) {
 		return;
 	}
 
@@ -217,3 +218,28 @@ ipcRenderer.on('toggletray', toggleTray);
 if (ConfigUtil.getConfigItem('trayIcon', true)) {
 	createTray();
 }
+
+ipcRenderer.on('toggleunreadTray', (event, arg) => {
+	should_tray_unread_update = arg
+	if (window.tray) {
+		window.tray.destroy();
+		if (window.tray.isDestroyed()) {
+			window.tray = null;
+		
+		}
+		if(arg){
+		should_tray_unread_update = !arg;
+		createTray();
+		renderNativeImage(unread).then(image => {
+			window.tray.setImage(image);
+			window.tray.setToolTip(unread + ' unread messages');
+			})
+		
+		}
+		else{
+		should_tray_unread_update = !arg
+		createTray();
+		window.tray.setImage(iconPath());
+		}
+	}
+})
