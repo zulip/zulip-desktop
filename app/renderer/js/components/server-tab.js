@@ -39,17 +39,17 @@ class ServerTab extends Tab {
 
 		const shownIndex = this.props.index + 1;
 
-		let cmdKey = '';
+		let shortcutText = '';
 
 		if (SystemUtil.getOS() === 'Mac') {
-			cmdKey = '⌘';
+			shortcutText = `⌘ ${shownIndex}`;
 		} else {
-			cmdKey = 'Ctrl +';
+			shortcutText = `Ctrl+${shownIndex}`;
 		}
 
 		ipcRenderer.send('register-server-tab-shortcut', shownIndex);
 
-		return `${cmdKey} ${shownIndex}`;
+		return shortcutText;
 	}
 }
 
