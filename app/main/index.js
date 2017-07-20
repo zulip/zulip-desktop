@@ -17,6 +17,9 @@ const conf = new Configstore();
 // Setting userAgent so that server-side code can identify the desktop app
 
 // Prevent window being garbage collected
+
+let badgeCount;
+
 let mainWindow;
 
 let isQuitting = false;
@@ -210,12 +213,26 @@ app.on('ready', () => {
 		}
 	});
 
-	ipc.on('update-badge', (event, messageCount) => {
-		if (process.platform === 'darwin') {
-			app.setBadgeCount(messageCount);
+	ipc.on('toggle-dock-unread-option', (event, dockarg) => {
+		if (dockarg === true && process.platform === 'darwin') {
+			showBadgeCount(badgeCount);
+		} else if (dockarg === false) {
+			hideBadgeCount();
 		}
+	});
+
+	ipc.on('update-badge', (event, messageCount) => {
+		badgeCount = messageCount;
 		page.send('tray', messageCount);
 	});
+
+	function showBadgeCount(messageCount) {
+		return app.setBadgeCount(messageCount);
+	}
+
+	function hideBadgeCount() {
+		return app.setBadgeCount(0);
+	}
 
 	ipc.on('forward-message', (event, listener, ...params) => {
 		console.log(listener, ...params);
