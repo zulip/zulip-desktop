@@ -218,6 +218,11 @@ app.on('ready', () => {
 		if (process.platform === 'darwin') {
 			app.setBadgeCount(messageCount);
 		}
+		if (process.platform === 'win32') {
+			if (!mainWindow.isFocused()) {
+				mainWindow.flashFrame(true);
+			}
+		}
 		page.send('tray', messageCount);
 	});
 
