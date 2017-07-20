@@ -139,11 +139,17 @@ function createMainWindow() {
 }
 
 function registerLocalShortcuts(page) {
-	// TODO - use global shortcut instead
+	// Somehow, reload action cannot be overwritten by the menu item
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
-		// page.send('reload');
-		mainWindow.reload();
-		page.send('destroytray');
+		page.send('reload-viewer');
+	});
+	// Also adding these shortcuts because some users might want to use it instead of CMD/Left-Right
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
+		page.send('back');
+	});
+
+	electronLocalshortcut.register(mainWindow, 'CommandOrControl+]', () => {
+		page.send('forward');
 	});
 }
 
@@ -183,9 +189,9 @@ app.on('ready', () => {
 			appUpdater();
 		}
 	});
+
 	electron.powerMonitor.on('resume', () => {
-		mainWindow.reload();
-		page.send('destroytray');
+		page.send('reload-viewer');
 	});
 
 	ipc.on('focus-app', () => {
@@ -194,13 +200,6 @@ app.on('ready', () => {
 
 	ipc.on('quit-app', () => {
 		app.quit();
-	});
-
-	ipc.on('reload-main', () => {
-		page.reload();
-		page.send('destroytray');
-		electronLocalshortcut.unregisterAll(mainWindow);
-		registerLocalShortcuts(page);
 	});
 
 	ipc.on('toggle-app', () => {
@@ -228,6 +227,14 @@ app.on('ready', () => {
 			// Array index == Shown index - 1
 			page.send('switch-server-tab', index - 1);
 		});
+	});
+
+	ipc.on('local-shortcuts', (event, enable) => {
+		if (enable) {
+			registerLocalShortcuts(page);
+		} else {
+			electronLocalshortcut.unregisterAll(mainWindow);
+		}
 	});
 });
 

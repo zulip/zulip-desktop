@@ -9,7 +9,7 @@ class NetworkTroubleshootingView {
 
 	init() {
 		this.$reconnectButton.addEventListener('click', () => {
-			ipcRenderer.send('reload-main');
+			ipcRenderer.send('forward-message', 'reload-viewer');
 		});
 	}
 }

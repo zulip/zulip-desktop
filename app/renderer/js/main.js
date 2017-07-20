@@ -16,7 +16,10 @@ class ServerManagerView {
 		const $actionsContainer = document.getElementById('actions-container');
 		this.$reloadButton = $actionsContainer.querySelector('#reload-action');
 		this.$settingsButton = $actionsContainer.querySelector('#settings-action');
-		this.$content = document.getElementById('content');
+		this.$webviewsContainer = document.getElementById('webviews-container');
+
+		this.$reloadTooltip = $actionsContainer.querySelector('#reload-tooltip');
+		this.$settingsTooltip = $actionsContainer.querySelector('#setting-tooltip');
 
 		this.activeTabIndex = -1;
 		this.tabs = [];
@@ -39,6 +42,8 @@ class ServerManagerView {
 		} else {
 			this.openSettings('Servers');
 		}
+
+		ipcRenderer.send('local-shortcuts', true);
 	}
 
 	initServer(server, index) {
@@ -48,7 +53,7 @@ class ServerManagerView {
 			onClick: this.activateTab.bind(this, index),
 			index,
 			webview: new WebView({
-				$root: this.$content,
+				$root: this.$webviewsContainer,
 				index,
 				url: server.url,
 				name: server.alias,
@@ -73,6 +78,18 @@ class ServerManagerView {
 		this.$settingsButton.addEventListener('click', () => {
 			this.openSettings('General');
 		});
+		this.$reloadButton.addEventListener('mouseover', () => {
+			this.$reloadTooltip.removeAttribute('style');
+		});
+		this.$reloadButton.addEventListener('mouseout', () => {
+			this.$reloadTooltip.style.display = 'none';
+		});
+		this.$settingsButton.addEventListener('mouseover', () => {
+			this.$settingsTooltip.removeAttribute('style');
+		});
+		this.$settingsButton.addEventListener('mouseout', () => {
+			this.$settingsTooltip.style.display = 'none';
+		});
 	}
 
 	openFunctionalTab(tabProps) {
@@ -89,7 +106,7 @@ class ServerManagerView {
 			onClick: this.activateTab.bind(this, this.functionalTabs[tabProps.name]),
 			onDestroy: this.destroyTab.bind(this, tabProps.name, this.functionalTabs[tabProps.name]),
 			webview: new WebView({
-				$root: this.$content,
+				$root: this.$webviewsContainer,
 				index: this.functionalTabs[tabProps.name],
 				url: tabProps.url,
 				name: tabProps.name,
@@ -164,6 +181,25 @@ class ServerManagerView {
 		}
 	}
 
+	destroyView() {
+		// Clear global variables
+		this.activeTabIndex = -1;
+		this.tabs = [];
+		this.functionalTabs = {};
+
+		// Clear DOM elements
+		this.$tabsContainer.innerHTML = '';
+		this.$webviewsContainer.innerHTML = '';
+
+		// Destroy shortcuts
+		ipcRenderer.send('local-shortcuts', false);
+	}
+
+	reloadView() {
+		this.destroyView();
+		this.initTabs();
+	}
+
 	updateBadge() {
 		let messageCountAll = 0;
 		for (let i = 0; i < this.tabs.length; i++) {
@@ -204,6 +240,7 @@ class ServerManagerView {
 			this.openSettings(settingNav);
 		});
 		ipcRenderer.on('open-about', this.openAbout.bind(this));
+		ipcRenderer.on('reload-viewer', this.reloadView.bind(this));
 		ipcRenderer.on('switch-server-tab', (event, index) => {
 			this.activateTab(index);
 		});
@@ -213,8 +250,8 @@ class ServerManagerView {
 window.onload = () => {
 	const serverManagerView = new ServerManagerView();
 	serverManagerView.init();
-};
 
-window.addEventListener('online', () => {
-	ipcRenderer.send('reload-main');
-});
+	window.addEventListener('online', () => {
+		serverManagerView.reloadView();
+	});
+};
