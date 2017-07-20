@@ -35,6 +35,13 @@ class GeneralSection extends BaseComponent {
 						<div class="setting-control"></div>
 					</div>
 				</div>
+				<div class="title">Dock toggle</div>
+                <div id="dock-unread-option-settings" class="settings-card">
+					<div class="setting-row">
+						<div class="setting-description">Toggle dock unread messages</div>
+						<div class="setting-control"></div>
+					</div>
+				</div>
             </div>
 		`;
 	}
@@ -67,11 +74,16 @@ class GeneralSection extends BaseComponent {
 		this.settingsOptionTemplate(silentOption);
 	}
 
+	dockUnreadOptionTemplate(dockToggleOption) {
+		this.settingsOptionTemplate(dockToggleOption);
+	}
+
 	init() {
 		this.props.$root.innerHTML = this.template();
 		this.initTrayOption();
 		this.initUpdateOption();
 		this.initSilentOption();
+		this.initDockToggleUnreadOption();
 	}
 
 	initTrayOption() {
@@ -116,7 +128,24 @@ class GeneralSection extends BaseComponent {
 		$silentOption.addEventListener('click', () => {
 			const newValue = !ConfigUtil.getConfigItem('silent');
 			ConfigUtil.setConfigItem('silent', newValue);
+			ipcRenderer.send('toggle-dock-unread', newValue);
 			this.initSilentOption();
+		});
+	}
+
+	initDockToggleUnreadOption() {
+		this.$dockToggleUnreadoptionSettings = document.querySelector('#dock-unread-option-settings .setting-control');
+		this.$dockToggleUnreadoptionSettings.innerHTML = '';
+
+		const dockToggleOption = ConfigUtil.getConfigItem('dock-toggle-unread', false);
+		const $dockToggleOption = this.generateNodeFromTemplate(this.settingsOptionTemplate(dockToggleOption));
+		this.$dockToggleUnreadoptionSettings.appendChild($dockToggleOption);
+
+		$dockToggleOption.addEventListener('click', () => {
+			const newValue = !ConfigUtil.getConfigItem('dock-toggle-unread');
+			ConfigUtil.setConfigItem('dock-toggle-unread', newValue);
+			ipcRenderer.send('toggle-dock-unread-option', newValue);
+			this.initDockToggleUnreadOption();
 		});
 	}
 
