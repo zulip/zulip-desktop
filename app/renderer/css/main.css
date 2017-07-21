@@ -232,3 +232,26 @@ webview:focus {
     top: 10px;
     right: 75px;
 }
+
+#collapse-button {
+    bottom: 30px;
+    left: 20px;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: #222c31;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: #999 1px 1px;
+}
+
+#collapse-button i {
+    color: #efefef;
+}
+
+#main-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
