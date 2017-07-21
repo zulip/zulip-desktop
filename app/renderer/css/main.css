@@ -209,17 +209,18 @@ webview:focus {
 
 #reload-tooltip,
 #setting-tooltip {
+    font-family: sans-serif;
     background: #222c31;
-    margin-left: 72px;
-    padding: 10px;
+    margin-left: 68px;
+    padding: 6px 8px;
     position: absolute;
-    margin-top: -3px;
+    margin-top: 0px;
     z-index: 1000;
     color: white;
     border-radius: 4px;
     text-align: center;
     width: 55px;
-    height: 15px;
+    font-size: 14px;
 }
 
 #reload-tooltip:after,
@@ -229,8 +230,8 @@ webview:focus {
     border-bottom: 8px solid transparent;
     border-right: 8px solid #222c31;
     position: absolute;
-    top: 10px;
-    right: 75px;
+    top: 7px;
+    right: 68px;
 }
 
 #collapse-button {
