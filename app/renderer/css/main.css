@@ -255,3 +255,7 @@ webview:focus {
     width: 100%;
     position: relative;
 }
+
+.hidden {
+    display: none !important;
+}
