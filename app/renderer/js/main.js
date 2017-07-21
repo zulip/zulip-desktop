@@ -244,6 +244,26 @@ class ServerManagerView {
 		ipcRenderer.on('switch-server-tab', (event, index) => {
 			this.activateTab(index);
 		});
+		ipcRenderer.on('render-taskbar-icon', (event, messageCount) => {
+			// Create a canvas from unread messagecounts
+			function createOverlayIcon(messageCount) {
+				const canvas = document.createElement('canvas');
+				canvas.height = 128;
+				canvas.width = 128;
+				canvas.style.letterSpacing = '-5px';
+				const ctx = canvas.getContext('2d');
+				ctx.fillStyle = '#f42020';
+				ctx.beginPath();
+				ctx.ellipse(64, 64, 64, 64, 0, 0, 2 * Math.PI);
+				ctx.fill();
+				ctx.textAlign = 'center';
+				ctx.fillStyle = 'white';
+				ctx.font = '90px sans-serif';
+				ctx.fillText(String(Math.min(99, messageCount)), 64, 96);
+				return canvas;
+			}
+			ipcRenderer.send('update-taskbar-icon', createOverlayIcon(messageCount).toDataURL(), String(messageCount));
+		});
 	}
 }
 

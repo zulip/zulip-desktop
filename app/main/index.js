@@ -87,7 +87,7 @@ function createMainWindow() {
 			}
 		}
 
-	// Unregister all the shortcuts so that they don't interfare with other apps
+		// Unregister all the shortcuts so that they don't interfare with other apps
 		electronLocalshortcut.unregisterAll(mainWindow);
 	});
 
@@ -222,8 +222,18 @@ app.on('ready', () => {
 			if (!mainWindow.isFocused()) {
 				mainWindow.flashFrame(true);
 			}
+			if (messageCount === 0) {
+				mainWindow.setOverlayIcon(null, '');
+			} else {
+				page.send('render-taskbar-icon', messageCount);
+			}
 		}
 		page.send('tray', messageCount);
+	});
+
+	ipc.on('update-taskbar-icon', (event, data, text) => {
+		const img = electron.nativeImage.createFromDataURL(data);
+		mainWindow.setOverlayIcon(img, text);
 	});
 
 	ipc.on('forward-message', (event, listener, ...params) => {
