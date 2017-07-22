@@ -3,9 +3,9 @@ const path = require('path');
 
 const electron = require('electron');
 
-const { ipcRenderer, remote } = electron;
+const {ipcRenderer, remote} = electron;
 
-const { Tray, Menu, nativeImage, BrowserWindow } = remote;
+const {Tray, Menu, nativeImage, BrowserWindow} = remote;
 
 const APP_ICON = path.join(__dirname, '../../resources/tray', 'tray');
 
@@ -181,7 +181,7 @@ ipcRenderer.on('tray', (event, arg) => {
 		return;
 	}
 
-	if (process.platform === 'linux')
+	if (process.platform === 'linux') {
 		if (arg === 0) {
 			unread = arg;
 			// Message Count // console.log("message count is zero.");
@@ -194,6 +194,7 @@ ipcRenderer.on('tray', (event, arg) => {
 				window.tray.setToolTip(arg + ' unread messages');
 			});
 		}
+	}
 });
 
 function toggleTray() {
