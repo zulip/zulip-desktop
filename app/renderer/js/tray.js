@@ -3,9 +3,9 @@ const path = require('path');
 
 const electron = require('electron');
 
-const {ipcRenderer, remote} = electron;
+const { ipcRenderer, remote } = electron;
 
-const {Tray, Menu, nativeImage, BrowserWindow} = remote;
+const { Tray, Menu, nativeImage, BrowserWindow } = remote;
 
 const APP_ICON = path.join(__dirname, '../../resources/tray', 'tray');
 
@@ -181,18 +181,19 @@ ipcRenderer.on('tray', (event, arg) => {
 		return;
 	}
 
-	if (arg === 0) {
-		unread = arg;
-		// Message Count // console.log("message count is zero.");
-		window.tray.setImage(iconPath());
-		window.tray.setToolTip('No unread messages');
-	} else {
-		unread = arg;
-		renderNativeImage(arg).then(image => {
-			window.tray.setImage(image);
-			window.tray.setToolTip(arg + ' unread messages');
-		});
-	}
+	if (process.platform === 'linux')
+		if (arg === 0) {
+			unread = arg;
+			// Message Count // console.log("message count is zero.");
+			window.tray.setImage(iconPath());
+			window.tray.setToolTip('No unread messages');
+		} else {
+			unread = arg;
+			renderNativeImage(arg).then(image => {
+				window.tray.setImage(image);
+				window.tray.setToolTip(arg + ' unread messages');
+			});
+		}
 });
 
 function toggleTray() {
@@ -204,10 +205,12 @@ function toggleTray() {
 		ConfigUtil.setConfigItem('trayIcon', false);
 	} else {
 		createTray();
-		renderNativeImage(unread).then(image => {
-			window.tray.setImage(image);
-			window.tray.setToolTip(unread + ' unread messages');
-		});
+		if (process.platform === 'linux') {
+			renderNativeImage(unread).then(image => {
+				window.tray.setImage(image);
+				window.tray.setToolTip(unread + ' unread messages');
+			});
+		}
 		ConfigUtil.setConfigItem('trayIcon', true);
 	}
 }
