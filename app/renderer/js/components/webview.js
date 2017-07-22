@@ -6,8 +6,7 @@ const fs = require('fs');
 const DomainUtil = require(__dirname + '/../utils/domain-util.js');
 const SystemUtil = require(__dirname + '/../utils/system-util.js');
 const LinkUtil = require(__dirname + '/../utils/link-util.js');
-const {app, dialog, shell} = require('electron').remote;
-const {ipcRenderer} = require('electron');
+const {shell} = require('electron').remote;
 
 const BaseComponent = require(__dirname + '/../components/base.js');
 
@@ -114,25 +113,6 @@ class WebView extends BaseComponent {
 		} else {
 			this.init();
 		}
-	}
-
-	checkConnectivity() {
-		return dialog.showMessageBox({
-			title: 'Internet connection problem',
-			message: 'No internet available! Try again?',
-			type: 'warning',
-			buttons: ['Try again', 'Close'],
-			defaultId: 0
-		}, index => {
-			if (index === 0) {
-				this.reload();
-				ipcRenderer.send('reload');
-				ipcRenderer.send('destroytray');
-			}
-			if (index === 1) {
-				app.quit();
-			}
-		});
 	}
 
 	zoomIn() {
