@@ -70,6 +70,10 @@ html, body {
     align-items: center;
     padding: 10px;
 }
+.action-button:hover {
+    background: #eee;
+    cursor: pointer;
+}
 
 .action-button i {
     color: #6c8592;
