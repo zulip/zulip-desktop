@@ -35,6 +35,13 @@ class GeneralSection extends BaseComponent {
 						<div class="setting-control"></div>
 					</div>
 				</div>
+				<div class="title">Show tray unread messages</div>
+                <div id="tray-unread-option-settings" class="settings-card">
+					<div class="setting-row">
+						<div class="setting-description">Show tray unread messages</div>
+						<div class="setting-control"></div>
+					</div>
+				</div>
             </div>
 		`;
 	}
@@ -67,11 +74,16 @@ class GeneralSection extends BaseComponent {
 		this.settingsOptionTemplate(silentOption);
 	}
 
+	trayUnreadOptionTemplate(trayUnreadUpdateOption) {
+		this.settingsOptionTemplate(trayUnreadUpdateOption);
+	}
+
 	init() {
 		this.props.$root.innerHTML = this.template();
 		this.initTrayOption();
 		this.initUpdateOption();
 		this.initSilentOption();
+		this.initTrayUnreadOption();
 	}
 
 	initTrayOption() {
@@ -117,6 +129,22 @@ class GeneralSection extends BaseComponent {
 			const newValue = !ConfigUtil.getConfigItem('silent');
 			ConfigUtil.setConfigItem('silent', newValue);
 			this.initSilentOption();
+		});
+	}
+
+	initTrayUnreadOption() {
+		this.$trayUnreadSettings = document.querySelector('#tray-unread-option-settings .setting-control');
+		this.$trayUnreadSettings.innerHTML = '';
+
+		const trayUnreadOption = ConfigUtil.getConfigItem('toggle-update-tray', 'true');
+		const $trayUnreadOption = this.generateNodeFromTemplate(this.settingsOptionTemplate(trayUnreadOption));
+		this.$trayUnreadSettings.appendChild($trayUnreadOption);
+
+		$trayUnreadOption.addEventListener('click', () => {
+			const newValue = !ConfigUtil.getConfigItem('toggle-update-tray');
+			ConfigUtil.setConfigItem('toggle-update-tray', newValue);
+			ipcRenderer.send('tray-unread', newValue);
+			this.initTrayUnreadOption();
 		});
 	}
 

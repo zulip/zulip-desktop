@@ -19,6 +19,7 @@ const iconPath = () => {
 };
 
 let unread = 0;
+let shouldTrayUnreadUpdate = true;
 
 const trayIconSize = () => {
 	switch (process.platform) {
@@ -177,7 +178,7 @@ ipcRenderer.on('destroytray', event => {
 });
 
 ipcRenderer.on('tray', (event, arg) => {
-	if (!window.tray) {
+	if (!window.tray || shouldTrayUnreadUpdate === false) {
 		return;
 	}
 	// We don't want to create tray from unread messages on windows and macOS since these systems already have dock badges and taskbar overlay icon.
@@ -221,3 +222,25 @@ ipcRenderer.on('toggletray', toggleTray);
 if (ConfigUtil.getConfigItem('trayIcon', true)) {
 	createTray();
 }
+
+ipcRenderer.on('toggleunreadTray', (event, arg) => {
+	shouldTrayUnreadUpdate = arg;
+	if (window.tray) {
+		window.tray.destroy();
+		if (window.tray.isDestroyed()) {
+			window.tray = null;
+		}
+		if (arg) {
+			shouldTrayUnreadUpdate = !arg;
+			createTray();
+			renderNativeImage(unread).then(image => {
+				window.tray.setImage(image);
+				window.tray.setToolTip(unread + ' unread messages');
+			});
+		} else {
+			shouldTrayUnreadUpdate = !arg;
+			createTray();
+			window.tray.setImage(iconPath());
+		}
+	}
+});

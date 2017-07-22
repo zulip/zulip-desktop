@@ -242,6 +242,10 @@ app.on('ready', () => {
 		page.send(listener);
 	});
 
+	ipc.on('tray-unread', (event, arg) => {
+		page.send('toggleunreadTray', arg);
+	});
+
 	ipc.on('register-server-tab-shortcut', (event, index) => {
 		electronLocalshortcut.register(mainWindow, `CommandOrControl+${index}`, () => {
 			// Array index == Shown index - 1
@@ -266,3 +270,4 @@ app.on('will-quit', () => {
 app.on('before-quit', () => {
 	isQuitting = true;
 });
+
