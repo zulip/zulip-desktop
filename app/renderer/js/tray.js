@@ -180,7 +180,7 @@ ipcRenderer.on('tray', (event, arg) => {
 	if (!window.tray) {
 		return;
 	}
-
+	// We don't want to create tray from unread messages on windows and macOS since these systems already have dock badges and taskbar overlay icon.
 	if (process.platform === 'linux') {
 		if (arg === 0) {
 			unread = arg;
