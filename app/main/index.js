@@ -122,9 +122,10 @@ function createMainWindow() {
 	// On osx it's 'moved'
 	win.on('move', function () {
 		const pos = this.getPosition();
+		// Let's not allow negative positions
 		conf.set({
-			x: pos[0],
-			y: pos[1]
+			x: pos[0] > 0 ? pos[0] : 0,
+			y: pos[1] > 0 ? pos[1] : 0
 		});
 	});
 
