@@ -1,6 +1,6 @@
 'use strict';
 
-const {app} = require('electron').remote;
+const {app, dialog} = require('electron').remote;
 const fs = require('fs');
 const path = require('path');
 const JsonDB = require('node-json-db');
@@ -90,11 +90,18 @@ class DomainUtil {
 				if (!error && response.statusCode !== 404) {
 					resolve(domain);
 				} else if (certsError.indexOf(error.toString()) >= 0) {
-					if (window.confirm(`Do you trust certificate from ${domain}? \n ${error}`)) {
-						resolve(domain);
-					} else {
-						reject('Untrusted Certificate.');
-					}
+					dialog.showMessageBox({
+						type: 'question',
+						buttons: ['Yes', 'No'],
+						defaultId: 0,
+						message: `Do you trust certificate from ${domain}? \n ${error}`
+					}, response => {
+						if (response === 0) {
+							resolve(domain);
+						} else {
+							reject('Untrusted Certificate.');
+						}
+					});
 				} else {
 					reject('Not a valid Zulip server');
 				}
