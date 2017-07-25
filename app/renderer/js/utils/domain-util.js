@@ -8,7 +8,7 @@ const request = require('request');
 
 let instance = null;
 
-const defaultIconUrl = __dirname + '../../../img/icon.png';
+const defaultIconUrl = '../renderer/img/icon.png';
 
 class DomainUtil {
 	constructor() {
