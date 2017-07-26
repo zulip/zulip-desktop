@@ -21,6 +21,7 @@ class ServerManagerView {
 
 		this.$reloadTooltip = $actionsContainer.querySelector('#reload-tooltip');
 		this.$settingsTooltip = $actionsContainer.querySelector('#setting-tooltip');
+		this.$sidebar = document.getElementById('sidebar');
 
 		this.activeTabIndex = -1;
 		this.tabs = [];
@@ -246,6 +247,14 @@ class ServerManagerView {
 		ipcRenderer.on('reload-viewer', this.reloadView.bind(this));
 		ipcRenderer.on('switch-server-tab', (event, index) => {
 			this.activateTab(index);
+		});
+		ipcRenderer.on('toggle-sidebar', (event, show) => {
+			debugger;
+			if (show) {
+				this.$sidebar.classList.remove('hidden');
+			} else {
+				this.$sidebar.classList.add('hidden');
+			}
 		});
 		ipcRenderer.on('render-taskbar-icon', (event, messageCount) => {
 			// Create a canvas from unread messagecounts

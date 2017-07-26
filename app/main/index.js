@@ -237,8 +237,7 @@ app.on('ready', () => {
 	});
 
 	ipc.on('forward-message', (event, listener, ...params) => {
-		console.log(listener, ...params);
-		page.send(listener);
+		page.send(listener, ...params);
 	});
 
 	ipc.on('register-server-tab-shortcut', (event, index) => {
