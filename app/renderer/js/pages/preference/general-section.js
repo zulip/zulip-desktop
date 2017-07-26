@@ -38,7 +38,7 @@ class GeneralSection extends BaseComponent {
 				<div class="title">User Interface</div>
                 <div id="ui-option-settings" class="settings-card">
 					<div class="setting-row" id="sidebar-option">
-						<div class="setting-description">Show sidebar</div>
+						<div class="setting-description">Show sidebar (<span class="code">CmdOrCtrl+S</span>)</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>

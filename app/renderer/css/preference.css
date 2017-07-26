@@ -230,3 +230,7 @@ img.server-info-icon {
     justify-content: space-between;
     width: 100%;
 }
+
+.code {
+    font-family: Courier New, Courier, monospace;
+}
