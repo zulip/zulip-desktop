@@ -5,7 +5,6 @@ const {ipcRenderer} = require('electron');
 
 const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
 const WebView = require(__dirname + '/js/components/webview.js');
-const CollapseButton = require(__dirname + '/js/components/collapse-button.js');
 const ServerTab = require(__dirname + '/js/components/server-tab.js');
 const FunctionalTab = require(__dirname + '/js/components/functional-tab.js');
 
@@ -29,8 +28,6 @@ class ServerManagerView {
 	}
 
 	init() {
-		new CollapseButton();
-
 		this.initTabs();
 		this.initActions();
 		this.registerIpcs();
@@ -249,7 +246,6 @@ class ServerManagerView {
 			this.activateTab(index);
 		});
 		ipcRenderer.on('toggle-sidebar', (event, show) => {
-			debugger;
 			if (show) {
 				this.$sidebar.classList.remove('hidden');
 			} else {

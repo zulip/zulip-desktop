@@ -143,7 +143,6 @@ class GeneralSection extends BaseComponent {
 		$sidebarOption.addEventListener('click', () => {
 			const newValue = !ConfigUtil.getConfigItem('show-sidebar');
 			ConfigUtil.setConfigItem('show-sidebar', newValue);
-			debugger;
 			ipcRenderer.send('forward-message', 'toggle-sidebar', newValue);
 			this.initSidebarToggle();
 		});
