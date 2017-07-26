@@ -277,8 +277,16 @@ class ServerManagerView {
 				ctx.fill();
 				ctx.textAlign = 'center';
 				ctx.fillStyle = 'white';
-				ctx.font = '90px sans-serif';
-				ctx.fillText(String(Math.min(99, messageCount)), 64, 96);
+				if (messageCount > 99) {
+					ctx.font = '65px Helvetica';
+					ctx.fillText('99+', 64, 85);
+				} else if (messageCount < 10) {
+					ctx.font = '90px Helvetica';
+					ctx.fillText(String(Math.min(99, messageCount)), 64, 96);
+				} else {
+					ctx.font = '85px Helvetica';
+					ctx.fillText(String(Math.min(99, messageCount)), 64, 90);
+				}
 				return canvas;
 			}
 			ipcRenderer.send('update-taskbar-icon', createOverlayIcon(messageCount).toDataURL(), String(messageCount));
