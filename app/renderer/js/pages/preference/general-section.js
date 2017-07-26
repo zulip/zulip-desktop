@@ -136,7 +136,7 @@ class GeneralSection extends BaseComponent {
 		this.$sidebarOptionSettings = document.querySelector('#ui-option-settings #sidebar-option .setting-control');
 		this.$sidebarOptionSettings.innerHTML = '';
 
-		const sidebarOption = ConfigUtil.getConfigItem('show-sidebar', false);
+		const sidebarOption = ConfigUtil.getConfigItem('show-sidebar', true);
 		const $sidebarOption = this.generateNodeFromTemplate(this.settingsOptionTemplate(sidebarOption));
 		this.$sidebarOptionSettings.appendChild($sidebarOption);
 
