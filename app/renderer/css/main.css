@@ -149,6 +149,7 @@ html, body {
     text-align: center;
     line-height: 17px;
     display: block;
+    right: 0;
 }
 
 .tab .server-tab-badge {
