@@ -1,8 +1,9 @@
 'use strict';
 const os = require('os');
 const electron = require('electron');
-
 const {dialog} = require('electron');
+
+const ConfigUtil = require(__dirname + '/../renderer/js/utils/config-util.js');
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -99,6 +100,17 @@ const viewSubmenu = [
 		click(item, focusedWindow) {
 			if (focusedWindow) {
 				focusedWindow.webContents.send('toggletray');
+			}
+		}
+	},
+	{
+		label: 'Toggle Sidebar',
+		accelerator: 'CommandOrControl+S',
+		click(item, focusedWindow) {
+			if (focusedWindow) {
+				const newValue = !ConfigUtil.getConfigItem('show-sidebar');
+				focusedWindow.webContents.send('toggle-sidebar', newValue);
+				ConfigUtil.setConfigItem('show-sidebar', newValue);
 			}
 		}
 	},

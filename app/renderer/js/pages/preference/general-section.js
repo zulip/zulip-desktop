@@ -21,10 +21,10 @@ class GeneralSection extends BaseComponent {
 						<div class="setting-control"></div>
 					</div>
 				</div>
-				<div class="title">App updates</div>
+				<div class="title">App Updates</div>
                 <div id="betaupdate-option-settings" class="settings-card">
 					<div class="setting-row">
-						<div class="setting-description">Get Beta updates</div>
+						<div class="setting-description">Get beta updates</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>
@@ -32,6 +32,13 @@ class GeneralSection extends BaseComponent {
                 <div id="silent-option-settings" class="settings-card">
 					<div class="setting-row">
 						<div class="setting-description">Mute all sounds from Zulip (requires reload)</div>
+						<div class="setting-control"></div>
+					</div>
+				</div>
+				<div class="title">User Interface</div>
+                <div id="ui-option-settings" class="settings-card">
+					<div class="setting-row" id="sidebar-option">
+						<div class="setting-description">Show sidebar (<span class="code">CmdOrCtrl+S</span>)</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>
@@ -67,11 +74,16 @@ class GeneralSection extends BaseComponent {
 		this.settingsOptionTemplate(silentOption);
 	}
 
+	sidebarToggleTemplate(toggleOption) {
+		this.settingsOptionTemplate(toggleOption);
+	}
+
 	init() {
 		this.props.$root.innerHTML = this.template();
 		this.initTrayOption();
 		this.initUpdateOption();
 		this.initSilentOption();
+		this.initSidebarToggle();
 	}
 
 	initTrayOption() {
@@ -117,6 +129,22 @@ class GeneralSection extends BaseComponent {
 			const newValue = !ConfigUtil.getConfigItem('silent');
 			ConfigUtil.setConfigItem('silent', newValue);
 			this.initSilentOption();
+		});
+	}
+
+	initSidebarToggle() {
+		this.$sidebarOptionSettings = document.querySelector('#ui-option-settings #sidebar-option .setting-control');
+		this.$sidebarOptionSettings.innerHTML = '';
+
+		const sidebarOption = ConfigUtil.getConfigItem('show-sidebar', true);
+		const $sidebarOption = this.generateNodeFromTemplate(this.settingsOptionTemplate(sidebarOption));
+		this.$sidebarOptionSettings.appendChild($sidebarOption);
+
+		$sidebarOption.addEventListener('click', () => {
+			const newValue = !ConfigUtil.getConfigItem('show-sidebar');
+			ConfigUtil.setConfigItem('show-sidebar', newValue);
+			ipcRenderer.send('forward-message', 'toggle-sidebar', newValue);
+			this.initSidebarToggle();
 		});
 	}
 
