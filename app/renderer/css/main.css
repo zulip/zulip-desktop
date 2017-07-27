@@ -70,8 +70,8 @@ html, body {
     align-items: center;
     padding: 10px;
 }
+
 .action-button:hover {
-    background: #eee;
     cursor: pointer;
 }
 
