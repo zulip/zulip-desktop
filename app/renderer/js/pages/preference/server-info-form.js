@@ -18,12 +18,12 @@ class ServerInfoForm extends BaseComponent {
 				</div>
 				<div class="server-info-right">
 					<div class="server-info-row">
-						<span class="server-info-key">Name</span>
-						<input class="server-info-value" disabled value="${this.props.server.alias}"/>
-					</div>
-					<div class="server-info-row">
 						<span class="server-info-key">Url</span>
 						<input class="server-info-value" disabled value="${this.props.server.url}"/>
+					</div>
+					<div class="server-info-row">
+						<span class="server-info-key">Label</span>
+						<input class="server-info-value" disabled value="${this.props.server.alias}"/>
 					</div>
 					<div class="server-info-row">
 						<span class="server-info-key">Icon</span>

@@ -17,12 +17,12 @@ class NewServerForm extends BaseComponent {
 				</div>
 				<div class="server-info-right">
 					<div class="server-info-row">
-						<span class="server-info-key">Name</span>
+						<span class="server-info-key">Url</span>
 						<input class="server-info-value" placeholder="(Required)"/>
 					</div>
 					<div class="server-info-row">
-						<span class="server-info-key">Url</span>
-						<input class="server-info-value" placeholder="(Required)"/>
+						<span class="server-info-key">Label</span>
+						<input class="server-info-value" placeholder="(Optional)"/>
 					</div>
 					<div class="server-info-row">
 						<span class="server-info-key">Icon</span>
@@ -51,8 +51,8 @@ class NewServerForm extends BaseComponent {
 		this.props.$root.innerHTML = '';
 		this.props.$root.appendChild(this.$newServerForm);
 
-		this.$newServerAlias = this.$newServerForm.querySelectorAll('input.server-info-value')[0];
-		this.$newServerUrl = this.$newServerForm.querySelectorAll('input.server-info-value')[1];
+		this.$newServerUrl = this.$newServerForm.querySelectorAll('input.server-info-value')[0];
+		this.$newServerAlias = this.$newServerForm.querySelectorAll('input.server-info-value')[1];
 		this.$newServerIcon = this.$newServerForm.querySelectorAll('input.server-info-value')[2];
 	}
 

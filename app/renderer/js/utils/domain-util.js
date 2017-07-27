@@ -92,11 +92,11 @@ class DomainUtil {
 					];
 				if (!error && response.statusCode !== 404) {
 					// Correct
-					this.getServerSettings(domain).then((serverSettings) => {
+					this.getServerSettings(domain, server).then(serverSettings => {
 						resolve(serverSettings);
 					}, () => {
 						resolve(server);
-					})
+					});
 				} else if (certsError.indexOf(error.toString()) >= 0) {
 					dialog.showMessageBox({
 						type: 'question',
@@ -105,11 +105,11 @@ class DomainUtil {
 						message: `Do you trust certificate from ${domain}? \n ${error}`
 					}, response => {
 						if (response === 0) {
-							this.getServerSettings(domain).then((serverSettings) => {
+							this.getServerSettings(domain, server).then(serverSettings => {
 								resolve(serverSettings);
 							}, () => {
 								resolve(server);
-							})
+							});
 						} else {
 							reject('Untrusted Certificate.');
 						}
@@ -121,19 +121,18 @@ class DomainUtil {
 		});
 	}
 
-	getServerSettings(domain) {
+	getServerSettings(domain, server) {
 		const serverSettingsUrl = domain + '/api/v1/server_settings';
 		return new Promise((resolve, reject) => {
 			request(serverSettingsUrl, (error, response) => {
-				if (!error && response.statusCode == 200) {
+				if (!error && response.statusCode === 200) {
 					const data = JSON.parse(response.body);
 					if (data.hasOwnProperty('realm_icon') && data.realm_icon) {
-						const server = {
-							icon: data.realm_uri + data.realm_icon,
+						resolve({
+							icon: (server.icon === defaultIconUrl) ? data.realm_uri + data.realm_icon : defaultIconUrl,
 							url: data.realm_uri,
-							alias: data.realm_name
-						}
-						resolve(server);
+							alias: server.alias || data.realm_name
+						});
 					}
 				} else {
 					reject('Zulip server version < 1.6.');
@@ -151,7 +150,7 @@ class DomainUtil {
 		}
 
 		return new Promise(resolve => {
-			const filePath = `${dir}/${new Date().getMilliseconds()}${path.extname(url).split("?")[0]}`;
+			const filePath = `${dir}/${new Date().getMilliseconds()}${path.extname(url).split('?')[0]}`;
 			const file = fs.createWriteStream(filePath);
 			try {
 				request(url).on('response', response => {
