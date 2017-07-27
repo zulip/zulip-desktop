@@ -58,13 +58,14 @@ class NewServerForm extends BaseComponent {
 
 	initActions() {
 		this.$saveServerButton.addEventListener('click', () => {
-			DomainUtil.checkDomain(this.$newServerUrl.value).then(domain => {
-				const server = {
-					alias: this.$newServerAlias.value,
-					url: domain,
-					icon: this.$newServerIcon.value
-				};
-				DomainUtil.addDomain(server).then(() => {
+			const newServerConf = {
+				alias: this.$newServerAlias.value,
+				url: this.$newServerUrl.value,
+				icon: this.$newServerIcon.value
+			};
+
+			DomainUtil.checkDomain(newServerConf).then(serverConf => {
+				DomainUtil.addDomain(serverConf).then(() => {
 					this.props.onChange(this.props.index);
 				});
 			}, errorMessage => {

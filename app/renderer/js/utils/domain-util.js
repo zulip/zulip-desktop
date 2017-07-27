@@ -73,7 +73,10 @@ class DomainUtil {
 		this.reloadDB();
 	}
 
-	checkDomain(domain) {
+	checkDomain(server) {
+		let domain = server.url;
+		server.icon = server.icon || defaultIconUrl;
+
 		const hasPrefix = (domain.indexOf('http') === 0);
 		if (!hasPrefix) {
 			domain = (domain.indexOf('localhost:') >= 0) ? `http://${domain}` : `https://${domain}`;
@@ -88,7 +91,12 @@ class DomainUtil {
 						'Error: unable to verify the first certificate'
 					];
 				if (!error && response.statusCode !== 404) {
-					resolve(domain);
+					// Correct
+					this.getServerSettings(domain).then((serverSettings) => {
+						resolve(serverSettings);
+					}, () => {
+						resolve(server);
+					})
 				} else if (certsError.indexOf(error.toString()) >= 0) {
 					dialog.showMessageBox({
 						type: 'question',
@@ -97,13 +105,38 @@ class DomainUtil {
 						message: `Do you trust certificate from ${domain}? \n ${error}`
 					}, response => {
 						if (response === 0) {
-							resolve(domain);
+							this.getServerSettings(domain).then((serverSettings) => {
+								resolve(serverSettings);
+							}, () => {
+								resolve(server);
+							})
 						} else {
 							reject('Untrusted Certificate.');
 						}
 					});
 				} else {
 					reject('Not a valid Zulip server');
+				}
+			});
+		});
+	}
+
+	getServerSettings(domain) {
+		const serverSettingsUrl = domain + '/api/v1/server_settings';
+		return new Promise((resolve, reject) => {
+			request(serverSettingsUrl, (error, response) => {
+				if (!error && response.statusCode == 200) {
+					const data = JSON.parse(response.body);
+					if (data.hasOwnProperty('realm_icon') && data.realm_icon) {
+						const server = {
+							icon: data.realm_uri + data.realm_icon,
+							url: data.realm_uri,
+							alias: data.realm_name
+						}
+						resolve(server);
+					}
+				} else {
+					reject('Zulip server version < 1.6.');
 				}
 			});
 		});
@@ -118,7 +151,7 @@ class DomainUtil {
 		}
 
 		return new Promise(resolve => {
-			const filePath = `${dir}/${new Date().getMilliseconds()}${path.extname(url)}`;
+			const filePath = `${dir}/${new Date().getMilliseconds()}${path.extname(url).split("?")[0]}`;
 			const file = fs.createWriteStream(filePath);
 			try {
 				request(url).on('response', response => {
