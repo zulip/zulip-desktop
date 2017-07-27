@@ -207,6 +207,11 @@ app.on('ready', () => {
 		app.quit();
 	});
 
+	ipc.on('hard-reload', () => {
+		mainWindow.reload();
+		page.send('destroytray');
+	});
+
 	ipc.on('toggle-app', () => {
 		if (mainWindow.isVisible()) {
 			mainWindow.hide();

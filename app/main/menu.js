@@ -59,6 +59,15 @@ const viewSubmenu = [
 		}
 	},
 	{
+		label: 'Hard Reload',
+		accelerator: 'CommandOrControl+Shift+R',
+		click(item, focusedWindow) {
+			if (focusedWindow) {
+				sendAction('hard-reload');
+			}
+		}
+	},
+	{
 		type: 'separator'
 	},
 	{
