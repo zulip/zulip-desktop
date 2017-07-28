@@ -97,7 +97,6 @@ class GeneralSection extends BaseComponent {
 		$trayOption.addEventListener('click', () => {
 			const newValue = !ConfigUtil.getConfigItem('trayIcon');
 			ConfigUtil.setConfigItem('trayIcon', newValue);
-			ipcRenderer.send('forward-message', 'toggletray');
 			this.initTrayOption();
 		});
 	}
