@@ -19,12 +19,7 @@ class LinkUtil {
 		const currentDomain = wurl('hostname', currentUrl);
 		const newDomain = wurl('hostname', newUrl);
 
-		const skipImages = '.jpg|.gif|.png|.jpeg|.JPG|.PNG';
-		const skipPages = ['integrations', 'api'];
-
-		const getskipPagesUrl = newUrl.substring(8, newUrl.length);
-
-		return (currentDomain === newDomain) && !newUrl.match(skipImages) && !skipPages.includes(getskipPagesUrl.split('/')[1]);
+		return (currentDomain === newDomain) && newUrl.includes('/#narrow');
 	}
 }
 

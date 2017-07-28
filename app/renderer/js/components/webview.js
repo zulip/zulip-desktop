@@ -44,7 +44,7 @@ class WebView extends BaseComponent {
 			const {url} = event;
 			const domainPrefix = DomainUtil.getDomain(this.props.index).url;
 
-			if (LinkUtil.isInternal(domainPrefix, url)) {
+			if (LinkUtil.isInternal(domainPrefix, url) || url === (domainPrefix + '/')) {
 				event.preventDefault();
 				this.$el.loadURL(url);
 			} else {
