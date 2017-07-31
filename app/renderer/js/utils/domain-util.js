@@ -73,16 +73,19 @@ class DomainUtil {
 		this.reloadDB();
 	}
 
-	checkDomain(server) {
-		let domain = server.url;
-		server.icon = server.icon || defaultIconUrl;
-
+	checkDomain(domain) {
 		const hasPrefix = (domain.indexOf('http') === 0);
 		if (!hasPrefix) {
 			domain = (domain.indexOf('localhost:') >= 0) ? `http://${domain}` : `https://${domain}`;
 		}
 
 		const checkDomain = domain + '/static/audio/zulip.ogg';
+
+		const serverConf = {
+			icon: defaultIconUrl,
+			url: domain,
+			alias: domain
+		};
 
 		return new Promise((resolve, reject) => {
 			request(checkDomain, (error, response) => {
@@ -92,10 +95,10 @@ class DomainUtil {
 					];
 				if (!error && response.statusCode !== 404) {
 					// Correct
-					this.getServerSettings(domain, server).then(serverSettings => {
+					this.getServerSettings(domain).then(serverSettings => {
 						resolve(serverSettings);
 					}, () => {
-						resolve(server);
+						resolve(serverConf);
 					});
 				} else if (certsError.indexOf(error.toString()) >= 0) {
 					dialog.showMessageBox({
@@ -105,10 +108,10 @@ class DomainUtil {
 						message: `Do you trust certificate from ${domain}? \n ${error}`
 					}, response => {
 						if (response === 0) {
-							this.getServerSettings(domain, server).then(serverSettings => {
+							this.getServerSettings(domain).then(serverSettings => {
 								resolve(serverSettings);
 							}, () => {
-								resolve(server);
+								resolve(serverConf);
 							});
 						} else {
 							reject('Untrusted Certificate.');
@@ -121,7 +124,7 @@ class DomainUtil {
 		});
 	}
 
-	getServerSettings(domain, server) {
+	getServerSettings(domain) {
 		const serverSettingsUrl = domain + '/api/v1/server_settings';
 		return new Promise((resolve, reject) => {
 			request(serverSettingsUrl, (error, response) => {
@@ -129,9 +132,9 @@ class DomainUtil {
 					const data = JSON.parse(response.body);
 					if (data.hasOwnProperty('realm_icon') && data.realm_icon) {
 						resolve({
-							icon: (server.icon === defaultIconUrl) ? data.realm_uri + data.realm_icon : defaultIconUrl,
+							icon: data.realm_uri + data.realm_icon,
 							url: data.realm_uri,
-							alias: server.alias || data.realm_name
+							alias: data.realm_name
 						});
 					}
 				} else {

@@ -18,19 +18,12 @@ class ServerInfoForm extends BaseComponent {
 				</div>
 				<div class="server-info-right">
 					<div class="server-info-row">
-						<span class="server-info-key">Url</span>
-						<input class="server-info-value" disabled value="${this.props.server.url}"/>
+						<span class="server-info-alias">${this.props.server.alias}</span>
 					</div>
 					<div class="server-info-row">
-						<span class="server-info-key">Label</span>
-						<input class="server-info-value" disabled value="${this.props.server.alias}"/>
+						<input class="server-info-url" disabled value="${this.props.server.url}"/>
 					</div>
 					<div class="server-info-row">
-						<span class="server-info-key">Icon</span>
-						<input class="server-info-value" disabled value="${this.props.server.icon}"/>
-					</div>
-					<div class="server-info-row">
-						<span class="server-info-key"></span>
 						<div class="action red server-delete-action">
 							<i class="material-icons">indeterminate_check_box</i>
 							<span>Delete</span>
