@@ -106,11 +106,9 @@ body {
 }
 
 img.server-info-icon {
-    background: #a4d3c4;
-    border-radius: 4px;
-    width: 28px;
-    height: 28px;
-    padding: 8px;
+    width: 36px;
+    height: 36px;
+    padding: 4px;
 }
 
 .server-info-left {
@@ -124,19 +122,14 @@ img.server-info-icon {
 
 .server-info-row {
     display: flex;
-    line-height: 27px;
-    margin: 8px 0;
-    height: 27px;
+    margin: 8px 0 0 0;
 }
 
-.server-info-key {
-    width: 40px;
-    margin-right: 20px;
+.server-info-alias {
     font-weight: bold;
-    text-align: right;
 }
 
-.server-info-value {
+.server-info-url {
     flex-grow: 1;
     font-size: 14px;
     height: 24px;
@@ -165,6 +158,7 @@ img.server-info-icon {
     align-items: center;
     padding: 0 10px;
     border-radius: 2px;
+    margin-right: 10px;
 }
 
 .action i {
@@ -200,11 +194,8 @@ img.server-info-icon {
 }
 
 .hidden {
-    height: 0 !important;
-    width: 0 !important;
+    display: none;
     margin: 5px !important;
-    opacity: 0 !important;
-    transition: opacity 0.3s;
 }
 
 .red {

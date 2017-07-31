@@ -17,19 +17,9 @@ class NewServerForm extends BaseComponent {
 				</div>
 				<div class="server-info-right">
 					<div class="server-info-row">
-						<span class="server-info-key">Name</span>
-						<input class="server-info-value" placeholder="(Required)"/>
+						<input class="server-info-url" placeholder="Enter the url of your Zulip server..."/>
 					</div>
 					<div class="server-info-row">
-						<span class="server-info-key">Url</span>
-						<input class="server-info-value" placeholder="(Required)"/>
-					</div>
-					<div class="server-info-row">
-						<span class="server-info-key">Icon</span>
-						<input class="server-info-value" placeholder="(Optional)"/>
-					</div>
-					<div class="server-info-row">
-						<span class="server-info-key"></span>
 						<div class="action green server-save-action">
 							<i class="material-icons">check_box</i>
 							<span>Save</span>
@@ -51,20 +41,13 @@ class NewServerForm extends BaseComponent {
 		this.props.$root.innerHTML = '';
 		this.props.$root.appendChild(this.$newServerForm);
 
-		this.$newServerAlias = this.$newServerForm.querySelectorAll('input.server-info-value')[0];
-		this.$newServerUrl = this.$newServerForm.querySelectorAll('input.server-info-value')[1];
-		this.$newServerIcon = this.$newServerForm.querySelectorAll('input.server-info-value')[2];
+		this.$newServerUrl = this.$newServerForm.querySelectorAll('input.server-info-url')[0];
 	}
 
 	initActions() {
 		this.$saveServerButton.addEventListener('click', () => {
-			DomainUtil.checkDomain(this.$newServerUrl.value).then(domain => {
-				const server = {
-					alias: this.$newServerAlias.value,
-					url: domain,
-					icon: this.$newServerIcon.value
-				};
-				DomainUtil.addDomain(server).then(() => {
+			DomainUtil.checkDomain(this.$newServerUrl.value).then(serverConf => {
+				DomainUtil.addDomain(serverConf).then(() => {
 					this.props.onChange(this.props.index);
 				});
 			}, errorMessage => {
