@@ -257,6 +257,9 @@ class ServerManagerView {
 		});
 		ipcRenderer.on('open-about', this.openAbout.bind(this));
 		ipcRenderer.on('reload-viewer', this.reloadView.bind(this));
+		ipcRenderer.on('hard-reload', () => {
+			ipcRenderer.send('reload-full-app');
+		});
 		ipcRenderer.on('switch-server-tab', (event, index) => {
 			this.activateTab(index);
 		});

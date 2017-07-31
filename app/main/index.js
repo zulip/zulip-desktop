@@ -144,10 +144,7 @@ function registerLocalShortcuts(page) {
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
 		page.send('reload-viewer');
 	});
-	// Reload full app not just webview, useful in debugging
-	electronLocalshortcut.register(mainWindow, 'CommandOrControl+Shift+R', () => {
-		mainWindow.reload();
-	});
+
 	// Also adding these shortcuts because some users might want to use it instead of CMD/Left-Right
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
 		page.send('back');
@@ -207,7 +204,8 @@ app.on('ready', () => {
 		app.quit();
 	});
 
-	ipc.on('hard-reload', () => {
+	// Reload full app not just webview, useful in debugging
+	ipc.on('reload-full-app', () => {
 		mainWindow.reload();
 		page.send('destroytray');
 	});
