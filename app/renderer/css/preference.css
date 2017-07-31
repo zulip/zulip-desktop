@@ -194,11 +194,8 @@ img.server-info-icon {
 }
 
 .hidden {
-    height: 0 !important;
-    width: 0 !important;
+    display: none;
     margin: 5px !important;
-    opacity: 0 !important;
-    transition: opacity 0.3s;
 }
 
 .red {
