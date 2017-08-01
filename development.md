@@ -14,6 +14,7 @@ To build and run the app from source, you'll need the following:
     if they don't come bundled with your Node.js installation
 * [Python](https://www.python.org/downloads/release/python-2713/)
   (v2.7.x recommended)
+* A C++ compiler compatible with C++11
 * Development headers for the libXext, libXtst, and libxkbfile libraries
 
 ### Debian/Ubuntu and friends
@@ -33,6 +34,8 @@ $ sudo apt install git nodejs python build-essential libxext-dev libxtst-dev lib
 
 Other developers run the app on Windows, macOS, and possibly other OSes.
 PRs to add specific instructions to this doc are welcome!
+
+On Windows, your C++ compiler should be Visual Studio 2015 or later.
 
 ## Download, build, and run
 
