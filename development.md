@@ -43,30 +43,39 @@ $ cd zulip-electron
 ```
 
 Install project dependencies:
-
 ```sh
 $ npm install
 ```
-Start the app:
 
+Start the app:
 ```sh
 $ npm start
 ```
 
-Start and watch changes
-
+Start and watch changes:
 ```sh
 $ npm run dev
 ```
-### Making a release
 
-To package app into an installer use command:
+## Troubleshooting
+
+If you have any problems running the app, see the [most common
+issues](./troubleshooting.md).
+
+## Making a release
+
+To package the app into an installer:
 ```
 npm run dist
 ```
-It will start the packaging process for the operating system you are running this command on. The ready for distribution file (e.g. dmg, windows installer, deb package) will be outputted to the `dist` directory.
 
-You can create a Windows installer only when running on Windows and similarly for Linux and OSX. So, to generate all three installers, you will need all three operating systems.
+This command will produce distributable packages or installers for the
+operating system you're running on:
+* on Windows, a Windows installer file
+* on macOS, a `.dmg` file
+* on Linux, a plain `.zip` file as well as a `.deb` file and an
+  `AppImage` file.
+To generate all three types, you will need all three operating
+systems.
 
-# Troubleshooting
-If you have any problems running the app please see the [most common issues](./troubleshooting.md).
+The output files appear in the `dist/` directory.
