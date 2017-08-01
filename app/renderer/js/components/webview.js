@@ -104,7 +104,7 @@ class WebView extends BaseComponent {
 		// The bug is introduced from Electron and this is a tempory fix.
 		// See https://github.com/zulip/zulip-electron/issues/216
 		const osName = SystemUtil.getOS();
-		if (osName === 'Mac' || osName === 'Linux') {
+		if (osName === 'Mac') {
 			this.$el.focus();
 		}
 	}
