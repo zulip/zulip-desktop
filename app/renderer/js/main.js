@@ -36,7 +36,7 @@ class ServerManagerView {
 	}
 
 	initSidebar() {
-		const showSidebar = ConfigUtil.getConfigItem('show-sidebar');
+		const showSidebar = ConfigUtil.getConfigItem('show-sidebar', true);
 		this.toggleSidebar(showSidebar);
 	}
 
