@@ -1,26 +1,42 @@
-# Development guide
+# Development setup
+
+This is a guide to running the Zulip desktop app from a source tree,
+in order to contribute to developing it.
 
 ## Prerequisites
 
+To build and run the app from source, you'll need the following:
+
 * [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 * [Node.js](https://nodejs.org) >= v6.9.0
-* [python](https://www.python.org/downloads/release/python-2713/) (v2.7.x recommended)
-* [node-gyp](https://github.com/nodejs/node-gyp#installation)
+  * [NPM](https://www.npmjs.com/get-npm) and
+    [node-gyp](https://github.com/nodejs/node-gyp#installation),
+    if they don't come bundled with your Node.js installation
+* [Python](https://www.python.org/downloads/release/python-2713/)
+  (v2.7.x recommended)
+* Development headers for the libXext, libXtst, and libxkbfile libraries
 
+### Debian/Ubuntu and friends
 
-## System specific dependencies
+On a system running Debian, Ubuntu, or another Debian-based Linux
+distribution, you can install all dependencies through the package
+manager (see [here][nodesource-install] for more on the first command):
 
-### Linux
-
-Install following packages:
 ```sh
-$ sudo apt-get install build-essential libxext-dev libxtst-dev libxkbfile-dev
+$ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+$ sudo apt install git nodejs python build-essential libxext-dev libxtst-dev libxkbfile-dev
 ```
 
-## Installation
+[nodesource-install]: https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
+
+### Other OSes
+
+Other developers run the app on Windows, macOS, and possibly other OSes.
+PRs to add specific instructions to this doc are welcome!
+
+## Download, build, and run
 
 Clone the source locally:
-
 ```sh
 $ git clone https://github.com/zulip/zulip-electron
 $ cd zulip-electron
