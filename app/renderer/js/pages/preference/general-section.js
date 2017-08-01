@@ -126,7 +126,7 @@ class GeneralSection extends BaseComponent {
 		this.$silentOptionSettings.appendChild($silentOption);
 
 		$silentOption.addEventListener('click', () => {
-			const newValue = !ConfigUtil.getConfigItem('silent');
+			const newValue = !ConfigUtil.getConfigItem('silent', true);
 			ConfigUtil.setConfigItem('silent', newValue);
 			this.initSilentOption();
 		});
