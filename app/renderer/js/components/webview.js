@@ -59,7 +59,10 @@ class WebView extends BaseComponent {
 			this.props.onTitleChange();
 		});
 
-		this.$el.addEventListener('dom-ready', this.show.bind(this));
+		this.$el.addEventListener('dom-ready', () => {
+			this.$el.classList.add('onload');
+			this.show();
+		});
 
 		this.$el.addEventListener('did-fail-load', event => {
 			const {errorDescription} = event;
@@ -92,6 +95,9 @@ class WebView extends BaseComponent {
 		}
 
 		this.$el.classList.remove('disabled');
+		setTimeout(() => {
+			this.$el.classList.remove('onload');
+		}, 1000);
 		this.focus();
 		this.loading = false;
 		this.props.onTitleChange(this.$el.getTitle());

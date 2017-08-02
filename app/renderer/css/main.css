@@ -208,8 +208,12 @@ body {
 
 webview {
     opacity: 1;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s ease-in;
     flex-grow: 1;
+}
+
+webview.onload {
+    transition: opacity 1s cubic-bezier(0.95, 0.05, 0.795, 0.035);
 }
 
 webview.disabled {
@@ -217,7 +221,7 @@ webview.disabled {
     height: 0;
     width: 0;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s ease-out;
 }
 
 webview:focus {
