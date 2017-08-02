@@ -107,6 +107,14 @@ function createMainWindow() {
 		conf.set('maximize', true);
 	});
 
+	win.on('enter-full-screen', () => {
+		win.webContents.send('enter-fullscreen');
+	});
+
+	win.on('leave-full-screen', () => {
+		win.webContents.send('leave-fullscreen');
+	});
+
 	win.on('unmaximize', () => {
 		conf.set('maximize', false);
 	});
