@@ -175,7 +175,7 @@ const darwinTpl = [
 		label: `${app.getName()}`,
 		submenu: [
 			{
-				label: 'Zulip desktop',
+				label: 'Zulip Desktop',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						sendAction('open-about');
@@ -195,7 +195,7 @@ const darwinTpl = [
 				}
 			},
 			{
-				label: 'Keyboard shortcuts',
+				label: 'Keyboard Shortcuts',
 				accelerator: 'Cmd+K',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
@@ -316,7 +316,7 @@ const otherTpl = [
 		label: 'File',
 		submenu: [
 			{
-				label: 'Zulip desktop',
+				label: 'Zulip Desktop',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						sendAction('open-about');
@@ -339,7 +339,7 @@ const otherTpl = [
 				type: 'separator'
 			},
 			{
-				label: 'Keyboard shortcuts',
+				label: 'Keyboard Shortcuts',
 				accelerator: 'Ctrl+K',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
