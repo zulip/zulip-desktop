@@ -21,10 +21,10 @@ class GeneralSection extends BaseComponent {
 						<div class="setting-control"></div>
 					</div>
 				</div>
-				<div class="title">App updates</div>
+				<div class="title">App Updates</div>
                 <div id="betaupdate-option-settings" class="settings-card">
 					<div class="setting-row">
-						<div class="setting-description">Get Beta updates</div>
+						<div class="setting-description">Get beta updates</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>
@@ -39,6 +39,10 @@ class GeneralSection extends BaseComponent {
                 <div id="dock-unread-option-settings" class="settings-card">
 					<div class="setting-row">
 						<div class="setting-description">Toggle dock unread messages</div>
+				<div class="title">User Interface</div>
+                <div id="ui-option-settings" class="settings-card">
+					<div class="setting-row" id="sidebar-option">
+						<div class="setting-description">Show sidebar (<span class="code">CmdOrCtrl+S</span>)</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>
@@ -74,8 +78,11 @@ class GeneralSection extends BaseComponent {
 		this.settingsOptionTemplate(silentOption);
 	}
 
+
 	dockUnreadOptionTemplate(dockToggleOption) {
 		this.settingsOptionTemplate(dockToggleOption);
+	sidebarToggleTemplate(toggleOption) {
+		this.settingsOptionTemplate(toggleOption);
 	}
 
 	init() {
@@ -84,6 +91,7 @@ class GeneralSection extends BaseComponent {
 		this.initUpdateOption();
 		this.initSilentOption();
 		this.initDockToggleUnreadOption();
+		this.initSidebarToggle();
 	}
 
 	initTrayOption() {
@@ -125,7 +133,7 @@ class GeneralSection extends BaseComponent {
 		this.$silentOptionSettings.appendChild($silentOption);
 
 		$silentOption.addEventListener('click', () => {
-			const newValue = !ConfigUtil.getConfigItem('silent');
+			const newValue = !ConfigUtil.getConfigItem('silent', true);
 			ConfigUtil.setConfigItem('silent', newValue);
 			ipcRenderer.send('toggle-dock-unread', newValue);
 			this.initSilentOption();
@@ -145,6 +153,19 @@ class GeneralSection extends BaseComponent {
 			ConfigUtil.setConfigItem('dock-toggle-unread', newValue);
 			ipcRenderer.send('toggle-dock-unread-option', newValue);
 			this.initDockToggleUnreadOption();
+	initSidebarToggle() {
+		this.$sidebarOptionSettings = document.querySelector('#ui-option-settings #sidebar-option .setting-control');
+		this.$sidebarOptionSettings.innerHTML = '';
+
+		const sidebarOption = ConfigUtil.getConfigItem('show-sidebar', true);
+		const $sidebarOption = this.generateNodeFromTemplate(this.settingsOptionTemplate(sidebarOption));
+		this.$sidebarOptionSettings.appendChild($sidebarOption);
+
+		$sidebarOption.addEventListener('click', () => {
+			const newValue = !ConfigUtil.getConfigItem('show-sidebar');
+			ConfigUtil.setConfigItem('show-sidebar', newValue);
+			ipcRenderer.send('forward-message', 'toggle-sidebar', newValue);
+			this.initSidebarToggle();
 		});
 	}
 

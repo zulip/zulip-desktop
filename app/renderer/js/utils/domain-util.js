@@ -1,6 +1,6 @@
 'use strict';
 
-const {app} = require('electron').remote;
+const {app, dialog} = require('electron').remote;
 const fs = require('fs');
 const path = require('path');
 const JsonDB = require('node-json-db');
@@ -8,7 +8,7 @@ const request = require('request');
 
 let instance = null;
 
-const defaultIconUrl = __dirname + '../../../img/icon.png';
+const defaultIconUrl = '../renderer/img/icon.png';
 
 class DomainUtil {
 	constructor() {
@@ -81,6 +81,12 @@ class DomainUtil {
 
 		const checkDomain = domain + '/static/audio/zulip.ogg';
 
+		const serverConf = {
+			icon: defaultIconUrl,
+			url: domain,
+			alias: domain
+		};
+
 		return new Promise((resolve, reject) => {
 			request(checkDomain, (error, response) => {
 				const certsError =
@@ -88,15 +94,51 @@ class DomainUtil {
 						'Error: unable to verify the first certificate'
 					];
 				if (!error && response.statusCode !== 404) {
-					resolve(domain);
+					// Correct
+					this.getServerSettings(domain).then(serverSettings => {
+						resolve(serverSettings);
+					}, () => {
+						resolve(serverConf);
+					});
 				} else if (certsError.indexOf(error.toString()) >= 0) {
-					if (window.confirm(`Do you trust certificate from ${domain}? \n ${error}`)) {
-						resolve(domain);
-					} else {
-						reject('Untrusted Certificate.');
-					}
+					dialog.showMessageBox({
+						type: 'question',
+						buttons: ['Yes', 'No'],
+						defaultId: 0,
+						message: `Do you trust certificate from ${domain}? \n ${error}`
+					}, response => {
+						if (response === 0) {
+							this.getServerSettings(domain).then(serverSettings => {
+								resolve(serverSettings);
+							}, () => {
+								resolve(serverConf);
+							});
+						} else {
+							reject('Untrusted Certificate.');
+						}
+					});
 				} else {
 					reject('Not a valid Zulip server');
+				}
+			});
+		});
+	}
+
+	getServerSettings(domain) {
+		const serverSettingsUrl = domain + '/api/v1/server_settings';
+		return new Promise((resolve, reject) => {
+			request(serverSettingsUrl, (error, response) => {
+				if (!error && response.statusCode === 200) {
+					const data = JSON.parse(response.body);
+					if (data.hasOwnProperty('realm_icon') && data.realm_icon) {
+						resolve({
+							icon: data.realm_uri + data.realm_icon,
+							url: data.realm_uri,
+							alias: data.realm_name
+						});
+					}
+				} else {
+					reject('Zulip server version < 1.6.');
 				}
 			});
 		});
@@ -111,7 +153,7 @@ class DomainUtil {
 		}
 
 		return new Promise(resolve => {
-			const filePath = `${dir}/${new Date().getMilliseconds()}${path.extname(url)}`;
+			const filePath = `${dir}/${new Date().getMilliseconds()}${path.extname(url).split('?')[0]}`;
 			const file = fs.createWriteStream(filePath);
 			try {
 				request(url).on('response', response => {

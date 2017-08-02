@@ -90,7 +90,7 @@ function createMainWindow() {
 			}
 		}
 
-	// Unregister all the shortcuts so that they don't interfare with other apps
+		// Unregister all the shortcuts so that they don't interfare with other apps
 		electronLocalshortcut.unregisterAll(mainWindow);
 	});
 
@@ -125,9 +125,10 @@ function createMainWindow() {
 	// On osx it's 'moved'
 	win.on('move', function () {
 		const pos = this.getPosition();
+		// Let's not allow negative positions
 		conf.set({
-			x: pos[0],
-			y: pos[1]
+			x: pos[0] > 0 ? pos[0] : 0,
+			y: pos[1] > 0 ? pos[1] : 0
 		});
 	});
 
@@ -146,6 +147,7 @@ function registerLocalShortcuts(page) {
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
 		page.send('reload-viewer');
 	});
+
 	// Also adding these shortcuts because some users might want to use it instead of CMD/Left-Right
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
 		page.send('back');
@@ -205,6 +207,12 @@ app.on('ready', () => {
 		app.quit();
 	});
 
+	// Reload full app not just webview, useful in debugging
+	ipc.on('reload-full-app', () => {
+		mainWindow.reload();
+		page.send('destroytray');
+	});
+
 	ipc.on('toggle-app', () => {
 		if (mainWindow.isVisible()) {
 			mainWindow.hide();
@@ -233,10 +241,26 @@ app.on('ready', () => {
 	function hideBadgeCount() {
 		return app.setBadgeCount(0);
 	}
+		if (process.platform === 'win32') {
+			if (!mainWindow.isFocused()) {
+				mainWindow.flashFrame(true);
+			}
+			if (messageCount === 0) {
+				mainWindow.setOverlayIcon(null, '');
+			} else {
+				page.send('render-taskbar-icon', messageCount);
+			}
+		}
+		page.send('tray', messageCount);
+	});
+
+	ipc.on('update-taskbar-icon', (event, data, text) => {
+		const img = electron.nativeImage.createFromDataURL(data);
+		mainWindow.setOverlayIcon(img, text);
+	});
 
 	ipc.on('forward-message', (event, listener, ...params) => {
-		console.log(listener, ...params);
-		page.send(listener);
+		page.send(listener, ...params);
 	});
 
 	ipc.on('register-server-tab-shortcut', (event, index) => {

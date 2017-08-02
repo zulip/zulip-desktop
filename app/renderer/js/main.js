@@ -7,6 +7,7 @@ const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
 const WebView = require(__dirname + '/js/components/webview.js');
 const ServerTab = require(__dirname + '/js/components/server-tab.js');
 const FunctionalTab = require(__dirname + '/js/components/functional-tab.js');
+const ConfigUtil = require(__dirname + '/js/utils/config-util.js');
 
 class ServerManagerView {
 	constructor() {
@@ -20,6 +21,7 @@ class ServerManagerView {
 
 		this.$reloadTooltip = $actionsContainer.querySelector('#reload-tooltip');
 		this.$settingsTooltip = $actionsContainer.querySelector('#setting-tooltip');
+		this.$sidebar = document.getElementById('sidebar');
 
 		this.activeTabIndex = -1;
 		this.tabs = [];
@@ -27,9 +29,15 @@ class ServerManagerView {
 	}
 
 	init() {
+		this.initSidebar();
 		this.initTabs();
 		this.initActions();
 		this.registerIpcs();
+	}
+
+	initSidebar() {
+		const showSidebar = ConfigUtil.getConfigItem('show-sidebar', true);
+		this.toggleSidebar(showSidebar);
 	}
 
 	initTabs() {
@@ -213,6 +221,14 @@ class ServerManagerView {
 		ipcRenderer.send('update-badge', messageCountAll);
 	}
 
+	toggleSidebar(show) {
+		if (show) {
+			this.$sidebar.classList.remove('hidden');
+		} else {
+			this.$sidebar.classList.add('hidden');
+		}
+	}
+
 	registerIpcs() {
 		const webviewListeners = {
 			'webview-reload': 'reload',
@@ -241,8 +257,42 @@ class ServerManagerView {
 		});
 		ipcRenderer.on('open-about', this.openAbout.bind(this));
 		ipcRenderer.on('reload-viewer', this.reloadView.bind(this));
+		ipcRenderer.on('hard-reload', () => {
+			ipcRenderer.send('reload-full-app');
+		});
 		ipcRenderer.on('switch-server-tab', (event, index) => {
 			this.activateTab(index);
+		});
+		ipcRenderer.on('toggle-sidebar', (event, show) => {
+			this.toggleSidebar(show);
+		});
+		ipcRenderer.on('render-taskbar-icon', (event, messageCount) => {
+			// Create a canvas from unread messagecounts
+			function createOverlayIcon(messageCount) {
+				const canvas = document.createElement('canvas');
+				canvas.height = 128;
+				canvas.width = 128;
+				canvas.style.letterSpacing = '-5px';
+				const ctx = canvas.getContext('2d');
+				ctx.fillStyle = '#f42020';
+				ctx.beginPath();
+				ctx.ellipse(64, 64, 64, 64, 0, 0, 2 * Math.PI);
+				ctx.fill();
+				ctx.textAlign = 'center';
+				ctx.fillStyle = 'white';
+				if (messageCount > 99) {
+					ctx.font = '65px Helvetica';
+					ctx.fillText('99+', 64, 85);
+				} else if (messageCount < 10) {
+					ctx.font = '90px Helvetica';
+					ctx.fillText(String(Math.min(99, messageCount)), 64, 96);
+				} else {
+					ctx.font = '85px Helvetica';
+					ctx.fillText(String(Math.min(99, messageCount)), 64, 90);
+				}
+				return canvas;
+			}
+			ipcRenderer.send('update-taskbar-icon', createOverlayIcon(messageCount).toDataURL(), String(messageCount));
 		});
 	}
 }

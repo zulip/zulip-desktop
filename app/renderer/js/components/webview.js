@@ -1,10 +1,12 @@
 'use strict';
 
+const path = require('path');
+const fs = require('fs');
+
 const DomainUtil = require(__dirname + '/../utils/domain-util.js');
 const SystemUtil = require(__dirname + '/../utils/system-util.js');
 const LinkUtil = require(__dirname + '/../utils/link-util.js');
-const {app, dialog, shell} = require('electron').remote;
-const {ipcRenderer} = require('electron');
+const {shell} = require('electron').remote;
 
 const BaseComponent = require(__dirname + '/../components/base.js');
 
@@ -42,7 +44,7 @@ class WebView extends BaseComponent {
 			const {url} = event;
 			const domainPrefix = DomainUtil.getDomain(this.props.index).url;
 
-			if (LinkUtil.isInternal(domainPrefix, url)) {
+			if (LinkUtil.isInternal(domainPrefix, url) || url === (domainPrefix + '/')) {
 				event.preventDefault();
 				this.$el.loadURL(url);
 			} else {
@@ -93,10 +95,18 @@ class WebView extends BaseComponent {
 		this.focus();
 		this.loading = false;
 		this.props.onTitleChange(this.$el.getTitle());
+		// Injecting preload css in webview to override some css rules
+		this.$el.insertCSS(fs.readFileSync(path.join(__dirname, '/../../css/preload.css'), 'utf8'));
 	}
 
 	focus() {
-		this.$el.focus();
+		// Explicit focusing the webview causes a bug the input cannot regain focus on Winodws.
+		// The bug is introduced from Electron and this is a tempory fix.
+		// See https://github.com/zulip/zulip-electron/issues/216
+		const osName = SystemUtil.getOS();
+		if (osName === 'Mac') {
+			this.$el.focus();
+		}
 	}
 
 	hide() {
@@ -109,25 +119,6 @@ class WebView extends BaseComponent {
 		} else {
 			this.init();
 		}
-	}
-
-	checkConnectivity() {
-		return dialog.showMessageBox({
-			title: 'Internet connection problem',
-			message: 'No internet available! Try again?',
-			type: 'warning',
-			buttons: ['Try again', 'Close'],
-			defaultId: 0
-		}, index => {
-			if (index === 0) {
-				this.reload();
-				ipcRenderer.send('reload');
-				ipcRenderer.send('destroytray');
-			}
-			if (index === 1) {
-				app.quit();
-			}
-		});
 	}
 
 	zoomIn() {

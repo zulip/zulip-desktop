@@ -1,11 +1,13 @@
 /*******************
  *  General rules  *
  *******************/
-html, body {
+
+html,
+body {
     height: 100%;
     margin: 0;
     cursor: default;
-    user-select:none;
+    user-select: none;
 }
 
 #content {
@@ -28,40 +30,40 @@ html, body {
 }
 
 @font-face {
-  font-family: 'Material Icons';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Material Icons'),
-       local('MaterialIcons-Regular'),
-       url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Material Icons'), local('MaterialIcons-Regular'), url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
 }
+
 
 /*******************
  *   Left Sidebar  *
  *******************/
- #tabs-container {
+
+#tabs-container {
     display: flex;
     align-items: center;
     flex-direction: column;
 }
 
 .material-icons {
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  /* Preferred icon size */
-  font-size: 24px;
-  display: inline-block;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
-  /* Support for all WebKit browsers. */
-  -webkit-font-smoothing: antialiased;
-  /* Support for Safari and Chrome. */
-  text-rendering: optimizeLegibility;
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    /* Preferred icon size */
+    font-size: 24px;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
 }
 
 .action-button {
@@ -69,6 +71,10 @@ html, body {
     flex-direction: column;
     align-items: center;
     padding: 10px;
+}
+
+.action-button:hover {
+    cursor: pointer;
 }
 
 .action-button i {
@@ -80,56 +86,65 @@ html, body {
     color: #98a9b3;
 }
 
+.tab:first-child {
+    margin-top: 8px;
+}
+
 .tab {
     position: relative;
     margin: 2px 0;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
-.tab.active::before {
-    content: "";
-    background: #fff;
-    border-radius: 0 3px 3px 0;
-    width: 4px;
-    position: absolute;
-    height: 35px;
-    left: -10px;
-    top: 5px;
+.tab .server-icons {
+    border-radius: 50%;
+    width: 30px;
+    padding: 3px;
+    height: 30px;
+    vertical-align: top;
 }
 
 .tab .server-tab {
-    background: #a4d3c4;
-    background-size: 28px;
-    background-repeat: no-repeat;
-    background-position: center;
-    border-radius: 4px;
-    width: 35px;
+    width: 100%;
     height: 35px;
     position: relative;
-    margin: 5px 0;
+    margin: 5px 0 2px 0;
     z-index: 11;
     line-height: 31px;
-    color: #194a2b;
+    color: #eee;
     text-align: center;
     overflow: hidden;
     opacity: 0.6;
+    padding: 2px 0;
 }
 
 .tab .server-tab:hover {
     opacity: 0.8;
 }
 
-.tab .functional-tab {
-    background: #eee;
+.tab.functional-tab {
+    height: 46px;
+    padding: 0;
 }
 
-.tab .functional-tab i {
+.tab.functional-tab.active .server-tab {
+    padding: 2px 0;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.tab.functional-tab .server-tab i {
     font-size: 28px;
     line-height: 36px;
 }
 
 .tab.active .server-tab {
     opacity: 1;
+    background-color: #648478;
 }
 
 .tab .server-tab-badge.active {
@@ -141,14 +156,15 @@ html, body {
     font-size: 10px;
     font-family: sans-serif;
     position: absolute;
-    right: -6px;
+    right: 5px;
     z-index: 15;
-    top: -2px;
+    top: 6px;
     float: right;
     color: #fff;
     text-align: center;
     line-height: 17px;
     display: block;
+    right: 0;
 }
 
 .tab .server-tab-badge {
@@ -157,7 +173,7 @@ html, body {
 
 .tab .server-tab-badge.close-button {
     width: 16px;
-    padding: 0 0 0 1px;
+    padding: 0;
 }
 
 .tab .server-tab-badge.close-button i {
@@ -172,15 +188,18 @@ html, body {
 }
 
 .tab .server-tab-shortcut {
-    color: #eee;
+    color: #648478;
     font-size: 12px;
     text-align: center;
     font-family: sans-serif;
+    margin-bottom: 5px;
 }
+
 
 /*******************
  *   Webview Area  *
  *******************/
+
 #webviews-container {
     display: flex;
     height: 100%;
@@ -205,21 +224,23 @@ webview:focus {
     outline: 0px solid transparent;
 }
 
+
 /* Tooltip styling */
 
 #reload-tooltip,
 #setting-tooltip {
+    font-family: sans-serif;
     background: #222c31;
-    margin-left: 72px;
-    padding: 10px;
+    margin-left: 68px;
+    padding: 6px 8px;
     position: absolute;
-    margin-top: -3px;
+    margin-top: 0px;
     z-index: 1000;
     color: white;
     border-radius: 4px;
     text-align: center;
     width: 55px;
-    height: 15px;
+    font-size: 14px;
 }
 
 #reload-tooltip:after,
@@ -229,6 +250,33 @@ webview:focus {
     border-bottom: 8px solid transparent;
     border-right: 8px solid #222c31;
     position: absolute;
-    top: 10px;
-    right: 75px;
+    top: 7px;
+    right: 68px;
+}
+
+#collapse-button {
+    bottom: 30px;
+    left: 20px;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: #222c31;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: #999 1px 1px;
+}
+
+#collapse-button i {
+    color: #efefef;
+}
+
+#main-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.hidden {
+    display: none !important;
 }

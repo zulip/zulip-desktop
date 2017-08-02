@@ -103,7 +103,20 @@ cleanUp()
 
 # }}}
 
+# this function is called when user hits Ctrl-C
+catchControl_c () {
+    echo -en "\n## Ctrl-C caught; Quitting \n"
+    # exit shell script
+    exit $?;
+}
+
+
+
 envSetup $*
 gitCheckout
 npmInstallStart
 cleanUp
+
+# initialise trap to call catchControl_c function and trap keyboard interrupt (control-c)
+trap catchControl_c SIGINT
+sleep 1000

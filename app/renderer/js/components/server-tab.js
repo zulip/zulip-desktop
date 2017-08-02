@@ -9,7 +9,9 @@ class ServerTab extends Tab {
 	template() {
 		return `<div class="tab">
 					<div class="server-tab-badge"></div>
-					<div class="server-tab" style="background-image: url('${this.props.icon}');"></div>
+					<div class="server-tab">
+					<img class="server-icons" src='${this.props.icon}'/>
+					</div>
 					<div class="server-tab-shortcut">${this.generateShortcutText()}</div>
 				</div>`;
 	}
@@ -39,17 +41,17 @@ class ServerTab extends Tab {
 
 		const shownIndex = this.props.index + 1;
 
-		let cmdKey = '';
+		let shortcutText = '';
 
 		if (SystemUtil.getOS() === 'Mac') {
-			cmdKey = '⌘';
+			shortcutText = `⌘ ${shownIndex}`;
 		} else {
-			cmdKey = '⌃';
+			shortcutText = `Ctrl+${shownIndex}`;
 		}
 
 		ipcRenderer.send('register-server-tab-shortcut', shownIndex);
 
-		return `${cmdKey} ${shownIndex}`;
+		return shortcutText;
 	}
 }
 

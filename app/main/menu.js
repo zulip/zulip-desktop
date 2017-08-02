@@ -1,8 +1,9 @@
 'use strict';
 const os = require('os');
 const electron = require('electron');
-
 const {dialog} = require('electron');
+
+const ConfigUtil = require(__dirname + '/../renderer/js/utils/config-util.js');
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -59,6 +60,15 @@ const viewSubmenu = [
 		}
 	},
 	{
+		label: 'Hard Reload',
+		accelerator: 'CommandOrControl+Shift+R',
+		click(item, focusedWindow) {
+			if (focusedWindow) {
+				sendAction('hard-reload');
+			}
+		}
+	},
+	{
 		type: 'separator'
 	},
 	{
@@ -99,6 +109,17 @@ const viewSubmenu = [
 		click(item, focusedWindow) {
 			if (focusedWindow) {
 				focusedWindow.webContents.send('toggletray');
+			}
+		}
+	},
+	{
+		label: 'Toggle Sidebar',
+		accelerator: 'CommandOrControl+S',
+		click(item, focusedWindow) {
+			if (focusedWindow) {
+				const newValue = !ConfigUtil.getConfigItem('show-sidebar');
+				focusedWindow.webContents.send('toggle-sidebar', newValue);
+				ConfigUtil.setConfigItem('show-sidebar', newValue);
 			}
 		}
 	},
@@ -154,7 +175,7 @@ const darwinTpl = [
 		label: `${app.getName()}`,
 		submenu: [
 			{
-				label: 'Zulip desktop',
+				label: 'Zulip Desktop',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						sendAction('open-about');
@@ -174,7 +195,7 @@ const darwinTpl = [
 				}
 			},
 			{
-				label: 'Keyboard shortcuts',
+				label: 'Keyboard Shortcuts',
 				accelerator: 'Cmd+K',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
@@ -295,7 +316,7 @@ const otherTpl = [
 		label: 'File',
 		submenu: [
 			{
-				label: 'Zulip desktop',
+				label: 'Zulip Desktop',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						sendAction('open-about');
@@ -318,7 +339,7 @@ const otherTpl = [
 				type: 'separator'
 			},
 			{
-				label: 'Keyboard shortcuts',
+				label: 'Keyboard Shortcuts',
 				accelerator: 'Ctrl+K',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
