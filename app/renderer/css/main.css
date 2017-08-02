@@ -290,7 +290,7 @@ webview:focus {
     border-radius: 6px;
     padding: 10px 0;
     position: absolute;
-    z-index: 1;
+    font-family: arial;
     width: 16%;
     top: 15px;
     height: 20px;
