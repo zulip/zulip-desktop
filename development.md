@@ -30,6 +30,25 @@ $ sudo apt install git nodejs python build-essential libxext-dev libxtst-dev lib
 
 [nodesource-install]: https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
 
+### Windows
+
+* use only 32bit or 64bit for all of the installers, do not mix architectures
+* install using default settings
+* open Windows Powershell as Admin
+
+```powershell
+C:\Windows\system32> npm install -g windows-build-tools
+C:\Windows\system32> npm install --global --production windows-build-tools
+```
+
+* open git bash run 
+
+```sh
+$ git init
+```
+
+* now continue with instructions [below](https://github.com/zulip/zulip-electron/blob/master/development.md#download-build-and-run)
+
 ### Other OSes
 
 Other developers run the app on Windows, macOS, and possibly other OSes.
@@ -68,7 +87,7 @@ issues](./troubleshooting.md).
 ## Making a release
 
 To package the app into an installer:
-```
+```sh
 npm run dist
 ```
 
