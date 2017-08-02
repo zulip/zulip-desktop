@@ -280,3 +280,37 @@ webview:focus {
 .hidden {
     display: none !important;
 }
+
+/* Full screen Popup container  */
+.popup .popuptext {
+    visibility: hidden;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 10px 0;
+    position: absolute;
+    z-index: 1;
+    width: 16%;
+    top: 15px;
+    height: 20px;
+    left: 43%;
+}
+
+.popup .show {
+    visibility: visible;
+    animation: cssAnimation 0s ease-in 5s forwards;
+    animation-fill-mode: forwards;
+}
+
+@keyframes cssAnimation {
+    from {
+        opacity: 0;
+    }
+    to {
+        width: 0;
+        height: 0;
+        overflow: hidden;
+        opacity: 1;
+    }
+}

@@ -23,6 +23,10 @@ class ServerManagerView {
 		this.$settingsTooltip = $actionsContainer.querySelector('#setting-tooltip');
 		this.$sidebar = document.getElementById('sidebar');
 
+		this.$fullscreenPopup = document.getElementById('fullscreen-popup');
+		this.$fullscreenEscapeKey = process.platform === 'darwin' ? '^⌘F' : 'F11';
+		this.$fullscreenPopup.innerHTML = `Press ${this.$fullscreenEscapeKey} to exit full screen`;
+
 		this.activeTabIndex = -1;
 		this.tabs = [];
 		this.functionalTabs = {};
@@ -255,17 +259,32 @@ class ServerManagerView {
 		ipcRenderer.on('open-settings', (event, settingNav) => {
 			this.openSettings(settingNav);
 		});
+
 		ipcRenderer.on('open-about', this.openAbout.bind(this));
+
 		ipcRenderer.on('reload-viewer', this.reloadView.bind(this));
+
 		ipcRenderer.on('hard-reload', () => {
 			ipcRenderer.send('reload-full-app');
 		});
+
 		ipcRenderer.on('switch-server-tab', (event, index) => {
 			this.activateTab(index);
 		});
+
 		ipcRenderer.on('toggle-sidebar', (event, show) => {
 			this.toggleSidebar(show);
 		});
+
+		ipcRenderer.on('enter-fullscreen', () => {
+			this.$fullscreenPopup.classList.add('show');
+			this.$fullscreenPopup.classList.remove('hidden');
+		});
+
+		ipcRenderer.on('leave-fullscreen', () => {
+			this.$fullscreenPopup.classList.remove('show');
+		});
+
 		ipcRenderer.on('render-taskbar-icon', (event, messageCount) => {
 			// Create a canvas from unread messagecounts
 			function createOverlayIcon(messageCount) {
