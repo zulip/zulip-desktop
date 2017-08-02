@@ -17,6 +17,20 @@ Install following packages:
 $ sudo apt-get install build-essential libxext-dev libxtst-dev libxkbfile-dev
 ```
 
+### Windows
+
+* use only 32bit or 64bit for all of the installers, do not mix architectures
+* install using default settings
+* open Windows Powershell as Admin
+```powershell
+C:\Windows\system32> npm install -g windows-build-tools
+C:\Windows\system32> npm install --global --production windows-build-tools
+```
+* open git bash run 
+```
+$ git init
+```
+
 ## Installation
 
 Clone the source locally:
