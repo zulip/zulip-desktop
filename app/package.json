@@ -27,7 +27,6 @@
     "InstantMessaging"
   ],
   "dependencies": {
-    "electron-config": "0.2.1",
     "electron-debug": "1.1.0",
     "electron-is-dev": "0.1.2",
     "electron-localshortcut": "1.0.0",
@@ -37,6 +36,7 @@
     "https": "^1.0.0",
     "node-json-db": "0.7.3",
     "request": "2.79.0",
-    "wurl": "2.1.0"
+    "wurl": "2.1.0",
+    "electron-window-state": "4.1.1"
   }
 }
