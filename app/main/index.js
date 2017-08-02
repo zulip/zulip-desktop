@@ -4,17 +4,13 @@ const electron = require('electron');
 const {app} = require('electron');
 const ipc = require('electron').ipcMain;
 const electronLocalshortcut = require('electron-localshortcut');
-const Configstore = require('electron-config');
 const isDev = require('electron-is-dev');
+const windowStateKeeper = require('electron-window-state');
 const appMenu = require('./menu');
 const {appUpdater} = require('./autoupdater');
 
 // Adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
-
-const conf = new Configstore();
-
-// Setting userAgent so that server-side code can identify the desktop app
 
 // Prevent window being garbage collected
 let mainWindow;
@@ -49,12 +45,19 @@ const iconPath = () => {
 };
 
 function createMainWindow() {
+	// Load the previous state with fallback to defaults
+	const mainWindowState = windowStateKeeper({
+		defaultWidth: 1000,
+		defaultHeight: 600
+	});
 	const win = new electron.BrowserWindow({
 		// This settings needs to be saved in config
 		title: 'Zulip',
-		width: conf.get('width') || 1000,
-		height: conf.get('height') || 600,
 		icon: iconPath(),
+		x: mainWindowState.x,
+		y: mainWindowState.y,
+		width: mainWindowState.width,
+		height: mainWindowState.height,
 		minWidth: 600,
 		minHeight: 500,
 		webPreferences: {
@@ -93,20 +96,6 @@ function createMainWindow() {
 
 	win.setTitle('Zulip');
 
-	// Let's save browser window position
-	if (conf.get('x') || conf.get('y')) {
-		win.setPosition(conf.get('x'), conf.get('y'));
-	}
-
-	if (conf.get('maximize')) {
-		win.maximize();
-	}
-
-	// Handle sizing events so we can persist them.
-	win.on('maximize', () => {
-		conf.set('maximize', true);
-	});
-
 	win.on('enter-full-screen', () => {
 		win.webContents.send('enter-fullscreen');
 	});
@@ -115,34 +104,17 @@ function createMainWindow() {
 		win.webContents.send('leave-fullscreen');
 	});
 
-	win.on('unmaximize', () => {
-		conf.set('maximize', false);
-	});
-
-	win.on('resize', function () {
-		const size = this.getSize();
-		conf.set({
-			width: size[0],
-			height: size[1]
-		});
-	});
-
-	// On osx it's 'moved'
-	win.on('move', function () {
-		const pos = this.getPosition();
-		// Let's not allow negative positions
-		conf.set({
-			x: pos[0] > 0 ? pos[0] : 0,
-			y: pos[1] > 0 ? pos[1] : 0
-		});
-	});
-
 	//  To destroy tray icon when navigate to a new URL
 	win.webContents.on('will-navigate', e => {
 		if (e) {
 			win.webContents.send('destroytray');
 		}
 	});
+
+	// Let us register listeners on the window, so we can update the state
+	// automatically (the listeners will be removed when the window is closed)
+	// and restore the maximized or full screen state
+	mainWindowState.manage(win);
 
 	return win;
 }
