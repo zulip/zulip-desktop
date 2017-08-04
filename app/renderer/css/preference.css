@@ -127,6 +127,7 @@ img.server-info-icon {
 
 .server-info-alias {
     font-weight: bold;
+    cursor: pointer;
 }
 
 .server-info-url {
@@ -224,4 +225,10 @@ img.server-info-icon {
 
 .code {
     font-family: Courier New, Courier, monospace;
+}
+
+i.open-tab-button {
+    padding: 0 5px;
+    font-size: 18px;
+    cursor: pointer;
 }

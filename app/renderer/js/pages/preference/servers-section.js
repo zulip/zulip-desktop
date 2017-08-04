@@ -50,7 +50,7 @@ class ServersSection extends BaseComponent {
 		this.$existingServers.innerHTML = servers.length === 0 ? '' : 'Existing servers';
 		this.initNewServerForm();
 
-		for (const i in servers) {
+		for (let i = 0; i < servers.length; i++) {
 			new ServerInfoForm({
 				$root: this.$serverInfoContainer,
 				server: servers[i],

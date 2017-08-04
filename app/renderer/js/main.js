@@ -161,7 +161,7 @@ class ServerManagerView {
 	}
 
 	activateTab(index, hideOldTab = true) {
-		if (this.tabs[index].loading) {
+		if (this.tabs[index].webview.loading) {
 			return;
 		}
 
@@ -178,7 +178,7 @@ class ServerManagerView {
 	}
 
 	destroyTab(name, index) {
-		if (this.tabs[index].loading) {
+		if (this.tabs[index].webview.loading) {
 			return;
 		}
 
