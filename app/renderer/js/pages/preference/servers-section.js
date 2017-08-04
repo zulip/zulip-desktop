@@ -68,11 +68,9 @@ class ServersSection extends BaseComponent {
 	}
 
 	initActions() {
-		this.$newServerButton.addEventListener('click', () => {
-			this.$newServerContainer.classList.remove('hidden');
-			this.$newServerButton.classList.remove('green');
-			this.$newServerButton.classList.add('grey');
-		});
+		this.$newServerContainer.classList.remove('hidden');
+		this.$newServerButton.classList.remove('green');
+		this.$newServerButton.classList.add('grey');
 	}
 
 	handleServerInfoChange() {
