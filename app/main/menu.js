@@ -1,13 +1,9 @@
 'use strict';
 const os = require('os');
-const electron = require('electron');
-const {dialog} = require('electron');
+const {dialog, app, shell, BrowserWindow, Menu} = require('electron');
 
 const ConfigUtil = require(__dirname + '/../renderer/js/utils/config-util.js');
 
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-const shell = electron.shell;
 const appName = app.getName();
 
 class AppMenu {
@@ -349,7 +345,7 @@ class AppMenu {
 
 	getMenu() {
 		const tpl = process.platform === 'darwin' ? this.getDarwinTpl() : this.getOtherTpl();
-		return electron.Menu.buildFromTemplate(tpl);
+		return Menu.buildFromTemplate(tpl);
 	}
 }
 
