@@ -153,7 +153,7 @@ app.on('activate', () => {
 });
 
 app.on('ready', () => {
-	electron.Menu.setApplicationMenu(appMenu);
+	electron.Menu.setApplicationMenu(appMenu.getMenu());
 	mainWindow = createMainWindow();
 
 	const page = mainWindow.webContents;
