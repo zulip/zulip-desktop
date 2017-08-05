@@ -343,9 +343,10 @@ class AppMenu {
 		});
 	}
 
-	getMenu() {
+	setMenu() {
 		const tpl = process.platform === 'darwin' ? this.getDarwinTpl() : this.getOtherTpl();
-		return Menu.buildFromTemplate(tpl);
+		const menu = Menu.buildFromTemplate(tpl);
+		Menu.setApplicationMenu(menu);
 	}
 }
 
