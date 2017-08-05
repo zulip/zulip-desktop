@@ -12,9 +12,6 @@ class NewServerForm extends BaseComponent {
 	template() {
 		return `
 			<div class="settings-card" style="border: solid 1px #4CAF50;">
-				<div class="server-info-left">
-					<img class="server-info-icon" src="${__dirname + '../../../../img/icon.png'}"/>
-				</div>
 				<div class="server-info-right">
 					<div class="server-info-row">
 						<input class="server-info-url" autofocus placeholder="Enter the url of your Zulip server..."/>
