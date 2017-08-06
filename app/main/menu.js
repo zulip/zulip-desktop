@@ -1,428 +1,381 @@
 'use strict';
 const os = require('os');
-const electron = require('electron');
-const {dialog} = require('electron');
+const {dialog, app, shell, BrowserWindow, Menu} = require('electron');
 
 const ConfigUtil = require(__dirname + '/../renderer/js/utils/config-util.js');
 
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-const shell = electron.shell;
 const appName = app.getName();
 
-function sendAction(action) {
-	const win = BrowserWindow.getAllWindows()[0];
-
-	if (process.platform === 'darwin') {
-		win.restore();
+class AppMenu {
+	getHistorySubmenu() {
+		return [{
+			label: 'Back',
+			accelerator: process.platform === 'darwin' ? 'Command+Left' : 'Alt+Left',
+			click(item, focusedWindow) {
+				if (focusedWindow) {
+					AppMenu.sendAction('back');
+				}
+			}
+		}, {
+			label: 'Forward',
+			accelerator: process.platform === 'darwin' ? 'Command+Right' : 'Alt+Right',
+			click(item, focusedWindow) {
+				if (focusedWindow) {
+					AppMenu.sendAction('forward');
+				}
+			}
+		}];
 	}
 
-	win.webContents.send(action);
-}
-
-function clearCache() {
-	const win = BrowserWindow.getAllWindows()[0];
-	const ses = win.webContents.session;
-	ses.clearCache(() => {
-		dialog.showMessageBox({type: 'info', buttons: [], message: 'Cache cleared!'});
-	});
-}
-
-const historySubmenu = [
-	{
-		label: 'Back',
-		accelerator: process.platform === 'darwin' ? 'Command+Left' : 'Alt+Left',
-		click(item, focusedWindow) {
-			if (focusedWindow) {
-				sendAction('back');
+	getViewSubmenu() {
+		return [{
+			label: 'Reload',
+			accelerator: 'CommandOrControl+R',
+			click(item, focusedWindow) {
+				if (focusedWindow) {
+					AppMenu.sendAction('reload-viewer');
+				}
 			}
-		}
-	},
-	{
-		label: 'Forward',
-		accelerator: process.platform === 'darwin' ? 'Command+Right' : 'Alt+Right',
-		click(item, focusedWindow) {
-			if (focusedWindow) {
-				sendAction('forward');
+		}, {
+			label: 'Hard Reload',
+			accelerator: 'CommandOrControl+Shift+R',
+			click(item, focusedWindow) {
+				if (focusedWindow) {
+					AppMenu.sendAction('hard-reload');
+				}
 			}
-		}
+		}, {
+			type: 'separator'
+		}, {
+			role: 'togglefullscreen'
+		}, {
+			label: 'Zoom In',
+			accelerator: 'CommandOrControl+=',
+			click(item, focusedWindow) {
+				if (focusedWindow) {
+					AppMenu.sendAction('zoomIn');
+				}
+			}
+		}, {
+			label: 'Zoom Out',
+			accelerator: 'CommandOrControl+-',
+			click(item, focusedWindow) {
+				if (focusedWindow) {
+					AppMenu.sendAction('zoomOut');
+				}
+			}
+		}, {
+			label: 'Actual Size',
+			accelerator: 'CommandOrControl+0',
+			click(item, focusedWindow) {
+				if (focusedWindow) {
+					AppMenu.sendAction('zoomActualSize');
+				}
+			}
+		}, {
+			type: 'separator'
+		}, {
+			label: 'Toggle Tray Icon',
+			click(item, focusedWindow) {
+				if (focusedWindow) {
+					focusedWindow.webContents.send('toggletray');
+				}
+			}
+		}, {
+			label: 'Toggle Sidebar',
+			accelerator: 'CommandOrControl+S',
+			click(item, focusedWindow) {
+				if (focusedWindow) {
+					const newValue = !ConfigUtil.getConfigItem('show-sidebar');
+					focusedWindow.webContents.send('toggle-sidebar', newValue);
+					ConfigUtil.setConfigItem('show-sidebar', newValue);
+				}
+			}
+		}, {
+			label: 'Toggle DevTools for Zulip App',
+			accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+			click(item, focusedWindow) {
+				if (focusedWindow) {
+					focusedWindow.webContents.toggleDevTools();
+				}
+			}
+		}, {
+			label: 'Toggle DevTools for Active Tab',
+			accelerator: process.platform === 'darwin' ? 'Alt+Command+U' : 'Ctrl+Shift+U',
+			click(item, focusedWindow) {
+				if (focusedWindow) {
+					AppMenu.sendAction('tab-devtools');
+				}
+			}
+		}];
 	}
-];
 
-const viewSubmenu = [
-	{
-		label: 'Reload',
-		accelerator: 'CommandOrControl+R',
-		click(item, focusedWindow) {
-			if (focusedWindow) {
-				sendAction('reload-viewer');
+	getHelpSubmenu() {
+		return [{
+			label: `${appName} Website`,
+			click() {
+				shell.openExternal('https://zulipchat.com/help/');
 			}
-		}
-	},
-	{
-		label: 'Hard Reload',
-		accelerator: 'CommandOrControl+Shift+R',
-		click(item, focusedWindow) {
-			if (focusedWindow) {
-				sendAction('hard-reload');
+		}, {
+			label: `${appName + 'Desktop'} - ${app.getVersion()}`,
+			enabled: false
+		}, {
+			label: 'Report an Issue...',
+			click() {
+				const body = `
+					<!-- Please succinctly describe your issue and steps to reproduce it. -->
+					-
+					${app.getName()} ${app.getVersion()}
+					Electron ${process.versions.electron}
+					${process.platform} ${process.arch} ${os.release()}`;
+				shell.openExternal(`https://github.com/zulip/zulip-electron/issues/new?body=${encodeURIComponent(body)}`);
 			}
-		}
-	},
-	{
-		type: 'separator'
-	},
-	{
-		role: 'togglefullscreen'
-	},
-	{
-		label: 'Zoom In',
-		accelerator: 'CommandOrControl+=',
-		click(item, focusedWindow) {
-			if (focusedWindow) {
-				sendAction('zoomIn');
-			}
-		}
-	},
-	{
-		label: 'Zoom Out',
-		accelerator: 'CommandOrControl+-',
-		click(item, focusedWindow) {
-			if (focusedWindow) {
-				sendAction('zoomOut');
-			}
-		}
-	},
-	{
-		label: 'Actual Size',
-		accelerator: 'CommandOrControl+0',
-		click(item, focusedWindow) {
-			if (focusedWindow) {
-				sendAction('zoomActualSize');
-			}
-		}
-	},
-	{
-		type: 'separator'
-	},
-	{
-		label: 'Toggle Tray Icon',
-		click(item, focusedWindow) {
-			if (focusedWindow) {
-				focusedWindow.webContents.send('toggletray');
-			}
-		}
-	},
-	{
-		label: 'Toggle Sidebar',
-		accelerator: 'CommandOrControl+S',
-		click(item, focusedWindow) {
-			if (focusedWindow) {
-				const newValue = !ConfigUtil.getConfigItem('show-sidebar');
-				focusedWindow.webContents.send('toggle-sidebar', newValue);
-				ConfigUtil.setConfigItem('show-sidebar', newValue);
-			}
-		}
-	},
-	{
-		label: 'Toggle DevTools for Zulip App',
-		accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-		click(item, focusedWindow) {
-			if (focusedWindow) {
-				focusedWindow.webContents.toggleDevTools();
-			}
-		}
-	},
-	{
-		label: 'Toggle DevTools for Active Tab',
-		accelerator: process.platform === 'darwin' ? 'Alt+Command+U' : 'Ctrl+Shift+U',
-		click(item, focusedWindow) {
-			if (focusedWindow) {
-				sendAction('tab-devtools');
-			}
-		}
+		}];
 	}
-];
 
-const helpSubmenu = [
-	{
-		label: `${appName} Website`,
-		click() {
-			shell.openExternal('https://zulipchat.com/help/');
-		}
-	},
-	{
-		label: `${appName + 'Desktop'} - ${app.getVersion()}`,
-		enabled: false
-	},
-	{
-		label: 'Report an Issue...',
-		click() {
-			const body = `
-<!-- Please succinctly describe your issue and steps to reproduce it. -->
--
-${app.getName()} ${app.getVersion()}
-Electron ${process.versions.electron}
-${process.platform} ${process.arch} ${os.release()}`;
+	getWindowSubmenu(tabs, activeTabIndex) {
+		const initialSubmenu = [{
+			role: 'minimize'
+		}, {
+			role: 'close'
+		}];
 
-			shell.openExternal(`https://github.com/zulip/zulip-electron/issues/new?body=${encodeURIComponent(body)}`);
+		if (tabs.length > 0) {
+			const ShortcutKey = process.platform === 'darwin' ? 'Cmd' : 'Ctrl';
+			initialSubmenu.push({
+				type: 'separator'
+			});
+			for (let i = 0; i < tabs.length; i++) {
+				initialSubmenu.push({
+					label: tabs[i].webview.props.name,
+					accelerator: tabs[i].props.role === 'function' ? '' : `${ShortcutKey} + ${tabs[i].props.index + 1}`,
+					checked: tabs[i].props.index === activeTabIndex,
+					click(item, focusedWindow) {
+						if (focusedWindow) {
+							AppMenu.sendAction('switch-server-tab', tabs[i].props.index);
+						}
+					},
+					type: 'radio'
+				});
+			}
 		}
+
+		return initialSubmenu;
 	}
-];
 
-const darwinTpl = [
+	getDarwinTpl(props) {
+		const {tabs, activeTabIndex} = props;
 
-	{
-		label: `${app.getName()}`,
-		submenu: [
-			{
+		return [{
+			label: `${app.getName()}`,
+			submenu: [{
 				label: 'Zulip Desktop',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
-						sendAction('open-about');
+						AppMenu.sendAction('open-about');
 					}
 				}
-			},
-			{
+			}, {
 				type: 'separator'
-			},
-			{
+			}, {
 				label: 'Settings',
 				accelerator: 'Cmd+,',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
-						sendAction('open-settings');
+						AppMenu.sendAction('open-settings');
 					}
 				}
-			},
-			{
+			}, {
 				label: 'Keyboard Shortcuts',
 				accelerator: 'Cmd+K',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
-						sendAction('shortcut');
+						AppMenu.sendAction('shortcut');
 					}
 				}
-			},
-			{
+			}, {
 				type: 'separator'
-			},
-			{
+			}, {
 				label: 'Clear Cache',
 				click() {
-					clearCache();
+					AppMenu.clearCache();
 				}
-			},
-			{
+			}, {
 				label: 'Log Out',
 				accelerator: 'Cmd+L',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
-						sendAction('log-out');
+						AppMenu.sendAction('log-out');
 					}
 				}
-			},
-			{
+			}, {
 				type: 'separator'
-			},
-			{
+			}, {
 				role: 'services',
 				submenu: []
-			},
-			{
+			}, {
 				type: 'separator'
-			},
-			{
+			}, {
 				role: 'hide'
-			},
-			{
+			}, {
 				role: 'hideothers'
-			},
-			{
+			}, {
 				role: 'unhide'
-			},
-			{
+			}, {
 				type: 'separator'
-			},
-			{
+			}, {
 				role: 'quit'
-			}
-		]
-	},
-	{
-		label: 'Edit',
-		submenu: [
-			{
+			}]
+		}, {
+			label: 'Edit',
+			submenu: [{
 				role: 'undo'
-			},
-			{
+			}, {
 				role: 'redo'
-			},
-			{
+			}, {
 				type: 'separator'
-			},
-			{
+			}, {
 				role: 'cut'
-			},
-			{
+			}, {
 				role: 'copy'
-			},
-			{
+			}, {
 				role: 'paste'
-			},
-			{
+			}, {
 				role: 'pasteandmatchstyle'
-			},
-			{
+			}, {
 				role: 'delete'
-			},
-			{
+			}, {
 				role: 'selectall'
-			}
-		]
-	},
-	{
-		label: 'View',
-		submenu: viewSubmenu
-	},
-	{
-		label: 'History',
-		submenu: historySubmenu
-	},
-	{
-		role: 'window',
-		submenu: [
-			{
-				role: 'minimize'
-			},
-			{
-				role: 'close'
-			},
-			{
-				type: 'separator'
-			},
-			{
-				role: 'front'
-			}
-		]
-	},
-	{
-		role: 'help',
-		submenu: helpSubmenu
+			}]
+		}, {
+			label: 'View',
+			submenu: this.getViewSubmenu()
+		}, {
+			label: 'History',
+			submenu: this.getHistorySubmenu()
+		}, {
+			label: 'Window',
+			submenu: this.getWindowSubmenu(tabs, activeTabIndex)
+		}, {
+			role: 'help',
+			submenu: this.getHelpSubmenu()
+		}];
 	}
-];
 
-const otherTpl = [
-	{
-		label: 'File',
-		submenu: [
-			{
+	getOtherTpl(props) {
+		const {tabs, activeTabIndex} = props;
+
+		return [{
+			label: 'File',
+			submenu: [{
 				label: 'Zulip Desktop',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
-						sendAction('open-about');
+						AppMenu.sendAction('open-about');
 					}
 				}
-			},
-			{
+			}, {
 				type: 'separator'
-			},
-			{
+			}, {
 				label: 'Settings',
 				accelerator: 'Ctrl+,',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
-						sendAction('open-settings');
+						AppMenu.sendAction('open-settings');
 					}
 				}
-			},
-			{
+			}, {
 				type: 'separator'
-			},
-			{
+			}, {
 				label: 'Keyboard Shortcuts',
 				accelerator: 'Ctrl+K',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
-						sendAction('shortcut');
+						AppMenu.sendAction('shortcut');
 					}
 				}
-			},
-			{
+			}, {
 				type: 'separator'
-			},
-			{
+			}, {
 				label: 'Clear Cache',
 				click() {
-					clearCache();
+					AppMenu.clearCache();
 				}
-			},
-			{
+			}, {
 				label: 'Log Out',
 				accelerator: 'Ctrl+L',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
-						sendAction('log-out');
+						AppMenu.sendAction('log-out');
 					}
 				}
-			},
-			{
+			}, {
 				type: 'separator'
-			},
-			{
+			}, {
 				role: 'quit',
 				accelerator: 'Ctrl+Q'
-			}
-		]
-	},
-	{
-		label: 'Edit',
-		submenu: [
-			{
+			}]
+		}, {
+			label: 'Edit',
+			submenu: [{
 				role: 'undo'
-			},
-			{
+			}, {
 				role: 'redo'
-			},
-			{
+			}, {
 				type: 'separator'
-			},
-			{
+			}, {
 				role: 'cut'
-			},
-			{
+			}, {
 				role: 'copy'
-			},
-			{
+			}, {
 				role: 'paste'
-			},
-			{
+			}, {
 				role: 'pasteandmatchstyle'
-			},
-			{
+			}, {
 				role: 'delete'
-			},
-			{
+			}, {
 				type: 'separator'
-			},
-			{
+			}, {
 				role: 'selectall'
-			}
-		]
-	},
-	{
-		label: 'View',
-		submenu: viewSubmenu
-	},
-	{
-		label: 'History',
-		submenu: historySubmenu
-	},
-	{
-		role: 'help',
-		submenu: helpSubmenu
+			}]
+		}, {
+			label: 'View',
+			submenu: this.getViewSubmenu()
+		}, {
+			label: 'History',
+			submenu: this.getHistorySubmenu()
+		}, {
+			label: 'Window',
+			submenu: this.getWindowSubmenu(tabs, activeTabIndex)
+		}, {
+			role: 'help',
+			submenu: this.getHelpSubmenu()
+		}];
 	}
-];
 
-const tpl = process.platform === 'darwin' ? darwinTpl : otherTpl;
+	static sendAction(action, ...params) {
+		const win = BrowserWindow.getAllWindows()[0];
 
-module.exports = electron.Menu.buildFromTemplate(tpl);
+		if (process.platform === 'darwin') {
+			win.restore();
+		}
+
+		win.webContents.send(action, ...params);
+	}
+
+	static clearCache() {
+		const win = BrowserWindow.getAllWindows()[0];
+		const ses = win.webContents.session;
+		ses.clearCache(() => {
+			dialog.showMessageBox({type: 'info', buttons: [], message: 'Cache cleared!'});
+		});
+	}
+
+	setMenu(props) {
+		const tpl = process.platform === 'darwin' ? this.getDarwinTpl(props) : this.getOtherTpl(props);
+		const menu = Menu.buildFromTemplate(tpl);
+		Menu.setApplicationMenu(menu);
+	}
+}
+
+module.exports = new AppMenu();

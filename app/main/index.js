@@ -153,7 +153,9 @@ app.on('activate', () => {
 });
 
 app.on('ready', () => {
-	electron.Menu.setApplicationMenu(appMenu);
+	appMenu.setMenu({
+		tabs: []
+	});
 	mainWindow = createMainWindow();
 
 	const page = mainWindow.webContents;
@@ -222,6 +224,10 @@ app.on('ready', () => {
 
 	ipc.on('forward-message', (event, listener, ...params) => {
 		page.send(listener, ...params);
+	});
+
+	ipc.on('update-menu', (event, props) => {
+		appMenu.setMenu(props);
 	});
 
 	ipc.on('register-server-tab-shortcut', (event, index) => {
