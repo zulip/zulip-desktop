@@ -141,13 +141,14 @@ class AppMenu {
 		}];
 
 		if (tabs.length > 0) {
+			const ShortcutKey = process.platform === 'darwin' ? 'Cmd' : 'Ctrl';
 			initialSubmenu.push({
 				type: 'separator'
 			});
 			for (let i = 0; i < tabs.length; i++) {
 				initialSubmenu.push({
 					label: tabs[i].webview.props.name,
-					accelerator: tabs[i].props.role === 'function' ? '' : `Cmd+${tabs[i].props.index + 1}`,
+					accelerator: tabs[i].props.role === 'function' ? '' : `${ShortcutKey} + ${tabs[i].props.index + 1}`,
 					checked: tabs[i].props.index === activeTabIndex,
 					click(item, focusedWindow) {
 						if (focusedWindow) {
@@ -261,7 +262,9 @@ class AppMenu {
 		}];
 	}
 
-	getOtherTpl() {
+	getOtherTpl(props) {
+		const {tabs, activeTabIndex} = props;
+
 		return [{
 			label: 'File',
 			submenu: [{
@@ -339,8 +342,8 @@ class AppMenu {
 			label: 'View',
 			submenu: this.getViewSubmenu()
 		}, {
-			label: 'History',
-			submenu: this.getHistorySubmenu()
+			label: 'Window',
+			submenu: this.getWindowSubmenu(tabs, activeTabIndex)
 		}, {
 			role: 'help',
 			submenu: this.getHelpSubmenu()
@@ -366,7 +369,7 @@ class AppMenu {
 	}
 
 	setMenu(props) {
-		const tpl = process.platform === 'darwin' ? this.getDarwinTpl(props) : this.getOtherTpl();
+		const tpl = process.platform === 'darwin' ? this.getDarwinTpl(props) : this.getOtherTpl(props);
 		const menu = Menu.buildFromTemplate(tpl);
 		Menu.setApplicationMenu(menu);
 	}
