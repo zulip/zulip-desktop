@@ -342,6 +342,9 @@ class AppMenu {
 			label: 'View',
 			submenu: this.getViewSubmenu()
 		}, {
+			label: 'History',
+			submenu: this.getHistorySubmenu()
+		}, {
 			label: 'Window',
 			submenu: this.getWindowSubmenu(tabs, activeTabIndex)
 		}, {
