@@ -133,13 +133,43 @@ class AppMenu {
 		}];
 	}
 
-	getDarwinTpl() {
+	getWindowSubmenu(tabs, activeTabIndex) {
+		const initialSubmenu = [{
+			role: 'minimize'
+		}, {
+			role: 'close'
+		}];
+
+		if (tabs.length > 0) {
+			initialSubmenu.push({
+				type: 'separator'
+			});
+			for (let i = 0; i < tabs.length; i++) {
+				initialSubmenu.push({
+					label: tabs[i].webview.props.name,
+					accelerator: tabs[i].props.role === 'function' ? '' : `Cmd+${tabs[i].props.index + 1}`,
+					checked: tabs[i].props.index === activeTabIndex,
+					click(item, focusedWindow) {
+						if (focusedWindow) {
+							AppMenu.sendAction('switch-server-tab', tabs[i].props.index);
+						}
+					},
+					type: 'radio'
+				});
+			}
+		}
+
+		return initialSubmenu;
+	}
+
+	getDarwinTpl(props) {
+		const {tabs, activeTabIndex} = props;
+
 		return [{
 			label: `${app.getName()}`,
 			submenu: [{
 				label: 'Zulip Desktop',
 				click(item, focusedWindow) {
-					console.log(this);
 					if (focusedWindow) {
 						AppMenu.sendAction('open-about');
 					}
@@ -223,16 +253,8 @@ class AppMenu {
 			label: 'History',
 			submenu: this.getHistorySubmenu()
 		}, {
-			role: 'window',
-			submenu: [{
-				role: 'minimize'
-			}, {
-				role: 'close'
-			}, {
-				type: 'separator'
-			}, {
-				role: 'front'
-			}]
+			label: 'Window',
+			submenu: this.getWindowSubmenu(tabs, activeTabIndex)
 		}, {
 			role: 'help',
 			submenu: this.getHelpSubmenu()
@@ -343,8 +365,8 @@ class AppMenu {
 		});
 	}
 
-	setMenu() {
-		const tpl = process.platform === 'darwin' ? this.getDarwinTpl() : this.getOtherTpl();
+	setMenu(props) {
+		const tpl = process.platform === 'darwin' ? this.getDarwinTpl(props) : this.getOtherTpl();
 		const menu = Menu.buildFromTemplate(tpl);
 		Menu.setApplicationMenu(menu);
 	}

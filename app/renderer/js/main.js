@@ -60,6 +60,7 @@ class ServerManagerView {
 
 	initServer(server, index) {
 		this.tabs.push(new ServerTab({
+			role: 'server',
 			icon: server.icon,
 			$root: this.$tabsContainer,
 			onClick: this.activateTab.bind(this, index),
@@ -113,8 +114,10 @@ class ServerManagerView {
 		this.functionalTabs[tabProps.name] = this.tabs.length;
 
 		this.tabs.push(new FunctionalTab({
+			role: 'function',
 			materialIcon: tabProps.materialIcon,
 			$root: this.$tabsContainer,
+			index: this.functionalTabs[tabProps.name],
 			onClick: this.activateTab.bind(this, this.functionalTabs[tabProps.name]),
 			onDestroy: this.destroyTab.bind(this, tabProps.name, this.functionalTabs[tabProps.name]),
 			webview: new WebView({
@@ -175,6 +178,11 @@ class ServerManagerView {
 
 		this.activeTabIndex = index;
 		this.tabs[index].activate();
+
+		ipcRenderer.send('update-menu', {
+			tabs: this.tabs,
+			activeTabIndex: this.activeTabIndex
+		});
 	}
 
 	destroyTab(name, index) {
