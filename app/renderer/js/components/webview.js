@@ -109,8 +109,10 @@ class WebView extends BaseComponent {
 		// Explicit focusing the webview causes a bug the input cannot regain focus on Winodws.
 		// The bug is introduced from Electron and this is a tempory fix.
 		// See https://github.com/zulip/zulip-electron/issues/216
-		// temporary fix 
-		this.$el.focus();		
+		if (!this.$el.getWebContents().isFocused()) {
+			this.$el.focus();
+			this.$el.getWebContents().focus();
+		}
 	}
 
 	hide() {
