@@ -106,9 +106,7 @@ class WebView extends BaseComponent {
 	}
 
 	focus() {
-		// Explicit focusing the webview causes a bug the input cannot regain focus on Winodws.
-		// The bug is introduced from Electron and this is a tempory fix.
-		// See https://github.com/zulip/zulip-electron/issues/216
+		// focus Webview and it's contents when Window regain focus.
 		const webContents = this.$el.getWebContents();
 		if (webContents && !webContents.isFocused()) {
 			this.$el.focus();
