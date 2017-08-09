@@ -20,13 +20,13 @@
   },
   "scripts": {
     "start": "electron app --disable-http-cache",
-    "postinstall": "install-app-deps",
+    "postinstall": "electron-builder install-app-deps",
     "test": "xo",
     "dev": "gulp dev",
-    "pack": "build --dir",
-    "dist": "build",
-    "mas": "build --mac mas",
-    "build:win": "build --win nsis-web --ia32 --x64",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "mas": "electron-builder --mac mas",
+    "build:win": "electron-builder --win nsis-web --ia32 --x64",
     "travis": "cd ./scripts && ./travis-build-test.sh"
   },
   "build": {
