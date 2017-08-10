@@ -73,7 +73,23 @@ class DomainUtil {
 		this.reloadDB();
 	}
 
+	// Check if domain is already added
+	duplicateDomain(domain) {
+		const servers = this.getDomains();
+		for (const i in servers) {
+			if (servers[i].url === domain) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	checkDomain(domain) {
+		if (this.duplicateDomain(domain)) {
+			alert('This Server Address already exists.');
+			return;
+		}
+
 		const hasPrefix = (domain.indexOf('http') === 0);
 		if (!hasPrefix) {
 			domain = (domain.indexOf('localhost:') >= 0) ? `http://${domain}` : `https://${domain}`;
