@@ -60,7 +60,7 @@ class WebView extends BaseComponent {
 		});
 
 		this.$el.addEventListener('dom-ready', () => {
-			this.$el.classList.add('onload');
+			if (this.props.role === 'server') this.$el.classList.add('onload');
 			this.show();
 		});
 
@@ -96,7 +96,7 @@ class WebView extends BaseComponent {
 
 		this.$el.classList.remove('disabled');
 		setTimeout(() => {
-			this.$el.classList.remove('onload');
+			if (this.props.role === 'server') this.$el.classList.remove('onload');
 		}, 1000);
 		this.focus();
 		this.loading = false;
