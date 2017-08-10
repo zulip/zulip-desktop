@@ -16,15 +16,9 @@ class ServersSection extends BaseComponent {
 	template() {
 		return `
 			<div class="settings-pane" id="server-settings-pane">
-				<div class="title">Manage Servers</div>
-				<div class="actions-container">
-					<div class="action green" id="new-server-action">
-						<i class="material-icons">add_box</i>
-						<span>Add Server</span>
-					</div>
-				</div>
-				<div id="new-server-container" class="hidden"></div>
-				<div class="sub-title" id="existing-servers"></div>
+				<div class="title">Add Server</div>
+				<div id="new-server-container"></div>
+				<div class="title" id="existing-servers"></div>
 				<div id="server-info-container"></div>
 			</div>
 		`;
@@ -32,7 +26,6 @@ class ServersSection extends BaseComponent {
 
 	init() {
 		this.initServers();
-		this.initActions();
 	}
 
 	initServers() {
@@ -47,7 +40,7 @@ class ServersSection extends BaseComponent {
 
 		this.$serverInfoContainer.innerHTML = servers.length ? '' : 'Add your first server to get started!';
 		// Show Existing servers if servers are there otherwise hide it
-		this.$existingServers.innerHTML = servers.length === 0 ? '' : 'Existing servers';
+		this.$existingServers.innerHTML = servers.length === 0 ? '' : 'Existing Servers';
 		this.initNewServerForm();
 
 		for (let i = 0; i < servers.length; i++) {
@@ -65,12 +58,6 @@ class ServersSection extends BaseComponent {
 			$root: this.$newServerContainer,
 			onChange: this.handleServerInfoChange.bind(this)
 		}).init();
-	}
-
-	initActions() {
-		this.$newServerContainer.classList.remove('hidden');
-		this.$newServerButton.classList.remove('green');
-		this.$newServerButton.classList.add('grey');
 	}
 
 	handleServerInfoChange() {

@@ -88,7 +88,6 @@ body {
 }
 
 #new-server-container {
-    margin: 20px 0;
     opacity: 1;
     transition: opacity 0.3s;
 }
