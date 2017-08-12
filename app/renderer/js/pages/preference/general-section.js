@@ -35,6 +35,10 @@ class GeneralSection extends BaseComponent {
 						<div class="setting-control"></div>
 					</div>
 				</div>
+				<div class="title">Dock toggle</div>
+                <div id="dock-unread-option-settings" class="settings-card">
+					<div class="setting-row">
+						<div class="setting-description">Toggle dock unread messages</div>
 				<div class="title">User Interface</div>
                 <div id="ui-option-settings" class="settings-card">
 					<div class="setting-row" id="sidebar-option">
@@ -74,6 +78,9 @@ class GeneralSection extends BaseComponent {
 		this.settingsOptionTemplate(silentOption);
 	}
 
+
+	dockUnreadOptionTemplate(dockToggleOption) {
+		this.settingsOptionTemplate(dockToggleOption);
 	sidebarToggleTemplate(toggleOption) {
 		this.settingsOptionTemplate(toggleOption);
 	}
@@ -83,6 +90,7 @@ class GeneralSection extends BaseComponent {
 		this.initTrayOption();
 		this.initUpdateOption();
 		this.initSilentOption();
+		this.initDockToggleUnreadOption();
 		this.initSidebarToggle();
 	}
 
@@ -97,7 +105,6 @@ class GeneralSection extends BaseComponent {
 		$trayOption.addEventListener('click', () => {
 			const newValue = !ConfigUtil.getConfigItem('trayIcon');
 			ConfigUtil.setConfigItem('trayIcon', newValue);
-			ipcRenderer.send('forward-message', 'toggletray');
 			this.initTrayOption();
 		});
 	}
@@ -128,10 +135,24 @@ class GeneralSection extends BaseComponent {
 		$silentOption.addEventListener('click', () => {
 			const newValue = !ConfigUtil.getConfigItem('silent', true);
 			ConfigUtil.setConfigItem('silent', newValue);
+			ipcRenderer.send('toggle-dock-unread', newValue);
 			this.initSilentOption();
 		});
 	}
 
+	initDockToggleUnreadOption() {
+		this.$dockToggleUnreadoptionSettings = document.querySelector('#dock-unread-option-settings .setting-control');
+		this.$dockToggleUnreadoptionSettings.innerHTML = '';
+
+		const dockToggleOption = ConfigUtil.getConfigItem('dock-toggle-unread', false);
+		const $dockToggleOption = this.generateNodeFromTemplate(this.settingsOptionTemplate(dockToggleOption));
+		this.$dockToggleUnreadoptionSettings.appendChild($dockToggleOption);
+
+		$dockToggleOption.addEventListener('click', () => {
+			const newValue = !ConfigUtil.getConfigItem('dock-toggle-unread');
+			ConfigUtil.setConfigItem('dock-toggle-unread', newValue);
+			ipcRenderer.send('toggle-dock-unread-option', newValue);
+			this.initDockToggleUnreadOption();
 	initSidebarToggle() {
 		this.$sidebarOptionSettings = document.querySelector('#ui-option-settings #sidebar-option .setting-control');
 		this.$sidebarOptionSettings.innerHTML = '';
