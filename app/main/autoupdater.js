@@ -18,7 +18,7 @@ function appUpdater() {
 		// Ask user to update the app
 		dialog.showMessageBox({
 			type: 'question',
-			buttons: ['Install and Relaunch', 'Later'],
+			buttons: ['Install and Relaunch', 'Install Later'],
 			defaultId: 0,
 			message: 'A new version of ' + app.getName() + ' has been downloaded',
 			detail: 'It will be installed the next time you restart the application'
