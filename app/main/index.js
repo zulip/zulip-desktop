@@ -1,13 +1,13 @@
 'use strict';
 const path = require('path');
 const electron = require('electron');
-const {app} = require('electron');
-const ipc = require('electron').ipcMain;
 const electronLocalshortcut = require('electron-localshortcut');
 const isDev = require('electron-is-dev');
 const windowStateKeeper = require('electron-window-state');
 const appMenu = require('./menu');
 const {appUpdater} = require('./autoupdater');
+
+const {app, ipcMain} = electron;
 
 // Adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
@@ -178,21 +178,21 @@ app.on('ready', () => {
 		page.send('reload-viewer');
 	});
 
-	ipc.on('focus-app', () => {
+	ipcMain.on('focus-app', () => {
 		mainWindow.show();
 	});
 
-	ipc.on('quit-app', () => {
+	ipcMain.on('quit-app', () => {
 		app.quit();
 	});
 
 	// Reload full app not just webview, useful in debugging
-	ipc.on('reload-full-app', () => {
+	ipcMain.on('reload-full-app', () => {
 		mainWindow.reload();
 		page.send('destroytray');
 	});
 
-	ipc.on('toggle-app', () => {
+	ipcMain.on('toggle-app', () => {
 		if (mainWindow.isVisible()) {
 			mainWindow.hide();
 		} else {
@@ -200,7 +200,7 @@ app.on('ready', () => {
 		}
 	});
 
-	ipc.on('update-badge', (event, messageCount) => {
+	ipcMain.on('update-badge', (event, messageCount) => {
 		if (process.platform === 'darwin') {
 			app.setBadgeCount(messageCount);
 		}
@@ -217,27 +217,27 @@ app.on('ready', () => {
 		page.send('tray', messageCount);
 	});
 
-	ipc.on('update-taskbar-icon', (event, data, text) => {
+	ipcMain.on('update-taskbar-icon', (event, data, text) => {
 		const img = electron.nativeImage.createFromDataURL(data);
 		mainWindow.setOverlayIcon(img, text);
 	});
 
-	ipc.on('forward-message', (event, listener, ...params) => {
+	ipcMain.on('forward-message', (event, listener, ...params) => {
 		page.send(listener, ...params);
 	});
 
-	ipc.on('update-menu', (event, props) => {
+	ipcMain.on('update-menu', (event, props) => {
 		appMenu.setMenu(props);
 	});
 
-	ipc.on('register-server-tab-shortcut', (event, index) => {
+	ipcMain.on('register-server-tab-shortcut', (event, index) => {
 		electronLocalshortcut.register(mainWindow, `CommandOrControl+${index}`, () => {
 			// Array index == Shown index - 1
 			page.send('switch-server-tab', index - 1);
 		});
 	});
 
-	ipc.on('local-shortcuts', (event, enable) => {
+	ipcMain.on('local-shortcuts', (event, enable) => {
 		if (enable) {
 			registerLocalShortcuts(page);
 		} else {
