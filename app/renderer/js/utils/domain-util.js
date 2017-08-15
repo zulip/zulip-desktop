@@ -162,14 +162,8 @@ class DomainUtil {
 
 	saveServerIcon(url) {
 		// The save will always succeed. If url is invalid, downgrade to default icon.
-		const dir = `${app.getPath('userData')}/server-icons`;
-
-		if (!fs.existsSync(dir)) {
-			fs.mkdirSync(dir);
-		}
-
 		return new Promise(resolve => {
-			const filePath = `${dir}/${new Date().getMilliseconds()}${path.extname(url).split('?')[0]}`;
+			const filePath = this.generateFilePath(url);
 			const file = fs.createWriteStream(filePath);
 			try {
 				request(url).on('response', response => {
@@ -193,6 +187,25 @@ class DomainUtil {
 
 	reloadDB() {
 		this.db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
+	}
+
+	generateFilePath(url) {
+		const dir = `${app.getPath('userData')}/server-icons`;
+		const extension = path.extname(url).split('?')[0];
+
+		let hash = 5381;
+		let len = url.length;
+
+		while(len) {
+			hash = (hash * 33) ^ url.charCodeAt(--len)
+		}
+
+		// Create 'server-icons' directory if not existed
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync(dir);
+		}
+
+		return `${dir}/${hash >>> 0}${extension}`;
 	}
 }
 
