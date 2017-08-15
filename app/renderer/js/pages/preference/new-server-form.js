@@ -41,15 +41,26 @@ class NewServerForm extends BaseComponent {
 		this.$newServerUrl = this.$newServerForm.querySelectorAll('input.server-info-url')[0];
 	}
 
+	submitFormHandler() {
+		DomainUtil.checkDomain(this.$newServerUrl.value).then(serverConf => {
+			DomainUtil.addDomain(serverConf).then(() => {
+				this.props.onChange(this.props.index);
+			});
+		}, errorMessage => {
+			alert(errorMessage);
+		});
+	}
+
 	initActions() {
 		this.$saveServerButton.addEventListener('click', () => {
-			DomainUtil.checkDomain(this.$newServerUrl.value).then(serverConf => {
-				DomainUtil.addDomain(serverConf).then(() => {
-					this.props.onChange(this.props.index);
-				});
-			}, errorMessage => {
-				alert(errorMessage);
-			});
+			this.submitFormHandler();
+		});
+		this.$newServerUrl.addEventListener('keypress', event => {
+			const EnterkeyCode = event.keyCode;
+			// Submit form when Enter key is pressed
+			if (EnterkeyCode === 13) {
+				this.submitFormHandler();
+			}
 		});
 	}
 }
