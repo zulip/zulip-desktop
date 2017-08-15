@@ -45,6 +45,11 @@ class DomainUtil {
 		return this.db.getData(`/domains[${index}]`);
 	}
 
+	updateDomain(index, server) {
+		this.reloadDB();
+		this.db.push(`/domains[${index}]`, server, true);
+	}
+
 	addDomain(server) {
 		return new Promise(resolve => {
 			if (server.icon) {
@@ -84,8 +89,8 @@ class DomainUtil {
 		return false;
 	}
 
-	checkDomain(domain) {
-		if (this.duplicateDomain(domain)) {
+	checkDomain(domain, silent = false) {
+		if (silent && this.duplicateDomain(domain)) {
 			alert('This Server Address already exists.');
 			return;
 		}
@@ -117,22 +122,30 @@ class DomainUtil {
 						resolve(serverConf);
 					});
 				} else if (certsError.indexOf(error.toString()) >= 0) {
-					dialog.showMessageBox({
-						type: 'question',
-						buttons: ['Yes', 'No'],
-						defaultId: 0,
-						message: `Do you trust certificate from ${domain}? \n ${error}`
-					}, response => {
-						if (response === 0) {
-							this.getServerSettings(domain).then(serverSettings => {
-								resolve(serverSettings);
-							}, () => {
-								resolve(serverConf);
-							});
-						} else {
-							reject('Untrusted Certificate.');
-						}
-					});
+					if (silent) {
+						this.getServerSettings(domain).then(serverSettings => {
+							resolve(serverSettings);
+						}, () => {
+							resolve(serverConf);
+						});
+					} else {
+						dialog.showMessageBox({
+							type: 'question',
+							buttons: ['Yes', 'No'],
+							defaultId: 0,
+							message: `Do you trust certificate from ${domain}? \n ${error}`
+						}, response => {
+							if (response === 0) {
+								this.getServerSettings(domain).then(serverSettings => {
+									resolve(serverSettings);
+								}, () => {
+									resolve(serverConf);
+								});
+							} else {
+								reject('Untrusted Certificate.');
+							}
+						});
+					}
 				} else {
 					reject('Not a valid Zulip server');
 				}
@@ -182,6 +195,17 @@ class DomainUtil {
 				console.log(err);
 				resolve(defaultIconUrl);
 			}
+		});
+	}
+
+	updateSavedServer(url, index) {
+		// Does not promise successful update
+		this.checkDomain(url, false).then(newServerConf => {
+			this.saveServerIcon(newServerConf.icon).then(localIconUrl => {
+				newServerConf.icon = localIconUrl;
+				this.updateDomain(index, newServerConf);
+				this.reloadDB();
+			});
 		});
 	}
 
