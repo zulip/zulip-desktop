@@ -90,8 +90,9 @@ class DomainUtil {
 	}
 
 	checkDomain(domain, silent = false) {
-		if (silent && this.duplicateDomain(domain)) {
-			alert('This Server Address already exists.');
+		if (!silent && this.duplicateDomain(domain)) {
+			// Do not check duplicate in silent mode
+			alert('This server has been added.');
 			return;
 		}
 
@@ -200,7 +201,7 @@ class DomainUtil {
 
 	updateSavedServer(url, index) {
 		// Does not promise successful update
-		this.checkDomain(url, false).then(newServerConf => {
+		this.checkDomain(url, true).then(newServerConf => {
 			this.saveServerIcon(newServerConf.icon).then(localIconUrl => {
 				newServerConf.icon = localIconUrl;
 				this.updateDomain(index, newServerConf);
@@ -220,8 +221,8 @@ class DomainUtil {
 		let hash = 5381;
 		let len = url.length;
 
-		while(len) {
-			hash = (hash * 33) ^ url.charCodeAt(--len)
+		while (len) {
+			hash = (hash * 33) ^ url.charCodeAt(--len);
 		}
 
 		// Create 'server-icons' directory if not existed
