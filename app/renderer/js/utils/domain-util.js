@@ -80,6 +80,7 @@ class DomainUtil {
 
 	// Check if domain is already added
 	duplicateDomain(domain) {
+		domain = this.formatUrl(domain);
 		const servers = this.getDomains();
 		for (const i in servers) {
 			if (servers[i].url === domain) {
@@ -96,10 +97,7 @@ class DomainUtil {
 			return;
 		}
 
-		const hasPrefix = (domain.indexOf('http') === 0);
-		if (!hasPrefix) {
-			domain = (domain.indexOf('localhost:') >= 0) ? `http://${domain}` : `https://${domain}`;
-		}
+		domain = this.formatUrl(domain);
 
 		const checkDomain = domain + '/static/audio/zulip.ogg';
 
@@ -231,6 +229,15 @@ class DomainUtil {
 		}
 
 		return `${dir}/${hash >>> 0}${extension}`;
+	}
+
+	formatUrl(domain) {
+		const hasPrefix = (domain.indexOf('http') === 0);
+		if (hasPrefix) {
+			return domain;
+		} else {
+			return (domain.indexOf('localhost:') >= 0) ? `http://${domain}` : `https://${domain}`;
+		}
 	}
 }
 
