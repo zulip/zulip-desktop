@@ -49,6 +49,7 @@ class ServerManagerView {
 		if (servers.length > 0) {
 			for (let i = 0; i < servers.length; i++) {
 				this.initServer(servers[i], i);
+				DomainUtil.updateSavedServer(servers[i].url, i);
 			}
 			this.activateTab(0);
 		} else {

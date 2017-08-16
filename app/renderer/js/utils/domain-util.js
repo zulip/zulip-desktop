@@ -45,6 +45,11 @@ class DomainUtil {
 		return this.db.getData(`/domains[${index}]`);
 	}
 
+	updateDomain(index, server) {
+		this.reloadDB();
+		this.db.push(`/domains[${index}]`, server, true);
+	}
+
 	addDomain(server) {
 		return new Promise(resolve => {
 			if (server.icon) {
@@ -75,6 +80,7 @@ class DomainUtil {
 
 	// Check if domain is already added
 	duplicateDomain(domain) {
+		domain = this.formatUrl(domain);
 		const servers = this.getDomains();
 		for (const i in servers) {
 			if (servers[i].url === domain) {
@@ -84,16 +90,14 @@ class DomainUtil {
 		return false;
 	}
 
-	checkDomain(domain) {
-		if (this.duplicateDomain(domain)) {
-			alert('This Server Address already exists.');
+	checkDomain(domain, silent = false) {
+		if (!silent && this.duplicateDomain(domain)) {
+			// Do not check duplicate in silent mode
+			alert('This server has been added.');
 			return;
 		}
 
-		const hasPrefix = (domain.indexOf('http') === 0);
-		if (!hasPrefix) {
-			domain = (domain.indexOf('localhost:') >= 0) ? `http://${domain}` : `https://${domain}`;
-		}
+		domain = this.formatUrl(domain);
 
 		const checkDomain = domain + '/static/audio/zulip.ogg';
 
@@ -117,22 +121,30 @@ class DomainUtil {
 						resolve(serverConf);
 					});
 				} else if (certsError.indexOf(error.toString()) >= 0) {
-					dialog.showMessageBox({
-						type: 'question',
-						buttons: ['Yes', 'No'],
-						defaultId: 0,
-						message: `Do you trust certificate from ${domain}? \n ${error}`
-					}, response => {
-						if (response === 0) {
-							this.getServerSettings(domain).then(serverSettings => {
-								resolve(serverSettings);
-							}, () => {
-								resolve(serverConf);
-							});
-						} else {
-							reject('Untrusted Certificate.');
-						}
-					});
+					if (silent) {
+						this.getServerSettings(domain).then(serverSettings => {
+							resolve(serverSettings);
+						}, () => {
+							resolve(serverConf);
+						});
+					} else {
+						dialog.showMessageBox({
+							type: 'question',
+							buttons: ['Yes', 'No'],
+							defaultId: 0,
+							message: `Do you trust certificate from ${domain}? \n ${error}`
+						}, response => {
+							if (response === 0) {
+								this.getServerSettings(domain).then(serverSettings => {
+									resolve(serverSettings);
+								}, () => {
+									resolve(serverConf);
+								});
+							} else {
+								reject('Untrusted Certificate.');
+							}
+						});
+					}
 				} else {
 					reject('Not a valid Zulip server');
 				}
@@ -162,14 +174,8 @@ class DomainUtil {
 
 	saveServerIcon(url) {
 		// The save will always succeed. If url is invalid, downgrade to default icon.
-		const dir = `${app.getPath('userData')}/server-icons`;
-
-		if (!fs.existsSync(dir)) {
-			fs.mkdirSync(dir);
-		}
-
 		return new Promise(resolve => {
-			const filePath = `${dir}/${new Date().getMilliseconds()}${path.extname(url).split('?')[0]}`;
+			const filePath = this.generateFilePath(url);
 			const file = fs.createWriteStream(filePath);
 			try {
 				request(url).on('response', response => {
@@ -191,8 +197,47 @@ class DomainUtil {
 		});
 	}
 
+	updateSavedServer(url, index) {
+		// Does not promise successful update
+		this.checkDomain(url, true).then(newServerConf => {
+			this.saveServerIcon(newServerConf.icon).then(localIconUrl => {
+				newServerConf.icon = localIconUrl;
+				this.updateDomain(index, newServerConf);
+				this.reloadDB();
+			});
+		});
+	}
+
 	reloadDB() {
 		this.db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
+	}
+
+	generateFilePath(url) {
+		const dir = `${app.getPath('userData')}/server-icons`;
+		const extension = path.extname(url).split('?')[0];
+
+		let hash = 5381;
+		let len = url.length;
+
+		while (len) {
+			hash = (hash * 33) ^ url.charCodeAt(--len);
+		}
+
+		// Create 'server-icons' directory if not existed
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync(dir);
+		}
+
+		return `${dir}/${hash >>> 0}${extension}`;
+	}
+
+	formatUrl(domain) {
+		const hasPrefix = (domain.indexOf('http') === 0);
+		if (hasPrefix) {
+			return domain;
+		} else {
+			return (domain.indexOf('localhost:') >= 0) ? `http://${domain}` : `https://${domain}`;
+		}
 	}
 }
 
