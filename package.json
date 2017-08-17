@@ -122,6 +122,7 @@
             500
           ],
           "no-warning-comments": 0,
+          "object-curly-spacing": 0,
           "capitalized-comments": 0,
           "no-else-return": 0,
           "no-path-concat": 0,

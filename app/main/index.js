@@ -5,9 +5,9 @@ const electronLocalshortcut = require('electron-localshortcut');
 const isDev = require('electron-is-dev');
 const windowStateKeeper = require('electron-window-state');
 const appMenu = require('./menu');
-const {appUpdater} = require('./autoupdater');
+const { appUpdater } = require('./autoupdater');
 
-const {app, ipcMain} = electron;
+const { app, ipcMain } = electron;
 
 // Adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
