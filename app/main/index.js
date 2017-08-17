@@ -254,3 +254,9 @@ app.on('will-quit', () => {
 app.on('before-quit', () => {
 	isQuitting = true;
 });
+
+// Send crash reports
+process.on('uncaughtException', err => {
+	console.error(err);
+	console.error(err.stack);
+});
