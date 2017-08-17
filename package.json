@@ -29,6 +29,9 @@
     "build:win": "electron-builder --win nsis-web --ia32 --x64",
     "travis": "cd ./scripts && ./travis-build-test.sh"
   },
+  "pre-commit": [
+    "test"
+  ],
   "build": {
     "appId": "org.zulip.zulip-electron",
     "asar": true,
@@ -103,7 +106,8 @@
     "chai-as-promised": "7.1.1",
     "chai": "4.1.1",
     "spectron": "3.7.2",
-    "xo": "0.18.2"
+    "xo": "0.18.2",
+    "pre-commit": "*"
   },
   "xo": {
     "parserOptions": {
