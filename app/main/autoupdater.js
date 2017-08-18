@@ -1,6 +1,7 @@
 'use strict';
-const {app, dialog} = require('electron');
-const {autoUpdater} = require('electron-updater');
+const fs = require('fs');
+const { app, dialog } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const isDev = require('electron-is-dev');
 
 const ConfigUtil = require('./../renderer/js/utils/config-util.js');
@@ -12,8 +13,17 @@ function appUpdater() {
 		return;
 	}
 
+	// Create Logs directory
+	const LogsDir = `${app.getPath('userData')}/Logs`;
+
+	if (!fs.existsSync(LogsDir)) {
+		fs.mkdirSync(LogsDir);
+	}
+
 	// Log whats happening
 	const log = require('electron-log');
+
+	log.transports.file.file = `${LogsDir}/updates.log`;
 	log.transports.file.level = 'info';
 	autoUpdater.logger = log;
 
@@ -32,7 +42,7 @@ function appUpdater() {
 			detail: 'It will be installed the next time you restart the application'
 		}, response => {
 			if (response === 0) {
-				setTimeout(() => autoUpdater.quitAndInstall(), 1);
+				setTimeout(() => autoUpdater.quitAndInstall(), 1000);
 			}
 		});
 	});
