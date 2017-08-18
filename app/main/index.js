@@ -2,7 +2,6 @@
 const path = require('path');
 const electron = require('electron');
 const electronLocalshortcut = require('electron-localshortcut');
-const isDev = require('electron-is-dev');
 const windowStateKeeper = require('electron-window-state');
 const appMenu = require('./menu');
 const { appUpdater } = require('./autoupdater');
@@ -32,10 +31,6 @@ const isAlreadyRunning = app.makeSingleInstance(() => {
 
 if (isAlreadyRunning) {
 	return app.quit();
-}
-
-function isWindowsOrmacOS() {
-	return process.platform === 'darwin' || process.platform === 'win32';
 }
 
 const APP_ICON = path.join(__dirname, '../resources', 'Icon');
@@ -167,11 +162,8 @@ app.on('ready', () => {
 	});
 
 	page.once('did-frame-finish-load', () => {
-		const checkOS = isWindowsOrmacOS();
-		if (checkOS && !isDev) {
-			// Initate auto-updates on MacOS and Windows
-			appUpdater();
-		}
+		// Initate auto-updates on MacOS and Windows
+		appUpdater();
 	});
 
 	electron.powerMonitor.on('resume', () => {

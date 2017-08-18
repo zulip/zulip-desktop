@@ -1,14 +1,22 @@
 'use strict';
 const {app, dialog} = require('electron');
 const {autoUpdater} = require('electron-updater');
+const isDev = require('electron-is-dev');
 
 const ConfigUtil = require('./../renderer/js/utils/config-util.js');
 
 function appUpdater() {
+	// Don't initiate auto-updates in development and on Linux system
+	// since autoUpdater doesn't work on Linux
+	if (isDev || process.platform === 'linux') {
+		return;
+	}
+
 	// Log whats happening
 	const log = require('electron-log');
 	log.transports.file.level = 'info';
 	autoUpdater.logger = log;
+
 	// Handle auto updates for beta/pre releases
 	autoUpdater.allowPrerelease = ConfigUtil.getConfigItem('betaUpdate') || false;
 
