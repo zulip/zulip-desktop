@@ -104,7 +104,7 @@ class WebView extends BaseComponent {
 		}, 1000);
 		this.focus();
 		this.loading = false;
-		this.props.onTitleChange(this.$el.getTitle());
+		this.props.onTitleChange();
 		// Injecting preload css in webview to override some css rules
 		this.$el.insertCSS(fs.readFileSync(path.join(__dirname, '/../../css/preload.css'), 'utf8'));
 	}
