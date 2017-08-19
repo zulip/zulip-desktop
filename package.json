@@ -45,7 +45,7 @@
       "category": "public.app-category.productivity"
     },
     "linux": {
-      "category": "InstantMessaging",
+      "category": "Chat;GNOME;GTK;Network;InstantMessaging",
       "packageCategory": "GNOME;GTK;Network;InstantMessaging",
       "description": "Zulip Desktop Client for Linux",
       "target": [
