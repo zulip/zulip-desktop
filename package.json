@@ -45,7 +45,7 @@
       "category": "public.app-category.productivity"
     },
     "linux": {
-      "category": "",
+      "category": "InstantMessaging",
       "packageCategory": "GNOME;GTK;Network;InstantMessaging",
       "description": "Zulip Desktop Client for Linux",
       "target": [
@@ -98,7 +98,7 @@
   "devDependencies": {
     "assert": "1.4.1",
     "devtron": "1.4.0",
-    "electron-builder": "19.19.1",
+    "electron-builder": "19.22.1",
     "electron": "1.6.11",
     "electron-connect": "0.6.2",
     "gulp": "3.9.1",
