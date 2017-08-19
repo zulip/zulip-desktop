@@ -1,7 +1,7 @@
 'use strict';
 
-const {ipcRenderer} = require('electron');
-const {spellChecker} = require('./spellchecker');
+const { ipcRenderer } = require('electron');
+const { spellChecker } = require('./spellchecker');
 // eslint-disable-next-line import/no-unassigned-import
 require('./notification');
 
@@ -36,7 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	spellChecker();
 
 	// redirect users to network troubleshooting page
-	document.querySelector('.restart_get_events_button').addEventListener('click', () => {
-		ipcRenderer.send('forward-message', 'reload-viewer');
-	});
+	const getRestartButton = document.querySelector('.restart_get_events_button');
+	if (getRestartButton) {
+		getRestartButton.addEventListener('click', () => {
+			ipcRenderer.send('forward-message', 'reload-viewer');
+		});
+	}
 });
