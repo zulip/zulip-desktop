@@ -185,7 +185,8 @@ img.server-info-icon {
 
 .settings-card {
     display: flex;
-    padding: 16px 30px;
+    flex-wrap: wrap;
+    padding: 12px 30px;
     margin: 10px 0 20px 0;
     background: #fff;
     border-radius: 2px;
@@ -220,6 +221,7 @@ img.server-info-icon {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    margin: 6px 0;
 }
 
 .code {

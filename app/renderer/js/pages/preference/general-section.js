@@ -13,18 +13,15 @@ class GeneralSection extends BaseComponent {
 
 	template() {
 		return `
-            <div class="settings-pane" id="server-settings-pane">
-                <div class="title">Tray Options</div>
-                <div id="tray-option-settings" class="settings-card">
-					<div class="setting-row">
+            <div class="settings-pane">
+                <div class="title">Appearance</div>
+                <div id="appearance-option-settings" class="settings-card">
+					<div class="setting-row" id="tray-option">
 						<div class="setting-description">Show app icon in system tray</div>
 						<div class="setting-control"></div>
 					</div>
-				</div>
-				<div class="title">App Updates</div>
-                <div id="betaupdate-option-settings" class="settings-card">
-					<div class="setting-row">
-						<div class="setting-description">Get beta updates</div>
+					<div class="setting-row" id="sidebar-option">
+						<div class="setting-description">Show sidebar (<span class="code">CmdOrCtrl+S</span>)</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>
@@ -35,10 +32,10 @@ class GeneralSection extends BaseComponent {
 						<div class="setting-control"></div>
 					</div>
 				</div>
-				<div class="title">User Interface</div>
-                <div id="ui-option-settings" class="settings-card">
-					<div class="setting-row" id="sidebar-option">
-						<div class="setting-description">Show sidebar (<span class="code">CmdOrCtrl+S</span>)</div>
+				<div class="title">App Updates</div>
+                <div class="settings-card">
+					<div class="setting-row" id="betaupdate-option">
+						<div class="setting-description">Get beta updates</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>
@@ -87,7 +84,7 @@ class GeneralSection extends BaseComponent {
 	}
 
 	initTrayOption() {
-		this.$trayOptionSettings = document.querySelector('#tray-option-settings .setting-control');
+		this.$trayOptionSettings = document.querySelector('#tray-option .setting-control');
 		this.$trayOptionSettings.innerHTML = '';
 
 		const trayOption = ConfigUtil.getConfigItem('trayIcon', true);
@@ -103,7 +100,7 @@ class GeneralSection extends BaseComponent {
 	}
 
 	initUpdateOption() {
-		this.$updateOptionSettings = document.querySelector('#betaupdate-option-settings .setting-control');
+		this.$updateOptionSettings = document.querySelector('#betaupdate-option .setting-control');
 		this.$updateOptionSettings.innerHTML = '';
 
 		const updateOption = ConfigUtil.getConfigItem('betaUpdate', false);
@@ -133,7 +130,7 @@ class GeneralSection extends BaseComponent {
 	}
 
 	initSidebarToggle() {
-		this.$sidebarOptionSettings = document.querySelector('#ui-option-settings #sidebar-option .setting-control');
+		this.$sidebarOptionSettings = document.querySelector('#sidebar-option .setting-control');
 		this.$sidebarOptionSettings.innerHTML = '';
 
 		const sidebarOption = ConfigUtil.getConfigItem('show-sidebar', true);
