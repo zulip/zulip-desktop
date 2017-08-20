@@ -2,10 +2,10 @@
 
 const {ipcRenderer} = require('electron');
 
-const BaseComponent = require(__dirname + '/../../components/base.js');
+const BaseSection = require(__dirname + '/base-section.js');
 const ConfigUtil = require(__dirname + '/../../utils/config-util.js');
 
-class GeneralSection extends BaseComponent {
+class GeneralSection extends BaseSection {
 	constructor(props) {
 		super();
 		this.props = props;
@@ -26,8 +26,8 @@ class GeneralSection extends BaseComponent {
 					</div>
 				</div>
 				<div class="title">Desktop Notification</div>
-                <div id="silent-option-settings" class="settings-card">
-					<div class="setting-row">
+                <div class="settings-card">
+					<div class="setting-row" id="silent-option">
 						<div class="setting-description">Mute all sounds from Zulip (requires reload)</div>
 						<div class="setting-control"></div>
 					</div>
@@ -43,110 +43,62 @@ class GeneralSection extends BaseComponent {
 		`;
 	}
 
-	settingsOptionTemplate(settingOption) {
-		if (settingOption) {
-			return `
-				<div class="action green">
-					<span>On</span>
-				</div>
-			`;
-		} else {
-			return `
-				<div class="action red">
-					<span>Off</span>
-				</div>
-			`;
-		}
-	}
-
-	trayOptionTemplate(trayOption) {
-		this.settingsOptionTemplate(trayOption);
-	}
-
-	updateOptionTemplate(updateOption) {
-		this.settingsOptionTemplate(updateOption);
-	}
-
-	silentOptionTemplate(silentOption) {
-		this.settingsOptionTemplate(silentOption);
-	}
-
-	sidebarToggleTemplate(toggleOption) {
-		this.settingsOptionTemplate(toggleOption);
-	}
-
 	init() {
 		this.props.$root.innerHTML = this.template();
-		this.initTrayOption();
-		this.initUpdateOption();
-		this.initSilentOption();
-		this.initSidebarToggle();
+		this.updateTrayOption();
+		this.updateUpdateOption();
+		this.updateSilentOption();
+		this.updateSidebarOption();
 	}
 
-	initTrayOption() {
-		this.$trayOptionSettings = document.querySelector('#tray-option .setting-control');
-		this.$trayOptionSettings.innerHTML = '';
-
-		const trayOption = ConfigUtil.getConfigItem('trayIcon', true);
-		const $trayOption = this.generateNodeFromTemplate(this.settingsOptionTemplate(trayOption));
-		this.$trayOptionSettings.appendChild($trayOption);
-
-		$trayOption.addEventListener('click', () => {
-			const newValue = !ConfigUtil.getConfigItem('trayIcon');
-			ConfigUtil.setConfigItem('trayIcon', newValue);
-			ipcRenderer.send('forward-message', 'toggletray');
-			this.initTrayOption();
+	updateTrayOption() {
+		this.generateSettingOption({
+			$element: document.querySelector('#tray-option .setting-control'),
+			value: ConfigUtil.getConfigItem('trayIcon', true),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('trayIcon');
+				ConfigUtil.setConfigItem('trayIcon', newValue);
+				ipcRenderer.send('forward-message', 'toggletray');
+				this.updateTrayOption();
+			}
 		});
 	}
 
-	initUpdateOption() {
-		this.$updateOptionSettings = document.querySelector('#betaupdate-option .setting-control');
-		this.$updateOptionSettings.innerHTML = '';
-
-		const updateOption = ConfigUtil.getConfigItem('betaUpdate', false);
-		const $updateOption = this.generateNodeFromTemplate(this.settingsOptionTemplate(updateOption));
-		this.$updateOptionSettings.appendChild($updateOption);
-
-		$updateOption.addEventListener('click', () => {
-			const newValue = !ConfigUtil.getConfigItem('betaUpdate');
-			ConfigUtil.setConfigItem('betaUpdate', newValue);
-			this.initUpdateOption();
+	updateUpdateOption() {
+		this.generateSettingOption({
+			$element: document.querySelector('#betaupdate-option .setting-control'),
+			value: ConfigUtil.getConfigItem('betaUpdate', false),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('betaUpdate');
+				ConfigUtil.setConfigItem('betaUpdate', newValue);
+				this.updateUpdateOption();
+			}
 		});
 	}
 
-	initSilentOption() {
-		this.$silentOptionSettings = document.querySelector('#silent-option-settings .setting-control');
-		this.$silentOptionSettings.innerHTML = '';
-
-		const silentOption = ConfigUtil.getConfigItem('silent', false);
-		const $silentOption = this.generateNodeFromTemplate(this.settingsOptionTemplate(silentOption));
-		this.$silentOptionSettings.appendChild($silentOption);
-
-		$silentOption.addEventListener('click', () => {
-			const newValue = !ConfigUtil.getConfigItem('silent', true);
-			ConfigUtil.setConfigItem('silent', newValue);
-			this.initSilentOption();
+	updateSilentOption() {
+		this.generateSettingOption({
+			$element: document.querySelector('#silent-option .setting-control'),
+			value: ConfigUtil.getConfigItem('silent', false),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('silent', true);
+				ConfigUtil.setConfigItem('silent', newValue);
+				this.updateSilentOption();
+			}
 		});
 	}
 
-	initSidebarToggle() {
-		this.$sidebarOptionSettings = document.querySelector('#sidebar-option .setting-control');
-		this.$sidebarOptionSettings.innerHTML = '';
-
-		const sidebarOption = ConfigUtil.getConfigItem('show-sidebar', true);
-		const $sidebarOption = this.generateNodeFromTemplate(this.settingsOptionTemplate(sidebarOption));
-		this.$sidebarOptionSettings.appendChild($sidebarOption);
-
-		$sidebarOption.addEventListener('click', () => {
-			const newValue = !ConfigUtil.getConfigItem('show-sidebar');
-			ConfigUtil.setConfigItem('show-sidebar', newValue);
-			ipcRenderer.send('forward-message', 'toggle-sidebar', newValue);
-			this.initSidebarToggle();
+	updateSidebarOption() {
+		this.generateSettingOption({
+			$element: document.querySelector('#sidebar-option .setting-control'),
+			value: ConfigUtil.getConfigItem('showSidebar', true),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('showSidebar');
+				ConfigUtil.setConfigItem('showSidebar', newValue);
+				ipcRenderer.send('forward-message', 'toggle-sidebar', newValue);
+				this.updateSidebarOption();
+			}
 		});
-	}
-
-	handleServerInfoChange() {
-		ipcRenderer.send('forward-message', 'reload-viewer');
 	}
 }
 

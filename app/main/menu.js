@@ -86,9 +86,9 @@ class AppMenu {
 			accelerator: 'CommandOrControl+S',
 			click(item, focusedWindow) {
 				if (focusedWindow) {
-					const newValue = !ConfigUtil.getConfigItem('show-sidebar');
+					const newValue = !ConfigUtil.getConfigItem('showSidebar');
 					focusedWindow.webContents.send('toggle-sidebar', newValue);
-					ConfigUtil.setConfigItem('show-sidebar', newValue);
+					ConfigUtil.setConfigItem('showSidebar', newValue);
 				}
 			}
 		}, {
