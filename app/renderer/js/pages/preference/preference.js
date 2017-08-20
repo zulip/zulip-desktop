@@ -6,6 +6,7 @@ const {ipcRenderer} = require('electron');
 const Nav = require(__dirname + '/js/pages/preference/nav.js');
 const ServersSection = require(__dirname + '/js/pages/preference/servers-section.js');
 const GeneralSection = require(__dirname + '/js/pages/preference/general-section.js');
+const NetworkSection = require(__dirname + '/js/pages/preference/network-section.js');
 
 class PreferenceView extends BaseComponent {
 	constructor() {
@@ -45,6 +46,12 @@ class PreferenceView extends BaseComponent {
 			}
 			case 'General': {
 				this.section = new GeneralSection({
+					$root: this.$settingsContainer
+				});
+				break;
+			}
+			case 'Network': {
+				this.section = new NetworkSection({
 					$root: this.$settingsContainer
 				});
 				break;
