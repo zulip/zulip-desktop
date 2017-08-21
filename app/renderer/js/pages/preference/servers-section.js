@@ -1,11 +1,11 @@
 'use strict';
 
-const BaseComponent = require(__dirname + '/../../components/base.js');
+const BaseSection = require(__dirname + '/base-section.js');
 const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
 const ServerInfoForm = require(__dirname + '/server-info-form.js');
 const NewServerForm = require(__dirname + '/new-server-form.js');
 
-class ServersSection extends BaseComponent {
+class ServersSection extends BaseSection {
 	constructor(props) {
 		super();
 		this.props = props;
