@@ -1,5 +1,7 @@
 'use strict';
 
+const {ipcRenderer} = require('electron');
+
 const BaseSection = require(__dirname + '/base-section.js');
 const ConfigUtil = require(__dirname + '/../../utils/config-util.js');
 
@@ -15,7 +17,7 @@ class NetworkSection extends BaseSection {
                 <div class="title">Proxy</div>
                 <div id="appearance-option-settings" class="settings-card">
 					<div class="setting-row" id="use-proxy-option">
-						<div class="setting-description">Connect servers through a proxy (requires reload)</div>
+						<div class="setting-description">Connect servers through a proxy</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-block">
@@ -60,7 +62,8 @@ class NetworkSection extends BaseSection {
 			ConfigUtil.setConfigItem('proxyPAC', this.$proxyPAC.value);
 			ConfigUtil.setConfigItem('proxyRules', this.$proxyRules.value);
 			ConfigUtil.setConfigItem('proxyBypass', this.$proxyBypass.value);
-			this.reloadApp();
+
+			ipcRenderer.send('forward-message', 'reload-proxy');
 		});
 	}
 
@@ -86,6 +89,10 @@ class NetworkSection extends BaseSection {
 				const newValue = !ConfigUtil.getConfigItem('useProxy');
 				ConfigUtil.setConfigItem('useProxy', newValue);
 				this.toggleProxySettings(newValue);
+				if (newValue === false) {
+					// Reload proxy if the proxy is turned off
+					ipcRenderer.send('forward-message', 'reload-proxy');
+				}
 				this.updateProxyOption();
 			}
 		});

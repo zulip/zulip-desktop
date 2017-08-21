@@ -26,6 +26,7 @@ class ConfigUtil {
 	}
 
 	getConfigItem(key, defaultValue = null) {
+		this.reloadDB();
 		const value = this.db.getData('/')[key];
 		if (value === undefined) {
 			this.setConfigItem(key, defaultValue);
