@@ -1,7 +1,5 @@
 'use strict';
 
-const {ipcRenderer} = require('electron');
-
 const BaseComponent = require(__dirname + '/../../components/base.js');
 const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
 const ServerInfoForm = require(__dirname + '/server-info-form.js');
@@ -48,7 +46,7 @@ class ServersSection extends BaseComponent {
 				$root: this.$serverInfoContainer,
 				server: servers[i],
 				index: i,
-				onChange: this.handleServerInfoChange.bind(this)
+				onChange: this.reloadApp
 			}).init();
 		}
 	}
@@ -56,12 +54,8 @@ class ServersSection extends BaseComponent {
 	initNewServerForm() {
 		new NewServerForm({
 			$root: this.$newServerContainer,
-			onChange: this.handleServerInfoChange.bind(this)
+			onChange: this.reloadApp
 		}).init();
-	}
-
-	handleServerInfoChange() {
-		ipcRenderer.send('forward-message', 'reload-viewer');
 	}
 }
 

@@ -1,5 +1,7 @@
 'use strict';
 
+const {ipcRenderer} = require('electron');
+
 const BaseComponent = require(__dirname + '/../../components/base.js');
 
 class BaseSection extends BaseComponent {
@@ -28,6 +30,10 @@ class BaseSection extends BaseComponent {
 				</div>
 			`;
 		}
+	}
+
+	reloadApp() {
+		ipcRenderer.send('forward-message', 'reload-viewer');
 	}
 }
 

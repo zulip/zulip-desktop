@@ -154,6 +154,10 @@ img.server-info-icon {
     border-bottom: #7cb980 1px solid;
 }
 
+.setting-block {
+    width: 100%;
+}
+
 .actions-container {
     display: flex;
     font-size: 14px;

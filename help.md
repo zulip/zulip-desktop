@@ -1,6 +1,6 @@
 # User Guide
 
-* Welcome! This guide will walk you through the basics of using Zulip Desktop.
+> Welcome! This guide will walk you through the basics of using Zulip Desktop.
 
 
 ## Get Zulip Desktop
