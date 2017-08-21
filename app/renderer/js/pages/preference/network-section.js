@@ -23,15 +23,15 @@ class NetworkSection extends BaseSection {
 					<div class="setting-block">
 						<div class="setting-row" id="proxy-pac-option">
 							<span class="setting-input-key">PAC script</span>
-							<input class="setting-input-value" placeholder=""/>
+							<input class="setting-input-value" placeholder="e.g. foobar.com/pacfile.js"/>
 						</div>
 						<div class="setting-row" id="proxy-rules-option">
 							<span class="setting-input-key">Proxy rules</span>
-							<input class="setting-input-value" placeholder=""/>
+							<input class="setting-input-value" placeholder="e.g. http=foopy:80;ftp=foopy2"/>
 						</div>
 						<div class="setting-row" id="proxy-bypass-option">
 							<span class="setting-input-key">Proxy bypass rules</span>
-							<input class="setting-input-value" placeholder=""/>
+							<input class="setting-input-value" placeholder="e.g. foobar.com"/>
 						</div>
 						<div class="setting-row">
 							<div class="action green" id="proxy-save-action">
