@@ -305,9 +305,11 @@ class ServerManagerView {
 			this.activateTab(index);
 		});
 
-		ipcRenderer.on('reload-proxy', () => {
+		ipcRenderer.on('reload-proxy', (event, showAlert) => {
 			this.loadProxy().then(() => {
-				alert('Proxy settings saved!');
+				if (showAlert) {
+					alert('Proxy settings saved!');
+				}
 			});
 		});
 

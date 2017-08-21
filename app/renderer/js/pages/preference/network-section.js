@@ -63,7 +63,7 @@ class NetworkSection extends BaseSection {
 			ConfigUtil.setConfigItem('proxyRules', this.$proxyRules.value);
 			ConfigUtil.setConfigItem('proxyBypass', this.$proxyBypass.value);
 
-			ipcRenderer.send('forward-message', 'reload-proxy');
+			ipcRenderer.send('forward-message', 'reload-proxy', true);
 		});
 	}
 
@@ -91,7 +91,7 @@ class NetworkSection extends BaseSection {
 				this.toggleProxySettings(newValue);
 				if (newValue === false) {
 					// Reload proxy if the proxy is turned off
-					ipcRenderer.send('forward-message', 'reload-proxy');
+					ipcRenderer.send('forward-message', 'reload-proxy', false);
 				}
 				this.updateProxyOption();
 			}
