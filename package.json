@@ -26,7 +26,6 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "mas": "electron-builder --mac mas",
-    "build:win": "electron-builder --win nsis-web --ia32 --x64",
     "travis": "cd ./scripts && ./travis-build-test.sh"
   },
   "pre-commit": [
@@ -77,7 +76,15 @@
       ]
     },
     "win": {
-      "target": "nsis",
+      "target": [
+        {
+          "target": "nsis-web",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
       "icon": "build/icon.ico",
       "publisherName": "Kandra Labs, Inc."
     },
