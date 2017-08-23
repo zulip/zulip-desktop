@@ -8,7 +8,7 @@ Desktop client for Zulip. Available for Mac, Linux and Windows.
 <img src="http://i.imgur.com/ChzTq4F.png"/>
 
 # Download
-You can download the latest version from the [Releases](https://github.com/zulip/zulip-electron/releases/latest) page.
+Please see [installation guide](./how-to-install.md).
 
 # Features
 * Sign in to multiple teams
