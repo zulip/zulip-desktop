@@ -1,7 +1,9 @@
 'use strict';
 
 require(__dirname + '/js/tray.js');
-const {ipcRenderer} = require('electron');
+const {ipcRenderer, remote} = require('electron');
+
+const {session} = remote;
 
 const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
 const WebView = require(__dirname + '/js/components/webview.js');
@@ -33,14 +35,35 @@ class ServerManagerView {
 	}
 
 	init() {
-		this.initSidebar();
-		this.initTabs();
-		this.initActions();
-		this.registerIpcs();
+		this.loadProxy().then(() => {
+			this.initSidebar();
+			this.initTabs();
+			this.initActions();
+			this.registerIpcs();
+		});
+	}
+
+	loadProxy() {
+		return new Promise(resolve => {
+			const proxyEnabled = ConfigUtil.getConfigItem('useProxy', false);
+			if (proxyEnabled) {
+				session.fromPartition('persist:webviewsession').setProxy({
+					pacScript: ConfigUtil.getConfigItem('proxyPAC', ''),
+					proxyRules: ConfigUtil.getConfigItem('proxyRules', ''),
+					proxyBypassRules: ConfigUtil.getConfigItem('proxyBypass', '')
+				}, resolve);
+			} else {
+				session.fromPartition('persist:webviewsession').setProxy({
+					pacScript: '',
+					proxyRules: '',
+					proxyBypassRules: ''
+				}, resolve);
+			}
+		});
 	}
 
 	initSidebar() {
-		const showSidebar = ConfigUtil.getConfigItem('show-sidebar', true);
+		const showSidebar = ConfigUtil.getConfigItem('showSidebar', true);
 		this.toggleSidebar(showSidebar);
 	}
 
@@ -280,6 +303,14 @@ class ServerManagerView {
 
 		ipcRenderer.on('switch-server-tab', (event, index) => {
 			this.activateTab(index);
+		});
+
+		ipcRenderer.on('reload-proxy', (event, showAlert) => {
+			this.loadProxy().then(() => {
+				if (showAlert) {
+					alert('Proxy settings saved!');
+				}
+			});
 		});
 
 		ipcRenderer.on('toggle-sidebar', (event, show) => {

@@ -129,7 +129,17 @@ img.server-info-icon {
     cursor: pointer;
 }
 
-.server-info-url {
+.setting-input-key {
+    font-size: 14px;
+    height: 27px;
+    line-height: 27px;
+    font-weight: bold;
+    background: transparent;
+    flex-wrap: nowrap;
+    margin-right: 10px;
+}
+
+.setting-input-value {
     flex-grow: 1;
     font-size: 14px;
     height: 24px;
@@ -140,8 +150,12 @@ img.server-info-icon {
     max-width: 500px;
 }
 
-.server-info-value:focus {
-    border-bottom: #388E3C 1px solid;
+.setting-input-value:focus {
+    border-bottom: #7cb980 1px solid;
+}
+
+.setting-block {
+    width: 100%;
 }
 
 .actions-container {
@@ -185,7 +199,8 @@ img.server-info-icon {
 
 .settings-card {
     display: flex;
-    padding: 16px 30px;
+    flex-wrap: wrap;
+    padding: 12px 30px;
     margin: 10px 0 20px 0;
     background: #fff;
     border-radius: 2px;
@@ -220,6 +235,7 @@ img.server-info-icon {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    margin: 6px 0;
 }
 
 .code {

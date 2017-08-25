@@ -28,6 +28,7 @@ class WebView extends BaseComponent {
 					${this.props.nodeIntegration ? 'nodeIntegration' : ''}
 					disablewebsecurity
 					${this.props.preload ? 'preload="js/preload.js"' : ''}
+					partition="persist:webviewsession"
 					webpreferences="allowRunningInsecureContent, javascript=yes">
 				</webview>`;
 	}

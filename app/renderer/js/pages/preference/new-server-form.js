@@ -11,10 +11,10 @@ class NewServerForm extends BaseComponent {
 
 	template() {
 		return `
-			<div class="settings-card" style="border: solid 1px #4CAF50;">
+			<div class="settings-card">
 				<div class="server-info-right">
 					<div class="server-info-row">
-						<input class="server-info-url" autofocus placeholder="Enter the url of your Zulip server..."/>
+						<input class="setting-input-value" autofocus placeholder="Enter the url of your Zulip server..."/>
 					</div>
 					<div class="server-info-row">
 						<div class="action green server-save-action">
@@ -38,7 +38,7 @@ class NewServerForm extends BaseComponent {
 		this.props.$root.innerHTML = '';
 		this.props.$root.appendChild(this.$newServerForm);
 
-		this.$newServerUrl = this.$newServerForm.querySelectorAll('input.server-info-url')[0];
+		this.$newServerUrl = this.$newServerForm.querySelectorAll('input.setting-input-value')[0];
 	}
 
 	submitFormHandler() {
