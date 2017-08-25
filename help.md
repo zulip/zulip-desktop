@@ -18,8 +18,19 @@ There are three fields provided:
 * `Proxy rules` - Rules indicating which proxies to use.
 * `Proxy bypass rules` - Rules indicating which URLs should
     bypass the proxy settings.
+	
+For a typical setup where internet access is required to use an HTTP proxy,
+but URLs on the local network should be accessed directly, configure as follows:
 
-Sets the proxy settings.
+`Proxy rules = proxy.example.com`
+
+Your HTTP proxy server
+`Proxy bypass rules = *.example.com;10.0.0.0/8`
+
+Directly connect to your own domain and private IP subnet
+for more complex setups, read below to configure complex proxy rules and proxy bypass rules.
+
+### Sets the proxy settings.
 
 When `PAC script` and `Proxy rules` are provided together, the `Proxy rules`
 option is ignored and `PAC script` configuration is applied.
