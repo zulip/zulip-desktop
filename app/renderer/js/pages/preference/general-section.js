@@ -1,6 +1,6 @@
 'use strict';
 
-const {ipcRenderer} = require('electron');
+const { ipcRenderer } = require('electron');
 
 const BaseSection = require(__dirname + '/base-section.js');
 const ConfigUtil = require(__dirname + '/../../utils/config-util.js');
@@ -24,6 +24,10 @@ class GeneralSection extends BaseSection {
 						<div class="setting-description">Show sidebar (<span class="code">CmdOrCtrl+S</span>)</div>
 						<div class="setting-control"></div>
 					</div>
+					<div class="setting-row" id="dock-option">
+					<div class="setting-description">Show app unread badge</div>
+					<div class="setting-control"></div>
+				</div>
 				</div>
 				<div class="title">Desktop Notification</div>
                 <div class="settings-card">
@@ -46,6 +50,7 @@ class GeneralSection extends BaseSection {
 	init() {
 		this.props.$root.innerHTML = this.template();
 		this.updateTrayOption();
+		this.updateDockOption();
 		this.updateUpdateOption();
 		this.updateSilentOption();
 		this.updateSidebarOption();
@@ -60,6 +65,19 @@ class GeneralSection extends BaseSection {
 				ConfigUtil.setConfigItem('trayIcon', newValue);
 				ipcRenderer.send('forward-message', 'toggletray');
 				this.updateTrayOption();
+			}
+		});
+	}
+
+	updateDockOption() {
+		this.generateSettingOption({
+			$element: document.querySelector('#dock-option .setting-control'),
+			value: ConfigUtil.getConfigItem('dockOption', true),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('dockOption');
+				ConfigUtil.setConfigItem('dockOption', newValue);
+				ipcRenderer.send('dock-unread-option', newValue);
+				this.updateDockOption();
 			}
 		});
 	}

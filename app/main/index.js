@@ -5,6 +5,7 @@ const electronLocalshortcut = require('electron-localshortcut');
 const windowStateKeeper = require('electron-window-state');
 const appMenu = require('./menu');
 const { appUpdater } = require('./autoupdater');
+const ConfigUtil = require('./../renderer/js/utils/config-util.js');
 
 const { app, ipcMain } = electron;
 
@@ -13,6 +14,7 @@ require('electron-debug')();
 
 // Prevent window being garbage collected
 let mainWindow;
+let badgeCount;
 
 let isQuitting = false;
 
@@ -192,7 +194,25 @@ app.on('ready', () => {
 		}
 	});
 
+	ipcMain.on('dock-unread-option', (event, showdock) => {
+		if (showdock || ConfigUtil.getConfigItem('dockOption')) {
+			showBadgeCount(badgeCount);
+		} else {
+			hideBadgeCount();
+		}
+	});
+
 	ipcMain.on('update-badge', (event, messageCount) => {
+		badgeCount = messageCount;
+		if (ConfigUtil.getConfigItem('dockOption')) {
+			showBadgeCount(badgeCount);
+		} else {
+			hideBadgeCount(badgeCount);
+		}
+		page.send('tray', messageCount);
+	});
+
+	function showBadgeCount(messageCount) {
 		if (process.platform === 'darwin') {
 			app.setBadgeCount(messageCount);
 		}
@@ -206,8 +226,16 @@ app.on('ready', () => {
 				page.send('render-taskbar-icon', messageCount);
 			}
 		}
-		page.send('tray', messageCount);
-	});
+	}
+
+	function hideBadgeCount() {
+		if (process.platform === 'darwin') {
+			app.setBadgeCount(0);
+		}
+		if (process.platform === 'win32') {
+			mainWindow.setOverlayIcon(null, '');
+		}
+	}
 
 	ipcMain.on('update-taskbar-icon', (event, data, text) => {
 		const img = electron.nativeImage.createFromDataURL(data);
