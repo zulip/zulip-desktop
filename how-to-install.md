@@ -28,6 +28,10 @@
 2. Run the installer, wait until it finishes
 3. Done! The app will update automatically
 
+**Portable**:
+
+1. Download [zulip-x.x.x-arch.nsis.7z][LR]  [*here arch = ia32 (32-bit), x64 (64-bit)*]
+2. Extract the zip wherever you want (e.g. a flash drive) and run the app from there
 
 ## Linux
 
