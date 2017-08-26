@@ -195,7 +195,7 @@ app.on('ready', () => {
 		}
 	});
 
-	ipcMain.on('dock-unread-option', () => {
+	ipcMain.on('toggle-badge-option', () => {
 		BadgeSettings.updateBadge(badgeCount, mainWindow);
 	});
 

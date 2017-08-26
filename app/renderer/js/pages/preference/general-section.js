@@ -24,7 +24,7 @@ class GeneralSection extends BaseSection {
 						<div class="setting-description">Show sidebar (<span class="code">CmdOrCtrl+S</span>)</div>
 						<div class="setting-control"></div>
 					</div>
-					<div class="setting-row" id="dock-option">
+					<div class="setting-row" id="badge-option">
 					<div class="setting-description">Show app unread badge</div>
 					<div class="setting-control"></div>
 				</div>
@@ -50,7 +50,7 @@ class GeneralSection extends BaseSection {
 	init() {
 		this.props.$root.innerHTML = this.template();
 		this.updateTrayOption();
-		this.updateDockOption();
+		this.updateBadgeOption();
 		this.updateUpdateOption();
 		this.updateSilentOption();
 		this.updateSidebarOption();
@@ -69,15 +69,15 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	updateDockOption() {
+	updateBadgeOption() {
 		this.generateSettingOption({
-			$element: document.querySelector('#dock-option .setting-control'),
-			value: ConfigUtil.getConfigItem('dockOption', true),
+			$element: document.querySelector('#badge-option .setting-control'),
+			value: ConfigUtil.getConfigItem('badgeOption', true),
 			clickHandler: () => {
-				const newValue = !ConfigUtil.getConfigItem('dockOption');
-				ConfigUtil.setConfigItem('dockOption', newValue);
-				ipcRenderer.send('dock-unread-option', newValue);
-				this.updateDockOption();
+				const newValue = !ConfigUtil.getConfigItem('badgeOption');
+				ConfigUtil.setConfigItem('badgeOption', newValue);
+				ipcRenderer.send('toggle-badge-option', newValue);
+				this.updateBadgeOption();
 			}
 		});
 	}

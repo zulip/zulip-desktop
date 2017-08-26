@@ -36,7 +36,7 @@ class BadgeSettings {
 	}
 
 	updateBadge(badgeCount, mainWindow) {
-		if (ConfigUtil.getConfigItem('dockOption')) {
+		if (ConfigUtil.getConfigItem('badgeOption')) {
 			this.showBadgeCount(badgeCount, mainWindow);
 		} else {
 			this.hideBadgeCount(mainWindow);
