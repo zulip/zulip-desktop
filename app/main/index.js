@@ -8,11 +8,14 @@ const { appUpdater } = require('./autoupdater');
 
 const { app, ipcMain } = electron;
 
+const BadgeSettings = require('./../renderer/js/pages/preference/badge-settings.js');
+
 // Adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
 
 // Prevent window being garbage collected
 let mainWindow;
+let badgeCount;
 
 let isQuitting = false;
 
@@ -192,26 +195,18 @@ app.on('ready', () => {
 		}
 	});
 
+	ipcMain.on('toggle-badge-option', () => {
+		BadgeSettings.updateBadge(badgeCount, mainWindow);
+	});
+
 	ipcMain.on('update-badge', (event, messageCount) => {
-		if (process.platform === 'darwin') {
-			app.setBadgeCount(messageCount);
-		}
-		if (process.platform === 'win32') {
-			if (!mainWindow.isFocused()) {
-				mainWindow.flashFrame(true);
-			}
-			if (messageCount === 0) {
-				mainWindow.setOverlayIcon(null, '');
-			} else {
-				page.send('render-taskbar-icon', messageCount);
-			}
-		}
+		badgeCount = messageCount;
+		BadgeSettings.updateBadge(badgeCount, mainWindow);
 		page.send('tray', messageCount);
 	});
 
 	ipcMain.on('update-taskbar-icon', (event, data, text) => {
-		const img = electron.nativeImage.createFromDataURL(data);
-		mainWindow.setOverlayIcon(img, text);
+		BadgeSettings.updateTaskbarIcon(data, text, mainWindow);
 	});
 
 	ipcMain.on('forward-message', (event, listener, ...params) => {

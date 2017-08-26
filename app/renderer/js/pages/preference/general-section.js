@@ -1,6 +1,6 @@
 'use strict';
 
-const {ipcRenderer} = require('electron');
+const { ipcRenderer } = require('electron');
 
 const BaseSection = require(__dirname + '/base-section.js');
 const ConfigUtil = require(__dirname + '/../../utils/config-util.js');
@@ -24,6 +24,10 @@ class GeneralSection extends BaseSection {
 						<div class="setting-description">Show sidebar (<span class="code">CmdOrCtrl+S</span>)</div>
 						<div class="setting-control"></div>
 					</div>
+					<div class="setting-row" id="badge-option">
+					<div class="setting-description">Show app unread badge</div>
+					<div class="setting-control"></div>
+				</div>
 				</div>
 				<div class="title">Desktop Notification</div>
                 <div class="settings-card">
@@ -46,6 +50,7 @@ class GeneralSection extends BaseSection {
 	init() {
 		this.props.$root.innerHTML = this.template();
 		this.updateTrayOption();
+		this.updateBadgeOption();
 		this.updateUpdateOption();
 		this.updateSilentOption();
 		this.updateSidebarOption();
@@ -60,6 +65,19 @@ class GeneralSection extends BaseSection {
 				ConfigUtil.setConfigItem('trayIcon', newValue);
 				ipcRenderer.send('forward-message', 'toggletray');
 				this.updateTrayOption();
+			}
+		});
+	}
+
+	updateBadgeOption() {
+		this.generateSettingOption({
+			$element: document.querySelector('#badge-option .setting-control'),
+			value: ConfigUtil.getConfigItem('badgeOption', true),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('badgeOption');
+				ConfigUtil.setConfigItem('badgeOption', newValue);
+				ipcRenderer.send('toggle-badge-option', newValue);
+				this.updateBadgeOption();
 			}
 		});
 	}
