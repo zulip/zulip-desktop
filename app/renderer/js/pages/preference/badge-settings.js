@@ -1,5 +1,8 @@
 'use strict';
+const electron = require('electron');
 const { app } = require('electron');
+
+const ConfigUtil = require(__dirname + '/../../utils/config-util.js');
 
 class BadgeSettings {
 	constructor(messageCount, mainWindow) {
@@ -18,7 +21,7 @@ class BadgeSettings {
 			if (messageCount === 0) {
 				mainWindow.setOverlayIcon(null, '');
 			} else {
-				mainWindow.webContentssend('render-taskbar-icon', messageCount);
+				mainWindow.webContents.send('render-taskbar-icon', messageCount);
 			}
 		}
 	}
@@ -30,6 +33,19 @@ class BadgeSettings {
 		if (process.platform === 'win32') {
 			mainWindow.setOverlayIcon(null, '');
 		}
+	}
+
+	updateBadge(badgeCount, mainWindow) {
+		if (ConfigUtil.getConfigItem('dockOption')) {
+			this.showBadgeCount(badgeCount, mainWindow);
+		} else {
+			this.hideBadgeCount(mainWindow);
+		}
+	}
+
+	updateTaskbarIcon(data, text, mainWindow) {
+		const img = electron.nativeImage.createFromDataURL(data);
+		mainWindow.setOverlayIcon(img, text);
 	}
 }
 

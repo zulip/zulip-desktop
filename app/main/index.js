@@ -9,7 +9,6 @@ const { appUpdater } = require('./autoupdater');
 const { app, ipcMain } = electron;
 
 const BadgeSettings = require('./../renderer/js/pages/preference/badge-settings.js');
-const ConfigUtil = require('./../renderer/js/utils/config-util.js');
 
 // Adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
@@ -196,27 +195,18 @@ app.on('ready', () => {
 		}
 	});
 
-	ipcMain.on('dock-unread-option', (event, showdock) => {
-		if (showdock || ConfigUtil.getConfigItem('dockOption')) {
-			BadgeSettings.showBadgeCount(badgeCount, mainWindow);
-		} else {
-			BadgeSettings.hideBadgeCount(mainWindow);
-		}
+	ipcMain.on('dock-unread-option', () => {
+		BadgeSettings.updateBadge(badgeCount, mainWindow);
 	});
 
 	ipcMain.on('update-badge', (event, messageCount) => {
 		badgeCount = messageCount;
-		if (ConfigUtil.getConfigItem('dockOption')) {
-			BadgeSettings.showBadgeCount(badgeCount, mainWindow);
-		} else {
-			BadgeSettings.hideBadgeCount(mainWindow);
-		}
+		BadgeSettings.updateBadge(badgeCount, mainWindow);
 		page.send('tray', messageCount);
 	});
 
 	ipcMain.on('update-taskbar-icon', (event, data, text) => {
-		const img = electron.nativeImage.createFromDataURL(data);
-		mainWindow.setOverlayIcon(img, text);
+		BadgeSettings.updateTaskbarIcon(data, text, mainWindow);
 	});
 
 	ipcMain.on('forward-message', (event, listener, ...params) => {
