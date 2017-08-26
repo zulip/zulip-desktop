@@ -36,7 +36,7 @@ class BadgeSettings {
 	}
 
 	updateBadge(badgeCount, mainWindow) {
-		if (ConfigUtil.getConfigItem('badgeOption')) {
+		if (ConfigUtil.getConfigItem('badgeOption', true)) {
 			this.showBadgeCount(badgeCount, mainWindow);
 		} else {
 			this.hideBadgeCount(mainWindow);
