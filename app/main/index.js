@@ -5,9 +5,11 @@ const electronLocalshortcut = require('electron-localshortcut');
 const windowStateKeeper = require('electron-window-state');
 const appMenu = require('./menu');
 const { appUpdater } = require('./autoupdater');
-const ConfigUtil = require('./../renderer/js/utils/config-util.js');
 
 const { app, ipcMain } = electron;
+
+const BadgeSettings = require('./../renderer/js/pages/preference/badge-settings.js');
+const ConfigUtil = require('./../renderer/js/utils/config-util.js');
 
 // Adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
@@ -196,46 +198,21 @@ app.on('ready', () => {
 
 	ipcMain.on('dock-unread-option', (event, showdock) => {
 		if (showdock || ConfigUtil.getConfigItem('dockOption')) {
-			showBadgeCount(badgeCount);
+			BadgeSettings.showBadgeCount(badgeCount, mainWindow);
 		} else {
-			hideBadgeCount();
+			BadgeSettings.hideBadgeCount(mainWindow);
 		}
 	});
 
 	ipcMain.on('update-badge', (event, messageCount) => {
 		badgeCount = messageCount;
 		if (ConfigUtil.getConfigItem('dockOption')) {
-			showBadgeCount(badgeCount);
+			BadgeSettings.showBadgeCount(badgeCount, mainWindow);
 		} else {
-			hideBadgeCount(badgeCount);
+			BadgeSettings.hideBadgeCount(mainWindow);
 		}
 		page.send('tray', messageCount);
 	});
-
-	function showBadgeCount(messageCount) {
-		if (process.platform === 'darwin') {
-			app.setBadgeCount(messageCount);
-		}
-		if (process.platform === 'win32') {
-			if (!mainWindow.isFocused()) {
-				mainWindow.flashFrame(true);
-			}
-			if (messageCount === 0) {
-				mainWindow.setOverlayIcon(null, '');
-			} else {
-				page.send('render-taskbar-icon', messageCount);
-			}
-		}
-	}
-
-	function hideBadgeCount() {
-		if (process.platform === 'darwin') {
-			app.setBadgeCount(0);
-		}
-		if (process.platform === 'win32') {
-			mainWindow.setOverlayIcon(null, '');
-		}
-	}
 
 	ipcMain.on('update-taskbar-icon', (event, data, text) => {
 		const img = electron.nativeImage.createFromDataURL(data);
