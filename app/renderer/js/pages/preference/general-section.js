@@ -133,6 +133,7 @@ class GeneralSection extends BaseSection {
 			clickHandler: () => {
 				const newValue = !ConfigUtil.getConfigItem('startAtLogin');
 				ConfigUtil.setConfigItem('startAtLogin', newValue);
+				ipcRenderer.send('toggleAutoLauncher', newValue);
 				this.updateStartAtLoginOption();
 			}
 		});
