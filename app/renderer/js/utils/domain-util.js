@@ -1,6 +1,6 @@
 'use strict';
 
-const {app, dialog} = require('electron').remote;
+const { app, dialog } = require('electron').remote;
 const fs = require('fs');
 const path = require('path');
 const JsonDB = require('node-json-db');
@@ -128,11 +128,17 @@ class DomainUtil {
 							resolve(serverConf);
 						});
 					} else {
+						const certErrorMessage = `Do you trust certificate from ${domain}? \n ${error}`;
+						const certErrorDetail = `The server you're connecting to is either someone impersonating the Zulip server you entered, or the server you're trying to connect to is configured in an insecure way.
+						\n Unless you have a good reason to believe otherwise, you should not proceed.
+						\n You can click here if you'd like to proceed with the connection.`;
+
 						dialog.showMessageBox({
-							type: 'question',
+							type: 'warning',
 							buttons: ['Yes', 'No'],
 							defaultId: 0,
-							message: `Do you trust certificate from ${domain}? \n ${error}`
+							message: certErrorMessage,
+							detail: certErrorDetail
 						}, response => {
 							if (response === 0) {
 								this.getServerSettings(domain).then(serverSettings => {
