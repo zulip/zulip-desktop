@@ -5,6 +5,7 @@ const electronLocalshortcut = require('electron-localshortcut');
 const windowStateKeeper = require('electron-window-state');
 const appMenu = require('./menu');
 const { appUpdater } = require('./autoupdater');
+const { setAutoLaunch } = require('./startup');
 
 const { app, ipcMain } = electron;
 
@@ -230,6 +231,10 @@ app.on('ready', () => {
 		} else {
 			electronLocalshortcut.unregisterAll(mainWindow);
 		}
+	});
+
+	ipcMain.on('toggleAutoLauncher', (event, AutoLaunchValue) => {
+		setAutoLaunch(AutoLaunchValue);
 	});
 });
 

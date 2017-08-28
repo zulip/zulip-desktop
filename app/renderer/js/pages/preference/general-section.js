@@ -1,5 +1,4 @@
 'use strict';
-
 const { ipcRenderer } = require('electron');
 
 const BaseSection = require(__dirname + '/base-section.js');
@@ -43,6 +42,13 @@ class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 				</div>
+				<div class="title">Functionality</div>
+                <div class="settings-card">
+					<div class="setting-row" id="startAtLogin-option">
+						<div class="setting-description">Start app at login</div>
+						<div class="setting-control"></div>
+					</div>
+				</div>
             </div>
 		`;
 	}
@@ -54,6 +60,7 @@ class GeneralSection extends BaseSection {
 		this.updateUpdateOption();
 		this.updateSilentOption();
 		this.updateSidebarOption();
+		this.updateStartAtLoginOption();
 	}
 
 	updateTrayOption() {
@@ -118,6 +125,20 @@ class GeneralSection extends BaseSection {
 			}
 		});
 	}
+
+	updateStartAtLoginOption() {
+		this.generateSettingOption({
+			$element: document.querySelector('#startAtLogin-option .setting-control'),
+			value: ConfigUtil.getConfigItem('startAtLogin', false),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('startAtLogin');
+				ConfigUtil.setConfigItem('startAtLogin', newValue);
+				ipcRenderer.send('toggleAutoLauncher', newValue);
+				this.updateStartAtLoginOption();
+			}
+		});
+	}
+
 }
 
 module.exports = GeneralSection;
