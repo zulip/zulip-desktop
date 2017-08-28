@@ -49,6 +49,14 @@ class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 				</div>
+				<div class="title">Reset Application Data</div>
+                <div class="settings-card">
+					<div class="setting-row" id="resetdata-option">
+						<div class="setting-description">This will delete all application data which will remove all added accounts and preferences
+						</div>
+						<button class="reset-data-button">Reset App Data</button>
+					</div>
+				</div>
             </div>
 		`;
 	}
@@ -61,6 +69,7 @@ class GeneralSection extends BaseSection {
 		this.updateSilentOption();
 		this.updateSidebarOption();
 		this.updateStartAtLoginOption();
+		this.updateResetDataOption();
 	}
 
 	updateTrayOption() {
@@ -136,6 +145,13 @@ class GeneralSection extends BaseSection {
 				ipcRenderer.send('toggleAutoLauncher', newValue);
 				this.updateStartAtLoginOption();
 			}
+		});
+	}
+
+	updateResetDataOption() {
+		const resetDataButton = document.querySelector('#resetdata-option .reset-data-button');
+		resetDataButton.addEventListener('click', () => {
+			alert('Cache cleared!');
 		});
 	}
 
