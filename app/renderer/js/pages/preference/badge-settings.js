@@ -4,10 +4,17 @@ const { app } = require('electron');
 
 const ConfigUtil = require(__dirname + '/../../utils/config-util.js');
 
+let instance = null;
+
 class BadgeSettings {
-	constructor(messageCount, mainWindow) {
-		this.messageCount = messageCount;
-		this.mainWindow = mainWindow;
+	constructor() {
+		if (instance) {
+			return instance;
+		} else {
+			instance = this;
+		}
+
+		return instance;
 	}
 
 	showBadgeCount(messageCount, mainWindow) {
@@ -15,14 +22,7 @@ class BadgeSettings {
 			app.setBadgeCount(messageCount);
 		}
 		if (process.platform === 'win32') {
-			if (!mainWindow.isFocused()) {
-				mainWindow.flashFrame(true);
-			}
-			if (messageCount === 0) {
-				mainWindow.setOverlayIcon(null, '');
-			} else {
-				mainWindow.webContents.send('render-taskbar-icon', messageCount);
-			}
+			this.updateOverlayIcon(messageCount, mainWindow);
 		}
 	}
 
@@ -40,6 +40,17 @@ class BadgeSettings {
 			this.showBadgeCount(badgeCount, mainWindow);
 		} else {
 			this.hideBadgeCount(mainWindow);
+		}
+	}
+
+	updateOverlayIcon(messageCount, mainWindow) {
+		if (!mainWindow.isFocused()) {
+			mainWindow.flashFrame(true);
+		}
+		if (messageCount === 0) {
+			mainWindow.setOverlayIcon(null, '');
+		} else {
+			mainWindow.webContents.send('render-taskbar-icon', messageCount);
 		}
 	}
 
