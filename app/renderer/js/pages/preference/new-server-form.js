@@ -14,7 +14,7 @@ class NewServerForm extends BaseComponent {
 			<div class="settings-card">
 				<div class="server-info-right">
 					<div class="server-info-row">
-						<input class="setting-input-value" autofocus placeholder="Enter the url of your Zulip server..."/>
+						<input class="setting-input-value" autofocus placeholder="Entert the URL of your Zulip organization..."/>
 					</div>
 					<div class="server-info-row">
 						<div class="action green server-save-action">
