@@ -59,7 +59,7 @@ class GeneralSection extends BaseSection {
 					<div class="setting-row" id="resetdata-option">
 						<div class="setting-description">This will delete all application data which will remove all added accounts and preferences
 						</div>
-						<button class="reset-data-button">Reset App Data</button>
+						<button class="reset-data-button green">Reset App Data</button>
 					</div>
 				</div>
             </div>
