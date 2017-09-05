@@ -1,6 +1,6 @@
 'use strict';
 const os = require('os');
-const {dialog, app, shell, BrowserWindow, Menu} = require('electron');
+const { app, shell, BrowserWindow, Menu } = require('electron');
 
 const ConfigUtil = require(__dirname + '/../renderer/js/utils/config-util.js');
 
@@ -164,7 +164,7 @@ class AppMenu {
 	}
 
 	getDarwinTpl(props) {
-		const {tabs, activeTabIndex} = props;
+		const { tabs, activeTabIndex } = props;
 
 		return [{
 			label: `${app.getName()}`,
@@ -195,11 +195,6 @@ class AppMenu {
 				}
 			}, {
 				type: 'separator'
-			}, {
-				label: 'Clear Cache',
-				click() {
-					AppMenu.clearCache();
-				}
 			}, {
 				label: 'Log Out',
 				accelerator: 'Cmd+L',
@@ -263,7 +258,7 @@ class AppMenu {
 	}
 
 	getOtherTpl(props) {
-		const {tabs, activeTabIndex} = props;
+		const { tabs, activeTabIndex } = props;
 
 		return [{
 			label: 'File',
@@ -296,11 +291,6 @@ class AppMenu {
 				}
 			}, {
 				type: 'separator'
-			}, {
-				label: 'Clear Cache',
-				click() {
-					AppMenu.clearCache();
-				}
 			}, {
 				label: 'Log Out',
 				accelerator: 'Ctrl+L',
@@ -361,14 +351,6 @@ class AppMenu {
 		}
 
 		win.webContents.send(action, ...params);
-	}
-
-	static clearCache() {
-		const win = BrowserWindow.getAllWindows()[0];
-		const ses = win.webContents.session;
-		ses.clearCache(() => {
-			dialog.showMessageBox({type: 'info', buttons: [], message: 'Cache cleared!'});
-		});
 	}
 
 	setMenu(props) {
