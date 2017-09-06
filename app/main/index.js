@@ -49,6 +49,10 @@ function createMainWindow() {
 		defaultWidth: 1000,
 		defaultHeight: 600
 	});
+
+	// Let's keep the window position global so that we can access it in other process
+	global.mainWindowState = mainWindowState;
+
 	const win = new electron.BrowserWindow({
 		// This settings needs to be saved in config
 		title: 'Zulip',
@@ -186,6 +190,12 @@ app.on('ready', () => {
 	ipcMain.on('reload-full-app', () => {
 		mainWindow.reload();
 		page.send('destroytray');
+	});
+
+	ipcMain.on('clear-app-settings', () => {
+		global.mainWindowState.unmanage(mainWindow);
+		app.relaunch();
+		app.exit();
 	});
 
 	ipcMain.on('toggle-app', () => {
