@@ -201,6 +201,7 @@ class AppMenu {
 				type: 'separator'
 			}, {
 				label: 'Reset App Settings',
+				accelerator: 'Command+Shift+D',
 				click() {
 					AppMenu.resetAppSettings();
 				}
@@ -302,6 +303,7 @@ class AppMenu {
 				type: 'separator'
 			}, {
 				label: 'Reset App Settings',
+				accelerator: 'Ctrl+Shift+D',
 				click() {
 					AppMenu.resetAppSettings();
 				}
