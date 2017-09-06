@@ -1,6 +1,10 @@
 'use strict';
 const os = require('os');
+const path = require('path');
+
 const { app, shell, BrowserWindow, Menu } = require('electron');
+
+const fs = require('fs-extra');
 
 const ConfigUtil = require(__dirname + '/../renderer/js/utils/config-util.js');
 
@@ -196,6 +200,11 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
+				label: 'Reset App Settings',
+				click() {
+					AppMenu.resetAppSettings();
+				}
+			}, {
 				label: 'Log Out',
 				accelerator: 'Cmd+L',
 				click(item, focusedWindow) {
@@ -292,6 +301,11 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
+				label: 'Reset App Settings',
+				click() {
+					AppMenu.resetAppSettings();
+				}
+			}, {
 				label: 'Log Out',
 				accelerator: 'Ctrl+L',
 				click(item, focusedWindow) {
@@ -351,6 +365,14 @@ class AppMenu {
 		}
 
 		win.webContents.send(action, ...params);
+	}
+
+	static resetAppSettings() {
+		const getAppPath = path.join(app.getPath('appData'), appName, 'window-state.json');
+
+		fs.unlink(getAppPath, () => {
+			setTimeout(() => AppMenu.sendAction('hard-reload'), 1000);
+		});
 	}
 
 	setMenu(props) {
