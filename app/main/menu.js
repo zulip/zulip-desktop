@@ -371,7 +371,7 @@ class AppMenu {
 		const getAppPath = path.join(app.getPath('appData'), appName, 'window-state.json');
 
 		fs.unlink(getAppPath, () => {
-			setTimeout(() => AppMenu.sendAction('hard-reload'), 1000);
+			setTimeout(() => app.relaunch(), app.exit(), 1000);
 		});
 	}
 
