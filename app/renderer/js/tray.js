@@ -180,11 +180,10 @@ ipcRenderer.on('tray', (event, arg) => {
 	if (!window.tray) {
 		return;
 	}
-	// We don't want to create tray from unread messages on windows and macOS since these systems already have dock badges and taskbar overlay icon.
-	if (process.platform === 'linux') {
+	// We don't want to create tray from unread messages on macOS since it already has dock badges.
+	if (process.platform === 'linux' || process.platform === 'win32') {
 		if (arg === 0) {
 			unread = arg;
-			// Message Count // console.log("message count is zero.");
 			window.tray.setImage(iconPath());
 			window.tray.setToolTip('No unread messages');
 		} else {
@@ -206,7 +205,7 @@ function toggleTray() {
 		ConfigUtil.setConfigItem('trayIcon', false);
 	} else {
 		createTray();
-		if (process.platform === 'linux') {
+		if (process.platform === 'linux' || process.platform === 'win32') {
 			renderNativeImage(unread).then(image => {
 				window.tray.setImage(image);
 				window.tray.setToolTip(unread + ' unread messages');
