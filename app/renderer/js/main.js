@@ -1,9 +1,9 @@
 'use strict';
 
 require(__dirname + '/js/tray.js');
-const {ipcRenderer, remote} = require('electron');
+const { ipcRenderer, remote } = require('electron');
 
-const {session} = remote;
+const { session } = remote;
 
 const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
 const WebView = require(__dirname + '/js/components/webview.js');
@@ -299,6 +299,10 @@ class ServerManagerView {
 
 		ipcRenderer.on('hard-reload', () => {
 			ipcRenderer.send('reload-full-app');
+		});
+
+		ipcRenderer.on('clear-app-data', () => {
+			ipcRenderer.send('clear-app-settings');
 		});
 
 		ipcRenderer.on('switch-server-tab', (event, index) => {

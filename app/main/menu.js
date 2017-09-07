@@ -201,6 +201,7 @@ class AppMenu {
 				type: 'separator'
 			}, {
 				label: 'Reset App Settings',
+				accelerator: 'Command+Shift+D',
 				click() {
 					AppMenu.resetAppSettings();
 				}
@@ -302,6 +303,7 @@ class AppMenu {
 				type: 'separator'
 			}, {
 				label: 'Reset App Settings',
+				accelerator: 'Ctrl+Shift+D',
 				click() {
 					AppMenu.resetAppSettings();
 				}
@@ -371,7 +373,7 @@ class AppMenu {
 		const getAppPath = path.join(app.getPath('appData'), appName, 'window-state.json');
 
 		fs.unlink(getAppPath, () => {
-			setTimeout(() => app.relaunch(), app.exit(), 1000);
+			setTimeout(() => AppMenu.sendAction('clear-app-data'), 1000);
 		});
 	}
 
