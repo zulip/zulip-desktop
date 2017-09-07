@@ -34,9 +34,13 @@ class GeneralSection extends BaseSection {
 				</div>
 				</div>
 				<div class="title">Desktop Notification</div>
-                <div class="settings-card">
+				<div class="settings-card">
+					<div class="setting-row" id="show-notification-option">
+						<div class="setting-description">Show Desktop Notifications</div>
+						<div class="setting-control"></div>
+					</div>
 					<div class="setting-row" id="silent-option">
-						<div class="setting-description">Mute all sounds from Zulip (requires reload)</div>
+						<div class="setting-description">Mute all sounds from Zulip</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>
@@ -75,6 +79,7 @@ class GeneralSection extends BaseSection {
 		this.updateSidebarOption();
 		this.updateStartAtLoginOption();
 		this.updateResetDataOption();
+		this.showDesktopNotification();
 	}
 
 	updateTrayOption() {
@@ -123,6 +128,18 @@ class GeneralSection extends BaseSection {
 				const newValue = !ConfigUtil.getConfigItem('silent', true);
 				ConfigUtil.setConfigItem('silent', newValue);
 				this.updateSilentOption();
+			}
+		});
+	}
+
+	showDesktopNotification() {
+		this.generateSettingOption({
+			$element: document.querySelector('#show-notification-option .setting-control'),
+			value: ConfigUtil.getConfigItem('showNotification', true),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('showNotification', true);
+				ConfigUtil.setConfigItem('showNotification', newValue);
+				this.showDesktopNotification();
 			}
 		});
 	}
