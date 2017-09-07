@@ -116,17 +116,17 @@ class ServerManagerView {
 		this.$settingsButton.addEventListener('click', () => {
 			this.openSettings('General');
 		});
-		this.$reloadButton.addEventListener('mouseover', () => {
-			this.$reloadTooltip.removeAttribute('style');
+
+		this.sidebarHoverEvent(this.$settingsButton, this.$settingsTooltip);
+		this.sidebarHoverEvent(this.$reloadButton, this.$reloadTooltip);
+	}
+
+	sidebarHoverEvent(SidebarButton, SidebarTooltip) {
+		SidebarButton.addEventListener('mouseover', () => {
+			SidebarTooltip.removeAttribute('style');
 		});
-		this.$reloadButton.addEventListener('mouseout', () => {
-			this.$reloadTooltip.style.display = 'none';
-		});
-		this.$settingsButton.addEventListener('mouseover', () => {
-			this.$settingsTooltip.removeAttribute('style');
-		});
-		this.$settingsButton.addEventListener('mouseout', () => {
-			this.$settingsTooltip.style.display = 'none';
+		SidebarButton.addEventListener('mouseout', () => {
+			SidebarTooltip.style.display = 'none';
 		});
 	}
 
