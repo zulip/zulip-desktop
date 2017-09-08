@@ -15,10 +15,6 @@
 ```powershell
 C:\Windows\system32> npm install --global --production windows-build-tools
 ```
-* open git bash run 
-```
-$ git init
-```
 
 ## Installation
 
