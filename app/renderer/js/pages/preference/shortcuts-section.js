@@ -11,21 +11,26 @@ class ShortcutsSection extends BaseSection {
 	}
 
 	template() {
+		let userOSKey = 'Ctrl';
+		if (process.platform === 'darwin') {
+			userOSKey = '⌘';
+		}
+
 		return `
             <div class="settings-pane">
               <div class="title">Desktop-specific</div>
               <div class="settings-card">
                 <table>
                   <tr>
-                    <td><kbd>Ctrl/Cmd</kbd> + <kbd>,</kbd></td>
+                    <td><kbd>${userOSKey}</kbd> + <kbd>,</kbd></td>
                     <td>Manage servers</td>
                   </tr>
                   <tr>
-                    <td><kbd>Ctrl/Cmd</kbd> + <kbd>[</kbd></td>
+                    <td><kbd>${userOSKey}</kbd> + <kbd>[</kbd></td>
                     <td>Back</td>
                   </tr>
                   <tr>
-                    <td><kbd>Ctrl/Cmd</kbd> + <kbd>]</kbd></td>
+                    <td><kbd>${userOSKey}</kbd> + <kbd>]</kbd></td>
                     <td>Forward</td>
                   </tr>
                 </table>
@@ -101,7 +106,7 @@ class ShortcutsSection extends BaseSection {
                     <td>Scroll up</td>
                   </tr>
                   <tr>
-                    <td><kbd>Ctrl/Cmd</kbd> + <kbd>Enter</kbd></td>
+                    <td><kbd>${userOSKey}</kbd> + <kbd>Enter</kbd></td>
                     <td>Send message</td>
                   </tr>
                   <tr>
@@ -173,7 +178,7 @@ class ShortcutsSection extends BaseSection {
                     <td>Cycle between stream narrows</td>
                   </tr>
                   <tr>
-                    <td><kbd>Esc</kbd>, <kbd>Ctrl/Cmd</kbd> + <kbd>[</kbd></td>
+                    <td><kbd>Esc</kbd>, <kbd>${userOSKey}</kbd> + <kbd>[</kbd></td>
                     <td>Return to Home view</td>
                   </tr>
                 </table>
