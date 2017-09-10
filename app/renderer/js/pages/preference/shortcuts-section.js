@@ -1,5 +1,7 @@
 'use strict';
 
+const { shell } = require('electron');
+
 const BaseSection = require(__dirname + '/base-section.js');
 
 class ShortcutsSection extends BaseSection {
@@ -12,7 +14,7 @@ class ShortcutsSection extends BaseSection {
 		return `
             <div class="settings-pane">
               <div class="title">Desktop-specific</div>
-              <div id="appearance-option-settings" class="settings-card">
+              <div class="settings-card">
                 <table>
                   <tr>
                     <td><kbd>Ctrl/Cmd</kbd> + <kbd>,</kbd></td>
@@ -30,7 +32,7 @@ class ShortcutsSection extends BaseSection {
                 <div class="setting-control"></div>
               </div>
               <div class="title">Navigation</div>
-              <div id="appearance-option-settings" class="settings-card">
+              <div class="settings-card">
                 <table>
                   <tr>
                     <td><kbd>/</kbd></td>
@@ -52,6 +54,7 @@ class ShortcutsSection extends BaseSection {
                     <td><kbd>↓</kbd>, <kbd>j</kbd></td>
                     <td>Next message</td>
                   </tr>
+									<tr>
                     <td><kbd>PgUp</kbd>, <kbd>K</kbd></td>
                     <td>Scroll up</td>
                   </tr>
@@ -93,6 +96,7 @@ class ShortcutsSection extends BaseSection {
                     <td><kbd>@</kbd></td>
                     <td>Compose a reply @-mentioning author</td>
                   </tr>
+									<tr>
                     <td><kbd>PgUp</kbd>, <kbd>K</kbd></td>
                     <td>Scroll up</td>
                   </tr>
@@ -111,12 +115,182 @@ class ShortcutsSection extends BaseSection {
                 </table>
                 <div class="setting-control"></div>
               </div>
+							<div class="title">Message Actions</div>
+              <div class="settings-card">
+                <table>
+                  <tr>
+                    <td><kbd>←</kbd></td>
+                    <td>Edit your last message</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>u</kbd></td>
+                    <td>Show message sender's profile</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>v</kbd></td>
+                    <td>Show images in thread</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>*</kbd></td>
+                    <td>Star selected message</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>+</kbd></td>
+                    <td>React to selected message with 👍</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>-</kbd></td>
+                    <td>Collapse/show selected message</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>M</kbd></td>
+                    <td>Toggle topic mute</td>
+                  </tr>
+                </table>
+                <div class="setting-control"></div>
+              </div>
+							<div class="title">Narrowing</div>
+              <div class="settings-card">
+                <table>
+                  <tr>
+                    <td><kbd>s</kbd></td>
+                    <td>Narrow by stream</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>S</kbd></td>
+                    <td>Narrow by topic</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>P</kbd></td>
+                    <td>Narrow to all private messages</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>n</kbd></td>
+                    <td>Narrow to next unread topic</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>A</kbd>, <kbd>D</kbd></td>
+                    <td>Cycle between stream narrows</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>Esc</kbd>, <kbd>Ctrl/Cmd</kbd> + <kbd>[</kbd></td>
+                    <td>Return to Home view</td>
+                  </tr>
+                </table>
+                <div class="setting-control"></div>
+              </div>
+							<div class="title">Menus</div>
+              <div class="settings-card">
+                <table>
+                  <tr>
+                    <td><kbd>g</kbd></td>
+                    <td>Toggle the gear menu</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>i</kbd></td>
+                    <td>Open message menu</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>:</kbd></td>
+                    <td>Open reactions menu</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>?</kbd></td>
+                    <td>Show keyboard shortcuts</td>
+                  </tr>
+                </table>
+                <div class="setting-control"></div>
+              </div>
+							<div class="title">Drafts</div>
+              <div class="settings-card">
+                <table>
+                  <tr>
+                    <td><kbd>d</kbd></td>
+                    <td>View drafts</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>↑</kbd></td>
+                    <td>Select previous draft</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>↓</kbd></td>
+                    <td>Select next draft</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>PgUp</kbd> (<kbd>Fn</kbd> + <kbd>↑</kbd>)</td>
+                    <td>Scroll up</td>
+                  </tr>
+									<tr>
+                    <td><kbd>Space</kbd>, <kbd>PgDn</kbd> (<kbd>Fn</kbd> + <kbd>↓</kbd>)</td>
+                    <td>Scroll down</td>
+                  </tr>
+									<tr>
+                    <td><kbd>Home</kbd> (<kbd>Fn</kbd> + <kbd>←</kbd>)</td>
+                    <td>Select first draft</td>
+                  </tr>
+									<tr>
+                    <td><kbd>End</kbd> (<kbd>Fn</kbd> + <kbd>→</kbd>), <kbd>G</kbd></td>
+                    <td>Select last draft</td>
+                  </tr>
+									<tr>
+                    <td><kbd>Enter</kbd> (<kbd>Return</kbd>)</td>
+                    <td>Edit selected draft</td>
+                  </tr>
+									<tr>
+                    <td><kbd>Backspace</kbd> (<kbd>Delete</kbd>)</td>
+                    <td>Delete selected draft</td>
+                  </tr>
+                </table>
+                <div class="setting-control"></div>
+              </div>
+							<div class="title">Streams</div>
+              <div class="settings-card">
+                <table>
+                  <tr>
+                    <td><kbd>↑</kbd> and <kbd>↓</kbd></td>
+                    <td>Scroll through streams</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>←</kbd> and <kbd>→</kbd></td>
+                    <td>Switch between tabs</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>V</kbd></td>
+                    <td>View stream messages</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>S</kbd></td>
+                    <td>Subscribe/unsubscribe from selected stream</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>n</kbd></td>
+                    <td>Create new stream</td>
+                  </tr>
+                </table>
+                <div class="setting-control"></div>
+              </div>
+							<div class="title">Documentation</div>
+              <div class="settings-card">
+								<span id="open-shortcuts-url">
+									Detailed keyboard shortcuts documentation found here
+									<i class="material-icons open-tab-button">open_in_new</i>
+								</span>
+                <div class="setting-control"></div>
+              </div>
             </div>
 		`;
 	}
 
 	init() {
 		this.props.$root.innerHTML = this.template();
+		this.openExternalShortcutsLink();
+	}
+
+	openExternalShortcutsLink() {
+		const externalShortcutsLink = document.getElementById('open-shortcuts-url');
+		externalShortcutsLink.addEventListener('click', () => {
+			shell.openExternal('https://chat.zulip.org/help/keyboard-shortcuts');
+		});
 	}
 }
 

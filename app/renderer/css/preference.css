@@ -14,7 +14,7 @@ body {
 kbd {
     padding: 0.1em 0.6em;
     border: 1px solid #ccc;
-    font-size: 11px;
+    font-size: 12px;
     font-family: Arial,Helvetica,sans-serif;
     background-color: #f7f7f7;
     color: #333;
@@ -36,13 +36,16 @@ table, th, td {
     border-collapse: collapse;
 }
 
-table { width: 70%; }
+table { width: 85%; }
 
 table tr:nth-child(even) { background-color: #f2f2f2; }
 
 td { padding: 5px; }
 
-td:nth-child(odd) { text-align: right; }
+td:nth-child(odd) {
+		text-align: right;
+		width: 50%;
+}
 
 @font-face {
   font-family: 'Material Icons';
@@ -297,4 +300,15 @@ i.open-tab-button {
 .reset-data-button:hover {
     background-color: #32a692;
     color: #fff;
+}
+
+#open-shortcuts-url {
+		color: #08c;
+		cursor: pointer;
+		text-decoration: none;
+}
+
+#open-shortcuts-url:hover {
+		color: #005580;;
+		text-decoration: underline;
 }
