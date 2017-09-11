@@ -57,7 +57,7 @@ class PreferenceView extends BaseComponent {
 				});
 				break;
 			}
-			case 'Keyboard Shortcuts': {
+			case 'Shortcuts': {
 				this.section = new ShortcutsSection({
 					$root: this.$settingsContainer
 				});
