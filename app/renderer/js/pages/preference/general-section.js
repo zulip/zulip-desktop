@@ -50,6 +50,10 @@ class GeneralSection extends BaseSection {
 						<div class="setting-description">Get beta updates</div>
 						<div class="setting-control"></div>
 					</div>
+					<div class="setting-row" id="autoupdate-option">
+					<div class="setting-description">Automatically install new updates</div>
+					<div class="setting-control"></div>
+				</div>
 				</div>
 				<div class="title">Functionality</div>
                 <div class="settings-card">
@@ -75,6 +79,7 @@ class GeneralSection extends BaseSection {
 		this.updateTrayOption();
 		this.updateBadgeOption();
 		this.updateUpdateOption();
+		this.updateAutoUpdateOption();
 		this.updateSilentOption();
 		this.updateSidebarOption();
 		this.updateStartAtLoginOption();
@@ -116,6 +121,18 @@ class GeneralSection extends BaseSection {
 				const newValue = !ConfigUtil.getConfigItem('betaUpdate');
 				ConfigUtil.setConfigItem('betaUpdate', newValue);
 				this.updateUpdateOption();
+			}
+		});
+	}
+
+	updateAutoUpdateOption() {
+		this.generateSettingOption({
+			$element: document.querySelector('#autoupdate-option .setting-control'),
+			value: ConfigUtil.getConfigItem('autoUpdate', true),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('autoUpdate');
+				ConfigUtil.setConfigItem('autoUpdate', newValue);
+				this.updateAutoUpdateOption();
 			}
 		});
 	}
