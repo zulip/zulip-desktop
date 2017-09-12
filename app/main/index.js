@@ -5,6 +5,8 @@ const electronLocalshortcut = require('electron-localshortcut');
 const windowStateKeeper = require('electron-window-state');
 const appMenu = require('./menu');
 const { appUpdater } = require('./autoupdater');
+const { crashHandler } = require('./crash-reporter');
+
 const { setAutoLaunch } = require('./startup');
 
 const { app, ipcMain } = electron;
@@ -172,6 +174,7 @@ app.on('ready', () => {
 	page.once('did-frame-finish-load', () => {
 		// Initate auto-updates on MacOS and Windows
 		appUpdater();
+		crashHandler();
 	});
 
 	electron.powerMonitor.on('resume', () => {
