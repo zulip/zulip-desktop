@@ -302,13 +302,21 @@ i.open-tab-button {
     color: #fff;
 }
 
-#open-shortcuts-url {
-		color: #08c;
+#server-info-container {
+		min-height: calc(100% - 220px);
+}
+
+#create-organization-container {
+		height: 25px;
+}
+
+#open-create-org-link {
+		color: #666;
 		cursor: pointer;
 		text-decoration: none;
 }
 
-#open-shortcuts-url:hover {
+#open-create-org-link:hover {
 		color: #005580;;
 		text-decoration: underline;
 }
