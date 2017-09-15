@@ -4,6 +4,7 @@ const BaseSection = require(__dirname + '/base-section.js');
 const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
 const ServerInfoForm = require(__dirname + '/server-info-form.js');
 const NewServerForm = require(__dirname + '/new-server-form.js');
+const CreateOrganziation = require(__dirname + '/create-new-org.js');
 
 class ServersSection extends BaseSection {
 	constructor(props) {
@@ -18,6 +19,7 @@ class ServersSection extends BaseSection {
 				<div id="new-server-container"></div>
 				<div class="title" id="existing-servers"></div>
 				<div id="server-info-container"></div>
+				<div id="create-organization-container"></div>
 			</div>
 		`;
 	}
@@ -41,6 +43,9 @@ class ServersSection extends BaseSection {
 		this.$existingServers.innerHTML = servers.length === 0 ? '' : 'Existing Servers';
 		this.initNewServerForm();
 
+		this.$createOrganizationContainer = document.getElementById('create-organization-container');
+		this.initCreateNewOrganization();
+
 		for (let i = 0; i < servers.length; i++) {
 			new ServerInfoForm({
 				$root: this.$serverInfoContainer,
@@ -49,6 +54,12 @@ class ServersSection extends BaseSection {
 				onChange: this.reloadApp
 			}).init();
 		}
+	}
+
+	initCreateNewOrganization() {
+		new CreateOrganziation({
+			$root: this.$createOrganizationContainer
+		}).init();
 	}
 
 	initNewServerForm() {

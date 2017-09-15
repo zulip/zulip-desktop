@@ -294,7 +294,6 @@ i.open-tab-button {
     font-size: 11px;
     transition: background-color 0.2s ease;
     text-decoration: none;
-
 }
 
 .reset-data-button:hover {
@@ -302,13 +301,27 @@ i.open-tab-button {
     color: #fff;
 }
 
-#open-shortcuts-url {
-		color: #08c;
+#server-info-container {
+		min-height: calc(100% - 235px);
+}
+
+#create-organization-container {
+		font-size: 1.15em;
+		margin-bottom: 15px;
+}
+
+#create-organization-container i {
+	position: relative;
+	top: 3px;
+}
+
+#open-create-org-link {
+		color: #666;
 		cursor: pointer;
 		text-decoration: none;
 }
 
-#open-shortcuts-url:hover {
+#open-create-org-link:hover {
 		color: #005580;;
 		text-decoration: underline;
 }

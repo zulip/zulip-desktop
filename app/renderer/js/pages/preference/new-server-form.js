@@ -19,7 +19,7 @@ class NewServerForm extends BaseComponent {
 					<div class="server-info-row">
 						<div class="action green server-save-action">
 							<i class="material-icons">check_box</i>
-							<span>Save</span>
+							<span>Add</span>
 						</div>
 					</div>
 				</div>
