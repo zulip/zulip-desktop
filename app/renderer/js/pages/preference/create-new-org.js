@@ -11,13 +11,11 @@ class CreateOrganziation extends BaseComponent {
 
 	template() {
 		return `
-			<!-- <div class="settings-card"> -->
-        <div class="setting-row">
-          <div class="setting-description">
-            <span id="open-create-org-link">Create a new organization on zulipchat.com<i class="material-icons open-tab-button">open_in_new</i></span>
-          </div>
-          <div class="setting-control"></div>
-        </div>
+			<div class="setting-row">
+				<div class="setting-description">
+					<span id="open-create-org-link">Create a new organization on zulipchat.com<i class="material-icons open-tab-button">open_in_new</i></span>
+				</div>
+				<div class="setting-control"></div>
 			</div>
 		`;
 	}

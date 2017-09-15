@@ -19,7 +19,6 @@ class ServersSection extends BaseSection {
 				<div id="new-server-container"></div>
 				<div class="title" id="existing-servers"></div>
 				<div id="server-info-container"></div>
-				<!-- <div class="title">Create Organization</div> -->
 				<div id="create-organization-container"></div>
 			</div>
 		`;
