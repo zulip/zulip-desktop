@@ -294,7 +294,6 @@ i.open-tab-button {
     font-size: 11px;
     transition: background-color 0.2s ease;
     text-decoration: none;
-
 }
 
 .reset-data-button:hover {
@@ -303,11 +302,17 @@ i.open-tab-button {
 }
 
 #server-info-container {
-		min-height: calc(100% - 220px);
+		min-height: calc(100% - 235px);
 }
 
 #create-organization-container {
-		height: 25px;
+		font-size: 1.15em;
+		margin-bottom: 15px;
+}
+
+#create-organization-container i {
+	position: relative;
+	top: 3px;
 }
 
 #open-create-org-link {
