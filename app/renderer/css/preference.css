@@ -210,7 +210,6 @@ img.server-info-icon {
     display: flex;
     align-items: center;
     padding: 0 10px;
-    border-radius: 2px;
     margin-right: 10px;
 }
 
@@ -242,9 +241,8 @@ img.server-info-icon {
     padding: 12px 30px;
     margin: 10px 0 20px 0;
     background: #fff;
-    border-radius: 2px;
-    width: 540px;
-    box-shadow: 1px 2px 4px #bcbcbc;
+    width: 70%;
+    border-left: 8px solid #bcbcbc;
 }
 
 .hidden {
@@ -253,15 +251,19 @@ img.server-info-icon {
 }
 
 .red {
-    color: #ef5350;
-    background: #ffebee;
-    border: 1px solid #ef5350;
+    color: #ffffff;
+    background: #ef5350;
+    padding: 3px;
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 .green {
-    color: #388E3C;
-    background: #E8F5E9;
-    border: 1px solid #388E3C;
+    color: #ffffff;
+    background: #388E3C;
+    padding: 3px;
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 .grey {
@@ -325,3 +327,4 @@ i.open-tab-button {
 		color: #005580;;
 		text-decoration: underline;
 }
+
