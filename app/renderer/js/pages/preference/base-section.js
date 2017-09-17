@@ -20,24 +20,18 @@ class BaseSection extends BaseComponent {
 		if (settingOption) {
 			return `
 				<div class="action">
-					<div class="onoffswitch">
-					    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
-					    <label class="onoffswitch-label" for="myonoffswitch">
-					        <span class="onoffswitch-inner"></span>
-					        <span class="onoffswitch-switch"></span>
-					    </label>
+					<div class="switch">
+					  <input class="cmn-toggle cmn-toggle-round" type="checkbox" checked>
+					  <label for="cmn-toggle-1"></label>
 					</div>
 				</div>
 			`;
 		} else {
 			return `
 				<div class="action">
-					<div class="onoffswitch">
-					    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" >
-					    <label class="onoffswitch-label" for="myonoffswitch">
-					        <span class="onoffswitch-inner"></span>
-					        <span class="onoffswitch-switch"></span>
-					    </label>
+					<div class="switch">
+					  <input class="cmn-toggle cmn-toggle-round" type="checkbox">
+					  <label for="cmn-toggle-1"></label>
 					</div>
 				</div>
 			`;
