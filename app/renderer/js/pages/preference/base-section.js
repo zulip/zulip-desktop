@@ -21,8 +21,8 @@ class BaseSection extends BaseComponent {
 			return `
 				<div class="action">
 					<div class="switch">
-					  <input class="cmn-toggle cmn-toggle-round" type="checkbox" checked>
-					  <label for="cmn-toggle-1"></label>
+					  <input class="toggle toggle-round" type="checkbox" checked>
+					  <label></label>
 					</div>
 				</div>
 			`;
@@ -30,8 +30,8 @@ class BaseSection extends BaseComponent {
 			return `
 				<div class="action">
 					<div class="switch">
-					  <input class="cmn-toggle cmn-toggle-round" type="checkbox">
-					  <label for="cmn-toggle-1"></label>
+					  <input class="toggle toggle-round" type="checkbox">
+					  <label></label>
 					</div>
 				</div>
 			`;

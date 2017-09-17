@@ -12,33 +12,33 @@ body {
 }
 
 kbd {
-    padding: 0.1em 0.6em;
+    padding: 0.3em 0.8em;
     border: 1px solid #ccc;
-    font-size: 12px;
-    font-family: Arial,Helvetica,sans-serif;
-    background-color: #f7f7f7;
-    color: #333;
-    -moz-box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
-    -webkit-box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
-    box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
+    font-size: 15px;
+    font-family: Courier New, Courier, monospace;
+    background-color: #383430;
+    color: #ededed;
     display: inline-block;
     margin: 0 0.1em;
-    text-shadow: 0 1px 0 #fff;
-    line-height: 1.4;
+    font-weight: bold;
     white-space: nowrap;
 }
 
 table, th, td {
-    border: 1px solid #ddd;
     border-collapse: collapse;
+    color: #383430;
 }
 
-table { width: 85%; }
+table { 
+    width: 100%;
+    margin-top: 18px;
+    margin-bottom: 18px;
+ }
 
-table tr:nth-child(even) { background-color: #f2f2f2; }
+table tr:nth-child(even) { background-color: #f7eee6; }
+
+table tr:nth-child(odd) { background-color: #fff8ef; }
+
 
 td { padding: 5px; }
 
@@ -121,7 +121,7 @@ td:nth-child(odd) {
 
 #settings-header {
     font-size: 22px;
-    color: #576d91;
+    color: #222c31;
     font-weight: bold;
     text-transform: uppercase;
 }
@@ -141,7 +141,7 @@ td:nth-child(odd) {
 .title {
     padding: 4px 0 6px 0;
     font-weight: bold;
-    color: #576d91;
+    color: #222c31;
     text-transform: uppercase;
 }
 
@@ -282,9 +282,10 @@ img.server-info-icon {
 
 .setting-row {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     width: 100%;
-    margin: 6px 0;
+    margin: 6px;
 }
 
 .code {
@@ -338,12 +339,12 @@ i.open-tab-button {
 		text-decoration: underline;
 }
 
-.cmn-toggle {
+.toggle {
   position: absolute;
   margin-left: -9999px;
   visibility: hidden;
 }
-.cmn-toggle + label {
+.toggle + label {
   display: block;
   position: relative;
   cursor: pointer;
@@ -351,15 +352,15 @@ i.open-tab-button {
   user-select: none;
 }
 
-input.cmn-toggle-round + label {
+input.toggle-round + label {
   padding: 2px;
   width: 50px;
   height: 25px;
   background-color: #dddddd;
   border-radius: 25px;
 }
-input.cmn-toggle-round + label:before,
-input.cmn-toggle-round + label:after {
+input.toggle-round + label:before,
+input.toggle-round + label:after {
   display: block;
   position: absolute;
   top: 2px;
@@ -367,22 +368,22 @@ input.cmn-toggle-round + label:after {
   bottom: 2px;
   content: "";
 }
-input.cmn-toggle-round + label:before {
+input.toggle-round + label:before {
   right: 1px;
   background-color: #f1f1f1;
   border-radius: 25px;
   transition: background 0.4s;
 }
-input.cmn-toggle-round + label:after {
+input.toggle-round + label:after {
   width: 25px;
   height: 25px;
   background-color: #fff;
   border-radius: 100%;
   transition: margin 0.4s;
 }
-input.cmn-toggle-round:checked + label:before {
+input.toggle-round:checked + label:before {
   background-color: #8ce196;
 }
-input.cmn-toggle-round:checked + label:after {
+input.toggle-round:checked + label:after {
   margin-left: 25px;
 }
