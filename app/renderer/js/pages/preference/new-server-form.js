@@ -14,10 +14,10 @@ class NewServerForm extends BaseComponent {
 			<div class="settings-card">
 				<div class="server-info-right">
 					<div class="server-info-row">
-						<input class="setting-input-value" autofocus placeholder="Entert the URL of your Zulip organization..."/>
+						<input class="setting-input-value" autofocus placeholder="Enter the URL of your Zulip organization..."/>
 					</div>
-					<div class="server-info-row">
-						<div class="action green server-save-action">
+					<div class="server-info-row save-btn">
+						<div class="action dark-green server-save-action">
 							<i class="material-icons">check_box</i>
 							<span>Save</span>
 						</div>

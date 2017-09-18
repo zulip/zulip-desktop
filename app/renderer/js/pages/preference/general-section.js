@@ -21,54 +21,56 @@ class GeneralSection extends BaseSection {
                 <div class="title">Appearance</div>
                 <div id="appearance-option-settings" class="settings-card">
 					<div class="setting-row" id="tray-option">
-						<div class="setting-description">Show app icon in system tray</div>
+						<div class="setting-description text">Show app icon in system tray</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="sidebar-option">
-						<div class="setting-description">Show sidebar (<span class="code">CmdOrCtrl+S</span>)</div>
+						<div class="setting-description text">Show sidebar (<span class="code">Cmd Or Ctrl+S</span>)</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="badge-option">
-					<div class="setting-description">Show app unread badge</div>
+					<div class="setting-description text">Show app unread badge</div>
 					<div class="setting-control"></div>
 				</div>
 				</div>
 				<div class="title">Desktop Notification</div>
 				<div class="settings-card">
 					<div class="setting-row" id="show-notification-option">
-						<div class="setting-description">Show Desktop Notifications</div>
+						<div class="setting-description text">Show Desktop Notifications</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="silent-option">
-						<div class="setting-description">Mute all sounds from Zulip</div>
+						<div class="setting-description text">Mute all sounds from Zulip</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>
 				<div class="title">App Updates</div>
                 <div class="settings-card">
 					<div class="setting-row" id="betaupdate-option">
-						<div class="setting-description">Get beta updates</div>
+						<div class="setting-description text">Get beta updates</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>
 				<div class="title">Functionality</div>
                 <div class="settings-card">
 					<div class="setting-row" id="startAtLogin-option">
-						<div class="setting-description">Start app at login</div>
+						<div class="setting-description text">Start app at login</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>
 				<div class="title">Reset Application Data</div>
                 <div class="settings-card">
-					<div class="setting-row" id="resetdata-option">
-						<div class="setting-description">This will delete all application data including all added accounts and preferences
+					<div class="setting-row reset-btn" id="resetdata-option">
+						<div class="setting-description text">This will delete all application data including all added accounts and preferences
 						</div>
-						<button class="reset-data-button green">Reset App Data</button>
+						<button class="reset-data-button dark-green">Reset App Data</button>
 					</div>
 				</div>
             </div>
 		`;
 	}
+
+
 
 	init() {
 		this.props.$root.innerHTML = this.template();
@@ -81,8 +83,8 @@ class GeneralSection extends BaseSection {
 		this.updateResetDataOption();
 		this.showDesktopNotification();
 	}
-
 	updateTrayOption() {
+		
 		this.generateSettingOption({
 			$element: document.querySelector('#tray-option .setting-control'),
 			value: ConfigUtil.getConfigItem('trayIcon', true),

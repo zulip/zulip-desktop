@@ -27,6 +27,8 @@ body {
     flex-direction: column;
     -webkit-app-region: drag;
     overflow: hidden;
+    transition:  5s ease;
+
 }
 
 @font-face {

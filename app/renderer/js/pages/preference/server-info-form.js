@@ -25,7 +25,7 @@ class ServerInfoForm extends BaseComponent {
 					<div class="server-info-row">
 						<input class="setting-input-value" disabled value="${this.props.server.url}"/>
 					</div>
-					<div class="server-info-row">
+					<div class="server-info-row save-btn">
 						<div class="action red server-delete-action">
 							<i class="material-icons">indeterminate_check_box</i>
 							<span>Delete</span>

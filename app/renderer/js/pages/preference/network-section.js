@@ -17,7 +17,7 @@ class NetworkSection extends BaseSection {
                 <div class="title">Proxy</div>
                 <div id="appearance-option-settings" class="settings-card">
 					<div class="setting-row" id="use-proxy-option">
-						<div class="setting-description">Connect servers through a proxy</div>
+						<div class="setting-description text">Connect servers through a proxy</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-block">
@@ -33,8 +33,8 @@ class NetworkSection extends BaseSection {
 							<span class="setting-input-key">Proxy bypass rules</span>
 							<input class="setting-input-value" placeholder="e.g. foobar.com"/>
 						</div>
-						<div class="setting-row">
-							<div class="action green" id="proxy-save-action">
+						<div class="save-btn">
+							<div class="action dark-green" id="proxy-save-action">
 								<i class="material-icons">check_box</i>
 								<span>Save</span>
 							</div>

@@ -12,22 +12,30 @@ class BaseSection extends BaseComponent {
 
 		const $optionControl = this.generateNodeFromTemplate(this.generateOptionTemplate(value));
 		$element.appendChild($optionControl);
-
 		$optionControl.addEventListener('click', clickHandler);
 	}
 
 	generateOptionTemplate(settingOption) {
 		if (settingOption) {
 			return `
-				<div class="action green">
-					<span>On</span>
-				</div>
+				<div class="onoffswitch">
+					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox"  checked>
+					<label class="onoffswitch-label" for="myonoffswitch">
+					        <span class="onoffswitch-inner"></span>
+					        <span class="onoffswitch-switch"></span>
+					 </label>
+			</div>
 			`;
 		} else {
 			return `
-				<div class="action red">
-					<span>Off</span>
-				</div>
+			<div class="onoffswitch">
+					<label class="onoffswitch-label" for="myonoffswitch">
+					    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" >
+
+					        <span class="onoffswitch-inner "></span>
+					        <span class="onoffswitch-switch"></span>
+					 </label>
+			</div>
 			`;
 		}
 	}
