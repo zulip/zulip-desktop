@@ -260,9 +260,9 @@ class ServerManagerView {
 
 	toggleSidebar(show) {
 		if (show) {
-			this.$sidebar.classList.remove('hidden');
+			this.$sidebar.classList.remove('sidebar-hide');
 		} else {
-			this.$sidebar.classList.add('hidden');
+			this.$sidebar.classList.add('sidebar-hide');
 		}
 	}
 
