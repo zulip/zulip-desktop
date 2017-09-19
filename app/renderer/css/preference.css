@@ -266,9 +266,9 @@ img.server-info-icon {
     padding-left: 10px;
 }
 
-.green {
+.blue {
     color: #ffffff;
-    background: #388E3C;
+    background: #4EBFAC;
     padding: 3px;
     padding-right: 10px;
     padding-left: 10px;
@@ -304,13 +304,13 @@ i.open-tab-button {
     padding: 10px;
     width: 120px;
     cursor: pointer;
-    font-size: 11px;
+    font-size: 13px;
     transition: background-color 0.2s ease;
     text-decoration: none;
 }
 
 .reset-data-button:hover {
-    background-color: #32a692;
+    background-color: #3c9f8d;
     color: #fff;
 }
 
@@ -369,7 +369,7 @@ input.toggle-round + label:after {
   content: "";
 }
 input.toggle-round + label:before {
-  right: 1px;
+  right: 2px;
   background-color: #f1f1f1;
   border-radius: 25px;
   transition: background 0.4s;
@@ -382,7 +382,7 @@ input.toggle-round + label:after {
   transition: margin 0.4s;
 }
 input.toggle-round:checked + label:before {
-  background-color: #8ce196;
+  background-color: #4EBFAC;
 }
 input.toggle-round:checked + label:after {
   margin-left: 25px;

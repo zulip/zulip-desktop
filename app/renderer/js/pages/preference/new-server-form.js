@@ -17,7 +17,7 @@ class NewServerForm extends BaseComponent {
 						<input class="setting-input-value" autofocus placeholder="Entert the URL of your Zulip organization..."/>
 					</div>
 					<div class="server-info-row">
-						<div class="action green server-save-action">
+						<div class="action blue server-save-action">
 							<i class="material-icons">check_box</i>
 							<span>Add</span>
 						</div>
