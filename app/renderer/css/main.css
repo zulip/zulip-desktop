@@ -27,6 +27,12 @@ body {
     flex-direction: column;
     -webkit-app-region: drag;
     overflow: hidden;
+    transition: all 1s ease; 
+}
+
+.sidebar-hide{
+    transform: translateX(-60px);
+    transition: all 1s ease;
 }
 
 @font-face {
