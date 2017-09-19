@@ -25,7 +25,7 @@ class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="sidebar-option">
-						<div class="setting-description">Show sidebar (<span class="code">CmdOrCtrl+S</span>)</div>
+						<div class="setting-description">Show sidebar (<span class="code">Cmd Or Ctrl+S</span>)</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="badge-option">
