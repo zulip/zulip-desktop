@@ -25,7 +25,7 @@ class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="sidebar-option">
-						<div class="setting-description">Show sidebar (<span class="code">CmdOrCtrl+S</span>)</div>
+						<div class="setting-description">Show sidebar (<span class="code">Cmd Or Ctrl+S</span>)</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="badge-option">
@@ -63,7 +63,7 @@ class GeneralSection extends BaseSection {
 					<div class="setting-row" id="resetdata-option">
 						<div class="setting-description">This will delete all application data including all added accounts and preferences
 						</div>
-						<button class="reset-data-button green">Reset App Data</button>
+						<button class="reset-data-button blue">Reset App Data</button>
 					</div>
 				</div>
             </div>

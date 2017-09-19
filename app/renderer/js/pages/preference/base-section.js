@@ -19,14 +19,20 @@ class BaseSection extends BaseComponent {
 	generateOptionTemplate(settingOption) {
 		if (settingOption) {
 			return `
-				<div class="action green">
-					<span>On</span>
+				<div class="action">
+					<div class="switch">
+					  <input class="toggle toggle-round" type="checkbox" checked>
+					  <label></label>
+					</div>
 				</div>
 			`;
 		} else {
 			return `
-				<div class="action red">
-					<span>Off</span>
+				<div class="action">
+					<div class="switch">
+					  <input class="toggle toggle-round" type="checkbox">
+					  <label></label>
+					</div>
 				</div>
 			`;
 		}
