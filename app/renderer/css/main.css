@@ -18,7 +18,7 @@ body {
     background-position: center;
 }
 
-#sidebar {
+.toggle-sidebar {
     background: #222c31;
     width: 54px;
     padding: 27px 0 20px 0;
@@ -27,6 +27,22 @@ body {
     flex-direction: column;
     -webkit-app-region: drag;
     overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+.toggle-sidebar div {
+    transform: translateX(0);
+    transition: all 0.5s ease-out;
+}
+
+.sidebar-hide {
+    width: 0;
+    transition: all 0.8s ease;
+}
+
+.sidebar-hide div {
+    transform: translateX(-100%);
+    transition: all 0.6s ease-out;
 }
 
 @font-face {
@@ -38,8 +54,8 @@ body {
 
 
 /*******************
- *   Left Sidebar  *
- *******************/
+  *   Left Sidebar  *
+  *******************/
 
 #tabs-container {
     display: flex;
@@ -197,8 +213,8 @@ body {
 
 
 /*******************
- *   Webview Area  *
- *******************/
+  *   Webview Area  *
+  *******************/
 
 #webviews-container {
     display: flex;
@@ -285,7 +301,9 @@ webview:focus {
     display: none !important;
 }
 
+
 /* Full screen Popup container  */
+
 .popup .popuptext {
     visibility: hidden;
     background-color: #555;
