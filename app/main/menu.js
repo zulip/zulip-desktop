@@ -173,7 +173,7 @@ class AppMenu {
 		return [{
 			label: `${app.getName()}`,
 			submenu: [{
-				label: 'Zulip Desktop',
+				label: 'About Zulip',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('open-about');
@@ -273,7 +273,7 @@ class AppMenu {
 		return [{
 			label: 'File',
 			submenu: [{
-				label: 'Zulip Desktop',
+				label: 'About Zulip',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('open-about');
