@@ -12,13 +12,19 @@ app.setAppUserModelId('org.zulip.zulip-electron');
 
 const NativeNotification = window.Notification;
 
-class baseNotification extends NativeNotification {
+class basegNotification extends NativeNotification {
 	constructor(title, opts) {
 		opts.silent = ConfigUtil.getConfigItem('silent') || false;
-		// calling super without passing arguments will fail to constuct Notification
-		// and will result in no notification. It's a hack (not an ideal way) for deleting the window notification
-		ConfigUtil.getConfigItem('showNotification') ? super(title, opts) : super(); // eslint-disable-line no-unused-expressions
+		super(title, opts);
+	}
+	static requestPermission() {
+		return; // eslint-disable-line no-useless-return
+	}
+	// Override default Notification permission
+	static get permission() {
+		return ConfigUtil.getConfigItem('showNotification') ? 'granted' : 'denied';
 	}
 }
 
 window.Notification = baseNotification;
+
