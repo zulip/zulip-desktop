@@ -12,7 +12,7 @@ app.setAppUserModelId('org.zulip.zulip-electron');
 
 const NativeNotification = window.Notification;
 
-class basegNotification extends NativeNotification {
+class baseNotification extends NativeNotification {
 	constructor(title, opts) {
 		opts.silent = ConfigUtil.getConfigItem('silent') || false;
 		super(title, opts);
