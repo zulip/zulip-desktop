@@ -21,6 +21,8 @@ class Tab extends BaseComponent {
 
 	registerListeners() {
 		this.$el.addEventListener('click', this.props.onClick);
+		this.$el.addEventListener('mouseover', this.props.onHover);
+		this.$el.addEventListener('mouseout', this.props.onHoverOut);
 	}
 
 	isLoading() {

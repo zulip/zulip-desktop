@@ -8,6 +8,7 @@ const {ipcRenderer} = require('electron');
 class ServerTab extends Tab {
 	template() {
 		return `<div class="tab">
+					<div class="server-tooltip" style="display:none"></div>
 					<div class="server-tab-badge"></div>
 					<div class="server-tab">
 					<img class="server-icons" src='${this.props.icon}'/>
