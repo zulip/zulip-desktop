@@ -31,7 +31,6 @@ body {
 }
 
 .toggle-sidebar div {
-    transform: translateX(0);
     transition: all 0.5s ease-out;
 }
 
@@ -272,6 +271,31 @@ webview:focus {
     position: absolute;
     top: 7px;
     right: 68px;
+}
+
+.server-tooltip {
+    font-family: 'arial';
+    background: #222c31;
+    left: 56px;
+    padding: 10px 20px;
+    position: fixed;
+    margin-top: 8px;
+    z-index: 5000 !important;
+    color: #fff;
+    border-radius: 4px;
+    text-align: center;
+    width: max-content;
+    font-size: 14px;
+}
+
+.server-tooltip:after {
+    content: " ";
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid #222c31;
+    position: absolute;
+    top: 10px;
+    left: -5px;
 }
 
 #collapse-button {

@@ -23,6 +23,8 @@ class ServerManagerView {
 
 		this.$reloadTooltip = $actionsContainer.querySelector('#reload-tooltip');
 		this.$settingsTooltip = $actionsContainer.querySelector('#setting-tooltip');
+		this.$serverIconTooltip = document.getElementsByClassName('server-tooltip');
+
 		this.$sidebar = document.getElementById('sidebar');
 
 		this.$fullscreenPopup = document.getElementById('fullscreen-popup');
@@ -90,6 +92,8 @@ class ServerManagerView {
 			$root: this.$tabsContainer,
 			onClick: this.activateTab.bind(this, index),
 			index,
+			onHover: this.onHover.bind(this, index, server.alias),
+			onHoverOut: this.onHoverOut.bind(this, index),
 			webview: new WebView({
 				$root: this.$webviewsContainer,
 				index,
@@ -128,6 +132,15 @@ class ServerManagerView {
 		SidebarButton.addEventListener('mouseout', () => {
 			SidebarTooltip.style.display = 'none';
 		});
+	}
+
+	onHover(index, serverName) {
+		this.$serverIconTooltip[index].innerHTML = serverName;
+		this.$serverIconTooltip[index].removeAttribute('style');
+	}
+
+	onHoverOut(index) {
+		this.$serverIconTooltip[index].style.display = 'none';
 	}
 
 	openFunctionalTab(tabProps) {
