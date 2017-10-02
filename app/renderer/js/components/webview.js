@@ -6,7 +6,7 @@ const fs = require('fs');
 const DomainUtil = require(__dirname + '/../utils/domain-util.js');
 const SystemUtil = require(__dirname + '/../utils/system-util.js');
 const LinkUtil = require(__dirname + '/../utils/link-util.js');
-const {shell} = require('electron').remote;
+const { shell, app } = require('electron').remote;
 
 const BaseComponent = require(__dirname + '/../components/base.js');
 
@@ -42,7 +42,7 @@ class WebView extends BaseComponent {
 
 	registerListeners() {
 		this.$el.addEventListener('new-window', event => {
-			const {url} = event;
+			const { url } = event;
 			const domainPrefix = DomainUtil.getDomain(this.props.index).url;
 
 			if (LinkUtil.isInternal(domainPrefix, url) || url === (domainPrefix + '/')) {
@@ -55,9 +55,18 @@ class WebView extends BaseComponent {
 		});
 
 		this.$el.addEventListener('page-title-updated', event => {
-			const {title} = event;
+			const { title } = event;
 			this.badgeCount = this.getBadgeCount(title);
 			this.props.onTitleChange();
+		});
+
+		this.$el.addEventListener('page-favicon-updated', event => {
+			const { favicons } = event;
+			// This returns a string of favicons URL. If there is a PM counts in unread messages then the URL would be like
+			// https://chat.zulip.org/static/images/favicon/favicon-pms.png
+			if (favicons[0].indexOf('favicon-pms') > 0) {
+				app.dock.setBadge('●');
+			}
 		});
 
 		this.$el.addEventListener('dom-ready', () => {
@@ -68,7 +77,7 @@ class WebView extends BaseComponent {
 		});
 
 		this.$el.addEventListener('did-fail-load', event => {
-			const {errorDescription} = event;
+			const { errorDescription } = event;
 			const hasConnectivityErr = (SystemUtil.connectivityERR.indexOf(errorDescription) >= 0);
 			if (hasConnectivityErr) {
 				console.error('error', errorDescription);
