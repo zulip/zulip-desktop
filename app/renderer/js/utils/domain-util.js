@@ -166,7 +166,9 @@ class DomainUtil {
 					const data = JSON.parse(response.body);
 					if (data.hasOwnProperty('realm_icon') && data.realm_icon) {
 						resolve({
-							icon: data.realm_uri + data.realm_icon,
+							// Some Zulip Servers use absolute URL for server icon whereas others use relative URL
+							// Following check handles both the cases
+							icon: data.realm_icon.startsWith('/') ? data.realm_uri + data.realm_icon : data.realm_icon,
 							url: data.realm_uri,
 							alias: data.realm_name
 						});
