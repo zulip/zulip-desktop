@@ -76,12 +76,13 @@ class ServerManagerView {
 				this.initServer(servers[i], i);
 				DomainUtil.updateSavedServer(servers[i].url, i);
 				this.activateTab(i);
+				// console.log(this.activateTab)
 			}
-			this.activateTab(0);
+			// Open last active tab
+			this.activateTab(ConfigUtil.getConfigItem('lastActiveTab'));
 		} else {
 			this.openSettings('Servers');
 		}
-
 		ipcRenderer.send('local-shortcuts', true);
 	}
 
@@ -90,7 +91,7 @@ class ServerManagerView {
 			role: 'server',
 			icon: server.icon,
 			$root: this.$tabsContainer,
-			onClick: this.activateTab.bind(this, index),
+			onClick: this.activateLastTab.bind(this, index),
 			index,
 			onHover: this.onHover.bind(this, index, server.alias),
 			onHoverOut: this.onHoverOut.bind(this, index),
@@ -201,6 +202,13 @@ class ServerManagerView {
 		});
 	}
 
+	activateLastTab(index) {
+		// Open last active tab
+		ConfigUtil.setConfigItem('lastActiveTab', index);
+		// Open all the tabs in background
+		this.activateTab(index);
+	}
+
 	activateTab(index, hideOldTab = true) {
 		if (this.tabs[index].webview.loading) {
 			return;
@@ -254,6 +262,11 @@ class ServerManagerView {
 	}
 
 	reloadView() {
+		// Save and remember the index of last active tab so that we can use it later
+		const lastActiveTab = this.tabs[this.activeTabIndex].props.index;
+		ConfigUtil.setConfigItem('lastActiveTab', lastActiveTab);
+
+		// Destroy the current view and re-initiate it
 		this.destroyView();
 		this.initTabs();
 	}
@@ -308,7 +321,7 @@ class ServerManagerView {
 
 		ipcRenderer.on('open-about', this.openAbout.bind(this));
 
-		ipcRenderer.on('reload-viewer', this.reloadView.bind(this));
+		ipcRenderer.on('reload-viewer', this.reloadView.bind(this, this.tabs[this.activeTabIndex].props.index));
 
 		ipcRenderer.on('hard-reload', () => {
 			ipcRenderer.send('reload-full-app');
