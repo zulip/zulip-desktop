@@ -76,7 +76,6 @@ class ServerManagerView {
 				this.initServer(servers[i], i);
 				DomainUtil.updateSavedServer(servers[i].url, i);
 				this.activateTab(i);
-				// console.log(this.activateTab)
 			}
 			// Open last active tab
 			this.activateTab(ConfigUtil.getConfigItem('lastActiveTab'));
