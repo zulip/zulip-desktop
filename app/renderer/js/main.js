@@ -209,7 +209,7 @@ class ServerManagerView {
 	}
 
 	activateTab(index, hideOldTab = true) {
-		if (this.tabs[index].webview.loading) {
+		if (!this.tabs[index]) {
 			return;
 		}
 
