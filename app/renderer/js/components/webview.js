@@ -64,7 +64,8 @@ class WebView extends BaseComponent {
 			const { favicons } = event;
 			// This returns a string of favicons URL. If there is a PM counts in unread messages then the URL would be like
 			// https://chat.zulip.org/static/images/favicon/favicon-pms.png
-			if (favicons[0].indexOf('favicon-pms') > 0) {
+			if (favicons[0].indexOf('favicon-pms') > 0 && process.platform === 'darwin') {
+				// This api is only supported on macOS
 				app.dock.setBadge('●');
 			}
 		});
