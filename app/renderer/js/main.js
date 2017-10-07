@@ -21,6 +21,7 @@ class ServerManagerView {
 		this.$settingsButton = $actionsContainer.querySelector('#settings-action');
 		this.$webviewsContainer = document.getElementById('webviews-container');
 
+		this.$addServerTooltip = document.getElementById('add-server-tooltip');
 		this.$reloadTooltip = $actionsContainer.querySelector('#reload-tooltip');
 		this.$settingsTooltip = $actionsContainer.querySelector('#setting-tooltip');
 		this.$serverIconTooltip = document.getElementsByClassName('server-tooltip');
@@ -121,6 +122,7 @@ class ServerManagerView {
 			this.openSettings('General');
 		});
 
+		this.sidebarHoverEvent(this.$addServerButton, this.$addServerTooltip);
 		this.sidebarHoverEvent(this.$settingsButton, this.$settingsTooltip);
 		this.sidebarHoverEvent(this.$reloadButton, this.$reloadTooltip);
 	}
