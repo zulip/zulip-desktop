@@ -273,6 +273,7 @@ webview:focus {
     right: 68px;
 }
 
+#add-server-tooltip,
 .server-tooltip {
     font-family: 'arial';
     background: #222c31;
@@ -288,6 +289,7 @@ webview:focus {
     font-size: 14px;
 }
 
+#add-server-tooltip:after,
 .server-tooltip:after {
     content: " ";
     border-top: 8px solid transparent;
