@@ -1,9 +1,10 @@
 'use strict';
 const gulp = require('gulp');
-const mocha = require('gulp-mocha');
 const electron = require('electron-connect').server.create({
 	verbose: true
 });
+const tape = require('gulp-tape');
+const tapColorize = require('tap-colorize');
 
 gulp.task('dev', () => {
   // Start browser process
@@ -28,9 +29,11 @@ gulp.task('reload:renderer', done => {
 	done();
 });
 
-// Test app using mocha+spectron
 gulp.task('test', () => {
-	return gulp.src('tests/index.js').pipe(mocha());
+	return gulp.src('tests/*.js')
+	.pipe(tape({
+		reporter: tapColorize()
+	}));
 });
 
 gulp.task('default', ['dev', 'test']);
