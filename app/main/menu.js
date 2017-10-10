@@ -37,7 +37,7 @@ class AppMenu {
 			accelerator: 'CommandOrControl+R',
 			click(item, focusedWindow) {
 				if (focusedWindow) {
-					AppMenu.sendAction('reload-viewer');
+					AppMenu.sendAction('reload-current-viewer');
 				}
 			}
 		}, {

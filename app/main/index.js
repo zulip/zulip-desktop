@@ -127,7 +127,7 @@ function createMainWindow() {
 function registerLocalShortcuts(page) {
 	// Somehow, reload action cannot be overwritten by the menu item
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
-		page.send('reload-viewer');
+		page.send('reload-current-viewer');
 	});
 
 	// Also adding these shortcuts because some users might want to use it instead of CMD/Left-Right

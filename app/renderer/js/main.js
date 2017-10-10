@@ -272,6 +272,12 @@ class ServerManagerView {
 		this.initTabs();
 	}
 
+	// This will trigger when pressed CTRL/CMD + R [WIP]
+	// It won't reload the current view properly when you add/delete a server.
+	reloadCurrentView() {
+		this.$reloadButton.click();
+	}
+
 	updateBadge() {
 		let messageCountAll = 0;
 		for (let i = 0; i < this.tabs.length; i++) {
@@ -323,6 +329,8 @@ class ServerManagerView {
 		ipcRenderer.on('open-about', this.openAbout.bind(this));
 
 		ipcRenderer.on('reload-viewer', this.reloadView.bind(this, this.tabs[this.activeTabIndex].props.index));
+
+		ipcRenderer.on('reload-current-viewer', this.reloadCurrentView.bind(this));
 
 		ipcRenderer.on('hard-reload', () => {
 			ipcRenderer.send('reload-full-app');
