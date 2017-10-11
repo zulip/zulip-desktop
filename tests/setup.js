@@ -164,7 +164,6 @@ function resetTestDataDir () {
   appDataDir = getAppDataDir()
   rimraf.sync(config.TEST_DIR)
   rimraf.sync(appDataDir)
-  console.log('TEST SON OATH', path.join(__dirname, 'package.json'))
   rimraf.sync(path.join(__dirname, 'package.json'))
 }
 
