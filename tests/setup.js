@@ -24,11 +24,11 @@ module.exports = {
 // Returns a promise that resolves to a Spectron Application once the app has loaded.
 // Takes a Tape test. Makes some basic assertions to verify that the app loaded correctly.
 function createApp (t) {
+  console.log('TEST DIR IS', path.join(__dirname))
   return new Application({
     path: path.join(__dirname, '..', 'node_modules', '.bin',
       'electron' + (process.platform === 'win32' ? '.cmd' : '')),
-    // args: ['-r', path.join(__dirname, 'mocks.js'), path.join(__dirname, '..')],
-    args: [__dirname + '/../app/renderer/main.html'],
+    args: [path.join(__dirname)], // Ensure this dir has a package.json file with a 'main' entry piont
     env: {NODE_ENV: 'test'},
     waitTimeout: 10e3
   })
@@ -135,9 +135,23 @@ function compareIgnoringTransparency (bufActual, bufExpected) {
   return l2Distance < 5000 && rms < 100
 }
 
+function getAppDataDir () {
+  let base
+
+  if (process.platform === 'darwin') {
+    base = path.join(process.env.HOME, 'Library', 'Application Support')
+  } else if (process.platform === 'linux') {
+    base = process.env.XDG_CONFIG_HOME ? 
+      process.env.XDG_CONFIG_HOME : path.join(process.env.HOME, '.config')
+  }
+  return path.join(base, config.TEST_APP_PRODUCT_NAME)
+}
+
 // Resets the test directory, containing config.json, torrents, downloads, etc
 function resetTestDataDir () {
+  appDataDir = getAppDataDir()
   rimraf.sync(config.TEST_DIR)
+  rimraf.sync(appDataDir)
 }
 
 function deleteTestDataDir () {
