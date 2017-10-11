@@ -22,7 +22,7 @@
     "start": "electron app --disable-http-cache",
     "reinstall": "rm -rf node_modules; rm -rf app/node_modules; npm install",
     "postinstall": "electron-builder install-app-deps",
-    "test": "xo",
+    "test": "gulp test && xo",
     "dev": "gulp dev",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
