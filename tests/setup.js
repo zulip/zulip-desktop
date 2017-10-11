@@ -81,6 +81,9 @@ function endTest (app, t, err) {
 // If we already have a reference under test/screenshots, assert that they're the same
 // Otherwise, create the reference screenshot: test/screenshots/<platform>/<name>.png
 function screenshotCreateOrCompare (app, t, name) {
+  // Remove cursor from page before taking a screenshot
+  app.webContents.executeJavaScript('setImmediate(function blur() { document.activeElement.blur(); })')
+
   const ssDir = path.join(__dirname, 'screenshots', process.platform)
   const ssPath = path.join(ssDir, name + '.png')
   let ssBuf
