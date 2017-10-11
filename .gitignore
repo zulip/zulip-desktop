@@ -24,3 +24,6 @@ yarn-error.log*
 # miscellaneous
 .idea
 config.gypi
+
+# failed screenshot test files
+*-failed.png
