@@ -30,7 +30,6 @@
     "travis": "cd ./scripts && ./travis-build-test.sh"
   },
   "pre-commit": [
-    "test"
   ],
   "build": {
     "appId": "org.zulip.zulip-electron",
