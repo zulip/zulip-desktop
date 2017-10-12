@@ -7,4 +7,7 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
   sleep 3
 fi
 
+echo 'Screen Resolution:'
+xrandr | fgrep '*'
+
 npm run test
