@@ -8,6 +8,10 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 fi
 
 echo 'Screen Resolution:'
-xrandr | fgrep '*'
+xdpyinfo | grep dimensions
 
+
+echo 'Screen Resolution (xrandr):'
+xrandr | fgrep '*'
+exit
 npm run test
