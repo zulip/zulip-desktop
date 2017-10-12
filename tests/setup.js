@@ -83,6 +83,8 @@ function endTest (app, t, err) {
 function screenshotCreateOrCompare (app, t, name) {
   // Remove cursor from page before taking a screenshot
   app.webContents.executeJavaScript('setImmediate(function blur() { document.activeElement.blur(); })')
+  // const windowStateFile = require(path.join(getAppDataDir(), 'window-state.json'))
+  // console.log(JSON.stringify(windowStateFile, null, '  '))
 
   const ssDir = path.join(__dirname, 'screenshots', process.platform)
   const ssPath = path.join(ssDir, name + '.png')
@@ -172,7 +174,7 @@ function getAppDataDir () {
 function resetTestDataDir () {
   appDataDir = getAppDataDir()
   rimraf.sync(config.TEST_DIR)
-  rimraf.sync(appDataDir)
+  // rimraf.sync(appDataDir)
   rimraf.sync(path.join(__dirname, 'package.json'))
 }
 
