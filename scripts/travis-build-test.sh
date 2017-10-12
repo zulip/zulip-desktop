@@ -13,5 +13,5 @@ xdpyinfo | grep dimensions
 
 echo 'Screen Resolution (xrandr):'
 xrandr | fgrep '*'
-exit
+
 npm run test
