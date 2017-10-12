@@ -59,8 +59,8 @@ function createMainWindow() {
 		// This settings needs to be saved in config
 		title: 'Zulip',
 		icon: iconPath(),
-		x: 50, //mainWindowState.x,
-		y: 50, //mainWindowState.y,
+		x: 50, // mainWindowState.x,
+		y: 50, // mainWindowState.y,
 		width: 1000, // mainWindowState.width,
 		height: 600, // mainWindowState.height,
 		minWidth: 600,
@@ -74,7 +74,6 @@ function createMainWindow() {
 	});
 
 	win.on('focus', () => {
-		console.log(mainWindowState)
 		win.webContents.send('focus');
 	});
 
