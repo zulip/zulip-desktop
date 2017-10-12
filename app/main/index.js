@@ -49,7 +49,7 @@ function createMainWindow() {
 	// Load the previous state with fallback to defaults
 	const mainWindowState = windowStateKeeper({
 		defaultWidth: 1000,
-		defaultHeight: 300
+		defaultHeight: 325
 	});
 
 	// Let's keep the window position global so that we can access it in other process
