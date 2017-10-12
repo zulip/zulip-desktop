@@ -106,8 +106,7 @@ function screenshotCreateOrCompare (app, t, name) {
         const ssFailedPath = path.join(ssDir, name + '-failed.png')
         console.log('Saving screenshot, failed comparison: ' + ssFailedPath)
         fs.writeFileSync(ssFailedPath, buffer)
-        const b64failureImage = fs.readFileSync(ssFailedPath, 'base64')
-        console.log('Failed Image:', b64failureImage)
+        console.log('Failed Image:', buffer.toString('base64'))
       }
     }
   })
