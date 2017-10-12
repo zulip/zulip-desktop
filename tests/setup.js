@@ -122,7 +122,12 @@ function compareIgnoringTransparency (bufActual, bufExpected) {
   let numDiff = 0
   const pngA = PNG.sync.read(bufActual)
   const pngE = PNG.sync.read(bufExpected)
-  if (pngA.width !== pngE.width || pngA.height !== pngE.height) return false
+  if (pngA.width !== pngE.width || pngA.height !== pngE.height) {
+    console.log('Screenshot W x H dim comparison failed')
+    console.log('Expected png width:', pngE.width, 'height:', pngE.height)
+    console.log('Actual png width:', pngA.width, 'height:', pngA.height)
+    return false
+  }
   const w = pngA.width
   const h = pngE.height
   const da = pngA.data
