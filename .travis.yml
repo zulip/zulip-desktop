@@ -18,8 +18,9 @@ node_js:
 - '6'
 
 before_install:
-- npm install -g gulp
-- npm install
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- +extension RANDR :99 -ac -screen 0 1280x1024x16"
+  - npm install -g gulp
+  - npm install
 
 cache:
   directories:
