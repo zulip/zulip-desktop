@@ -64,7 +64,7 @@ function createMainWindow() {
 		width: mainWindowState.width,
 		height: mainWindowState.height,
 		minWidth: 600,
-		minHeight: 500,
+		minHeight: 200,
 		webPreferences: {
 			plugins: true,
 			allowDisplayingInsecureContent: true,
