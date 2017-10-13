@@ -59,12 +59,12 @@ function createMainWindow() {
 		// This settings needs to be saved in config
 		title: 'Zulip',
 		icon: iconPath(),
-		x: 50, // mainWindowState.x,
-		y: 50, // mainWindowState.y,
-		width: 1000, // mainWindowState.width,
-		height: 600, // mainWindowState.height,
+		x: mainWindowState.x,
+		y: mainWindowState.y,
+		width: mainWindowState.width,
+		height: mainWindowState.height,
 		minWidth: 600,
-		minHeight: 200,
+		minHeight: 500,
 		webPreferences: {
 			plugins: true,
 			allowDisplayingInsecureContent: true,
