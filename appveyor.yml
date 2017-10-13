@@ -1,23 +1,15 @@
-version: build{build}
+environment:
+  nodejs_version: "6"
 
-platform:
-  - x64
-os: Previous Visual Studio 2015
-
-cache:
-  - node_modules
-  
 install:
-  - ps: Install-Product node 6 x64
-  - git reset --hard HEAD
-  - npm install npm -g
-  - node --version
-  - npm --version
-  - python --version
+  - ps: Install-Product node $env:nodejs_version
   - npm install
-  - npm install -g gulp
-
-build: off  
 
 test_script:
-  - npm run test
+  # Output useful info for debugging.
+  - node --version
+  - npm --version
+  - npm run tests
+
+# Don't actually build.
+build: off
