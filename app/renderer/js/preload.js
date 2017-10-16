@@ -2,6 +2,9 @@
 
 const { ipcRenderer } = require('electron');
 const { spellChecker } = require('./spellchecker');
+
+const ConfigUtil = require(__dirname + '/utils/config-util.js');
+
 // eslint-disable-next-line import/no-unassigned-import
 require('./notification');
 
@@ -32,8 +35,15 @@ process.once('loaded', () => {
 
 // To prevent failing this script on linux we need to load it after the document loaded
 document.addEventListener('DOMContentLoaded', () => {
-	// Init spellchecker
-	spellChecker();
+	// Get the default language of the server
+	const serverLanguage = page_params.default_language; // eslint-disable-line no-undef, camelcase
+
+	if (serverLanguage) {
+		// Set spellcheker language
+		ConfigUtil.setConfigItem('spellcheckerLanguage', serverLanguage);
+		// Init spellchecker
+		spellChecker();
+	}
 
 	// redirect users to network troubleshooting page
 	const getRestartButton = document.querySelector('.restart_get_events_button');
