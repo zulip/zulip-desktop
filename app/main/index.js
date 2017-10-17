@@ -47,24 +47,26 @@ const iconPath = () => {
 
 function createMainWindow() {
 	// Load the previous state with fallback to defaults
-	const mainWindowState = windowStateKeeper({
-		defaultWidth: 1000,
-		defaultHeight: 600
-	});
+	// const mainWindowState = windowStateKeeper({
+	// 	defaultWidth: 1000,
+	// 	defaultHeight: 600
+	// });
 
 	// Let's keep the window position global so that we can access it in other process
-	global.mainWindowState = mainWindowState;
+	// global.mainWindowState = mainWindowState;
 
 	const win = new electron.BrowserWindow({
 		// This settings needs to be saved in config
 		title: 'Zulip',
 		icon: iconPath(),
-		x: mainWindowState.x,
-		y: mainWindowState.y,
-		width: mainWindowState.width,
-		height: mainWindowState.height,
-		minWidth: 600,
-		minHeight: 500,
+		// x: mainWindowState.x,
+		// y: mainWindowState.y,
+		// width: mainWindowState.width,
+		// height: mainWindowState.height,
+		// minWidth: 600,
+		// minHeight: 500,
+		width: 1000,
+		height: 600,
 		webPreferences: {
 			plugins: true,
 			allowDisplayingInsecureContent: true,
@@ -119,7 +121,7 @@ function createMainWindow() {
 	// Let us register listeners on the window, so we can update the state
 	// automatically (the listeners will be removed when the window is closed)
 	// and restore the maximized or full screen state
-	mainWindowState.manage(win);
+	// mainWindowState.manage(win);
 
 	return win;
 }
@@ -196,7 +198,7 @@ app.on('ready', () => {
 	});
 
 	ipcMain.on('clear-app-settings', () => {
-		global.mainWindowState.unmanage(mainWindow);
+		// global.mainWindowState.unmanage(mainWindow);
 		app.relaunch();
 		app.exit();
 	});
