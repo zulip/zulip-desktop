@@ -1,7 +1,7 @@
 'use strict';
 
 const { ipcRenderer } = require('electron');
-const { spellChecker } = require('./spellchecker');
+const SetupSpellChecker = require('./spellchecker');
 
 const ConfigUtil = require(__dirname + '/utils/config-util.js');
 
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		// Set spellcheker language
 		ConfigUtil.setConfigItem('spellcheckerLanguage', serverLanguage);
 		// Init spellchecker
-		spellChecker();
+		SetupSpellChecker.init();
 	}
 
 	// redirect users to network troubleshooting page
@@ -53,3 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	}
 });
+
+// Clean up spellchecker events after you navigate away from this page;
+// otherwise, you may experience errors
+window.addEventListener('beforeunload', () => {
+	SetupSpellChecker.unsubscribeSpellChecker();
+});
+
