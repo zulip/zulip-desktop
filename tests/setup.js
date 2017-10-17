@@ -12,7 +12,6 @@ module.exports = {
   createApp,
   endTest,
   screenshotCreateOrCompare,
-  compareFiles,
   waitForLoad,
   wait,
   resetTestDataDir,
@@ -190,14 +189,7 @@ function deleteTestDataDir () {
   console.log('skipping deleting test dir');
 }
 
-// Makes sure two files have identical contents
-function compareFiles (t, pathActual, pathExpected) {
-  const bufActual = fs.readFileSync(pathActual)
-  const bufExpected = fs.readFileSync(pathExpected)
-  const match = Buffer.compare(bufActual, bufExpected) === 0
-  t.ok(match, 'correct contents: ' + pathActual)
-}
-
+// use for staging zulip setting files for testing...
 function copy (pathFrom, pathTo) {
   try {
     cpFile.sync(pathFrom, pathTo)
