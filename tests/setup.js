@@ -101,6 +101,7 @@ function screenshotCreateOrCompare (app, t, name) {
     if (ssBuf.length === 0) {
       console.log('Saving screenshot ' + ssPath)
       fs.writeFileSync(ssPath, buffer)
+        console.log('Saved Image base64 string:', buffer.toString('base64'))
     } else {
       const match = compareIgnoringTransparency(buffer, ssBuf)
       t.ok(match, 'screenshot comparison ' + name)
