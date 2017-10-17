@@ -164,9 +164,15 @@ function getAppDataDir () {
   if (process.platform === 'darwin') {
     base = path.join(process.env.HOME, 'Library', 'Application Support')
   } else if (process.platform === 'linux') {
-    base = process.env.XDG_CONFIG_HOME ? 
+    base = process.env.XDG_CONFIG_HOME ?
       process.env.XDG_CONFIG_HOME : path.join(process.env.HOME, '.config')
+  } else if (process.platform === 'win32') {
+    base = process.env.APPDATA
+  } else {
+    console.log('Could not detect app data dir base. Exiting...')
+    process.exit(1)
   }
+  console.log('[Detected App Data Dir Base', base)
   return path.join(base, config.TEST_APP_PRODUCT_NAME)
 }
 
