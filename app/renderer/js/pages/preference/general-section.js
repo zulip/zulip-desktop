@@ -57,6 +57,10 @@ class GeneralSection extends BaseSection {
 						<div class="setting-description">Start app at login</div>
 						<div class="setting-control"></div>
 					</div>
+					<div class="setting-row" id="enable-spellchecker-option">
+					<div class="setting-description">Enable Spellchecker (requires restart)</div>
+					<div class="setting-control"></div>
+				</div>
 				</div>
 				<div class="title">Reset Application Data</div>
                 <div class="settings-card">
@@ -80,6 +84,7 @@ class GeneralSection extends BaseSection {
 		this.updateStartAtLoginOption();
 		this.updateResetDataOption();
 		this.showDesktopNotification();
+		this.enableSpellchecker();
 	}
 
 	updateTrayOption() {
@@ -166,6 +171,18 @@ class GeneralSection extends BaseSection {
 				ConfigUtil.setConfigItem('startAtLogin', newValue);
 				ipcRenderer.send('toggleAutoLauncher', newValue);
 				this.updateStartAtLoginOption();
+			}
+		});
+	}
+
+	enableSpellchecker() {
+		this.generateSettingOption({
+			$element: document.querySelector('#enable-spellchecker-option .setting-control'),
+			value: ConfigUtil.getConfigItem('enableSpellchecker', true),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('enableSpellchecker');
+				ConfigUtil.setConfigItem('enableSpellchecker', newValue);
+				this.enableSpellchecker();
 			}
 		});
 	}

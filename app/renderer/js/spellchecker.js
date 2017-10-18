@@ -6,7 +6,9 @@ const ConfigUtil = require(__dirname + '/utils/config-util.js');
 
 class SetupSpellChecker {
 	init() {
-		this.enableSpellChecker();
+		if (ConfigUtil.getConfigItem('enableSpellchecker')) {
+			this.enableSpellChecker();
+		}
 		this.enableContextMenu();
 	}
 
@@ -45,7 +47,9 @@ class SetupSpellChecker {
 		if (this.SpellCheckHandler) {
 			this.SpellCheckHandler.unsubscribe();
 		}
-		this.contextMenuListener.unsubscribe();
+		if (this.contextMenuListener) {
+			this.contextMenuListener.unsubscribe();
+		}
 	}
 }
 
