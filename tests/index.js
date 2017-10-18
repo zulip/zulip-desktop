@@ -12,4 +12,4 @@ test('app runs', function (t) {
     .then(() => setup.resetTestDataDir()) 
 })
 
-require('./test-add-organization')
+// require('./test-add-organization')
