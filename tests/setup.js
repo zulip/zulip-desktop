@@ -50,7 +50,7 @@ function waitForLoad (app, t, opts) {
     return app.client.waitUntilWindowLoaded()
   })
   .then(function() {
-      return app.client.pause(2000);
+    return app.client.pause(2000);
   })
   .then(function () {
     return app.webContents.getTitle()
