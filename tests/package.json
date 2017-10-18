@@ -106,6 +106,7 @@
  ],
  "devDependencies": {
   "assert": "1.4.1",
+  "cp-file": "^5.0.0",
   "devtron": "1.4.0",
   "electron": "1.6.14",
   "electron-builder": "19.29.1",
@@ -114,6 +115,7 @@
   "gulp-mocha": "4.3.1",
   "gulp-shell": "^0.6.3",
   "gulp-tape": "0.0.9",
+  "pngjs": "^3.0.0",
   "pre-commit": "1.2.2",
   "spectron": "3.7.2",
   "tap-colorize": "^1.2.0",
@@ -159,9 +161,5 @@
    "browser",
    "mocha"
   ]
- },
- "dependencies": {
-  "cp-file": "^5.0.0",
-  "pngjs": "^3.0.0"
  }
 }
