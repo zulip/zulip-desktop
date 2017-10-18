@@ -29,7 +29,7 @@ gulp.task('reload:renderer', done => {
 	done();
 });
 
-gulp.task('test', () => {
+gulp.task('test-e2e', () => {
 	return gulp.src('tests/*.js')
 	// Ignore return gulp.src('tests/index.js')
 	.pipe(tape({
@@ -37,4 +37,4 @@ gulp.task('test', () => {
 	}));
 });
 
-gulp.task('default', ['dev', 'test']);
+gulp.task('default', ['dev', 'test-e2e']);

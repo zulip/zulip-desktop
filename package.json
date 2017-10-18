@@ -22,14 +22,17 @@
     "start": "electron app --disable-http-cache",
     "reinstall": "rm -rf node_modules; rm -rf app/node_modules; npm install",
     "postinstall": "electron-builder install-app-deps",
-    "test": "gulp test && xo",
+    "test": "xo",
+    "test-e2e": "gulp test-e2e",
     "dev": "gulp dev",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "mas": "electron-builder --mac mas",
     "travis": "cd ./scripts && ./travis-build-test.sh"
   },
-  "pre-commit": [],
+  "pre-commit": [
+    "test"
+  ],
   "build": {
     "appId": "org.zulip.zulip-electron",
     "asar": true,
