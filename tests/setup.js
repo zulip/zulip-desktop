@@ -118,6 +118,7 @@ function screenshotCreateOrCompare (app, t, name) {
 
 // Compares two PNGs, ignoring any transparent regions in bufExpected.
 // Returns true if they match.
+// Credit to WebTorrent-desktop project for this img compare method
 function compareIgnoringTransparency (bufActual, bufExpected) {
   // Common case: exact byte-for-byte match
   if (Buffer.compare(bufActual, bufExpected) === 0) return true
