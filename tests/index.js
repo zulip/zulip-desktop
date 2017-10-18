@@ -9,5 +9,4 @@ test('app runs', function (t) {
     .then(() => setup.screenshotCreateOrCompare(app, t, 'app-basic'))
     .then(() => setup.endTest(app, t),
           (err) => setup.endTest(app, t, err || 'error'))
-    .then(() => setup.resetTestDataDir()) 
 })

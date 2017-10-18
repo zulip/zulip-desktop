@@ -12,7 +12,6 @@ test('add-organization', function (t) {
     .then(() => setup.wait(5000))
     .then(() => app.client.windowByIndex(0)) // Switch focus back to main win
     .then(() => setup.screenshotCreateOrCompare(app, t, 'add-organization'))
-    .then(() => setup.resetTestDataDir()) 
     .then(() => setup.endTest(app, t),
           (err) => setup.endTest(app, t, err || 'error'))
 })
