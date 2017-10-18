@@ -29,8 +29,7 @@
     "mas": "electron-builder --mac mas",
     "travis": "cd ./scripts && ./travis-build-test.sh"
   },
-  "pre-commit": [
-  ],
+  "pre-commit": [],
   "build": {
     "appId": "org.zulip.zulip-electron",
     "asar": true,
