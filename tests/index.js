@@ -1,8 +1,6 @@
 const test = require('tape')
 const setup = require('./setup')
 
-test.onFinish(setup.deleteTestDataDir)
-
 test('app runs', function (t) {
   t.timeoutAfter(10e3)
   setup.resetTestDataDir()

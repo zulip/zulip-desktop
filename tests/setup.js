@@ -14,9 +14,7 @@ module.exports = {
   screenshotCreateOrCompare,
   waitForLoad,
   wait,
-  resetTestDataDir,
-  deleteTestDataDir,
-  copy
+  resetTestDataDir
 }
 
 // Runs Zulip Desktop.
@@ -82,8 +80,6 @@ function endTest (app, t, err) {
 function screenshotCreateOrCompare (app, t, name) {
   // Remove cursor from page before taking a screenshot
   app.webContents.executeJavaScript('setImmediate(function blur() { document.activeElement.blur(); })')
-  // const windowStateFile = require(path.join(getAppDataDir(), 'window-state.json'))
-  // console.log(JSON.stringify(windowStateFile, null, '  '))
 
   const ssDir = path.join(__dirname, 'screenshots', process.platform)
   const ssPath = path.join(ssDir, name + '.png')
@@ -100,7 +96,7 @@ function screenshotCreateOrCompare (app, t, name) {
     if (ssBuf.length === 0) {
       console.log('Saving screenshot ' + ssPath)
       fs.writeFileSync(ssPath, buffer)
-        console.log('Saved Image base64 string:', buffer.toString('base64'))
+      console.log('Screenshot Image as base64 string:', buffer.toString('base64'))
     } else {
       const match = compareIgnoringTransparency(buffer, ssBuf)
       t.ok(match, 'screenshot comparison ' + name)
@@ -176,28 +172,9 @@ function getAppDataDir () {
   return path.join(base, config.TEST_APP_PRODUCT_NAME)
 }
 
-// Resets the test directory, containing config.json, torrents, downloads, etc
+// Resets the test directory, containing domain.json, window-state.json, etc
 function resetTestDataDir () {
   appDataDir = getAppDataDir()
-  rimraf.sync(config.TEST_DIR)
-  // rimraf.sync(appDataDir)
+  rimraf.sync(appDataDir)
   rimraf.sync(path.join(__dirname, 'package.json'))
-}
-
-function deleteTestDataDir () {
-  // rimraf.sync(config.TEST_DIR)
-  console.log('skipping deleting test dir');
-}
-
-// use for staging zulip setting files for testing...
-function copy (pathFrom, pathTo) {
-  try {
-    cpFile.sync(pathFrom, pathTo)
-  } catch (err) {
-    // Windows lets us create files and folders under C:\Windows\Temp,
-    // but when you try to `copySync` into one of those folders, you get EPERM
-    // Ignore for now...
-    if (process.platform !== 'win32' || err.code !== 'EPERM') throw err
-    console.log('ignoring windows copy EPERM error', err)
-  }
 }
