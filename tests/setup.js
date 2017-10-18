@@ -78,9 +78,14 @@ function endTest (app, t, err) {
 // If we already have a reference under test/screenshots, assert that they're the same
 // Otherwise, create the reference screenshot: test/screenshots/<platform>/<name>.png
 function screenshotCreateOrCompare (app, t, name) {
-  // Remove cursor from page before taking a screenshot
-  app.webContents.executeJavaScript('setImmediate(function blur() { document.activeElement.blur(); })')
+  // Prep view for screenshot. Remove blinking cursor and auto-hiding scrollbars
+  // to ensure screen shots will be consistent across different OSs
+  const jsToRemoveScrollbars = "_webviews=document.querySelectorAll('webview');_webviews.forEach((w)=>w.insertCSS('::-webkit-scrollbar { display: none; }'))"
+  app.webContents.executeJavaScript(jsToRemoveScrollbars)
 
+  // Remove cursor from page before taking a screenshot
+  const jsToRemoveBlinkingCursor = 'setImmediate(function blur() { document.activeElement.blur(); })'
+  app.webContents.executeJavaScript(jsToRemoveBlinkingCursor)
 
   const ssDir = path.join(__dirname, 'screenshots', process.platform)
   const ssPath = path.join(ssDir, name + '.png')

@@ -11,5 +11,3 @@ test('app runs', function (t) {
           (err) => setup.endTest(app, t, err || 'error'))
     .then(() => setup.resetTestDataDir()) 
 })
-
-// require('./test-add-organization')
