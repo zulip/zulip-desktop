@@ -104,8 +104,6 @@
   ],
   "devDependencies": {
     "assert": "1.4.1",
-    "chai": "4.1.1",
-    "chai-as-promised": "7.1.1",
     "devtron": "1.4.0",
     "electron": "1.6.14",
     "electron-builder": "19.29.1",
