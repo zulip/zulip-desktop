@@ -30,7 +30,7 @@ gulp.task('reload:renderer', done => {
 });
 
 gulp.task('test', () => {
-	return gulp.src('tests/*.js')
+	return gulp.src('tests/index.js')
 	.pipe(tape({
 		reporter: tapColorize()
 	}));

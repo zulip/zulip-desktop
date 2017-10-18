@@ -81,6 +81,7 @@ function screenshotCreateOrCompare (app, t, name) {
   // Remove cursor from page before taking a screenshot
   app.webContents.executeJavaScript('setImmediate(function blur() { document.activeElement.blur(); })')
 
+
   const ssDir = path.join(__dirname, 'screenshots', process.platform)
   const ssPath = path.join(ssDir, name + '.png')
   let ssBuf
