@@ -172,7 +172,7 @@ function getAppDataDir () {
     console.log('Could not detect app data dir base. Exiting...')
     process.exit(1)
   }
-  console.log('[Detected App Data Dir Base', base)
+  console.log('Detected App Data Dir base:', base)
   return path.join(base, config.TEST_APP_PRODUCT_NAME)
 }
 
