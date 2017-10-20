@@ -110,8 +110,10 @@ class DomainUtil {
 		return new Promise((resolve, reject) => {
 			request(checkDomain, (error, response) => {
 				const certsError =
-					['Error: self signed certificate',
-						'Error: unable to verify the first certificate'
+					[
+						'Error: self signed certificate',
+						'Error: unable to verify the first certificate',
+						'Error: unable to get local issuer certificate'
 					];
 				if (!error && response.statusCode !== 404) {
 					// Correct
