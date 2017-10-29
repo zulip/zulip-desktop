@@ -86,8 +86,8 @@ function screenshotCreateOrCompare (app, t, name) {
   app.webContents.executeJavaScript(jsToRemoveScrollbars)
 
   // Remove cursor from page before taking a screenshot
-  const jsToRemoveBlinkingCursor = 'setImmediate(function blur() { document.activeElement.blur(); })'
-  app.webContents.executeJavaScript(jsToRemoveBlinkingCursor)
+  // const jsToRemoveBlinkingCursor = 'setImmediate(function blur() { document.activeElement.blur(); })'
+  // app.webContents.executeJavaScript(jsToRemoveBlinkingCursor)
 
   const ssDir = path.join(__dirname, 'screenshots', process.platform)
   const ssPath = path.join(ssDir, name + '.png')
@@ -114,7 +114,7 @@ function screenshotCreateOrCompare (app, t, name) {
         console.log('Screenshot Image as base64 string:', buffer.toString('base64'))
       }
     } else {
-      looksSame(ssBuf, buffer, function (error, match) {
+      looksSame(ssBuf, buffer, {ignoreCaret: true}, function (error, match) {
         console.log('PNG ERRRR', error)
         t.ok(match, 'screenshot comparison ' + name)
         if (!match) {
@@ -135,12 +135,12 @@ function screenshotCreateOrCompare (app, t, name) {
         //     reference: ssBuf,
         //     current: buffer,
         //     // diff: '/path/to/save/diff/to.png',
+        //     diff: path.join(ssDir, name + '-diff.png'),
         //     highlightColor: '#ff00ff', //color to highlight the differences 
         //     strict: false,//strict comparsion 
         //     tolerance: 2.3
-        // }, function(error, diffBuf) {
-        //   console.log('Diff image', diffBuf.toString('base64'))
-        // });
+        // }, function(error) {
+        // })
         }
       })
     }
