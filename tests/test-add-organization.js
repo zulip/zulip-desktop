@@ -2,7 +2,7 @@ const test = require('tape')
 const setup = require('./setup')
 
 test('add-organization', function (t) {
-  t.timeoutAfter(30e3)
+  t.timeoutAfter(50e3)
   setup.resetTestDataDir()
   const app = setup.createApp()
   setup.waitForLoad(app, t)
