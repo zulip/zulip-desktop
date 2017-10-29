@@ -25,5 +25,6 @@ yarn-error.log*
 .idea
 config.gypi
 
-# failed screenshot test files
+# Test generated files
 *-failed.png
+tests/package.json
