@@ -163,5 +163,8 @@
       "browser",
       "mocha"
     ]
+  },
+  "dependencies": {
+    "resemblejs": "^2.2.6"
   }
 }
