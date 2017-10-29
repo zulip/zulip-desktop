@@ -83,7 +83,11 @@ function screenshotCreateOrCompare (app, t, name) {
   // Prep view for screenshot. Remove blinking cursor and auto-hiding scrollbars
   // to ensure screen shots will be consistent across different OSs
   const jsToRemoveScrollbars = "_webviews=document.querySelectorAll('webview');_webviews.forEach((w)=>w.insertCSS('::-webkit-scrollbar { display: none; }'))"
-  app.webContents.executeJavaScript(jsToRemoveScrollbars)
+  const jsToScrollToBottomOfPage = 'window.scrollTo(0,document.body.scrollHeight);'
+  // console.log(
+  //   'exec js is',
+  //   // app.webContents.executeJavaScript(jsToScrollToBottomOfPage + jsToRemoveScrollbars)
+  // )
 
   // Remove cursor from page before taking a screenshot
   // const jsToRemoveBlinkingCursor = 'setImmediate(function blur() { document.activeElement.blur(); })'
@@ -98,7 +102,10 @@ function screenshotCreateOrCompare (app, t, name) {
   } catch (err) {
     ssBuf = Buffer.alloc(0)
   }
-  return wait().then(function () {
+  return app
+    .webContents
+    .executeJavaScript(jsToScrollToBottomOfPage + jsToRemoveScrollbars)
+    .then(function () {
     return app.browserWindow.capturePage()
   }).then(function (buffer) {
     if (ssBuf.length === 0) {
@@ -134,11 +141,11 @@ function screenshotCreateOrCompare (app, t, name) {
         //   looksSame.createDiff({
         //     reference: ssBuf,
         //     current: buffer,
-        //     // diff: '/path/to/save/diff/to.png',
+        //     ignoreCaret: true,
         //     diff: path.join(ssDir, name + '-diff.png'),
         //     highlightColor: '#ff00ff', //color to highlight the differences 
-        //     strict: false,//strict comparsion 
-        //     tolerance: 2.3
+        //     strict: false, //strict comparsion 
+        //     tolerance: 4
         // }, function(error) {
         // })
         }
