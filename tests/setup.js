@@ -1,6 +1,8 @@
 const Application = require('spectron').Application
 const cpFile = require('cp-file')
 const fs = require('fs')
+const isCI = require('is-ci')
+const looksSame = require('looks-same')
 const mkdirp = require('mkdirp')
 const path = require('path')
 const PNG = require('pngjs').PNG
@@ -102,63 +104,47 @@ function screenshotCreateOrCompare (app, t, name) {
     if (ssBuf.length === 0) {
       console.log('Saving screenshot ' + ssPath)
       fs.writeFileSync(ssPath, buffer)
-      console.log('Screenshot Image as base64 string:', buffer.toString('base64'))
-    } else {
-      const match = compareIgnoringTransparency(buffer, ssBuf)
-      t.ok(match, 'screenshot comparison ' + name)
-      if (!match) {
-        const ssFailedPath = path.join(ssDir, name + '-failed.png')
-        console.log('Saving screenshot, failed comparison: ' + ssFailedPath)
-        fs.writeFileSync(ssFailedPath, buffer)
-        console.log('Failed Image:', buffer.toString('base64'))
+
+      /**
+       * If you don't have a base screenshot nor the dev environment for a specific platform
+       * then you can log the image base64 string, copy and save it as an image locally on your
+       * machine in order to generate base images for a test for specific platform
+       */
+      if(isCI) {
+        console.log('Screenshot Image as base64 string:', buffer.toString('base64'))
       }
+    } else {
+      looksSame(ssBuf, buffer, function (error, match) {
+        console.log('PNG ERRRR', error)
+        t.ok(match, 'screenshot comparison ' + name)
+        if (!match) {
+          console.log()
+          
+          if (isCI) {
+            console.log('Failed image base64 as string:', buffer.toString('base64'))
+          } else {
+            const ssFailedPath = path.join(ssDir, name + '-failed.png')
+            console.log('Saving screenshot, failed comparison: ' + ssFailedPath)
+            fs.writeFileSync(ssFailedPath, buffer)
+          }
+        /**
+         * Uncomment lines below to get screenshot diff between -failed and saved image
+         * https://github.com/gemini-testing/looks-same#building-diff-image
+         */
+        //   looksSame.createDiff({
+        //     reference: ssBuf,
+        //     current: buffer,
+        //     // diff: '/path/to/save/diff/to.png',
+        //     highlightColor: '#ff00ff', //color to highlight the differences 
+        //     strict: false,//strict comparsion 
+        //     tolerance: 2.3
+        // }, function(error, diffBuf) {
+        //   console.log('Diff image', diffBuf.toString('base64'))
+        // });
+        }
+      })
     }
   })
-}
-
-// Compares two PNGs, ignoring any transparent regions in bufExpected.
-// Returns true if they match.
-// Credit to WebTorrent-desktop project for this img compare method
-function compareIgnoringTransparency (bufActual, bufExpected) {
-  // Common case: exact byte-for-byte match
-  if (Buffer.compare(bufActual, bufExpected) === 0) return true
-
-  // Otherwise, compare pixel by pixel
-  let sumSquareDiff = 0
-  let numDiff = 0
-  const pngA = PNG.sync.read(bufActual)
-  const pngE = PNG.sync.read(bufExpected)
-  if (pngA.width !== pngE.width || pngA.height !== pngE.height) {
-    console.log('Screenshot W x H dim comparison failed')
-    console.log('Expected png width:', pngE.width, 'height:', pngE.height)
-    console.log('Actual png width:', pngA.width, 'height:', pngA.height)
-    return false
-  }
-  const w = pngA.width
-  const h = pngE.height
-  const da = pngA.data
-  const de = pngE.data
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
-      const i = ((y * w) + x) * 4
-      if (de[i + 3] === 0) continue // Skip transparent pixels
-      const ca = (da[i] << 16) | (da[i + 1] << 8) | da[i + 2]
-      const ce = (de[i] << 16) | (de[i + 1] << 8) | de[i + 2]
-      if (ca === ce) continue
-
-      // Add pixel diff to running sum
-      // This is necessary on Windows, where rendering apparently isn't quite deterministic
-      // and a few pixels in the screenshot will sometimes be off by 1. (Visually identical.)
-      numDiff++
-      sumSquareDiff += (da[i] - de[i]) * (da[i] - de[i])
-      sumSquareDiff += (da[i + 1] - de[i + 1]) * (da[i + 1] - de[i + 1])
-      sumSquareDiff += (da[i + 2] - de[i + 2]) * (da[i + 2] - de[i + 2])
-    }
-  }
-  const rms = Math.sqrt(sumSquareDiff / (numDiff + 1))
-  const l2Distance = Math.round(Math.sqrt(sumSquareDiff))
-  console.log('screenshot diff l2 distance: ' + l2Distance + ', rms: ' + rms)
-  return l2Distance < 5000 && rms < 100
 }
 
 function getAppDataDir () {
