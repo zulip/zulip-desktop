@@ -23,6 +23,7 @@
     "reinstall": "rm -rf node_modules; rm -rf app/node_modules; npm install",
     "postinstall": "electron-builder install-app-deps",
     "test": "xo",
+    "test-e2e": "gulp test-e2e",
     "dev": "gulp dev",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
@@ -105,17 +106,24 @@
   ],
   "devDependencies": {
     "assert": "1.4.1",
+    "cp-file": "^5.0.0",
     "devtron": "1.4.0",
-    "electron-builder": "19.29.1",
     "electron": "1.6.14",
+    "electron-builder": "19.29.1",
     "electron-connect": "0.6.2",
     "gulp": "3.9.1",
     "gulp-mocha": "4.3.1",
-    "chai-as-promised": "7.1.1",
-    "chai": "4.1.1",
+    "gulp-shell": "^0.6.3",
+    "gulp-tape": "0.0.9",
+    "is-ci": "^1.0.10",
+    "looks-same": "^3.2.1",
+    "pngjs": "^3.0.0",
+    "pre-commit": "1.2.2",
     "spectron": "3.7.2",
-    "xo": "0.18.2",
-    "pre-commit": "1.2.2"
+    "tap-colorize": "^1.2.0",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.8.0",
+    "xo": "0.18.2"
   },
   "xo": {
     "parserOptions": {
@@ -155,5 +163,8 @@
       "browser",
       "mocha"
     ]
+  },
+  "dependencies": {
+    "resemblejs": "^2.2.6"
   }
 }

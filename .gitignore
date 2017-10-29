@@ -24,3 +24,7 @@ yarn-error.log*
 # miscellaneous
 .idea
 config.gypi
+
+# Test generated files
+*-failed.png
+tests/package.json
