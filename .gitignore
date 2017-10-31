@@ -24,3 +24,5 @@ yarn-error.log*
 # miscellaneous
 .idea
 config.gypi
+.python-version
+
