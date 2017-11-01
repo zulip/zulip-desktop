@@ -154,7 +154,9 @@ class DomainUtil {
 						});
 					}
 				} else {
-					reject('Not a valid Zulip server');
+					const invalidZulipServerError = `${domain} does not appear to be a valid Zulip server. Make sure that \
+					(1) you can connect to that URL in a web browser and \n (2) if you need a proxy to connect to the Internet, that you've configured your proxy in the Network settings`;
+					reject(invalidZulipServerError);
 				}
 			});
 		});
