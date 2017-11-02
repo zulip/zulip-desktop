@@ -33,7 +33,7 @@ class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="flash-taskbar-option" style= "display:${process.platform === 'win32' ? '' : 'none'}">
-						<div class="setting-description">Flash taskbar on New message</div>
+						<div class="setting-description">Flash taskbar on new message</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>
