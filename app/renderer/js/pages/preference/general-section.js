@@ -29,9 +29,13 @@ class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="badge-option">
-					<div class="setting-description">Show app unread badge</div>
-					<div class="setting-control"></div>
-				</div>
+						<div class="setting-description">Show app unread badge</div>
+						<div class="setting-control"></div>
+					</div>
+					<div class="setting-row" id="flash-taskbar-option">
+						<div class="setting-description">Flash taskbar on New message</div>
+						<div class="setting-control"></div>
+					</div>
 				</div>
 				<div class="title">Desktop Notification</div>
 				<div class="settings-card">
@@ -78,6 +82,7 @@ class GeneralSection extends BaseSection {
 		this.props.$root.innerHTML = this.template();
 		this.updateTrayOption();
 		this.updateBadgeOption();
+		this.updateFlashTaskbar();
 		this.updateUpdateOption();
 		this.updateSilentOption();
 		this.updateSidebarOption();
@@ -109,6 +114,18 @@ class GeneralSection extends BaseSection {
 				ConfigUtil.setConfigItem('badgeOption', newValue);
 				ipcRenderer.send('toggle-badge-option', newValue);
 				this.updateBadgeOption();
+			}
+		});
+	}
+
+	updateFlashTaskbar() {
+		this.generateSettingOption({
+			$element: document.querySelector('#flash-taskbar-option .setting-control'),
+			value: ConfigUtil.getConfigItem('flashTaskbarOnMessage', true),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('flashTaskbarOnMessage');
+				ConfigUtil.setConfigItem('flashTaskbarOnMessage', newValue);
+				this.updateFlashTaskbar();
 			}
 		});
 	}
