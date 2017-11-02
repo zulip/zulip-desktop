@@ -32,7 +32,7 @@ class GeneralSection extends BaseSection {
 						<div class="setting-description">Show app unread badge</div>
 						<div class="setting-control"></div>
 					</div>
-					<div class="setting-row" id="flash-taskbar-option">
+					<div class="setting-row" id="flash-taskbar-option" style= "display:${process.platform === 'win32' ? '' : 'none'}">
 						<div class="setting-description">Flash taskbar on New message</div>
 						<div class="setting-control"></div>
 					</div>
@@ -82,14 +82,19 @@ class GeneralSection extends BaseSection {
 		this.props.$root.innerHTML = this.template();
 		this.updateTrayOption();
 		this.updateBadgeOption();
-		this.updateFlashTaskbar();
-		this.updateUpdateOption();
 		this.updateSilentOption();
+		this.updateUpdateOption();
 		this.updateSidebarOption();
 		this.updateStartAtLoginOption();
 		this.updateResetDataOption();
 		this.showDesktopNotification();
 		this.enableSpellchecker();
+
+		// Platform specific settings
+		// Flashing taskbar on Windows
+		if (process.platform === 'win32') {
+			this.updateFlashTaskbar();
+		}
 	}
 
 	updateTrayOption() {
