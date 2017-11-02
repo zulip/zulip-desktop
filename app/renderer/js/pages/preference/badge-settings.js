@@ -45,7 +45,7 @@ class BadgeSettings {
 
 	updateOverlayIcon(messageCount, mainWindow) {
 		if (!mainWindow.isFocused()) {
-			mainWindow.flashFrame(true);
+			mainWindow.flashFrame(ConfigUtil.getConfigItem('flashTaskbarOnMessage'));
 		}
 		if (messageCount === 0) {
 			mainWindow.setOverlayIcon(null, '');
