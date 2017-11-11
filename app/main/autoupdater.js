@@ -7,9 +7,8 @@ const isDev = require('electron-is-dev');
 const ConfigUtil = require('./../renderer/js/utils/config-util.js');
 
 function appUpdater() {
-	// Don't initiate auto-updates in development and on Linux system
-	// since autoUpdater doesn't work on Linux
-	if (isDev || process.platform === 'linux') {
+	// Don't initiate auto-updates in development
+	if (isDev) {
 		return;
 	}
 
