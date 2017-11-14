@@ -1,7 +1,6 @@
 'use strict';
 const path = require('path');
 const electron = require('electron');
-const electronLocalshortcut = require('electron-localshortcut');
 const windowStateKeeper = require('electron-window-state');
 const isDev = require('electron-is-dev');
 const appMenu = require('./menu');
@@ -98,9 +97,6 @@ function createMainWindow() {
 				win.hide();
 			}
 		}
-
-		// Unregister all the shortcuts so that they don't interfare with other apps
-		electronLocalshortcut.unregisterAll(mainWindow);
 	});
 
 	win.setTitle('Zulip');
@@ -128,26 +124,10 @@ function createMainWindow() {
 	return win;
 }
 
-function registerLocalShortcuts(page) {
-	// Also adding these shortcuts because some users might want to use it instead of CMD/Left-Right
-	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
-		page.send('back');
-	});
-
-	electronLocalshortcut.register(mainWindow, 'CommandOrControl+]', () => {
-		page.send('forward');
-	});
-}
-
 // eslint-disable-next-line max-params
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
 	event.preventDefault();
 	callback(true);
-});
-
-app.on('window-all-closed', () => {
-	// Unregister all the shortcuts so that they don't interfare with other apps
-	electronLocalshortcut.unregisterAll(mainWindow);
 });
 
 app.on('activate', () => {
@@ -163,8 +143,6 @@ app.on('ready', () => {
 	mainWindow = createMainWindow();
 
 	const page = mainWindow.webContents;
-
-	registerLocalShortcuts(page);
 
 	page.on('dom-ready', () => {
 		mainWindow.show();
@@ -231,28 +209,13 @@ app.on('ready', () => {
 	});
 
 	ipcMain.on('register-server-tab-shortcut', (event, index) => {
-		electronLocalshortcut.register(mainWindow, `CommandOrControl+${index}`, () => {
-			// Array index == Shown index - 1
-			page.send('switch-server-tab', index - 1);
-		});
-	});
-
-	ipcMain.on('local-shortcuts', (event, enable) => {
-		if (enable) {
-			registerLocalShortcuts(page);
-		} else {
-			electronLocalshortcut.unregisterAll(mainWindow);
-		}
+		// Array index == Shown index - 1
+		page.send('switch-server-tab', index - 1);
 	});
 
 	ipcMain.on('toggleAutoLauncher', (event, AutoLaunchValue) => {
 		setAutoLaunch(AutoLaunchValue);
 	});
-});
-
-app.on('will-quit', () => {
-	// Unregister all the shortcuts so that they don't interfare with other apps
-	electronLocalshortcut.unregisterAll(mainWindow);
 });
 
 app.on('before-quit', () => {

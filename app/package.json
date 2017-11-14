@@ -29,7 +29,6 @@
   "dependencies": {
     "electron-debug": "1.4.0",
     "electron-is-dev": "0.3.0",
-    "electron-localshortcut": "2.0.2",
     "electron-log": "2.2.7",
     "electron-spellchecker": "1.1.2",
     "electron-updater": "2.16.2",
