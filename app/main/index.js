@@ -3,6 +3,7 @@ const path = require('path');
 const electron = require('electron');
 const electronLocalshortcut = require('electron-localshortcut');
 const windowStateKeeper = require('electron-window-state');
+const isDev = require('electron-is-dev');
 const appMenu = require('./menu');
 const { appUpdater } = require('./autoupdater');
 const { crashHandler } = require('./crash-reporter');
@@ -14,7 +15,10 @@ const { app, ipcMain } = electron;
 const BadgeSettings = require('./../renderer/js/pages/preference/badge-settings.js');
 
 // Adds debug features like hotkeys for triggering dev tools and reload
-require('electron-debug')();
+// in development mode
+if (isDev) {
+	require('electron-debug')();
+}
 
 // Prevent window being garbage collected
 let mainWindow;
@@ -125,11 +129,6 @@ function createMainWindow() {
 }
 
 function registerLocalShortcuts(page) {
-	// Somehow, reload action cannot be overwritten by the menu item
-	electronLocalshortcut.register(mainWindow, 'CommandOrControl+R', () => {
-		page.send('reload-current-viewer');
-	});
-
 	// Also adding these shortcuts because some users might want to use it instead of CMD/Left-Right
 	electronLocalshortcut.register(mainWindow, 'CommandOrControl+[', () => {
 		page.send('back');
