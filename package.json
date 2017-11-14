@@ -115,7 +115,8 @@
     "chai": "4.1.1",
     "spectron": "3.7.2",
     "xo": "0.18.2",
-    "pre-commit": "1.2.2"
+    "pre-commit": "1.2.2",
+    "electron-debug": "1.4.0"
   },
   "xo": {
     "parserOptions": {

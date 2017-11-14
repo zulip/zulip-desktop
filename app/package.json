@@ -27,7 +27,6 @@
     "InstantMessaging"
   ],
   "dependencies": {
-    "electron-debug": "1.4.0",
     "electron-is-dev": "0.3.0",
     "electron-log": "2.2.7",
     "electron-spellchecker": "1.1.2",
