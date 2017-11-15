@@ -1,7 +1,7 @@
 {
   "name": "zulip",
   "productName": "Zulip",
-  "version": "1.5.0",
+  "version": "1.6.0-beta",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
   "email": "<svnitakash@gmail.com>",
