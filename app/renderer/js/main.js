@@ -83,7 +83,6 @@ class ServerManagerView {
 		} else {
 			this.openSettings('Servers');
 		}
-		ipcRenderer.send('local-shortcuts', true);
 	}
 
 	initServer(server, index) {
@@ -257,9 +256,6 @@ class ServerManagerView {
 		// Clear DOM elements
 		this.$tabsContainer.innerHTML = '';
 		this.$webviewsContainer.innerHTML = '';
-
-		// Destroy shortcuts
-		ipcRenderer.send('local-shortcuts', false);
 	}
 
 	reloadView() {
