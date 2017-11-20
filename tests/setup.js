@@ -2,10 +2,8 @@ const Application = require('spectron').Application
 const cpFile = require('cp-file')
 const fs = require('fs')
 const isCI = require('is-ci')
-const looksSame = require('looks-same')
 const mkdirp = require('mkdirp')
 const path = require('path')
-const PNG = require('pngjs').PNG
 const rimraf = require('rimraf')
 
 const config = require('./config')
