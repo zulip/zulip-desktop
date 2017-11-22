@@ -24,5 +24,8 @@ yarn-error.log*
 # miscellaneous
 .idea
 config.gypi
-.python-version
 
+# Test generated files
+tests/package.json
+
+.python-version
