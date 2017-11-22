@@ -15,7 +15,7 @@ class ServersSection extends BaseSection {
 	template() {
 		return `
 			<div class="settings-pane" id="server-settings-pane">
-				<div class="title">Add Server</div>
+				<div class="title">Enter URL of your Zulip organization</div>
 				<div id="new-server-container"></div>
 				<div class="title" id="existing-servers"></div>
 				<div id="server-info-container"></div>

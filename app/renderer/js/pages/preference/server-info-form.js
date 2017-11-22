@@ -20,7 +20,7 @@ class ServerInfoForm extends BaseComponent {
 				<div class="server-info-right">
 					<div class="server-info-row">
 						<span class="server-info-alias">${this.props.server.alias}</span>
-						<i class="material-icons open-tab-button">open_in_new</i>						
+						<i class="material-icons open-tab-button">open_in_new</i>
 					</div>
 					<div class="server-info-row">
 						<input class="setting-input-value" disabled value="${this.props.server.url}"/>

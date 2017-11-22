@@ -29,7 +29,7 @@ table, th, td {
     color: #383430;
 }
 
-table { 
+table {
     width: 100%;
     margin-top: 18px;
     margin-bottom: 18px;
@@ -140,9 +140,8 @@ td:nth-child(odd) {
 
 .title {
     padding: 4px 0 6px 0;
-    font-weight: bold;
+    font-weight: 500;
     color: #222c31;
-    text-transform: uppercase;
 }
 
 .sub-title {
@@ -224,7 +223,7 @@ img.server-info-icon {
 .action i {
     margin-right: 5px;
     font-size: 18px;
-    line-height: 27px;
+    line-height: 26px;
 }
 
 .settings-pane {
