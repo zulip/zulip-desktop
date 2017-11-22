@@ -109,7 +109,7 @@
     "cp-file": "^5.0.0",
     "devtron": "1.4.0",
     "electron-builder": "19.45.5",
-    "electron": "1.6.14",
+    "electron": "1.6.15",
     "electron-connect": "0.6.2",
     "gulp": "3.9.1",
     "gulp-tape": "0.0.9",
