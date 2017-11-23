@@ -115,6 +115,10 @@ class DomainUtil {
 						'Error: unable to verify the first certificate',
 						'Error: unable to get local issuer certificate'
 					];
+				// If the domain contains following strings we just bypass the server
+				const whitelistDomains = [
+					'zulipdev.org'
+				];
 				if (!error && response.statusCode !== 404) {
 					// Correct
 					this.getServerSettings(domain).then(serverSettings => {
@@ -122,7 +126,7 @@ class DomainUtil {
 					}, () => {
 						resolve(serverConf);
 					});
-				} else if (certsError.indexOf(error.toString()) >= 0) {
+				} else if (domain.indexOf(whitelistDomains) >= 0 || certsError.indexOf(error.toString()) >= 0) {
 					if (silent) {
 						this.getServerSettings(domain).then(serverSettings => {
 							resolve(serverSettings);
