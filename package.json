@@ -108,7 +108,7 @@
     "assert": "1.4.1",
     "cp-file": "^5.0.0",
     "devtron": "1.4.0",
-    "electron-builder": "19.45.5",
+    "electron-builder": "19.46.4",
     "electron": "1.6.15",
     "electron-connect": "0.6.2",
     "gulp": "3.9.1",
