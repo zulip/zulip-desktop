@@ -152,7 +152,7 @@
       }
     ],
     "ignore": [
-      "tests/*.js"
+      "tests/e2e/*.js"
     ],
     "envs": [
       "node",
