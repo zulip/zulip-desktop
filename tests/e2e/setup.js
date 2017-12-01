@@ -22,7 +22,7 @@ module.exports = {
 function createApp (t) {
   generateTestAppPackageJson()
   return new Application({
-    path: path.join(__dirname, '..', 'node_modules', '.bin',
+    path: path.join(__dirname,'..', '..', 'node_modules', '.bin',
       'electron' + (process.platform === 'win32' ? '.cmd' : '')),
     args: [path.join(__dirname)], // Ensure this dir has a package.json file with a 'main' entry piont
     env: {NODE_ENV: 'test'},
@@ -34,9 +34,9 @@ function createApp (t) {
 // Reads app package.json and updates the productName to config.TEST_APP_PRODUCT_NAME 
 // We do this so that the app integration doesn't doesn't share the same appDataDir as the dev application
 function generateTestAppPackageJson () {
-  let packageJson = require(path.join(__dirname, '../package.json'))
+  let packageJson = require(path.join(__dirname, '..', '..', 'package.json'))
   packageJson.productName = config.TEST_APP_PRODUCT_NAME
-  packageJson.main = '../app/main'
+  packageJson.main = '../../app/main'
 
   const testPackageJsonPath = path.join(__dirname, 'package.json')
   fs.writeFileSync(testPackageJsonPath, JSON.stringify(packageJson, null, ' '), 'utf-8')
@@ -69,6 +69,7 @@ function wait (ms) {
 // Quit the app, end the test, either in success (!err) or failure (err)
 function endTest (app, t, err) {
   return app.stop().then(function () {
+    resetTestDataDir()
     t.end(err)
   })
 }

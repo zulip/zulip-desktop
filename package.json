@@ -179,7 +179,7 @@
       }
     ],
     "ignore": [
-      "tests/*.js",
+      "tests/e2e/*.js",
       "tools/locale-helper/*.js"
     ],
     "envs": [

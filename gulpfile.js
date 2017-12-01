@@ -30,7 +30,7 @@ gulp.task('reload:renderer', done => {
 });
 
 gulp.task('test-e2e', () => {
-	return gulp.src('tests/*.js')
+	return gulp.src('tests/e2e/*.js')
 	.pipe(tape({
 		reporter: tapColorize()
 	}));
