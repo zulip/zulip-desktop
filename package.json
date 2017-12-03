@@ -57,7 +57,8 @@
       "maintainer": "Akash Nimare <svnitakash@gmail.com>"
     },
     "deb": {
-      "synopsis": "Zulip Desktop App"
+      "synopsis": "Zulip Desktop App",
+      "afterInstall": "./scripts/debian-add-repo.sh"
     },
     "dmg": {
       "background": "build/appdmg.png",
