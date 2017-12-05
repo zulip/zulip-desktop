@@ -27,5 +27,6 @@ config.gypi
 
 # Test generated files
 tests/e2e/package.json
+coverage
 
 .python-version

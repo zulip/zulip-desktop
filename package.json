@@ -106,20 +106,30 @@
   ],
   "devDependencies": {
     "assert": "1.4.1",
+    "browserify": "^14.5.0",
     "cp-file": "^5.0.0",
     "devtron": "1.4.0",
-    "electron-builder": "19.46.4",
     "electron": "1.6.15",
+    "electron-builder": "19.46.4",
     "electron-connect": "0.6.2",
+    "electron-debug": "1.4.0",
     "gulp": "3.9.1",
     "gulp-tape": "0.0.9",
     "is-ci": "^1.0.10",
+    "jasmine": "^2.8.0",
+    "karma": "^1.7.1",
+    "karma-browserify": "^5.1.2",
+    "karma-coverage": "^1.1.1",
+    "karma-electron": "^5.2.2",
+    "karma-electron-launcher": "^0.2.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-mocha-reporter": "^2.2.5",
     "pre-commit": "1.2.2",
     "spectron": "3.7.2",
     "tap-colorize": "^1.2.0",
     "tape": "^4.8.0",
-    "xo": "0.18.2",
-    "electron-debug": "1.4.0"
+    "watchify": "^3.9.0",
+    "xo": "0.18.2"
   },
   "xo": {
     "parserOptions": {
@@ -152,7 +162,8 @@
       }
     ],
     "ignore": [
-      "tests/e2e/*.js"
+      "tests/e2e/*.js",
+      "tests/unit/*"
     ],
     "envs": [
       "node",
@@ -161,6 +172,5 @@
     ]
   },
   "dependencies": {
-    "resemblejs": "^2.2.6"
   }
 }
