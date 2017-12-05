@@ -24,6 +24,7 @@
     "postinstall": "electron-builder install-app-deps",
     "test": "xo",
     "test-e2e": "gulp test-e2e",
+    "test-unit": "karma start karma.conf.js",
     "dev": "gulp dev",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
