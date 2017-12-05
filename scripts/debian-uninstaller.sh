@@ -22,3 +22,10 @@ getDesktopEntry=/home/$getSudoUser/.config/autostart/zulip.desktop;
 if [ -f $getDesktopEntry ]; then
     sudo rm $getDesktopEntry;
 fi
+
+# App directory which contains all the config, setting files
+appDirectory=/home/$getSudoUser/.config/Zulip/;
+
+if [ -d $appDirectory ]; then
+    sudo rm -rf $appDirectory;
+fi
