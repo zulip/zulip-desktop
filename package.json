@@ -59,7 +59,7 @@
     "deb": {
       "synopsis": "Zulip Desktop App",
       "afterInstall": "./scripts/debian-add-repo.sh",
-      "afterRemove": "./scripts/debain-remove-repo.sh"
+      "afterRemove": "./scripts/debian-uninstaller.sh"
     },
     "dmg": {
       "background": "build/appdmg.png",
