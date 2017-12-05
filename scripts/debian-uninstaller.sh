@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # This script runs when user uninstall the debian package.
 # It will remove all the config files and anything which was added by the app.
