@@ -7,25 +7,37 @@
 	<body>
 	<div class="about">
 		<img class="logo" src="../resources/zulip.png" />
-		<p class="detail" id="version">version ?.?.?</p>
+		<p class="detail" id="version">v?.?.?</p>
 		<div class="maintenance-info">
-			<p class="detail maintainer">Maintained by Zulip</p>
-			<p class="detail license">Available under the Apache License</p>
-			<a class="bug" onclick="linkInBrowser()" href="#">Found bug?</a>
+			<p class="detail maintainer">
+				Maintained by <a onclick="linkInBrowser('website')">Zulip</a>
+			</p>
+			<p class="detail license">
+				Available under the <a onclick="linkInBrowser('license')">Apache 2.0 License</a>
+			</p>
+			<a class="bug" onclick="linkInBrowser('bug')" href="#">Found bug?</a>
 		</div>
 	</div>
 	<script>
 
-	const app = require('electron').remote.app;
-	const version_tag = document.getElementById('version');
-	version_tag.innerHTML = 'version ' + app.getVersion();
+	const { app } = require('electron').remote;
+	const { shell } = require('electron');
+	const version_tag = document.querySelector('#version');
+	version_tag.innerHTML = 'v' + app.getVersion();
 
-	function linkInBrowser(event) {
-
-		const shell = require('electron').shell;
-
-		const url = "https://github.com/zulip/zulip-electron/issues/new?body=Please describe your issue and steps to reproduce it."
-
+	function linkInBrowser(type) {
+		let url;
+		switch (type) {
+			case 'website': 
+				url = "https://zulipchat.com";
+				break;
+			case 'license': 
+				url = "https://github.com/zulip/zulip-electron/blob/master/LICENSE";
+				break;
+			default:
+				url = 'https://github.com/zulip/zulip-electron/issues/new?body=' + 
+				      '%3C!--Please%20describe%20your%20issue%20and%20steps%20to%20reproduce%20it.--%3E';
+		}
 		shell.openExternal(url);
 	}
 	</script>

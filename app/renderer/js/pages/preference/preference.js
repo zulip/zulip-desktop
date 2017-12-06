@@ -3,8 +3,6 @@
 const BaseComponent = require(__dirname + '/js/components/base.js');
 const { ipcRenderer } = require('electron');
 
-const ConfigUtil = require(__dirname + '/js/utils/config-util.js');
-
 const Nav = require(__dirname + '/js/pages/preference/nav.js');
 const ServersSection = require(__dirname + '/js/pages/preference/servers-section.js');
 const GeneralSection = require(__dirname + '/js/pages/preference/general-section.js');
@@ -27,7 +25,6 @@ class PreferenceView extends BaseComponent {
 
 		this.setDefaultView();
 		this.registerIpcs();
-		this.setDefaultSettings();
 	}
 
 	setDefaultView() {
@@ -37,30 +34,6 @@ class PreferenceView extends BaseComponent {
 			nav = hasTag.substring(1);
 		}
 		this.handleNavigation(nav);
-	}
-
-	// Settings are initialized only when user clicks on General/Server/Network section settings
-	// In case, user doesn't visit these section, those values set to be null automatically
-	// This will make sure the default settings are correctly set to either true or false
-	setDefaultSettings() {
-		// Default settings which should be respected
-		const settingOptions = {
-			trayIcon: true,
-			useProxy: false,
-			showSidebar: true,
-			badgeOption: true,
-			startAtLogin: false,
-			enableSpellchecker: true,
-			showNotification: true,
-			betaUpdate: false,
-			silent: false
-		};
-
-		for (const i in settingOptions) {
-			if (ConfigUtil.getConfigItem(i) === null) {
-				ConfigUtil.setConfigItem(i, settingOptions[i]);
-			}
-		}
 	}
 
 	handleNavigation(navItem) {

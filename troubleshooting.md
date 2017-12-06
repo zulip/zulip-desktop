@@ -5,7 +5,11 @@
 * Electron is more or less Chrome, you can get developer tools using `CMD+ALT+I`
 
 ### Error : ChecksumMismatchError
-- Try deleteing `node_modules` && `app/node_modules` directories. Re-install dependencies using `npm install`.
+- Try deleteing `node_modules` && `app/node_modules` directories. Re-install dependencies using `npm install`
 
 ### Error : Module version mismatch. Expected 50, got 51
-- Make sure you have installed [node-gyp](https://github.com/nodejs/node-gyp#installation) dependencies properly.
+- Make sure you have installed [node-gyp](https://github.com/nodejs/node-gyp#installation) dependencies properly
+
+### Error: Desktop Notifications not working
+- Make sure the **Show Desktop Notifications** setting option is set to be true
+- Check your OS notifications center settings

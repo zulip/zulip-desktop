@@ -43,6 +43,7 @@ class ServerManagerView {
 			this.initTabs();
 			this.initActions();
 			this.registerIpcs();
+			this.initDefaultSettings();
 		});
 	}
 
@@ -63,6 +64,31 @@ class ServerManagerView {
 				}, resolve);
 			}
 		});
+	}
+
+	// Settings are initialized only when user clicks on General/Server/Network section settings
+	// In case, user doesn't visit these section, those values set to be null automatically
+	// This will make sure the default settings are correctly set to either true or false
+	initDefaultSettings() {
+		// Default settings which should be respected
+		const settingOptions = {
+			trayIcon: true,
+			useProxy: false,
+			showSidebar: true,
+			badgeOption: true,
+			startAtLogin: false,
+			enableSpellchecker: true,
+			showNotification: true,
+			betaUpdate: false,
+			silent: false,
+			lastActiveTab: 0
+		};
+
+		for (const i in settingOptions) {
+			if (ConfigUtil.getConfigItem(i) === null) {
+				ConfigUtil.setConfigItem(i, settingOptions[i]);
+			}
+		}
 	}
 
 	initSidebar() {

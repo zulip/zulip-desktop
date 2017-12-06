@@ -1,21 +1,23 @@
 body {
 	background: #fafafa;
 	font-family: menu, "Helvetica Neue", sans-serif;
-	-webkit-font-smoothing: antialiased;
+	-webkit-font-smoothing: subpixel-antialiased;
 }
 
 .logo {
 	display: block;
-	margin: 0 auto;
+	margin: -40px auto;
 }
 
 #version {
-	color: #aaa;
-	font-size: 0.9em;
+	color: #444343;
+	font-size: 1.3em;
+	padding-top: 40px;
 }
 
 .about {
-	margin-top: 50px;
+	margin: 25vh auto;
+	height: 25vh;
 	text-align: center;
 }
 
@@ -42,9 +44,9 @@ body {
 }
 
 .maintenance-info {
+	cursor: pointer;
 	position: absolute;
 	width: 100%;
-	bottom: 20px;
 	left: 0px;
 	color: #444;
 }
@@ -52,7 +54,6 @@ body {
 .maintenance-info p {
 	margin: 0;
 	font-size: 1em;
-
 	width: 100%;
 }
 
@@ -70,4 +71,12 @@ body {
 
 .maintenance-info .bug:hover {
 	background-color: #32a692;
+}
+
+p.detail a {
+	color: #355f4c;
+}
+
+p.detail a:hover {
+	text-decoration: underline;
 }

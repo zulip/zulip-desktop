@@ -5,11 +5,10 @@
   "main": "./app/main",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
-  "email": "<svnitakash@gmail.com>",
-  "copyright": "©2017 Kandra Labs, Inc.",
+  "copyright": "Kandra Labs, Inc.",
   "author": {
     "name": "Kandra Labs, Inc.",
-    "email": "svnitakash@gmail.com"
+    "email": "support@zulipchat.com"
   },
   "repository": {
     "type": "git",
@@ -58,7 +57,9 @@
       "maintainer": "Akash Nimare <svnitakash@gmail.com>"
     },
     "deb": {
-      "synopsis": "Zulip Desktop App"
+      "synopsis": "Zulip Desktop App",
+      "afterInstall": "./scripts/debian-add-repo.sh",
+      "afterRemove": "./scripts/debian-uninstaller.sh"
     },
     "dmg": {
       "background": "build/appdmg.png",
