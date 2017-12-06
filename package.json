@@ -107,7 +107,6 @@
   ],
   "devDependencies": {
     "assert": "1.4.1",
-    "browserify": "^14.5.0",
     "cp-file": "^5.0.0",
     "devtron": "1.4.0",
     "electron": "1.6.15",
@@ -172,6 +171,5 @@
       "mocha"
     ]
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
