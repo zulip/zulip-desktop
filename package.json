@@ -118,8 +118,6 @@
     "is-ci": "^1.0.10",
     "jasmine": "^2.8.0",
     "karma": "^1.7.1",
-    "karma-browserify": "^5.1.2",
-    "karma-coverage": "^1.1.1",
     "karma-electron": "^5.2.2",
     "karma-electron-launcher": "^0.2.0",
     "karma-jasmine": "^1.1.0",

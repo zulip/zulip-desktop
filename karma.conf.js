@@ -4,25 +4,17 @@ module.exports = function (config) {
 		frameworks: ['jasmine'],
 		browsers: ['Electron'],
 		preprocessors: {
-			'**/*.js': ['electron'],
-			'app/renderer/**/*.js': ['coverage']
+			'**/*.js': ['electron']
 		},
 		files: [
 			{pattern: './karma.shim.js', watched: true, included: true, served: true},
 			{pattern: './tests/unit/*.js', watched: true, included: true, served: true},
 			{pattern: './app/renderer/**/*.js', watched: true, included: false, served: true}
 		],
-		reporters: ['mocha', 'coverage'],
+		reporters: ['mocha'],
 		client: {
 			captureConsole: true,
 			useIframe: false
-		},
-		coverageReporter: {
-			dir: './coverage',
-			reporters: [
-				{type: 'lcov', subdir: '.'},
-				{type: 'text-summary'}
-			]
 		},
 		singleRun: true
 	});
