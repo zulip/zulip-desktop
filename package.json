@@ -168,6 +168,5 @@
       "browser",
       "mocha"
     ]
-  },
-  "dependencies": {}
+  }
 }
