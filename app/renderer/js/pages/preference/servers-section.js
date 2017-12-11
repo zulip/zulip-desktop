@@ -15,7 +15,7 @@ class ServersSection extends BaseSection {
 	template() {
 		return `
 			<div class="settings-pane" id="server-settings-pane">
-				<div class="title">Enter URL of your Zulip organization</div>
+				<div class="page-title">Register or login to a Zulip Organization to get started</div>
 				<div id="new-server-container"></div>
 				<div class="title" id="existing-servers"></div>
 				<div id="server-info-container"></div>
@@ -38,9 +38,9 @@ class ServersSection extends BaseSection {
 		this.$newServerContainer = document.getElementById('new-server-container');
 		this.$newServerButton = document.getElementById('new-server-action');
 
-		this.$serverInfoContainer.innerHTML = servers.length ? '' : 'Add your first server to get started!';
+		this.$serverInfoContainer.innerHTML = servers.length ? '' : '';
 		// Show Existing servers if servers are there otherwise hide it
-		this.$existingServers.innerHTML = servers.length === 0 ? '' : 'Existing Servers';
+		this.$existingServers.innerHTML = servers.length === 0 ? '' : 'Existing Organizations';
 		this.initNewServerForm();
 
 		this.$createOrganizationContainer = document.getElementById('create-organization-container');

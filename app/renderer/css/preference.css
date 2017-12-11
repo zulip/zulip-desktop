@@ -5,7 +5,7 @@ body {
     cursor: default;
     user-select: none;
     font-family: menu, "Helvetica Neue", sans-serif;
-	-webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
     font-size: 14px;
     color: #333;
     background: #efefef;
@@ -24,7 +24,9 @@ kbd {
     white-space: nowrap;
 }
 
-table, th, td {
+table,
+th,
+td {
     border-collapse: collapse;
     color: #383430;
 }
@@ -33,51 +35,54 @@ table {
     width: 100%;
     margin-top: 18px;
     margin-bottom: 18px;
- }
+}
 
-table tr:nth-child(even) { background-color: #f7eee6; }
+table tr:nth-child(even) {
+    background-color: #f7eee6;
+}
 
-table tr:nth-child(odd) { background-color: #fff8ef; }
+table tr:nth-child(odd) {
+    background-color: #fff8ef;
+}
 
-
-td { padding: 5px; }
+td {
+    padding: 5px;
+}
 
 td:nth-child(odd) {
-		text-align: right;
-		width: 50%;
+    text-align: right;
+    width: 50%;
 }
 
 @font-face {
-  font-family: 'Material Icons';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Material Icons'),
-       local('MaterialIcons-Regular'),
-       url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Material Icons'), local('MaterialIcons-Regular'), url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
 }
 
 @font-face {
-  font-family: 'Montserrat';
-  src: url(../fonts/Montserrat-Regular.ttf) format('truetype');
+    font-family: 'Montserrat';
+    src: url(../fonts/Montserrat-Regular.ttf) format('truetype');
 }
 
 .material-icons {
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  /* Preferred icon size */
-  font-size: 24px;
-  display: inline-block;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
-  /* Support for all WebKit browsers. */
-  -webkit-font-smoothing: antialiased;
-  /* Support for Safari and Chrome. */
-  text-rendering: optimizeLegibility;
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    /* Preferred icon size */
+    font-size: 24px;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
 }
 
 #content {
@@ -144,6 +149,13 @@ td:nth-child(odd) {
     color: #222c31;
 }
 
+.page-title {
+    color: #222c31;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 4px 0 6px 0;
+}
+
 .sub-title {
     padding: 4px 0 6px 0;
     font-weight: bold;
@@ -188,16 +200,18 @@ img.server-info-icon {
 .setting-input-value {
     flex-grow: 1;
     font-size: 14px;
-    height: 24px;
-    border: none;
-    border-bottom: #ededed 1px solid;
+    height: 22px;
+    border-radius: 3px;
+    padding: 7px;
+    border: #ededed 2px solid;
     outline-width: 0;
     background: transparent;
     max-width: 500px;
 }
 
 .setting-input-value:focus {
-    border-bottom: #7cb980 1px solid;
+    border: #7cb980 2px solid;
+    border-radius: 3px;
 }
 
 .setting-block {
@@ -314,75 +328,83 @@ i.open-tab-button {
 }
 
 #server-info-container {
-		min-height: calc(100% - 235px);
+    min-height: calc(100% - 235px);
 }
 
 #create-organization-container {
-		font-size: 1.15em;
-		margin-bottom: 15px;
+    font-size: 1.15em;
+    position: fixed;
+    bottom: 15px;
 }
 
 #create-organization-container i {
-	position: relative;
-	top: 3px;
+    position: relative;
+    top: 3px;
 }
 
 #open-create-org-link {
-		color: #666;
-		cursor: pointer;
-		text-decoration: none;
+    color: #666;
+    cursor: pointer;
+    text-decoration: none;
 }
 
 #open-create-org-link:hover {
-		color: #005580;;
-		text-decoration: underline;
+    color: #005580;
+    ;
+    text-decoration: underline;
 }
 
 .toggle {
-  position: absolute;
-  margin-left: -9999px;
-  visibility: hidden;
-}
-.toggle + label {
-  display: block;
-  position: relative;
-  cursor: pointer;
-  outline: none;
-  user-select: none;
+    position: absolute;
+    margin-left: -9999px;
+    visibility: hidden;
 }
 
-input.toggle-round + label {
-  padding: 2px;
-  width: 50px;
-  height: 25px;
-  background-color: #dddddd;
-  border-radius: 25px;
+.toggle+label {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
 }
-input.toggle-round + label:before,
-input.toggle-round + label:after {
-  display: block;
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  bottom: 2px;
-  content: "";
+
+input.toggle-round+label {
+    padding: 2px;
+    width: 50px;
+    height: 25px;
+    background-color: #dddddd;
+    border-radius: 25px;
 }
-input.toggle-round + label:before {
-  right: 2px;
-  background-color: #f1f1f1;
-  border-radius: 25px;
-  transition: background 0.4s;
+
+input.toggle-round+label:before,
+input.toggle-round+label:after {
+    display: block;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    bottom: 2px;
+    content: "";
 }
-input.toggle-round + label:after {
-  width: 25px;
-  height: 25px;
-  background-color: #fff;
-  border-radius: 100%;
-  transition: margin 0.4s;
+
+input.toggle-round+label:before {
+    right: 2px;
+    background-color: #f1f1f1;
+    border-radius: 25px;
+    transition: background 0.4s;
 }
-input.toggle-round:checked + label:before {
-  background-color: #4EBFAC;
+
+input.toggle-round+label:after {
+    width: 25px;
+    height: 25px;
+    background-color: #fff;
+    border-radius: 100%;
+    transition: margin 0.4s;
 }
-input.toggle-round:checked + label:after {
-  margin-left: 25px;
+
+input.toggle-round:checked+label:before {
+    background-color: #4EBFAC;
+}
+
+input.toggle-round:checked+label:after {
+    margin-left: 25px;
 }
