@@ -5,8 +5,8 @@ const { SpellCheckHandler, ContextMenuListener, ContextMenuBuilder } = require('
 const ConfigUtil = require(__dirname + '/utils/config-util.js');
 
 class SetupSpellChecker {
-	init(forceEnableSpellChecker) {
-		if (ConfigUtil.getConfigItem('enableSpellchecker') || forceEnableSpellChecker) {
+	init() {
+		if (ConfigUtil.getConfigItem('enableSpellchecker')) {
 			this.enableSpellChecker();
 		}
 		this.enableContextMenu();
