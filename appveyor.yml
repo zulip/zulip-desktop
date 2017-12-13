@@ -21,5 +21,3 @@ build: off
 
 test_script:
   - npm run test
-  - npm run test-unit
-  - npm run test-e2e

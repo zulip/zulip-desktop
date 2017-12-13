@@ -10,9 +10,7 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
     xdpyinfo | grep dimensions
 fi
 
-npm run test
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-  - npm run test-unit
-    npm run test-e2e
+    npm run test
 fi
