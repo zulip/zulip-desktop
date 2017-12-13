@@ -13,11 +13,11 @@ fi
 # macOS
 # Run all the tests
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    npm run test
+    npm run test-all
 fi
 
 # Linux
 # Only run linting test on Linux
 if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-    npm run lint && npm run test-e2e
+    npm run lint
 fi
