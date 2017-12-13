@@ -6,7 +6,7 @@ os: Previous Visual Studio 2015
 
 cache:
   - node_modules
-  
+
 install:
   - ps: Install-Product node 6 x64
   - git reset --hard HEAD
@@ -20,4 +20,4 @@ install:
 build: off
 
 test_script:
-  - npm run test
+  - npm run test-all
