@@ -2,7 +2,10 @@ const ConfigUtil = require('js/utils/config-util.js');
 const SetupSpellChecker = require('js/spellchecker')
 
 describe('test spell checker', function () {
+  // enable spellchecker settings
   ConfigUtil.setConfigItem('enableSpellchecker', true);
+  ConfigUtil.setConfigItem('spellcheckerLanguage', 'en');
+
   SetupSpellChecker.init()  // re-initialize after setting update
 
   const spellCheckHandler = SetupSpellChecker.SpellCheckHandler
