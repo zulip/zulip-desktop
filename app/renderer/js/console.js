@@ -1,8 +1,13 @@
 const NodeConsole = require('console').Console;
 const fs = require('fs');
-
-const { app } = require('electron').remote;
 const isDev = require('electron-is-dev');
+
+let app = null;
+if (process.type === 'renderer') {
+	app = require('electron').remote.app;
+} else {
+	app = require('electron').app;
+}
 
 const browserConsole = console;
 const logDir = `${app.getPath('userData')}/Logs`;
