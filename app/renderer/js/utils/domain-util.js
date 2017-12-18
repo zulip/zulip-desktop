@@ -5,6 +5,11 @@ const fs = require('fs');
 const path = require('path');
 const JsonDB = require('node-json-db');
 const request = require('request');
+const Console = require('../console');
+
+const console = new Console({
+	file: `domain-util.log`
+});
 
 let instance = null;
 
@@ -225,7 +230,23 @@ class DomainUtil {
 	}
 
 	reloadDB() {
-		this.db = new JsonDB(app.getPath('userData') + '/domain.json', true, true);
+		const domainJsonPath = path.join(app.getPath('userData'), '/domain.json');
+		try {
+			const file = fs.readFileSync(domainJsonPath, 'utf8');
+			JSON.parse(file);
+		} catch (err) {
+			if (fs.existsSync(domainJsonPath)) {
+				fs.unlinkSync(domainJsonPath);
+				dialog.showErrorBox(
+					'Error saving new organization',
+					'There seems to be error while saving new organisation, ' +
+					'you may have to readd your previous organizations back.'
+				);
+				console.error('Error while JSON parsing domain.json: ');
+				console.error(err);
+			}
+		}
+		this.db = new JsonDB(domainJsonPath, true, true);
 	}
 
 	generateFilePath(url) {
