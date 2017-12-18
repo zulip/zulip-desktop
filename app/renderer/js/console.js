@@ -11,9 +11,6 @@ if (process.type === 'renderer') {
 
 const browserConsole = console;
 const logDir = `${app.getPath('userData')}/Logs`;
-if (!fs.existsSync(logDir)) {
-	fs.mkdirSync(logDir);
-}
 
 function customConsole(opts, type, ...args) {
 	const { nodeConsole, timestamp } = opts;
