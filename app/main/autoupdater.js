@@ -1,5 +1,4 @@
 'use strict';
-const fs = require('fs');
 const { app, dialog } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const isDev = require('electron-is-dev');
@@ -14,10 +13,6 @@ function appUpdater() {
 
 	// Create Logs directory
 	const LogsDir = `${app.getPath('userData')}/Logs`;
-
-	if (!fs.existsSync(LogsDir)) {
-		fs.mkdirSync(LogsDir);
-	}
 
 	// Log whats happening
 	const log = require('electron-log');
