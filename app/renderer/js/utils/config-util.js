@@ -6,8 +6,9 @@ const process = require('process');
 const JsonDB = require('node-json-db');
 const Console = require('../console');
 
-const console = new Console({
-	file: 'config-util.log'
+const logger = new Console({
+	file: 'config-util.log',
+	timestamp: true
 });
 
 let instance = null;
@@ -70,8 +71,8 @@ class ConfigUtil {
 					'Error saving settings',
 					'We encountered error while saving current settings.'
 				);
-				console.error('Error while JSON parsing settings.json: ');
-				console.error(err);
+				logger.error('Error while JSON parsing settings.json: ');
+				logger.error(err);
 			}
 		}
 		this.db = new JsonDB(settingsJsonPath, true, true);

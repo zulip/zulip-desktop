@@ -1,7 +1,9 @@
 const NodeConsole = require('console').Console;
 const fs = require('fs');
 const isDev = require('electron-is-dev');
+const { initSetUp } = require('./utils/default-util');
 
+initSetUp();
 let app = null;
 if (process.type === 'renderer') {
 	app = require('electron').remote.app;
@@ -54,7 +56,7 @@ class Console {
 			timestamp = getTimestamp;
 		}
 
-		const fileStream = fs.createWriteStream(file);
+		const fileStream = fs.createWriteStream(file, { flags: 'a' });
 		const nodeConsole = new NodeConsole(fileStream);
 		this.nodeConsole = nodeConsole;
 		this.timestamp = timestamp;

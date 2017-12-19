@@ -7,8 +7,9 @@ const JsonDB = require('node-json-db');
 const request = require('request');
 const Console = require('../console');
 
-const console = new Console({
-	file: `domain-util.log`
+const logger = new Console({
+	file: `domain-util.log`,
+	timestamp: true
 });
 
 let instance = null;
@@ -242,8 +243,8 @@ class DomainUtil {
 					'There seems to be error while saving new organisation, ' +
 					'you may have to readd your previous organizations back.'
 				);
-				console.error('Error while JSON parsing domain.json: ');
-				console.error(err);
+				logger.error('Error while JSON parsing domain.json: ');
+				logger.error(err);
 			}
 		}
 		this.db = new JsonDB(domainJsonPath, true, true);
