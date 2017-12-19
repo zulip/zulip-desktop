@@ -155,7 +155,8 @@ app.on('ready', () => {
 	});
 
 	electron.powerMonitor.on('resume', () => {
-		page.send('reload-viewer');
+		mainWindow.reload();
+		page.send('destroytray');
 	});
 
 	ipcMain.on('focus-app', () => {
