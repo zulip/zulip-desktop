@@ -26,6 +26,7 @@ class WebView extends BaseComponent {
 	template() {
 		return `<webview
 					class="disabled"
+					data-tab-id="${this.props.tabIndex}"
 					src="${this.props.url}"
 					${this.props.nodeIntegration ? 'nodeIntegration' : ''}
 					disablewebsecurity
