@@ -149,6 +149,13 @@ class ServerManagerView {
 			this.openSettings('General');
 		});
 
+		const $serverImgs = document.querySelectorAll('.server-icons');
+		$serverImgs.forEach($serverImg => {
+			$serverImg.addEventListener('error', () => {
+				$serverImg.src = 'img/icon.png';
+			});
+		});
+
 		this.sidebarHoverEvent(this.$addServerButton, this.$addServerTooltip);
 		this.sidebarHoverEvent(this.$settingsButton, this.$settingsTooltip);
 		this.sidebarHoverEvent(this.$reloadButton, this.$reloadTooltip);
