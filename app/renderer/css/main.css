@@ -186,6 +186,13 @@ body {
     padding: 2px 0;
 }
 
+.server-tab .alt-icon {
+    font-family: Verdana;
+    font-weight: 600;
+    font-size: 22px;
+    margin-top: -1px;
+}
+
 .tab .server-tab:hover {
     opacity: 0.8;
 }

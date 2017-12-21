@@ -214,8 +214,12 @@ class ServerManagerView {
 
 		const $serverImgs = document.querySelectorAll('.server-icons');
 		$serverImgs.forEach($serverImg => {
+			if ($serverImg.src.includes('img/icon.png')) {
+				this.displayInitalCharLogo($serverImg);
+			}
+
 			$serverImg.addEventListener('error', () => {
-				$serverImg.src = 'img/icon.png';
+				this.displayInitalCharLogo($serverImg);
 			});
 		});
 
@@ -235,6 +239,26 @@ class ServerManagerView {
 		const currentIndex = this.tabIndex;
 		this.tabIndex++;
 		return currentIndex;
+	}
+
+	displayInitalCharLogo($img) {
+		const $webview = document.querySelector('webview');
+		const realmName = $webview.getAttribute('name');
+
+		if (realmName === null) {
+			$img.src = '/img/icon.png';
+			return;
+		}
+
+		const $altIcon = document.createElement('div');
+		const $parent = $img.parentElement;
+
+		$altIcon.textContent = realmName.charAt(0) || 'Z';
+		$altIcon.classList.add('server-icon');
+		$altIcon.classList.add('alt-icon');
+
+		$parent.removeChild($img);
+		$parent.appendChild($altIcon);
 	}
 
 	sidebarHoverEvent(SidebarButton, SidebarTooltip, addServer = false) {
