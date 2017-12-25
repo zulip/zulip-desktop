@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const JsonDB = require('node-json-db');
 const request = require('request');
-const Console = require('../console');
+const Console = require('./console-util');
 
 const logger = new Console({
 	file: `domain-util.log`,
@@ -240,8 +240,8 @@ class DomainUtil {
 				fs.unlinkSync(domainJsonPath);
 				dialog.showErrorBox(
 					'Error saving new organization',
-					'There seems to be error while saving new organisation, ' +
-					'you may have to readd your previous organizations back.'
+					'There seems to be error while saving new organization, ' +
+					'you may have to re-add your previous organizations back.'
 				);
 				logger.error('Error while JSON parsing domain.json: ');
 				logger.error(err);

@@ -1,7 +1,7 @@
 const NodeConsole = require('console').Console;
 const fs = require('fs');
 const isDev = require('electron-is-dev');
-const { initSetUp } = require('./utils/default-util');
+const { initSetUp } = require('./default-util');
 
 initSetUp();
 let app = null;
