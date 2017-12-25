@@ -10,7 +10,6 @@ const WebView = require(__dirname + '/js/components/webview.js');
 const ServerTab = require(__dirname + '/js/components/server-tab.js');
 const FunctionalTab = require(__dirname + '/js/components/functional-tab.js');
 const ConfigUtil = require(__dirname + '/js/utils/config-util.js');
-const { initSetUp } = require(__dirname + '/js/utils/default-util.js');
 
 class ServerManagerView {
 	constructor() {
@@ -45,7 +44,6 @@ class ServerManagerView {
 			this.initActions();
 			this.registerIpcs();
 			this.initDefaultSettings();
-			initSetUp();
 		});
 	}
 
