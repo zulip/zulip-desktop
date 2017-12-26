@@ -73,6 +73,18 @@ class PreferenceView extends BaseComponent {
 		ipcRenderer.on('switch-settings-nav', (event, navItem) => {
 			this.handleNavigation(navItem);
 		});
+
+		ipcRenderer.on('toggle-sidebar', (event, state) => {
+			const inputSelector = '#sidebar-option .action .switch input';
+			const input = document.querySelector(inputSelector);
+			input.checked = state;
+		});
+
+		ipcRenderer.on('toggletray', (event, state) => {
+			const inputSelector = '#tray-option .action .switch input';
+			const input = document.querySelector(inputSelector);
+			input.checked = state;
+		});
 	}
 }
 

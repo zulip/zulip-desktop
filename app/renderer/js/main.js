@@ -262,6 +262,13 @@ class ServerManagerView {
 			tabs: this.tabs,
 			activeTabIndex: this.activeTabIndex
 		});
+
+		ipcRenderer.on('toggle-sidebar', (event, state) => {
+			const selector = 'webview:not([class*=disabled])';
+			const webview = document.querySelector(selector);
+			const webContents = webview.getWebContents();
+			webContents.send('toggle-sidebar', state);
+		});
 	}
 
 	destroyTab(name, index) {

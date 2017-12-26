@@ -197,13 +197,16 @@ ipcRenderer.on('tray', (event, arg) => {
 });
 
 function toggleTray() {
+	let state;
 	if (window.tray) {
+		state = false;
 		window.tray.destroy();
 		if (window.tray.isDestroyed()) {
 			window.tray = null;
 		}
 		ConfigUtil.setConfigItem('trayIcon', false);
 	} else {
+		state = true;
 		createTray();
 		if (process.platform === 'linux' || process.platform === 'win32') {
 			renderNativeImage(unread).then(image => {
@@ -213,6 +216,10 @@ function toggleTray() {
 		}
 		ConfigUtil.setConfigItem('trayIcon', true);
 	}
+	const selector = 'webview:not([class*=disabled])';
+	const webview = document.querySelector(selector);
+	const webContents = webview.getWebContents();
+	webContents.send('toggletray', state);
 }
 
 ipcRenderer.on('toggletray', toggleTray);
