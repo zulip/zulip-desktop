@@ -1,10 +1,10 @@
 'use strict';
 
-const { remote } = require('electron');
+const { remote, ipcRenderer } = require('electron');
 
 const ConfigUtil = require(__dirname + '/utils/config-util.js');
 
-const app = remote.app;
+const { app } = remote;
 
 // From https://github.com/felixrieseberg/electron-windows-notifications#appusermodelid
 // On windows 8 we have to explicitly set the appUserModelId otherwise notification won't work.
@@ -16,6 +16,10 @@ class baseNotification extends NativeNotification {
 	constructor(title, opts) {
 		opts.silent = ConfigUtil.getConfigItem('silent') || false;
 		super(title, opts);
+
+		this.addEventListener('click', () => {
+			ipcRenderer.send('focus-app');
+		});
 	}
 	static requestPermission() {
 		return; // eslint-disable-line no-useless-return
