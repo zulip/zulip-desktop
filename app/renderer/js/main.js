@@ -1,10 +1,10 @@
 'use strict';
 
-require(__dirname + '/js/tray.js');
 const { ipcRenderer, remote } = require('electron');
 
 const { session } = remote;
 
+require(__dirname + '/js/tray.js');
 const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
 const WebView = require(__dirname + '/js/components/webview.js');
 const ServerTab = require(__dirname + '/js/components/server-tab.js');
@@ -83,6 +83,13 @@ class ServerManagerView {
 			silent: false,
 			lastActiveTab: 0
 		};
+
+		// Platform specific settings
+
+		if (process.platform === 'win32') {
+			// Only available on Windows
+			settingOptions.flashTaskbarOnMessage = true;
+		}
 
 		for (const i in settingOptions) {
 			if (ConfigUtil.getConfigItem(i) === null) {
