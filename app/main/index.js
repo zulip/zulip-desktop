@@ -12,6 +12,7 @@ const { setAutoLaunch } = require('./startup');
 const { app, ipcMain } = electron;
 
 const BadgeSettings = require('./../renderer/js/pages/preference/badge-settings.js');
+const ConfigUtil = require('./../renderer/js/utils/config-util.js');
 
 // Adds debug features like hotkeys for triggering dev tools and reload
 // in development mode
@@ -81,7 +82,11 @@ function createMainWindow() {
 	});
 
 	win.once('ready-to-show', () => {
-		win.show();
+		if (ConfigUtil.getConfigItem('startMinimized')) {
+			win.minimize();
+		} else {
+			win.show();
+		}
 	});
 
 	win.loadURL(mainURL);
@@ -145,7 +150,11 @@ app.on('ready', () => {
 	const page = mainWindow.webContents;
 
 	page.on('dom-ready', () => {
-		mainWindow.show();
+		if (ConfigUtil.getConfigItem('startMinimized')) {
+			mainWindow.minimize();
+		} else {
+			mainWindow.show();
+		}
 	});
 
 	page.once('did-frame-finish-load', () => {
