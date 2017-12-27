@@ -5,9 +5,9 @@ const fs = require('fs');
 const path = require('path');
 const JsonDB = require('node-json-db');
 const request = require('request');
-const Console = require('./console-util');
+const Logger = require('./logger-util');
 
-const logger = new Console({
+const logger = new Logger({
 	file: `domain-util.log`,
 	timestamp: true
 });
