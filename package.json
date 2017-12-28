@@ -31,7 +31,9 @@
     "dist": "electron-builder",
     "mas": "electron-builder --mac mas",
     "travis": "cd ./scripts && ./travis-build-test.sh",
-    "build-locales": "node tools/locale-helper"
+    "build-locales": "node tools/locale-helper",
+    "setup-gitlint-hooks": "node ./tools/gitlint/setup-gitlint-hook",
+    "lint-commits": "node ./tools/gitlint --all-commits"
   },
   "pre-commit": [
     "test"
@@ -111,6 +113,7 @@
   ],
   "devDependencies": {
     "assert": "1.4.1",
+    "chalk": "^2.3.0",
     "cp-file": "^5.0.0",
     "devtron": "1.4.0",
     "electron": "1.8.4",

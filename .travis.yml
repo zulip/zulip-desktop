@@ -28,7 +28,9 @@ cache:
   - app/node_modules
 
 script:
-- npm run travis
+  - node ./tools/gitlint --ci-mode
+  - npm run travis
+
 notifications:
   webhooks:
     urls:
