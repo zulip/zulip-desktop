@@ -77,6 +77,7 @@ class ServerManagerView {
 			showSidebar: true,
 			badgeOption: true,
 			startAtLogin: false,
+			startMinimized: false,
 			enableSpellchecker: true,
 			showNotification: true,
 			betaUpdate: false,
