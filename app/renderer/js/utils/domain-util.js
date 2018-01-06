@@ -125,7 +125,20 @@ class DomainUtil {
 				const whitelistDomains = [
 					'zulipdev.org'
 				];
-				if (!error && response.statusCode !== 404) {
+
+				// If error is falsy, convert it to an empty string to prevent an error
+				// during `error.toString()`.
+				error = error || '';
+
+				// `error` is only populated if there is an error with the `request`
+				// function itself, not an error in the response. Therefore, check both
+				// that there is no `request` error and no error status code. A
+				// status code error is most likely more common than the `request`
+				// error itself.
+				//
+				// For example, a 400 response would have a null `error` but a status
+				// code equal to 400, causing it to fail.
+				if (!error && response.statusCode < 400) {
 					// Correct
 					this.getServerSettings(domain).then(serverSettings => {
 						resolve(serverSettings);
