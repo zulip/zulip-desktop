@@ -121,11 +121,16 @@ class DomainUtil {
 						'Error: unable to verify the first certificate',
 						'Error: unable to get local issuer certificate'
 					];
+
 				// If the domain contains following strings we just bypass the server
 				const whitelistDomains = [
 					'zulipdev.org'
 				];
-				if (!error && response.statusCode !== 404) {
+
+				// make sure that error is a error or string not undefined
+				// so validation does not throw error.
+				error = error || '';
+				if (!error && response.statusCode < 400) {
 					// Correct
 					this.getServerSettings(domain).then(serverSettings => {
 						resolve(serverSettings);
@@ -165,7 +170,7 @@ class DomainUtil {
 					}
 				} else {
 					const invalidZulipServerError = `${domain} does not appear to be a valid Zulip server. Make sure that \
-					\n(1) you can connect to that URL in a web browser and \n (2) if you need a proxy to connect to the Internet, that you've configured your proxy in the Network settings`;
+					\n(1) you can connect to that URL in a web browser and \n (2) if you need a proxy to connect to the Internet, that you've configured your proxy in the Network settings \n (3) its a zulip server`;
 					reject(invalidZulipServerError);
 				}
 			});
