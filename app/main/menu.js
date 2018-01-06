@@ -54,7 +54,7 @@ class AppMenu {
 			role: 'togglefullscreen'
 		}, {
 			label: 'Zoom In',
-			accelerator: 'CommandOrControl+=',
+			accelerator: 'CommandOrControl+Plus',
 			click(item, focusedWindow) {
 				if (focusedWindow) {
 					AppMenu.sendAction('zoomIn');
