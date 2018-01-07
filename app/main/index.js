@@ -129,6 +129,9 @@ function createMainWindow() {
 	return win;
 }
 
+// Decrease load on GPU (experimental)
+app.disableHardwareAcceleration();
+
 // eslint-disable-next-line max-params
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
 	event.preventDefault();
