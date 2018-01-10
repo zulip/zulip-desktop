@@ -277,6 +277,20 @@ class ServerManagerView {
 			const webContents = webview.getWebContents();
 			webContents.send('toggle-sidebar', state);
 		});
+
+		ipcRenderer.on('toogle-silent', (event, state) => {
+			const webviews = document.querySelectorAll('webview');
+			webviews.forEach(webview => {
+				try {
+					webview.setAudioMuted(state);
+				} catch (err) {
+					// webview is not ready yet
+					webview.addEventListener('dom-ready', () => {
+						webview.isAudioMuted();
+					});
+				}
+			});
+		});
 	}
 
 	destroyTab(name, index) {
