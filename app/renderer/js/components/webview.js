@@ -11,7 +11,7 @@ const { shell, app } = require('electron').remote;
 
 const BaseComponent = require(__dirname + '/../components/base.js');
 
-const silentWebview = ConfigUtil.getConfigItem('silent');
+const shouldSilentWebview = ConfigUtil.getConfigItem('silent');
 class WebView extends BaseComponent {
 	constructor(props) {
 		super();
@@ -56,7 +56,7 @@ class WebView extends BaseComponent {
 			}
 		});
 
-		if (silentWebview) {
+		if (shouldSilentWebview) {
 			this.$el.addEventListener('dom-ready', () => {
 				this.$el.setAudioMuted(true);
 			});
