@@ -1,11 +1,10 @@
 'use strict';
 const path = require('path');
-
-const { ipcRenderer } = require('electron');
-const { app, dialog } = require('electron').remote;
-
+const { ipcRenderer, remote } = require('electron');
 const fs = require('fs-extra');
 
+const { app, dialog } = remote;
+const currentBrowserWindow = remote.getCurrentWindow();
 const BaseSection = require(__dirname + '/base-section.js');
 const ConfigUtil = require(__dirname + '/../../utils/config-util.js');
 
@@ -160,6 +159,7 @@ class GeneralSection extends BaseSection {
 				const newValue = !ConfigUtil.getConfigItem('silent', true);
 				ConfigUtil.setConfigItem('silent', newValue);
 				this.updateSilentOption();
+				currentBrowserWindow.send('toogle-silent', newValue);
 			}
 		});
 	}

@@ -4,12 +4,14 @@ const path = require('path');
 const fs = require('fs');
 
 const DomainUtil = require(__dirname + '/../utils/domain-util.js');
+const ConfigUtil = require(__dirname + '/../utils/config-util.js');
 const SystemUtil = require(__dirname + '/../utils/system-util.js');
 const LinkUtil = require(__dirname + '/../utils/link-util.js');
 const { shell, app } = require('electron').remote;
 
 const BaseComponent = require(__dirname + '/../components/base.js');
 
+const shouldSilentWebview = ConfigUtil.getConfigItem('silent');
 class WebView extends BaseComponent {
 	constructor(props) {
 		super();
@@ -53,6 +55,12 @@ class WebView extends BaseComponent {
 				shell.openExternal(url);
 			}
 		});
+
+		if (shouldSilentWebview) {
+			this.$el.addEventListener('dom-ready', () => {
+				this.$el.setAudioMuted(true);
+			});
+		}
 
 		this.$el.addEventListener('page-title-updated', event => {
 			const { title } = event;
