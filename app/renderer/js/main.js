@@ -35,6 +35,7 @@ class ServerManagerView {
 		this.activeTabIndex = -1;
 		this.tabs = [];
 		this.functionalTabs = {};
+		this.tabIndex = 0;
 	}
 
 	init() {
@@ -120,17 +121,20 @@ class ServerManagerView {
 	}
 
 	initServer(server, index) {
+		const tabIndex = this.getTabIndex();
 		this.tabs.push(new ServerTab({
 			role: 'server',
 			icon: server.icon,
 			$root: this.$tabsContainer,
 			onClick: this.activateLastTab.bind(this, index),
 			index,
+			tabIndex,
 			onHover: this.onHover.bind(this, index, server.alias),
 			onHoverOut: this.onHoverOut.bind(this, index),
 			webview: new WebView({
 				$root: this.$webviewsContainer,
 				index,
+				tabIndex,
 				url: server.url,
 				name: server.alias,
 				isActive: () => {
@@ -167,6 +171,12 @@ class ServerManagerView {
 		this.sidebarHoverEvent(this.$reloadButton, this.$reloadTooltip);
 	}
 
+	getTabIndex() {
+		const currentIndex = this.tabIndex;
+		this.tabIndex++;
+		return currentIndex;
+	}
+
 	sidebarHoverEvent(SidebarButton, SidebarTooltip) {
 		SidebarButton.addEventListener('mouseover', () => {
 			SidebarTooltip.removeAttribute('style');
@@ -193,16 +203,19 @@ class ServerManagerView {
 
 		this.functionalTabs[tabProps.name] = this.tabs.length;
 
+		const tabIndex = this.getTabIndex();
 		this.tabs.push(new FunctionalTab({
 			role: 'function',
 			materialIcon: tabProps.materialIcon,
 			$root: this.$tabsContainer,
 			index: this.functionalTabs[tabProps.name],
+			tabIndex,
 			onClick: this.activateTab.bind(this, this.functionalTabs[tabProps.name]),
 			onDestroy: this.destroyTab.bind(this, tabProps.name, this.functionalTabs[tabProps.name]),
 			webview: new WebView({
 				$root: this.$webviewsContainer,
 				index: this.functionalTabs[tabProps.name],
+				tabIndex,
 				url: tabProps.url,
 				name: tabProps.name,
 				isActive: () => {
@@ -421,6 +434,18 @@ class ServerManagerView {
 
 		ipcRenderer.on('leave-fullscreen', () => {
 			this.$fullscreenPopup.classList.remove('show');
+		});
+
+		ipcRenderer.on('focus-webview-with-id', (event, webviewId) => {
+			const webviews = document.querySelectorAll('webview');
+			webviews.forEach(webview => {
+				const currentId = webview.getWebContents().id;
+				const tabId = webview.getAttribute('data-tab-id');
+				const concurrentTab = document.querySelector(`div[data-tab-id="${tabId}"]`);
+				if (currentId === webviewId) {
+					concurrentTab.click();
+				}
+			});
 		});
 
 		ipcRenderer.on('render-taskbar-icon', (event, messageCount) => {

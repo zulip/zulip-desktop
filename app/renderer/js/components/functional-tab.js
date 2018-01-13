@@ -4,7 +4,7 @@ const Tab = require(__dirname + '/../components/tab.js');
 
 class FunctionalTab extends Tab {
 	template() {
-		return `<div class="tab functional-tab">
+		return `<div class="tab functional-tab" data-tab-id="${this.props.tabIndex}">
 					<div class="server-tab-badge close-button">
 						<i class="material-icons">close</i>
 					</div>
