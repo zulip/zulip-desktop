@@ -12,18 +12,11 @@ Please see [installation guide](https://zulipchat.com/help/desktop-app-install-g
 
 # Features
 * Sign in to multiple teams
-* Native desktop Notifications
-* SpellChecker
+* Desktop Notifications with inline reply support
+* Multilanguage SpellChecker
 * OSX/Win/Linux installers
-* Automatic Updates (macOS/Windows)
+* Automatic Updates (macOS/Windows/Linux)
 * Keyboard shortcuts
-
-Description            | Keys
------------------------| -----------------------
-Default shortcuts      | <kbd>Cmd/Ctrl</kbd> <kbd>k</kbd>
-Manage Zulip Servers    | <kbd>Cmd/Ctrl</kbd> <kbd>,</kbd>
-Back                   | <kbd>Cmd/Ctrl</kbd> <kbd>[</kbd>
-Forward                | <kbd>Cmd/Ctrl</kbd> <kbd>]</kbd>
 
 # Development
 Please see our [development guide](./development.md) to get started and run app locally.
