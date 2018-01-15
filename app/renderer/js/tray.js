@@ -5,13 +5,13 @@ const electron = require('electron');
 
 const { ipcRenderer, remote } = electron;
 
-const { Tray, Menu, nativeImage, BrowserWindow } = remote;
+const { Tray, Menu, BrowserWindow } = remote;
 
 const APP_ICON = path.join(__dirname, '../../resources/', 'f');
 
 const ConfigUtil = require(__dirname + '/utils/config-util.js');
 
-const iconPath = (unreadCount) => {
+const iconPath = unreadCount => {
 	if (process.platform === 'linux') {
 		return APP_ICON + 'linux.png';
 	}
@@ -215,10 +215,10 @@ function toggleTray() {
 		state = true;
 		createTray();
 		if (process.platform === 'darwin' || process.platform === 'win32') {
-			renderNativeImage(unread).then(image => {
-				window.tray.setImage(image);
-				window.tray.setToolTip(unread + ' unread messages');
-			});
+			// renderNativeImage(unread).then(image => {
+			window.tray.setImage(iconPath());
+			window.tray.setToolTip(unread + ' unread messages');
+			// });
 		}
 		ConfigUtil.setConfigItem('trayIcon', true);
 	}
