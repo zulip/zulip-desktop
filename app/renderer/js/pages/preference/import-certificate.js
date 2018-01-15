@@ -43,7 +43,7 @@ class ImportCertificate extends HTMLElement {
       <div class="setting-row">
         <input class="setting-input-value" placeholder="Enter Passphrase for certificate">
       </div>
-      <div class="setting-row">
+      <div class="setting-row limit-text-overflow">
         <button class="action import-cert-btn">Select and Import Certificate</button>
         <div class="import-cert-loading">
           <div>Importing Certificate..</div>

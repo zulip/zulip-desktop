@@ -311,6 +311,10 @@ img.server-info-icon {
     margin: 6px;
 }
 
+.setting-row.limit-text-overflow {
+    max-width: 520px;
+}
+
 .code {
     font-family: Courier New, Courier, monospace;
 }
