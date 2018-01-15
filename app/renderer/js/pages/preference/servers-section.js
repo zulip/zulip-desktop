@@ -4,8 +4,10 @@ const BaseSection = require(__dirname + '/base-section.js');
 const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
 const ServerInfoForm = require(__dirname + '/server-info-form.js');
 const NewServerForm = require(__dirname + '/new-server-form.js');
+const ImportCertificate = require(__dirname + '/import-certificate');
 const CreateOrganziation = require(__dirname + '/create-new-org.js');
 
+customElements.define('import-certificate', ImportCertificate);
 class ServersSection extends BaseSection {
 	constructor(props) {
 		super();
@@ -17,6 +19,7 @@ class ServersSection extends BaseSection {
 			<div class="settings-pane" id="server-settings-pane">
 				<div class="page-title">Register or login to a Zulip organization to get started</div>
 				<div id="new-server-container"></div>
+				${process.platform === 'linux' ? '<import-certificate></import-certificate>' : ''}
 				<div class="title" id="existing-servers"></div>
 				<div id="server-info-container"></div>
 				<div id="create-organization-container"></div>
