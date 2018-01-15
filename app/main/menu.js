@@ -121,7 +121,7 @@ class AppMenu {
 				shell.openExternal('https://zulipchat.com/help/');
 			}
 		}, {
-			label: `${appName + 'Desktop'} - ${app.getVersion()}`,
+			label: `${appName + ' Desktop'} - ${app.getVersion()}`,
 			enabled: false
 		}, {
 			label: 'Report an Issue...',
