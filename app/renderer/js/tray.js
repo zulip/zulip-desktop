@@ -50,43 +50,41 @@ const renderCanvas = function (arg) {
 
 	return new Promise(resolve => {
 		const SIZE = config.size * config.pixelRatio;
-		const PADDING = SIZE * 0.05;
-		const CENTER = SIZE / 2;
-		const HAS_COUNT = config.showUnreadCount && config.unreadCount;
-		const color = config.unreadCount ? config.unreadColor : config.readColor;
-		const backgroundColor = config.unreadCount ? config.unreadBackgroundColor : config.readBackgroundColor;
-
 		const canvas = document.createElement('canvas');
+		const ctx = canvas.getContext('2d');
+		const image = new Image();
 		canvas.width = SIZE;
 		canvas.height = SIZE;
-		const ctx = canvas.getContext('2d');
 
-		// Circle
-		// If (!config.thick || config.thick && HAS_COUNT) {
-		ctx.beginPath();
-		ctx.arc(CENTER, CENTER, (SIZE / 2) - PADDING, 0, 2 * Math.PI, false);
-		ctx.fillStyle = backgroundColor;
-		ctx.fill();
-		ctx.lineWidth = SIZE / (config.thick ? 10 : 20);
-		ctx.strokeStyle = backgroundColor;
-		ctx.stroke();
-		// Count or Icon
-		if (HAS_COUNT) {
-			ctx.fillStyle = color;
-			ctx.textAlign = 'center';
-			if (config.unreadCount > 99) {
-				ctx.font = `${config.thick ? 'bold ' : ''}${SIZE * 0.4}px Helvetica`;
-				ctx.fillText('99+', CENTER, CENTER + (SIZE * 0.15));
-			} else if (config.unreadCount < 10) {
-				ctx.font = `${config.thick ? 'bold ' : ''}${SIZE * 0.5}px Helvetica`;
-				ctx.fillText(config.unreadCount, CENTER, CENTER + (SIZE * 0.20));
+		image.src = '../resources/icon.png';
+		image.onload = () => {
+			ctx.drawImage(image, 7.5, 7.5, 85, 85);
+
+			const { PI } = Math;
+			const circle = new Path2D();
+			circle.arc(75, 80, 20, 0.5 * PI, 2.5 * PI, false);
+
+			ctx.fillStyle = 'red';
+			ctx.fill(circle);
+			ctx.fillStyle = 'white';
+
+			let count = Number(config.unreadCount);
+			if (count < 100) {
+				ctx.font = '900 20px Verdana';
+				ctx.fillText(count, 62, 88);
 			} else {
-				ctx.font = `${config.thick ? 'bold ' : ''}${SIZE * 0.5}px Helvetica`;
-				ctx.fillText(config.unreadCount, CENTER, CENTER + (SIZE * 0.15));
+				count = count.toString();
+				count.replace(/0{3,}/, 'K+');
+				ctx.font = '900 16px Verdana';
+				ctx.fillText(count, 58, 86);
 			}
 
-			resolve(canvas);
-		}
+			let pngIcon = nativeImage.createFromDataURL(canvas.toDataURL('image/png'));
+			pngIcon = pngIcon.resize({ height: SIZE, width: SIZE });
+			pngIcon = pngIcon.toPNG();
+			const trayIcon = nativeImage.createFromBuffer(pngIcon, config.pixelRatio);
+			resolve(trayIcon);
+		};
 	});
 };
 /**
@@ -97,9 +95,8 @@ const renderCanvas = function (arg) {
 const renderNativeImage = function (arg) {
 	return Promise.resolve()
 		.then(() => renderCanvas(arg))
-		.then(canvas => {
-			const pngData = nativeImage.createFromDataURL(canvas.toDataURL('image/png')).toPng();
-			return Promise.resolve(nativeImage.createFromBuffer(pngData, config.pixelRatio));
+		.then(trayIcon => {
+			return Promise.resolve(trayIcon);
 		});
 };
 
@@ -189,6 +186,7 @@ ipcRenderer.on('tray', (event, arg) => {
 		} else {
 			unread = arg;
 			renderNativeImage(arg).then(image => {
+				console.log(image);
 				window.tray.setImage(image);
 				window.tray.setToolTip(arg + ' unread messages');
 			});
