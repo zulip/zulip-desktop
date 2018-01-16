@@ -46,11 +46,28 @@ const config = {
 };
 
 ipcRenderer.on('tray-icon-png', (event, data) => {
+	const {
+		image,
+		id
+	} = data;
 	const { size } = config;
-	let iconData = nativeImage.createFromDataURL(data);
-	iconData = iconData.resize({ height: size, width: size }).toPNG();
-	const trayIcon = nativeImage.createFromBuffer(iconData, config.pixelRatio);
-	window.tray.setImage(trayIcon);
+	const activeTabId = document.querySelector('.tab.active').getAttribute('data-tab-id');
+	const webviews = document.querySelectorAll('webview');
+	let shouldUpdate = false;
+ 	webviews.forEach(webview => {
+		 const currentId = webview.getWebContents().id;
+		 if (currentId === id) {
+			const webviewTabId = webview.getAttribute('data-tab-id');
+			shouldUpdate = activeTabId === webviewTabId;
+		 }
+	 });
+
+	if (shouldUpdate) {
+		let iconData = nativeImage.createFromDataURL(image);
+		iconData = iconData.resize({ height: size, width: size }).toPNG();
+		const trayIcon = nativeImage.createFromBuffer(iconData, config.pixelRatio);
+		window.tray.setImage(trayIcon);
+	}
 });
 
 const renderCanvas = function (arg) {

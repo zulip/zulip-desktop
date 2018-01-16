@@ -17,6 +17,7 @@ const logout = () => {
 };
 
 const currentWindow = remote.getCurrentWindow();
+const currentWebContents = remote.getCurrentWebContents();
 const { webContents } = currentWindow;
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -34,7 +35,10 @@ function setFaviconLinking() {
 			ctx.drawImage(favIcon, 0, 0, size, size);
 
 			const pngImage = canvas.toDataURL();
-			webContents.send('tray-icon-png', pngImage);
+			webContents.send('tray-icon-png', {
+				image: pngImage,
+				id: currentWebContents.id
+			});
 		};
 
 		favIcon.src = url;
