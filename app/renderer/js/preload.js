@@ -20,8 +20,9 @@ const currentWindow = remote.getCurrentWindow();
 const { webContents } = currentWindow;
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
-canvas.width = 16;
-canvas.height = 16;
+const size = 20;
+canvas.width = size;
+canvas.height = size;
 function setFaviconLinking() {
 	const { favicon } = window;
 	const oldFavSet = favicon.set;
@@ -29,8 +30,8 @@ function setFaviconLinking() {
 		oldFavSet(url);
 		const favIcon = new Image();
 		favIcon.onload = () => {
-			ctx.clearRect(0, 0, 16, 16);
-			ctx.drawImage(favIcon, 0, 0, 16, 16);
+			ctx.clearRect(0, 0, size, size);
+			ctx.drawImage(favIcon, 0, 0, size, size);
 
 			const pngImage = canvas.toDataURL();
 			webContents.send('tray-icon-png', pngImage);
