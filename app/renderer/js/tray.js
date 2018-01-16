@@ -46,7 +46,9 @@ const config = {
 };
 
 ipcRenderer.on('tray-icon-png', (event, data) => {
-	const iconData = nativeImage.createFromDataURL(data).toPNG();
+	const { size } = config;
+	let iconData = nativeImage.createFromDataURL(data);
+	iconData = iconData.resize({ height: size, width: size }).toPNG();
 	const trayIcon = nativeImage.createFromBuffer(iconData, config.pixelRatio);
 	window.tray.setImage(trayIcon);
 });

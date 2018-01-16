@@ -20,7 +20,7 @@ const currentWindow = remote.getCurrentWindow();
 const { webContents } = currentWindow;
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
-const size = 20;
+const size = 16;
 canvas.width = size;
 canvas.height = size;
 function setFaviconLinking() {
