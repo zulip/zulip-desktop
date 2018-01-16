@@ -1,7 +1,7 @@
 const { remote } = require('electron');
-const {
-  build: { appId }
- } = require('../../../../package');
+
+// Do not change this
+const appId = 'org.zulip.zulip-electron';
 
 function checkElements(...elements) {
 	let status = true;
