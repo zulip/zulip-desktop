@@ -45,6 +45,12 @@ const config = {
 	thick: process.platform === 'win32'
 };
 
+ipcRenderer.on('tray-icon-png', (event, data) => {
+	const iconData = nativeImage.createFromDataURL(data).toPNG();
+	const trayIcon = nativeImage.createFromBuffer(iconData, config.pixelRatio);
+	window.tray.setImage(trayIcon);
+});
+
 const renderCanvas = function (arg) {
 	config.unreadCount = arg;
 

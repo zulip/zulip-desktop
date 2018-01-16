@@ -1,6 +1,6 @@
 'use strict';
 
-const { ipcRenderer } = require('electron');
+const { ipcRenderer, remote } = require('electron');
 const SetupSpellChecker = require('./spellchecker');
 
 const ConfigUtil = require(__dirname + '/utils/config-util.js');
@@ -15,6 +15,31 @@ const logout = () => {
 	const nodes = document.querySelectorAll('.dropdown-menu li:last-child a');
 	nodes[nodes.length - 1].click();
 };
+
+const currentWindow = remote.getCurrentWindow();
+const { webContents } = currentWindow;
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = 16;
+canvas.height = 16;
+function setFaviconLinking() {
+	const { favicon } = window;
+	const oldFavSet = favicon.set;
+	function newFavSet(url) {
+		oldFavSet(url);
+		const favIcon = new Image();
+		favIcon.onload = () => {
+			ctx.clearRect(0, 0, 16, 16);
+			ctx.drawImage(favIcon, 0, 0, 16, 16);
+
+			const pngImage = canvas.toDataURL();
+			webContents.send('tray-icon-png', pngImage);
+		};
+
+		favIcon.src = url;
+	}
+	window.favicon.set = newFavSet;
+}
 
 const shortcut = () => {
 	// Create the menu for the below
@@ -52,6 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			ipcRenderer.send('forward-message', 'reload-viewer');
 		});
 	}
+
+	setFaviconLinking();
 });
 
 // Clean up spellchecker events after you navigate away from this page;
@@ -59,4 +86,3 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('beforeunload', () => {
 	SetupSpellChecker.unsubscribeSpellChecker();
 });
-
