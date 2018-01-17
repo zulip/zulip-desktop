@@ -135,21 +135,22 @@ class DomainUtil {
 	getServerSettings(domain) {
 		const serverSettingsUrl = domain + '/api/v1/server_settings';
 		return new Promise((resolve, reject) => {
-			request(serverSettingsUrl, (error, response) => {
-				if (!error && response.statusCode === 200) {
-					const data = JSON.parse(response.body);
-					if (data.hasOwnProperty('realm_icon') && data.realm_icon) {
-						resolve({
-							// Some Zulip Servers use absolute URL for server icon whereas others use relative URL
-							// Following check handles both the cases
-							icon: data.realm_icon.startsWith('/') ? data.realm_uri + data.realm_icon : data.realm_icon,
-							url: data.realm_uri,
-							alias: data.realm_name
-						});
-					}
-				} else {
-					reject('Zulip server version < 1.6.');
+			request(serverSettingsUrl)
+			.then(response => {
+				const data = JSON.parse(response.body);
+				if (data.hasOwnProperty('realm_icon') && data.realm_icon) {
+					resolve({
+						// Some Zulip Servers use absolute URL for server icon whereas others use relative URL
+						// Following check handles both the cases
+						icon: data.realm_icon.startsWith('/') ? data.realm_uri + data.realm_icon : data.realm_icon,
+						url: data.realm_uri,
+						alias: data.realm_name
+					});
 				}
+			})
+			.catch(err => {
+				logger.log(err);
+				reject('Zulip server version < 1.6.');
 			});
 		});
 	}
@@ -158,24 +159,15 @@ class DomainUtil {
 		// The save will always succeed. If url is invalid, downgrade to default icon.
 		return new Promise(resolve => {
 			const filePath = this.generateFilePath(url);
-			const file = fs.createWriteStream(filePath);
-			try {
-				request(url).on('response', response => {
-					response.on('error', err => {
-						console.log(err);
-						resolve(defaultIconUrl);
-					});
-					response.pipe(file).on('finish', () => {
-						resolve(filePath);
-					});
-				}).on('error', err => {
-					console.log(err);
-					resolve(defaultIconUrl);
-				});
-			} catch (err) {
-				console.log(err);
+
+			request(url)
+			.then(response => {
+				fs.writeFileSync(filePath, response.body);
+			})
+			.catch(err => {
+				logger.log(err);
 				resolve(defaultIconUrl);
-			}
+			});
 		});
 	}
 
