@@ -4,7 +4,7 @@ const { app, dialog } = require('electron').remote;
 const fs = require('fs');
 const path = require('path');
 const JsonDB = require('node-json-db');
-const request = require('request');
+const request = require('./request-util');
 const Logger = require('./logger-util');
 
 const logger = new Logger({
@@ -114,65 +114,20 @@ class DomainUtil {
 		};
 
 		return new Promise((resolve, reject) => {
-			request(checkDomain, (error, response) => {
-				const certsError =
-					[
-						'Error: self signed certificate',
-						'Error: unable to verify the first certificate',
-						'Error: unable to get local issuer certificate'
-					];
-
-				// If the domain contains following strings we just bypass the server
-				const whitelistDomains = [
-					'zulipdev.org'
-				];
-
-				// make sure that error is a error or string not undefined
-				// so validation does not throw error.
-				error = error || '';
-				if (!error && response.statusCode < 400) {
-					// Correct
-					this.getServerSettings(domain).then(serverSettings => {
-						resolve(serverSettings);
-					}, () => {
-						resolve(serverConf);
-					});
-				} else if (domain.indexOf(whitelistDomains) >= 0 || certsError.indexOf(error.toString()) >= 0) {
-					if (silent) {
-						this.getServerSettings(domain).then(serverSettings => {
-							resolve(serverSettings);
-						}, () => {
-							resolve(serverConf);
-						});
-					} else {
-						const certErrorMessage = `Do you trust certificate from ${domain}? \n ${error}`;
-						const certErrorDetail = `The server you're connecting to is either someone impersonating the Zulip server you entered, or the server you're trying to connect to is configured in an insecure way.
-						\n Unless you have a good reason to believe otherwise, you should not proceed.
-						\n You can click here if you'd like to proceed with the connection.`;
-
-						dialog.showMessageBox({
-							type: 'warning',
-							buttons: ['Yes', 'No'],
-							defaultId: 0,
-							message: certErrorMessage,
-							detail: certErrorDetail
-						}, response => {
-							if (response === 0) {
-								this.getServerSettings(domain).then(serverSettings => {
-									resolve(serverSettings);
-								}, () => {
-									resolve(serverConf);
-								});
-							} else {
-								reject('Untrusted Certificate.');
-							}
-						});
-					}
-				} else {
-					const invalidZulipServerError = `${domain} does not appear to be a valid Zulip server. Make sure that \
-					\n(1) you can connect to that URL in a web browser and \n (2) if you need a proxy to connect to the Internet, that you've configured your proxy in the Network settings \n (3) its a zulip server`;
-					reject(invalidZulipServerError);
-				}
+			request(checkDomain)
+			.then(() => {
+				this.getServerSettings(domain).then(serverSettings => {
+					resolve(serverSettings);
+				}, () => {
+					resolve(serverConf);
+				});
+			})
+			.catch(err => {
+				logger.log(`Error checking zulip server '${domain}' error: `);
+				logger.log(err);
+				const invalidZulipServerError = `${domain} does not appear to be a valid Zulip server. Make sure that \
+				\n(1) you can connect to that URL in a web browser and \n (2) if you need a proxy to connect to the Internet, that you've configured your proxy in the Network settings \n (3) its a zulip server`;
+				reject(invalidZulipServerError);
 			});
 		});
 	}
@@ -180,21 +135,22 @@ class DomainUtil {
 	getServerSettings(domain) {
 		const serverSettingsUrl = domain + '/api/v1/server_settings';
 		return new Promise((resolve, reject) => {
-			request(serverSettingsUrl, (error, response) => {
-				if (!error && response.statusCode === 200) {
-					const data = JSON.parse(response.body);
-					if (data.hasOwnProperty('realm_icon') && data.realm_icon) {
-						resolve({
-							// Some Zulip Servers use absolute URL for server icon whereas others use relative URL
-							// Following check handles both the cases
-							icon: data.realm_icon.startsWith('/') ? data.realm_uri + data.realm_icon : data.realm_icon,
-							url: data.realm_uri,
-							alias: data.realm_name
-						});
-					}
-				} else {
-					reject('Zulip server version < 1.6.');
+			request(serverSettingsUrl)
+			.then(response => {
+				const data = JSON.parse(response.body);
+				if (data.hasOwnProperty('realm_icon') && data.realm_icon) {
+					resolve({
+						// Some Zulip Servers use absolute URL for server icon whereas others use relative URL
+						// Following check handles both the cases
+						icon: data.realm_icon.startsWith('/') ? data.realm_uri + data.realm_icon : data.realm_icon,
+						url: data.realm_uri,
+						alias: data.realm_name
+					});
 				}
+			})
+			.catch(err => {
+				logger.log(err);
+				reject('Zulip server version < 1.6.');
 			});
 		});
 	}
@@ -203,24 +159,15 @@ class DomainUtil {
 		// The save will always succeed. If url is invalid, downgrade to default icon.
 		return new Promise(resolve => {
 			const filePath = this.generateFilePath(url);
-			const file = fs.createWriteStream(filePath);
-			try {
-				request(url).on('response', response => {
-					response.on('error', err => {
-						console.log(err);
-						resolve(defaultIconUrl);
-					});
-					response.pipe(file).on('finish', () => {
-						resolve(filePath);
-					});
-				}).on('error', err => {
-					console.log(err);
-					resolve(defaultIconUrl);
-				});
-			} catch (err) {
-				console.log(err);
+
+			request(url)
+			.then(response => {
+				fs.writeFileSync(filePath, response.body);
+			})
+			.catch(err => {
+				logger.log(err);
 				resolve(defaultIconUrl);
-			}
+			});
 		});
 	}
 
