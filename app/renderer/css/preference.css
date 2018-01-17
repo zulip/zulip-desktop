@@ -263,7 +263,13 @@ img.server-info-icon {
     margin: 10px 0 20px 0;
     background: #fff;
     width: 70%;
+    transition: all 0.2s;
+}
+
+.settings-card:hover {
     border-left: 8px solid #bcbcbc;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),
+                0 2px 0px 0px rgba(0,0,0,0.12);
 }
 
 .hidden {
