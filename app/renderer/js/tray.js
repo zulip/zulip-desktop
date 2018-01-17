@@ -45,29 +45,13 @@ const config = {
 	thick: process.platform === 'win32'
 };
 
-ipcRenderer.on('tray-icon-png', (event, data) => {
-	const {
-		image,
-		id
-	} = data;
+ipcRenderer.on('tray-icon-png', (event, image) => {
 	const { size } = config;
-	const activeTabId = document.querySelector('.tab.active').getAttribute('data-tab-id');
-	const webviews = document.querySelectorAll('webview');
-	let shouldUpdate = false;
- 	webviews.forEach(webview => {
-		 const currentId = webview.getWebContents().id;
-		 if (currentId === id) {
-			const webviewTabId = webview.getAttribute('data-tab-id');
-			shouldUpdate = activeTabId === webviewTabId;
-		 }
-	 });
 
-	if (shouldUpdate) {
-		let iconData = nativeImage.createFromDataURL(image);
-		iconData = iconData.resize({ height: size, width: size }).toPNG();
-		const trayIcon = nativeImage.createFromBuffer(iconData, config.pixelRatio);
-		window.tray.setImage(trayIcon);
-	}
+	let iconData = nativeImage.createFromDataURL(image);
+	iconData = iconData.resize({ height: size, width: size }).toPNG();
+	const trayIcon = nativeImage.createFromBuffer(iconData, config.pixelRatio);
+	window.tray.setImage(trayIcon);
 });
 
 const renderCanvas = function (arg) {
@@ -205,6 +189,12 @@ ipcRenderer.on('tray', (event, arg) => {
 	if (!window.tray) {
 		return;
 	}
+
+	if (arg !== 0) {
+		const firstWebview = document.querySelector('webview:not([nodeintegration])');
+		firstWebview.webContents.send('get-unread-favicon', arg);
+	}
+
 	// We don't want to create tray from unread messages on macOS since it already has dock badges.
 	if (process.platform === 'linux' || process.platform === 'win32') {
 		if (arg === 0) {

@@ -17,34 +17,30 @@ const logout = () => {
 };
 
 const currentWindow = remote.getCurrentWindow();
-const currentWebContents = remote.getCurrentWebContents();
 const { webContents } = currentWindow;
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
 const size = 16;
 canvas.width = size;
 canvas.height = size;
-function setFaviconLinking() {
-	const { favicon } = window;
-	const oldFavSet = favicon.set;
-	function newFavSet(url) {
-		oldFavSet(url);
-		const favIcon = new Image();
-		favIcon.onload = () => {
-			ctx.clearRect(0, 0, size, size);
-			ctx.drawImage(favIcon, 0, 0, size, size);
+function getTrayIcon(count) {
+	count = count > 99 ? 99 : count;
+	const url = `/static/images/favicon/favicon-${count}.png`;
+	const favIcon = new Image();
+	favIcon.onload = () => {
+		ctx.clearRect(0, 0, size, size);
+		ctx.drawImage(favIcon, 0, 0, size, size);
 
-			const pngImage = canvas.toDataURL();
-			webContents.send('tray-icon-png', {
-				image: pngImage,
-				id: currentWebContents.id
-			});
-		};
+		const pngImage = canvas.toDataURL();
+		webContents.send('tray-icon-png', pngImage);
+	};
 
-		favIcon.src = url;
-	}
-	window.favicon.set = newFavSet;
+	favIcon.src = url;
 }
+
+ipcRenderer.on('get-unread-favicon', (event, count) => {
+	getTrayIcon(count);
+});
 
 const shortcut = () => {
 	// Create the menu for the below
@@ -82,8 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			ipcRenderer.send('forward-message', 'reload-viewer');
 		});
 	}
-
-	setFaviconLinking();
 });
 
 // Clean up spellchecker events after you navigate away from this page;
