@@ -192,7 +192,8 @@ ipcRenderer.on('tray', (event, arg) => {
 
 	if (arg !== 0) {
 		const firstWebview = document.querySelector('webview:not([nodeintegration])');
-		firstWebview.webContents.send('get-unread-favicon', arg);
+		const webContents = firstWebview.getWebContents();
+		webContents.send('get-unread-favicon', arg);
 	}
 
 	// We don't want to create tray from unread messages on macOS since it already has dock badges.
