@@ -41,4 +41,13 @@
 </body>
 <script src="js/main.js"></script>
 
+<!-- To trigger electron.reload on changes in renderer from gulp -->
+<script>
+  window.addEventListener('load', () => {
+    const isDev = require('electron-is-dev');
+    if (isDev) {
+      require('electron-connect').client.create();
+    }
+  });
+</script>
 </html>
