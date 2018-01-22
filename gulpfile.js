@@ -14,7 +14,7 @@ gulp.task('dev', () => {
   // Reload renderer process
 	gulp.watch('app/renderer/css/*.css', ['reload:renderer']);
 	gulp.watch('app/renderer/*.html', ['reload:renderer']);
-	gulp.watch('app/renderer/js/*.js', ['reload:renderer']);
+	gulp.watch('app/renderer/js/**/*.js', ['reload:renderer']);
 });
 
 gulp.task('restart:browser', done => {
