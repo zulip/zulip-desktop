@@ -69,25 +69,26 @@ class PreferenceView extends BaseComponent {
 		window.location.hash = `#${navItem}`;
 	}
 
+	// Handle toggling and reflect changes in preference page
+	handleToggle(elementName, state) {
+		const inputSelector = `#${elementName} .action .switch input`;
+		const input = document.querySelector(inputSelector);
+		if (input) {
+			input.checked = state;
+		}
+	}
+
 	registerIpcs() {
 		ipcRenderer.on('switch-settings-nav', (event, navItem) => {
 			this.handleNavigation(navItem);
 		});
 
 		ipcRenderer.on('toggle-sidebar', (event, state) => {
-			const inputSelector = '#sidebar-option .action .switch input';
-			const input = document.querySelector(inputSelector);
-			if (input) {
-				input.checked = state;
-			}
+			this.handleToggle('sidebar-option', state);
 		});
 
 		ipcRenderer.on('toggletray', (event, state) => {
-			const inputSelector = '#tray-option .action .switch input';
-			const input = document.querySelector(inputSelector);
-			if (input) {
-				input.checked = state;
-			}
+			this.handleToggle('tray-option', state);
 		});
 	}
 }
