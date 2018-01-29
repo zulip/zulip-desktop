@@ -43,11 +43,13 @@ class NewServerForm extends BaseComponent {
 	}
 
 	submitFormHandler() {
+		this.$saveServerButton.children[1].innerHTML = 'Adding...';
 		DomainUtil.checkDomain(this.$newServerUrl.value).then(serverConf => {
 			DomainUtil.addDomain(serverConf).then(() => {
 				this.props.onChange(this.props.index);
 			});
 		}, errorMessage => {
+			this.$saveServerButton.children[1].innerHTML = 'Add';
 			alert(errorMessage);
 		});
 	}
