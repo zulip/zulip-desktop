@@ -99,8 +99,7 @@ class DomainUtil {
 	checkDomain(domain, silent = false) {
 		if (!silent && this.duplicateDomain(domain)) {
 			// Do not check duplicate in silent mode
-			alert('This server has been added.');
-			return;
+			return Promise.reject('This server has been added.');
 		}
 
 		domain = this.formatUrl(domain);
