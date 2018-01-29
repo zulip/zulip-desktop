@@ -27,7 +27,7 @@ class NetworkSection extends BaseSection {
 						</div>
 						<div class="setting-row" id="proxy-rules-option">
 							<span class="setting-input-key">Proxy rules</span>
-							<input class="setting-input-value" placeholder="e.g. http=foopy:80;ftp=foopy2"/>
+							<input class="setting-input-value" placeholder="e.g. http_proxy:80;ftp_proxy:2121"/>
 						</div>
 						<div class="setting-row" id="proxy-bypass-option">
 							<span class="setting-input-key">Proxy bypass rules</span>
