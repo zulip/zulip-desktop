@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 const {spawnSync} = require('child_process');
 const chalk = require('chalk');
 
@@ -77,7 +79,7 @@ function error(...args) {
 	console.error.apply(this, args);
 }
 
-function warn() {
+function warn(msg) {
 	console.error(chalk`{yellow ${msg}}`);
 }
 

@@ -154,12 +154,6 @@
           "import/no-extraneous-dependencies": 0,
           "no-prototype-builtins": 0
         }
-      },
-      {
-        "files": "scripts/gitlint/*.js",
-        "rules": {
-          "unicorn/no-process-exit": 1
-        }
       }
     ],
     "ignore": [
