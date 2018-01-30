@@ -5,7 +5,7 @@ const {
 } = require('electron');
 
 const DefaultNotification = require('./default-notification');
-const { appId } = require('./helpers');
+const { appId, loadBots } = require('./helpers');
 
 // From https://github.com/felixrieseberg/electron-windows-notifications#appusermodelid
 // On windows 8 we have to explicitly set the appUserModelId otherwise notification won't work.
@@ -16,3 +16,7 @@ if (process.platform === 'darwin') {
 	const DarwinNotification = require('./darwin-notifications');
 	window.Notification = DarwinNotification;
 }
+
+window.addEventListener('load', () => {
+	loadBots();
+});

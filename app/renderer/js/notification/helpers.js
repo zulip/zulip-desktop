@@ -3,6 +3,39 @@ const { remote } = require('electron');
 // Do not change this
 const appId = 'org.zulip.zulip-electron';
 
+const botsList = [];
+let botsListLoaded = false;
+
+// this function load list of bots from the server
+// sync=True for a synchronous getJSON request
+// in case botsList isn't already completely loaded when required in parseRely
+function loadBots(sync = false) {
+	const { $ } = window;
+	botsList.length = 0;
+	if (sync) {
+		$.ajaxSetup({async: false});
+	}
+	$.getJSON('/json/users')
+		.done(data => {
+			const members = data.members;
+			members.forEach(membersRow => {
+				if (membersRow.is_bot) {
+					const bot = `@${membersRow.full_name}`;
+					const mention = `@**${bot.replace(/^@/, '')}**`;
+					botsList.push([bot, mention]);
+				}
+			});
+			botsListLoaded = true;
+		})
+		.fail(error => {
+			console.log('Request failed: ', error.responseText);
+			console.log('Request status: ', error.statusText);
+		});
+	if (sync) {
+		$.ajaxSetup({async: true});
+	}
+}
+
 function checkElements(...elements) {
 	let status = true;
 	elements.forEach(element => {
@@ -41,7 +74,6 @@ const webContentsId = webContents.id;
 function focusCurrentServer() {
 	currentWindow.send('focus-webview-with-id', webContentsId);
 }
-
 // this function parses the reply from to notification
 // making it easier to reply from notification eg
 // @username in reply will be converted to @**username**
@@ -83,6 +115,20 @@ function parseReply(reply) {
 		reply = reply.replace(regex, streamMention);
 	});
 
+	// If botsList isn't completely loaded yet, make a synchronous getJSON request for list
+	if (botsListLoaded === false) {
+		loadBots(true);
+	}
+
+	// Iterate for every bot name and replace in reply
+	// @botname with @**botname**
+	botsList.forEach(([bot, mention]) => {
+		if (reply.includes(bot)) {
+			const regex = new RegExp(bot, 'g');
+			reply = reply.replace(regex, mention);
+		}
+	});
+
 	reply = reply.replace(/\\n/, '\n');
 	return reply;
 }
@@ -98,5 +144,6 @@ module.exports = {
 	customReply,
 	parseReply,
 	setupReply,
-	focusCurrentServer
+	focusCurrentServer,
+	loadBots
 };
