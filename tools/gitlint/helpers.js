@@ -5,7 +5,7 @@ const commitMsgRegex = /[A-Z]+.*\.$/;
 const isFullCommitRegex = /(\w|\W){1,}:\s{1}/;
 const fullCommitRegex = /(\w|\W){1,}:\s{1}[A-Z]+.*\.$/;
 
-exports.run = script => {
+function run(script) {
 	script = script.split(' ');
 	const cmd = script.splice(0, 1)[0];
 	const args = script;
@@ -16,7 +16,7 @@ exports.run = script => {
 	}).stdout;
 
 	return output;
-};
+}
 
 function garbageCollect(a) {
 	a.forEach((content, index) => {
@@ -27,7 +27,7 @@ function garbageCollect(a) {
 	return a;
 }
 
-exports.getAllCommits = output => {
+function getAllCommits(output) {
 	output = output.split('\ncommits');
 	if (!output.length > 1) {
 		exports.error('There are no commits to lint.');
@@ -40,9 +40,9 @@ exports.getAllCommits = output => {
 	});
 
 	return output;
-};
+}
 
-exports.parseCommit = output => {
+function parseCommit(output) {
 	output = output.split('\n\n');
 
 	let commit = output[0].replace('commit ', '');
@@ -65,18 +65,27 @@ exports.parseCommit = output => {
 		commitHash
 	};
 	return result;
-};
+}
 
-exports.logSuccess = () => {
+function logSuccess() {
 	console.log(chalk`{green commit linter:} commit linter passed.`);
 	process.exit(0);
-};
+}
 
-exports.error = (...args) => {
+function error(...args) {
 	args.unshift(chalk.red('ERROR! '));
 	console.error.apply(this, args);
-};
+}
 
-exports.warn = msg => {
+function warn() {
 	console.error(chalk`{yellow ${msg}}`);
+}
+
+module.exports = {
+	run,
+	getAllCommits,
+	parseCommit,
+	logSuccess,
+	error,
+	warn
 };

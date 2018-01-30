@@ -15,6 +15,8 @@ function travis() {
 	}
 
 	const cmd = `git log ${process.env.TRAVIS_COMMIT_RANGE}`;
+	const commitRange = run(`git diff --name-only ${process.env.TRAVIS_COMMIT_RANGE}`);
+	process.stdout.write(`COMMIT_RANGE: ${commitRange}`, 'utf8');
 	return run(cmd);
 }
 

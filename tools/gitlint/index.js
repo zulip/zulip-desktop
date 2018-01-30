@@ -1,4 +1,5 @@
 const helpers = require('./helpers');
+const getCICmd = require('./ci');
 
 let checkAllCommits = false;
 let ciMode = false;
@@ -9,7 +10,7 @@ if (process.argv[2]) {
 
 let cmd;
 if (ciMode) {
-	cmd = helpers.getCICmd();
+	cmd = getCICmd();
 } else {
 	cmd =
     checkAllCommits ? 'git log upstream/master...HEAD' : 'git log -1 HEAD';

@@ -27,8 +27,8 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "mas": "electron-builder --mac mas",
-    "setup-gitlint-hooks": "node ./scripts/gitlint/setup-gitlint-hook",
-    "lint-commits": "node ./scripts/gitlint --all-commits",
+    "setup-gitlint-hooks": "node ./tools/gitlint/setup-gitlint-hook",
+    "lint-commits": "node ./tools/gitlint --all-commits",
     "travis": "cd ./scripts && ./travis-build-test.sh"
   },
   "pre-commit": [
@@ -158,7 +158,7 @@
       {
         "files": "scripts/gitlint/*.js",
         "rules": {
-          "unicorn/no-process-exit": 0
+          "unicorn/no-process-exit": 1
         }
       }
     ],
