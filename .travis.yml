@@ -28,6 +28,9 @@ cache:
   - app/node_modules
 
 script:
+  - echo $TRAVIS_COMMIT_RANGE
+  - echo ${TRAVIS_COMMIT_RANGE/.../..}
+  - echo "test"
   - git log -4
   - node ./tools/gitlint --ci-mode
   - npm run travis

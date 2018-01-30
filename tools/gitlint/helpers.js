@@ -78,7 +78,7 @@ function error(...args) {
 }
 
 function warn() {
-	console.error(chalk`{yellow ${msg}}`);
+	// console.error(chalk`{yellow ${msg}}`);
 }
 
 module.exports = {
