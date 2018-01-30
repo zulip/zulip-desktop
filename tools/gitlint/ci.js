@@ -1,5 +1,3 @@
-const {run} = require('./helpers');
-
 module.exports = () => {
 	if (process.argv.TRAVIS !== undefined) {
 		return travis();
@@ -11,21 +9,19 @@ module.exports = () => {
 function travis() {
 	if (!process.env.TRAVIS_PULL_REQUEST) {
     // Building against master last commit
-		return run('git log -1 HEAD');
+		return 'git log -1 HEAD';
 	}
 
-	const cmd = `git log ${process.env.TRAVIS_COMMIT_RANGE}`;
-	const commitRange = run(`git diff --name-only ${process.env.TRAVIS_COMMIT_RANGE}`);
-	process.stdout.write(`COMMIT_RANGE: ${commitRange}`, 'utf8');
-	return run(cmd);
+	const cmd = `git log ${process.env.TRAVIS_COMMIT_RANGE}/.../..`;
+	return cmd;
 }
 
 function appveyor() {
 	if (!process.env.APPVEYOR_PULL_REQUEST_NUMBER) {
-		return run('git log -1 HEAD');
+		return 'git log -1 HEAD';
 	}
 
 	const cmd =
     `git log origin/master...${process.env.APPVEYOR_PULL_REQUEST_HEAD_COMMIT}`;
-	return run(cmd);
+	return cmd;
 }

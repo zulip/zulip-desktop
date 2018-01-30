@@ -56,7 +56,7 @@ function parseCommit(output) {
 	let lintingStatus = commitMsgRegex.test(commitMsg);
 	lintingStatus = (commitMsg.length <= 72);
 
-	if (lintingStatus && isFullCommitRegex(commitMsg)) {
+	if (lintingStatus && isFullCommitRegex.test(commitMsg)) {
 		lintingStatus = fullCommitRegex.test(commitMsg);
 	}
 
