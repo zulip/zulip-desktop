@@ -12,11 +12,16 @@ const { appId, loadBots } = require('./helpers');
 app.setAppUserModelId(appId);
 
 window.Notification = DefaultNotification;
+
 if (process.platform === 'darwin') {
 	const DarwinNotification = require('./darwin-notifications');
 	window.Notification = DarwinNotification;
 }
 
 window.addEventListener('load', () => {
-	loadBots();
+	// Call this function only when user is logged in
+	// eslint-disable-next-line no-undef, camelcase
+	if (page_params.realm_uri) {
+		loadBots();
+	}
 });
