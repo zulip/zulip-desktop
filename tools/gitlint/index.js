@@ -37,7 +37,7 @@ if (lintFailed) {
   commit msg linting failed
   -------------------------------
   Reasons it does not have:
-    a) capitial latter at start of message
+    a) Capital letter at start of message
 		b) period at the end of commit or
 		c) Commit msg length is more than 72 charaters
 	`);
