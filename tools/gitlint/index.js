@@ -21,11 +21,13 @@ if (ciMode) {
 const commits = helpers.run(cmd);
 const commitsArray = helpers.getAllCommits(commits);
 let lintFailed = false;
+let reasons = '';
 commitsArray.forEach(commit => {
 	const res = helpers.parseCommit(commit);
 	if (res.failed) {
 		const {commitHash} = res;
 		helpers.error(`commit ${commitHash} does not pass our commit style.`);
+		reasons += '\n' + res.reasons;
 		lintFailed = true;
 	} else {
 		helpers.logSuccess('Commit[s] follow the zulip-electron commit rules.');
@@ -33,14 +35,7 @@ commitsArray.forEach(commit => {
 });
 
 if (lintFailed) {
-	helpers.warn(`
-  commit msg linting failed
-  -------------------------------
-  Reasons it does not have:
-    a) Capital letter at start of message
-		b) period at the end of commit or
-		c) Commit msg length is more than 72 charaters
-	`);
+	helpers.warn(reasons);
 	helpers.warn('Run with --no-verify flag to skip the commit-linter');
 	process.exit(1);
 }

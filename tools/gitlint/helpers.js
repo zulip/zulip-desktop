@@ -47,6 +47,7 @@ function getAllCommits(output) {
 function parseCommit(output) {
 	output = output.split('\n\n');
 
+	const reasons = [];
 	let commit = output[0].replace('commit ', '');
 	commit = commit.replace(/\n.*/g, '');
 	let commitHash = commit.split('');
@@ -56,16 +57,32 @@ function parseCommit(output) {
 	const fullCommit = output[1].split('\n');
 	const commitMsg = fullCommit[0];
 	let lintingStatus = commitMsgRegex.test(commitMsg);
-	lintingStatus = (commitMsg.length <= 72);
 
-	if (lintingStatus && isFullCommitRegex.test(commitMsg)) {
+	if (!lintingStatus) {
+		const msg = `${commitHash} does not have capital letter at start or period at the end.`;
+		reasons.push(msg);
+		lintingStatus = true;
+	}
+
+	lintingStatus = (commitMsg.length <= 72);
+	if (!lintingStatus) {
+		reasons.push(`${commitHash} has commit msg title greater than 72 characters.`);
+		lintingStatus = true;
+	}
+
+	if (isFullCommitRegex.test(commitMsg)) {
 		lintingStatus = fullCommitRegex.test(commitMsg);
+		if (!lintingStatus) {
+			reasons.push(`${commitHash} does not follow style have capital letter at start or period at the end.`);
+		}
 	}
 
 	const result = {
-		failed: !lintingStatus,
+		failed: reasons.lenth > 0,
+		reason: reasons.join('\n'),
 		commitHash
 	};
+
 	return result;
 }
 
