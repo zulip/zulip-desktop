@@ -28,7 +28,6 @@ cache:
   - app/node_modules
 
 script:
-  - git log -4
   - node ./tools/gitlint --ci-mode
   - npm run travis
 

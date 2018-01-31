@@ -21,13 +21,10 @@ if (ciMode) {
 const commits = helpers.run(cmd);
 const commitsArray = helpers.getAllCommits(commits);
 let lintFailed = false;
-let reasons = '';
 commitsArray.forEach(commit => {
 	const res = helpers.parseCommit(commit);
 	if (res.failed) {
-		const {commitHash} = res;
-		helpers.error(`commit ${commitHash} does not pass our commit style.`);
-		reasons += '\n' + res.reasons;
+		helpers.error(res.reason);
 		lintFailed = true;
 	} else {
 		helpers.logSuccess('Commit[s] follow the zulip-electron commit rules.');
@@ -35,7 +32,6 @@ commitsArray.forEach(commit => {
 });
 
 if (lintFailed) {
-	helpers.warn(reasons);
-	helpers.warn('Run with --no-verify flag to skip the commit-linter');
+	helpers.warn('Run with --no-verify flag to skip the commit-linter\n\n');
 	process.exit(1);
 }

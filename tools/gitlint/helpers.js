@@ -78,7 +78,7 @@ function parseCommit(output) {
 	}
 
 	const result = {
-		failed: reasons.lenth > 0,
+		failed: reasons.length > 0,
 		reason: reasons.join('\n'),
 		commitHash
 	};
