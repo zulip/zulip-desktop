@@ -12,16 +12,19 @@ body {
 }
 
 kbd {
-    padding: 0.3em 0.8em;
-    border: 1px solid #ccc;
+    display: inline-block;
+    border: 1px solid #ccc ;
+    border-radius: 3px;
     font-size: 15px;
     font-family: Courier New, Courier, monospace;
-    background-color: #383430;
-    color: #ededed;
-    display: inline-block;
-    margin: 0 0.1em;
     font-weight: bold;
     white-space: nowrap;
+    background-color: #f7f7f7;
+    color: #333;
+    margin: 0 0.1em;
+    padding: 0.3em 0.8em;
+    text-shadow: 0 1px 0 #fff;
+    line-height: 1.4;
 }
 
 table,
@@ -38,11 +41,11 @@ table {
 }
 
 table tr:nth-child(even) {
-    background-color: #f7eee6;
+    background-color: #fafafa;
 }
 
 table tr:nth-child(odd) {
-    background-color: #fff8ef;
+    background-color: #fff;
 }
 
 td {

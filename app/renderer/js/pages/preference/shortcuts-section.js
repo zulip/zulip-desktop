@@ -109,7 +109,7 @@ class ShortcutsSection extends BaseSection {
                     <td>Enter Full Screen</td>
                   </tr>
                   <tr>
-                    <td><kbd>${userOSKey}</kbd><kbd>=</kbd></td>
+                    <td><kbd>${userOSKey}</kbd><kbd>+</kbd></td>
                     <td>Zoom In</td>
                   </tr>
                   <tr>
