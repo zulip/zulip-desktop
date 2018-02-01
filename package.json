@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "electron app --disable-http-cache",
-    "reinstall": "rm -rf node_modules; rm -rf app/node_modules; npm install",
+    "reinstall": "./tools/reinstall-node-modules",
     "postinstall": "electron-builder install-app-deps",
     "test": "xo",
     "test-e2e": "gulp test-e2e",
