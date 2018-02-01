@@ -25,6 +25,7 @@ commitsArray.forEach(commit => {
 	const res = helpers.parseCommit(commit);
 	if (res.failed) {
 		helpers.error(res.reason);
+		helpers.error(res.commitMsg);
 		lintFailed = true;
 	} else {
 		helpers.logSuccess('Commit[s] follow the zulip-electron commit rules.');

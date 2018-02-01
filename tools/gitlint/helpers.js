@@ -41,6 +41,13 @@ function getAllCommits(output) {
 		output[index] = 'commit' + commit;
 	});
 
+	// Exclude travis Merge ... into ... commit since it will cause
+	// linting to fail for change not related to user's.
+	if (process.env.TRAVIS_PULL_REQUEST) {
+		const travisCommit = output.pop();
+		console.log('Removing last commit: ', travisCommit);
+	}
+
 	return output;
 }
 
@@ -80,7 +87,8 @@ function parseCommit(output) {
 	const result = {
 		failed: reasons.length > 0,
 		reason: reasons.join('\n'),
-		commitHash
+		commitHash,
+		commitMsg
 	};
 
 	return result;
