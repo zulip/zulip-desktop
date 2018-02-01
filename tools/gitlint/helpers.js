@@ -51,7 +51,7 @@ function parseCommit(output) {
 	let commit = output[0].replace('commit ', '');
 	commit = commit.replace(/\n.*/g, '');
 	let commitHash = commit.split('');
-	commitHash = commitHash.slice(commitHash.length - 7);
+	commitHash = commitHash.slice(6, 13);
 	commitHash = commitHash.join('');
 
 	const fullCommit = output[1].split('\n');
