@@ -1,12 +1,23 @@
-IF NOT git diff-index --quiet HEAD (
-    ECHO "There are uncommitted changes:"
+@echo off
+git diff-index --quiet HEAD
+if %ERRORLEVEL% NEQ 0 (
+    echo "There are uncommitted changes:"
     git status --short
-    ECHO "Doing nothing to avoid losing your work."
-    EXIT 1
+    echo "Doing nothing to avoid losing your work."
+    exit /B 1
+)
+
+if "%~1"=="" (
+    echo "Error you must specify the PR number"
+)
+
+if "%~2"=="" ( 
+    set remote="upstream"
+) else (
+    set remote=%2
 )
 
 set request_id="%1"
-set remote=%2 OR "upstream"
 git fetch "%remote%" "pull/%request_id%/head"
-git checkout -B "review-original-%request_id%"
+git checkout -B "review-%request_id%"
 git reset --hard FETCH_HEAD
