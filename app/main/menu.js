@@ -115,26 +115,33 @@ class AppMenu {
 	}
 
 	getHelpSubmenu() {
-		return [{
-			label: `${appName} Help`,
-			click() {
-				shell.openExternal('https://zulipchat.com/help/');
-			}
-		}, {
-			label: `${appName + ' Desktop-'} v${app.getVersion()}`,
-			enabled: false
-		}, {
-			label: 'Report an Issue...',
-			click() {
-				const body = `
+		return [
+			{
+				label: `${appName + ' Desktop-'} v${app.getVersion()}`,
+				enabled: false
+			},
+			{
+				label: `${appName} Help`,
+				click() {
+					shell.openExternal('https://zulipchat.com/help/');
+				}
+			}, {
+				label: 'Show App Logs',
+				click() {
+					shell.openItem(app.getPath('userData'));
+				}
+			}, {
+				label: 'Report an Issue...',
+				click() {
+					const body = `
 					<!-- Please succinctly describe your issue and steps to reproduce it. -->
 					-
 					${app.getName()} ${app.getVersion()}
 					Electron ${process.versions.electron}
 					${process.platform} ${process.arch} ${os.release()}`;
-				shell.openExternal(`https://github.com/zulip/zulip-electron/issues/new?body=${encodeURIComponent(body)}`);
-			}
-		}];
+					shell.openExternal(`https://github.com/zulip/zulip-electron/issues/new?body=${encodeURIComponent(body)}`);
+				}
+			}];
 	}
 
 	getWindowSubmenu(tabs, activeTabIndex) {
