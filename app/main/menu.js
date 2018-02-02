@@ -116,12 +116,12 @@ class AppMenu {
 
 	getHelpSubmenu() {
 		return [{
-			label: `${appName} Website`,
+			label: `${appName} Help`,
 			click() {
 				shell.openExternal('https://zulipchat.com/help/');
 			}
 		}, {
-			label: `${appName + ' Desktop'} - ${app.getVersion()}`,
+			label: `${appName + ' Desktop-'} v${app.getVersion()}`,
 			enabled: false
 		}, {
 			label: 'Report an Issue...',
