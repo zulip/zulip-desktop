@@ -182,7 +182,7 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
-				label: 'Settings',
+				label: 'Desktop App Settings',
 				accelerator: 'Cmd+,',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
@@ -282,7 +282,7 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
-				label: 'Settings',
+				label: 'Desktop App Settings',
 				accelerator: 'Ctrl+,',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
