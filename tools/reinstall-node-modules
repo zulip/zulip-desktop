@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+set -x
+
+echo "Removing node_modules and app/node_modules"
+rm -rf node_modules
+rm -rf app/node_modules
+
+echo "node_modules removed reinstalling npm packages"
+npm i
