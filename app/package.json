@@ -34,6 +34,7 @@
     "electron-window-state": "4.1.1",
     "node-json-db": "0.7.3",
     "request": "2.81.0",
+    "semver": "5.4.1",
     "wurl": "2.5.0"
   },
   "optionalDependencies": {

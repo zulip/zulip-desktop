@@ -11,6 +11,12 @@ function appUpdater() {
 		return;
 	}
 
+	if (process.platform === 'linux' && !process.env.APPIMAGE) {
+		const { debianUpdateNotification } = require('./debianupdater');
+		debianUpdateNotification();
+		return;
+	}
+
 	// Create Logs directory
 	const LogsDir = `${app.getPath('userData')}/Logs`;
 
