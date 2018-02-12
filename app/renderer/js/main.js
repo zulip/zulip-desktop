@@ -1,6 +1,7 @@
 'use strict';
 
 const { ipcRenderer, remote } = require('electron');
+const isDev = require('electron-is-dev');
 
 const { session } = remote;
 
@@ -482,8 +483,17 @@ class ServerManagerView {
 window.onload = () => {
 	const serverManagerView = new ServerManagerView();
 	serverManagerView.init();
-
 	window.addEventListener('online', () => {
 		serverManagerView.reloadView();
 	});
+
+	// only start electron-connect (auto reload on change) when its ran
+	// from `npm run dev` or `gulp dev` and not from `npm start` when
+	// app is started `npm start` main process's proces.argv will have
+	// `--no-electron-connect`
+	const mainProcessArgv = remote.getGlobal('process').argv;
+	if (isDev && !mainProcessArgv.includes('--no-electron-connect')) {
+		const electronConnect = require('electron-connect');
+		electronConnect.client.create();
+	}
 };
