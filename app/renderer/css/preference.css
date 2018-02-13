@@ -399,7 +399,6 @@ input.toggle-round+label:before {
     right: 2px;
     background-color: #f1f1f1;
     border-radius: 25px;
-    transition: background 0.4s;
 }
 
 input.toggle-round+label:after {
@@ -407,7 +406,6 @@ input.toggle-round+label:after {
     height: 25px;
     background-color: #fff;
     border-radius: 100%;
-    transition: margin 0.4s;
 }
 
 input.toggle-round:checked+label:before {
