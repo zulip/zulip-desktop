@@ -32,7 +32,11 @@ function debianUpdateNotification() {
 				latestVersion = data.tag_name;
 			}
 			if (semver.gt(latestVersion, app.getVersion())) {
-				new Notification({title: 'Zulip Update', body: 'A new version ' + latestVersion + ' is available. Please update using your package manager.'}).show();
+				const notified = ConfigUtil.getConfigItem(latestVersion);
+				if (notified === null || notified === false) {
+					new Notification({title: 'Zulip Update', body: 'A new version ' + latestVersion + ' is available. Please update using your package manager.'}).show();
+					ConfigUtil.setConfigItem(latestVersion, true);
+				}
 			}
 		} else {
 			console.log('Status:', response.statusCode);
