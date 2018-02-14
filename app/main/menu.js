@@ -368,7 +368,7 @@ class AppMenu {
 
 	static sendAction(action, ...params) {
 		const win = BrowserWindow.getAllWindows()[0];
-	
+
 		if (process.platform === 'darwin') {
 			win.restore();
 		}
