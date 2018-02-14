@@ -11,6 +11,7 @@ const WebView = require(__dirname + '/js/components/webview.js');
 const ServerTab = require(__dirname + '/js/components/server-tab.js');
 const FunctionalTab = require(__dirname + '/js/components/functional-tab.js');
 const ConfigUtil = require(__dirname + '/js/utils/config-util.js');
+const ReconnectUtil = require(__dirname + '/js/utils/reconnect-util.js');
 
 class ServerManagerView {
 	constructor() {
@@ -488,9 +489,14 @@ class ServerManagerView {
 
 window.onload = () => {
 	const serverManagerView = new ServerManagerView();
+	const reconnectUtil = new ReconnectUtil(serverManagerView);
 	serverManagerView.init();
 	window.addEventListener('online', () => {
-		serverManagerView.reloadView();
+		reconnectUtil.pollInternetAndReload();
+	});
+
+	window.addEventListener('offline', () => {
+		reconnectUtil.clearState();
 	});
 
 	// only start electron-connect (auto reload on change) when its ran
