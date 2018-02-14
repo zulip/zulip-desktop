@@ -246,6 +246,7 @@ webview:focus {
 
 /* Tooltip styling */
 
+#back-tooltip,
 #reload-tooltip,
 #setting-tooltip {
     font-family: sans-serif;
@@ -262,6 +263,7 @@ webview:focus {
     font-size: 14px;
 }
 
+#back-tooltip:after,
 #reload-tooltip:after,
 #setting-tooltip:after {
     content: " ";
