@@ -5,14 +5,10 @@ const request = require('request');
 const semver = require('semver');
 const ConfigUtil = require('../renderer/js/utils/config-util');
 
-function debianUpdateNotification() {
-	let url = '';
+function linuxUpdateNotification() {
+	let	url = 'https://api.github.com/repos/zulip/zulip-electron/releases';
+	url = ConfigUtil.getConfigItem('betaUpdate') ? url : url + '/latest';
 
-	if (ConfigUtil.getConfigItem('betaUpdate')) {
-		url = 'https://api.github.com/repos/zulip/zulip-electron/releases';
-	} else {
-		url = 'https://api.github.com/repos/zulip/zulip-electron/releases/latest';
-	}
 	const options = {
 		url,
 		headers: {'User-Agent': 'request'}
@@ -25,15 +21,11 @@ function debianUpdateNotification() {
 		}
 		if (response.statusCode < 400) {
 			const data = JSON.parse(body);
-			let latestVersion = '';
-			if (ConfigUtil.getConfigItem('betaUpdate')) {
-				latestVersion = data[0].tag_name;
-			} else {
-				latestVersion = data.tag_name;
-			}
+			const latestVersion = ConfigUtil.getConfigItem('betaUpdate') ? data[0].tag_name : data.tag_name;
+
 			if (semver.gt(latestVersion, app.getVersion())) {
 				const notified = ConfigUtil.getConfigItem(latestVersion);
-				if (notified === null || notified === false) {
+				if (notified === null) {
 					new Notification({title: 'Zulip Update', body: 'A new version ' + latestVersion + ' is available. Please update using your package manager.'}).show();
 					ConfigUtil.setConfigItem(latestVersion, true);
 				}
@@ -45,5 +37,5 @@ function debianUpdateNotification() {
 }
 
 module.exports = {
-	debianUpdateNotification
+	linuxUpdateNotification
 };

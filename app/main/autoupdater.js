@@ -12,8 +12,8 @@ function appUpdater() {
 	}
 
 	if (process.platform === 'linux' && !process.env.APPIMAGE) {
-		const { debianUpdateNotification } = require('./debianupdater');
-		debianUpdateNotification();
+		const { linuxUpdateNotification } = require('./linuxupdater');
+		linuxUpdateNotification();
 		return;
 	}
 
