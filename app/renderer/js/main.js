@@ -497,6 +497,7 @@ window.onload = () => {
 
 	window.addEventListener('offline', () => {
 		reconnectUtil.clearState();
+		console.log('No internet connection, you are offline.');
 	});
 
 	// only start electron-connect (auto reload on change) when its ran
