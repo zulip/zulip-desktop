@@ -31,9 +31,11 @@ class ReconnectUtil {
 						if (!this.alreadyReloaded) {
 							this.serverManagerView.reloadView();
 						}
+						console.log('You\'re back online.');
 						return resolve(true);
 					}
 
+					console.log('No internet connection, you are offline.');
 					const errMsgHolder = document.querySelector('#description');
 					errMsgHolder.innerHTML = `
 										<div>You internet connection does't seem to work properly!</div>
