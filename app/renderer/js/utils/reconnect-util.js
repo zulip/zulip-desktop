@@ -35,7 +35,7 @@ class ReconnectUtil {
 						return resolve(true);
 					}
 
-					console.log('No internet connection, you are offline.');
+					console.log('There is no internet connection, try checking network cables, modem and router.');
 					const errMsgHolder = document.querySelector('#description');
 					errMsgHolder.innerHTML = `
 										<div>You internet connection does't seem to work properly!</div>
