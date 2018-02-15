@@ -137,7 +137,11 @@
         "rules": {
           "max-lines": [
             "warn",
-            500
+            {
+              "max": 500,
+              "skipBlankLines": true,
+              "skipComments": true
+            }
           ],
           "no-warning-comments": 0,
           "object-curly-spacing": 0,
