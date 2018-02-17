@@ -221,11 +221,6 @@ app.on('ready', () => {
 		appMenu.setMenu(props);
 	});
 
-	ipcMain.on('register-server-tab-shortcut', (event, index) => {
-		// Array index == Shown index - 1
-		page.send('switch-server-tab', index - 1);
-	});
-
 	ipcMain.on('toggleAutoLauncher', (event, AutoLaunchValue) => {
 		setAutoLaunch(AutoLaunchValue);
 	});

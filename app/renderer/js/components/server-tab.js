@@ -50,7 +50,8 @@ class ServerTab extends Tab {
 			shortcutText = `Ctrl+${shownIndex}`;
 		}
 
-		ipcRenderer.send('register-server-tab-shortcut', shownIndex);
+		// Array index == Shown index - 1
+		ipcRenderer.send('switch-server-tab', shownIndex - 1);
 
 		return shortcutText;
 	}
