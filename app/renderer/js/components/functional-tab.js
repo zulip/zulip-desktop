@@ -16,10 +16,11 @@ class FunctionalTab extends Tab {
 
 	init() {
 		this.$el = this.generateNodeFromTemplate(this.template());
-		this.props.$root.appendChild(this.$el);
-
-		this.$closeButton = this.$el.getElementsByClassName('server-tab-badge')[0];
-		this.registerListeners();
+		if (this.props.name !== 'Settings') {
+			this.props.$root.appendChild(this.$el);
+			this.$closeButton = this.$el.getElementsByClassName('server-tab-badge')[0];
+			this.registerListeners();
+		}
 	}
 
 	registerListeners() {

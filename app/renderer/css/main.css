@@ -113,6 +113,14 @@ body {
     color: #6c8592;
 }
 
+.action-button.active {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.action-button.active i {
+    color: #eee;
+}
+
 .tab:first-child {
     margin-top: 8px;
 }
