@@ -419,7 +419,7 @@ class ServerManagerView {
 		});
 
 		ipcRenderer.on('switch-server-tab', (event, index) => {
-			this.activateTab(index);
+			this.activateLastTab(index);
 		});
 
 		ipcRenderer.on('reload-proxy', (event, showAlert) => {
