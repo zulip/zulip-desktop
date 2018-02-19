@@ -21,8 +21,7 @@
     "start": "electron app --disable-http-cache --no-electron-connect",
     "reinstall": "./tools/reinstall-node-modules",
     "postinstall": "electron-builder install-app-deps",
-    "test": "xo",
-    "test-e2e": "gulp test-e2e",
+    "test-e2e": "mocha --no-timeouts --exit && gulp test-e2e",
     "dev": "gulp dev & nodemon --watch app/main --watch app/renderer --exec 'npm test' -e html,css,js",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
@@ -116,9 +115,10 @@
     "gulp": "3.9.1",
     "gulp-tape": "0.0.9",
     "is-ci": "^1.0.10",
+    "mocha": "^5.0.1",
     "nodemon": "^1.14.11",
     "pre-commit": "1.2.2",
-    "spectron": "3.7.2",
+    "spectron": "^3.7.2",
     "tap-colorize": "^1.2.0",
     "tape": "^4.8.0",
     "xo": "0.18.2"
@@ -154,7 +154,7 @@
       }
     ],
     "ignore": [
-      "tests/*.js"
+      "test/**/*.js"
     ],
     "envs": [
       "node",

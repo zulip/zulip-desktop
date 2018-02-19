@@ -15,7 +15,7 @@ addons:
 
 language: node_js
 node_js:
-- '6'
+- '7'
 
 before_install:
   - ./scripts/travis-xvfb.sh
@@ -29,6 +29,7 @@ cache:
 
 script:
 - npm run travis
+
 notifications:
   webhooks:
     urls:
