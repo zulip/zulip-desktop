@@ -354,6 +354,10 @@ webview:focus {
     animation-fill-mode: forwards;
 }
 
+.sidebar-not-ready {
+    opacity: 0.8;
+}
+
 @keyframes cssAnimation {
     from {
         opacity: 0;

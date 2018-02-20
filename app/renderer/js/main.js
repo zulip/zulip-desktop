@@ -488,6 +488,9 @@ window.onload = () => {
 	}
 
 	const serverManagerView = new ServerManagerView();
+	const sidebar = document.querySelector('.sidebar-not-ready');
+	sidebar.classList.remove('sidebar-not-ready');
+
 	serverManagerView.init();
 	window.addEventListener('online', () => {
 		serverManagerView.reloadView();
