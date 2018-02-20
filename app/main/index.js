@@ -1,9 +1,7 @@
 'use strict';
 const path = require('path');
 const electron = require('electron');
-const windowStateKeeper = require('electron-window-state');
 const isDev = require('electron-is-dev');
-const appMenu = require('./menu');
 const { appUpdater } = require('./autoupdater');
 const { crashHandler } = require('./crash-reporter');
 
@@ -50,6 +48,8 @@ const iconPath = () => {
 };
 
 function createMainWindow() {
+	const windowStateKeeper = require('electron-window-state');
+
 	// Load the previous state with fallback to defaults
 	const mainWindowState = windowStateKeeper({
 		defaultWidth: 1000,
@@ -145,6 +145,7 @@ app.on('activate', () => {
 });
 
 app.on('ready', () => {
+	const appMenu = require('./menu');
 	appMenu.setMenu({
 		tabs: []
 	});
