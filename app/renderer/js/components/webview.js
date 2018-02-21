@@ -69,6 +69,18 @@ class WebView extends BaseComponent {
 			this.props.onTitleChange();
 		});
 
+		this.$el.addEventListener('did-navigate-in-page', event => {
+			const isSettingPage = event.url.includes('renderer/preference.html');
+			if (isSettingPage) {
+				return;
+			}
+			this.canGoBackButton();
+		});
+
+		this.$el.addEventListener('did-navigate', () => {
+			this.canGoBackButton();
+		});
+
 		this.$el.addEventListener('page-favicon-updated', event => {
 			const { favicons } = event;
 			// This returns a string of favicons URL. If there is a PM counts in unread messages then the URL would be like
@@ -180,6 +192,15 @@ class WebView extends BaseComponent {
 	back() {
 		if (this.$el.canGoBack()) {
 			this.$el.goBack();
+		}
+	}
+
+	canGoBackButton() {
+		const $backButton = document.querySelector('#actions-container #back-action');
+		if (this.$el.canGoBack()) {
+			$backButton.classList.remove('disable');
+		} else {
+			$backButton.classList.add('disable');
 		}
 	}
 
