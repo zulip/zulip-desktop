@@ -166,10 +166,11 @@ app.on('ready', () => {
 		crashHandler();
 	});
 
-	electron.powerMonitor.on('resume', () => {
-		mainWindow.reload();
-		page.send('destroytray');
-	});
+	// Temporarily remove this event
+	// electron.powerMonitor.on('resume', () => {
+	// 	mainWindow.reload();
+	// 	page.send('destroytray');
+	// });
 
 	ipcMain.on('focus-app', () => {
 		mainWindow.show();
