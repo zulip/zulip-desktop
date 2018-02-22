@@ -101,6 +101,18 @@ body {
     color: #98a9b3;
 }
 
+.action-button.disable {
+    opacity: 0.6;
+}
+
+.action-button.disable:hover {
+    cursor: not-allowed;
+}
+
+.action-button.disable:hover i {
+    color: #6c8592;
+}
+
 .tab:first-child {
     margin-top: 8px;
 }
