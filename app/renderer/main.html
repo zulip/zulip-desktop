@@ -9,38 +9,38 @@
 </head>
 
 <body>
-  <div id="content">
+  <div id="content" class="loading">
     <div class="popup">
       <span class="popuptext hidden" id="fullscreen-popup"></span>
-  </div>
-  <div id="sidebar" class="toggle-sidebar">
-    <div id="view-controls-container">
-      <div id="tabs-container"></div>
-      <div id="add-tab" class="tab functional-tab">
-        <div class="server-tab" id="add-action">
-          <i class="material-icons">add</i>
+    </div>
+    <div id="sidebar" class="toggle-sidebar">
+      <div id="view-controls-container">
+        <div id="tabs-container"></div>
+        <div id="add-tab" class="tab functional-tab">
+          <div class="server-tab" id="add-action">
+            <i class="material-icons">add</i>
+          </div>
+          <span id="add-server-tooltip" style="display:none">Add organization</span>
         </div>
-        <span id="add-server-tooltip" style="display:none">Add organization</span>
+      </div>
+      <div id="actions-container">
+        <div class="action-button" id="reload-action">
+          <i class="material-icons md-48">refresh</i>
+          <span id="reload-tooltip" style="display:none">Reload</span>
+        </div>
+        <div class="action-button disable" id="back-action">
+          <i class="material-icons md-48">arrow_back</i>
+          <span id="back-tooltip" style="display:none">Go Back</span>
+        </div>
+        <div class="action-button" id="settings-action">
+          <i class="material-icons md-48">settings</i>
+          <span id="setting-tooltip" style="display:none">Settings</span>
+        </div>
       </div>
     </div>
-    <div id="actions-container">
-      <div class="action-button" id="reload-action">
-        <i class="material-icons md-48">refresh</i>
-        <span id="reload-tooltip" style="display:none">Reload</span>
-      </div>
-      <div class="action-button disable" id="back-action">
-        <i class="material-icons md-48">arrow_back</i>
-        <span id="back-tooltip" style="display:none">Go Back</span>
-      </div>
-      <div class="action-button" id="settings-action">
-        <i class="material-icons md-48">settings</i>
-        <span id="setting-tooltip" style="display:none">Settings</span>
-      </div>
+    <div id="main-container">
+      <div id="webviews-container"></div>
     </div>
-  </div>
-  <div id="main-container">
-    <div id="webviews-container"></div>
-  </div>
   </div>
 </body>
 <script src="js/main.js"></script>

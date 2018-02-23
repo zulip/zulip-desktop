@@ -13,6 +13,9 @@ body {
 #content {
     display: flex;
     height: 100%;
+}
+
+.loading {
     background: #fff url(../img/ic_loading.gif) no-repeat;
     background-size: 60px 60px;
     background-position: center;

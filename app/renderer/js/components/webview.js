@@ -21,6 +21,7 @@ class WebView extends BaseComponent {
 		this.zoomFactor = 1.0;
 		this.loading = false;
 		this.badgeCount = 0;
+		this.loadingIndicator = document.getElementById('content');
 	}
 
 	template() {
@@ -92,6 +93,8 @@ class WebView extends BaseComponent {
 		});
 
 		this.$el.addEventListener('dom-ready', () => {
+			// const loadingIndicator = document.getElementById('content');
+			this.loadingIndicator.classList.remove('loading');
 			if (this.props.role === 'server') {
 				this.$el.classList.add('onload');
 			}
