@@ -157,6 +157,11 @@ class AppMenu {
 				type: 'separator'
 			});
 			for (let i = 0; i < tabs.length; i++) {
+				// Do not add functional tab settings to list of windows in menu bar
+				if (tabs[i].props.role === 'function' && tabs[i].webview.props.name === 'Settings') {
+					continue;
+				}
+
 				initialSubmenu.push({
 					label: tabs[i].webview.props.name,
 					accelerator: tabs[i].props.role === 'function' ? '' : `${ShortcutKey} + ${tabs[i].props.index + 1}`,
@@ -166,7 +171,7 @@ class AppMenu {
 							AppMenu.sendAction('switch-server-tab', tabs[i].props.index);
 						}
 					},
-					type: 'radio'
+					type: 'checkbox'
 				});
 			}
 		}

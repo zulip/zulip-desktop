@@ -119,6 +119,8 @@ class ServerManagerView {
 			}
 			// Open last active tab
 			this.activateTab(ConfigUtil.getConfigItem('lastActiveTab'));
+			// Remove focus from the settings icon at sidebar bottom
+			this.$settingsButton.classList.remove('active');
 		} else {
 			this.openSettings('Servers');
 		}
@@ -215,6 +217,7 @@ class ServerManagerView {
 		this.tabs.push(new FunctionalTab({
 			role: 'function',
 			materialIcon: tabProps.materialIcon,
+			name: tabProps.name,
 			$root: this.$tabsContainer,
 			index: this.functionalTabs[tabProps.name],
 			tabIndex,
@@ -235,7 +238,6 @@ class ServerManagerView {
 				preload: false
 			})
 		}));
-
 		this.activateTab(this.functionalTabs[tabProps.name]);
 	}
 
@@ -245,6 +247,7 @@ class ServerManagerView {
 			materialIcon: 'settings',
 			url: `file://${__dirname}/preference.html#${nav}`
 		});
+		this.$settingsButton.classList.add('active');
 		this.tabs[this.functionalTabs.Settings].webview.send('switch-settings-nav', nav);
 	}
 
@@ -280,6 +283,10 @@ class ServerManagerView {
 			if (this.activeTabIndex === index) {
 				return;
 			} else if (hideOldTab) {
+				// If old tab is functional tab Settings, remove focus from the settings icon at sidebar bottom
+				if (this.tabs[this.activeTabIndex].props.role === 'function' && this.tabs[this.activeTabIndex].props.name === 'Settings') {
+					this.$settingsButton.classList.remove('active');
+				}
 				this.tabs[this.activeTabIndex].deactivate();
 			}
 		}
