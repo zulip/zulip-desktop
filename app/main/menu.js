@@ -203,7 +203,7 @@ class AppMenu {
 				}
 			}, {
 				label: 'Keyboard Shortcuts',
-				accelerator: 'Cmd+K',
+				accelerator: 'Cmd+Shift+K',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('shortcut');
@@ -305,7 +305,7 @@ class AppMenu {
 				type: 'separator'
 			}, {
 				label: 'Keyboard Shortcuts',
-				accelerator: 'Ctrl+K',
+				accelerator: 'Ctrl+Shift+K',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('shortcut');
