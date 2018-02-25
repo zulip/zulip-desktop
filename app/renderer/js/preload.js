@@ -12,6 +12,9 @@ require('./notification');
 // Prevent drag and drop event in main process which prevents remote code executaion
 require(__dirname + '/shared/preventdrag.js');
 
+// eslint-disable-next-line camelcase
+window.electron_bridge = require('./electron-bridge');
+
 const logout = () => {
 	// Create the menu for the below
 	document.querySelector('.dropdown-toggle').click();
