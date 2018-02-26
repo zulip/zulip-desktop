@@ -250,7 +250,7 @@ body {
 
 webview {
     opacity: 1;
-    transition: opacity 0.3s ease-in;
+    /* transition: opacity 0.3s ease-in; */
     flex-grow: 1;
 }
 
