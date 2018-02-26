@@ -17,6 +17,9 @@
   "bugs": {
     "url": "https://github.com/zulip/zulip-electron/issues"
   },
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "scripts": {
     "start": "electron app --disable-http-cache --no-electron-connect",
     "reinstall": "./tools/reinstall-node-modules",
