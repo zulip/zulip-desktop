@@ -2,16 +2,21 @@ sudo: required
 dist: trusty
 
 os:
-- osx
-- linux
+  - osx
+  - linux
+
+osx_image: xcode9.0
 
 addons:
   apt:
     packages:
-    - build-essential
-    - libxext-dev
-    - libxtst-dev
-    - libxkbfile-dev
+      - build-essential
+      - libxext-dev
+      - libxtst-dev
+      - libxkbfile-dev
+  artifacts:
+    paths:
+      - $(ls ./dist/* | tr "\n" ":")
 
 language: node_js
 node_js:
@@ -24,11 +29,20 @@ before_install:
 
 cache:
   directories:
-  - node_modules
-  - app/node_modules
+    - node_modules
+    - app/node_modules
+    - ~/.cache
 
 script:
-- npm run travis
+  - npm run travis
+  - chmod +x ./scripts/install-release-dependencies.sh
+  - ./scripts/install-release-dependencies.sh
+  - electron-builder
+  - node ./scripts/prepare-artifacts.js
+  # log out /dist files might be useful to know
+  # what files are uploaded
+  - ls dist
+
 notifications:
   webhooks:
     urls:
