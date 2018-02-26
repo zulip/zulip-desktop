@@ -337,13 +337,11 @@ i.open-tab-button {
 }
 
 #server-info-container {
-    min-height: calc(100% - 235px);
+    min-height: calc(100% - 260px);
 }
 
 #create-organization-container {
     font-size: 1.15em;
-    position: fixed;
-    bottom: 15px;
 }
 
 #create-organization-container i {
