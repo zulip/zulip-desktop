@@ -2,16 +2,30 @@ sudo: required
 dist: trusty
 
 os:
-- osx
-- linux
+  - osx
+  - linux
+
+osx_image: xcode9.0
 
 addons:
   apt:
     packages:
-    - build-essential
-    - libxext-dev
-    - libxtst-dev
-    - libxkbfile-dev
+      - build-essential
+      - libxext-dev
+      - libxtst-dev
+      - libxkbfile-dev
+  artifacts:
+    paths:
+      - $(ls ./dist/*.AppImage | tr "\n" ":")
+      - $(ls ./dist/*.deb | tr "\n" ":")
+      - $(ls ./dist/*.dmg | tr "\n" ":")
+      - $(ls ./dist/*.zip | tr "\n" ":")
+      - $(ls ./dist/*.dmg.blockmap | tr "\n" ":")
+      - $(ls ./dist/github/*.json | tr "\n" ":")
+      - $(ls ./dist/github/*.yml | tr "\n" ":")
+      - $(ls ./dist/*.yml | tr "\n" ":")
+      - $(ls ./dist/mac/*.yml | tr "\n" ":")
+      - $(ls ./dist/linux/*.yml | tr "\n" ":")
 
 language: node_js
 node_js:
@@ -24,11 +38,20 @@ before_install:
 
 cache:
   directories:
-  - node_modules
-  - app/node_modules
+    - node_modules
+    - app/node_modules
+    - ~/.cache
 
 script:
-- npm run travis
+  - npm run travis
+  - chmod +x ./scripts/install-release-dependencies.sh
+  - ./scripts/install-release-dependencies.sh
+  - npm run dist
+  - node ./scripts/prepare-artifacts.js
+  # log out /dist files might be useful to know
+  # what files are uploaded
+  - ls dist
+
 notifications:
   webhooks:
     urls:
