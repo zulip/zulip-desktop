@@ -247,14 +247,14 @@ class GeneralSection extends BaseSection {
 			defaultId: 1,
 			properties: ['openFile'],
 			filters: [{ name: 'CSS file', extensions: ['css'] }]
-		}
+		};
 
-		dialog.showOpenDialog(showDialogOptions, (selectedFile) => {
+		dialog.showOpenDialog(showDialogOptions, selectedFile => {
 			if (selectedFile) {
 				ConfigUtil.setConfigItem('customCSS', selectedFile[0]);
-				ipcRenderer.send('forward-message', 'hard-reload')
+				ipcRenderer.send('forward-message', 'hard-reload');
 			}
-		})
+		});
 	}
 
 	updateResetDataOption() {
