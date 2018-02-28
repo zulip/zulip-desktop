@@ -21,6 +21,7 @@ class WebView extends BaseComponent {
 		this.zoomFactor = 1.0;
 		this.loading = false;
 		this.badgeCount = 0;
+		this.customCSS = ConfigUtil.getConfigItem('customCSS');
 	}
 
 	template() {
@@ -139,6 +140,7 @@ class WebView extends BaseComponent {
 		this.props.onTitleChange();
 		// Injecting preload css in webview to override some css rules
 		this.$el.insertCSS(fs.readFileSync(path.join(__dirname, '/../../css/preload.css'), 'utf8'));
+		this.$el.insertCSS(fs.readFileSync(path.resolve(__dirname, this.customCSS), 'utf8'));
 	}
 
 	focus() {
