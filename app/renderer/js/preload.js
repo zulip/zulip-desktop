@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	if (serverLanguage) {
 		// Set spellcheker language
 		ConfigUtil.setConfigItem('spellcheckerLanguage', serverLanguage);
+
 		// Init spellchecker
 		SetupSpellChecker.init();
 	}

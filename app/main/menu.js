@@ -10,6 +10,8 @@ const ConfigUtil = require(__dirname + '/../renderer/js/utils/config-util.js');
 
 const appName = app.getName();
 
+const i18n = require(__dirname + '/../translations/i18n');
+
 class AppMenu {
 	getHistorySubmenu() {
 		return [{
@@ -246,15 +248,15 @@ class AppMenu {
 		}, {
 			label: 'Edit',
 			submenu: [{
-				role: 'undo'
+				role: 'undo', label: i18n._('Undo')
 			}, {
-				role: 'redo'
+				role: 'redo', label: i18n._('Redo')
 			}, {
 				type: 'separator'
 			}, {
-				role: 'cut'
+				role: 'cut', label: i18n._('Cut')
 			}, {
-				role: 'copy'
+				role: 'copy', label: i18n._('Copy')
 			}, {
 				role: 'paste'
 			}, {
@@ -334,11 +336,11 @@ class AppMenu {
 				accelerator: 'Ctrl+Q'
 			}]
 		}, {
-			label: 'Edit',
+			label: i18n.__('Edit'),
 			submenu: [{
-				role: 'undo'
+				role: 'undo', label: i18n.__('Undo')
 			}, {
-				role: 'redo'
+				role: 'redo', label: i18n.__('Redo')
 			}, {
 				type: 'separator'
 			}, {
