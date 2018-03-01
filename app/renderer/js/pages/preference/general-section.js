@@ -289,15 +289,15 @@ class GeneralSection extends BaseSection {
 	}
 
 	addCustomCSS() {
-		const resetDataButton = document.querySelector('#add-custom-css .custom-css-button');
-		resetDataButton.addEventListener('click', () => {
+		const customCSSButton = document.querySelector('#add-custom-css .custom-css-button');
+		customCSSButton.addEventListener('click', () => {
 			this.customCssDialog();
 		});
 	}
 
 	showCustomCSSPath() {
 		if (!ConfigUtil.getConfigItem('customCSS')) {
-			const cssPATH = document.getElementById('custom-css-path');
+			const cssPATH = document.getElementById('remove-custom-css');
 			cssPATH.style.display = 'none';
 		}
 	}

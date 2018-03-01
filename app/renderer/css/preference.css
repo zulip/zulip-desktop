@@ -345,7 +345,12 @@ i.open-tab-button {
     padding: 10px;
     margin-top: 10px;
     display: flex;
+    width: 90%;
     justify-content: space-between;
+}
+
+#remove-custom-css {
+    align-items: flex-end;
 }
 
 #server-info-container {
