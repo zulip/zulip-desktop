@@ -87,7 +87,6 @@ body {
     flex-direction: column;
     position: fixed;
     bottom: 0;
-    width: inherit;
 }
 
 .action-button {
