@@ -28,6 +28,7 @@ body {
     -webkit-app-region: drag;
     overflow: hidden;
     transition: all 0.5s ease;
+    z-index: 1;
 }
 
 .toggle-sidebar div {
@@ -278,7 +279,7 @@ webview:focus {
 #setting-tooltip {
     font-family: sans-serif;
     background: #222c31;
-    margin-left: 68px;
+    margin-left: 45px;
     padding: 6px 8px;
     position: absolute;
     margin-top: 0px;
