@@ -344,6 +344,7 @@ i.open-tab-button {
     background: #eeeeee;
     padding: 10px;
     margin-top: 10px;
+    margin-right: 10px;
     display: flex;
     width: 90%;
     justify-content: space-between;
@@ -429,4 +430,19 @@ input.toggle-round:checked+label:before {
 
 input.toggle-round:checked+label:after {
     margin-left: 25px;
+}
+
+
+/* responsive grid */
+
+@media (max-width: 650px) {
+    .selected-css-path {
+        margin-right: 15px;
+    }
+    #css-delete-action {
+        margin-left: 10px;
+    }
+    #css-delete-action span {
+        display: none;
+    }
 }
