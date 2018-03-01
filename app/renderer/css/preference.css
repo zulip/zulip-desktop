@@ -13,7 +13,7 @@ body {
 
 kbd {
     display: inline-block;
-    border: 1px solid #ccc ;
+    border: 1px solid #ccc;
     border-radius: 3px;
     font-size: 15px;
     font-family: Courier New, Courier, monospace;
@@ -271,8 +271,7 @@ img.server-info-icon {
 
 .settings-card:hover {
     border-left: 8px solid #bcbcbc;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),
-                0 2px 0px 0px rgba(0,0,0,0.12);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 0px 0px rgba(0, 0, 0, 0.12);
 }
 
 .hidden {
@@ -320,7 +319,8 @@ i.open-tab-button {
     cursor: pointer;
 }
 
-.reset-data-button {
+.reset-data-button,
+.custom-css-button {
     display: inline-block;
     border: none;
     padding: 10px;
@@ -331,9 +331,27 @@ i.open-tab-button {
     text-decoration: none;
 }
 
+.css-delete-action {
+    margin-bottom: 10px;
+}
+
 .reset-data-button:hover {
     background-color: #3c9f8d;
     color: #fff;
+}
+
+.selected-css-path {
+    background: #eeeeee;
+    padding: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+}
+
+#remove-custom-css {
+    align-items: flex-end;
 }
 
 #server-info-container {
@@ -412,4 +430,19 @@ input.toggle-round:checked+label:before {
 
 input.toggle-round:checked+label:after {
     margin-left: 25px;
+}
+
+
+/* responsive grid */
+
+@media (max-width: 650px) {
+    .selected-css-path {
+        margin-right: 15px;
+    }
+    #css-delete-action {
+        margin-left: 10px;
+    }
+    #css-delete-action span {
+        display: none;
+    }
 }

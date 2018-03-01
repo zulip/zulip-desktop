@@ -69,6 +69,24 @@ class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 				</div>
+				<div class="title">Add custom CSS</div>
+				<div class="settings-card">
+					<div class="setting-row" id="add-custom-css">
+						<div class="setting-description">
+							This will inject the selected css stylesheet in all the added accounts
+						</div>
+						<button class="custom-css-button blue">Add</button>
+					</div>
+					<div class="setting-row" id="remove-custom-css">
+						<div class="setting-description">
+							<div class="selected-css-path" id="custom-css-path">${ConfigUtil.getConfigItem('customCSS')}</div>
+						</div>
+						<div class="action red" id="css-delete-action">
+							<i class="material-icons">indeterminate_check_box</i>
+							<span>Delete</span>
+						</div>
+					</div>
+				</div>
 				<div class="title">Reset Application Data</div>
                 <div class="settings-card">
 					<div class="setting-row" id="resetdata-option">
@@ -93,6 +111,9 @@ class GeneralSection extends BaseSection {
 		this.showDesktopNotification();
 		this.enableSpellchecker();
 		this.minimizeOnStart();
+		this.addCustomCSS();
+		this.showCustomCSSPath();
+		this.removeCustomCSS();
 
 		// Platform specific settings
 		// Flashing taskbar on Windows
@@ -232,6 +253,22 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
+	customCssDialog() {
+		const showDialogOptions = {
+			title: 'Select file',
+			defaultId: 1,
+			properties: ['openFile'],
+			filters: [{ name: 'CSS file', extensions: ['css'] }]
+		};
+
+		dialog.showOpenDialog(showDialogOptions, selectedFile => {
+			if (selectedFile) {
+				ConfigUtil.setConfigItem('customCSS', selectedFile[0]);
+				ipcRenderer.send('forward-message', 'hard-reload');
+			}
+		});
+	}
+
 	updateResetDataOption() {
 		const resetDataButton = document.querySelector('#resetdata-option .reset-data-button');
 		resetDataButton.addEventListener('click', () => {
@@ -248,6 +285,28 @@ class GeneralSection extends BaseSection {
 				ConfigUtil.setConfigItem('startMinimized', newValue);
 				this.minimizeOnStart();
 			}
+		});
+	}
+
+	addCustomCSS() {
+		const customCSSButton = document.querySelector('#add-custom-css .custom-css-button');
+		customCSSButton.addEventListener('click', () => {
+			this.customCssDialog();
+		});
+	}
+
+	showCustomCSSPath() {
+		if (!ConfigUtil.getConfigItem('customCSS')) {
+			const cssPATH = document.getElementById('remove-custom-css');
+			cssPATH.style.display = 'none';
+		}
+	}
+
+	removeCustomCSS() {
+		const removeCSSButton = document.getElementById('css-delete-action');
+		removeCSSButton.addEventListener('click', () => {
+			ConfigUtil.setConfigItem('customCSS');
+			ipcRenderer.send('forward-message', 'hard-reload');
 		});
 	}
 
