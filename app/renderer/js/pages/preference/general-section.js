@@ -69,19 +69,22 @@ class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 				</div>
-				<div class="title">Add Custom CSS</div>
-                <div class="settings-card">
-					<div class="setting-row" id="custom-css-option">
-						<div class="setting-description">This will inject the selected css stylesheet in all the added accounts
-						<div class="selected-css-path" id="custom-css-path">
-						${ConfigUtil.getConfigItem('customCSS')}
-						<div class="action red" id="css-delete-action">
-						<i class="material-icons">indeterminate_check_box</i>
-						<span>Delete</span>
-					</div>
-						</div>
+				<div class="title">Add custom CSS</div>
+				<div class="settings-card">
+					<div class="setting-row" id="add-custom-css">
+						<div class="setting-description">
+							This will inject the selected css stylesheet in all the added accounts
 						</div>
 						<button class="custom-css-button blue">Add</button>
+					</div>
+					<div class="setting-row" id="remove-custom-css">
+						<div class="setting-description">
+							<div class="selected-css-path" id="custom-css-path">${ConfigUtil.getConfigItem('customCSS')}</div>
+						</div>
+						<div class="action red" id="css-delete-action">
+							<i class="material-icons">indeterminate_check_box</i>
+							<span>Delete</span>
+						</div>
 					</div>
 				</div>
 				<div class="title">Reset Application Data</div>
@@ -286,7 +289,7 @@ class GeneralSection extends BaseSection {
 	}
 
 	addCustomCSS() {
-		const resetDataButton = document.querySelector('#custom-css-option .custom-css-button');
+		const resetDataButton = document.querySelector('#add-custom-css .custom-css-button');
 		resetDataButton.addEventListener('click', () => {
 			this.customCssDialog();
 		});
