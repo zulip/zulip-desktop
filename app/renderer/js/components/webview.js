@@ -7,7 +7,7 @@ const DomainUtil = require(__dirname + '/../utils/domain-util.js');
 const ConfigUtil = require(__dirname + '/../utils/config-util.js');
 const SystemUtil = require(__dirname + '/../utils/system-util.js');
 const LinkUtil = require(__dirname + '/../utils/link-util.js');
-const { shell, app } = require('electron').remote;
+const { shell, app, dialog } = require('electron').remote;
 
 const BaseComponent = require(__dirname + '/../components/base.js');
 
@@ -140,7 +140,19 @@ class WebView extends BaseComponent {
 		this.props.onTitleChange();
 		// Injecting preload css in webview to override some css rules
 		this.$el.insertCSS(fs.readFileSync(path.join(__dirname, '/../../css/preload.css'), 'utf8'));
+
+		// get customCSS again from config util to avoid warning user again
+		this.customCSS = ConfigUtil.getConfigItem('customCSS');
 		if (this.customCSS) {
+			if (!fs.existsSync(this.customCSS)) {
+				this.customCSS = null;
+				ConfigUtil.setConfigItem('customCSS', null);
+
+				const errMsg = 'The custom css previously set is deleted!';
+				dialog.showErrorBox('custom css file deleted!', errMsg);
+				return;
+			}
+
 			this.$el.insertCSS(fs.readFileSync(path.resolve(__dirname, this.customCSS), 'utf8'));
 		}
 	}
