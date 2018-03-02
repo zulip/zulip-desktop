@@ -28,7 +28,7 @@ body {
     -webkit-app-region: drag;
     overflow: hidden;
     transition: all 0.5s ease;
-    z-index: 1;
+    z-index: 2;
 }
 
 .toggle-sidebar div {
@@ -265,6 +265,7 @@ webview.onload {
 
 webview.active {
     opacity: 1;
+    z-index: 1;
     visibility: visible;
 }
 
