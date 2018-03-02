@@ -272,6 +272,10 @@ webview.disabled {
     opacity: 0;
 }
 
+webview.focus {
+    outline: 0px solid transparent;
+}
+
 /* Tooltip styling */
 
 #back-tooltip,
