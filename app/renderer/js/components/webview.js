@@ -130,6 +130,7 @@ class WebView extends BaseComponent {
 		}
 
 		this.$el.classList.remove('disabled');
+		this.$el.classList.add('active');
 		setTimeout(() => {
 			if (this.props.role === 'server') {
 				this.$el.classList.remove('onload');
@@ -168,6 +169,7 @@ class WebView extends BaseComponent {
 
 	hide() {
 		this.$el.classList.add('disabled');
+		this.$el.classList.remove('active');
 	}
 
 	load() {
