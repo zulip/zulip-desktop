@@ -121,6 +121,12 @@ class AppMenu {
 				enabled: false
 			},
 			{
+				label: `What's New...`,
+				click() {
+					shell.openExternal(`https://github.com/zulip/zulip-electron/releases/tag/v${app.getVersion()}`);
+				}
+			},
+			{
 				label: `${appName} Help`,
 				click() {
 					shell.openExternal('https://zulipchat.com/help/');
