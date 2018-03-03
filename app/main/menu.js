@@ -10,10 +10,12 @@ const ConfigUtil = require(__dirname + '/../renderer/js/utils/config-util.js');
 
 const appName = app.getName();
 
+const i18n = require(__dirname + '/../translations/i18n');
+
 class AppMenu {
 	getHistorySubmenu() {
 		return [{
-			label: 'Back',
+			label: i18n._('Back'),
 			accelerator: process.platform === 'darwin' ? 'Command+Left' : 'Alt+Left',
 			click(item, focusedWindow) {
 				if (focusedWindow) {
@@ -21,7 +23,7 @@ class AppMenu {
 				}
 			}
 		}, {
-			label: 'Forward',
+			label: i18n._('Forward'),
 			accelerator: process.platform === 'darwin' ? 'Command+Right' : 'Alt+Right',
 			click(item, focusedWindow) {
 				if (focusedWindow) {
@@ -33,7 +35,7 @@ class AppMenu {
 
 	getViewSubmenu() {
 		return [{
-			label: 'Reload',
+			label: i18n._('Reload'),
 			accelerator: 'CommandOrControl+R',
 			click(item, focusedWindow) {
 				if (focusedWindow) {
@@ -41,7 +43,7 @@ class AppMenu {
 				}
 			}
 		}, {
-			label: 'Hard Reload',
+			label: i18n._('Hard Reload'),
 			accelerator: 'CommandOrControl+Shift+R',
 			click(item, focusedWindow) {
 				if (focusedWindow) {
@@ -51,9 +53,10 @@ class AppMenu {
 		}, {
 			type: 'separator'
 		}, {
+			label: i18n._('Toggle Full Screen'),
 			role: 'togglefullscreen'
 		}, {
-			label: 'Zoom In',
+			label: i18n._('Zoom In'),
 			accelerator: process.platform === 'darwin' ? 'Command+Plus' : 'Control+=',
 			click(item, focusedWindow) {
 				if (focusedWindow) {
@@ -61,7 +64,7 @@ class AppMenu {
 				}
 			}
 		}, {
-			label: 'Zoom Out',
+			label: i18n._('Zoom Out'),
 			accelerator: 'CommandOrControl+-',
 			click(item, focusedWindow) {
 				if (focusedWindow) {
@@ -69,7 +72,7 @@ class AppMenu {
 				}
 			}
 		}, {
-			label: 'Actual Size',
+			label: i18n._('Actual Size'),
 			accelerator: 'CommandOrControl+0',
 			click(item, focusedWindow) {
 				if (focusedWindow) {
@@ -79,14 +82,14 @@ class AppMenu {
 		}, {
 			type: 'separator'
 		}, {
-			label: 'Toggle Tray Icon',
+			label: i18n._('Toggle Tray Icon'),
 			click(item, focusedWindow) {
 				if (focusedWindow) {
 					focusedWindow.webContents.send('toggletray');
 				}
 			}
 		}, {
-			label: 'Toggle Sidebar',
+			label: i18n._('Toggle Sidebar'),
 			accelerator: 'CommandOrControl+S',
 			click(item, focusedWindow) {
 				if (focusedWindow) {
@@ -96,7 +99,7 @@ class AppMenu {
 				}
 			}
 		}, {
-			label: 'Toggle DevTools for Zulip App',
+			label: i18n._('Toggle DevTools for Zulip App'),
 			accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
 			click(item, focusedWindow) {
 				if (focusedWindow) {
@@ -104,7 +107,7 @@ class AppMenu {
 				}
 			}
 		}, {
-			label: 'Toggle DevTools for Active Tab',
+			label: i18n._('Toggle DevTools for Active Tab'),
 			accelerator: process.platform === 'darwin' ? 'Alt+Command+U' : 'Ctrl+Shift+U',
 			click(item, focusedWindow) {
 				if (focusedWindow) {
@@ -121,17 +124,17 @@ class AppMenu {
 				enabled: false
 			},
 			{
-				label: `${appName} Help`,
+				label: i18n._(`${appName} Help`),
 				click() {
 					shell.openExternal('https://zulipchat.com/help/');
 				}
 			}, {
-				label: 'Show App Logs',
+				label: i18n._('Show App Logs'),
 				click() {
 					shell.openItem(app.getPath('userData'));
 				}
 			}, {
-				label: 'Report an Issue...',
+				label: i18n._('Report an issue...'),
 				click() {
 					const body = `
 					<!-- Please succinctly describe your issue and steps to reproduce it. -->
@@ -146,8 +149,10 @@ class AppMenu {
 
 	getWindowSubmenu(tabs, activeTabIndex) {
 		const initialSubmenu = [{
+			label: i18n._('Minimize'),
 			role: 'minimize'
 		}, {
+			label: i18n._('Close'),
 			role: 'close'
 		}];
 
@@ -185,7 +190,7 @@ class AppMenu {
 		return [{
 			label: `${app.getName()}`,
 			submenu: [{
-				label: 'About Zulip',
+				label: i18n._('About Zulip'),
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('open-about');
@@ -194,7 +199,7 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
-				label: 'Desktop App Settings',
+				label: i18n._('Desktop App Settings'),
 				accelerator: 'Cmd+,',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
@@ -202,7 +207,7 @@ class AppMenu {
 					}
 				}
 			}, {
-				label: 'Keyboard Shortcuts',
+				label: i18n._('Keyboard Shortcuts'),
 				accelerator: 'Cmd+Shift+K',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
@@ -212,13 +217,13 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
-				label: 'Reset App Settings',
+				label: i18n._('Reset App Settings'),
 				accelerator: 'Command+Shift+D',
 				click() {
 					AppMenu.resetAppSettings();
 				}
 			}, {
-				label: 'Log Out',
+				label: i18n._('Log Out'),
 				accelerator: 'Cmd+L',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
@@ -241,39 +246,43 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
+				label: i18n._('Quit'),
 				role: 'quit'
 			}]
 		}, {
-			label: 'Edit',
+			label: i18n._('Edit'),
 			submenu: [{
-				role: 'undo'
+				role: 'undo', label: i18n._('Undo')
 			}, {
-				role: 'redo'
+				role: 'redo', label: i18n._('Redo')
 			}, {
 				type: 'separator'
 			}, {
-				role: 'cut'
+				role: 'cut', label: i18n._('Cut')
 			}, {
-				role: 'copy'
+				role: 'copy', label: i18n._('Copy')
 			}, {
-				role: 'paste'
+				role: 'paste', label: i18n._('Paste')
 			}, {
-				role: 'pasteandmatchstyle'
+				role: 'pasteandmatchstyle', label: i18n._('Paste and Match Style')
 			}, {
-				role: 'delete'
+				role: 'delete', label: i18n._('Delete')
 			}, {
-				role: 'selectall'
+				type: 'separator'
+			}, {
+				role: 'selectall', label: i18n._('Select All')
 			}]
 		}, {
-			label: 'View',
+			label: i18n._('View'),
 			submenu: this.getViewSubmenu()
 		}, {
-			label: 'History',
+			label: i18n._('History'),
 			submenu: this.getHistorySubmenu()
 		}, {
-			label: 'Window',
+			label: i18n._('Window'),
 			submenu: this.getWindowSubmenu(tabs, activeTabIndex)
 		}, {
+			label: i18n._('Help'),
 			role: 'help',
 			submenu: this.getHelpSubmenu()
 		}];
@@ -283,9 +292,9 @@ class AppMenu {
 		const { tabs, activeTabIndex } = props;
 
 		return [{
-			label: 'File',
+			label: i18n._('File'),
 			submenu: [{
-				label: 'About Zulip',
+				label: i18n._('About Zulip'),
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('open-about');
@@ -294,7 +303,7 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
-				label: 'Desktop App Settings',
+				label: i18n._('Desktop App Settings'),
 				accelerator: 'Ctrl+,',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
@@ -304,7 +313,7 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
-				label: 'Keyboard Shortcuts',
+				label: i18n._('Keyboard Shortcuts'),
 				accelerator: 'Ctrl+Shift+K',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
@@ -314,13 +323,13 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
-				label: 'Reset App Settings',
+				label: i18n._('Reset App Settings'),
 				accelerator: 'Ctrl+Shift+D',
 				click() {
 					AppMenu.resetAppSettings();
 				}
 			}, {
-				label: 'Log Out',
+				label: i18n._('Log Out'),
 				accelerator: 'Ctrl+L',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
@@ -330,42 +339,44 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
+				label: i18n._('Quit'),
 				role: 'quit',
 				accelerator: 'Ctrl+Q'
 			}]
 		}, {
-			label: 'Edit',
+			label: i18n._('Edit'),
 			submenu: [{
-				role: 'undo'
+				role: 'undo', label: i18n._('Undo')
 			}, {
-				role: 'redo'
-			}, {
-				type: 'separator'
-			}, {
-				role: 'cut'
-			}, {
-				role: 'copy'
-			}, {
-				role: 'paste'
-			}, {
-				role: 'pasteandmatchstyle'
-			}, {
-				role: 'delete'
+				role: 'redo', label: i18n._('Redo')
 			}, {
 				type: 'separator'
 			}, {
-				role: 'selectall'
+				role: 'cut', label: i18n._('Cut')
+			}, {
+				role: 'copy', label: i18n._('Copy')
+			}, {
+				role: 'paste', label: i18n._('Paste')
+			}, {
+				role: 'pasteandmatchstyle', label: i18n._('Paste and Match Style')
+			}, {
+				role: 'delete', label: i18n._('Delete')
+			}, {
+				type: 'separator'
+			}, {
+				role: 'selectall', label: i18n._('Select All')
 			}]
 		}, {
-			label: 'View',
+			label: i18n._('View'),
 			submenu: this.getViewSubmenu()
 		}, {
-			label: 'History',
+			label: i18n._('History'),
 			submenu: this.getHistorySubmenu()
 		}, {
-			label: 'Window',
+			label: i18n._('Window'),
 			submenu: this.getWindowSubmenu(tabs, activeTabIndex)
 		}, {
+			label: i18n._('Help'),
 			role: 'help',
 			submenu: this.getHelpSubmenu()
 		}];
