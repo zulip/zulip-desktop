@@ -1,4 +1,46 @@
 {
-    "Edit": "Redigera",
-    "Undo": "Ångra"
+	"File": "Datei",
+	"About Zulip": "Über Zulip",
+	"Desktop App Settings": "Desktop App Einstellungen",
+	"Keyboard Shortcuts": "Tastatürkürzel",
+	"Reset App Settings": "App-Einstellungen Zurücksetzen",
+	"Log Out": "Ausloggen",
+	"Quit": "Verlassen",
+
+    "Edit": "Bearbeiten",
+    "Undo": "Rückgängig machen",
+    "Redo": "Wiederholen",
+    "Cut": "Schnitt",
+    "Copy": "Kopieren",
+    "Paste": "Einfügen",
+    "Paste and Match Style": "Einfügen und Vergleichen von Stilen",
+    "Delete": "Löschen",
+    "Select All": "Wählen Sie Alle",
+
+    "View": "Aussicht",
+    "Reload": "Neu Laden",
+    "Hard Reload": "Hart Neu Laden",
+    "Toggle Full Screen": "Vollbild Umschalten",
+    "Zoom In": "Zoomen",
+    "Zoom Out": "Rauszoomen",
+    "Actual Size": "Tatsächliche Größe",
+    "Toggle Tray Icon": "Umschalten Tablett Symbol",
+    "Toggle Sidebar": "Umschalten Seitenleiste",
+    "Toggle DevTools for Zulip App": "Umschalten DevTools für Zulip App",
+    "Toggle DevTools for Active Tab": "Umschalten DevTools für Aktive Registerkarte",
+
+
+    "History": "Geschichte",
+    "Back": "Zurück",
+    "Forward": "Nach Vorne",
+
+    "Window": "Fenster",
+    "Minimize": "Minimieren",
+    "Close": "Schließen",
+
+    "Help": "Hilfe",
+    "Zulip Help": "Zulip Hilfe",
+    "Show App Logs": "App-Protokolle Anzeigen",
+    "Report an issue...": "Ein Problem melden..."
+
 }

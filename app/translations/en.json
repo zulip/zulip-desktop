@@ -1,4 +1,46 @@
 {
+	"File": "File",
+	"About Zulip": "About Zulip",
+	"Desktop App Settings": "Desktop App Settings",
+	"Keyboard Shortcuts": "Keyboard Shortcuts",
+	"Reset App Settings": "Reset App Settings",
+	"Log Out": "Log Out",
+	"Quit": "Quit",
+
     "Edit": "Edit",
-    "Undo": "Undo"
+    "Redo": "Redo",
+    "Undo": "Undo",
+    "Cut": "Cut",
+    "Copy": "Copy",
+    "Paste": "Paste",
+    "Paste and Match Style": "Paste and Match Style",
+    "Delete": "Delete",
+    "Select All": "Select All",
+
+    "View": "View",
+    "Reload": "Reload",
+    "Hard Reload": "Hard Reload",
+    "Toggle Full Screen": "Toggle Full Screen",
+    "Zoom In": "Zoom In",
+    "Zoom Out": "Zoom Out",
+    "Actual Size": "Actual Size",
+    "Toggle Tray Icon": "Toggle Tray Icon",
+    "Toggle Sidebar": "Toggle Sidebar",
+    "Toggle DevTools for Zulip App": "Toggle DevTools for Zulip App",
+    "Toggle DevTools for Active Tab": "Toggle DevTools for Active Tab",
+
+
+    "History": "History",
+    "Back": "Back",
+    "Forward": "Forward",
+
+    "Window": "Window",
+    "Minimize": "Minimize",
+    "Close": "Close",
+
+    "Help": "Help",
+    "Zulip Help": "Zulip Help",
+    "Show App Logs": "Show App Logs",
+    "Report an issue...": "Report an issue..."
+
    }

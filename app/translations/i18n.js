@@ -13,11 +13,9 @@ class i18n {
 		if (fs.existsSync(this.appLocale)) {
 			this.loadedLanguage = JSON.parse(fs.readFileSync(this.appLocale, 'utf8'));
 			console.log('translate into', this.appLanguage);
-			console.log(this.loadedLanguage);
 		} else {
 			this.loadedLanguage = JSON.parse(fs.readFileSync(path.join(__dirname, 'en.json'), 'utf8'));
 			console.log('no lang found');
-			console.log(this.loadedLanguage);
 		}
 	}
 
