@@ -30,7 +30,8 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "mas": "electron-builder --mac mas",
-    "travis": "cd ./scripts && ./travis-build-test.sh"
+    "travis": "cd ./scripts && ./travis-build-test.sh",
+    "build-locales": "node tools/locale-helper"
   },
   "pre-commit": [
     "test"
@@ -116,6 +117,7 @@
     "electron-builder": "19.53.6",
     "electron-connect": "0.6.2",
     "electron-debug": "1.4.0",
+    "google-translate-api": "2.3.0",
     "gulp": "3.9.1",
     "gulp-tape": "0.0.9",
     "is-ci": "^1.0.10",
@@ -161,7 +163,8 @@
       }
     ],
     "ignore": [
-      "tests/*.js"
+      "tests/*.js",
+      "tools/locale-helper/*.js"
     ],
     "envs": [
       "node",
