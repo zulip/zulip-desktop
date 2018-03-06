@@ -167,6 +167,16 @@ td:nth-child(odd) {
     padding: 4px 0 6px 0;
 }
 
+.add-server-info-row {
+    display: flex;
+    margin: 8px 0 0 0;
+}
+
+.add-server-info-right {
+    flex-grow: 1;
+    margin-top: 10px;
+}
+
 .sub-title {
     padding: 4px 0 6px 0;
     font-weight: bold;
@@ -177,25 +187,40 @@ img.server-info-icon {
     width: 36px;
     height: 36px;
     padding: 4px;
+    cursor: pointer;
+    vertical-align: middle;
 }
 
 .server-info-left {
-    margin: 10px 20px 0 0;
+    margin: 4px 20px 0 0;
+    min-width: 40%;
 }
 
 .server-info-right {
-    flex-grow: 1;
-    margin-right: 10px;
+    margin-top: 4px;
+    min-width: 55%;
 }
 
 .server-info-row {
-    display: flex;
-    margin: 8px 0 0 0;
+    display: inline-block;
+    margin: 5px 0 0 0;
+}
+
+.server-info-left .server-info-row {
+    vertical-align: -2px;
+}
+
+.server-url {
+    min-width: 60%;
 }
 
 .server-info-alias {
     font-weight: bold;
     cursor: pointer;
+}
+
+.server-url-info {
+    margin-right: 10px;
 }
 
 .setting-input-key {
@@ -286,11 +311,14 @@ img.server-info-icon {
 }
 
 .red {
-    color: #ffffff;
-    background: #ef5350;
-    padding: 3px;
-    padding-right: 10px;
-    padding-left: 10px;
+    color: #ef5350;
+    padding: 8px;
+    border: rgba(239, 83, 80, 0.5) solid 1px;
+}
+
+.red:hover{
+    color: #e63431;
+    border: rgba(239, 83, 80, 0.7) solid 1px;;
 }
 
 .blue {

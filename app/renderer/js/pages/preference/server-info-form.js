@@ -16,19 +16,18 @@ class ServerInfoForm extends BaseComponent {
 			<div class="settings-card">
 				<div class="server-info-left">
 					<img class="server-info-icon" src="${this.props.server.icon}"/>
-				</div>
-				<div class="server-info-right">
 					<div class="server-info-row">
 						<span class="server-info-alias">${this.props.server.alias}</span>
 						<i class="material-icons open-tab-button">open_in_new</i>
 					</div>
-					<div class="server-info-row">
-						<input class="setting-input-value" disabled value="${this.props.server.url}"/>
+				</div>
+				<div class="server-info-right">
+					<div class="server-info-row server-url">
+						<span class="server-url-info">${this.props.server.url}</span>
 					</div>
 					<div class="server-info-row">
 						<div class="action red server-delete-action">
-							<i class="material-icons">indeterminate_check_box</i>
-							<span>Delete</span>
+							<span>Disconnect</span>
 						</div>
 					</div>
 				</div>
@@ -44,6 +43,7 @@ class ServerInfoForm extends BaseComponent {
 	initForm() {
 		this.$serverInfoForm = this.generateNodeFromTemplate(this.template());
 		this.$serverInfoAlias = this.$serverInfoForm.getElementsByClassName('server-info-alias')[0];
+		this.$serverIcon = this.$serverInfoForm.getElementsByClassName('server-info-icon')[0];
 		this.$deleteServerButton = this.$serverInfoForm.getElementsByClassName('server-delete-action')[0];
 		this.$openServerButton = this.$serverInfoForm.getElementsByClassName('open-tab-button')[0];
 		this.props.$root.appendChild(this.$serverInfoForm);
@@ -71,7 +71,12 @@ class ServerInfoForm extends BaseComponent {
 		this.$serverInfoAlias.addEventListener('click', () => {
 			ipcRenderer.send('forward-message', 'switch-server-tab', this.props.index);
 		});
+
+		this.$serverIcon.addEventListener('click', () => {
+			ipcRenderer.send('forward-message', 'switch-server-tab', this.props.index);
+		});
 	}
+
 }
 
 module.exports = ServerInfoForm;
