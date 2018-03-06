@@ -1,6 +1,6 @@
 'use strict';
-const {dialog} = require('electron').remote;
-const {ipcRenderer} = require('electron');
+const { dialog } = require('electron').remote;
+const { ipcRenderer } = require('electron');
 
 const BaseComponent = require(__dirname + '/../../components/base.js');
 const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
@@ -55,7 +55,7 @@ class ServerInfoForm extends BaseComponent {
 				type: 'warning',
 				buttons: ['YES', 'NO'],
 				defaultId: 0,
-				message: 'Are you sure you want to delete this server?'
+				message: 'Are you sure you want to disconnect this organization?'
 			}, response => {
 				if (response === 0) {
 					DomainUtil.removeDomain(this.props.index);

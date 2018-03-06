@@ -40,7 +40,7 @@ class ServersSection extends BaseSection {
 
 		this.$serverInfoContainer.innerHTML = servers.length ? '' : '';
 		// Show Existing servers if servers are there otherwise hide it
-		this.$existingServers.innerHTML = servers.length === 0 ? '' : 'Existing organizations';
+		this.$existingServers.innerHTML = servers.length === 0 ? '' : 'Connected organizations';
 		this.initNewServerForm();
 
 		this.$createOrganizationContainer = document.getElementById('create-organization-container');
