@@ -95,11 +95,13 @@ td:nth-child(odd) {
 }
 
 #sidebar {
-    width: 80px;
-    padding: 30px;
+    width: 150px;
+    min-width: 100px;
+    padding: 30px 30px 30px 35px;
     display: flex;
     flex-direction: column;
     font-size: 16px;
+    background: #f2f2f2;
 }
 
 #nav-container {
