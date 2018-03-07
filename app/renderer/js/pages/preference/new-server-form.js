@@ -13,17 +13,25 @@ class NewServerForm extends BaseComponent {
 		return `
 			<div class="settings-card">
 				<div class="server-info-right">
-					<div class="title">URL of Zulip organization</div>
+					<div class="title">Organization URL</div>
 					<div class="server-info-row">
-						<input class="setting-input-value" autofocus placeholder="your-organization.zulipchat.com or chat.your-organization.com"/>
+						<input class="setting-input-value" autofocus placeholder="example.zulipchat.com or chat.example.com"/>
 					</div>
 					<div class="server-info-row">
 						<div class="action blue server-save-action">
-							<i class="material-icons">add_box</i>
-							<span>Add</span>
+							<span>Next</span>
 						</div>
 					</div>
 				</div>
+				<div class="divider">
+				<hr class="left"/>OR<hr class="right" />
+				</div>
+
+				<div class="server-info-row">
+						<div class="action blue server-create-action">
+							<span>Create a new organization</span>
+						</div>
+					</div>
 			</div>
 		`;
 	}
@@ -43,13 +51,13 @@ class NewServerForm extends BaseComponent {
 	}
 
 	submitFormHandler() {
-		this.$saveServerButton.children[1].innerHTML = 'Adding...';
+		this.$saveServerButton.children[0].innerHTML = 'Adding...';
 		DomainUtil.checkDomain(this.$newServerUrl.value).then(serverConf => {
 			DomainUtil.addDomain(serverConf).then(() => {
 				this.props.onChange(this.props.index);
 			});
 		}, errorMessage => {
-			this.$saveServerButton.children[1].innerHTML = 'Add';
+			this.$saveServerButton.children[0].innerHTML = 'Next';
 			alert(errorMessage);
 		});
 	}

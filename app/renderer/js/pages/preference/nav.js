@@ -8,7 +8,7 @@ class PreferenceNav extends BaseComponent {
 
 		this.props = props;
 
-		this.navItems = ['General', 'Network', 'Servers', 'Shortcuts'];
+		this.navItems = ['General', 'Network', 'Servers', 'Added-servers', 'Shortcuts'];
 
 		this.init();
 	}

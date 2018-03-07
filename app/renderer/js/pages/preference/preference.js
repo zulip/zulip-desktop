@@ -8,6 +8,7 @@ const ServersSection = require(__dirname + '/js/pages/preference/servers-section
 const GeneralSection = require(__dirname + '/js/pages/preference/general-section.js');
 const NetworkSection = require(__dirname + '/js/pages/preference/network-section.js');
 const ShortcutsSection = require(__dirname + '/js/pages/preference/shortcuts-section.js');
+const AddedSection = require(__dirname + '/js/pages/preference/added-server-section.js');
 
 class PreferenceView extends BaseComponent {
 	constructor() {
@@ -53,6 +54,12 @@ class PreferenceView extends BaseComponent {
 			}
 			case 'Network': {
 				this.section = new NetworkSection({
+					$root: this.$settingsContainer
+				});
+				break;
+			}
+			case 'Added-servers': {
+				this.section = new AddedSection({
 					$root: this.$settingsContainer
 				});
 				break;

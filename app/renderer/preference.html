@@ -1,16 +1,163 @@
 <!DOCTYPE html>
 <html lang="en" class="responsive desktop">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Zulip - Settings</title>
-    <link rel="stylesheet" href="css/preference.css" type="text/css" media="screen">
-  </head>
-  <body>
-    <div id="content">
-      <div id="sidebar"></div>
-      <div id="settings-container"></div>
-    </div>
-  </body>
-  <script src="js/pages/preference/preference.js"></script>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Zulip - Settings</title>
+  <link rel="stylesheet" href="css/preference.css" type="text/css" media="screen">
+  <style>
+    /* The Modal (background) */
+
+    .modal {
+      display: block;
+      /* Hidden by default */
+      position: fixed;
+      /* Stay in place */
+      z-index: 1;
+      /* Sit on top */
+      padding-top: 100px;
+      /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%;
+      /* Full width */
+      height: 100%;
+      /* Full height */
+      overflow: auto;
+      /* Enable scroll if needed */
+      /* background-color: rgb(0, 0, 0); */
+      /* Fallback color */
+      /* background-color: rgba(0, 0, 0, 0.4); */
+      background: rgba(61, 64, 67, 15);
+      /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 57px;
+      border: #dae1e3 1px solid;
+      width: 600px;
+      /* margin-bottom: 113px; */
+      height: 344px;
+      border-radius: 4px;
+    }
+
+    /* The Close Button */
+
+    .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    #server-settings-pane {
+      margin-left: 18%;
+    }
+
+    .settings-card.server-info-right:hover {
+      box-shadow: none !important;
+      border: none !important;
+    }
+
+    .server-save-action {
+      padding: 11px;
+      padding-left: 20px;
+      width: 292px;
+      border-radius: 4px;
+      margin-top: 16px;
+
+    }
+
+    .divider {
+      /* width: 250px;
+      text-align: center;
+      margin-left: 39px;
+      margin-top: 48px; */
+
+      width: 335px;
+      text-align: center;
+      margin-left: 0px;
+      margin-top: 48px;
+      color: #7d878a;
+
+    }
+
+    .divider hr {
+      margin-left: auto;
+      margin-right: auto;
+      width: 42%;
+
+    }
+
+    .left {
+      float: left;
+    }
+
+    .right {
+      float: right;
+    }
+
+    .server-create-action {
+      width: 314px;
+      margin-top: 40px;
+      padding: 11px;
+      border-radius: 4px;
+
+    }
+
+    .server-create-action span {
+      margin-left: 60px;
+      font-size: 15px;
+    }
+
+    .server-save-action span {
+      margin-left: 130px;
+    }
+
+    .server-save-action {
+      width: 306px;
+    }
+
+    .server-info-row {
+      display: block;
+    }
+
+    .setting-input-value {
+      width: 319px;
+    }
+
+    .page-title {
+      color: #222c31;
+      margin-left: 65px;
+      font-size: 22px;
+      font-weight: 100;
+      margin-bottom: 20px;
+      padding: 0;
+    }
+    .title {
+      color: #7d878a;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="content">
+    <div id="sidebar"></div>
+    <div id="settings-container"></div>
+  </div>
+</body>
+<script src="js/pages/preference/preference.js"></script>
+
 </html>
