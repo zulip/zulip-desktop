@@ -11,9 +11,9 @@ class NewServerForm extends BaseComponent {
 
 	template() {
 		return `
-			<div class="settings-card">
-				<div class="server-info-right">
-					<div class="title">Organization URL</div>
+		<div class="settings-card">
+			<div class="server-info-right">
+				<div class="title">Organization URL</div>
 					<div class="server-info-row">
 						<input class="setting-input-value" autofocus placeholder="example.zulipchat.com or chat.example.com"/>
 					</div>
@@ -22,8 +22,8 @@ class NewServerForm extends BaseComponent {
 							<span>Connect</span>
 						</div>
 					</div>
-				</div>
 			</div>
+		</div>
 		`;
 	}
 

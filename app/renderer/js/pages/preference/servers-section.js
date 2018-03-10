@@ -12,10 +12,14 @@ class ServersSection extends BaseSection {
 
 	template() {
 		return `
+		<div class="add-server-modal">
+		<div class="modal-container">
 			<div class="settings-pane" id="server-settings-pane">
 				<div class="page-title">Add a new Zulip organization</div>
 				<div id="new-server-container"></div>
 				<div id="create-organization-container"></div>
+			</div>
+			</div>
 			</div>
 		`;
 	}
