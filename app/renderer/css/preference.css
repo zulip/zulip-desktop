@@ -115,7 +115,7 @@ td:nth-child(odd) {
 }
 
 .nav.active {
-    color: #464e5a;
+    color: #4ebfac;
     cursor: default;
     position: relative;
 }
@@ -123,7 +123,7 @@ td:nth-child(odd) {
 .nav.active::before {
     background: #464e5a;
     width: 3px;
-    height: 16px;
+    height: 18px;
     position: absolute;
     left: -8px;
     content: '';
