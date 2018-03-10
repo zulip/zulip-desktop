@@ -462,6 +462,29 @@ input.toggle-round:checked+label:after {
     font-size: 1.6rem;
 }
 
+.divider {
+    width: 335px;
+    text-align: center;
+    margin-left: 0px;
+    margin-top: 48px;
+    color: #7d878a;
+}
+
+.divider hr {
+    margin-left: auto;
+    margin-right: auto;
+    width: 42%;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+
 /* responsive grid */
 
 @media (max-width: 650px) {

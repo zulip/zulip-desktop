@@ -11,19 +11,20 @@ class NewServerForm extends BaseComponent {
 
 	template() {
 		return `
-		<div class="settings-card">
 			<div class="server-info-right">
 				<div class="title">Organization URL</div>
-					<div class="server-info-row">
-						<input class="setting-input-value" autofocus placeholder="example.zulipchat.com or chat.example.com"/>
+				<div class="server-info-row">
+					<input class="setting-input-value" autofocus placeholder="example.zulipchat.com or chat.example.com"/>
+				</div>
+				<div class="server-info-row">
+					<div class="action blue server-save-action">
+						<span>Connect</span>
 					</div>
-					<div class="server-info-row">
-						<div class="action blue server-save-action">
-							<span>Connect</span>
-						</div>
-					</div>
+				</div>
+				<div class="divider">
+					<hr class="left"/>OR<hr class="right" />
+				</div>
 			</div>
-		</div>
 		`;
 	}
 
