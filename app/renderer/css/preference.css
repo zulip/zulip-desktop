@@ -440,8 +440,9 @@ input.toggle-round:checked+label:after {
     width: 100%;
     height: 100%;
     /* background: rgba(61, 64, 67, 15); */
-    background: linear-gradient(35deg,#003b52,#45b59b);
+    background: linear-gradient(35deg, #003b52, #45b59b);
 }
+
 
 /* Modal Content */
 
@@ -498,6 +499,12 @@ input.toggle-round:checked+label:after {
 .server-center .blue {
     border-radius: 3px;
 }
+
+.server-center .blue:hover {
+    border-right: 2px solid #309085;
+    border-bottom: 2px solid #309085;
+}
+
 
 /* responsive grid */
 
