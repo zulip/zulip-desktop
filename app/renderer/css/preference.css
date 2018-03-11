@@ -519,3 +519,17 @@ input.toggle-round:checked+label:after {
         display: none;
     }
 }
+
+@media (max-width: 720px) {
+    .modal-container {
+        width: 60vw;
+        padding: 40px;
+        min-width: 300px;
+    }
+    .server-center .blue {
+        margin-right: 1px;
+    }
+    #new-server-container {
+        padding-left: 0px;
+    }
+}
