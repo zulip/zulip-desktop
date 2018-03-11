@@ -2,6 +2,7 @@
 
 const BaseComponent = require(__dirname + '/../../components/base.js');
 const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
+const shell = require('electron').shell;
 
 class NewServerForm extends BaseComponent {
 	constructor(props) {
@@ -11,19 +12,26 @@ class NewServerForm extends BaseComponent {
 
 	template() {
 		return `
-			<div class="server-info-right">
+			<div class="server-input-container">
 				<div class="title">Organization URL</div>
 				<div class="server-info-row">
-					<input class="setting-input-value" autofocus placeholder="example.zulipchat.com or chat.example.com"/>
+					<input class="setting-input-value" autofocus placeholder="your-organization.zulipchat.com or chat.your-organization.com"/>
 				</div>
-				<div class="server-info-row">
+				<div class="server-center">
 					<div class="action blue server-save-action">
-						<span>Connect</span>
+						<span id="connect">Connect</span>
 					</div>
 				</div>
+				<div class="server-center">
 				<div class="divider">
 					<hr class="left"/>OR<hr class="right" />
 				</div>
+				</div>
+				<div class="server-center">
+				<div class="action blue server-save-action">
+					<span id="open-create-org-link">Create a new organization</span>
+			</div>
+					</div>
 			</div>
 		`;
 	}
@@ -36,6 +44,7 @@ class NewServerForm extends BaseComponent {
 	initForm() {
 		this.$newServerForm = this.generateNodeFromTemplate(this.template());
 		this.$saveServerButton = this.$newServerForm.getElementsByClassName('server-save-action')[0];
+
 		this.props.$root.innerHTML = '';
 		this.props.$root.appendChild(this.$newServerForm);
 
@@ -54,6 +63,14 @@ class NewServerForm extends BaseComponent {
 		});
 	}
 
+	openCreateNewOrgExternalLink() {
+		const link = 'https://zulipchat.com/beta/';
+		const externalCreateNewOrgEl = document.getElementById('open-create-org-link');
+		externalCreateNewOrgEl.addEventListener('click', () => {
+			shell.openExternal(link);
+		});
+	}
+
 	initActions() {
 		this.$saveServerButton.addEventListener('click', () => {
 			this.submitFormHandler();
@@ -65,6 +82,8 @@ class NewServerForm extends BaseComponent {
 				this.submitFormHandler();
 			}
 		});
+		// open create new org link in default browser
+		this.openCreateNewOrgExternalLink();
 	}
 }
 
