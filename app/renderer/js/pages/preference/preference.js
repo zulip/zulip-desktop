@@ -40,7 +40,7 @@ class PreferenceView extends BaseComponent {
 	handleNavigation(navItem) {
 		this.nav.select(navItem);
 		switch (navItem) {
-			case 'Servers': {
+			case 'AddServer': {
 				this.section = new ServersSection({
 					$root: this.$settingsContainer
 				});

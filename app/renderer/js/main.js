@@ -122,7 +122,7 @@ class ServerManagerView {
 			// Remove focus from the settings icon at sidebar bottom
 			this.$settingsButton.classList.remove('active');
 		} else {
-			this.openSettings('Servers');
+			this.openSettings('AddServer');
 		}
 	}
 
@@ -159,7 +159,7 @@ class ServerManagerView {
 			this.tabs[this.activeTabIndex].webview.reload();
 		});
 		this.$addServerButton.addEventListener('click', () => {
-			this.openSettings('Servers');
+			this.openSettings('AddServer');
 		});
 		this.$settingsButton.addEventListener('click', () => {
 			this.openSettings('General');
