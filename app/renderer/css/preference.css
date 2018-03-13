@@ -311,6 +311,10 @@ img.server-info-icon {
     margin: 6px;
 }
 
+.setting-row.limit-text-overflow {
+    max-width: 520px;
+}
+
 .code {
     font-family: Courier New, Courier, monospace;
 }
@@ -434,17 +438,68 @@ input.toggle-round:checked+label:after {
     margin-left: 25px;
 }
 
+.import-cert-btn {
+    color: white;
+    background-color: #4ebfac;
+    border: #4ebfac 1px solid;
+    padding: 9px;
+    font-size: 14px;
+    box-sizing: border-box;
+    font-family: 'Montserrat';
+    font-weight: bolder;
+    transition: all ease-out 2s;
+}
+
+.import-cert-status {
+    color: #2f812f;
+}
+
+.import-cert-loading {
+    display: none;
+    transition: all ease-out 2s;
+}
+
+.import-cert-loading::before {
+    content: "";
+    height: 38px;
+    width: 38px;
+    background: #fff url(../img/ic_loading.gif) no-repeat;
+    background-size: 38px 38px;
+    background-position: center;
+}
+
+.import-cert-loading div {
+    display: block;
+    padding: 10px;
+}
+
+.import-cert-loading.show {
+    display: flex !important;
+}
+
+.show {
+    display: block !important;
+}
+
+.hide {
+    display: none !important;
+}
+
+.error {
+    color: #e94646 !important;
+}
+
 
 /* responsive grid */
 
 @media (max-width: 650px) {
-    .selected-css-path {
-        margin-right: 15px;
-    }
-    #css-delete-action {
-        margin-left: 10px;
-    }
-    #css-delete-action span {
-        display: none;
-    }
+  .selected-css-path {
+      margin-right: 15px;
+  }
+  #css-delete-action {
+      margin-left: 10px;
+  }
+  #css-delete-action span {
+      display: none;
+  }
 }
