@@ -496,6 +496,8 @@ input.toggle-round:checked+label:after {
 }
 
 .server-center span {
+    font-weight: bold;
+    font-size: 1.1rem;
     padding: 10px;
     margin: auto;
     align-items: center;
