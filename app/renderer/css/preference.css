@@ -129,6 +129,12 @@ td:nth-child(odd) {
     content: '';
 }
 
+/* We don't want to show this in nav item since we have the + button for adding an Organization */
+
+#nav-AddServer {
+    display: none;
+}
+
 #settings-header {
     font-size: 22px;
     color: #222c31;
