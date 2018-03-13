@@ -9,7 +9,7 @@ const { crashHandler } = require('./crash-reporter');
 
 const { setAutoLaunch } = require('./startup');
 
-const { app, ipcMain } = electron;
+const { app, dialog, ipcMain } = electron;
 
 const BadgeSettings = require('./../renderer/js/pages/preference/badge-settings.js');
 const ConfigUtil = require('./../renderer/js/utils/config-util.js');
@@ -135,7 +135,17 @@ app.disableHardwareAcceleration();
 // eslint-disable-next-line max-params
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
 	event.preventDefault();
-	callback(true);
+
+	// eslint-disable-next-line no-negated-condition
+	if (process.platform !== 'linux') {
+		dialog.showCertificateTrustDialog({
+			certificate
+		}, status => {
+			callback(status);
+		});
+	} else {
+		callback(true);
+	}
 });
 
 app.on('activate', () => {
