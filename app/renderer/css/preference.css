@@ -220,8 +220,7 @@ img.server-info-icon {
 }
 
 .setting-input-value:focus {
-    border: #7cb980 2px solid;
-    border-radius: 3px;
+    border: #4EBFAC 2px solid;
 }
 
 .setting-block {
