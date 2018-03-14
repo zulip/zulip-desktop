@@ -52,8 +52,8 @@ const iconPath = () => {
 function createMainWindow() {
 	// Load the previous state with fallback to defaults
 	const mainWindowState = windowStateKeeper({
-		defaultWidth: 1000,
-		defaultHeight: 600
+		defaultWidth: 1100,
+		defaultHeight: 720
 	});
 
 	// Let's keep the window position global so that we can access it in other process

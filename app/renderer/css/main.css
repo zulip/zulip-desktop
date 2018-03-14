@@ -121,11 +121,14 @@ body {
 }
 
 .action-button.active {
-    background-color: rgba(255, 255, 255, 0.25);
+    /* background-color: rgba(255, 255, 255, 0.25); */
+    background-color: #efefef;
+    opacity: 0.9;
+    padding-right: 14px;
 }
 
 .action-button.active i {
-    color: #eee;
+    color: #1c262b;
 }
 
 .tab:first-child {
@@ -284,7 +287,7 @@ webview.focus {
 #setting-tooltip {
     font-family: sans-serif;
     background: #222c31;
-    margin-left: 45px;
+    margin-left: 48px;
     padding: 6px 8px;
     position: absolute;
     margin-top: 0px;
@@ -356,6 +359,8 @@ webview.focus {
     height: 100%;
     width: 100%;
     position: relative;
+    flex-grow: 1;
+    flex-basis: 0px;
 }
 
 .hidden {

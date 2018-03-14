@@ -7,6 +7,7 @@ const Nav = require(__dirname + '/js/pages/preference/nav.js');
 const ServersSection = require(__dirname + '/js/pages/preference/servers-section.js');
 const GeneralSection = require(__dirname + '/js/pages/preference/general-section.js');
 const NetworkSection = require(__dirname + '/js/pages/preference/network-section.js');
+const ConnectedOrgSection = require(__dirname + '/js/pages/preference/connected-org-section.js');
 const ShortcutsSection = require(__dirname + '/js/pages/preference/shortcuts-section.js');
 
 class PreferenceView extends BaseComponent {
@@ -39,7 +40,7 @@ class PreferenceView extends BaseComponent {
 	handleNavigation(navItem) {
 		this.nav.select(navItem);
 		switch (navItem) {
-			case 'Servers': {
+			case 'AddServer': {
 				this.section = new ServersSection({
 					$root: this.$settingsContainer
 				});
@@ -47,6 +48,12 @@ class PreferenceView extends BaseComponent {
 			}
 			case 'General': {
 				this.section = new GeneralSection({
+					$root: this.$settingsContainer
+				});
+				break;
+			}
+			case 'Organizations': {
+				this.section = new ConnectedOrgSection({
 					$root: this.$settingsContainer
 				});
 				break;

@@ -129,6 +129,12 @@ td:nth-child(odd) {
     content: '';
 }
 
+/* We don't want to show this in nav item since we have the + button for adding an Organization */
+
+#nav-AddServer {
+    display: none;
+}
+
 #settings-header {
     font-size: 22px;
     color: #222c31;
@@ -144,12 +150,12 @@ td:nth-child(odd) {
 }
 
 #new-server-container {
-    opacity: 1;
-    transition: opacity 0.3s;
+    padding-left: 42px;
+    padding-top: 25px;
+    margin-right: 16px;
 }
 
 .title {
-    padding: 4px 0 6px 0;
     font-weight: 500;
     color: #222c31;
 }
@@ -205,18 +211,16 @@ img.server-info-icon {
 .setting-input-value {
     flex-grow: 1;
     font-size: 14px;
-    height: 22px;
     border-radius: 3px;
-    padding: 7px;
+    padding: 13px;
     border: #ededed 2px solid;
     outline-width: 0;
     background: transparent;
-    max-width: 500px;
+    max-width: 450px;
 }
 
 .setting-input-value:focus {
-    border: #7cb980 2px solid;
-    border-radius: 3px;
+    border: #4EBFAC 2px solid;
 }
 
 .setting-block {
@@ -370,15 +374,8 @@ i.open-tab-button {
 }
 
 #open-create-org-link {
-    color: #666;
     cursor: pointer;
     text-decoration: none;
-}
-
-#open-create-org-link:hover {
-    color: #005580;
-    ;
-    text-decoration: underline;
 }
 
 .toggle {
@@ -435,6 +432,87 @@ input.toggle-round:checked+label:after {
 }
 
 
+/*  Add new server modal */
+
+.add-server-modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    padding-top: 15vh;
+    left: 0;
+    top: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    /* background: rgba(61, 64, 67, 15); */
+    background: linear-gradient(35deg, #003b52, #45b59b);
+}
+
+
+/* Modal Content */
+
+.modal-container {
+    background-color: #f4f7f8;
+    margin: auto;
+    padding: 57px;
+    border: #dae1e3 1px solid;
+    width: 550px;
+    height: 370px;
+    border-radius: 4px;
+}
+
+.add-server-modal .page-title {
+    text-align: center;
+    font-size: 1.6rem;
+}
+
+.divider {
+    margin-bottom: 30px;
+    margin-right: 10px;
+    margin-top: 30px;
+    color: #7d878a;
+}
+
+.divider hr {
+    margin-left: auto;
+    margin-right: auto;
+    width: 45%;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.server-center {
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    padding-top: 13px;
+}
+
+.server-center span {
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 10px;
+    margin: auto;
+    align-items: center;
+    text-align: center;
+}
+
+.server-center .blue {
+    border-radius: 3px;
+}
+
+.server-center .blue:hover {
+    border-right: 2px solid #309085;
+    border-bottom: 2px solid #309085;
+}
+
+
 /* responsive grid */
 
 @media (max-width: 650px) {
@@ -446,5 +524,19 @@ input.toggle-round:checked+label:after {
     }
     #css-delete-action span {
         display: none;
+    }
+}
+
+@media (max-width: 720px) {
+    .modal-container {
+        width: 60vw;
+        padding: 40px;
+        min-width: 300px;
+    }
+    .server-center .blue {
+        margin-right: 1px;
+    }
+    #new-server-container {
+        padding-left: 0px;
     }
 }
