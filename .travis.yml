@@ -17,6 +17,7 @@ addons:
   artifacts:
     paths:
       - $(ls ./dist/* | tr "\n" ":")
+    debug: true
 
 language: node_js
 node_js:
