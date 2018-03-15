@@ -19,7 +19,7 @@ function changeFileName(file) {
   return file;
 }
 
-// Change file name to want we want
+// Change file name to what we want
 // eg zulip_1.8.2_amd64.deb -> Zulip-1.8.2-amd64.deb
 // and change file name
 files.map(file => {
