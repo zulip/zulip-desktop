@@ -16,7 +16,7 @@ addons:
       - libxkbfile-dev
   artifacts:
     paths:
-      - $(ls ./dist/* | tr "\n" ":")
+      - $(ls ./dist/*.dmg | tr "\n" ":")
     debug: true
 
 language: node_js
