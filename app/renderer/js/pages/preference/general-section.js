@@ -180,7 +180,7 @@ class GeneralSection extends BaseSection {
 				const newValue = !ConfigUtil.getConfigItem('silent', true);
 				ConfigUtil.setConfigItem('silent', newValue);
 				this.updateSilentOption();
-				currentBrowserWindow.send('toogle-silent', newValue);
+				currentBrowserWindow.send('toggle-silent', newValue);
 			}
 		});
 	}

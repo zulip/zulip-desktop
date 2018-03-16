@@ -311,7 +311,7 @@ class ServerManagerView {
 			webContents.send('toggle-sidebar', state);
 		});
 
-		ipcRenderer.on('toogle-silent', (event, state) => {
+		ipcRenderer.on('toggle-silent', (event, state) => {
 			const webviews = document.querySelectorAll('webview');
 			webviews.forEach(webview => {
 				try {
