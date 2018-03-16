@@ -268,10 +268,10 @@ class ServerManagerView {
 	}
 
 	activateLastTab(index) {
-		// Open last active tab
-		ConfigUtil.setConfigItem('lastActiveTab', index);
-		// Open all the tabs in background
+		// Open all the tabs in background, also activate the tab based on the index
 		this.activateTab(index);
+		// Save last active tab
+		ConfigUtil.setConfigItem('lastActiveTab', index);
 	}
 
 	activateTab(index, hideOldTab = true) {
