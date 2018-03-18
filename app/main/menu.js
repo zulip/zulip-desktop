@@ -6,6 +6,7 @@ const { app, shell, BrowserWindow, Menu, dialog } = require('electron');
 const fs = require('fs-extra');
 
 const ConfigUtil = require(__dirname + '/../renderer/js/utils/config-util.js');
+const DNDUtil = require(__dirname + '/../renderer/js/utils/dnd-util.js');
 
 const appName = app.getName();
 
@@ -215,6 +216,13 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
+				label: 'Toggle Do Not Disturb',
+				accelerator: 'Command+Shift+M',
+				click() {
+					const dndUtil = DNDUtil.toggle();
+					AppMenu.sendAction('toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
+				}
+			}, {
 				label: 'Reset App Settings',
 				accelerator: 'Command+Shift+D',
 				click() {
@@ -316,6 +324,13 @@ class AppMenu {
 				}
 			}, {
 				type: 'separator'
+			}, {
+				label: 'Toggle Do Not Disturb',
+				accelerator: 'Ctrl+Shift+M',
+				click() {
+					const dndUtil = DNDUtil.toggle();
+					AppMenu.sendAction('toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
+				}
 			}, {
 				label: 'Reset App Settings',
 				accelerator: 'Ctrl+Shift+D',

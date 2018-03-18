@@ -46,7 +46,7 @@ body {
 }
 
 #view-controls-container {
-	height: calc(100% - 156px);
+	height: calc(100% - 208px);
 	overflow-y: hidden;
 }
 
@@ -309,6 +309,7 @@ webview.focus {
 
 /* Tooltip styling */
 
+#dnd-tooltip,
 #back-tooltip,
 #reload-tooltip,
 #setting-tooltip {
@@ -326,6 +327,7 @@ webview.focus {
     font-size: 14px;
 }
 
+#dnd-tooltip:after,
 #back-tooltip:after,
 #reload-tooltip:after,
 #setting-tooltip:after {
