@@ -29,3 +29,7 @@ appDirectory=/home/$getSudoUser/.config/Zulip/;
 if [ -d $appDirectory ]; then
     sudo rm -rf $appDirectory;
 fi
+
+# Delete the link to the binary
+echo 'Removing binary link'
+sudo rm -f '/usr/local/bin/${executable}';
