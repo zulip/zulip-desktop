@@ -15,6 +15,7 @@ To build and run the app from source, you'll need the following:
 * [Python](https://www.python.org/downloads/release/python-2713/)
   (v2.7.x recommended)
 * A C++ compiler compatible with C++11
+* Linux users also need [Snapcraft](https://snapcraft.io/)
 * Development headers for the libXext, libXtst, and libxkbfile libraries
 
 ### Debian/Ubuntu and friends
@@ -25,7 +26,7 @@ manager (see [here][nodesource-install] for more on the first command):
 
 ```sh
 $ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-$ sudo apt install git nodejs python build-essential libxext-dev libxtst-dev libxkbfile-dev libgconf-2-4
+$ sudo apt install git nodejs python build-essential snapcraft libxext-dev libxtst-dev libxkbfile-dev libgconf-2-4
 ```
 
 [nodesource-install]: https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
@@ -76,7 +77,7 @@ This command will produce distributable packages or installers for the
 operating system you're running on:
 * on Windows, a Windows installer file
 * on macOS, a `.dmg` file
-* on Linux, a plain `.zip` file as well as a `.deb` file and an
+* on Linux, a plain `.zip` file as well as a `.deb` file, `.snap` file and an
   `AppImage` file.
 To generate all three types, you will need all three operating
 systems.

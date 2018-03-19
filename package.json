@@ -55,7 +55,8 @@
       "target": [
         "deb",
         "zip",
-        "AppImage"
+        "AppImage",
+        "snap"
       ],
       "maintainer": "Akash Nimare <svnitakash@gmail.com>"
     },
@@ -63,6 +64,9 @@
       "synopsis": "Zulip Desktop App",
       "afterInstall": "./scripts/debian-add-repo.sh",
       "afterRemove": "./scripts/debian-uninstaller.sh"
+    },
+    "snap": {
+      "synopsis": "Zulip Desktop App"
     },
     "dmg": {
       "background": "build/appdmg.png",
