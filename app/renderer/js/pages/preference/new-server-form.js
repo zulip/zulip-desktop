@@ -14,7 +14,7 @@ class NewServerForm extends BaseComponent {
 		return `
 			<div class="server-input-container">
 				<div class="title">Organization URL</div>
-				<div class="server-info-row">
+				<div class="add-server-info-row">
 					<input class="setting-input-value" autofocus placeholder="your-organization.zulipchat.com or chat.your-organization.com"/>
 				</div>
 				<div class="server-center">
