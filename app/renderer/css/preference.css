@@ -207,7 +207,10 @@ img.server-info-icon {
 }
 
 .server-info-left .server-info-row {
+    display: inline-flex;
+    align-items: inherit;
     vertical-align: -2px;
+    position: relative;
 }
 
 .server-url {
@@ -348,8 +351,8 @@ img.server-info-icon {
 }
 
 i.open-tab-button {
-    padding: 0 5px;
-    font-size: 18px;
+    padding-left: 2px;
+    font-size: 19px;
     cursor: pointer;
 }
 
