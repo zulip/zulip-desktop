@@ -7,7 +7,7 @@ test('app runs', function (t) {
   const app = setup.createApp()
   setup.waitForLoad(app, t)
     .then(() => app.client.windowByIndex(1)) // focus on webview
-    .then(() => app.client.waitForExist('//*[@id="new-server-container"]/div/div/div[2]/input'))
+    .then(() => app.client.waitForExist('//*[@id="connect"]')) // id of the connect button
     .then(() => setup.endTest(app, t),
           (err) => setup.endTest(app, t, err || 'error'))
 })
