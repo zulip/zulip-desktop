@@ -540,9 +540,7 @@ input.toggle-round:checked+label:after {
 }
 
 .server-center .blue:hover {
-    /* border-right: 2px solid #309085; */
-    /* border-bottom: 2px solid #309085; */
-    background: #329588g;
+    background: #329588;
 }
 
 
