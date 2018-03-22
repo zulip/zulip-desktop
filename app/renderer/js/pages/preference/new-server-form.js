@@ -15,7 +15,7 @@ class NewServerForm extends BaseComponent {
 			<div class="server-input-container">
 				<div class="title">Organization URL</div>
 				<div class="add-server-info-row">
-					<input class="setting-input-value" autofocus placeholder="your-organization.zulipchat.com or chat.your-organization.com"/>
+					<input class="setting-input-value" autofocus placeholder="your-organization.zulipchat.com or zulip.your-organization.com"/>
 				</div>
 				<div class="server-center">
 					<div class="action blue server-save-action">
@@ -64,7 +64,7 @@ class NewServerForm extends BaseComponent {
 	}
 
 	openCreateNewOrgExternalLink() {
-		const link = 'https://zulipchat.com/beta/';
+		const link = 'https://zulipchat.com/new/';
 		const externalCreateNewOrgEl = document.getElementById('open-create-org-link');
 		externalCreateNewOrgEl.addEventListener('click', () => {
 			shell.openExternal(link);
