@@ -18,8 +18,8 @@ class NewServerForm extends BaseComponent {
 					<input class="setting-input-value" autofocus placeholder="your-organization.zulipchat.com or zulip.your-organization.com"/>
 				</div>
 				<div class="server-center">
-					<div class="action blue server-save-action">
-						<span id="connect">Connect</span>
+					<div class="server-save-action">
+						<button id="connect">Connect</button>
 					</div>
 				</div>
 				<div class="server-center">
@@ -28,8 +28,8 @@ class NewServerForm extends BaseComponent {
 				</div>
 				</div>
 				<div class="server-center">
-				<div class="action blue server-save-action">
-					<span id="open-create-org-link">Create a new organization</span>
+				<div class="server-save-action">
+					<button id="open-create-org-link">Create a new organization</button>
 			</div>
 					</div>
 			</div>
@@ -44,7 +44,6 @@ class NewServerForm extends BaseComponent {
 	initForm() {
 		this.$newServerForm = this.generateNodeFromTemplate(this.template());
 		this.$saveServerButton = this.$newServerForm.getElementsByClassName('server-save-action')[0];
-
 		this.props.$root.innerHTML = '';
 		this.props.$root.appendChild(this.$newServerForm);
 
@@ -66,7 +65,8 @@ class NewServerForm extends BaseComponent {
 	openCreateNewOrgExternalLink() {
 		const link = 'https://zulipchat.com/new/';
 		const externalCreateNewOrgEl = document.getElementById('open-create-org-link');
-		externalCreateNewOrgEl.addEventListener('click', () => {
+		externalCreateNewOrgEl.addEventListener('click', (event) => {
+			event.preventDefault();
 			shell.openExternal(link);
 		});
 	}
