@@ -6,11 +6,11 @@
 // use drag and drop event to share files etc
 
 const preventDragAndDrop = () => {
-	document.addEventListener('dragover', event => {
-		event.preventDefault();
-	});
-	document.addEventListener('drop', event => {
-		event.preventDefault();
+	const preventEvents = ['dragover', 'drop'];
+	preventEvents.forEach(dragEvents => {
+		document.addEventListener(dragEvents, event => {
+			event.preventDefault();
+		});
 	});
 };
 
