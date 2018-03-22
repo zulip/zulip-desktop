@@ -199,7 +199,11 @@ img.server-info-icon {
 
 .server-info-right {
     margin-top: 4px;
-    min-width: 55%;
+    width: 55%;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-grow: 1;
 }
 
 .server-info-row {
@@ -215,7 +219,9 @@ img.server-info-icon {
 }
 
 .server-url {
-    min-width: 60%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .server-info-alias {
@@ -305,7 +311,6 @@ img.server-info-icon {
 }
 
 .settings-card:hover {
-    border-left: 8px solid #bcbcbc;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 0px 0px rgba(0, 0, 0, 0.12);
 }
 

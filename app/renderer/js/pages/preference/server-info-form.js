@@ -23,7 +23,7 @@ class ServerInfoForm extends BaseComponent {
 				</div>
 				<div class="server-info-right">
 					<div class="server-info-row server-url">
-						<span class="server-url-info">${this.props.server.url}</span>
+						<span class="server-url-info" title="${this.props.server.url}">${this.props.server.url}</span>
 					</div>
 					<div class="server-info-row">
 						<div class="action red server-delete-action">
