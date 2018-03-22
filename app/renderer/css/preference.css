@@ -477,6 +477,7 @@ input.toggle-round:checked+label:after {
     height: 100%;
     /* background: rgba(61, 64, 67, 15); */
     background: linear-gradient(35deg, #003b52, #45b59b);
+    overflow: auto;
 }
 
 
