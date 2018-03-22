@@ -8,6 +8,9 @@ const ConfigUtil = require(__dirname + '/utils/config-util.js');
 // eslint-disable-next-line import/no-unassigned-import
 require('./notification');
 
+// Prevent drag and drop event in main process which prevents remote code executaion
+require(__dirname + '/shared/preventdrag.js');
+
 const logout = () => {
 	// Create the menu for the below
 	document.querySelector('.dropdown-toggle').click();
