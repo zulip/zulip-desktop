@@ -71,7 +71,6 @@ function createMainWindow() {
 		minHeight: 400,
 		webPreferences: {
 			plugins: true,
-			allowDisplayingInsecureContent: true,
 			nodeIntegration: true
 		},
 		show: false
