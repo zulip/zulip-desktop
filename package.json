@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "electron app --disable-http-cache --no-electron-connect",
-    "reinstall": "./tools/reinstall-node-modules",
+    "reinstall": "node ./tools/reinstall-node-modules.js",
     "postinstall": "electron-builder install-app-deps",
     "test": "xo",
     "test-e2e": "gulp test-e2e",
