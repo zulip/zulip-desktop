@@ -129,6 +129,7 @@ td:nth-child(odd) {
     content: '';
 }
 
+
 /* We don't want to show this in nav item since we have the + button for adding an Organization */
 
 #nav-AddServer {
@@ -319,9 +320,10 @@ img.server-info-icon {
     border: rgba(239, 83, 80, 0.5) solid 1px;
 }
 
-.red:hover{
+.red:hover {
     color: #e63431;
-    border: rgba(239, 83, 80, 0.7) solid 1px;;
+    border: rgba(239, 83, 80, 0.7) solid 1px;
+    ;
 }
 
 .blue {
@@ -477,6 +479,7 @@ input.toggle-round:checked+label:after {
     height: 100%;
     /* background: rgba(61, 64, 67, 15); */
     background: linear-gradient(35deg, #003b52, #45b59b);
+    overflow: auto;
 }
 
 
@@ -499,15 +502,14 @@ input.toggle-round:checked+label:after {
 
 .divider {
     margin-bottom: 30px;
-    margin-right: 10px;
     margin-top: 30px;
     color: #7d878a;
 }
 
 .divider hr {
-    margin-left: auto;
-    margin-right: auto;
-    width: 45%;
+    margin-left: 8px;
+    margin-right: 8px;
+    width: 44%;
 }
 
 .left {
@@ -523,24 +525,31 @@ input.toggle-round:checked+label:after {
     text-align: center;
     align-items: center;
     padding-top: 13px;
+    margin-left: -5px;
 }
 
-.server-center span {
+.server-center button {
     font-weight: bold;
     font-size: 1.1rem;
-    padding: 10px;
     margin: auto;
     align-items: center;
     text-align: center;
-}
-
-.server-center .blue {
+    color: #fff;
+    background: #4EBFAC;
+    border-color: none;
+    border: none;
+    width: 98%;
+    height: 46px;
     border-radius: 3px;
+    cursor: pointer;
 }
 
-.server-center .blue:hover {
-    border-right: 2px solid #309085;
-    border-bottom: 2px solid #309085;
+.server-center button:hover {
+    background: #329588;
+}
+
+.server-center button:focus {
+    background: #329588;
 }
 
 
@@ -564,8 +573,17 @@ input.toggle-round:checked+label:after {
         padding: 40px;
         min-width: 300px;
     }
-    .server-center .blue {
-        margin-right: 1px;
+    .server-center button {
+        margin-right: -12px;
+        width: 100%;
+    }
+    .divider {
+        margin-right: -8px;
+    }
+    .divider hr {
+        margin-left: 6px;
+        margin-right: 6px;
+        width: 43%;
     }
     #new-server-container {
         padding-left: 0px;
