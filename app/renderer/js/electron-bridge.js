@@ -3,7 +3,7 @@ const { ipcRenderer } = require('electron');
 
 // we have and will have some non camelcase stuff
 // while working with zulip so just turning the rule off
-// for the wole file.
+// for the whole file.
 /* eslint-disable camelcase */
 class ElectronBridge extends events {
 	// eslint-disable-next-line no-useless-constructor
@@ -23,8 +23,17 @@ class ElectronBridge extends events {
 const electron_bridge = new ElectronBridge();
 
 electron_bridge.on('total_unread_count', (...args) => {
-	console.log(args);
 	ipcRenderer.send('unread-count', ...args);
+});
+
+electron_bridge.on('realm_name', (...args) => {
+	ipcRenderer.send('realm-name-changed', ...args);
+});
+
+electron_bridge.on('realm_icon_url', iconURL => {
+	const serverURL = location.origin;
+	iconURL = iconURL.includes('http') ? iconURL : `${serverURL}${iconURL}`;
+	ipcRenderer.send('realm-icon-changed', serverURL, iconURL);
 });
 
 // this follows node's idiomatic implementation of event

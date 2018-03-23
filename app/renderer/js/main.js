@@ -371,6 +371,22 @@ class ServerManagerView {
 			const webContents = webview.getWebContents();
 			webContents.send('toggle-dnd', state, newSettings);
 		});
+
+		ipcRenderer.on('update-realm-icon', (event, serverURL, iconURL) => {
+			DomainUtil.getDomains().forEach((domain, index) => {
+				if (domain.url.includes(serverURL)) {
+					DomainUtil.saveServerIcon(iconURL).then(localIconUrl => {
+						const serverImgSelector = `.tab[data-tab-id="${index}"] .server-icons`;
+						const serverImg = document.querySelector(serverImgSelector);
+						serverImg.src = localIconUrl;
+
+						domain.icon = localIconUrl;
+						DomainUtil.db.push(`/domains[${index}]`, domain, true);
+						DomainUtil.reloadDB();
+					});
+				}
+			});
+		});
 	}
 
 	destroyTab(name, index) {
