@@ -605,3 +605,19 @@ input.toggle-round:checked+label:after {
         width: 40%;
     }
 }
+
+@media (max-width: 900px) {
+    .settings-card {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .server-info-right {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .action {
+        margin-top: 10px;
+    }
+}
