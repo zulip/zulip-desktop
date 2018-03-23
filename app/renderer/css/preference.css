@@ -594,3 +594,14 @@ input.toggle-round:checked+label:after {
         padding-left: 0px;
     }
 }
+
+@media (max-width: 600px) {
+    .divider {
+        margin-left: 4%;
+    }
+    .divider hr {
+        margin-left: 2px;
+        margin-right: 2px;
+        width: 40%;
+    }
+}
