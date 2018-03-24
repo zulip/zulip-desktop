@@ -2,7 +2,7 @@
 const os = require('os');
 const path = require('path');
 
-const { app, shell, BrowserWindow, Menu } = require('electron');
+const { app, shell, BrowserWindow, Menu, dialog } = require('electron');
 
 const fs = require('fs-extra');
 
@@ -388,20 +388,32 @@ class AppMenu {
 	}
 
 	static resetAppSettings() {
+		const resetAppSettingsMessage = 'By proceeding you will be removing all connected organizations and preferences from Zulip.';
+
 		// We save App's settings/configurations in following files
 		const settingFiles = ['window-state.json', 'domain.json', 'settings.json'];
 
-		settingFiles.forEach(settingFileName => {
-			const getSettingFilesPath = path.join(app.getPath('appData'), appName, settingFileName);
-			fs.access(getSettingFilesPath, error => {
-				if (error) {
-					console.log(error);
-				} else {
-					fs.unlink(getSettingFilesPath, () => {
-						AppMenu.sendAction('clear-app-data');
+		dialog.showMessageBox({
+			type: 'warning',
+			buttons: ['YES', 'NO'],
+			defaultId: 0,
+			message: 'Are you sure?',
+			detail: resetAppSettingsMessage
+		}, response => {
+			if (response === 0) {
+				settingFiles.forEach(settingFileName => {
+					const getSettingFilesPath = path.join(app.getPath('appData'), appName, settingFileName);
+					fs.access(getSettingFilesPath, error => {
+						if (error) {
+							console.log(error);
+						} else {
+							fs.unlink(getSettingFilesPath, () => {
+								AppMenu.sendAction('clear-app-data');
+							});
+						}
 					});
-				}
-			});
+				});
+			}
 		});
 	}
 
