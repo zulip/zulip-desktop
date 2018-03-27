@@ -47,7 +47,7 @@ script:
   - npm run travis
   - chmod +x ./scripts/install-release-dependencies.sh
   - ./scripts/install-release-dependencies.sh
-  - npm run dist
+  - electron-builder --x64 --ia32
   - node ./scripts/prepare-artifacts.js
   # log out /dist files might be useful to know
   # what files are uploaded
