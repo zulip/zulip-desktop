@@ -14,7 +14,7 @@ const files = fs.readdirSync(process.cwd());
 function changeFileName(file) {
   file = file.replace(/^z/, 'Z');
 
-  if (/\.deb/.test(file)) {
+  if (/\.deb|\.snap/.test(file)) {
     file = file.replace(/_/g, '-');
   }
   return file;

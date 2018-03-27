@@ -18,6 +18,7 @@ addons:
     paths:
       - $(ls ./dist/*.AppImage | tr "\n" ":")
       - $(ls ./dist/*.deb | tr "\n" ":")
+      - $(ls ./dist/*.snap | tr "\n" ":")
       - $(ls ./dist/*.dmg | tr "\n" ":")
       - $(ls ./dist/*.zip | tr "\n" ":")
       - $(ls ./dist/*.dmg.blockmap | tr "\n" ":")
