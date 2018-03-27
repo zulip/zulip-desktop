@@ -7,6 +7,13 @@ node_modules/
 # Compiled binary build directory
 dist/
 
+#snap generated files
+snap/parts
+snap/prime
+snap/snap
+snap/stage
+snap/*.snap
+
 # Logs
 logs
 *.log

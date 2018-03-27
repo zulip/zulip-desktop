@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "electron app --disable-http-cache --no-electron-connect",
-    "reinstall": "./tools/reinstall-node-modules",
+    "reinstall": "node ./tools/reinstall-node-modules.js",
     "postinstall": "electron-builder install-app-deps",
     "test": "xo",
     "test-e2e": "gulp test-e2e",
@@ -55,7 +55,8 @@
       "target": [
         "deb",
         "zip",
-        "AppImage"
+        "AppImage",
+        "snap"
       ],
       "maintainer": "Akash Nimare <svnitakash@gmail.com>"
     },
@@ -63,6 +64,9 @@
       "synopsis": "Zulip Desktop App",
       "afterInstall": "./scripts/debian-add-repo.sh",
       "afterRemove": "./scripts/debian-uninstaller.sh"
+    },
+    "snap": {
+      "synopsis": "Zulip Desktop App"
     },
     "dmg": {
       "background": "build/appdmg.png",
@@ -114,7 +118,7 @@
     "cp-file": "^5.0.0",
     "devtron": "1.4.0",
     "electron": "1.8.4",
-    "electron-builder": "20.4.1",
+    "electron-builder": "20.8.1",
     "electron-connect": "0.6.2",
     "electron-debug": "1.4.0",
     "google-translate-api": "2.3.0",
