@@ -14,6 +14,8 @@ addons:
       - libxext-dev
       - libxtst-dev
       - libxkbfile-dev
+      - g++-multilib
+      - libxss-dev:i386
   artifacts:
     paths:
       - $(ls ./dist/*.AppImage | tr "\n" ":")
