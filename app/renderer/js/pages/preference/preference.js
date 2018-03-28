@@ -97,6 +97,15 @@ class PreferenceView extends BaseComponent {
 		ipcRenderer.on('toggletray', (event, state) => {
 			this.handleToggle('tray-option', state);
 		});
+
+		ipcRenderer.on('toggle-dnd', (event, state, newSettings) => {
+			this.handleToggle('show-notification-option', newSettings.showNotification);
+			this.handleToggle('silent-option', newSettings.silent);
+
+			if (process.platform === 'win32') {
+				this.handleToggle('flash-taskbar-option', newSettings.flashTaskbarOnMessage);
+			}
+		});
 	}
 }
 

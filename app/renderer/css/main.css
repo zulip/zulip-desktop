@@ -282,6 +282,7 @@ webview.focus {
 
 /* Tooltip styling */
 
+#dnd-tooltip,
 #back-tooltip,
 #reload-tooltip,
 #setting-tooltip {
@@ -299,6 +300,7 @@ webview.focus {
     font-size: 14px;
 }
 
+#dnd-tooltip:after,
 #back-tooltip:after,
 #reload-tooltip:after,
 #setting-tooltip:after {
