@@ -26,7 +26,7 @@
     "InstantMessaging"
   ],
   "dependencies": {
-    "@electron-elements/send-feedback": "1.0.5",
+    "@electron-elements/send-feedback": "1.0.6",
     "auto-launch": "5.0.1",
     "electron-is-dev": "0.3.0",
     "electron-log": "2.2.7",

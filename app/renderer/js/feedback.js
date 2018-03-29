@@ -32,6 +32,7 @@ sendFeedback.titlePlaceholder = 'Enter issue title';
 sendFeedback.textareaLabel = 'Describe the issue:';
 sendFeedback.textareaPlaceholder = 'Succinctly describe your issue and steps to reproduce it...';
 sendFeedback.buttonLabel = 'Report Issue';
+sendFeedback.loaderSuccessText = '';
 
 sendFeedback.useReporter('emailReporter', {
 	email: 'akash@zulipchat.com'
