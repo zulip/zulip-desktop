@@ -79,14 +79,6 @@ class ShortcutsSection extends BaseSection {
                     <td>Select All</td>
                   </tr>
                   <tr>
-                    <td><kbd>${userOSKey}</kbd><kbd>F</kbd></td>
-                    <td>Find</td>
-                  </tr>
-                  <tr>
-                    <td><kbd>${userOSKey}</kbd><kbd>G</kbd></td>
-                    <td>Find Next</td>
-                  </tr>
-                  <tr>
                     <td><kbd>Control</kbd><kbd>${userOSKey}</kbd><kbd>Space</kbd></td>
                     <td>Emoji & Symbols</td>
                   </tr>
