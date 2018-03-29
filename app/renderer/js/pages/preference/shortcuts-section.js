@@ -121,7 +121,7 @@ class ShortcutsSection extends BaseSection {
                     <td>Actual Size</td>
                   </tr>
                   <tr>
-                    <td><kbd>${userOSKey}</kbd><kbd>S</kbd></td>
+                    <td><kbd>${userOSKey}</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd></td>
                     <td>Toggle Sidebar</td>
                   </tr>
                   <tr>
@@ -256,7 +256,7 @@ class ShortcutsSection extends BaseSection {
                     <td>Actual Size</td>
                   </tr>
                   <tr>
-                    <td><kbd>${userOSKey}</kbd> + <kbd>S</kbd></td>
+                    <td><kbd>${userOSKey}</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd></td>
                     <td>Toggle Sidebar</td>
                   </tr>
                   <tr>

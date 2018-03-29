@@ -87,7 +87,7 @@ class AppMenu {
 			}
 		}, {
 			label: 'Toggle Sidebar',
-			accelerator: 'CommandOrControl+S',
+			accelerator: 'CommandOrControl+Shift+S',
 			click(item, focusedWindow) {
 				if (focusedWindow) {
 					const newValue = !ConfigUtil.getConfigItem('showSidebar');
