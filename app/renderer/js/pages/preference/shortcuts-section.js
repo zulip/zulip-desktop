@@ -1,6 +1,7 @@
 'use strict';
 
 const BaseSection = require(__dirname + '/base-section.js');
+const shell = require('electron').shell;
 
 class ShortcutsSection extends BaseSection {
 	constructor(props) {
@@ -159,6 +160,7 @@ class ShortcutsSection extends BaseSection {
                 </table>
                 <div class="setting-control"></div>
               </div>
+              <div class="tip"><b><i class="material-icons md-14">settings</i>Tip: </b>These desktop app shortcuts extend the Zulip webapp's <span id="open-hotkeys-link">keyboard shortcuts</span>.</div>
             </div>
 		`;
 	}
@@ -298,13 +300,22 @@ class ShortcutsSection extends BaseSection {
                 </table>
                 <div class="setting-control"></div>
               </div>
+              <div class="tip"><b><i class="material-icons md-14">lightbulb_outline</i>Tip: </b>These desktop app shortcuts extend the Zulip webapp's <span id="open-hotkeys-link">keyboard shortcuts</span>.</div>
             </div>
 		`;
 	}
 
+	openHotkeysExternalLink() {
+		const link = 'https://zulipchat.com/help/keyboard-shortcuts';
+		const externalCreateNewOrgEl = document.getElementById('open-hotkeys-link');
+		externalCreateNewOrgEl.addEventListener('click', () => {
+			shell.openExternal(link);
+		});
+	}
 	init() {
 		this.props.$root.innerHTML = (process.platform === 'darwin') ?
 			this.templateMac() : this.templateWinLin();
+		this.openHotkeysExternalLink();
 	}
 }
 
