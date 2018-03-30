@@ -23,7 +23,7 @@ const shortcut = () => {
 	// Create the menu for the below
 	const node = document.querySelector('a[data-overlay-trigger=keyboard-shortcuts]');
 	// Additional check
-	if (node.text.trim().toLowerCase() === 'keyboard shortcuts') {
+	if (node.text.trim().toLowerCase() === 'keyboard shortcuts (?)') {
 		node.click();
 	} else {
 		// Atleast click the dropdown
