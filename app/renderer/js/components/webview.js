@@ -49,7 +49,13 @@ class WebView extends BaseComponent {
 			const { url } = event;
 			const domainPrefix = DomainUtil.getDomain(this.props.index).url;
 
-			if (LinkUtil.isInternal(domainPrefix, url) || url === (domainPrefix + '/')) {
+			// Whitelist URLs which are allowed to be opened in the app
+			const isWhiteListURL =
+				LinkUtil.isInternal(domainPrefix, url) ||
+				url === domainPrefix + '/' ||
+				url.includes(domainPrefix + '/user_uploads/'); // URL containing the file attachments
+
+			if (isWhiteListURL) {
 				event.preventDefault();
 				this.$el.loadURL(url);
 			} else {
