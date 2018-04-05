@@ -3,13 +3,12 @@
 const path = require('path');
 const fs = require('fs');
 
-const DomainUtil = require(__dirname + '/../utils/domain-util.js');
 const ConfigUtil = require(__dirname + '/../utils/config-util.js');
 const SystemUtil = require(__dirname + '/../utils/system-util.js');
-const LinkUtil = require(__dirname + '/../utils/link-util.js');
-const { shell, app, dialog } = require('electron').remote;
+const { app, dialog } = require('electron').remote;
 
 const BaseComponent = require(__dirname + '/../components/base.js');
+const handleExternalLink = require(__dirname + '/../components/handle-external-link.js');
 
 const shouldSilentWebview = ConfigUtil.getConfigItem('silent');
 class WebView extends BaseComponent {
@@ -46,22 +45,7 @@ class WebView extends BaseComponent {
 
 	registerListeners() {
 		this.$el.addEventListener('new-window', event => {
-			const { url } = event;
-			const domainPrefix = DomainUtil.getDomain(this.props.index).url;
-
-			// Whitelist URLs which are allowed to be opened in the app
-			const isWhiteListURL =
-				LinkUtil.isInternal(domainPrefix, url) ||
-				url === domainPrefix + '/' ||
-				url.includes(domainPrefix + '/user_uploads/'); // URL containing the file attachments
-
-			if (isWhiteListURL) {
-				event.preventDefault();
-				this.$el.loadURL(url);
-			} else {
-				event.preventDefault();
-				shell.openExternal(url);
-			}
+			handleExternalLink.call(this, event);
 		});
 
 		if (shouldSilentWebview) {
