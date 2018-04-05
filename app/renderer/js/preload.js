@@ -4,6 +4,7 @@ const { ipcRenderer } = require('electron');
 const SetupSpellChecker = require('./spellchecker');
 
 const ConfigUtil = require(__dirname + '/utils/config-util.js');
+const LinkUtil = require(__dirname + '/utils/link-util.js');
 
 // eslint-disable-next-line import/no-unassigned-import
 require('./notification');
@@ -55,6 +56,24 @@ document.addEventListener('DOMContentLoaded', () => {
 			ipcRenderer.send('forward-message', 'reload-viewer');
 		});
 	}
+
+	// Open image attachment link in the lightbox instead of opening in the default browser
+	const { $, lightbox } = window;
+
+	$('#main_div').on('click', '.message_content p a', function (e) {
+		const url = $(this).attr('href');
+
+		if (LinkUtil.isImage(url)) {
+			const $img = $(this).parent().siblings('.message_inline_image').find('img');
+
+			// prevent the image link from opening in a new page.
+			e.preventDefault();
+			// prevent the message compose dialog from happening.
+			e.stopPropagation();
+
+			lightbox.open($img);
+		}
+	});
 });
 
 // Clean up spellchecker events after you navigate away from this page;
