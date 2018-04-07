@@ -63,3 +63,10 @@ window.addEventListener('beforeunload', () => {
 	SetupSpellChecker.unsubscribeSpellChecker();
 });
 
+// electron's globalShortcut can cause unexpected results
+// so adding the reload shortcut in the old-school way
+document.addEventListener('keydown', event => {
+	if (event.code === 'F5') {
+		ipcRenderer.send('forward-message', 'hard-reload');
+	}
+});
