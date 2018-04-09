@@ -21,6 +21,12 @@ class LinkUtil {
 
 		return (currentDomain === newDomain) && newUrl.includes('/#narrow');
 	}
+
+	isImage(url) {
+		// test for images extension as well as urls like .png?s=100
+		const isImageUrl = /\.(bmp|gif|jpg|jpeg|png|webp)\?*.*$/i;
+		return isImageUrl.test(url);
+	}
 }
 
 module.exports = new LinkUtil();
