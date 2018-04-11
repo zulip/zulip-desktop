@@ -20,12 +20,12 @@ class LinkUtil {
 		const newDomain = wurl('hostname', newUrl);
 
 		const sameDomainUrl = (currentDomain === newDomain || newUrl === currentUrl + '/');
-		const isUplodsUrl = newUrl.includes(currentUrl + '/user_uploads/');
-		const isInternalUrl = newUrl.includes('/#narrow') || isUplodsUrl;
+		const isUploadsUrl = newUrl.includes(currentUrl + '/user_uploads/');
+		const isInternalUrl = newUrl.includes('/#narrow') || isUploadsUrl;
 
 		return {
 			isInternalUrl: sameDomainUrl && isInternalUrl,
-			isUplodsUrl
+			isUploadsUrl
 		};
 	}
 

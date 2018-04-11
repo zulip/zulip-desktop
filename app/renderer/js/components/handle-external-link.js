@@ -16,7 +16,7 @@ function handleExternalLink(event) {
 	if (isWhiteListURL) {
 		event.preventDefault();
 
-    // only open the pdf in hidden webview since opening the
+    // only open the  pdf, mp3, mp4 etc.. in hidden webview since opening the
     // image in webview will do nothing and will not save it
     // whereas the pdf will be saved to user desktop once openened in
     // in the hidden webview and will not trigger webview reload
