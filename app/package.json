@@ -36,6 +36,7 @@
     "node-json-db": "0.7.3",
     "request": "2.81.0",
     "semver": "5.4.1",
+    "@sentry/electron": "0.5.0",
     "wurl": "2.5.0"
   },
   "optionalDependencies": {
