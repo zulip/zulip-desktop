@@ -175,7 +175,7 @@ class ServerManagerView {
 			});
 		});
 
-		this.sidebarHoverEvent(this.$addServerButton, this.$addServerTooltip);
+		this.sidebarHoverEvent(this.$addServerButton, this.$addServerTooltip, true);
 		this.sidebarHoverEvent(this.$settingsButton, this.$settingsTooltip);
 		this.sidebarHoverEvent(this.$reloadButton, this.$reloadTooltip);
 		this.sidebarHoverEvent(this.$backButton, this.$backTooltip);
@@ -187,9 +187,17 @@ class ServerManagerView {
 		return currentIndex;
 	}
 
-	sidebarHoverEvent(SidebarButton, SidebarTooltip) {
+	sidebarHoverEvent(SidebarButton, SidebarTooltip, addServer = false) {
 		SidebarButton.addEventListener('mouseover', () => {
 			SidebarTooltip.removeAttribute('style');
+			// To handle position of add server tooltip due to scrolling of list of organizations
+			// This could not be handled using CSS, hence the top of the tooltip is made same
+			// as that of its parent element.
+			// This needs to handled only for the add server tooltip and not others.
+			if (addServer) {
+				const { top } = SidebarButton.getBoundingClientRect();
+				SidebarTooltip.style.top = top + 'px';
+			}
 		});
 		SidebarButton.addEventListener('mouseout', () => {
 			SidebarTooltip.style.display = 'none';
@@ -199,6 +207,11 @@ class ServerManagerView {
 	onHover(index, serverName) {
 		this.$serverIconTooltip[index].innerHTML = serverName;
 		this.$serverIconTooltip[index].removeAttribute('style');
+		// To handle position of servers' tooltip due to scrolling of list of organizations
+		// This could not be handled using CSS, hence the top of the tooltip is made same
+		// as that of its parent element.
+		const { top } = this.$serverIconTooltip[index].parentElement.getBoundingClientRect();
+		this.$serverIconTooltip[index].style.top = top + 'px';
 	}
 
 	onHoverOut(index) {
