@@ -1,5 +1,4 @@
 'use strict';
-const os = require('os');
 const path = require('path');
 
 const { app, shell, BrowserWindow, Menu, dialog } = require('electron');
@@ -139,13 +138,11 @@ class AppMenu {
 			}, {
 				label: 'Report an Issue...',
 				click() {
-					const body = `
-					<!-- Please succinctly describe your issue and steps to reproduce it. -->
-					-
-					${app.getName()} ${app.getVersion()}
-					Electron ${process.versions.electron}
-					${process.platform} ${process.arch} ${os.release()}`;
-					shell.openExternal(`https://github.com/zulip/zulip-electron/issues/new?body=${encodeURIComponent(body)}`);
+          // the goal is to notify the main.html BrowserWindow
+          // which may not be the focused window.
+					BrowserWindow.getAllWindows().forEach(window => {
+						window.webContents.send('open-feedback-modal');
+					});
 				}
 			}];
 	}

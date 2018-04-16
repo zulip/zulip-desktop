@@ -12,6 +12,7 @@ const ServerTab = require(__dirname + '/js/components/server-tab.js');
 const FunctionalTab = require(__dirname + '/js/components/functional-tab.js');
 const ConfigUtil = require(__dirname + '/js/utils/config-util.js');
 const ReconnectUtil = require(__dirname + '/js/utils/reconnect-util.js');
+const { feedbackHolder } = require(__dirname + '/js/feedback.js');
 
 class ServerManagerView {
 	constructor() {
@@ -495,6 +496,10 @@ class ServerManagerView {
 				return canvas;
 			}
 			ipcRenderer.send('update-taskbar-icon', createOverlayIcon(messageCount).toDataURL(), String(messageCount));
+		});
+
+		ipcRenderer.on('open-feedback-modal', () => {
+			feedbackHolder.classList.add('show');
 		});
 	}
 }
