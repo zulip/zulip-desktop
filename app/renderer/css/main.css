@@ -45,6 +45,28 @@ body {
     transition: all 0.6s ease-out;
 }
 
+#view-controls-container {
+	height: calc(100% - 156px);
+	overflow-y: hidden;
+}
+
+#view-controls-container:hover {
+	overflow-y: overlay;
+}
+
+#view-controls-container::-webkit-scrollbar {
+	width: 4px;
+}
+
+#view-controls-container::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+#view-controls-container::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
 @font-face {
     font-family: 'Material Icons';
     font-style: normal;
