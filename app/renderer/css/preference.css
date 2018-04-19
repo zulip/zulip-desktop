@@ -258,8 +258,8 @@ img.server-info-icon {
     border: #4EBFAC 2px solid;
 }
 
-.setting-block {
-    width: 100%;
+.manual-proxy-block {
+    width: 96%;
 }
 
 .actions-container {

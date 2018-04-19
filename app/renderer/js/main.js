@@ -58,7 +58,7 @@ class ServerManagerView {
 
 	loadProxy() {
 		return new Promise(resolve => {
-			const proxyEnabled = ConfigUtil.getConfigItem('useProxy', false);
+			const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy', false) || ConfigUtil.getConfigItem('useSystemProxy', false);
 			if (proxyEnabled) {
 				session.fromPartition('persist:webviewsession').setProxy({
 					pacScript: ConfigUtil.getConfigItem('proxyPAC', ''),
@@ -82,7 +82,8 @@ class ServerManagerView {
 		// Default settings which should be respected
 		const settingOptions = {
 			trayIcon: true,
-			useProxy: false,
+			useManualProxy: false,
+			useSystemProxy: false,
 			showSidebar: true,
 			badgeOption: true,
 			startAtLogin: false,
