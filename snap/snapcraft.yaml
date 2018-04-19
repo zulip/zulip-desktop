@@ -1,7 +1,7 @@
 name: zulip
 version: 1.8.2
 summary: Zulip
-description: Zulip Desktop Client for Linux
+description: Zulip Desktop Client for Linux.
 confinement: strict
 grade: stable
 icon: build/icon.png
@@ -32,6 +32,6 @@ parts:
       - libpulse0
       - libxss1
       - libxtst6
-    source: ../dist/linux-unpacked
+    source: dist/linux-unpacked
     after:
       - desktop-gtk2
