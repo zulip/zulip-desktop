@@ -4,7 +4,7 @@ summary: Zulip
 description: Zulip Desktop Client for Linux.
 confinement: strict
 grade: stable
-icon: build/icon.png
+icon: snap/gui/icon.png
 apps:
   zulip:
     command: env TMPDIR=$XDG_RUNTIME_DIR desktop-launch $SNAP/zulip
@@ -33,6 +33,5 @@ parts:
       - libxss1
       - libxtst6
     source: dist/linux-unpacked
-		source-branch: snap-fix
     after:
       - desktop-gtk2
