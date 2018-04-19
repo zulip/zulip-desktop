@@ -33,5 +33,6 @@ parts:
       - libxss1
       - libxtst6
     source: dist/linux-unpacked
+		source-branch: snap-fix
     after:
       - desktop-gtk2
