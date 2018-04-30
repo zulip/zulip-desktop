@@ -46,7 +46,8 @@
     ],
     "copyright": "©2017 Kandra Labs, Inc.",
     "mac": {
-      "category": "public.app-category.productivity"
+      "category": "public.app-category.productivity",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "linux": {
       "category": "Chat;GNOME;GTK;Network;InstantMessaging",
@@ -58,7 +59,8 @@
         "AppImage",
         "snap"
       ],
-      "maintainer": "Akash Nimare <svnitakash@gmail.com>"
+      "maintainer": "Akash Nimare <svnitakash@gmail.com>",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "deb": {
       "synopsis": "Zulip Desktop App",
