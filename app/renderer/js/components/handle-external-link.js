@@ -1,7 +1,6 @@
 const { shell } = require('electron').remote;
 const LinkUtil = require('../utils/link-util');
 const DomainUtil = require('../utils/domain-util');
-const hiddenWebView = require('../components/hidden-webview');
 
 function handleExternalLink(event) {
 	const { url } = event;
@@ -16,12 +15,12 @@ function handleExternalLink(event) {
 	if (isWhiteListURL) {
 		event.preventDefault();
 
-    // only open the  pdf, mp3, mp4 etc.. in hidden webview since opening the
-    // image in webview will do nothing and will not save it
-    // whereas the pdf will be saved to user desktop once openened in
-    // in the hidden webview and will not trigger webview reload
+    // download txt, pdf, mp3, mp4 etc.. by using downloadURL in the
+    // main process which allows the user to save the files to their desktop
+    // and not trigger webview reload while image in webview will
+    // do nothing and will not save it
 		if (!LinkUtil.isImage(url) && isUploadsURL) {
-			hiddenWebView.loadURL(url);
+			this.$el.downloadURL(url);
 			return;
 		}
 
