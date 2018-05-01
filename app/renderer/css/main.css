@@ -284,11 +284,6 @@ webview {
     flex-direction: column;
 }
 
-webview.download-webview {
-  z-index: -1;
-  pointer-events: none;
-}
-
 webview.onload {
     transition: opacity 1s cubic-bezier(0.95, 0.05, 0.795, 0.035);
 }
