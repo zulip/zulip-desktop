@@ -4,6 +4,6 @@
 const hiddenWebView = document.createElement('webview');
 hiddenWebView.classList.add('download-webview');
 hiddenWebView.src = 'about:blank';
-document.querySelector('#webviews-container').appendChild(hiddenWebView);
+document.querySelector('#content').appendChild(hiddenWebView);
 
 module.exports = hiddenWebView;
