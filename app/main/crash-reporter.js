@@ -7,7 +7,7 @@ const crashHandler = () => {
 		productName: 'zulip-electron',
 		companyName: 'Kandra Labs, Inc.',
 		submitURL: 'https://zulip-sentry.herokuapp.com/crashreport',
-		autoSubmit: true
+		uploadToServer: true
 	});
 };
 
