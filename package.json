@@ -170,7 +170,8 @@
     ],
     "ignore": [
       "tests/*.js",
-      "tools/locale-helper/*.js"
+      "tools/locale-helper/*.js",
+      "scripts/*.js"
     ],
     "envs": [
       "node",
