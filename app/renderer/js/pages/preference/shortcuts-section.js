@@ -24,6 +24,10 @@ class ShortcutsSection extends BaseSection {
                     <td><kbd>${userOSKey}</kbd><kbd>K</kbd></td>
                     <td>Keyboard Shortcuts</td>
                   </tr>
+									<tr>
+                    <td><kbd>${userOSKey}</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd></td>
+                    <td>Toggle Do Not Disturb</td>
+                  </tr>
                   <tr>
                     <td><kbd>Shift</kbd><kbd>${userOSKey}</kbd><kbd>D</kbd></td>
                     <td>Reset App Settings</td>
@@ -174,6 +178,10 @@ class ShortcutsSection extends BaseSection {
                   <tr>
                     <td><kbd>${userOSKey}</kbd> + <kbd>K</kbd></td>
                     <td>Keyboard Shortcuts</td>
+                  </tr>
+									<tr>
+                    <td><kbd>${userOSKey}</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd></td>
+                    <td>Toggle Do Not Disturb</td>
                   </tr>
                   <tr>
                     <td><kbd>${userOSKey}</kbd> + <kbd>L</kbd></td>

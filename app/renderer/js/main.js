@@ -11,6 +11,7 @@ const WebView = require(__dirname + '/js/components/webview.js');
 const ServerTab = require(__dirname + '/js/components/server-tab.js');
 const FunctionalTab = require(__dirname + '/js/components/functional-tab.js');
 const ConfigUtil = require(__dirname + '/js/utils/config-util.js');
+const DNDUtil = require(__dirname + '/js/utils/dnd-util.js');
 const ReconnectUtil = require(__dirname + '/js/utils/reconnect-util.js');
 const { feedbackHolder } = require(__dirname + '/js/feedback.js');
 
@@ -24,12 +25,14 @@ class ServerManagerView {
 		this.$settingsButton = $actionsContainer.querySelector('#settings-action');
 		this.$webviewsContainer = document.getElementById('webviews-container');
 		this.$backButton = $actionsContainer.querySelector('#back-action');
+		this.$dndButton = $actionsContainer.querySelector('#dnd-action');
 
 		this.$addServerTooltip = document.getElementById('add-server-tooltip');
 		this.$reloadTooltip = $actionsContainer.querySelector('#reload-tooltip');
 		this.$settingsTooltip = $actionsContainer.querySelector('#setting-tooltip');
 		this.$serverIconTooltip = document.getElementsByClassName('server-tooltip');
 		this.$backTooltip = $actionsContainer.querySelector('#back-tooltip');
+		this.$dndTooltip = $actionsContainer.querySelector('#dnd-tooltip');
 
 		this.$sidebar = document.getElementById('sidebar');
 
@@ -88,7 +91,12 @@ class ServerManagerView {
 			showNotification: true,
 			betaUpdate: false,
 			silent: false,
-			lastActiveTab: 0
+			lastActiveTab: 0,
+			dnd: false,
+			dndPreviousSettings: {
+				showNotification: true,
+				silent: false
+			}
 		};
 
 		// Platform specific settings
@@ -96,6 +104,7 @@ class ServerManagerView {
 		if (process.platform === 'win32') {
 			// Only available on Windows
 			settingOptions.flashTaskbarOnMessage = true;
+			settingOptions.dndPreviousSettings.flashTaskbarOnMessage = true;
 		}
 
 		for (const i in settingOptions) {
@@ -156,6 +165,11 @@ class ServerManagerView {
 	}
 
 	initActions() {
+		this.initDNDButton();
+		this.$dndButton.addEventListener('click', () => {
+			const dndUtil = DNDUtil.toggle();
+			ipcRenderer.send('forward-message', 'toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
+		});
 		this.$reloadButton.addEventListener('click', () => {
 			this.tabs[this.activeTabIndex].webview.reload();
 		});
@@ -180,6 +194,12 @@ class ServerManagerView {
 		this.sidebarHoverEvent(this.$settingsButton, this.$settingsTooltip);
 		this.sidebarHoverEvent(this.$reloadButton, this.$reloadTooltip);
 		this.sidebarHoverEvent(this.$backButton, this.$backTooltip);
+		this.sidebarHoverEvent(this.$dndButton, this.$dndTooltip);
+	}
+
+	initDNDButton() {
+		const dnd = ConfigUtil.getConfigItem('dnd', false);
+		this.toggleDNDButton(dnd);
 	}
 
 	getTabIndex() {
@@ -338,6 +358,15 @@ class ServerManagerView {
 				}
 			});
 		});
+
+		ipcRenderer.on('toggle-dnd', (event, state, newSettings) => {
+			this.toggleDNDButton(state);
+			ipcRenderer.send('forward-message', 'toggle-silent', newSettings.silent);
+			const selector = 'webview:not([class*=disabled])';
+			const webview = document.querySelector(selector);
+			const webContents = webview.getWebContents();
+			webContents.send('toggle-dnd', state, newSettings);
+		});
 	}
 
 	destroyTab(name, index) {
@@ -402,6 +431,12 @@ class ServerManagerView {
 		} else {
 			this.$sidebar.classList.add('sidebar-hide');
 		}
+	}
+
+	// Toggles the dnd button icon.
+	toggleDNDButton(alert) {
+		this.$dndTooltip.textContent = (alert ? 'Turn Off' : 'Enable') + ' Do Not Disturb';
+		this.$dndButton.querySelector('i').textContent = alert ? 'notifications_off' : 'notifications';
 	}
 
 	registerIpcs() {
