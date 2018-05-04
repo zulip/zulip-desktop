@@ -18,7 +18,7 @@ class WebView extends BaseComponent {
 		this.props = props;
 
 		this.zoomFactor = 1.0;
-		this.loading = false;
+		this.loading = true;
 		this.badgeCount = 0;
 		this.customCSS = ConfigUtil.getConfigItem('customCSS');
 	}
@@ -86,6 +86,7 @@ class WebView extends BaseComponent {
 			if (this.props.role === 'server') {
 				this.$el.classList.add('onload');
 			}
+			this.loading = false;
 			this.show();
 		});
 
@@ -119,6 +120,13 @@ class WebView extends BaseComponent {
 			return;
 		}
 
+		// To show or hide the loading indicator in the the active tab
+		if (this.loading) {
+			document.querySelector('#webviews-container').classList.remove('loaded');
+		} else {
+			document.querySelector('#webviews-container').classList.add('loaded');
+		}
+
 		this.$el.classList.remove('disabled');
 		this.$el.classList.add('active');
 		setTimeout(() => {
@@ -127,7 +135,6 @@ class WebView extends BaseComponent {
 			}
 		}, 1000);
 		this.focus();
-		this.loading = false;
 		this.props.onTitleChange();
 		// Injecting preload css in webview to override some css rules
 		this.$el.insertCSS(fs.readFileSync(path.join(__dirname, '/../../css/preload.css'), 'utf8'));
@@ -220,6 +227,9 @@ class WebView extends BaseComponent {
 
 	reload() {
 		this.hide();
+		// Shows the loading indicator till the webview is reloaded
+		document.querySelector('#webviews-container').classList.remove('loaded');
+		this.loading = true;
 		this.$el.reload();
 	}
 

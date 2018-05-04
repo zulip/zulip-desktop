@@ -272,6 +272,9 @@ class ServerManagerView {
 				preload: false
 			})
 		}));
+		// To show loading indicator the first time a functional tab is opened, indicator is
+		// closed when the functional tab DOM is ready, handled in webview.js
+		document.querySelector('#webviews-container').classList.remove('loaded');
 		this.activateTab(this.functionalTabs[tabProps.name]);
 	}
 
@@ -386,6 +389,9 @@ class ServerManagerView {
 	}
 
 	destroyView() {
+		// Show loading indicator
+		document.querySelector('#webviews-container').classList.remove('loaded');
+
 		// Clear global variables
 		this.activeTabIndex = -1;
 		this.tabs = [];
