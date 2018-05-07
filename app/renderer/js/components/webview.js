@@ -21,6 +21,7 @@ class WebView extends BaseComponent {
 		this.loading = true;
 		this.badgeCount = 0;
 		this.customCSS = ConfigUtil.getConfigItem('customCSS');
+		this.$webviewsContainer = document.querySelector('#webviews-container').classList;
 	}
 
 	template() {
@@ -122,9 +123,9 @@ class WebView extends BaseComponent {
 
 		// To show or hide the loading indicator in the the active tab
 		if (this.loading) {
-			document.querySelector('#webviews-container').classList.remove('loaded');
+			this.$webviewsContainer.remove('loaded');
 		} else {
-			document.querySelector('#webviews-container').classList.add('loaded');
+			this.$webviewsContainer.add('loaded');
 		}
 
 		this.$el.classList.remove('disabled');
@@ -228,7 +229,7 @@ class WebView extends BaseComponent {
 	reload() {
 		this.hide();
 		// Shows the loading indicator till the webview is reloaded
-		document.querySelector('#webviews-container').classList.remove('loaded');
+		this.$webviewsContainer.remove('loaded');
 		this.loading = true;
 		this.$el.reload();
 	}
