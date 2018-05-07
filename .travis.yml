@@ -47,6 +47,7 @@ script:
   - npm run travis
   - |
     if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+      ls
       docker run --rm \
         --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_') \
         -v ${PWD}:/project \
@@ -54,17 +55,19 @@ script:
         -v ~/.cache/electron-builder:/root/.cache/electron-builder \
         electronuserland/builder:wine \
         /bin/bash -c "./scripts/install-apt-dependencies.sh && electron-builder -l"
-        ./scripts/rename-zulip-files.sh linux
+        ./scripts/rename-zip-files.sh linux
     else
       # mac travis build run only windows x32 bit
       electron-builder -w
-      ./scripts/rename-zulip-files.sh ia32
+      ./scripts/rename-zip-files.sh ia32
       electron-builder -m
-      scripts/rename-zulip-files.sh mac
+      ./scripts/rename-zip-files.sh mac
     fi
 
   # log out /dist files might be useful to know
   # what files are uploaded
+  - mv dist/zips/* dist/
+  - rm -rf dist/zips
   - ls dist
 
 notifications:
