@@ -73,20 +73,24 @@
     "dmg": {
       "background": "build/appdmg.png",
       "icon": "build/icon.icns",
-      "iconSize": 128,
+      "iconSize": 100,
       "contents": [
         {
           "x": 380,
-          "y": 240,
+          "y": 280,
           "type": "link",
           "path": "/Applications"
         },
         {
-          "x": 122,
-          "y": 240,
+          "x": 110,
+          "y": 280,
           "type": "file"
         }
-      ]
+      ],
+      "window": {
+          "width": 500,
+          "height": 500
+      }
     },
     "win": {
       "target": [
