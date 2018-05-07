@@ -1,11 +1,11 @@
 'use strict';
-const { app, dialog } = require('electron');
+const { app, dialog, shell } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const isDev = require('electron-is-dev');
 
 const ConfigUtil = require('./../renderer/js/utils/config-util.js');
 
-function appUpdater() {
+function appUpdater(updateFromMenu = false) {
 	// Don't initiate auto-updates in development
 	if (isDev) {
 		return;
@@ -29,6 +29,38 @@ function appUpdater() {
 
 	// Handle auto updates for beta/pre releases
 	autoUpdater.allowPrerelease = ConfigUtil.getConfigItem('betaUpdate') || false;
+
+	autoUpdater.on('update-available', () => {
+		if (updateFromMenu) {
+			dialog.showMessageBox({
+				message: 'A new version fo Zulip Desktop is available.',
+				detail: `The update will be downloaded in the background. You will be notified when it is ready to be installed.
+Alternatively you can download it manually from https://zulipchat.com/apps/`
+			});
+		}
+	});
+
+	autoUpdater.on('update-not-available', () => {
+		if (updateFromMenu) {
+			dialog.showMessageBox({
+				message: 'No update available.',
+				detail: 'You are running the latest version of Zulip Desktop.'
+			});
+		}
+	}, {once: true});
+
+	autoUpdater.on('error', () => {
+		if (updateFromMenu) {
+			dialog.showMessageBox({
+				buttons: ['Manual Download'],
+				message: 'Oh no!',
+				detail: `Something bad happened and the app can't auto-update itself; 
+don't worry you can still download the update manually`
+			}, () => {
+				shell.openExternal('https://zulipchat.com/apps/');
+			});
+		}
+	});
 
 	// Ask the user if update is available
 	// eslint-disable-next-line no-unused-vars
