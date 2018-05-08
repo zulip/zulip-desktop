@@ -47,7 +47,7 @@ Alternatively you can download it manually from https://zulipchat.com/apps/`
 				detail: 'You are running the latest version of Zulip Desktop.'
 			});
 		}
-	}, {once: true});
+	});
 
 	autoUpdater.on('error', () => {
 		if (updateFromMenu) {
