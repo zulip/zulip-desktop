@@ -30,12 +30,18 @@ function appUpdater(updateFromMenu = false) {
 	// Handle auto updates for beta/pre releases
 	autoUpdater.allowPrerelease = ConfigUtil.getConfigItem('betaUpdate') || false;
 
+	const eventsListenerRemove = ['update-available', 'update-not-available'];
 	autoUpdater.on('update-available', () => {
 		if (updateFromMenu) {
 			dialog.showMessageBox({
 				message: 'A new version fo Zulip Desktop is available.',
 				detail: `The update will be downloaded in the background. You will be notified when it is ready to be installed.
 Alternatively you can download it manually from https://zulipchat.com/apps/`
+			});
+
+			// This is to prevent removal of 'update-downloaded' and 'error' event listener.
+			eventsListenerRemove.forEach(event => {
+				autoUpdater.removeAllListeners(event);
 			});
 		}
 	});
@@ -46,6 +52,9 @@ Alternatively you can download it manually from https://zulipchat.com/apps/`
 				message: 'No update available.',
 				detail: 'You are running the latest version of Zulip Desktop.'
 			});
+			// Remove all autoUpdator listeners so that next time autoUpdator is manually called these
+			// listeners don't trigger multiple times.
+			autoUpdater.removeAllListeners();
 		}
 	});
 
@@ -59,6 +68,9 @@ don't worry you can still download the update manually`
 			}, () => {
 				shell.openExternal('https://zulipchat.com/apps/');
 			});
+			// Remove all autoUpdator listeners so that next time autoUpdator is manually called these
+			// listeners don't trigger multiple times.
+			autoUpdater.removeAllListeners();
 		}
 	});
 
