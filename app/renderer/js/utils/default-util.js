@@ -10,6 +10,7 @@ if (process.type === 'renderer') {
 
 const zulipDir = app.getPath('userData');
 const logDir = `${zulipDir}/Logs/`;
+const certificatesDir = `${zulipDir}/certificates/`;
 const initSetUp = () => {
 	// if it is the first time the app is running
 	// create zulip dir in userData folder to
@@ -22,6 +23,11 @@ const initSetUp = () => {
 		if (!fs.existsSync(logDir)) {
 			fs.mkdirSync(logDir);
 		}
+
+		if (!fs.existsSync(certificatesDir)) {
+			fs.mkdirSync(certificatesDir);
+		}
+
 		setupCompleted = true;
 	}
 };

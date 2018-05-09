@@ -557,6 +557,31 @@ input.toggle-round:checked+label:after {
     background: #329588;
 }
 
+.certificates-card {
+     width:70%
+}
+
+.certificate-input {
+     width:100%;
+     margin-top: 10px; 
+     display:inline-flex;
+}
+
+.certificate-input div {
+    align-self:center;
+}
+
+.certificate-input .setting-input-value {
+    margin-left:10px;
+    max-width: 100%;
+}
+
+#add-certificate-button {
+    width:20%;
+    margin-right:0px;
+    height: 35px;
+}
+
 .tip {
     background-color: hsl(46,63%,95%);
     border: 1px solid hsl(46,63%,84%);

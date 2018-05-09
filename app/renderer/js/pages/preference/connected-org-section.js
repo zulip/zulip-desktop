@@ -3,6 +3,7 @@
 const BaseSection = require(__dirname + '/base-section.js');
 const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
 const ServerInfoForm = require(__dirname + '/server-info-form.js');
+const AddCertificate = require(__dirname + '/add-certificate.js');
 
 class ConnectedOrgSection extends BaseSection {
 	constructor(props) {
@@ -16,6 +17,9 @@ class ConnectedOrgSection extends BaseSection {
 				<div class="page-title">Connected organizations</div>
 				<div class="title" id="existing-servers">All the connected orgnizations will appear here.</div>
 				<div id="server-info-container"></div>
+
+				<div class="page-title">Add Custom Certificates</div>
+				<div id="add-certificate-container"></div>
 			</div>
 		`;
 	}
@@ -44,6 +48,15 @@ class ConnectedOrgSection extends BaseSection {
 				onChange: this.reloadApp
 			}).init();
 		}
+
+		this.$addCertificateContainer = document.getElementById('add-certificate-container');
+		this.initAddCertificate();
+	}
+
+	initAddCertificate() {
+		new AddCertificate({
+			$root: this.$addCertificateContainer
+		}).init();
 	}
 
 }
