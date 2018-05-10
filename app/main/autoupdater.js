@@ -50,7 +50,7 @@ Alternatively you can download it manually from https://zulipchat.com/apps/`
 		if (updateFromMenu) {
 			dialog.showMessageBox({
 				message: 'No update available.',
-				detail: 'You are running the latest version of Zulip Desktop.'
+				detail: `You are running the latest version of Zulip Desktop.\nVersion: ${app.getVersion()}`
 			});
 			// Remove all autoUpdator listeners so that next time autoUpdator is manually called these
 			// listeners don't trigger multiple times.
