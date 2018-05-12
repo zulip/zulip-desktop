@@ -31,10 +31,10 @@ function appUpdater(updateFromMenu = false) {
 	autoUpdater.allowPrerelease = ConfigUtil.getConfigItem('betaUpdate') || false;
 
 	const eventsListenerRemove = ['update-available', 'update-not-available'];
-	autoUpdater.on('update-available', () => {
+	autoUpdater.on('update-available', info => {
 		if (updateFromMenu) {
 			dialog.showMessageBox({
-				message: 'A new version fo Zulip Desktop is available.',
+				message: `A new version ${info.version}, of Zulip Desktop is available`,
 				detail: `The update will be downloaded in the background. You will be notified when it is ready to be installed.
 Alternatively you can download it manually from https://zulipchat.com/apps/`
 			});
@@ -49,7 +49,7 @@ Alternatively you can download it manually from https://zulipchat.com/apps/`
 	autoUpdater.on('update-not-available', () => {
 		if (updateFromMenu) {
 			dialog.showMessageBox({
-				message: 'No update available.',
+				message: 'No updates available',
 				detail: `You are running the latest version of Zulip Desktop.\nVersion: ${app.getVersion()}`
 			});
 			// Remove all autoUpdator listeners so that next time autoUpdator is manually called these
@@ -62,9 +62,9 @@ Alternatively you can download it manually from https://zulipchat.com/apps/`
 		if (updateFromMenu) {
 			dialog.showMessageBox({
 				buttons: ['Manual Download'],
-				message: 'Oh no!',
-				detail: `Something bad happened and the app can't auto-update itself; 
-don't worry you can still download the update manually`
+				message: 'Unable to check for updates',
+				detail: `The latest version of Zulip Desktop is available at -\nhttps://zulipchat.com/apps/.\n
+Current Version: ${app.getVersion()}`
 			}, () => {
 				shell.openExternal('https://zulipchat.com/apps/');
 			});
