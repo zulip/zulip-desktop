@@ -17,6 +17,8 @@ function appUpdater(updateFromMenu = false) {
 		return;
 	}
 
+	let updateAvailable = false;
+
 	// Create Logs directory
 	const LogsDir = `${app.getPath('userData')}/Logs`;
 
@@ -35,9 +37,10 @@ function appUpdater(updateFromMenu = false) {
 		if (updateFromMenu) {
 			dialog.showMessageBox({
 				message: `A new version ${info.version}, of Zulip Desktop is available`,
-				detail: `The update will be downloaded in the background. You will be notified when it is ready to be installed.
-Alternatively you can download it manually from https://zulipchat.com/apps/`
+				detail: 'The update will be downloaded in the background. You will be notified when it is ready to be installed.'
 			});
+
+			updateAvailable = true;
 
 			// This is to prevent removal of 'update-downloaded' and 'error' event listener.
 			eventsListenerRemove.forEach(event => {
@@ -60,9 +63,10 @@ Alternatively you can download it manually from https://zulipchat.com/apps/`
 
 	autoUpdater.on('error', () => {
 		if (updateFromMenu) {
+			const messageText = (updateAvailable) ? ('Unable to download the updates') : ('Unable to check for updates');
 			dialog.showMessageBox({
 				buttons: ['Manual Download'],
-				message: 'Unable to check for updates',
+				message: messageText,
 				detail: `The latest version of Zulip Desktop is available at -\nhttps://zulipchat.com/apps/.\n
 Current Version: ${app.getVersion()}`
 			}, () => {

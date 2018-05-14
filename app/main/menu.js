@@ -128,12 +128,6 @@ class AppMenu {
 				}
 			},
 			{
-				label: `Check for Update`,
-				click() {
-					AppMenu.checkForUpdate();
-				}
-			},
-			{
 				label: `${appName} Help`,
 				click() {
 					shell.openExternal('https://zulipchat.com/help/');
@@ -202,7 +196,12 @@ class AppMenu {
 						AppMenu.sendAction('open-about');
 					}
 				}
-			}, {
+			},	{
+				label: `Check for Update`,
+				click() {
+					AppMenu.checkForUpdate();
+				}
+			},	{
 				type: 'separator'
 			}, {
 				label: 'Desktop App Settings',
@@ -309,7 +308,12 @@ class AppMenu {
 						AppMenu.sendAction('open-about');
 					}
 				}
-			}, {
+			}, 	{
+				label: `Check for Update`,
+				click() {
+					AppMenu.checkForUpdate();
+				}
+			},	{
 				type: 'separator'
 			}, {
 				label: 'Desktop App Settings',
