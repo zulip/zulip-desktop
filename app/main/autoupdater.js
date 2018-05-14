@@ -65,12 +65,15 @@ function appUpdater(updateFromMenu = false) {
 		if (updateFromMenu) {
 			const messageText = (updateAvailable) ? ('Unable to download the updates') : ('Unable to check for updates');
 			dialog.showMessageBox({
-				buttons: ['Manual Download'],
+				type: 'error',
+				buttons: ['Manual Download', 'Cancel'],
 				message: messageText,
 				detail: `The latest version of Zulip Desktop is available at -\nhttps://zulipchat.com/apps/.\n
 Current Version: ${app.getVersion()}`
-			}, () => {
-				shell.openExternal('https://zulipchat.com/apps/');
+			}, response => {
+				if (response === 0) {
+					shell.openExternal('https://zulipchat.com/apps/');
+				}
 			});
 			// Remove all autoUpdator listeners so that next time autoUpdator is manually called these
 			// listeners don't trigger multiple times.
