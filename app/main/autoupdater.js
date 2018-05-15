@@ -1,11 +1,11 @@
 'use strict';
-const { app, dialog } = require('electron');
+const { app, dialog, shell } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const isDev = require('electron-is-dev');
 
 const ConfigUtil = require('./../renderer/js/utils/config-util.js');
 
-function appUpdater() {
+function appUpdater(updateFromMenu = false) {
 	// Don't initiate auto-updates in development
 	if (isDev) {
 		return;
@@ -16,6 +16,8 @@ function appUpdater() {
 		linuxUpdateNotification();
 		return;
 	}
+
+	let updateAvailable = false;
 
 	// Create Logs directory
 	const LogsDir = `${app.getPath('userData')}/Logs`;
@@ -29,6 +31,55 @@ function appUpdater() {
 
 	// Handle auto updates for beta/pre releases
 	autoUpdater.allowPrerelease = ConfigUtil.getConfigItem('betaUpdate') || false;
+
+	const eventsListenerRemove = ['update-available', 'update-not-available'];
+	autoUpdater.on('update-available', info => {
+		if (updateFromMenu) {
+			dialog.showMessageBox({
+				message: `A new version ${info.version}, of Zulip Desktop is available`,
+				detail: 'The update will be downloaded in the background. You will be notified when it is ready to be installed.'
+			});
+
+			updateAvailable = true;
+
+			// This is to prevent removal of 'update-downloaded' and 'error' event listener.
+			eventsListenerRemove.forEach(event => {
+				autoUpdater.removeAllListeners(event);
+			});
+		}
+	});
+
+	autoUpdater.on('update-not-available', () => {
+		if (updateFromMenu) {
+			dialog.showMessageBox({
+				message: 'No updates available',
+				detail: `You are running the latest version of Zulip Desktop.\nVersion: ${app.getVersion()}`
+			});
+			// Remove all autoUpdator listeners so that next time autoUpdator is manually called these
+			// listeners don't trigger multiple times.
+			autoUpdater.removeAllListeners();
+		}
+	});
+
+	autoUpdater.on('error', error => {
+		if (updateFromMenu) {
+			const messageText = (updateAvailable) ? ('Unable to download the updates') : ('Unable to check for updates');
+			dialog.showMessageBox({
+				type: 'error',
+				buttons: ['Manual Download', 'Cancel'],
+				message: messageText,
+				detail: (error).toString() + `\n\nThe latest version of Zulip Desktop is available at -\nhttps://zulipchat.com/apps/.\n
+Current Version: ${app.getVersion()}`
+			}, response => {
+				if (response === 0) {
+					shell.openExternal('https://zulipchat.com/apps/');
+				}
+			});
+			// Remove all autoUpdator listeners so that next time autoUpdator is manually called these
+			// listeners don't trigger multiple times.
+			autoUpdater.removeAllListeners();
+		}
+	});
 
 	// Ask the user if update is available
 	// eslint-disable-next-line no-unused-vars

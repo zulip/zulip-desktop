@@ -4,6 +4,7 @@ const path = require('path');
 const { app, shell, BrowserWindow, Menu, dialog } = require('electron');
 
 const fs = require('fs-extra');
+const { appUpdater } = require('./autoupdater');
 
 const ConfigUtil = require(__dirname + '/../renderer/js/utils/config-util.js');
 const DNDUtil = require(__dirname + '/../renderer/js/utils/dnd-util.js');
@@ -195,7 +196,12 @@ class AppMenu {
 						AppMenu.sendAction('open-about');
 					}
 				}
-			}, {
+			},	{
+				label: `Check for Update`,
+				click() {
+					AppMenu.checkForUpdate();
+				}
+			},	{
 				type: 'separator'
 			}, {
 				label: 'Desktop App Settings',
@@ -302,7 +308,12 @@ class AppMenu {
 						AppMenu.sendAction('open-about');
 					}
 				}
-			}, {
+			}, 	{
+				label: `Check for Update`,
+				click() {
+					AppMenu.checkForUpdate();
+				}
+			},	{
 				type: 'separator'
 			}, {
 				label: 'Desktop App Settings',
@@ -399,6 +410,9 @@ class AppMenu {
 		win.webContents.send(action, ...params);
 	}
 
+	static checkForUpdate() {
+		appUpdater(true);
+	}
 	static resetAppSettings() {
 		const resetAppSettingsMessage = 'By proceeding you will be removing all connected organizations and preferences from Zulip.';
 
