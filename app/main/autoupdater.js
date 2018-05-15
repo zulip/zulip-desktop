@@ -61,14 +61,14 @@ function appUpdater(updateFromMenu = false) {
 		}
 	});
 
-	autoUpdater.on('error', () => {
+	autoUpdater.on('error', error => {
 		if (updateFromMenu) {
 			const messageText = (updateAvailable) ? ('Unable to download the updates') : ('Unable to check for updates');
 			dialog.showMessageBox({
 				type: 'error',
 				buttons: ['Manual Download', 'Cancel'],
 				message: messageText,
-				detail: `The latest version of Zulip Desktop is available at -\nhttps://zulipchat.com/apps/.\n
+				detail: (error).toString() + `\n\nThe latest version of Zulip Desktop is available at -\nhttps://zulipchat.com/apps/.\n
 Current Version: ${app.getVersion()}`
 			}, response => {
 				if (response === 0) {
