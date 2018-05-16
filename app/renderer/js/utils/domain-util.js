@@ -188,7 +188,7 @@ class DomainUtil {
 							// Following check handles both the cases
 							icon: data.realm_icon.startsWith('/') ? data.realm_uri + data.realm_icon : data.realm_icon,
 							url: data.realm_uri,
-							alias: data.realm_name
+							alias: encodeURIComponent(data.realm_name)
 						});
 					}
 				} else {
