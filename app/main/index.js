@@ -161,7 +161,9 @@ app.on('ready', () => {
 
 	page.once('did-frame-finish-load', () => {
 		// Initate auto-updates on MacOS and Windows
-		appUpdater();
+		if (ConfigUtil.getConfigItem('autoUpdate')) {
+			appUpdater();
+		}
 		crashHandler();
 	});
 

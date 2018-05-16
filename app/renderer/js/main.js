@@ -89,6 +89,7 @@ class ServerManagerView {
 			startMinimized: false,
 			enableSpellchecker: true,
 			showNotification: true,
+			autoUpdate: true,
 			betaUpdate: false,
 			silent: false,
 			lastActiveTab: 0,

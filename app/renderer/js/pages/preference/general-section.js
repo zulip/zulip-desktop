@@ -48,7 +48,11 @@ class GeneralSection extends BaseSection {
 					</div>
 				</div>
 				<div class="title">App Updates</div>
-                <div class="settings-card">
+				<div class="settings-card">
+				<div class="setting-row" id="autoupdate-option">
+						<div class="setting-description">Enable auto updates</div>
+						<div class="setting-control"></div>
+					</div>
 					<div class="setting-row" id="betaupdate-option">
 						<div class="setting-description">Get beta updates</div>
 						<div class="setting-control"></div>
@@ -104,7 +108,8 @@ class GeneralSection extends BaseSection {
 		this.updateTrayOption();
 		this.updateBadgeOption();
 		this.updateSilentOption();
-		this.updateUpdateOption();
+		this.autoUpdateOption();
+		this.betaUpdateOption();
 		this.updateSidebarOption();
 		this.updateStartAtLoginOption();
 		this.updateResetDataOption();
@@ -160,14 +165,26 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	updateUpdateOption() {
+	autoUpdateOption() {
+		this.generateSettingOption({
+			$element: document.querySelector('#autoupdate-option .setting-control'),
+			value: ConfigUtil.getConfigItem('autoUpdate', true),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('autoUpdate');
+				ConfigUtil.setConfigItem('autoUpdate', newValue);
+				this.autoUpdateOption();
+			}
+		});
+	}
+
+	betaUpdateOption() {
 		this.generateSettingOption({
 			$element: document.querySelector('#betaupdate-option .setting-control'),
 			value: ConfigUtil.getConfigItem('betaUpdate', false),
 			clickHandler: () => {
 				const newValue = !ConfigUtil.getConfigItem('betaUpdate');
 				ConfigUtil.setConfigItem('betaUpdate', newValue);
-				this.updateUpdateOption();
+				this.betaUpdateOption();
 			}
 		});
 	}
