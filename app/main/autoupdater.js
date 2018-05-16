@@ -30,7 +30,10 @@ function appUpdater(updateFromMenu = false) {
 	autoUpdater.logger = log;
 
 	// Handle auto updates for beta/pre releases
-	autoUpdater.allowPrerelease = ConfigUtil.getConfigItem('betaUpdate') || false;
+	const isAutoUpdate = ConfigUtil.getConfigItem('autoUpdate');
+	const isBetaUpdate = ConfigUtil.getConfigItem('betaUpdate');
+
+	autoUpdater.allowPrerelease = (isAutoUpdate && isBetaUpdate) || false;
 
 	const eventsListenerRemove = ['update-available', 'update-not-available'];
 	autoUpdater.on('update-available', info => {
