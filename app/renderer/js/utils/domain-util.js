@@ -5,6 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const JsonDB = require('node-json-db');
 const request = require('request');
+const escape = require('escape-html');
+
 const Logger = require('./logger-util');
 
 const logger = new Logger({
@@ -188,7 +190,7 @@ class DomainUtil {
 							// Following check handles both the cases
 							icon: data.realm_icon.startsWith('/') ? data.realm_uri + data.realm_icon : data.realm_icon,
 							url: data.realm_uri,
-							alias: encodeURIComponent(data.realm_name)
+							alias: escape(data.realm_name)
 						});
 					}
 				} else {
