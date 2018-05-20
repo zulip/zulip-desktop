@@ -557,6 +557,23 @@ input.toggle-round:checked+label:after {
     background: #329588;
 }
 
+.tip {
+    width: 70%;
+    background-color: hsl(46,63%,95%);
+    border: 1px solid hsl(46,63%,84%);
+    border-radius: 4px;
+    padding: 12px 30px;
+    margin: 10px 0 20px 0;
+}
+
+.md-14 {
+    font-size: 14px;
+}
+
+#open-hotkeys-link {
+    text-decoration: underline;
+    cursor: pointer;
+}
 
 /* responsive grid */
 
