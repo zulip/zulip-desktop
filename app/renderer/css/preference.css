@@ -558,16 +558,15 @@ input.toggle-round:checked+label:after {
 }
 
 .tip {
-    width: 70%;
     background-color: hsl(46,63%,95%);
     border: 1px solid hsl(46,63%,84%);
     border-radius: 4px;
-    padding: 12px 30px;
-    margin: 10px 0 20px 0;
 }
 
 .md-14 {
     font-size: 14px;
+    vertical-align: middle;
+    padding-right: 6px;
 }
 
 #open-hotkeys-link {
