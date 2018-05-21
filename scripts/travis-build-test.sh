@@ -15,6 +15,6 @@ fi
 
 npm run test
 
-if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    npm run test-e2e
-fi
+# if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+#     npm run test-e2e
+# fi
