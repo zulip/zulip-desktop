@@ -8,7 +8,7 @@ cache:
   - node_modules
 
 install:
-  - ps: Install-Product node 6 x64
+  - ps: Install-Product node 8 x64
   - git reset --hard HEAD
   - npm install npm -g
   - node --version
