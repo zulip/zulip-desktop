@@ -65,13 +65,13 @@ class DomainUtil {
 					server.icon = localIconUrl;
 					this.db.push('/domains[]', server, true);
 					this.reloadDB();
-					resolve();
+					resolve(server);
 				});
 			} else {
 				server.icon = defaultIconUrl;
 				this.db.push('/domains[]', server, true);
 				this.reloadDB();
-				resolve();
+				resolve(server);
 			}
 		});
 	}

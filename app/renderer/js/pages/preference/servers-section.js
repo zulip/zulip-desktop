@@ -37,8 +37,7 @@ class ServersSection extends BaseSection {
 
 	initNewServerForm() {
 		new NewServerForm({
-			$root: this.$newServerContainer,
-			onChange: this.reloadApp
+			$root: this.$newServerContainer
 		}).init();
 	}
 }

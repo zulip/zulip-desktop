@@ -120,8 +120,7 @@ class ServerManagerView {
 		this.toggleSidebar(showSidebar);
 	}
 
-	initTabs() {
-		const servers = DomainUtil.getDomains();
+	initTabs(servers = DomainUtil.getDomains()) {
 		if (servers.length > 0) {
 			for (let i = 0; i < servers.length; i++) {
 				this.initServer(servers[i], i);
@@ -135,6 +134,45 @@ class ServerManagerView {
 		} else {
 			this.openSettings('AddServer');
 		}
+	}
+
+  /*
+    This function does a bit of updating our internal props
+    to make sure everything works as expected, the thing that are
+    done here is if there are any FunctionlTabs we need to move them
+    after the tabs so the tabs have correct id's.
+  */
+	addServer(server) {
+		const functionalTabsData = [];
+		this.tabs.forEach((tab, index) => {
+			if (tab instanceof FunctionalTab) {
+				functionalTabsData.push({
+					index,
+					tab
+				});
+
+				this.tabs.splice(index, 1);
+			}
+		});
+
+		const index = this.tabs.length;
+		this.initServer(server, index);
+		this.tabs[index].webview.init();
+		this.activateTab(index);
+
+    // restore back function tabs
+		functionalTabsData.forEach(data => {
+			this.tabs.push(data.tab);
+			for (const tabName in this.functionalTabs) {
+				const value = this.functionalTabs[tabName];
+				if (value === data.index) {
+					const newIndex = this.tabs.length - 1;
+					const webview = document.querySelector(`webview[data-tab-id="${data.index}"]`);
+					webview.setAttribute('data-tab-id', newIndex);
+					this.functionalTabs[tabName] = newIndex;
+				}
+			}
+		});
 	}
 
 	initServer(server, index) {
@@ -563,6 +601,13 @@ window.onload = () => {
 	const serverManagerView = new ServerManagerView();
 	const reconnectUtil = new ReconnectUtil(serverManagerView);
 	serverManagerView.init();
+
+	window.serverManagerView = serverManagerView;
+	window.FunctionalTab = FunctionalTab;
+	ipcRenderer.on('add-server', (event, server) => {
+		serverManagerView.addServer(server);
+	});
+
 	window.addEventListener('online', () => {
 		reconnectUtil.pollInternetAndReload();
 	});
