@@ -131,6 +131,9 @@ function createMainWindow() {
 // Decrease load on GPU (experimental)
 app.disableHardwareAcceleration();
 
+// Temporary fix for Electron render colors differently
+app.commandLine.appendSwitch('force-color-profile', 'srgb');
+
 // eslint-disable-next-line max-params
 app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
 	event.preventDefault();
