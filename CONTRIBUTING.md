@@ -12,7 +12,7 @@ Zulip-Desktop app is built on top of [Electron](http://electron.atom.io/). If yo
 
 * The whole Zulip documentation, such as setting up a development environment, setting up with the Zulip webapp project, and testing, can be read [here](https://zulip.readthedocs.io).
 
-* If you have any questions regarding zulip-electron, open an [issue](https://github.com/zulip/zulip-electron/issues/new/) or ask it on [chat.zulip.org](https://chat.zulip.org/#narrow/stream/electron).
+* If you have any questions regarding zulip-electron, open an [issue](https://github.com/zulip/zulip-electron/issues/new/) or ask it on [chat.zulip.org](https://chat.zulip.org/#narrow/stream/16-desktop).
 
 ## Issue
 Ensure the bug was not already reported by searching on GitHub under [issues](https://github.com/zulip/zulip-electron/issues). If you're unable to find an open issue addressing the bug, open a [new issue](https://github.com/zulip/zulip-electron/issues/new).
