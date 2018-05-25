@@ -2,6 +2,7 @@
 
 const BaseComponent = require(__dirname + '/../../components/base.js');
 const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
+const { ipcRenderer } = require('electron');
 const shell = require('electron').shell;
 
 class NewServerForm extends BaseComponent {
@@ -50,12 +51,11 @@ class NewServerForm extends BaseComponent {
 		this.$newServerUrl = this.$newServerForm.querySelectorAll('input.setting-input-value')[0];
 	}
 
-	submitFormHandler() {
+	async submitFormHandler() {
 		this.$saveServerButton.children[0].innerHTML = 'Connecting...';
-		DomainUtil.checkDomain(this.$newServerUrl.value).then(serverConf => {
-			DomainUtil.addDomain(serverConf).then(() => {
-				this.props.onChange(this.props.index);
-			});
+		DomainUtil.checkDomain(this.$newServerUrl.value).then(async serverConf => {
+			const server = await DomainUtil.addDomain(serverConf);
+			ipcRenderer.send('forward-message', 'add-server', server);
 		}, errorMessage => {
 			this.$saveServerButton.children[0].innerHTML = 'Connect';
 			alert(errorMessage);
