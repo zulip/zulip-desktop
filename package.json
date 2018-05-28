@@ -1,7 +1,7 @@
 {
   "name": "zulip",
   "productName": "Zulip",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "main": "./app/main",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
@@ -124,7 +124,7 @@
     "cp-file": "^5.0.0",
     "devtron": "1.4.0",
     "electron": "2.0.1",
-    "electron-builder": "20.13.4",
+    "electron-builder": "20.15.1",
     "electron-connect": "0.6.2",
     "electron-debug": "1.4.0",
     "google-translate-api": "2.3.0",
