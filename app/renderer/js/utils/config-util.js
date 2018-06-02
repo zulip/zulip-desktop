@@ -69,7 +69,7 @@ class ConfigUtil {
 				fs.unlinkSync(settingsJsonPath);
 				dialog.showErrorBox(
 					'Error saving settings',
-					'We encountered error while saving current settings.'
+					'We encountered an error while saving the current settings.'
 				);
 				logger.error('Error while JSON parsing settings.json: ');
 				logger.error(err);

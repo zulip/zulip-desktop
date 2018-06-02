@@ -61,7 +61,7 @@ class LinuxUpdateUtil {
 				fs.unlinkSync(linuxUpdateJsonPath);
 				dialog.showErrorBox(
 					'Error saving update notifications.',
-					'We encountered error while saving update notifications.'
+					'We encountered an error while saving the update notifications.'
 				);
 				logger.error('Error while JSON parsing updates.json: ');
 				logger.error(err);
