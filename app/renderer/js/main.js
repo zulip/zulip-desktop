@@ -227,7 +227,7 @@ class ServerManagerView {
 	}
 
 	onHover(index, serverName) {
-		this.$serverIconTooltip[index].innerText = serverName;
+		this.$serverIconTooltip[index].innerHTML = escape(serverName);
 		this.$serverIconTooltip[index].removeAttribute('style');
 		// To handle position of servers' tooltip due to scrolling of list of organizations
 		// This could not be handled using CSS, hence the top of the tooltip is made same
