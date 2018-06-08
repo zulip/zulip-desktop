@@ -18,7 +18,7 @@ class ProxyUtil {
 	resolveSystemProxy(mainWindow) {
 		const page = mainWindow.webContents;
 		const ses = page.session;
-		const resolveProxyUrl = 'chat.zulip.org';
+		const resolveProxyUrl = 'www.google.com';
 
 		let proxyString = '';
 

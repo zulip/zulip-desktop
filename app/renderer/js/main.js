@@ -58,6 +58,16 @@ class ServerManagerView {
 
 	loadProxy() {
 		return new Promise(resolve => {
+			// To change proxyEnable to useManualProxy in older versions
+			const proxyEnabledOld = ConfigUtil.isConfigItemExists('useProxy');
+			if (proxyEnabledOld) {
+				const proxyEnableOldState = ConfigUtil.getConfigItem('useProxy');
+				if (proxyEnableOldState) {
+					ConfigUtil.setConfigItem('useManualProxy', true);
+				}
+				ConfigUtil.removeConfigItem('useProxy');
+			}
+
 			const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy', false) || ConfigUtil.getConfigItem('useSystemProxy', false);
 			if (proxyEnabled) {
 				session.fromPartition('persist:webviewsession').setProxy({
