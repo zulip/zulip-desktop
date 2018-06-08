@@ -49,6 +49,16 @@ class ConfigUtil {
 		}
 	}
 
+	isConfigItemExists(key) {
+		this.reloadDB();
+		const value = this.db.getData('/')[key];
+		if (value === undefined) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	setConfigItem(key, value) {
 		this.db.push(`/${key}`, value, true);
 		this.reloadDB();
