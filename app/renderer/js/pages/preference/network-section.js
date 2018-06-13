@@ -123,7 +123,8 @@ class NetworkSection extends BaseSection {
 				}
 				ConfigUtil.setConfigItem('proxyRules', '');
 				ConfigUtil.setConfigItem('useManualProxy', newValue);
-				ipcRenderer.send('forward-message', 'reload-proxy', false);
+				// Reload app only when turning manual proxy off, hence !newValue
+				ipcRenderer.send('forward-message', 'reload-proxy', !newValue);
 				this.updateProxyOption();
 			}
 		});

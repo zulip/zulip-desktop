@@ -506,6 +506,7 @@ class ServerManagerView {
 			this.loadProxy().then(() => {
 				if (showAlert) {
 					alert('Proxy settings saved!');
+					ipcRenderer.send('reload-full-app');
 				}
 			});
 		});
