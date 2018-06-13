@@ -15,6 +15,8 @@ const DNDUtil = require(__dirname + '/js/utils/dnd-util.js');
 const ReconnectUtil = require(__dirname + '/js/utils/reconnect-util.js');
 const { feedbackHolder } = require(__dirname + '/js/feedback.js');
 
+const escape = require('escape-html');
+
 class ServerManagerView {
 	constructor() {
 		this.$addServerButton = document.getElementById('add-tab');
