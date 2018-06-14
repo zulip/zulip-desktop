@@ -17,7 +17,7 @@ class NetworkSection extends BaseSection {
                 <div class="title">Proxy</div>
                 <div id="appearance-option-settings" class="settings-card">
 					<div class="setting-row" id="use-system-settings">
-						<div class="setting-description">Use system proxy settings</div>
+						<div class="setting-description">Use system proxy settings (requires restart)</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="use-manual-settings">
@@ -105,7 +105,7 @@ class NetworkSection extends BaseSection {
 					// Reload proxy system proxy settings
 					const systemSettings = ConfigUtil.getConfigItem('systemProxyRules');
 					ConfigUtil.setConfigItem('proxyRules', systemSettings);
-					ipcRenderer.send('forward-message', 'reload-proxy', true);
+					ipcRenderer.send('forward-message', 'reload-proxy', false);
 				}
 				ConfigUtil.setConfigItem('useSystemProxy', newValue);
 				this.updateProxyOption();

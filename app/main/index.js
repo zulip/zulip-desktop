@@ -154,7 +154,11 @@ app.on('ready', () => {
 	});
 	mainWindow = createMainWindow();
 
-	ProxyUtil.resolveSystemProxy(mainWindow);
+	const isSystemProxy = ConfigUtil.getConfigItem('useSystemProxy');
+
+	if (isSystemProxy) {
+		ProxyUtil.resolveSystemProxy(mainWindow);
+	}
 
 	const page = mainWindow.webContents;
 
