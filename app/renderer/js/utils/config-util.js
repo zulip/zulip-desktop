@@ -48,15 +48,11 @@ class ConfigUtil {
 			return value;
 		}
 	}
-
+	// This function returns whether a key exists in the configuration file (settings.json)
 	isConfigItemExists(key) {
 		this.reloadDB();
 		const value = this.db.getData('/')[key];
-		if (value === undefined) {
-			return false;
-		} else {
-			return true;
-		}
+		return (value !== undefined);
 	}
 
 	setConfigItem(key, value) {
