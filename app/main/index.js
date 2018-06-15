@@ -13,6 +13,7 @@ const { app, ipcMain } = electron;
 
 const BadgeSettings = require('./../renderer/js/pages/preference/badge-settings.js');
 const ConfigUtil = require('./../renderer/js/utils/config-util.js');
+const ProxyUtil = require('./../renderer/js/utils/proxy-util.js');
 
 // Adds debug features like hotkeys for triggering dev tools and reload
 // in development mode
@@ -152,6 +153,12 @@ app.on('ready', () => {
 		tabs: []
 	});
 	mainWindow = createMainWindow();
+
+	const isSystemProxy = ConfigUtil.getConfigItem('useSystemProxy');
+
+	if (isSystemProxy) {
+		ProxyUtil.resolveSystemProxy(mainWindow);
+	}
 
 	const page = mainWindow.webContents;
 

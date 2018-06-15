@@ -16,11 +16,15 @@ class NetworkSection extends BaseSection {
             <div class="settings-pane">
                 <div class="title">Proxy</div>
                 <div id="appearance-option-settings" class="settings-card">
-					<div class="setting-row" id="use-proxy-option">
-						<div class="setting-description">Connect servers through a proxy</div>
+					<div class="setting-row" id="use-system-settings">
+						<div class="setting-description">Use system proxy settings (requires restart)</div>
 						<div class="setting-control"></div>
 					</div>
-					<div class="setting-block">
+					<div class="setting-row" id="use-manual-settings">
+						<div class="setting-description">Manual proxy configuration</div>
+						<div class="setting-control"></div>
+					</div>
+					<div class="manual-proxy-block">
 						<div class="setting-row" id="proxy-pac-option">
 							<span class="setting-input-key">PAC script</span>
 							<input class="setting-input-value" placeholder="e.g. foobar.com/pacfile.js"/>
@@ -51,7 +55,7 @@ class NetworkSection extends BaseSection {
 		this.$proxyRules = document.querySelector('#proxy-rules-option .setting-input-value');
 		this.$proxyBypass = document.querySelector('#proxy-bypass-option .setting-input-value');
 		this.$proxySaveAction = document.getElementById('proxy-save-action');
-		this.$settingBlock = this.props.$root.querySelector('.setting-block');
+		this.$manualProxyBlock = this.props.$root.querySelector('.manual-proxy-block');
 		this.initProxyOption();
 
 		this.$proxyPAC.value = ConfigUtil.getConfigItem('proxyPAC', '');
@@ -68,31 +72,54 @@ class NetworkSection extends BaseSection {
 	}
 
 	initProxyOption() {
-		const proxyEnabled = ConfigUtil.getConfigItem('useProxy', false);
-		this.toggleProxySettings(proxyEnabled);
+		const manualProxyEnabled = ConfigUtil.getConfigItem('useManualProxy', false);
+		this.toggleManualProxySettings(manualProxyEnabled);
+
 		this.updateProxyOption();
 	}
 
-	toggleProxySettings(option) {
+	toggleManualProxySettings(option) {
 		if (option) {
-			this.$settingBlock.classList.remove('hidden');
+			this.$manualProxyBlock.classList.remove('hidden');
 		} else {
-			this.$settingBlock.classList.add('hidden');
+			this.$manualProxyBlock.classList.add('hidden');
 		}
 	}
 
 	updateProxyOption() {
 		this.generateSettingOption({
-			$element: document.querySelector('#use-proxy-option .setting-control'),
-			value: ConfigUtil.getConfigItem('useProxy', false),
+			$element: document.querySelector('#use-system-settings .setting-control'),
+			value: ConfigUtil.getConfigItem('useSystemProxy', false),
 			clickHandler: () => {
-				const newValue = !ConfigUtil.getConfigItem('useProxy');
-				ConfigUtil.setConfigItem('useProxy', newValue);
-				this.toggleProxySettings(newValue);
-				if (newValue === false) {
-					// Reload proxy if the proxy is turned off
-					ipcRenderer.send('forward-message', 'reload-proxy', false);
+				const newValue = !ConfigUtil.getConfigItem('useSystemProxy');
+				const manualProxyValue = ConfigUtil.getConfigItem('useManualProxy');
+				if (manualProxyValue && newValue) {
+					ConfigUtil.setConfigItem('useManualProxy', !manualProxyValue);
+					this.toggleManualProxySettings(!manualProxyValue);
 				}
+				if (newValue === false) {
+					// Remove proxy system proxy settings
+					ConfigUtil.setConfigItem('proxyRules', '');
+					ipcRenderer.send('forward-message', 'reload-proxy', true);
+				}
+				ConfigUtil.setConfigItem('useSystemProxy', newValue);
+				this.updateProxyOption();
+			}
+		});
+		this.generateSettingOption({
+			$element: document.querySelector('#use-manual-settings .setting-control'),
+			value: ConfigUtil.getConfigItem('useManualProxy', false),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('useManualProxy');
+				const systemProxyValue = ConfigUtil.getConfigItem('useSystemProxy');
+				this.toggleManualProxySettings(newValue);
+				if (systemProxyValue && newValue) {
+					ConfigUtil.setConfigItem('useSystemProxy', !systemProxyValue);
+				}
+				ConfigUtil.setConfigItem('proxyRules', '');
+				ConfigUtil.setConfigItem('useManualProxy', newValue);
+				// Reload app only when turning manual proxy off, hence !newValue
+				ipcRenderer.send('forward-message', 'reload-proxy', !newValue);
 				this.updateProxyOption();
 			}
 		});

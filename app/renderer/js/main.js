@@ -60,7 +60,17 @@ class ServerManagerView {
 
 	loadProxy() {
 		return new Promise(resolve => {
-			const proxyEnabled = ConfigUtil.getConfigItem('useProxy', false);
+			// To change proxyEnable to useManualProxy in older versions
+			const proxyEnabledOld = ConfigUtil.isConfigItemExists('useProxy');
+			if (proxyEnabledOld) {
+				const proxyEnableOldState = ConfigUtil.getConfigItem('useProxy');
+				if (proxyEnableOldState) {
+					ConfigUtil.setConfigItem('useManualProxy', true);
+				}
+				ConfigUtil.removeConfigItem('useProxy');
+			}
+
+			const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
 			if (proxyEnabled) {
 				session.fromPartition('persist:webviewsession').setProxy({
 					pacScript: ConfigUtil.getConfigItem('proxyPAC', ''),
@@ -84,7 +94,8 @@ class ServerManagerView {
 		// Default settings which should be respected
 		const settingOptions = {
 			trayIcon: true,
-			useProxy: false,
+			useManualProxy: false,
+			useSystemProxy: false,
 			showSidebar: true,
 			badgeOption: true,
 			startAtLogin: false,
@@ -497,6 +508,7 @@ class ServerManagerView {
 			this.loadProxy().then(() => {
 				if (showAlert) {
 					alert('Proxy settings saved!');
+					ipcRenderer.send('reload-full-app');
 				}
 			});
 		});
