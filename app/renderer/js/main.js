@@ -68,7 +68,7 @@ class ServerManagerView {
 				ConfigUtil.removeConfigItem('useProxy');
 			}
 
-			const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy', false) || ConfigUtil.getConfigItem('useSystemProxy', false);
+			const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
 			if (proxyEnabled) {
 				session.fromPartition('persist:webviewsession').setProxy({
 					pacScript: ConfigUtil.getConfigItem('proxyPAC', ''),

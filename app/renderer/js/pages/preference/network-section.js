@@ -101,11 +101,6 @@ class NetworkSection extends BaseSection {
 					// Remove proxy system proxy settings
 					ConfigUtil.setConfigItem('proxyRules', '');
 					ipcRenderer.send('forward-message', 'reload-proxy', true);
-				} else {
-					// Reload proxy system proxy settings
-					const systemSettings = ConfigUtil.getConfigItem('systemProxyRules');
-					ConfigUtil.setConfigItem('proxyRules', systemSettings);
-					ipcRenderer.send('forward-message', 'reload-proxy', false);
 				}
 				ConfigUtil.setConfigItem('useSystemProxy', newValue);
 				this.updateProxyOption();
