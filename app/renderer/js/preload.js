@@ -1,6 +1,6 @@
 'use strict';
 
-const { ipcRenderer } = require('electron');
+const { ipcRenderer, shell } = require('electron');
 const SetupSpellChecker = require('./spellchecker');
 
 const ConfigUtil = require(__dirname + '/utils/config-util.js');
@@ -71,6 +71,11 @@ document.addEventListener('DOMContentLoaded', () => {
 			// prevent the message compose dialog from happening.
 			e.stopPropagation();
 
+			// Open image in the default browser if image preview is unavailable
+			if (!$img[0]) {
+				shell.openExternal(window.location.origin + url);
+			}
+			// Open image in lightbox
 			lightbox.open($img);
 		}
 	});
