@@ -417,7 +417,7 @@ class AppMenu {
 		const resetAppSettingsMessage = 'By proceeding you will be removing all connected organizations and preferences from Zulip.';
 
 		// We save App's settings/configurations in following files
-		const settingFiles = ['window-state.json', 'domain.json', 'settings.json'];
+		const settingFiles = ['window-state.json', 'domain.json', 'settings.json', 'certificates.json'];
 
 		dialog.showMessageBox({
 			type: 'warning',
