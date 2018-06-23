@@ -1,4 +1,10 @@
 const isOnline = require('is-online');
+const Logger = require('./logger-util');
+
+const logger = new Logger({
+	file: `domain-util.log`,
+	timestamp: true
+});
 
 class ReconnectUtil {
 	constructor(serverManagerView) {
@@ -31,11 +37,11 @@ class ReconnectUtil {
 							if (!this.alreadyReloaded) {
 								this.serverManagerView.reloadView();
 							}
-							console.log('You\'re back online.');
+							logger.log('You\'re back online.');
 							return resolve(true);
 						}
 
-						console.log('There is no internet connection, try checking network cables, modem and router.');
+						logger.log('There is no internet connection, try checking network cables, modem and router.');
 						const errMsgHolder = document.querySelector('#description');
 						if (errMsgHolder) {
 							errMsgHolder.innerHTML = `

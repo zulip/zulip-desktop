@@ -116,7 +116,7 @@ class DomainUtil {
 			try {
 				certificateLocation = fs.readFileSync(certificate);
 			} catch (err) {
-				console.log(err);
+				logger.warn('Error while trying to get certificate: ' + err);
 			}
 		}
 		// If certificate for the domain exists add it as a ca key in the request's parameter else consider only domain as the parameter for request
@@ -219,18 +219,21 @@ class DomainUtil {
 			try {
 				request(url).on('response', response => {
 					response.on('error', err => {
-						console.log(err);
+						logger.log('Could not get server icon.');
+						logger.log(err);
 						resolve(defaultIconUrl);
 					});
 					response.pipe(file).on('finish', () => {
 						resolve(filePath);
 					});
 				}).on('error', err => {
-					console.log(err);
+					logger.log('Could not get server icon.');
+					logger.log(err);
 					resolve(defaultIconUrl);
 				});
 			} catch (err) {
-				console.log(err);
+				logger.log('Could not get server icon.');
+				logger.log(err);
 				resolve(defaultIconUrl);
 			}
 		});

@@ -1,4 +1,10 @@
 const { remote } = require('electron');
+const Logger = require('../utils/logger-util.js');
+
+const logger = new Logger({
+	file: 'errors.log',
+	timestamp: true
+});
 
 // Do not change this
 const appId = 'org.zulip.zulip-electron';
@@ -28,8 +34,8 @@ function loadBots(sync = false) {
 			botsListLoaded = true;
 		})
 		.fail(error => {
-			console.log('Request failed: ', error.responseText);
-			console.log('Request status: ', error.statusText);
+			logger.log('Load bots request failed: ', error.responseText);
+			logger.log('Load bots request status: ', error.statusText);
 		});
 	if (sync) {
 		$.ajaxSetup({async: true});

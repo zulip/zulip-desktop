@@ -5,6 +5,12 @@ const request = require('request');
 const semver = require('semver');
 const ConfigUtil = require('../renderer/js/utils/config-util');
 const LinuxUpdateUtil = require('../renderer/js/utils/linux-update-util');
+const Logger = require('../renderer/js/utils/logger-util');
+
+const logger = new Logger({
+	file: 'linux-update-util.log',
+	timestamp: true
+});
 
 function linuxUpdateNotification() {
 	let	url = 'https://api.github.com/repos/zulip/zulip-electron/releases';
@@ -17,7 +23,8 @@ function linuxUpdateNotification() {
 
 	request(options, (error, response, body) => {
 		if (error) {
-			console.log('Error:', error);
+			logger.error('Linux update error.');
+			logger.error(error);
 			return;
 		}
 		if (response.statusCode < 400) {
@@ -32,7 +39,7 @@ function linuxUpdateNotification() {
 				}
 			}
 		} else {
-			console.log('Status:', response.statusCode);
+			logger.log('Linux update response status: ', response.statusCode);
 		}
 	});
 }

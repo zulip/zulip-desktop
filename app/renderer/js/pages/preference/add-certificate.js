@@ -44,7 +44,6 @@ class AddCertificate extends BaseComponent {
 			const fileName = certificate.substring(certificate.lastIndexOf('/') + 1);
 			const copy = CertificateUtil.copyCertificate(server, certificate, fileName);
 			if (!copy) {
-				console.log('We encountered error while saving the certificate.');
 				return;
 			}
 			CertificateUtil.setCertificate(server, fileName);

@@ -51,7 +51,6 @@ class CertificateUtil {
 			);
 			logger.error('Error while copying the certificate to certificates folder.');
 			logger.error(err);
-			console.log(err);
 		}
 		return copied;
 	}
