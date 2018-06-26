@@ -39,7 +39,12 @@ class ConfigUtil {
 	}
 
 	getConfigItem(key, defaultValue = null) {
-		this.reloadDB();
+		try {
+			this.db.reload();
+		} catch (err) {
+			logger.error('Error while reloading settings.json: ');
+			logger.error(err);
+		}
 		const value = this.db.getData('/')[key];
 		if (value === undefined) {
 			this.setConfigItem(key, defaultValue);
@@ -50,19 +55,24 @@ class ConfigUtil {
 	}
 	// This function returns whether a key exists in the configuration file (settings.json)
 	isConfigItemExists(key) {
-		this.reloadDB();
+		try {
+			this.db.reload();
+		} catch (err) {
+			logger.error('Error while reloading settings.json: ');
+			logger.error(err);
+		}
 		const value = this.db.getData('/')[key];
 		return (value !== undefined);
 	}
 
 	setConfigItem(key, value) {
 		this.db.push(`/${key}`, value, true);
-		this.reloadDB();
+		this.db.save();
 	}
 
 	removeConfigItem(key) {
 		this.db.delete(`/${key}`);
-		this.reloadDB();
+		this.db.save();
 	}
 
 	reloadDB() {
