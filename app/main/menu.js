@@ -8,8 +8,14 @@ const { appUpdater } = require('./autoupdater');
 
 const ConfigUtil = require(__dirname + '/../renderer/js/utils/config-util.js');
 const DNDUtil = require(__dirname + '/../renderer/js/utils/dnd-util.js');
+const Logger = require(__dirname + '/../renderer/js/utils/logger-util.js');
 
 const appName = app.getName();
+
+const logger = new Logger({
+	file: 'errors.log',
+	timestamp: true
+});
 
 class AppMenu {
 	getHistorySubmenu() {
@@ -431,7 +437,8 @@ class AppMenu {
 					const getSettingFilesPath = path.join(app.getPath('appData'), appName, settingFileName);
 					fs.access(getSettingFilesPath, error => {
 						if (error) {
-							console.log(error);
+							logger.error('Error while resetting app settings.');
+							logger.error(error);
 						} else {
 							fs.unlink(getSettingFilesPath, () => {
 								AppMenu.sendAction('clear-app-data');

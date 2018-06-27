@@ -3,6 +3,12 @@
 const { SpellCheckHandler, ContextMenuListener, ContextMenuBuilder } = require('electron-spellchecker');
 
 const ConfigUtil = require(__dirname + '/utils/config-util.js');
+const Logger = require(__dirname + '/utils/logger-util.js');
+
+const logger = new Logger({
+	file: 'errors.log',
+	timestamp: true
+});
 
 class SetupSpellChecker {
 	init() {
@@ -16,7 +22,7 @@ class SetupSpellChecker {
 		try {
 			this.SpellCheckHandler = new SpellCheckHandler();
 		} catch (err) {
-			console.log(err);
+			logger.error(err);
 		}
 	}
 
