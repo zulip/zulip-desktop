@@ -3,7 +3,7 @@
 const { SpellCheckHandler, ContextMenuListener, ContextMenuBuilder } = require('electron-spellchecker');
 
 const ConfigUtil = require(__dirname + '/utils/config-util.js');
-const Logger = require(__dirname + '/js/utils/logger-util.js');
+const Logger = require(__dirname + '/utils/logger-util.js');
 
 const logger = new Logger({
 	file: 'errors.log',
