@@ -64,7 +64,7 @@ class CertificateUtil {
 		this.reloadDB();
 	}
 	reloadDB() {
-		const settingsJsonPath = path.join(app.getPath('userData'), '/certificates.json');
+		const settingsJsonPath = path.join(app.getPath('userData'), '/config/certificates.json');
 		try {
 			const file = fs.readFileSync(settingsJsonPath, 'utf8');
 			JSON.parse(file);

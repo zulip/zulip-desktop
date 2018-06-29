@@ -11,6 +11,7 @@ if (process.type === 'renderer') {
 const zulipDir = app.getPath('userData');
 const logDir = `${zulipDir}/Logs/`;
 const certificatesDir = `${zulipDir}/certificates/`;
+const configDir = `${zulipDir}/config/`;
 const initSetUp = () => {
 	// if it is the first time the app is running
 	// create zulip dir in userData folder to
@@ -26,6 +27,30 @@ const initSetUp = () => {
 
 		if (!fs.existsSync(certificatesDir)) {
 			fs.mkdirSync(certificatesDir);
+		}
+
+		if (!fs.existsSync(configDir)) {
+			fs.mkdirSync(configDir);
+			const domainJson = `${zulipDir}/domain.json`;
+			const certificatesJson = `${zulipDir}/certificates.json`;
+			const settingsJson = `${zulipDir}/settings.json`;
+			const updatesJson = `${zulipDir}/updates.json`;
+			if (fs.existsSync(domainJson)) {
+				fs.copyFileSync(domainJson, configDir + `domain.json`);
+				fs.unlinkSync(domainJson);
+			}
+			if (fs.existsSync(certificatesJson)) {
+				fs.copyFileSync(certificatesJson, configDir + `certificates.json`);
+				fs.unlinkSync(certificatesJson);
+			}
+			if (fs.existsSync(settingsJson)) {
+				fs.copyFileSync(settingsJson, configDir + `settings.json`);
+				fs.unlinkSync(settingsJson);
+			}
+			if (fs.existsSync(updatesJson)) {
+				fs.copyFileSync(updatesJson, configDir + `updates.json`);
+				fs.unlinkSync(updatesJson);
+			}
 		}
 
 		setupCompleted = true;

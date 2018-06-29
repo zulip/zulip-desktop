@@ -251,7 +251,7 @@ class DomainUtil {
 	}
 
 	reloadDB() {
-		const domainJsonPath = path.join(app.getPath('userData'), '/domain.json');
+		const domainJsonPath = path.join(app.getPath('userData'), 'config/domain.json');
 		try {
 			const file = fs.readFileSync(domainJsonPath, 'utf8');
 			JSON.parse(file);

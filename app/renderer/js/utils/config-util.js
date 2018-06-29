@@ -66,7 +66,7 @@ class ConfigUtil {
 	}
 
 	reloadDB() {
-		const settingsJsonPath = path.join(app.getPath('userData'), '/settings.json');
+		const settingsJsonPath = path.join(app.getPath('userData'), '/config/settings.json');
 		try {
 			const file = fs.readFileSync(settingsJsonPath, 'utf8');
 			JSON.parse(file);

@@ -52,7 +52,7 @@ class LinuxUpdateUtil {
 	}
 
 	reloadDB() {
-		const linuxUpdateJsonPath = path.join(app.getPath('userData'), '/updates.json');
+		const linuxUpdateJsonPath = path.join(app.getPath('userData'), '/config/updates.json');
 		try {
 			const file = fs.readFileSync(linuxUpdateJsonPath, 'utf8');
 			JSON.parse(file);
