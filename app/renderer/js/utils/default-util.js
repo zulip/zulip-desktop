@@ -35,6 +35,7 @@ const initSetUp = () => {
 			const certificatesJson = `${zulipDir}/certificates.json`;
 			const settingsJson = `${zulipDir}/settings.json`;
 			const updatesJson = `${zulipDir}/updates.json`;
+			const windowStateJson = `${zulipDir}/window-state.json`;
 			if (fs.existsSync(domainJson)) {
 				fs.copyFileSync(domainJson, configDir + `domain.json`);
 				fs.unlinkSync(domainJson);
@@ -50,6 +51,9 @@ const initSetUp = () => {
 			if (fs.existsSync(updatesJson)) {
 				fs.copyFileSync(updatesJson, configDir + `updates.json`);
 				fs.unlinkSync(updatesJson);
+			}
+			if (fs.existsSync(windowStateJson)) {
+				fs.unlinkSync(windowStateJson);
 			}
 		}
 
