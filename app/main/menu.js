@@ -151,10 +151,11 @@ class AppMenu {
 					zip.addLocalFolder(`${app.getPath('appData')}/${appName}/config`);
 
 					// Put the log file in downloads folder
-					zip.writeZip(`${app.getPath('downloads')}/Zulip-logs-${date}.zip`);
+                    			const logFilePath = `${app.getPath('downloads')}/Zulip-logs-${date}.zip`;
+					zip.writeZip(logFilePath);
 
 					// Open and select the log file
-					shell.showItemInFolder(`${app.getPath('downloads')}/Zulip-logs-${date}.zip`);
+					shell.showItemInFolder(logFilePath);
 				}
 			}, {
 				label: 'Report an Issue...',
