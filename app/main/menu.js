@@ -145,10 +145,16 @@ class AppMenu {
 					const zip = new AdmZip();
 					let date = new Date();
 					date = date.toLocaleDateString().replace(/\//g, '-');
+
+					// Create a zip file of all the logs and config data
 					zip.addLocalFolder(`${app.getPath('appData')}/${appName}/Logs`);
 					zip.addLocalFolder(`${app.getPath('appData')}/${appName}/config`);
+
+					// Put the log file in downloads folder
 					zip.writeZip(`${app.getPath('downloads')}/Zulip-logs-${date}.zip`);
-					shell.openItem(app.getPath('downloads'));
+
+					// Open and select the log file
+					shell.showItemInFolder(`${app.getPath('downloads')}/Zulip-logs-${date}.zip`);
 				}
 			}, {
 				label: 'Report an Issue...',
