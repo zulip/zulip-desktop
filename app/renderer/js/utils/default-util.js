@@ -29,6 +29,8 @@ const initSetUp = () => {
 			fs.mkdirSync(certificatesDir);
 		}
 
+		// Migrate config files from app data folder to config folder inside app
+		// data folder. This will be done once when a user updates to the new version.
 		if (!fs.existsSync(configDir)) {
 			fs.mkdirSync(configDir);
 			const domainJson = `${zulipDir}/domain.json`;
@@ -36,22 +38,32 @@ const initSetUp = () => {
 			const settingsJson = `${zulipDir}/settings.json`;
 			const updatesJson = `${zulipDir}/updates.json`;
 			const windowStateJson = `${zulipDir}/window-state.json`;
-			if (fs.existsSync(domainJson)) {
-				fs.copyFileSync(domainJson, configDir + `domain.json`);
-				fs.unlinkSync(domainJson);
-			}
-			if (fs.existsSync(certificatesJson)) {
-				fs.copyFileSync(certificatesJson, configDir + `certificates.json`);
-				fs.unlinkSync(certificatesJson);
-			}
-			if (fs.existsSync(settingsJson)) {
-				fs.copyFileSync(settingsJson, configDir + `settings.json`);
-				fs.unlinkSync(settingsJson);
-			}
-			if (fs.existsSync(updatesJson)) {
-				fs.copyFileSync(updatesJson, configDir + `updates.json`);
-				fs.unlinkSync(updatesJson);
-			}
+			const configData = [
+				{
+					path: domainJson,
+					fileName: `domain.json`
+				},
+				{
+					path: certificatesJson,
+					fileName: `certificates.json`
+				},
+				{
+					path: settingsJson,
+					fileName: `settings.json`
+				},
+				{
+					path: updatesJson,
+					fileName: `updates.json`
+				}
+			];
+			configData.forEach(data => {
+				if (fs.existsSync(data.path)) {
+					fs.copyFileSync(data.path, configDir + data.fileName);
+					fs.unlinkSync(data.path);
+				}
+			});
+			// window-state.json is only deleted not moved, as the electron-window-state
+			// package will recreate the file in the config folder.
 			if (fs.existsSync(windowStateJson)) {
 				fs.unlinkSync(windowStateJson);
 			}
