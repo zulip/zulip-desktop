@@ -181,8 +181,5 @@
       "browser",
       "mocha"
     ]
-  },
-  "dependencies": {
-    "adm-zip": "^0.4.11"
   }
 }
