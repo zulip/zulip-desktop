@@ -27,7 +27,7 @@
   ],
   "dependencies": {
     "@electron-elements/send-feedback": "1.0.7",
-    "escape-html": "1.0.3",
+    "@sentry/electron": "0.5.5",
     "adm-zip": "0.4.11",
     "auto-launch": "5.0.5",
     "electron-is-dev": "0.3.0",
@@ -35,6 +35,7 @@
     "electron-spellchecker": "1.1.2",
     "electron-updater": "2.23.3",
     "electron-window-state": "4.1.1",
+    "escape-html": "1.0.3",
     "is-online": "7.0.0",
     "node-json-db": "0.7.3",
     "request": "2.85.0",
