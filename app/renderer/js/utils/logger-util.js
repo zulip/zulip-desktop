@@ -2,8 +2,10 @@ const NodeConsole = require('console').Console;
 const fs = require('fs');
 const isDev = require('electron-is-dev');
 const { initSetUp } = require('./default-util');
+const { sentryInit, captureException } = require('./sentry-util');
 
 initSetUp();
+sentryInit();
 let app = null;
 if (process.type === 'renderer') {
 	app = require('electron').remote.app;
@@ -81,6 +83,10 @@ class Logger {
 			`${date.getMonth()}/${date.getDate()} ` +
 			`${date.getMinutes()}:${date.getSeconds()}`;
 		return timestamp;
+	}
+
+	reportSentry(err) {
+		captureException(err);
 	}
 }
 

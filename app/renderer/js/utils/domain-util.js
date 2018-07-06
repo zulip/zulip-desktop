@@ -155,6 +155,9 @@ class DomainUtil {
 							resolve(serverConf);
 						});
 					} else {
+						// Report error to sentry to get idea of possible certificate errors
+						// users get when adding the servers
+						logger.reportSentry(new Error(error));
 						const certErrorMessage = `Do you trust certificate from ${domain}? \n ${error}`;
 						const certErrorDetail = `The organization you're connecting to is either someone impersonating the Zulip server you entered, or the server you're trying to connect to is configured in an insecure way.
 						\nIf you have a valid certificate please add it from Settings>Organizations and try to add the organization again.
@@ -221,6 +224,7 @@ class DomainUtil {
 					response.on('error', err => {
 						logger.log('Could not get server icon.');
 						logger.log(err);
+						logger.reportSentry(err);
 						resolve(defaultIconUrl);
 					});
 					response.pipe(file).on('finish', () => {
@@ -229,11 +233,13 @@ class DomainUtil {
 				}).on('error', err => {
 					logger.log('Could not get server icon.');
 					logger.log(err);
+					logger.reportSentry(err);
 					resolve(defaultIconUrl);
 				});
 			} catch (err) {
 				logger.log('Could not get server icon.');
 				logger.log(err);
+				logger.reportSentry(err);
 				resolve(defaultIconUrl);
 			}
 		});
@@ -265,6 +271,7 @@ class DomainUtil {
 				);
 				logger.error('Error while JSON parsing domain.json: ');
 				logger.error(err);
+				logger.reportSentry(err);
 			}
 		}
 		this.db = new JsonDB(domainJsonPath, true, true);

@@ -14,6 +14,7 @@ const { app, ipcMain } = electron;
 const BadgeSettings = require('./../renderer/js/pages/preference/badge-settings.js');
 const ConfigUtil = require('./../renderer/js/utils/config-util.js');
 const ProxyUtil = require('./../renderer/js/utils/proxy-util.js');
+const { sentryInit } = require('./../renderer/js/utils/sentry-util.js');
 
 // Adds debug features like hotkeys for triggering dev tools and reload
 // in development mode
@@ -154,6 +155,9 @@ app.on('ready', () => {
 		tabs: []
 	});
 	mainWindow = createMainWindow();
+
+	// Initialize sentry for main process
+	sentryInit();
 
 	const isSystemProxy = ConfigUtil.getConfigItem('useSystemProxy');
 

@@ -79,6 +79,7 @@ class ConfigUtil {
 				);
 				logger.error('Error while JSON parsing settings.json: ');
 				logger.error(err);
+				logger.reportSentry(err);
 			}
 		}
 		this.db = new JsonDB(settingsJsonPath, true, true);
