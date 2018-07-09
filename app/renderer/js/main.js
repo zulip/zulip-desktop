@@ -127,6 +127,11 @@ class ServerManagerView {
 			settingOptions.dndPreviousSettings.flashTaskbarOnMessage = true;
 		}
 
+		if (process.platform === 'darwin') {
+			// Only available on macOS
+			settingOptions.dockBouncing = true;
+		}
+
 		for (const i in settingOptions) {
 			if (ConfigUtil.getConfigItem(i) === null) {
 				ConfigUtil.setConfigItem(i, settingOptions[i]);
