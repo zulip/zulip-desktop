@@ -95,6 +95,20 @@ class GeneralSection extends BaseSection {
 						</div>
 					</div>
 				</div>
+				<div class="title">Advanced</div>
+				<div class="settings-card">
+					<div class="setting-row" id="download-folder">
+						<div class="setting-description">
+							Default download location
+						</div>
+						<button class="download-folder-button blue">Choose</button>
+					</div>
+					<div class="setting-row">
+						<div class="setting-description">
+							<div class="download-folder-path">${ConfigUtil.getConfigItem('downloadsPath')}</div>
+						</div>
+					</div>
+				</div>
 				<div class="title">Reset Application Data</div>
                 <div class="settings-card">
 					<div class="setting-row" id="resetdata-option">
@@ -123,6 +137,7 @@ class GeneralSection extends BaseSection {
 		this.addCustomCSS();
 		this.showCustomCSSPath();
 		this.removeCustomCSS();
+		this.downloadFolder();
 
 		// Platform specific settings
 
@@ -345,6 +360,28 @@ class GeneralSection extends BaseSection {
 		removeCSSButton.addEventListener('click', () => {
 			ConfigUtil.setConfigItem('customCSS');
 			ipcRenderer.send('forward-message', 'hard-reload');
+		});
+	}
+
+	downloadFolderDialog() {
+		const showDialogOptions = {
+			title: 'Select Download Location',
+			defaultId: 1,
+			properties: ['openDirectory']
+		};
+
+		dialog.showOpenDialog(showDialogOptions, selectedFolder => {
+			if (selectedFolder) {
+				ConfigUtil.setConfigItem('downloadsPath', selectedFolder[0]);
+				const downloadFolderPath = document.querySelector('.download-folder-path');
+				downloadFolderPath.innerText = selectedFolder[0];
+			}
+		});
+	}
+	downloadFolder() {
+		const downloadFolder = document.querySelector('#download-folder .download-folder-button');
+		downloadFolder.addEventListener('click', () => {
+			this.downloadFolderDialog();
 		});
 	}
 
