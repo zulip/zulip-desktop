@@ -5,7 +5,6 @@ const windowStateKeeper = require('electron-window-state');
 const isDev = require('electron-is-dev');
 const appMenu = require('./menu');
 const { appUpdater } = require('./autoupdater');
-const { crashHandler } = require('./crash-reporter');
 
 const { setAutoLaunch } = require('./startup');
 
@@ -180,7 +179,6 @@ app.on('ready', () => {
 		if (ConfigUtil.getConfigItem('autoUpdate')) {
 			appUpdater();
 		}
-		crashHandler();
 	});
 
 	// Temporarily remove this event
