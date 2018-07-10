@@ -238,6 +238,17 @@ app.on('ready', () => {
 	ipcMain.on('toggleAutoLauncher', (event, AutoLaunchValue) => {
 		setAutoLaunch(AutoLaunchValue);
 	});
+
+	ipcMain.on('downloadFile', (event, url, downloadPath) => {
+		page.downloadURL(url);
+		page.session.once('will-download', (event, item) => {
+			const filePath = path.join(downloadPath, item.getFilename());
+			item.setSavePath(filePath);
+			item.once('done', () => {
+				page.send('downloadFileCompleted', filePath, item.getFilename());
+			});
+		});
+	});
 });
 
 app.on('before-quit', () => {
