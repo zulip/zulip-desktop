@@ -364,7 +364,8 @@ i.open-tab-button {
 }
 
 .reset-data-button,
-.custom-css-button {
+.custom-css-button,
+.download-folder-button {
     display: inline-block;
     border: none;
     padding: 10px;
@@ -384,7 +385,8 @@ i.open-tab-button {
     color: #fff;
 }
 
-.selected-css-path {
+.selected-css-path,
+.download-folder-path {
     background: #eeeeee;
     padding: 10px;
     margin-top: 10px;
@@ -602,7 +604,8 @@ input.toggle-round:checked+label:after {
 /* responsive grid */
 
 @media (max-width: 650px) {
-    .selected-css-path {
+    .selected-css-path,
+    .download-folder-path  {
         margin-right: 15px;
     }
     #css-delete-action {

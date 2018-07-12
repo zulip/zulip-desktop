@@ -3,7 +3,7 @@
 const { ipcRenderer, remote } = require('electron');
 const isDev = require('electron-is-dev');
 
-const { session } = remote;
+const { session, app } = remote;
 
 require(__dirname + '/js/tray.js');
 const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
@@ -116,7 +116,8 @@ class ServerManagerView {
 			dndPreviousSettings: {
 				showNotification: true,
 				silent: false
-			}
+			},
+			downloadsPath: `${app.getPath('downloads')}`
 		};
 
 		// Platform specific settings
