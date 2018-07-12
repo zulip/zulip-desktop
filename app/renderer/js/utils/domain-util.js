@@ -164,7 +164,7 @@ class DomainUtil {
 						dialog.showMessageBox({
 							type: 'warning',
 							buttons: ['Yes', 'No'],
-							defaultId: 0,
+							defaultId: 1,
 							message: certErrorMessage,
 							detail: certErrorDetail
 						}, response => {
