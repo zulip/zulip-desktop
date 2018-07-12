@@ -4,11 +4,12 @@ const LinkUtil = require('../utils/link-util');
 const DomainUtil = require('../utils/domain-util');
 const ConfigUtil = require('../utils/config-util');
 
+const dingSound = new Audio('../resources/sounds/ding.ogg');
+
 function handleExternalLink(event) {
 	const { url } = event;
 	const domainPrefix = DomainUtil.getDomain(this.props.index).url;
 	const downloadPath = ConfigUtil.getConfigItem('downloadsPath', `${app.getPath('downloads')}`);
-
   // Whitelist URLs which are allowed to be opened in the app
 	const {
     isInternalUrl: isWhiteListURL,
@@ -26,8 +27,15 @@ function handleExternalLink(event) {
 			ipcRenderer.send('downloadFile', url, downloadPath);
 			ipcRenderer.once('downloadFileCompleted', (event, filePath, fileName) => {
 				const downloadNotification = new Notification('Download Complete', {
-					body: `Click to open ${fileName}`
+					body: `Click to open ${fileName}`,
+					silent: true // We'll play our own sound - ding.ogg
 				});
+
+				// Play sound to indicate download complete
+				if (!ConfigUtil.getConfigItem('silent')) {
+					dingSound.play();
+				}
+
 				downloadNotification.onclick = () => {
 					shell.openItem(filePath);
 				};
