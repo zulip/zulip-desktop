@@ -5,6 +5,28 @@
 All notable changes to the Zulip desktop app are documented in this file.
 
 
+### v2.3.3 --2018-07-14
+
+**Enhancements**:
+* Add dock bounce effect on macOS
+* Add a setting option to use the system proxy settings
+* Add support for self/custom signed certificate
+* Add Sentry support to get the bug reports
+* Show a notification when a user clicks on file attachments and open the same in default native app 
+
+
+**Fixes**:
+* Fix auto-updates on Windows
+* Fix image attachments not opening up in the app (99a1711bb07f50e632dc24085725b5c9dcadd805)
+* Security fix - Do proper HTML escaping for server data to avoid XSS attacks 
+* Other minor fixes
+
+**Updated dependencies**:
+
+electron-builder: v20.20.4
+
+electron-updater: v2.23.3
+
 
 ### v2.3.2 --2018-05-28
 
