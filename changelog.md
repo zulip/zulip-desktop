@@ -17,7 +17,7 @@ All notable changes to the Zulip desktop app are documented in this file.
 
 **Fixes**:
 * Fix auto-updates on Windows
-* Fix image attachments not opening up in the app (99a1711bb07f50e632dc24085725b5c9dcadd805)
+* Fix image attachments not opening up in the app
 * Security fix - Do proper HTML escaping for server data to avoid XSS attacks 
 * Other minor fixes
 
