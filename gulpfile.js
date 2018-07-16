@@ -10,11 +10,11 @@ gulp.task('dev', () => {
   // Start browser process
 	electron.start();
   // Restart browser process
-	gulp.watch('app/main/*.js', ['restart:browser']);
+	gulp.watch('app/main/*.js', gulp.series('restart:browser'));
   // Reload renderer process
-	gulp.watch('app/renderer/css/*.css', ['reload:renderer']);
-	gulp.watch('app/renderer/*.html', ['reload:renderer']);
-	gulp.watch('app/renderer/js/**/*.js', ['reload:renderer']);
+	gulp.watch('app/renderer/css/*.css', gulp.series('reload:renderer'));
+	gulp.watch('app/renderer/*.html', gulp.series('reload:renderer'));
+	gulp.watch('app/renderer/js/**/*.js', gulp.series('reload:renderer'));
 });
 
 gulp.task('restart:browser', done => {
@@ -36,4 +36,4 @@ gulp.task('test-e2e', () => {
 	}));
 });
 
-gulp.task('default', ['dev', 'test-e2e']);
+gulp.task('default', gulp.parallel('dev', 'test-e2e'));
