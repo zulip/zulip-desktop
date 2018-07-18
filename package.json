@@ -188,7 +188,8 @@
     ],
     "ignore": [
       "tests/e2e/*.js",
-      "tools/locale-helper/*.js"
+      "tools/locale-helper/*.js",
+      "tests/unit/*.js"
     ],
     "envs": [
       "node",
