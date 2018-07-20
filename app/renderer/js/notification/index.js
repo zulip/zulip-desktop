@@ -20,8 +20,15 @@ if (process.platform === 'darwin') {
 
 window.addEventListener('load', () => {
 	// Call this function only when user is logged in
+	let webpageParams = null;
+	try {
+		// eslint-disable-next-line no-undef, camelcase
+		webpageParams = page_params;
+	} catch (err) {
+		webpageParams = null;
+	}
 	// eslint-disable-next-line no-undef, camelcase
-	if (page_params.realm_uri) {
+	if (webpageParams && page_params.realm_uri) {
 		loadBots();
 	}
 });
