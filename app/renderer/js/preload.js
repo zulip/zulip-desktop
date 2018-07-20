@@ -5,6 +5,7 @@ const SetupSpellChecker = require('./spellchecker');
 
 const ConfigUtil = require(__dirname + '/utils/config-util.js');
 const LinkUtil = require(__dirname + '/utils/link-util.js');
+const params = require(__dirname + '/utils/params-util.js');
 
 // eslint-disable-next-line import/no-unassigned-import
 require('./notification');
@@ -42,46 +43,44 @@ process.once('loaded', () => {
 
 // To prevent failing this script on linux we need to load it after the document loaded
 document.addEventListener('DOMContentLoaded', () => {
+	if (params.isPageParams()) {
 	// Get the default language of the server
-	const serverLanguage = page_params.default_language; // eslint-disable-line no-undef, camelcase
+		const serverLanguage = page_params.default_language; // eslint-disable-line no-undef, camelcase
+		if (serverLanguage) {
+			// Set spellcheker language
+			ConfigUtil.setConfigItem('spellcheckerLanguage', serverLanguage);
+			// Init spellchecker
+			SetupSpellChecker.init();
+		}
+		// redirect users to network troubleshooting page
+		const getRestartButton = document.querySelector('.restart_get_events_button');
+		if (getRestartButton) {
+			getRestartButton.addEventListener('click', () => {
+				ipcRenderer.send('forward-message', 'reload-viewer');
+			});
+		}
+		// Open image attachment link in the lightbox instead of opening in the default browser
+		const { $, lightbox } = window;
+		$('#main_div').on('click', '.message_content p a', function (e) {
+			const url = $(this).attr('href');
 
-	if (serverLanguage) {
-		// Set spellcheker language
-		ConfigUtil.setConfigItem('spellcheckerLanguage', serverLanguage);
-		// Init spellchecker
-		SetupSpellChecker.init();
-	}
+			if (LinkUtil.isImage(url)) {
+				const $img = $(this).parent().siblings('.message_inline_image').find('img');
 
-	// redirect users to network troubleshooting page
-	const getRestartButton = document.querySelector('.restart_get_events_button');
-	if (getRestartButton) {
-		getRestartButton.addEventListener('click', () => {
-			ipcRenderer.send('forward-message', 'reload-viewer');
+				// prevent the image link from opening in a new page.
+				e.preventDefault();
+				// prevent the message compose dialog from happening.
+				e.stopPropagation();
+
+				// Open image in the default browser if image preview is unavailable
+				if (!$img[0]) {
+					shell.openExternal(window.location.origin + url);
+				}
+				// Open image in lightbox
+				lightbox.open($img);
+			}
 		});
 	}
-
-	// Open image attachment link in the lightbox instead of opening in the default browser
-	const { $, lightbox } = window;
-
-	$('#main_div').on('click', '.message_content p a', function (e) {
-		const url = $(this).attr('href');
-
-		if (LinkUtil.isImage(url)) {
-			const $img = $(this).parent().siblings('.message_inline_image').find('img');
-
-			// prevent the image link from opening in a new page.
-			e.preventDefault();
-			// prevent the message compose dialog from happening.
-			e.stopPropagation();
-
-			// Open image in the default browser if image preview is unavailable
-			if (!$img[0]) {
-				shell.openExternal(window.location.origin + url);
-			}
-			// Open image in lightbox
-			lightbox.open($img);
-		}
-	});
 });
 
 // Clean up spellchecker events after you navigate away from this page;

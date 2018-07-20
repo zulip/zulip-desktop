@@ -4,6 +4,7 @@ const {
   remote: { app }
 } = require('electron');
 
+const params = require('../utils/params-util.js');
 const DefaultNotification = require('./default-notification');
 const { appId, loadBots } = require('./helpers');
 
@@ -19,9 +20,8 @@ if (process.platform === 'darwin') {
 }
 
 window.addEventListener('load', () => {
-	// Call this function only when user is logged in
 	// eslint-disable-next-line no-undef, camelcase
-	if (page_params.realm_uri) {
+	if (params.isPageParams() && page_params.realm_uri) {
 		loadBots();
 	}
 });
