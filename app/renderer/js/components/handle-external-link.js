@@ -39,6 +39,14 @@ function handleExternalLink(event) {
 				downloadNotification.onclick = () => {
 					shell.openItem(filePath);
 				};
+				ipcRenderer.removeAllListeners('downloadFileFailed');
+			});
+
+			ipcRenderer.once('downloadFileFailed', () => {
+				// Automatic download failed, so show save dialog prompt and download
+				// through webview
+				this.$el.downloadURL(url);
+				ipcRenderer.removeAllListeners('downloadFileCompleted');
 			});
 			return;
 		}
