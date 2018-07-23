@@ -105,7 +105,7 @@ class GeneralSection extends BaseSection {
 					</div>
 					<div class="setting-row">
 						<div class="setting-description">
-							<div class="download-folder-path">${ConfigUtil.getConfigItem('downloadsPath')}</div>
+							<div class="download-folder-path">${ConfigUtil.getConfigItem('downloadsPath', `${app.getPath('downloads')}`)}</div>
 						</div>
 					</div>
 				</div>
