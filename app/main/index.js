@@ -246,8 +246,35 @@ app.on('ready', () => {
 		page.session.once('will-download', (event, item) => {
 			const filePath = path.join(downloadPath, item.getFilename());
 			item.setSavePath(filePath);
-			item.once('done', () => {
-				page.send('downloadFileCompleted', filePath, item.getFilename());
+			item.on('updated', (event, state) => {
+				switch (state) {
+					case 'interrupted' : {
+						// Can interrupted to due to network error, cancel download then
+						console.log('Download interrupted, cancelling and fallback to dialog download.');
+						item.cancel();
+						break;
+					}
+					case 'progressing': {
+						if (item.isPaused()) {
+							item.cancel();
+						}
+						// This event can also be used to show progres in percentage in future.
+						break;
+					}
+					default: {
+						console.info('Unknown updated state of download item');
+					}
+				}
+			});
+			item.once('done', (event, state) => {
+				if (state === 'completed') {
+					page.send('downloadFileCompleted', item.getSavePath(), item.getFilename());
+				} else {
+					console.log('Download failed state: ', state);
+					page.send('downloadFileFailed');
+				}
+				// To stop item for listening to updated events of this file
+				item.removeAllListeners('updated');
 			});
 		});
 	});
