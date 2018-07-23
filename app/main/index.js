@@ -250,6 +250,7 @@ app.on('ready', () => {
 				switch (state) {
 					case 'interrupted' : {
 						// Can interrupted to due to network error, cancel download then
+						console.log('Download interrupted, cancelling and fallback to dialog download.');
 						item.cancel();
 						break;
 					}
@@ -269,6 +270,7 @@ app.on('ready', () => {
 				if (state === 'completed') {
 					page.send('downloadFileCompleted', item.getSavePath(), item.getFilename());
 				} else {
+					console.log('Download failed state: ', state);
 					page.send('downloadFileFailed');
 				}
 				// To stop item for listening to updated events of this file
