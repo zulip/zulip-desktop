@@ -4,6 +4,13 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v2.3.4-beta --2018-07-24
+
+**Fixes**:
+* Fix downloading functionality of file attachments.
+* Fix null of downloadPath when settings.json fails.
+
+<hr>
 
 ### v2.3.3 --2018-07-14
 
@@ -27,6 +34,7 @@ electron-builder: v20.20.4
 
 electron-updater: v2.23.3
 
+<hr>
 
 ### v2.3.2 --2018-05-28
 
