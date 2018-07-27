@@ -154,10 +154,7 @@ const createTray = function () {
 	]);
 	window.tray.setContextMenu(contextMenu);
 	window.tray.on('click', () => {
-		// Click event only works on Windows
-		if (process.platform === 'win32') {
-			ipcRenderer.send('toggle-app');
-		}
+		ipcRenderer.send('toggle-app');
 	});
 };
 

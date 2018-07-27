@@ -208,10 +208,10 @@ app.on('ready', () => {
 	});
 
 	ipcMain.on('toggle-app', () => {
-		if (mainWindow.isVisible()) {
-			mainWindow.hide();
-		} else {
+		if (!mainWindow.isVisible() || mainWindow.isMinimized() || !mainWindow.isFocused()) {
 			mainWindow.show();
+		} else {
+			mainWindow.hide();
 		}
 	});
 
@@ -248,7 +248,7 @@ app.on('ready', () => {
 			item.setSavePath(filePath);
 			item.on('updated', (event, state) => {
 				switch (state) {
-					case 'interrupted' : {
+					case 'interrupted': {
 						// Can interrupted to due to network error, cancel download then
 						console.log('Download interrupted, cancelling and fallback to dialog download.');
 						item.cancel();
