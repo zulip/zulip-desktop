@@ -73,7 +73,8 @@ function createMainWindow() {
 		minHeight: 400,
 		webPreferences: {
 			plugins: true,
-			nodeIntegration: true
+			nodeIntegration: true,
+			partition: 'persist:webviewsession'
 		},
 		show: false
 	});
