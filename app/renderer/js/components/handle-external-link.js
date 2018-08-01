@@ -29,7 +29,7 @@ function handleExternalLink(event) {
 			ipcRenderer.send('downloadFile', url, downloadPath);
 			ipcRenderer.once('downloadFileCompleted', (event, filePath, fileName) => {
 				const downloadNotification = new Notification('Download Complete', {
-					body: `Click to open ${fileName}`,
+					body: shouldShowInFolder ? `Click to show ${fileName} in folder` : `Click to open ${fileName}`,
 					silent: true // We'll play our own sound - ding.ogg
 				});
 
