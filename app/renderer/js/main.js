@@ -117,7 +117,8 @@ class ServerManagerView {
 				showNotification: true,
 				silent: false
 			},
-			downloadsPath: `${app.getPath('downloads')}`
+			downloadsPath: `${app.getPath('downloads')}`,
+			showDownloadFolder: false
 		};
 
 		// Platform specific settings

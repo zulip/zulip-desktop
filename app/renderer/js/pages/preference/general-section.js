@@ -97,6 +97,10 @@ class GeneralSection extends BaseSection {
 				</div>
 				<div class="title">Advanced</div>
 				<div class="settings-card">
+				<div class="setting-row" id="show-download-folder">
+					<div class="setting-description">Show downloaded file in the file manager</div>
+					<div class="setting-control"></div>
+				</div>
 					<div class="setting-row" id="download-folder">
 						<div class="setting-description">
 							Default download location
@@ -108,6 +112,7 @@ class GeneralSection extends BaseSection {
 							<div class="download-folder-path">${ConfigUtil.getConfigItem('downloadsPath', `${app.getPath('downloads')}`)}</div>
 						</div>
 					</div>
+
 				</div>
 				<div class="title">Reset Application Data</div>
                 <div class="settings-card">
@@ -138,6 +143,7 @@ class GeneralSection extends BaseSection {
 		this.showCustomCSSPath();
 		this.removeCustomCSS();
 		this.downloadFolder();
+		this.showDownloadFolder();
 
 		// Platform specific settings
 
@@ -382,6 +388,18 @@ class GeneralSection extends BaseSection {
 		const downloadFolder = document.querySelector('#download-folder .download-folder-button');
 		downloadFolder.addEventListener('click', () => {
 			this.downloadFolderDialog();
+		});
+	}
+
+	showDownloadFolder() {
+		this.generateSettingOption({
+			$element: document.querySelector('#show-download-folder .setting-control'),
+			value: ConfigUtil.getConfigItem('showDownloadFolder', false),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('showDownloadFolder');
+				ConfigUtil.setConfigItem('showDownloadFolder', newValue);
+				this.showDownloadFolder();
+			}
 		});
 	}
 
