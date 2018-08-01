@@ -279,6 +279,10 @@ app.on('ready', () => {
 			});
 		});
 	});
+
+	ipcMain.on('realm-icon-changed', (event, serverURL, iconURL) => {
+		page.send('update-realm-icon', serverURL, iconURL);
+	});
 });
 
 app.on('before-quit', () => {
