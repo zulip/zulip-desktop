@@ -5,6 +5,7 @@ const SetupSpellChecker = require('./spellchecker');
 
 const ConfigUtil = require(__dirname + '/utils/config-util.js');
 const LinkUtil = require(__dirname + '/utils/link-util.js');
+const params = require(__dirname + '/utils/params-util.js');
 
 // eslint-disable-next-line import/no-unassigned-import
 require('./notification');
@@ -39,14 +40,8 @@ process.once('loaded', () => {
 
 // To prevent failing this script on linux we need to load it after the document loaded
 document.addEventListener('DOMContentLoaded', () => {
+	if (params.isPageParams()) {
 	// Get the default language of the server
-	let webpageParams = null;
-	try {
-		webpageParams = page_params;   // eslint-disable-line no-undef, camelcase
-	} catch (err) {
-		webpageParams = null;
-	}
-	if (webpageParams) {
 		const serverLanguage = page_params.default_language; // eslint-disable-line no-undef, camelcase
 		if (serverLanguage) {
 			// Set spellcheker language
