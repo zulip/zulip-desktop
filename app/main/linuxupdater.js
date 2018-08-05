@@ -4,6 +4,7 @@ const { Notification } = require('electron');
 const request = require('request');
 const semver = require('semver');
 const ConfigUtil = require('../renderer/js/utils/config-util');
+const ProxyUtil = require('../renderer/js/utils/proxy-util');
 const LinuxUpdateUtil = require('../renderer/js/utils/linux-update-util');
 const Logger = require('../renderer/js/utils/logger-util');
 
@@ -15,10 +16,12 @@ const logger = new Logger({
 function linuxUpdateNotification() {
 	let	url = 'https://api.github.com/repos/zulip/zulip-electron/releases';
 	url = ConfigUtil.getConfigItem('betaUpdate') ? url : url + '/latest';
+	const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
 
 	const options = {
 		url,
-		headers: {'User-Agent': 'request'}
+		headers: {'User-Agent': 'request'},
+		proxy: proxyEnabled ? ProxyUtil.getProxy(url) : ''
 	};
 
 	request(options, (error, response, body) => {
