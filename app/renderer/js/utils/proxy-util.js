@@ -1,5 +1,6 @@
 'use strict';
 
+const url = require('url');
 const ConfigUtil = require('./config-util.js');
 
 let instance = null;
@@ -13,6 +14,39 @@ class ProxyUtil {
 		}
 
 		return instance;
+	}
+
+	// Return proxy to be used for a particular uri, to be used for request
+	getProxy(uri) {
+		uri = url.parse(uri);
+		const proxyRules = ConfigUtil.getConfigItem('proxyRules', '').split(';');
+		// If SPS is on and system uses no proxy then request should not try to use proxy from
+		// environment. NO_PROXY = '*' makes request ignore all environment proxy variables.
+		if (proxyRules[0] === '') {
+			process.env.NO_PROXY = '*';
+			return;
+		}
+
+		const proxyRule = {};
+		if (uri.protocol === 'http:') {
+			proxyRules.forEach(proxy => {
+				if (proxy.includes('http=')) {
+					proxyRule.hostname = proxy.split('http=')[1].trim().split(':')[0];
+					proxyRule.port = proxy.split('http=')[1].trim().split(':')[1];
+				}
+			});
+			return proxyRule;
+		}
+
+		if (uri.protocol === 'https:') {
+			proxyRules.forEach(proxy => {
+				if (proxy.includes('https=')) {
+					proxyRule.hostname = proxy.split('https=')[1].trim().split(':')[0];
+					proxyRule.port = proxy.split('https=')[1].trim().split(':')[1];
+				}
+			});
+			return proxyRule;
+		}
 	}
 
 	resolveSystemProxy(mainWindow) {
