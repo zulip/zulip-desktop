@@ -73,7 +73,8 @@ function createMainWindow() {
 		minHeight: 400,
 		webPreferences: {
 			plugins: true,
-			nodeIntegration: true
+			nodeIntegration: true,
+			partition: 'persist:webviewsession'
 		},
 		show: false
 	});
@@ -175,7 +176,7 @@ app.on('ready', () => {
 	});
 
 	page.once('did-frame-finish-load', () => {
-		// Initate auto-updates on MacOS and Windows
+		// Initiate auto-updates on MacOS and Windows
 		if (ConfigUtil.getConfigItem('autoUpdate')) {
 			appUpdater();
 		}
@@ -277,6 +278,10 @@ app.on('ready', () => {
 				item.removeAllListeners('updated');
 			});
 		});
+	});
+
+	ipcMain.on('realm-icon-changed', (event, serverURL, iconURL) => {
+		page.send('update-realm-icon', serverURL, iconURL);
 	});
 });
 

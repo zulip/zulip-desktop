@@ -388,8 +388,7 @@ i.open-tab-button {
 .selected-css-path,
 .download-folder-path {
     background: #eeeeee;
-    padding: 10px;
-    margin-top: 10px;
+    padding: 5px 10px;
     margin-right: 10px;
     display: flex;
     width: 90%;
@@ -565,7 +564,7 @@ input.toggle-round:checked+label:after {
 
 .certificate-input {
      width:100%;
-     margin-top: 10px; 
+     margin-top: 10px;
      display:inline-flex;
 }
 

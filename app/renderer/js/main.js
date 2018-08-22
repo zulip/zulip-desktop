@@ -117,7 +117,8 @@ class ServerManagerView {
 				showNotification: true,
 				silent: false
 			},
-			downloadsPath: `${app.getPath('downloads')}`
+			downloadsPath: `${app.getPath('downloads')}`,
+			showDownloadFolder: false
 		};
 
 		// Platform specific settings
@@ -395,6 +396,22 @@ class ServerManagerView {
 			const webview = document.querySelector(selector);
 			const webContents = webview.getWebContents();
 			webContents.send('toggle-dnd', state, newSettings);
+		});
+
+		ipcRenderer.on('update-realm-icon', (event, serverURL, iconURL) => {
+			DomainUtil.getDomains().forEach((domain, index) => {
+				if (domain.url.includes(serverURL)) {
+					DomainUtil.saveServerIcon(iconURL).then(localIconUrl => {
+						const serverImgsSelector = `.tab .server-icons`;
+						const serverImgs = document.querySelectorAll(serverImgsSelector);
+						serverImgs[index].src = localIconUrl;
+
+						domain.icon = localIconUrl;
+						DomainUtil.db.push(`/domains[${index}]`, domain, true);
+						DomainUtil.reloadDB();
+					});
+				}
+			});
 		});
 	}
 

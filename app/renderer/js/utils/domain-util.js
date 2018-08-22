@@ -10,6 +10,8 @@ const escape = require('escape-html');
 const Logger = require('./logger-util');
 
 const CertificateUtil = require(__dirname + '/certificate-util.js');
+const ProxyUtil = require(__dirname + '/proxy-util.js');
+const ConfigUtil = require(__dirname + '/config-util.js');
 
 const logger = new Logger({
 	file: `domain-util.log`,
@@ -119,8 +121,16 @@ class DomainUtil {
 				logger.warn('Error while trying to get certificate: ' + err);
 			}
 		}
+
+		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
+
 		// If certificate for the domain exists add it as a ca key in the request's parameter else consider only domain as the parameter for request
-		const checkDomain = (certificateLocation) ? ({url: domain + '/static/audio/zulip.ogg', ca: certificateLocation}) : domain + '/static/audio/zulip.ogg';
+		// Add proxy as a parameter if it sbeing used.
+		const checkDomain = {
+			url: domain + '/static/audio/zulip.ogg',
+			ca: (certificateLocation) ? certificateLocation : '',
+			proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : ''
+		};
 
 		const serverConf = {
 			icon: defaultIconUrl,
@@ -193,9 +203,13 @@ class DomainUtil {
 	}
 
 	getServerSettings(domain) {
-		const serverSettingsUrl = domain + '/api/v1/server_settings';
+		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
+		const serverSettingsOptions = {
+			url: domain + '/api/v1/server_settings',
+			proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : ''
+		};
 		return new Promise((resolve, reject) => {
-			request(serverSettingsUrl, (error, response) => {
+			request(serverSettingsOptions, (error, response) => {
 				if (!error && response.statusCode === 200) {
 					const data = JSON.parse(response.body);
 					if (data.hasOwnProperty('realm_icon') && data.realm_icon) {
@@ -215,12 +229,17 @@ class DomainUtil {
 	}
 
 	saveServerIcon(url) {
+		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
+		const serverIconOptions = {
+			url,
+			proxy: proxyEnabled ? ProxyUtil.getProxy(url) : ''
+		};
 		// The save will always succeed. If url is invalid, downgrade to default icon.
 		return new Promise(resolve => {
 			const filePath = this.generateFilePath(url);
 			const file = fs.createWriteStream(filePath);
 			try {
-				request(url).on('response', response => {
+				request(serverIconOptions).on('response', response => {
 					response.on('error', err => {
 						logger.log('Could not get server icon.');
 						logger.log(err);

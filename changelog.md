@@ -4,6 +4,21 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+
+### v2.3.5 --2018-08-03
+
+**New features**:
+* Add a setting option to show downloaded file in file manager.
+* Added electron bridge to communicate with webapp in real time.
+
+**Fixes**:
+
+* Fix failing attached file downloads.
+* Fix page_params error.
+* gulpfile: Update syntax and methods for gulp v4.x.
+
+<hr>
+
 ### v2.3.4-beta --2018-07-24
 
 **Fixes**:
