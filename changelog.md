@@ -4,7 +4,7 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
-### v2.3.5 --2018-08-27
+### v2.3.6 --2018-08-27
 
 **New features**:
 * Add proxy details while validating a server. This fixes the server validating issue for users who are using the proxy settings. 
