@@ -16,6 +16,8 @@ const ReconnectUtil = require(__dirname + '/js/utils/reconnect-util.js');
 const Logger = require(__dirname + '/js/utils/logger-util.js');
 const { feedbackHolder } = require(__dirname + '/js/feedback.js');
 
+const Sortable  = require('sortablejs');
+
 const logger = new Logger({
 	file: 'errors.log',
 	timestamp: true
@@ -41,6 +43,8 @@ class ServerManagerView {
 		this.$dndTooltip = $actionsContainer.querySelector('#dnd-tooltip');
 
 		this.$sidebar = document.getElementById('sidebar');
+
+		this.$drag = document.querySelector('.simpleList');
 
 		this.$fullscreenPopup = document.getElementById('fullscreen-popup');
 		this.$fullscreenEscapeKey = process.platform === 'darwin' ? '^⌘F' : 'F11';
@@ -142,6 +146,7 @@ class ServerManagerView {
 	initSidebar() {
 		const showSidebar = ConfigUtil.getConfigItem('showSidebar', true);
 		this.toggleSidebar(showSidebar);
+		this.$sortable = Sortable.create(this.$drag);
 	}
 
 	initTabs() {
@@ -159,6 +164,7 @@ class ServerManagerView {
 		} else {
 			this.openSettings('AddServer');
 		}
+
 	}
 
 	initServer(server, index) {

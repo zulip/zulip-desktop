@@ -40,7 +40,8 @@
     "node-json-db": "0.7.3",
     "request": "2.85.0",
     "semver": "5.4.1",
-    "wurl": "2.5.0"
+    "wurl": "2.5.0",
+    "sortablejs": "*"
   },
   "optionalDependencies": {
     "node-mac-notifier": "0.1.0"
