@@ -212,7 +212,8 @@ app.on('ready', () => {
 			width: mainWindowState.width - paddingWidth,
 			height: mainWindowState.height - paddingHeight,
 			webPreferences: {
-				plugins: true
+				plugins: true,
+				partition: 'persist:webviewsession'
 			}
 		});
 		pdfWindow.loadURL(url);
