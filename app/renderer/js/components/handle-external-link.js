@@ -21,11 +21,19 @@ function handleExternalLink(event) {
 	if (isWhiteListURL) {
 		event.preventDefault();
 
-		// download txt, pdf, mp3, mp4 etc.. by using downloadURL in the
+		// Show pdf attachments in a new window
+
+		if (LinkUtil.isPDF(url) && isUploadsURL) {
+			ipcRenderer.send('pdf-view', url);
+			return;
+		}
+
+		// download txt, mp3, mp4 etc.. by using downloadURL in the
 		// main process which allows the user to save the files to their desktop
 		// and not trigger webview reload while image in webview will
 		// do nothing and will not save it
-		if (!LinkUtil.isImage(url) && isUploadsURL) {
+
+		if (!LinkUtil.isImage(url) && !LinkUtil.isPDF(url) && isUploadsURL) {
 			ipcRenderer.send('downloadFile', url, downloadPath);
 			ipcRenderer.once('downloadFileCompleted', (event, filePath, fileName) => {
 				const downloadNotification = new Notification('Download Complete', {

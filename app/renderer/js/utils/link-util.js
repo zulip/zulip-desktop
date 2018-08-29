@@ -34,6 +34,12 @@ class LinkUtil {
 		const isImageUrl = /\.(bmp|gif|jpg|jpeg|png|webp)\?*.*$/i;
 		return isImageUrl.test(url);
 	}
+
+	isPDF(url) {
+		// test for pdf extension
+		const isPDFUrl = /\.(pdf)\?*.*$/i;
+		return isPDFUrl.test(url);
+	}
 }
 
 module.exports = new LinkUtil();
