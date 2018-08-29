@@ -196,6 +196,29 @@ app.on('ready', () => {
 		app.quit();
 	});
 
+	// Show pdf in a new BrowserWindow
+	ipcMain.on('pdf-view', (event, url) => {
+		// Paddings for pdfWindow so that it fits into the main browserWindow
+		const paddingWidth = 55;
+		const paddingHeight = 22;
+
+		// Get the config of main browserWindow
+		const mainWindowState = global.mainWindowState;
+
+		// Window to view the pdf file
+		const pdfWindow = new electron.BrowserWindow({
+			x: mainWindowState.x + paddingWidth,
+			y: mainWindowState.y + paddingHeight,
+			width: mainWindowState.width - paddingWidth,
+			height: mainWindowState.height - paddingHeight,
+			webPreferences: {
+				plugins: true,
+				partition: 'persist:webviewsession'
+			}
+		});
+		pdfWindow.loadURL(url);
+	});
+
 	// Reload full app not just webview, useful in debugging
 	ipcMain.on('reload-full-app', () => {
 		mainWindow.reload();
@@ -249,7 +272,7 @@ app.on('ready', () => {
 			item.setSavePath(filePath);
 			item.on('updated', (event, state) => {
 				switch (state) {
-					case 'interrupted' : {
+					case 'interrupted': {
 						// Can interrupted to due to network error, cancel download then
 						console.log('Download interrupted, cancelling and fallback to dialog download.');
 						item.cancel();
