@@ -217,6 +217,9 @@ app.on('ready', () => {
 			}
 		});
 		pdfWindow.loadURL(url);
+
+		// We don't want to have the menu bar in pdf window
+		pdfWindow.setMenu(null);
 	});
 
 	// Reload full app not just webview, useful in debugging
