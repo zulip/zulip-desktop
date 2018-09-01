@@ -14,6 +14,7 @@ Please see the [installation guide](https://zulipchat.com/help/desktop-app-insta
 # Features
 * Sign in to multiple teams
 * Desktop notifications with inline reply
+* Tray/dock integration
 * Multi-language spell checker
 * Automatic updates
 
