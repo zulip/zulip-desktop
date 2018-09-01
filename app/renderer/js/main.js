@@ -16,8 +16,6 @@ const ReconnectUtil = require(__dirname + '/js/utils/reconnect-util.js');
 const Logger = require(__dirname + '/js/utils/logger-util.js');
 const { feedbackHolder } = require(__dirname + '/js/feedback.js');
 
-const escape = require('escape-html');
-
 const logger = new Logger({
 	file: 'errors.log',
 	timestamp: true
@@ -253,7 +251,7 @@ class ServerManagerView {
 	}
 
 	onHover(index, serverName) {
-		this.$serverIconTooltip[index].innerHTML = escape(serverName);
+		this.$serverIconTooltip[index].innerHTML = serverName;
 		this.$serverIconTooltip[index].removeAttribute('style');
 		// To handle position of servers' tooltip due to scrolling of list of organizations
 		// This could not be handled using CSS, hence the top of the tooltip is made same
