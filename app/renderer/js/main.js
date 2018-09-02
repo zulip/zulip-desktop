@@ -16,7 +16,7 @@ const ReconnectUtil = require(__dirname + '/js/utils/reconnect-util.js');
 const Logger = require(__dirname + '/js/utils/logger-util.js');
 const { feedbackHolder } = require(__dirname + '/js/feedback.js');
 
-const Sortable  = require('sortablejs');
+const Sortable = require('sortablejs');
 
 const logger = new Logger({
 	file: 'errors.log',
@@ -146,7 +146,27 @@ class ServerManagerView {
 	initSidebar() {
 		const showSidebar = ConfigUtil.getConfigItem('showSidebar', true);
 		this.toggleSidebar(showSidebar);
-		this.$sortable = Sortable.create(this.$drag);
+
+		// Allow dragging of server tabs and update the data-tab-id
+		const _this = this;
+		this.$sortable = Sortable.create(this.$drag, {
+			dataIdAttr: 'data-sortable-id',
+			onEnd() {
+				const newTabs = [];
+				const tabElements = document.querySelectorAll('#tabs-container .tab');
+				tabElements.forEach((el, index) => {
+					const oldIndex = +el.getAttribute('data-tab-id');
+					newTabs.push(_this.tabs[oldIndex]);
+					el.setAttribute('data-tab-id', index.toString());
+				});
+
+				_this.tabs = newTabs;
+				ipcRenderer.send('update-menu', {
+					tabs: _this.tabs,
+					activeTabIndex: _this.activeTabIndex
+				});
+			}
+		});
 	}
 
 	initTabs() {
@@ -164,7 +184,6 @@ class ServerManagerView {
 		} else {
 			this.openSettings('AddServer');
 		}
-
 	}
 
 	initServer(server, index) {
