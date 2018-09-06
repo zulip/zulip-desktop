@@ -367,52 +367,6 @@ class ServerManagerView {
 			tabs: this.tabs,
 			activeTabIndex: this.activeTabIndex
 		});
-
-		ipcRenderer.on('toggle-sidebar', (event, state) => {
-			const selector = 'webview:not([class*=disabled])';
-			const webview = document.querySelector(selector);
-			const webContents = webview.getWebContents();
-			webContents.send('toggle-sidebar', state);
-		});
-
-		ipcRenderer.on('toggle-silent', (event, state) => {
-			const webviews = document.querySelectorAll('webview');
-			webviews.forEach(webview => {
-				try {
-					webview.setAudioMuted(state);
-				} catch (err) {
-					// webview is not ready yet
-					webview.addEventListener('dom-ready', () => {
-						webview.isAudioMuted();
-					});
-				}
-			});
-		});
-
-		ipcRenderer.on('toggle-dnd', (event, state, newSettings) => {
-			this.toggleDNDButton(state);
-			ipcRenderer.send('forward-message', 'toggle-silent', newSettings.silent);
-			const selector = 'webview:not([class*=disabled])';
-			const webview = document.querySelector(selector);
-			const webContents = webview.getWebContents();
-			webContents.send('toggle-dnd', state, newSettings);
-		});
-
-		ipcRenderer.on('update-realm-icon', (event, serverURL, iconURL) => {
-			DomainUtil.getDomains().forEach((domain, index) => {
-				if (domain.url.includes(serverURL)) {
-					DomainUtil.saveServerIcon(iconURL).then(localIconUrl => {
-						const serverImgsSelector = `.tab .server-icons`;
-						const serverImgs = document.querySelectorAll(serverImgsSelector);
-						serverImgs[index].src = localIconUrl;
-
-						domain.icon = localIconUrl;
-						DomainUtil.db.push(`/domains[${index}]`, domain, true);
-						DomainUtil.reloadDB();
-					});
-				}
-			});
-		});
 	}
 
 	destroyTab(name, index) {
@@ -544,6 +498,52 @@ class ServerManagerView {
 
 		ipcRenderer.on('toggle-sidebar', (event, show) => {
 			this.toggleSidebar(show);
+		});
+
+		ipcRenderer.on('toggle-sidebar', (event, state) => {
+			const selector = 'webview:not([class*=disabled])';
+			const webview = document.querySelector(selector);
+			const webContents = webview.getWebContents();
+			webContents.send('toggle-sidebar', state);
+		});
+
+		ipcRenderer.on('toggle-silent', (event, state) => {
+			const webviews = document.querySelectorAll('webview');
+			webviews.forEach(webview => {
+				try {
+					webview.setAudioMuted(state);
+				} catch (err) {
+					// webview is not ready yet
+					webview.addEventListener('dom-ready', () => {
+						webview.isAudioMuted();
+					});
+				}
+			});
+		});
+
+		ipcRenderer.on('toggle-dnd', (event, state, newSettings) => {
+			this.toggleDNDButton(state);
+			ipcRenderer.send('forward-message', 'toggle-silent', newSettings.silent);
+			const selector = 'webview:not([class*=disabled])';
+			const webview = document.querySelector(selector);
+			const webContents = webview.getWebContents();
+			webContents.send('toggle-dnd', state, newSettings);
+		});
+
+		ipcRenderer.on('update-realm-icon', (event, serverURL, iconURL) => {
+			DomainUtil.getDomains().forEach((domain, index) => {
+				if (domain.url.includes(serverURL)) {
+					DomainUtil.saveServerIcon(iconURL).then(localIconUrl => {
+						const serverImgsSelector = `.tab .server-icons`;
+						const serverImgs = document.querySelectorAll(serverImgsSelector);
+						serverImgs[index].src = localIconUrl;
+
+						domain.icon = localIconUrl;
+						DomainUtil.db.push(`/domains[${index}]`, domain, true);
+						DomainUtil.reloadDB();
+					});
+				}
+			});
 		});
 
 		ipcRenderer.on('enter-fullscreen', () => {
