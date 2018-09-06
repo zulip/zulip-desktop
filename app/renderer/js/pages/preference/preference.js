@@ -90,7 +90,7 @@ class PreferenceView extends BaseComponent {
 			this.handleNavigation(navItem);
 		});
 
-		ipcRenderer.on('toggle-sidebar', (event, state) => {
+		ipcRenderer.on('toggle-sidebar-setting', (event, state) => {
 			this.handleToggle('sidebar-option', state);
 		});
 

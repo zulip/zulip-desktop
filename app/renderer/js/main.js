@@ -532,14 +532,14 @@ class ServerManagerView {
 		});
 
 		ipcRenderer.on('toggle-sidebar', (event, show) => {
+			// Toggle the left sidebar
 			this.toggleSidebar(show);
-		});
 
-		ipcRenderer.on('toggle-sidebar', (event, state) => {
+			// Toggle sidebar switch in the general settings
 			const selector = 'webview:not([class*=disabled])';
 			const webview = document.querySelector(selector);
 			const webContents = webview.getWebContents();
-			webContents.send('toggle-sidebar', state);
+			webContents.send('toggle-sidebar-setting', show);
 		});
 
 		ipcRenderer.on('toggle-silent', (event, state) => {
