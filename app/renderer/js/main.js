@@ -515,7 +515,7 @@ class ServerManagerView {
 				} catch (err) {
 					// webview is not ready yet
 					webview.addEventListener('dom-ready', () => {
-						webview.isAudioMuted();
+						webview.setAudioMuted(state);
 					});
 				}
 			});
