@@ -1,5 +1,7 @@
 'use strict';
 const path = require('path');
+const fs = require('fs');
+
 const electron = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const isDev = require('electron-is-dev');
@@ -272,7 +274,26 @@ app.on('ready', () => {
 		page.downloadURL(url);
 		page.session.once('will-download', (event, item) => {
 			const filePath = path.join(downloadPath, item.getFilename());
-			item.setSavePath(filePath);
+
+			const getTimeStamp = () => {
+				const date = new Date();
+				return date.getTime();
+			};
+
+			const formatFile = filePath => {
+				const fileExtension = path.extname(filePath);
+				const baseName = path.basename(filePath, fileExtension);
+				return `${baseName}-${getTimeStamp()}${fileExtension}`;
+			};
+
+			// Update the name and path of the file if it already exists
+
+			const updatedFilePath = path.join(downloadPath, formatFile(filePath));
+
+			const setFilePath = fs.existsSync(filePath) ? updatedFilePath : filePath;
+
+			item.setSavePath(setFilePath);
+
 			item.on('updated', (event, state) => {
 				switch (state) {
 					case 'interrupted': {
@@ -285,7 +306,7 @@ app.on('ready', () => {
 						if (item.isPaused()) {
 							item.cancel();
 						}
-						// This event can also be used to show progres in percentage in future.
+						// This event can also be used to show progress in percentage in future.
 						break;
 					}
 					default: {
@@ -294,8 +315,9 @@ app.on('ready', () => {
 				}
 			});
 			item.once('done', (event, state) => {
+				const getFileName = fs.existsSync(filePath) ? formatFile(filePath) : item.getFilename();
 				if (state === 'completed') {
-					page.send('downloadFileCompleted', item.getSavePath(), item.getFilename());
+					page.send('downloadFileCompleted', item.getSavePath(), getFileName);
 				} else {
 					console.log('Download failed state: ', state);
 					page.send('downloadFileFailed');
