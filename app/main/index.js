@@ -328,6 +328,10 @@ app.on('ready', () => {
 		});
 	});
 
+	ipcMain.on('realm-name-changed', (event, serverURL, realmName) => {
+		page.send('update-realm-name', serverURL, realmName);
+	});
+
 	ipcMain.on('realm-icon-changed', (event, serverURL, iconURL) => {
 		page.send('update-realm-icon', serverURL, iconURL);
 	});

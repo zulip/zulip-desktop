@@ -21,8 +21,9 @@ electron_bridge.on('total_unread_count', (...args) => {
 	ipcRenderer.send('unread-count', ...args);
 });
 
-electron_bridge.on('realm_name', (...args) => {
-	ipcRenderer.send('realm-name-changed', ...args);
+electron_bridge.on('realm_name', realmName => {
+	const serverURL = location.origin;
+	ipcRenderer.send('realm-name-changed', serverURL, realmName);
 });
 
 electron_bridge.on('realm_icon_url', iconURL => {
