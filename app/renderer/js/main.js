@@ -4,6 +4,7 @@ const { ipcRenderer, remote } = require('electron');
 const isDev = require('electron-is-dev');
 
 const { session, app } = remote;
+const escape = require('escape-html');
 
 require(__dirname + '/js/tray.js');
 const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
@@ -168,11 +169,12 @@ class ServerManagerView {
 		this.tabs.push(new ServerTab({
 			role: 'server',
 			icon: server.icon,
+			name: server.alias,
 			$root: this.$tabsContainer,
 			onClick: this.activateLastTab.bind(this, index),
 			index,
 			tabIndex,
-			onHover: this.onHover.bind(this, index, server.alias),
+			onHover: this.onHover.bind(this, index),
 			onHoverOut: this.onHoverOut.bind(this, index),
 			webview: new WebView({
 				$root: this.$webviewsContainer,
@@ -252,8 +254,9 @@ class ServerManagerView {
 		});
 	}
 
-	onHover(index, serverName) {
-		this.$serverIconTooltip[index].innerHTML = serverName;
+	onHover(index) {
+		// this.$serverIconTooltip[index].innerHTML already has realm name, so we are just
+		// removing the style.
 		this.$serverIconTooltip[index].removeAttribute('style');
 		// To handle position of servers' tooltip due to scrolling of list of organizations
 		// This could not be handled using CSS, hence the top of the tooltip is made same
@@ -528,6 +531,27 @@ class ServerManagerView {
 			const webview = document.querySelector(selector);
 			const webContents = webview.getWebContents();
 			webContents.send('toggle-dnd', state, newSettings);
+		});
+
+		ipcRenderer.on('update-realm-name', (event, serverURL, realmName) => {
+			DomainUtil.getDomains().forEach((domain, index) => {
+				if (domain.url.includes(serverURL)) {
+					const serverTooltipSelector = `.tab .server-tooltip`;
+					const serverTooltips = document.querySelectorAll(serverTooltipSelector);
+					serverTooltips[index].innerHTML = escape(realmName);
+					this.tabs[index].props.name = escape(realmName);
+					this.tabs[index].webview.props.name = realmName;
+
+					domain.alias = escape(realmName);
+					DomainUtil.db.push(`/domains[${index}]`, domain, true);
+					DomainUtil.reloadDB();
+					// Update the realm name also on the Window menu
+					ipcRenderer.send('update-menu', {
+						tabs: this.tabs,
+						activeTabIndex: this.activeTabIndex
+					});
+				}
+			});
 		});
 
 		ipcRenderer.on('update-realm-icon', (event, serverURL, iconURL) => {
