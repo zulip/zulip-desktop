@@ -237,10 +237,10 @@ app.on('ready', () => {
 	});
 
 	ipcMain.on('toggle-app', () => {
-		if (mainWindow.isVisible()) {
-			mainWindow.hide();
-		} else {
+		if (!mainWindow.isVisible() || mainWindow.isMinimized()) {
 			mainWindow.show();
+		} else {
+			mainWindow.hide();
 		}
 	});
 

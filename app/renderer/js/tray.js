@@ -3,9 +3,9 @@ const path = require('path');
 
 const electron = require('electron');
 
-const {ipcRenderer, remote} = electron;
+const { ipcRenderer, remote } = electron;
 
-const {Tray, Menu, nativeImage, BrowserWindow} = remote;
+const { Tray, Menu, nativeImage, BrowserWindow } = remote;
 
 const APP_ICON = path.join(__dirname, '../../resources/tray', 'tray');
 
@@ -153,12 +153,11 @@ const createTray = function () {
 	}
 	]);
 	window.tray.setContextMenu(contextMenu);
-	window.tray.on('click', () => {
-		// Click event only works on Windows
-		if (process.platform === 'win32') {
+	if (process.platform === 'linux' || process.platform === 'win32') {
+		window.tray.on('click', () => {
 			ipcRenderer.send('toggle-app');
-		}
-	});
+		});
+	}
 };
 
 ipcRenderer.on('destroytray', event => {
