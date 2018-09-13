@@ -242,16 +242,17 @@ class ServerManagerView {
 	}
 
 	displayInitalCharLogo($img) {
-		const $webview = document.querySelector('webview');
+		const $altIcon = document.createElement('div');
+		const $parent = $img.parentElement;
+		const $container = $parent.parentElement;
+		const webviewId = $container.dataset.tabId;
+		const $webview = document.querySelector(`webview[data-tab-id="${webviewId}"]`);
 		const realmName = $webview.getAttribute('name');
 
 		if (realmName === null) {
 			$img.src = '/img/icon.png';
 			return;
 		}
-
-		const $altIcon = document.createElement('div');
-		const $parent = $img.parentElement;
 
 		$altIcon.textContent = realmName.charAt(0) || 'Z';
 		$altIcon.classList.add('server-icon');
