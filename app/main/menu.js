@@ -415,7 +415,8 @@ class AppMenu {
 			label: '&Window',
 			submenu: this.getWindowSubmenu(tabs, activeTabIndex)
 		}, {
-			role: '&help',
+			label: '&Help',
+			role: 'help',
 			submenu: this.getHelpSubmenu()
 		}];
 	}
