@@ -320,7 +320,7 @@ class AppMenu {
 		const { tabs, activeTabIndex } = props;
 
 		return [{
-			label: 'File',
+			label: '&File',
 			submenu: [{
 				label: 'About Zulip',
 				click(item, focusedWindow) {
@@ -383,7 +383,7 @@ class AppMenu {
 				accelerator: 'Ctrl+Q'
 			}]
 		}, {
-			label: 'Edit',
+			label: '&Edit',
 			submenu: [{
 				role: 'undo'
 			}, {
@@ -406,16 +406,16 @@ class AppMenu {
 				role: 'selectall'
 			}]
 		}, {
-			label: 'View',
+			label: '&View',
 			submenu: this.getViewSubmenu()
 		}, {
-			label: 'History',
+			label: '&History',
 			submenu: this.getHistorySubmenu()
 		}, {
-			label: 'Window',
+			label: '&Window',
 			submenu: this.getWindowSubmenu(tabs, activeTabIndex)
 		}, {
-			role: 'help',
+			role: '&help',
 			submenu: this.getHelpSubmenu()
 		}];
 	}
