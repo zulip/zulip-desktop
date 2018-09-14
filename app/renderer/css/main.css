@@ -190,7 +190,10 @@ body {
     font-family: Verdana;
     font-weight: 600;
     font-size: 22px;
-    margin-top: -1px;
+    border: 2px solid #222c31;
+    margin-left: 17%;
+    width: 33px;
+    border-radius: 50%;
 }
 
 .tab .server-tab:hover {
