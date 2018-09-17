@@ -14,7 +14,7 @@ body {
 kbd {
     display: inline-block;
     border: 1px solid #ccc;
-    border-radius: 3px;
+    border-radius: 4px;
     font-size: 15px;
     font-family: Courier New, Courier, monospace;
     font-weight: bold;
@@ -128,7 +128,6 @@ td:nth-child(odd) {
     left: -8px;
     content: '';
 }
-
 
 /* We don't want to show this in nav item since we have the + button for adding an Organization */
 
@@ -246,7 +245,7 @@ img.server-info-icon {
 .setting-input-value {
     flex-grow: 1;
     font-size: 14px;
-    border-radius: 3px;
+    border-radius: 4px;
     padding: 13px;
     border: #ededed 2px solid;
     outline-width: 0;
@@ -306,7 +305,7 @@ img.server-info-icon {
     padding: 12px 30px;
     margin: 10px 0 20px 0;
     background: #fff;
-    width: 70%;
+    width: 80%;
     transition: all 0.2s;
 }
 
@@ -323,20 +322,37 @@ img.server-info-icon {
     color: #ef5350;
     padding: 8px;
     border: rgba(239, 83, 80, 0.5) solid 1px;
+    border-radius: 4px;
+    border-color: #fff;
 }
 
 .red:hover {
-    color: #e63431;
-    border: rgba(239, 83, 80, 0.7) solid 1px;
-    ;
+    background-color: rgba(230, 52, 49, 0.5);
+    color: #fff;
 }
 
-.blue {
-    color: #ffffff;
+.green {
+    color: #fff;
     background: #4EBFAC;
-    padding: 3px;
-    padding-right: 10px;
-    padding-left: 10px;
+    border-radius: 4px;
+    display: inline-block;
+    border: none;
+    padding: 10px;
+    width: 110px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+}
+
+.green:hover {
+    background-color: #3c9f8d;
+    color: #fff;
+}
+
+.w-200 {
+    width: 200px;
 }
 
 .grey {
@@ -363,26 +379,8 @@ i.open-tab-button {
     cursor: pointer;
 }
 
-.reset-data-button,
-.custom-css-button,
-.download-folder-button {
-    display: inline-block;
-    border: none;
-    padding: 10px;
-    width: 120px;
-    cursor: pointer;
-    font-size: 13px;
-    transition: background-color 0.2s ease;
-    text-decoration: none;
-}
-
 .css-delete-action {
     margin-bottom: 10px;
-}
-
-.reset-data-button:hover {
-    background-color: #3c9f8d;
-    color: #fff;
 }
 
 .selected-css-path,
@@ -450,9 +448,12 @@ input.toggle-round+label:after {
 }
 
 input.toggle-round+label:before {
-    right: 2px;
     background-color: #f1f1f1;
     border-radius: 25px;
+    top: 0;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
 }
 
 input.toggle-round+label:after {
@@ -464,12 +465,15 @@ input.toggle-round+label:after {
 
 input.toggle-round:checked+label:before {
     background-color: #4EBFAC;
+    top: 0;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
 }
 
 input.toggle-round:checked+label:after {
     margin-left: 25px;
 }
-
 
 /*  Add new server modal */
 
@@ -487,7 +491,6 @@ input.toggle-round:checked+label:after {
     background: linear-gradient(35deg, #003b52, #45b59b);
     overflow: auto;
 }
-
 
 /* Modal Content */
 
@@ -546,7 +549,7 @@ input.toggle-round:checked+label:after {
     border: none;
     width: 98%;
     height: 46px;
-    border-radius: 3px;
+    border-radius: 4px;
     cursor: pointer;
 }
 
@@ -559,33 +562,31 @@ input.toggle-round:checked+label:after {
 }
 
 .certificates-card {
-     width:70%
+    width: 80%
 }
 
 .certificate-input {
-     width:100%;
-     margin-top: 10px;
-     display:inline-flex;
+    width: 100%;
+    margin-top: 10px;
+    display: inline-flex;
 }
 
 .certificate-input div {
-    align-self:center;
+    align-self: center;
 }
 
 .certificate-input .setting-input-value {
-    margin-left:10px;
+    margin-left: 10px;
     max-width: 100%;
 }
 
 #add-certificate-button {
-    width:20%;
-    margin-right:0px;
-    height: 35px;
+    margin: 10px;
 }
 
 .tip {
-    background-color: hsl(46,63%,95%);
-    border: 1px solid hsl(46,63%,84%);
+    background-color: hsl(46, 63%, 95%);
+    border: 1px solid hsl(46, 63%, 84%);
     border-radius: 4px;
 }
 
@@ -604,7 +605,7 @@ input.toggle-round:checked+label:after {
 
 @media (max-width: 650px) {
     .selected-css-path,
-    .download-folder-path  {
+    .download-folder-path {
         margin-right: 15px;
     }
     #css-delete-action {
@@ -654,12 +655,10 @@ input.toggle-round:checked+label:after {
         flex-direction: column;
         align-items: center;
     }
-
     .server-info-right {
         flex-direction: column;
         align-items: center;
     }
-
     .action {
         margin-top: 10px;
     }
