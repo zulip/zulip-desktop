@@ -38,7 +38,7 @@ class NetworkSection extends BaseSection {
 							<input class="setting-input-value" placeholder="e.g. foobar.com"/>
 						</div>
 						<div class="setting-row">
-							<div class="action blue" id="proxy-save-action">
+							<div class="action green" id="proxy-save-action">
 								<i class="material-icons">check_box</i>
 								<span>Save</span>
 							</div>

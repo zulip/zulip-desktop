@@ -83,7 +83,7 @@ class GeneralSection extends BaseSection {
 						<div class="setting-description">
 							This will inject the selected css stylesheet in all the added accounts
 						</div>
-						<button class="custom-css-button blue">Add</button>
+						<button class="custom-css-button green">Add</button>
 					</div>
 					<div class="setting-row" id="remove-custom-css">
 						<div class="setting-description">
@@ -105,7 +105,7 @@ class GeneralSection extends BaseSection {
 						<div class="setting-description">
 							Default download location
 						</div>
-						<button class="download-folder-button blue">Choose</button>
+						<button class="download-folder-button green">Choose</button>
 					</div>
 					<div class="setting-row">
 						<div class="setting-description">
@@ -119,7 +119,7 @@ class GeneralSection extends BaseSection {
 					<div class="setting-row" id="resetdata-option">
 						<div class="setting-description">This will delete all application data including all added accounts and preferences
 						</div>
-						<button class="reset-data-button blue">Reset App Data</button>
+						<button class="reset-data-button green w-200">Reset App Data</button>
 					</div>
 				</div>
             </div>
