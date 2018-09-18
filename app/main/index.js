@@ -253,6 +253,13 @@ app.on('ready', () => {
 		BadgeSettings.updateBadge(badgeCount, mainWindow);
 	});
 
+	ipcMain.on('toggle-menubar', showMenubar => {
+		mainWindow.setAutoHideMenuBar(showMenubar);
+		if (!showMenubar) {
+			mainWindow.setMenuBarVisibility(true);
+		}
+	});
+
 	ipcMain.on('update-badge', (event, messageCount) => {
 		badgeCount = messageCount;
 		BadgeSettings.updateBadge(badgeCount, mainWindow);
