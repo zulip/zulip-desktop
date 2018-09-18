@@ -110,11 +110,6 @@ function createMainWindow() {
 
 	win.setTitle('Zulip');
 
-	// Auto-hide menu bar on Windows + Linux
-	if (process.platform !== 'darwin') {
-		win.setAutoHideMenuBar(ConfigUtil.getConfigItem('autoHideMenubar'));
-	}
-
 	win.on('enter-full-screen', () => {
 		win.webContents.send('enter-fullscreen');
 	});
@@ -162,6 +157,13 @@ app.on('ready', () => {
 		tabs: []
 	});
 	mainWindow = createMainWindow();
+
+	// Auto-hide menu bar on Windows + Linux
+	if (process.platform !== 'darwin') {
+		const shouldHideMenu = ConfigUtil.getConfigItem('autoHideMenubar') || false;
+		mainWindow.setAutoHideMenuBar(shouldHideMenu);
+		mainWindow.setMenuBarVisibility(!shouldHideMenu);
+	}
 
 	// Initialize sentry for main process
 	sentryInit();
@@ -255,9 +257,7 @@ app.on('ready', () => {
 
 	ipcMain.on('toggle-menubar', (event, showMenubar) => {
 		mainWindow.setAutoHideMenuBar(showMenubar);
-		if (!showMenubar) {
-			mainWindow.setMenuBarVisibility(true);
-		}
+		mainWindow.setMenuBarVisibility(!showMenubar);
 	});
 
 	ipcMain.on('update-badge', (event, messageCount) => {
