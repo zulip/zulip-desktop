@@ -186,7 +186,7 @@ class GeneralSection extends BaseSection {
 			clickHandler: () => {
 				const newValue = !ConfigUtil.getConfigItem('autoHideMenubar');
 				ConfigUtil.setConfigItem('autoHideMenubar', newValue);
-				ipcRenderer.send('forward-message', 'toggle-menubar');
+				ipcRenderer.send('toggle-menubar', newValue);
 				this.updateMenubarOption();
 			}
 		});
