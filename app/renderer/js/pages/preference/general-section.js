@@ -24,7 +24,7 @@ class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="menubar-option" style= "display:${process.platform === 'darwin' ? 'none' : ''}">
-						<div class="setting-description">Auto hide menu bar</div>
+						<div class="setting-description">Auto hide Menubar (Press Alt key to display)</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="sidebar-option">
