@@ -139,6 +139,10 @@ class ServerManagerView {
 			settingOptions.dockBouncing = true;
 		}
 
+		if (process.platform !== 'darwin') {
+			settingOptions.autoHideMenubar = false;
+		}
+
 		for (const i in settingOptions) {
 			if (ConfigUtil.getConfigItem(i) === null) {
 				ConfigUtil.setConfigItem(i, settingOptions[i]);

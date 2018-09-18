@@ -110,6 +110,11 @@ function createMainWindow() {
 
 	win.setTitle('Zulip');
 
+	// Auto-hide menu bar on Windows + Linux
+	if (process.platform !== 'darwin') {
+		win.setAutoHideMenuBar(ConfigUtil.getConfigItem('autoHideMenubar'));
+	}
+
 	win.on('enter-full-screen', () => {
 		win.webContents.send('enter-fullscreen');
 	});

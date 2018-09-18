@@ -23,6 +23,10 @@ class GeneralSection extends BaseSection {
 						<div class="setting-description">Show app icon in system tray</div>
 						<div class="setting-control"></div>
 					</div>
+					<div class="setting-row" id="menubar-option" style= "display:${process.platform === 'darwin' ? 'none' : ''}">
+						<div class="setting-description">Auto hide menu bar</div>
+						<div class="setting-control"></div>
+					</div>
 					<div class="setting-row" id="sidebar-option">
 						<div class="setting-description">Show sidebar (<span class="code">Cmd Or Ctrl+Shift+S</span>)</div>
 						<div class="setting-control"></div>
@@ -155,6 +159,11 @@ class GeneralSection extends BaseSection {
 		if (process.platform === 'darwin') {
 			this.updateDockBouncing();
 		}
+
+		// Auto hide menubar on Windows and Linux
+		if (process.platform !== 'darwin') {
+			this.updateMenubarOption();
+		}
 	}
 
 	updateTrayOption() {
@@ -166,6 +175,19 @@ class GeneralSection extends BaseSection {
 				ConfigUtil.setConfigItem('trayIcon', newValue);
 				ipcRenderer.send('forward-message', 'toggletray');
 				this.updateTrayOption();
+			}
+		});
+	}
+
+	updateMenubarOption() {
+		this.generateSettingOption({
+			$element: document.querySelector('#menubar-option .setting-control'),
+			value: ConfigUtil.getConfigItem('autoHideMenubar', false),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('autoHideMenubar');
+				ConfigUtil.setConfigItem('autoHideMenubar', newValue);
+				ipcRenderer.send('forward-message', 'toggle-menubar');
+				this.updateMenubarOption();
 			}
 		});
 	}
