@@ -158,6 +158,13 @@ app.on('ready', () => {
 	});
 	mainWindow = createMainWindow();
 
+	// Auto-hide menu bar on Windows + Linux
+	if (process.platform !== 'darwin') {
+		const shouldHideMenu = ConfigUtil.getConfigItem('autoHideMenubar') || false;
+		mainWindow.setAutoHideMenuBar(shouldHideMenu);
+		mainWindow.setMenuBarVisibility(!shouldHideMenu);
+	}
+
 	// Initialize sentry for main process
 	sentryInit();
 
@@ -246,6 +253,11 @@ app.on('ready', () => {
 
 	ipcMain.on('toggle-badge-option', () => {
 		BadgeSettings.updateBadge(badgeCount, mainWindow);
+	});
+
+	ipcMain.on('toggle-menubar', (event, showMenubar) => {
+		mainWindow.setAutoHideMenuBar(showMenubar);
+		mainWindow.setMenuBarVisibility(!showMenubar);
 	});
 
 	ipcMain.on('update-badge', (event, messageCount) => {
