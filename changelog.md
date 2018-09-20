@@ -4,6 +4,18 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+
+### v2.3.7-beta --2018-09-03
+
+**New features**:
+* Add a feature to show and view pdf file in the app.
+
+**Fixes**:
+* Use package reload instead of custom reload. This is an experimental fix for setting files getting corrupted issue.
+* Unescape server name in window menu item.
+
+<hr>
+
 ### v2.3.6 --2018-08-27
 
 **New features**:
