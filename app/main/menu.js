@@ -125,22 +125,22 @@ class AppMenu {
 	getHelpSubmenu() {
 		return [
 			{
-				label: `${appName + ' Desktop-'} v${app.getVersion()}`,
+				label: `${appName + ' Desktop '} v${app.getVersion()}`,
 				enabled: false
 			},
 			{
-				label: `What's New...`,
+				label: `What's New`,
 				click() {
 					shell.openExternal(`https://github.com/zulip/zulip-electron/releases/tag/v${app.getVersion()}`);
 				}
 			},
 			{
-				label: `${appName} Help`,
+				label: `Help Center`,
 				click() {
 					shell.openExternal('https://zulipchat.com/help/');
 				}
 			}, {
-				label: 'Show App Logs',
+				label: 'Download App Logs',
 				click() {
 					const zip = new AdmZip();
 					let date = new Date();
@@ -158,7 +158,7 @@ class AppMenu {
 					shell.showItemInFolder(logFilePath);
 				}
 			}, {
-				label: 'Report an Issue...',
+				label: 'Report an Issue',
 				click() {
 					// the goal is to notify the main.html BrowserWindow
 					// which may not be the focused window.
@@ -217,7 +217,7 @@ class AppMenu {
 					}
 				}
 			}, {
-				label: `Check for Update`,
+				label: `Check for Updates`,
 				click() {
 					AppMenu.checkForUpdate();
 				}
