@@ -19,7 +19,6 @@
 				Available under the
 				<a onclick="linkInBrowser('license')">Apache 2.0 License</a>
 			</p>
-			<a class="bug" onclick="linkInBrowser('bug')" href="#">Found bug?</a>
 		</div>
 	</div>
 	<script>
@@ -38,9 +37,6 @@
 				case 'license':
 					url = "https://github.com/zulip/zulip-electron/blob/master/LICENSE";
 					break;
-				default:
-					url = 'https://github.com/zulip/zulip-electron/issues/new?body=' +
-						'%3C!--Please%20describe%20your%20issue%20and%20steps%20to%20reproduce%20it.--%3E';
 			}
 			shell.openExternal(url);
 		}
