@@ -4,6 +4,27 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v2.3.8 --2018-09-25
+
+**New features**:
+* Auto hide menubar on Windows/Linux. Add a setting option for the same.
+* Improve design of setting page.
+* Toggle app on clicking the tray icon (Linux).
+* Update sidebar realm name when it's changed in webapp.
+* left-sidebar: Add initial character of realm name instead of default icon.
+
+**Fixes**:
+* linux: Fix ALT+SHIFT opening menu items on Linux.
+* sentry: Add ignore errors to sentry configuration.
+* Linux: Add label for help menu item.
+* file-attachments: Allow multiple downloads of same file name.
+
+**Module Updates**
+* electron: Update electron to v2.0.9.
+
+
+<hr>
+
 
 ### v2.3.7-beta --2018-09-03
 
