@@ -124,16 +124,10 @@ const createTray = function () {
 		}
 	},
 	{
-		type: 'separator'
-	},
-	{
 		label: 'Focus',
 		click() {
 			ipcRenderer.send('focus-app');
 		}
-	},
-	{
-		type: 'separator'
 	},
 	{
 		label: 'Settings',
@@ -141,9 +135,6 @@ const createTray = function () {
 			ipcRenderer.send('focus-app');
 			sendAction('open-settings');
 		}
-	},
-	{
-		type: 'separator'
 	},
 	{
 		label: 'Quit',
