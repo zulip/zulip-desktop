@@ -125,7 +125,7 @@ class AppMenu {
 	getHelpSubmenu() {
 		return [
 			{
-				label: `${appName + ' Desktop '} v${app.getVersion()}`,
+				label: `${appName + ' Desktop'} v${app.getVersion()}`,
 				enabled: false
 			},
 			{
