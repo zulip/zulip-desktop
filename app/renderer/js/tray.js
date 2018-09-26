@@ -137,6 +137,9 @@ const createTray = function () {
 		}
 	},
 	{
+		type: 'separator'
+	},
+	{
 		label: 'Quit',
 		click() {
 			ipcRenderer.send('quit-app');
