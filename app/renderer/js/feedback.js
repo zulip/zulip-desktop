@@ -5,6 +5,10 @@ const SendFeedback = require('@electron-elements/send-feedback');
 
 // make the button color match zulip app's theme
 SendFeedback.customStyles = `
+.send-feedback {
+	overflow: auto;
+}
+
 button:hover, button:focus {
   border-color: #4EBFAC;
   color: #4EBFAC;
