@@ -17,12 +17,12 @@ class AddCertificate extends BaseComponent {
 		return `
 			<div class="settings-card certificates-card">
 				<div class="certificate-input">
-					<div>Organization URL :</div>
+					<div>Organization URL</div>
 					<input class="setting-input-value" autofocus placeholder="your-organization.zulipchat.com or zulip.your-organization.com"/>
 				</div>
 				<div class="certificate-input">
-					<div>Custom CA's certificate file :</div>
-					<button class="green" id="add-certificate-button">Add</button>
+					<div>Certificate file</div>
+					<button class="green" id="add-certificate-button">Upload</button>
 				</div>
 			</div>
 		`;
