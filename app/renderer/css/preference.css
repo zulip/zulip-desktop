@@ -111,7 +111,7 @@ td:nth-child(odd) {
 }
 
 .nav {
-    padding: 5px 0;
+    padding: 7px 0;
     color: #999;
     cursor: pointer;
 }
@@ -340,12 +340,13 @@ img.server-info-icon {
     display: inline-block;
     border: none;
     padding: 10px;
-    width: 110px;
+    width: 100px;
     cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
     transition: background-color 0.2s ease;
     text-decoration: none;
+    text-align: center;
 }
 
 .green:hover {
@@ -353,8 +354,8 @@ img.server-info-icon {
     color: #fff;
 }
 
-.w-200 {
-    width: 200px;
+.w-150 {
+    width: 150px;
 }
 
 .grey {
