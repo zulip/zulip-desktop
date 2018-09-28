@@ -28,7 +28,7 @@ class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="sidebar-option">
-						<div class="setting-description">Show sidebar (<span class="code">Cmd Or Ctrl+Shift+S</span>)</div>
+						<div class="setting-description">Show sidebar (<span class="code">Cmd/Ctrl+S</span>)</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="badge-option">
@@ -44,7 +44,7 @@ class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 				</div>
-				<div class="title">Desktop Notification</div>
+				<div class="title">Desktop Notifications</div>
 				<div class="settings-card">
 					<div class="setting-row" id="show-notification-option">
 						<div class="setting-description">Show Desktop Notifications</div>
@@ -77,7 +77,7 @@ class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="enable-spellchecker-option">
-						<div class="setting-description">Enable Spellchecker (requires restart)</div>
+						<div class="setting-description">Enable spellchecker (requires restart)</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>
@@ -102,14 +102,14 @@ class GeneralSection extends BaseSection {
 				<div class="title">Advanced</div>
 				<div class="settings-card">
 				<div class="setting-row" id="show-download-folder">
-					<div class="setting-description">Show downloaded file in the file manager</div>
+					<div class="setting-description">Show downloaded files in file manager</div>
 					<div class="setting-control"></div>
 				</div>
 					<div class="setting-row" id="download-folder">
 						<div class="setting-description">
 							Default download location
 						</div>
-						<button class="download-folder-button green">Choose</button>
+						<button class="download-folder-button green">Change</button>
 					</div>
 					<div class="setting-row">
 						<div class="setting-description">
