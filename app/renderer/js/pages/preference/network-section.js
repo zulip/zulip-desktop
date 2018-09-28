@@ -39,7 +39,6 @@ class NetworkSection extends BaseSection {
 						</div>
 						<div class="setting-row">
 							<div class="action green" id="proxy-save-action">
-								<i class="material-icons">check_box</i>
 								<span>Save</span>
 							</div>
 						</div>
