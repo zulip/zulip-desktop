@@ -151,7 +151,7 @@ body {
 }
 
 .tab:first-child {
-    margin-top: 8px;
+    margin-top: 9px;
 }
 
 .tab {
@@ -165,25 +165,23 @@ body {
 }
 
 .tab .server-icons {
-    border-radius: 50%;
-    width: 30px;
-    padding: 3px;
-    height: 30px;
+    width: 35px;
     vertical-align: top;
+    border-radius: 4px;
 }
 
 .tab .server-tab {
     width: 100%;
     height: 35px;
     position: relative;
-    margin: 5px 0 2px 0;
+    margin-top: 5px;
     z-index: 11;
     line-height: 31px;
     color: #eee;
     text-align: center;
     overflow: hidden;
     opacity: 0.6;
-    padding: 2px 0;
+    padding: 6px 0;
 }
 
 .server-tab .alt-icon {
@@ -192,8 +190,8 @@ body {
     font-size: 22px;
     border: 2px solid #222c31;
     margin-left: 17%;
-    width: 33px;
-    border-radius: 50%;
+    width: 35px;
+    border-radius: 4px;
 }
 
 .tab .server-tab:hover {
@@ -368,7 +366,7 @@ webview.focus {
     left: 56px;
     padding: 10px 20px;
     position: fixed;
-    margin-top: 8px;
+    margin-top: 11px;
     z-index: 5000 !important;
     color: #fff;
     border-radius: 4px;
