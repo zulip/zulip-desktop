@@ -588,9 +588,12 @@ input.toggle-round:checked+label:after {
 }
 
 .tip {
-    background-color: hsl(46, 63%, 95%);
-    border: 1px solid hsl(46, 63%, 84%);
-    border-radius: 4px;
+    background: none;
+    padding: 0;
+}
+
+.tip:hover{
+   box-shadow: none;
 }
 
 .md-14 {
