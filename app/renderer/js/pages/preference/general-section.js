@@ -81,30 +81,27 @@ class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 				</div>
-				<div class="title">Add custom CSS</div>
-				<div class="settings-card">
-					<div class="setting-row" id="add-custom-css">
-						<div class="setting-description">
-							This will inject the selected css stylesheet in all the added accounts
-						</div>
-						<button class="custom-css-button green">Add</button>
-					</div>
-					<div class="setting-row" id="remove-custom-css">
-						<div class="setting-description">
-							<div class="selected-css-path" id="custom-css-path">${ConfigUtil.getConfigItem('customCSS')}</div>
-						</div>
-						<div class="action red" id="css-delete-action">
-							<i class="material-icons">indeterminate_check_box</i>
-							<span>Delete</span>
-						</div>
-					</div>
-				</div>
 				<div class="title">Advanced</div>
 				<div class="settings-card">
 				<div class="setting-row" id="show-download-folder">
 					<div class="setting-description">Show downloaded files in file manager</div>
 					<div class="setting-control"></div>
 				</div>
+				<div class="setting-row" id="add-custom-css">
+				<div class="setting-description">
+					Inject the custom css stylesheet in all the added accounts
+				</div>
+				<button class="custom-css-button green">Upload</button>
+			</div>
+			<div class="setting-row" id="remove-custom-css">
+				<div class="setting-description">
+					<div class="selected-css-path" id="custom-css-path">${ConfigUtil.getConfigItem('customCSS')}</div>
+				</div>
+				<div class="action red" id="css-delete-action">
+					<i class="material-icons">indeterminate_check_box</i>
+					<span>Delete</span>
+				</div>
+			</div>
 					<div class="setting-row" id="download-folder">
 						<div class="setting-description">
 							Default download location
