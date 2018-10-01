@@ -89,7 +89,7 @@ class GeneralSection extends BaseSection {
 				</div>
 				<div class="setting-row" id="add-custom-css">
 				<div class="setting-description">
-					Inject the custom css stylesheet in all the added accounts
+					Add custom CSS
 				</div>
 				<button class="custom-css-button green">Upload</button>
 			</div>
