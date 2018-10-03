@@ -115,36 +115,29 @@ function sendAction(action) {
 
 const createTray = function () {
 	window.tray = new Tray(iconPath());
-	const contextMenu = Menu.buildFromTemplate([{
-		label: 'About',
-		click() {
-			// We need to focus the main window first
-			ipcRenderer.send('focus-app');
-			sendAction('open-about');
+	const contextMenu = Menu.buildFromTemplate([
+		{
+			label: 'Zulip',
+			click() {
+				ipcRenderer.send('focus-app');
+			}
+		},
+		{
+			label: 'Settings',
+			click() {
+				ipcRenderer.send('focus-app');
+				sendAction('open-settings');
+			}
+		},
+		{
+			type: 'separator'
+		},
+		{
+			label: 'Quit',
+			click() {
+				ipcRenderer.send('quit-app');
+			}
 		}
-	},
-	{
-		label: 'Focus',
-		click() {
-			ipcRenderer.send('focus-app');
-		}
-	},
-	{
-		label: 'Settings',
-		click() {
-			ipcRenderer.send('focus-app');
-			sendAction('open-settings');
-		}
-	},
-	{
-		type: 'separator'
-	},
-	{
-		label: 'Quit',
-		click() {
-			ipcRenderer.send('quit-app');
-		}
-	}
 	]);
 	window.tray.setContextMenu(contextMenu);
 	if (process.platform === 'linux' || process.platform === 'win32') {
