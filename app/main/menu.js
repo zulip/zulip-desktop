@@ -129,6 +129,14 @@ class AppMenu {
 				enabled: false
 			},
 			{
+				label: 'About Zulip',
+				click(item, focusedWindow) {
+					if (focusedWindow) {
+						AppMenu.sendAction('open-about');
+					}
+				}
+			},
+			{
 				label: `What's New`,
 				click() {
 					shell.openExternal(`https://github.com/zulip/zulip-electron/releases/tag/v${app.getVersion()}`);
@@ -210,13 +218,6 @@ class AppMenu {
 		return [{
 			label: `${app.getName()}`,
 			submenu: [{
-				label: 'About Zulip',
-				click(item, focusedWindow) {
-					if (focusedWindow) {
-						AppMenu.sendAction('open-about');
-					}
-				}
-			}, {
 				label: `Check for Updates`,
 				click() {
 					AppMenu.checkForUpdate();
@@ -224,7 +225,7 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
-				label: 'Desktop App Settings',
+				label: 'Desktop Settings',
 				accelerator: 'Cmd+,',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
@@ -297,8 +298,6 @@ class AppMenu {
 			}, {
 				role: 'pasteandmatchstyle'
 			}, {
-				role: 'delete'
-			}, {
 				role: 'selectall'
 			}]
 		}, {
@@ -322,21 +321,14 @@ class AppMenu {
 		return [{
 			label: '&File',
 			submenu: [{
-				label: 'About Zulip',
-				click(item, focusedWindow) {
-					if (focusedWindow) {
-						AppMenu.sendAction('open-about');
-					}
-				}
-			}, {
-				label: `Check for Update`,
+				label: `Check for Updates`,
 				click() {
 					AppMenu.checkForUpdate();
 				}
 			}, {
 				type: 'separator'
 			}, {
-				label: 'Desktop App Settings',
+				label: 'Desktop Settings',
 				accelerator: 'Ctrl+,',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
@@ -398,8 +390,6 @@ class AppMenu {
 				role: 'paste'
 			}, {
 				role: 'pasteandmatchstyle'
-			}, {
-				role: 'delete'
 			}, {
 				type: 'separator'
 			}, {
