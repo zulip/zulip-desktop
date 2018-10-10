@@ -39,6 +39,65 @@ class AppMenu {
 		}];
 	}
 
+	getToolsSubmenu() {
+		return [{
+			label: `Check for Updates`,
+			click() {
+				AppMenu.checkForUpdate();
+			}
+		},
+		{
+			label: `Release Notes`,
+			click() {
+				shell.openExternal(`https://github.com/zulip/zulip-electron/releases/tag/v${app.getVersion()}`);
+			}
+		}, {
+			type: 'separator'
+		}, {
+			label: 'Factory Reset',
+			accelerator: process.platform === 'darwin' ? 'Command+Shift+D' : 'Ctrl+Shift+D',
+			click() {
+				AppMenu.resetAppSettings();
+			}
+		}, {
+			label: 'Download App Logs',
+			click() {
+				const zip = new AdmZip();
+				let date = new Date();
+				date = date.toLocaleDateString().replace(/\//g, '-');
+
+				// Create a zip file of all the logs and config data
+				zip.addLocalFolder(`${app.getPath('appData')}/${appName}/Logs`);
+				zip.addLocalFolder(`${app.getPath('appData')}/${appName}/config`);
+
+				// Put the log file in downloads folder
+				const logFilePath = `${app.getPath('downloads')}/Zulip-logs-${date}.zip`;
+				zip.writeZip(logFilePath);
+
+				// Open and select the log file
+				shell.showItemInFolder(logFilePath);
+			}
+		}, {
+			type: 'separator'
+		}, {
+			label: 'Toggle DevTools for Zulip App',
+			accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+			click(item, focusedWindow) {
+				if (focusedWindow) {
+					focusedWindow.webContents.toggleDevTools();
+				}
+			}
+		}, {
+			label: 'Toggle DevTools for Active Tab',
+			accelerator: process.platform === 'darwin' ? 'Alt+Command+U' : 'Ctrl+Shift+U',
+			click(item, focusedWindow) {
+				if (focusedWindow) {
+					AppMenu.sendAction('tab-devtools');
+				}
+			}
+		}];
+	}
+
 	getViewSubmenu() {
 		return [{
 			label: 'Reload',
@@ -103,22 +162,6 @@ class AppMenu {
 					ConfigUtil.setConfigItem('showSidebar', newValue);
 				}
 			}
-		}, {
-			label: 'Toggle DevTools for Zulip App',
-			accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-			click(item, focusedWindow) {
-				if (focusedWindow) {
-					focusedWindow.webContents.toggleDevTools();
-				}
-			}
-		}, {
-			label: 'Toggle DevTools for Active Tab',
-			accelerator: process.platform === 'darwin' ? 'Alt+Command+U' : 'Ctrl+Shift+U',
-			click(item, focusedWindow) {
-				if (focusedWindow) {
-					AppMenu.sendAction('tab-devtools');
-				}
-			}
 		}];
 	}
 
@@ -137,33 +180,9 @@ class AppMenu {
 				}
 			},
 			{
-				label: `What's New`,
-				click() {
-					shell.openExternal(`https://github.com/zulip/zulip-electron/releases/tag/v${app.getVersion()}`);
-				}
-			},
-			{
 				label: `Help Center`,
 				click() {
 					shell.openExternal('https://zulipchat.com/help/');
-				}
-			}, {
-				label: 'Download App Logs',
-				click() {
-					const zip = new AdmZip();
-					let date = new Date();
-					date = date.toLocaleDateString().replace(/\//g, '-');
-
-					// Create a zip file of all the logs and config data
-					zip.addLocalFolder(`${app.getPath('appData')}/${appName}/Logs`);
-					zip.addLocalFolder(`${app.getPath('appData')}/${appName}/config`);
-
-					// Put the log file in downloads folder
-					const logFilePath = `${app.getPath('downloads')}/Zulip-logs-${date}.zip`;
-					zip.writeZip(logFilePath);
-
-					// Open and select the log file
-					shell.showItemInFolder(logFilePath);
 				}
 			}, {
 				label: 'Report an Issue',
@@ -218,13 +237,6 @@ class AppMenu {
 		return [{
 			label: `${app.getName()}`,
 			submenu: [{
-				label: `Check for Updates`,
-				click() {
-					AppMenu.checkForUpdate();
-				}
-			}, {
-				type: 'separator'
-			}, {
 				label: 'Desktop Settings',
 				accelerator: 'Cmd+,',
 				click(item, focusedWindow) {
@@ -248,12 +260,6 @@ class AppMenu {
 				click() {
 					const dndUtil = DNDUtil.toggle();
 					AppMenu.sendAction('toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
-				}
-			}, {
-				label: 'Reset App Settings',
-				accelerator: 'Command+Shift+D',
-				click() {
-					AppMenu.resetAppSettings();
 				}
 			}, {
 				label: 'Log Out',
@@ -310,6 +316,9 @@ class AppMenu {
 			label: 'Window',
 			submenu: this.getWindowSubmenu(tabs, activeTabIndex)
 		}, {
+			label: 'Tools',
+			submenu: this.getToolsSubmenu()
+		}, {
 			role: 'help',
 			submenu: this.getHelpSubmenu()
 		}];
@@ -321,13 +330,6 @@ class AppMenu {
 		return [{
 			label: '&File',
 			submenu: [{
-				label: `Check for Updates`,
-				click() {
-					AppMenu.checkForUpdate();
-				}
-			}, {
-				type: 'separator'
-			}, {
 				label: 'Desktop Settings',
 				accelerator: 'Ctrl+,',
 				click(item, focusedWindow) {
@@ -353,12 +355,6 @@ class AppMenu {
 				click() {
 					const dndUtil = DNDUtil.toggle();
 					AppMenu.sendAction('toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
-				}
-			}, {
-				label: 'Reset App Settings',
-				accelerator: 'Ctrl+Shift+D',
-				click() {
-					AppMenu.resetAppSettings();
 				}
 			}, {
 				label: 'Log Out',
@@ -404,6 +400,9 @@ class AppMenu {
 		}, {
 			label: '&Window',
 			submenu: this.getWindowSubmenu(tabs, activeTabIndex)
+		}, {
+			label: '&Tools',
+			submenu: this.getToolsSubmenu()
 		}, {
 			label: '&Help',
 			role: 'help',
