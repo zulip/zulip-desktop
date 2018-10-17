@@ -99,7 +99,7 @@ class NetworkSection extends BaseSection {
 				if (newValue === false) {
 					// Remove proxy system proxy settings
 					ConfigUtil.setConfigItem('proxyRules', '');
-					ipcRenderer.send('forward-message', 'reload-proxy', true);
+					ipcRenderer.send('forward-message', 'reload-proxy', false);
 				}
 				ConfigUtil.setConfigItem('useSystemProxy', newValue);
 				this.updateProxyOption();
