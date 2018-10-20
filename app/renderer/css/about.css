@@ -57,22 +57,6 @@ body {
 	width: 100%;
 }
 
-.maintenance-info .bug {
-	display: inline-block;
-	padding: 8px 15px;
-	margin-top: 30px;
-	text-decoration: none;
-	background-color: #52c2af;
-	color: #fff;
-	border-radius: 4px;
-
-	transition: background-color 0.2s ease;
-}
-
-.maintenance-info .bug:hover {
-	background-color: #32a692;
-}
-
 p.detail a {
 	color: #355f4c;
 }
