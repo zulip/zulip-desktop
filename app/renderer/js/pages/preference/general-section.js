@@ -248,8 +248,10 @@ class GeneralSection extends BaseSection {
 			value: ConfigUtil.getConfigItem('betaUpdate', false),
 			clickHandler: () => {
 				const newValue = !ConfigUtil.getConfigItem('betaUpdate');
-				ConfigUtil.setConfigItem('betaUpdate', newValue);
-				this.betaUpdateOption();
+				if (ConfigUtil.getConfigItem('autoUpdate')) {
+					ConfigUtil.setConfigItem('betaUpdate', newValue);
+					this.betaUpdateOption();
+				}
 			}
 		});
 	}
