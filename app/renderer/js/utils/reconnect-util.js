@@ -45,8 +45,8 @@ class ReconnectUtil {
 						const errMsgHolder = document.querySelector('#description');
 						if (errMsgHolder) {
 							errMsgHolder.innerHTML = `
-										<div>You internet connection does't seem to work properly!</div>
-										</div>Verify that it works and then click try again.</div>`;
+										<div>Your internet connection doesn't seem to work properly!</div>
+										<div>Verify that it works and then click try again.</div>`;
 						}
 						return resolve(false);
 					});
