@@ -111,6 +111,7 @@ class ServerManagerView {
 			showNotification: true,
 			autoUpdate: true,
 			betaUpdate: false,
+			customCSS: false,
 			silent: false,
 			lastActiveTab: 0,
 			dnd: false,
