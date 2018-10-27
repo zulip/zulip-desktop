@@ -308,6 +308,7 @@ class ServerManagerView {
 		this.functionalTabs[tabProps.name] = this.tabs.length;
 
 		const tabIndex = this.getTabIndex();
+
 		this.tabs.push(new FunctionalTab({
 			role: 'function',
 			materialIcon: tabProps.materialIcon,
@@ -332,9 +333,11 @@ class ServerManagerView {
 				preload: false
 			})
 		}));
+
 		// To show loading indicator the first time a functional tab is opened, indicator is
 		// closed when the functional tab DOM is ready, handled in webview.js
 		this.$webviewsContainer.classList.remove('loaded');
+
 		this.activateTab(this.functionalTabs[tabProps.name]);
 	}
 
@@ -398,7 +401,8 @@ class ServerManagerView {
 
 		ipcRenderer.send('update-menu', {
 			tabs: this.tabs,
-			activeTabIndex: this.activeTabIndex
+			activeTabIndex: this.activeTabIndex,
+			enableMenu: this.tabs[index].props.role === 'server'
 		});
 	}
 
