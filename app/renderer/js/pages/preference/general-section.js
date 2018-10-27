@@ -233,6 +233,10 @@ class GeneralSection extends BaseSection {
 			clickHandler: () => {
 				const newValue = !ConfigUtil.getConfigItem('autoUpdate');
 				ConfigUtil.setConfigItem('autoUpdate', newValue);
+				if (!newValue) {
+					ConfigUtil.setConfigItem('betaUpdate', false);
+					this.betaUpdateOption();
+				}
 				this.autoUpdateOption();
 			}
 		});
@@ -244,8 +248,10 @@ class GeneralSection extends BaseSection {
 			value: ConfigUtil.getConfigItem('betaUpdate', false),
 			clickHandler: () => {
 				const newValue = !ConfigUtil.getConfigItem('betaUpdate');
-				ConfigUtil.setConfigItem('betaUpdate', newValue);
-				this.betaUpdateOption();
+				if (ConfigUtil.getConfigItem('autoUpdate')) {
+					ConfigUtil.setConfigItem('betaUpdate', newValue);
+					this.betaUpdateOption();
+				}
 			}
 		});
 	}
