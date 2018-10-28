@@ -232,7 +232,7 @@ class AppMenu {
 	}
 
 	getDarwinTpl(props) {
-		const { tabs, activeTabIndex } = props;
+		const { tabs, activeTabIndex, enableMenu } = props;
 
 		return [{
 			label: `${app.getName()}`,
@@ -247,6 +247,7 @@ class AppMenu {
 			}, {
 				label: 'Keyboard Shortcuts',
 				accelerator: 'Cmd+Shift+K',
+				enabled: enableMenu,
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('shortcut');
@@ -264,6 +265,7 @@ class AppMenu {
 			}, {
 				label: 'Log Out',
 				accelerator: 'Cmd+L',
+				enabled: enableMenu,
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('log-out');
@@ -325,7 +327,7 @@ class AppMenu {
 	}
 
 	getOtherTpl(props) {
-		const { tabs, activeTabIndex } = props;
+		const { tabs, activeTabIndex, enableMenu } = props;
 
 		return [{
 			label: '&File',
@@ -342,6 +344,7 @@ class AppMenu {
 			}, {
 				label: 'Keyboard Shortcuts',
 				accelerator: 'Ctrl+Shift+K',
+				enabled: enableMenu,
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('shortcut');
@@ -359,6 +362,7 @@ class AppMenu {
 			}, {
 				label: 'Log Out',
 				accelerator: 'Ctrl+L',
+				enabled: enableMenu,
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('log-out');
