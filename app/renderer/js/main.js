@@ -402,6 +402,7 @@ class ServerManagerView {
 		ipcRenderer.send('update-menu', {
 			tabs: this.tabs,
 			activeTabIndex: this.activeTabIndex,
+			// Following flag controls whether a menu item should be enabled or not
 			enableMenu: this.tabs[index].props.role === 'server'
 		});
 	}
