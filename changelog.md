@@ -1,8 +1,17 @@
 # Version History
 
-
-
 All notable changes to the Zulip desktop app are documented in this file.
+
+### v2.3.82 --2018-09-25
+
+**New features**:
+* UI enhancements.
+* Updated some menu items.
+
+**Fixes**:
+* Fix about page not opening up.
+
+<hr>
 
 ### v2.3.8 --2018-09-25
 
