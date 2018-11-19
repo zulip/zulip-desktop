@@ -129,7 +129,8 @@ class DomainUtil {
 		const checkDomain = {
 			url: domain + '/static/audio/zulip.ogg',
 			ca: (certificateLocation) ? certificateLocation : '',
-			proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : ''
+			proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : '',
+			ecdhCurve: 'auto'
 		};
 
 		const serverConf = {
@@ -206,7 +207,8 @@ class DomainUtil {
 		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
 		const serverSettingsOptions = {
 			url: domain + '/api/v1/server_settings',
-			proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : ''
+			proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : '',
+			ecdhCurve: 'auto'
 		};
 		return new Promise((resolve, reject) => {
 			request(serverSettingsOptions, (error, response) => {
@@ -232,7 +234,8 @@ class DomainUtil {
 		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
 		const serverIconOptions = {
 			url,
-			proxy: proxyEnabled ? ProxyUtil.getProxy(url) : ''
+			proxy: proxyEnabled ? ProxyUtil.getProxy(url) : '',
+			ecdhCurve: 'auto'
 		};
 		// The save will always succeed. If url is invalid, downgrade to default icon.
 		return new Promise(resolve => {

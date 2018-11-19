@@ -21,7 +21,8 @@ function linuxUpdateNotification() {
 	const options = {
 		url,
 		headers: {'User-Agent': 'request'},
-		proxy: proxyEnabled ? ProxyUtil.getProxy(url) : ''
+		proxy: proxyEnabled ? ProxyUtil.getProxy(url) : '',
+		ecdhCurve: 'auto'
 	};
 
 	request(options, (error, response, body) => {
