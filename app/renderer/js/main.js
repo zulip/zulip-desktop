@@ -200,8 +200,10 @@ class ServerManagerView {
 
 	initActions() {
 		this.initDNDButton();
+		this.checkDNDstate();
 		this.$dndButton.addEventListener('click', () => {
 			const dndUtil = DNDUtil.toggle();
+			this.checkDNDstate();
 			ipcRenderer.send('forward-message', 'toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
 		});
 		this.$reloadButton.addEventListener('click', () => {
@@ -235,7 +237,26 @@ class ServerManagerView {
 		this.sidebarHoverEvent(this.$dndButton, this.$dndTooltip);
 	}
 
+	checkDNDstate() {
+		const check = ConfigUtil.getConfigItem('dndSwitchOff');
+		if (check !== null && typeof check === 'object') {
+			if (check.carry && (new Date().getHours() === 0)) { // for dnd operations ending after midnight
+				check.carry = 0;
+			}
+			if (check.min <= (new Date().getMinutes())) {
+				if ((check.hr + (24 * check.carry)) <= (new Date().getHours())) {
+					const dndUtil = DNDUtil.toggle();
+					ipcRenderer.send('forward-message', 'toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
+					ConfigUtil.setConfigItem('dndSwitchOff', null);
+					return;
+				}
+			}
+			setTimeout(this.checkDNDstate, 60 * 1000); // keeps running unless DND is switched off by the timer
+		}
+	}
+
 	initDNDButton() {
+		this.checkDNDstate();
 		const dnd = ConfigUtil.getConfigItem('dnd', false);
 		this.toggleDNDButton(dnd);
 	}
