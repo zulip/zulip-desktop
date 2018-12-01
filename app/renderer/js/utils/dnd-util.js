@@ -49,7 +49,7 @@ function makeView() {
 				time = -1;
 			}
 			if (time > 0) {
-				dndOffTime.min += time;
+				dndOffTime.hr += time;
 				if (dndOffTime.hr >= 24) {
 					dndOffTime.hr -= 24;
 					dndOffTime.carry += 1; 
@@ -84,7 +84,7 @@ function checkDNDstate() {
 		if (check.carry && (new Date().getHours() === 0)) { // for dnd operations ending after midnight
 			check.carry = 0;
 		}
-		if ((check.hr + (24 * check.carry)) < (new Date().getHours()) || check.min <= (new Date().getMinutes())) {
+		if ((check.hr + (24 * check.carry)) < (new Date().getHours()) && check.min <= (new Date().getMinutes())) {
 			toggle();
 			sleep(1000).then(() => {
 				ipcRenderer.send('forward-message', 'toggle-dnd', dnd, newSettings);

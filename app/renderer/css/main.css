@@ -109,8 +109,8 @@ body {
     display: block;
     color: black;
     background-color: white;
-    font-size: 9px;
-    max-width: 54px;
+    font-size: 10px;
+    width: 56px;
     text-align: center;
 }
 

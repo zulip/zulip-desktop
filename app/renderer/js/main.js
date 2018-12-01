@@ -247,7 +247,7 @@ class ServerManagerView {
 				check.carry = 0;
 			}
 			console.warn()
-			if ((check.hr + (24 * check.carry)) < (new Date().getHours()) || check.min <= (new Date().getMinutes())) {
+			if ((check.hr + (24 * check.carry)) < (new Date().getHours()) && check.min <= (new Date().getMinutes())) {
 				const dndUtil = DNDUtil.toggle();
 				ipcRenderer.send('forward-message', 'toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
 				ConfigUtil.setConfigItem('dndSwitchOff', null);
