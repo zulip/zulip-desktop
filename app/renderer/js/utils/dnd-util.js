@@ -12,7 +12,8 @@ function makeView() {
 	const dndOffTime = {
 		hr: new Date().getHours(),
 		min: new Date().getMinutes(),
-		carry: 0 // for dnd switch on after midnight 0 am
+		carry: 0, // for dnd switch on after midnight 0 am
+		day: new Date().getDay()
 	};
 	const timeLeft = document.createElement('span');
 	const timeDisableDNDInput = document.createElement('div');
@@ -87,7 +88,7 @@ function sleep(ms) {
 function checkDNDstate() {
 	const check = ConfigUtil.getConfigItem('dndSwitchOff');
 	if (check !== null && typeof check === 'object') {
-		if (check.carry && (new Date().getHours() === 0)) { // for dnd operations ending after midnight
+		if (check.carry && (new Date().getDay() !== check.day)) { // for dnd operations ending after midnight
 			check.carry = 0;
 		}
 		if ((check.hr + (24 * check.carry)) < (new Date().getHours()) && check.min <= (new Date().getMinutes())) {
@@ -153,5 +154,7 @@ function toggle() {
 }
 
 module.exports = {
-	toggle
+	toggle,
+	checkDNDstate,
+	showDNDTimeLeft
 };

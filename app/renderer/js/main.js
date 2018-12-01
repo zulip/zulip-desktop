@@ -200,11 +200,11 @@ class ServerManagerView {
 
 	initActions() {
 		this.initDNDButton();
-		this.checkDNDstate();
-		this.showDNDTimeLeft();
+		DNDUtil.checkDNDstate();
+		DNDUtil.showDNDTimeLeft();
 		this.$dndButton.addEventListener('click', () => {
 			const dndUtil = DNDUtil.toggle();
-			this.checkDNDstate();
+			DNDUtil.checkDNDstate();
 			ipcRenderer.send('forward-message', 'toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
 		});
 		this.$reloadButton.addEventListener('click', () => {
@@ -238,35 +238,8 @@ class ServerManagerView {
 		this.sidebarHoverEvent(this.$dndButton, this.$dndTooltip);
 	}
 
-	checkDNDstate() {
-		const check = ConfigUtil.getConfigItem('dndSwitchOff');
-		if (check !== null && typeof check === 'object') {
-			if (check.carry && (new Date().getHours() === 0)) { // for dnd operations ending after midnight
-				check.carry = 0;
-			}
-			if ((check.hr + (24 * check.carry)) < (new Date().getHours()) && check.min <= (new Date().getMinutes())) {
-				const dndUtil = DNDUtil.toggle();
-				ipcRenderer.send('forward-message', 'toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
-				ConfigUtil.setConfigItem('dndSwitchOff', null);
-				return;
-			}
-			setTimeout(this.checkDNDstate, 60 * 1000); // keeps running unless DND is switched off by the timer
-		}
-	}
-
-	showDNDTimeLeft() {
-		const check = ConfigUtil.getConfigItem('dndSwitchOff');
-		if (check !== null && typeof check === 'object') {
-			const timeLeft = document.createElement('span');
-			timeLeft.id = 'timeLeft';
-			timeLeft.innerHTML = 'DND off at<br/> <b>' + check.hr + ' hrs ' + check.min + ' mins';
-			timeLeft.className = 'timeLeft';
-			document.getElementById('actions-container').prepend(timeLeft);
-		}
-	}
-
 	initDNDButton() {
-		this.checkDNDstate();
+		DNDUtil.checkDNDstate();
 		const dnd = ConfigUtil.getConfigItem('dnd', false);
 		this.toggleDNDButton(dnd);
 	}
