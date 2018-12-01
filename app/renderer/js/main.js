@@ -239,7 +239,7 @@ class ServerManagerView {
 	}
 
 	checkDNDstate() {
-		const check = ConfigUtil.getConfigItem('dndSwitchOff')
+		const check = ConfigUtil.getConfigItem('dndSwitchOff');
 		if (check !== null && typeof check === 'object') {
 			if (check.carry && (new Date().getHours() === 0)) { // for dnd operations ending after midnight
 				check.carry = 0;
@@ -262,7 +262,7 @@ class ServerManagerView {
 			timeLeft.innerHTML = 'DND off at<br/> <b>' + check.hr + ' hrs ' + check.min + ' mins';
 			timeLeft.className = 'timeLeft';
 			document.getElementById('actions-container').prepend(timeLeft);
-		} 
+		}
 	}
 
 	initDNDButton() {

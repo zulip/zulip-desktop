@@ -4,18 +4,20 @@ const ConfigUtil = require(__dirname + '/config-util.js');
 
 const {ipcRenderer} = require('electron');
 
-let count = 0, dnd, newSettings;
+let count = 0;
+let	dnd;
+let newSettings;
+let time = -1;
 function makeView() {
-	let time = -1, dndOffTime = {
-			hr: new Date().getHours(),
-			min: new Date().getMinutes(),
-			carry: 0 // for dnd switch on after midnight 0 am
-		};
+	const dndOffTime = {
+		hr: new Date().getHours(),
+		min: new Date().getMinutes(),
+		carry: 0 // for dnd switch on after midnight 0 am
+	};
 	const timeLeft = document.createElement('span');
 	const timeDisableDNDInput = document.createElement('div');
 	const actionContainer = document.getElementById('actions-container');
 	timeLeft.id = 'timeLeft';
-	const check = ConfigUtil.getConfigItem('dndSwitchOff');
 	actionContainer.prepend(timeLeft);
 	timeDisableDNDInput.className = 'dndInput';
 	for (let i = 1; i <= 4; i++) {
@@ -33,45 +35,49 @@ function makeView() {
 			opt.innerHTML = 'Until I resume<br/>';
 			opt.id = 'dnd_4';
 		}
-		opt.addEventListener('click', element, false);
+		opt.addEventListener('click', () => {
+			element(opt, dndOffTime, timeDisableDNDInput);
+		}, false);
 		timeDisableDNDInput.appendChild(opt);
 		actionContainer.appendChild(timeDisableDNDInput);
-		function element() {
-			const optionElement = document.getElementById(opt.id);
-			optionElement.className = 'dndOptionsSelect';
-			if (opt.id === 'dnd_1') {
-				time = 1;
-			} else if (opt.id === 'dnd_2') {
-				time = 8;
-			} else if (opt.id === 'dnd_3') {
-				time = 12;
-			} else {
-				time = -1;
-			}
-			if (time > 0) {
-				dndOffTime.hr += time;
-				if (dndOffTime.hr >= 24) {
-					dndOffTime.hr -= 24;
-					dndOffTime.carry += 1; 
-				}
-				ConfigUtil.setConfigItem('dndSwitchOff', dndOffTime);
-			} else {
-				ConfigUtil.setConfigItem('dndSwitchOff', null);
-			}
-			const doneButton = document.createElement('button');
-			doneButton.className = 'dndButton';
-			doneButton.innerHTML = 'Done';
-			doneButton.onclick = () => {
-				setTimeout(() => {
-					timeDisableDNDInput.removeChild(doneButton);
-					actionContainer.removeChild(timeDisableDNDInput);
-					showDNDTimeLeft();
-					checkDNDstate();
-				}, 500);
-			};
-			timeDisableDNDInput.appendChild(doneButton);
-		}
 	}
+}
+
+function element(opt, dndOffTime, timeDisableDNDInput) {
+	const optionElement = document.getElementById(opt.id);
+	const actionContainer = document.getElementById('actions-container');
+	optionElement.className = 'dndOptionsSelect';
+	if (opt.id === 'dnd_1') {
+		time = 1;
+	} else if (opt.id === 'dnd_2') {
+		time = 8;
+	} else if (opt.id === 'dnd_3') {
+		time = 12;
+	} else {
+		time = -1;
+	}
+	if (time > 0) {
+		dndOffTime.hr += time;
+		if (dndOffTime.hr >= 24) {
+			dndOffTime.hr -= 24;
+			dndOffTime.carry += 1;
+		}
+		ConfigUtil.setConfigItem('dndSwitchOff', dndOffTime);
+	} else {
+		ConfigUtil.setConfigItem('dndSwitchOff', null);
+	}
+	const doneButton = document.createElement('button');
+	doneButton.className = 'dndButton';
+	doneButton.innerHTML = 'Done';
+	doneButton.onclick = () => {
+		setTimeout(() => {
+			timeDisableDNDInput.removeChild(doneButton);
+			actionContainer.removeChild(timeDisableDNDInput);
+			showDNDTimeLeft();
+			checkDNDstate();
+		}, 500);
+	};
+	timeDisableDNDInput.appendChild(doneButton);
 }
 
 function sleep(ms) {
@@ -112,7 +118,7 @@ function toggle() {
 	if (process.platform === 'win32') {
 		dndSettingList.push('flashTaskbarOnMessage');
 	}
-	if (dnd) { //executesWhenOffisCLicked
+	if (dnd) {
 		showDNDTimeLeft();
 		count++;
 		if (count) {
