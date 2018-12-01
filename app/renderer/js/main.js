@@ -240,13 +240,10 @@ class ServerManagerView {
 
 	checkDNDstate() {
 		const check = ConfigUtil.getConfigItem('dndSwitchOff');
-		console.warn('from main')
-		console.warn(check)
 		if (check !== null && typeof check === 'object') {
 			if (check.carry && (new Date().getHours() === 0)) { // for dnd operations ending after midnight
 				check.carry = 0;
 			}
-			console.warn()
 			if ((check.hr + (24 * check.carry)) < (new Date().getHours()) && check.min <= (new Date().getMinutes())) {
 				const dndUtil = DNDUtil.toggle();
 				ipcRenderer.send('forward-message', 'toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
@@ -262,7 +259,7 @@ class ServerManagerView {
 		if (check !== null && typeof check === 'object') {
 			const timeLeft = document.createElement('span');
 			timeLeft.id = 'timeLeft';
-			timeLeft.innerHTML = 'DND off at<br/> <b>'+check.hr+' hrs '+check.min+' mins';
+			timeLeft.innerHTML = 'DND off at<br/> <b>' + check.hr + ' hrs ' + check.min + ' mins';
 			timeLeft.className = 'timeLeft';
 			document.getElementById('actions-container').prepend(timeLeft);
 		} 

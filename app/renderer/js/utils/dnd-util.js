@@ -97,19 +97,16 @@ function checkDNDstate() {
 
 function showDNDTimeLeft() {
 	const check = ConfigUtil.getConfigItem('dndSwitchOff');
-	console.warn('showDND  time ')
-	console.warn(check)
 	if (check !== null && typeof check === 'object') {
 		const timeLeft = document.createElement('span');
 		timeLeft.id = 'timeLeft';
-		timeLeft.innerHTML = 'DND off at<br/> <b>'+check.hr+' hrs '+check.min+' mins</b>';
+		timeLeft.innerHTML = 'DND off at<br/> <b>' + check.hr + ' hrs ' + check.min + ' mins</b>';
 		timeLeft.className = 'timeLeft';
 		document.getElementById('actions-container').prepend(timeLeft);
 	}
 }
 
 function toggle() {
-	console.warn('got it')
 	const dnd = !ConfigUtil.getConfigItem('dnd', false);
 	const dndSettingList = ['showNotification', 'silent'];
 	if (process.platform === 'win32') {
@@ -133,12 +130,10 @@ function toggle() {
 		// Store old value in oldSettings.
 		ConfigUtil.setConfigItem('dndPreviousSettings', oldSettings);
 	} else {
-		console.warn('Killer on')
 		try {
-			let x =document.getElementById('timeLeft')
-			console.warn(x)
-			x.parentNode.removeChild(x);
-		} catch(e) {;}
+			const ele = document.getElementById('timeLeft');
+			ele.parentNode.removeChild(ele);
+		} catch (err) {}
 		newSettings = ConfigUtil.getConfigItem('dndPreviousSettings');
 		ConfigUtil.setConfigItem('dndSwitchOff', null);
 	}
