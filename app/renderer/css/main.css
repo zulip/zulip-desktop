@@ -94,7 +94,7 @@ body {
 
 .dndOptionsSelect {
     background-color: pink;
-
+    width: 200px;
 }
 
 .dndButton {
