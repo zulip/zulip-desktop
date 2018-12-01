@@ -11,8 +11,12 @@ function makeView() {
 			min: new Date().getMinutes(),
 			carry: 0 // for dnd switch on after midnight 0 am
 		};
+	const timeLeft = document.createElement('span');
 	const timeDisableDNDInput = document.createElement('div');
 	const actionContainer = document.getElementById('actions-container');
+	timeLeft.id = 'timeLeft';
+	const check = ConfigUtil.getConfigItem('dndSwitchOff');
+	actionContainer.prepend(timeLeft);
 	timeDisableDNDInput.className = 'dndInput';
 	for (let i = 1; i <= 4; i++) {
 		const opt = document.createElement('span');
@@ -45,8 +49,8 @@ function makeView() {
 				time = -1;
 			}
 			if (time > 0) {
-				dndOffTime.hr += time;
-				if (dndOffTime.hr > 24) {
+				dndOffTime.min += time;
+				if (dndOffTime.hr >= 24) {
 					dndOffTime.hr -= 24;
 					dndOffTime.carry += 1; 
 				}
@@ -61,6 +65,7 @@ function makeView() {
 				setTimeout(() => {
 					timeDisableDNDInput.removeChild(doneButton);
 					actionContainer.removeChild(timeDisableDNDInput);
+					showDNDTimeLeft();
 					checkDNDstate();
 				}, 500);
 			};
@@ -79,26 +84,39 @@ function checkDNDstate() {
 		if (check.carry && (new Date().getHours() === 0)) { // for dnd operations ending after midnight
 			check.carry = 0;
 		}
-		if (check.min <= (new Date().getMinutes())) {
-			if ((check.hr + (24 * check.carry)) <= (new Date().getHours())) {
-				toggle();
-				sleep(1000).then(() => {
-					ipcRenderer.send('forward-message', 'toggle-dnd', dnd, newSettings);
-					ConfigUtil.setConfigItem('dndSwitchOff', null);
-				});
-			}
+		if ((check.hr + (24 * check.carry)) < (new Date().getHours()) || check.min <= (new Date().getMinutes())) {
+			toggle();
+			sleep(1000).then(() => {
+				ipcRenderer.send('forward-message', 'toggle-dnd', dnd, newSettings);
+				ConfigUtil.setConfigItem('dndSwitchOff', null);
+			});
 		}
 		setTimeout(checkDNDstate, 60 * 1000); // keeps running unless DND is switched off by the timer
 	}
 }
 
+function showDNDTimeLeft() {
+	const check = ConfigUtil.getConfigItem('dndSwitchOff');
+	console.warn('showDND  time ')
+	console.warn(check)
+	if (check !== null && typeof check === 'object') {
+		const timeLeft = document.createElement('span');
+		timeLeft.id = 'timeLeft';
+		timeLeft.innerHTML = 'DND off at<br/> <b>'+check.hr+' hrs '+check.min+' mins</b>';
+		timeLeft.className = 'timeLeft';
+		document.getElementById('actions-container').prepend(timeLeft);
+	}
+}
+
 function toggle() {
+	console.warn('got it')
 	const dnd = !ConfigUtil.getConfigItem('dnd', false);
 	const dndSettingList = ['showNotification', 'silent'];
 	if (process.platform === 'win32') {
 		dndSettingList.push('flashTaskbarOnMessage');
 	}
 	if (dnd) { //executesWhenOffisCLicked
+		showDNDTimeLeft();
 		count++;
 		if (count) {
 			makeView();
@@ -115,6 +133,12 @@ function toggle() {
 		// Store old value in oldSettings.
 		ConfigUtil.setConfigItem('dndPreviousSettings', oldSettings);
 	} else {
+		console.warn('Killer on')
+		try {
+			let x =document.getElementById('timeLeft')
+			console.warn(x)
+			x.parentNode.removeChild(x);
+		} catch(e) {;}
 		newSettings = ConfigUtil.getConfigItem('dndPreviousSettings');
 		ConfigUtil.setConfigItem('dndSwitchOff', null);
 	}

@@ -105,6 +105,15 @@ body {
     border-radius: 5px;
 }
 
+.timeLeft {
+    display: block;
+    color: black;
+    background-color: white;
+    font-size: 9px;
+    max-width: 54px;
+    text-align: center;
+}
+
 .material-icons {
     font-family: 'Material Icons';
     font-weight: normal;
