@@ -11,8 +11,7 @@ let time = -1;
 function makeView() {
 	const dndOffTime = {
 		hr: new Date().getHours(),
-		min: parseInt((new Date().getMinutes()).toString().length == 1 ? '0'
-			+ (new Date().getMinutes()).toString() : (new Date().getMinutes()).toString()),
+		min: new Date().getMinutes(),
 		carry: 0, // for dnd switch on after midnight 0 am
 		day: new Date().getDay()
 	};
@@ -87,7 +86,7 @@ function sleep(ms) {
 }
 
 function formatTime(str) {
-	return str.length == 1 ? '0'+str : str;
+	return str.length === 1 ? '0' + str : str;
 }
 
 function checkDNDstate() {
@@ -98,7 +97,7 @@ function checkDNDstate() {
 		}
 		const savedValue = (check.hr + (24 * check.carry)).toString() + formatTime(check.min.toString());
 		const presentValue = (new Date().getHours()).toString() + formatTime((new Date().getMinutes()).toString());
-		if (parseInt(savedValue) < parseInt(presentValue)) {
+		if (parseInt(savedValue, 10) < parseInt(presentValue, 10)) {
 			toggle();
 			sleep(1000).then(() => {
 				ipcRenderer.send('forward-message', 'toggle-dnd', dnd, newSettings);
