@@ -86,7 +86,7 @@ function element(opt, dndOffTime, timeDisableDNDInput) {
 		checkDNDstate(true);
 		timeDisableDNDInput.removeChild(doneButton);
 		actionContainer.removeChild(timeDisableDNDInput);
-	}
+	};
 	timeDisableDNDInput.appendChild(cancelButton);
 }
 
