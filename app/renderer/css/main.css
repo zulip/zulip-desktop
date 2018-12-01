@@ -87,7 +87,7 @@ body {
     top: 60%;
     position: fixed;
     border: 2px solid pink;
-    border-radius: 10px;
+    border-radius: 5px;
     background-color: #fff;
     padding: 20px;
 }
@@ -112,6 +112,16 @@ body {
     font-size: 10px;
     width: 56px;
     text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.dndCancel {
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+    margin-top: 5px;
+    padding: 5px;
 }
 
 .material-icons {

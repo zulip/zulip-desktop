@@ -79,6 +79,15 @@ function element(opt, dndOffTime, timeDisableDNDInput) {
 		}, 500);
 	};
 	timeDisableDNDInput.appendChild(doneButton);
+	const cancelButton = document.createElement('button');
+	cancelButton.className = 'dndCancel';
+	cancelButton.innerHTML = 'Cancel';
+	cancelButton.onclick = () => {
+		checkDNDstate(true);
+		timeDisableDNDInput.removeChild(doneButton);
+		actionContainer.removeChild(timeDisableDNDInput);
+	}
+	timeDisableDNDInput.appendChild(cancelButton);
 }
 
 function sleep(ms) {
@@ -89,9 +98,9 @@ function formatTime(str) {
 	return str.length === 1 ? '0' + str : str;
 }
 
-function checkDNDstate() {
+function checkDNDstate(cancel = false) {
 	const check = ConfigUtil.getConfigItem('dndSwitchOff');
-	if (check !== null && typeof check === 'object') {
+	if (check !== null && typeof check === 'object' && !cancel) {
 		if (check.carry && (new Date().getDay() !== check.day)) { // for dnd operations ending after midnight
 			check.carry = 0;
 		}
@@ -105,6 +114,12 @@ function checkDNDstate() {
 			});
 		}
 		setTimeout(checkDNDstate, 60 * 1000); // keeps running unless DND is switched off by the timer
+	} else if (cancel) {
+		toggle();
+		sleep(500).then(() => {
+			ipcRenderer.send('forward-message', 'toggle-dnd', dnd, newSettings);
+			ConfigUtil.setConfigItem('dndSwitchOff', null);
+		});
 	}
 }
 
@@ -135,7 +150,7 @@ function toggle() {
 		newSettings = {};
 		// Iterate through the dndSettingList.
 		for (const settingName of dndSettingList) {
-			// Store the current value of setting.\
+			// Store the current value of setting.
 			oldSettings[settingName] = ConfigUtil.getConfigItem(settingName);
 			// New value of setting.
 			newSettings[settingName] = (settingName === 'silent');
