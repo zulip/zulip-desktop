@@ -28,6 +28,8 @@ function makeView() {
 				opt.innerHTML = 'Until I resume<br/>';
 				opt.id = 'dnd_4';
 				break;
+			default:
+				break;
 		}
 		opt.addEventListener('click', () => {
 			element(opt, timeDisableDNDInput);
