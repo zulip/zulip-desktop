@@ -4,47 +4,46 @@ const ConfigUtil = require(__dirname + '/config-util.js');
 
 const {ipcRenderer} = require('electron');
 
-let count = 0;
-let	dnd;
-let newSettings;
-let time = -1;
+let time;
 function makeView() {
+	const timeDisableDNDInput = document.createElement('div');
+	const actionContainer = document.getElementById('actions-container');
+	timeDisableDNDInput.className = 'dndInput';
+	for (let i = 1; i <= 4; i++) {
+		const opt = document.createElement('span');
+		switch (i) {
+			case 1:
+				opt.innerHTML = 'For 1 hour<br/>';
+				opt.id = 'dnd_1';
+				break;
+			case 2:
+				opt.innerHTML = 'For 8 hour<br/>';
+				opt.id = 'dnd_2';
+				break;
+			case 3:
+				opt.innerHTML = 'For 12 hour<br/>';
+				opt.id = 'dnd_3';
+				break;
+			case 4:
+				opt.innerHTML = 'Until I resume<br/>';
+				opt.id = 'dnd_4';
+				break;
+		}
+		opt.addEventListener('click', () => {
+			element(opt, timeDisableDNDInput);
+		}, false);
+		timeDisableDNDInput.appendChild(opt);
+	}
+	actionContainer.appendChild(timeDisableDNDInput);
+}
+
+function element(opt, timeDisableDNDInput) {
 	const dndOffTime = {
 		hr: new Date().getHours(),
 		min: new Date().getMinutes(),
 		carry: 0, // for dnd switch on after midnight 0 am
 		day: new Date().getDay()
 	};
-	const timeLeft = document.createElement('span');
-	const timeDisableDNDInput = document.createElement('div');
-	const actionContainer = document.getElementById('actions-container');
-	timeLeft.id = 'timeLeft';
-	actionContainer.prepend(timeLeft);
-	timeDisableDNDInput.className = 'dndInput';
-	for (let i = 1; i <= 4; i++) {
-		const opt = document.createElement('span');
-		if (i === 1) {
-			opt.innerHTML = 'For 1 hour<br/>';
-			opt.id = 'dnd_1';
-		} else if (i === 2) {
-			opt.innerHTML = 'For 8 hour<br/>';
-			opt.id = 'dnd_2';
-		} else if (i === 3) {
-			opt.innerHTML = 'For 12 hour<br/>';
-			opt.id = 'dnd_3';
-		} else if (i === 4) {
-			opt.innerHTML = 'Until I resume<br/>';
-			opt.id = 'dnd_4';
-		}
-		opt.addEventListener('click', () => {
-			element(opt, dndOffTime, timeDisableDNDInput);
-		}, false);
-		timeDisableDNDInput.appendChild(opt);
-		actionContainer.appendChild(timeDisableDNDInput);
-	}
-}
-
-function element(opt, dndOffTime, timeDisableDNDInput) {
 	const optionElement = document.getElementById(opt.id);
 	const actionContainer = document.getElementById('actions-container');
 	optionElement.className = 'dndOptionsSelect';
@@ -107,17 +106,17 @@ function checkDNDstate(cancel = false) {
 		const savedValue = (check.hr + (24 * check.carry)).toString() + formatTime(check.min.toString());
 		const presentValue = (new Date().getHours()).toString() + formatTime((new Date().getMinutes()).toString());
 		if (parseInt(savedValue, 10) < parseInt(presentValue, 10)) {
-			toggle();
-			sleep(1000).then(() => {
-				ipcRenderer.send('forward-message', 'toggle-dnd', dnd, newSettings);
+			const res = toggle();
+			sleep(500).then(() => {
+				ipcRenderer.send('forward-message', 'toggle-dnd', res.dnd, res.newSettings);
 				ConfigUtil.setConfigItem('dndSwitchOff', null);
 			});
 		}
 		setTimeout(checkDNDstate, 60 * 1000); // keeps running unless DND is switched off by the timer
 	} else if (cancel) {
-		toggle();
+		const res = toggle();
 		sleep(500).then(() => {
-			ipcRenderer.send('forward-message', 'toggle-dnd', dnd, newSettings);
+			ipcRenderer.send('forward-message', 'toggle-dnd', res.dnd, res.newSettings);
 			ConfigUtil.setConfigItem('dndSwitchOff', null);
 		});
 	}
@@ -140,12 +139,11 @@ function toggle() {
 	if (process.platform === 'win32') {
 		dndSettingList.push('flashTaskbarOnMessage');
 	}
+
+	let newSettings;
 	if (dnd) {
 		showDNDTimeLeft();
-		count++;
-		if (count) {
-			makeView();
-		}
+		makeView();
 		const oldSettings = {};
 		newSettings = {};
 		// Iterate through the dndSettingList.

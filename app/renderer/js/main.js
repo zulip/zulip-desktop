@@ -200,8 +200,6 @@ class ServerManagerView {
 
 	initActions() {
 		this.initDNDButton();
-		DNDUtil.checkDNDstate();
-		DNDUtil.showDNDTimeLeft();
 		this.$dndButton.addEventListener('click', () => {
 			const dndUtil = DNDUtil.toggle();
 			DNDUtil.checkDNDstate();
@@ -240,6 +238,7 @@ class ServerManagerView {
 
 	initDNDButton() {
 		DNDUtil.checkDNDstate();
+		DNDUtil.showDNDTimeLeft();
 		const dnd = ConfigUtil.getConfigItem('dnd', false);
 		this.toggleDNDButton(dnd);
 	}
