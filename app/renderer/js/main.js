@@ -3,7 +3,7 @@
 const { ipcRenderer, remote } = require('electron');
 const isDev = require('electron-is-dev');
 
-const { session, app } = remote;
+const { session, app, Menu, dialog } = remote;
 const escape = require('escape-html');
 
 require(__dirname + '/js/tray.js');
@@ -245,9 +245,31 @@ class ServerManagerView {
 		this.$backButton.addEventListener('click', () => {
 			this.tabs[this.activeTabIndex].webview.back();
 		});
-
 		const $serverImgs = document.querySelectorAll('.server-icons');
-		$serverImgs.forEach($serverImg => {
+		$serverImgs.forEach(($serverImg, index) => {
+			$serverImg.addEventListener('contextmenu', e => {
+				e.preventDefault();
+				const template = [
+					{
+						label: 'Disconnect organization',
+						click: () => {
+							dialog.showMessageBox({
+								type: 'warning',
+								buttons: ['YES', 'NO'],
+								defaultId: 0,
+								message: 'Are you sure you want to disconnect this organization?'
+							}, response => {
+								if (response === 0) {
+									DomainUtil.removeDomain(index);
+									ipcRenderer.send('reload-full-app');
+								}
+							});
+						}
+					}
+				];
+				const contextMenu = Menu.buildFromTemplate(template);
+				contextMenu.popup({ window: remote.getCurrentWindow() });
+			});
 			if ($serverImg.src.includes('img/icon.png')) {
 				this.displayInitalCharLogo($serverImg);
 			}
