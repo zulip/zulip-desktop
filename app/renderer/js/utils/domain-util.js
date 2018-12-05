@@ -65,7 +65,7 @@ class DomainUtil {
 	addDomain(server) {
 		return new Promise(resolve => {
 			if (server.icon) {
-				this.saveServerIcon(server.icon).then(localIconUrl => {
+				this.saveServerIcon(server).then(localIconUrl => {
 					server.icon = localIconUrl;
 					this.db.push('/domains[]', server, true);
 					this.reloadDB();
@@ -204,9 +204,22 @@ class DomainUtil {
 	}
 
 	getServerSettings(domain) {
+		const certificate = CertificateUtil.getCertificate(encodeURIComponent(domain));
+		let certificateLocation = '';
+
+		if (certificate) {
+			// To handle case where certificate has been moved from the location in certificates.json
+			try {
+				certificateLocation = fs.readFileSync(certificate);
+			} catch (err) {
+				logger.warn('Error while trying to get certificate: ' + err);
+			}
+		}
+
 		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
 		const serverSettingsOptions = {
 			url: domain + '/api/v1/server_settings',
+			ca: (certificateLocation) ? certificateLocation : '',
 			proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : '',
 			ecdhCurve: 'auto'
 		};
@@ -230,13 +243,32 @@ class DomainUtil {
 		});
 	}
 
-	saveServerIcon(url) {
+	saveServerIcon(server) {
+		const url = server.icon;
+		const domain = server.url;
+
+		const certificate = CertificateUtil.getCertificate(encodeURIComponent(domain));
+		let certificateLocation = '';
+
+		if (certificate) {
+			// To handle case where certificate has been moved from the location in certificates.json
+			try {
+				certificateLocation = fs.readFileSync(certificate);
+			} catch (err) {
+				logger.warn('Error while trying to get certificate: ' + err);
+			}
+		}
+
 		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
+
+		// Add proxy and certificate as a parameter if its being used.
 		const serverIconOptions = {
 			url,
+			ca: (certificateLocation) ? certificateLocation : '',
 			proxy: proxyEnabled ? ProxyUtil.getProxy(url) : '',
 			ecdhCurve: 'auto'
 		};
+
 		// The save will always succeed. If url is invalid, downgrade to default icon.
 		return new Promise(resolve => {
 			const filePath = this.generateFilePath(url);
@@ -270,7 +302,7 @@ class DomainUtil {
 	updateSavedServer(url, index) {
 		// Does not promise successful update
 		this.checkDomain(url, true).then(newServerConf => {
-			this.saveServerIcon(newServerConf.icon).then(localIconUrl => {
+			this.saveServerIcon(newServerConf).then(localIconUrl => {
 				newServerConf.icon = localIconUrl;
 				this.updateDomain(index, newServerConf);
 				this.reloadDB();
