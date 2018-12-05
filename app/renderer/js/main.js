@@ -229,22 +229,11 @@ class ServerManagerView {
 
 	initActions() {
 		this.initDNDButton();
-		this.$dndButton.addEventListener('click', () => {
-			const dndUtil = DNDUtil.toggle();
-			ipcRenderer.send('forward-message', 'toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
-		});
-		this.$reloadButton.addEventListener('click', () => {
-			this.tabs[this.activeTabIndex].webview.reload();
-		});
-		this.$addServerButton.addEventListener('click', () => {
-			this.openSettings('AddServer');
-		});
-		this.$settingsButton.addEventListener('click', () => {
-			this.openSettings('General');
-		});
-		this.$backButton.addEventListener('click', () => {
-			this.tabs[this.activeTabIndex].webview.back();
-		});
+		this.initServerActions();
+		this.initLeftSidebarEvents();
+	}
+
+	initServerActions() {
 		const $serverImgs = document.querySelectorAll('.server-icons');
 		$serverImgs.forEach(($serverImg, index) => {
 			$serverImg.addEventListener('contextmenu', e => {
@@ -277,6 +266,25 @@ class ServerManagerView {
 			$serverImg.addEventListener('error', () => {
 				this.displayInitalCharLogo($serverImg);
 			});
+		});
+	}
+
+	initLeftSidebarEvents() {
+		this.$dndButton.addEventListener('click', () => {
+			const dndUtil = DNDUtil.toggle();
+			ipcRenderer.send('forward-message', 'toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
+		});
+		this.$reloadButton.addEventListener('click', () => {
+			this.tabs[this.activeTabIndex].webview.reload();
+		});
+		this.$addServerButton.addEventListener('click', () => {
+			this.openSettings('AddServer');
+		});
+		this.$settingsButton.addEventListener('click', () => {
+			this.openSettings('General');
+		});
+		this.$backButton.addEventListener('click', () => {
+			this.tabs[this.activeTabIndex].webview.back();
 		});
 
 		this.sidebarHoverEvent(this.$addServerButton, this.$addServerTooltip, true);
@@ -502,6 +510,7 @@ class ServerManagerView {
 		// Destroy the current view and re-initiate it
 		this.destroyView();
 		this.initTabs();
+		this.initServerActions();
 	}
 
 	// This will trigger when pressed CTRL/CMD + R [WIP]
