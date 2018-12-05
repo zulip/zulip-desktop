@@ -231,11 +231,11 @@ class ServerManagerView {
 				contextMenu.popup({ window: remote.getCurrentWindow() });
 			});
 			if ($serverImg.src.includes('img/icon.png')) {
-				this.displayInitalCharLogo($serverImg);
+				this.displayInitialCharLogo($serverImg);
 			}
 
 			$serverImg.addEventListener('error', () => {
-				this.displayInitalCharLogo($serverImg);
+				this.displayInitialCharLogo($serverImg);
 			});
 		});
 	}
@@ -276,7 +276,7 @@ class ServerManagerView {
 		return currentIndex;
 	}
 
-	displayInitalCharLogo($img) {
+	displayInitialCharLogo($img) {
 		const $altIcon = document.createElement('div');
 		const $parent = $img.parentElement;
 		const $container = $parent.parentElement;
