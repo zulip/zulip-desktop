@@ -358,6 +358,10 @@ img.server-info-icon {
     width: 150px;
 }
 
+.w-200 {
+    width: 200px;
+}
+
 .grey {
     color: #9E9E9E;
     background: #FAFAFA;
@@ -401,7 +405,11 @@ i.open-tab-button {
 }
 
 #server-info-container {
-    min-height: calc(100% - 260px);
+    /* min-height: calc(100% - 260px); */
+}
+
+#new-org-button {
+    margin: 30px 0px 30px 0px;
 }
 
 #create-organization-container {
