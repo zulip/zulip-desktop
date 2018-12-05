@@ -8,24 +8,24 @@ let time;
 function makeView() {
 	const timeDisableDNDInput = document.createElement('div');
 	const actionContainer = document.getElementById('actions-container');
-	timeDisableDNDInput.className = 'dndInput';
+	timeDisableDNDInput.className = 'dnd-input';
 	for (let i = 1; i <= 4; i++) {
 		const opt = document.createElement('span');
 		switch (i) {
 			case 1:
-				opt.innerHTML = 'For 1 hour<br/>';
+				opt.innerHTML = 'For 1 hour <hr/>';
 				opt.id = 'dnd_1';
 				break;
 			case 2:
-				opt.innerHTML = 'For 8 hour<br/>';
+				opt.innerHTML = 'For 8 hour <hr/>';
 				opt.id = 'dnd_2';
 				break;
 			case 3:
-				opt.innerHTML = 'For 12 hour<br/>';
+				opt.innerHTML = 'For 12 hour <hr/>';
 				opt.id = 'dnd_3';
 				break;
 			case 4:
-				opt.innerHTML = 'Until I resume<br/>';
+				opt.innerHTML = 'Until I resume <hr/>';
 				opt.id = 'dnd_4';
 				break;
 			default:
@@ -48,7 +48,17 @@ function element(opt, timeDisableDNDInput) {
 	};
 	const optionElement = document.getElementById(opt.id);
 	const actionContainer = document.getElementById('actions-container');
-	optionElement.className = 'dndOptionsSelect';
+	const checkmark = document.createElement('span');
+	const checkmarkStem = document.createElement('span');
+	const checkmarkTop = document.createElement('span');
+	checkmark.className = 'checkmark';
+	checkmarkStem.className = 'checkmark-stem';
+	checkmarkTop.className = 'checkmark-top';
+	checkmark.appendChild(checkmarkStem);
+	checkmark.appendChild(checkmarkTop);
+	opt.appendChild(checkmark);
+	timeDisableDNDInput.style.height = '175px';
+	optionElement.className = 'dnd-options-select';
 	if (opt.id === 'dnd_1') {
 		time = 1;
 	} else if (opt.id === 'dnd_2') {
@@ -69,7 +79,7 @@ function element(opt, timeDisableDNDInput) {
 		ConfigUtil.setConfigItem('dndSwitchOff', null);
 	}
 	const doneButton = document.createElement('button');
-	doneButton.className = 'dndButton';
+	doneButton.className = 'dnd-button';
 	doneButton.innerHTML = 'Done';
 	doneButton.onclick = () => {
 		setTimeout(() => {
@@ -81,7 +91,7 @@ function element(opt, timeDisableDNDInput) {
 	};
 	timeDisableDNDInput.appendChild(doneButton);
 	const cancelButton = document.createElement('button');
-	cancelButton.className = 'dndCancel';
+	cancelButton.className = 'dnd-cancel';
 	cancelButton.innerHTML = 'Cancel';
 	cancelButton.onclick = () => {
 		checkDNDstate(true);
@@ -130,7 +140,7 @@ function showDNDTimeLeft() {
 		const timeLeft = document.createElement('span');
 		timeLeft.id = 'timeLeft';
 		timeLeft.innerHTML = 'DND off at<br/> <b>' + check.hr + ' hrs ' + check.min + ' mins</b>';
-		timeLeft.className = 'timeLeft';
+		timeLeft.className = 'time-left';
 		document.getElementById('actions-container').prepend(timeLeft);
 	}
 }

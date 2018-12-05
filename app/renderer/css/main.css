@@ -82,30 +82,34 @@ body {
     flex-direction: column;
 }
 
-.dndInput {
+.dnd-input {
     left: 5%;
     top: 60%;
     position: fixed;
-    border: 2px solid pink;
-    border-radius: 5px;
+    border: 1px solid #4F3A3A;
+    border-radius: 2px;
     background-color: #fff;
-    padding: 20px;
+    padding: 10px;
+    width: 150px;
+    box-shadow: 5px 5px 10px #0E5446;
+    min-height: 150px;
 }
 
-.dndOptionsSelect {
-    background-color: pink;
-    width: 200px;
+.dnd-options-select {
+    background-color: transparent;
 }
 
-.dndButton {
-    margin-top: 10px;
-    padding: 5px;
+.dnd-button {
+    padding: 8px 15px 8px 15px;
     color: #fff;
-    background-color: blue;
+    background-color: #4EBCA3;
     border-radius: 5px;
+    font-weight: 800;
+    position: absolute;
+    left: 8px;
 }
 
-.timeLeft {
+.time-left {
     display: block;
     color: black;
     background-color: white;
@@ -116,12 +120,45 @@ body {
     padding-bottom: 5px;
 }
 
-.dndCancel {
-    background-color: green;
-    color: white;
+.dnd-cancel {
+    background-color: white;
+    color: #222c31;
     border-radius: 5px;
-    margin-top: 5px;
-    padding: 5px;
+    position: absolute;
+    font-weight: 800;
+    right: 8px;
+    padding: 8px 15px 8px 15px;
+}
+
+.checkmark {
+    display: inline-block;
+    width: 0px;
+    height: 12px;
+    -ms-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    left: 125px;
+    bottom: 38px;
+    transform: rotate(45deg);
+    position: relative;
+}
+
+.checkmark-stem {
+    position: absolute;
+    width: 3px;
+    height: 13px;
+    background-color: #222c31;
+    right: -10px;
+    top: -5px;
+}
+
+.checkmark-top {
+    position: absolute;
+    width: 5px;
+    height: 3px;
+    background-color: #222c31;
+    right: -9px;
+    top: 5px;
+    margin-right: inherit;
 }
 
 .material-icons {
