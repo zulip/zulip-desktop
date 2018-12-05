@@ -556,6 +556,10 @@ class ServerManagerView {
 			this.activateLastTab(index);
 		});
 
+		ipcRenderer.on('open-org-tab', () => {
+			this.openSettings('AddServer');
+		});
+
 		ipcRenderer.on('reload-proxy', (event, showAlert) => {
 			this.loadProxy().then(() => {
 				if (showAlert) {
