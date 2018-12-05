@@ -28,7 +28,7 @@ class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="sidebar-option">
-						<div class="setting-description">Show sidebar (<span class="code">Cmd/Ctrl+S</span>)</div>
+						<div class="setting-description">Show sidebar (<span class="code">${process.platform === 'darwin' ? 'Cmd+Shift+S' : 'Ctrl+Shift+S'}</span>)</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="badge-option">
