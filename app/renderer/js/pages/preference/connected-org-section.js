@@ -17,7 +17,7 @@ class ConnectedOrgSection extends BaseSection {
 				<div class="page-title">Connected organizations</div>
 				<div class="title" id="existing-servers">All the connected orgnizations will appear here.</div>
 				<div id="server-info-container"></div>
-				<div id="new-org-button"><button class="green sea w-200">Connect to another organization"</button></div>
+				<div id="new-org-button"><button class="green sea w-250">Connect to another organization</button></div>
 				<div class="page-title">Add Custom Certificates</div>
 				<div id="add-certificate-container"></div>
 			</div>
