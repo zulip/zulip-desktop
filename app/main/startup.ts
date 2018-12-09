@@ -1,10 +1,10 @@
 'use strict';
 const { app } = require('electron');
 const AutoLaunch = require('auto-launch');
-const isDev = require('electron-is-dev');
+const isDev: boolean = require('electron-is-dev');
 const ConfigUtil = require('./../renderer/js/utils/config-util.js');
 
-const setAutoLaunch = AutoLaunchValue => {
+const setAutoLaunch = (AutoLaunchValue: boolean) => {
 	// Don't run this in development
 	if (isDev) {
 		return;
