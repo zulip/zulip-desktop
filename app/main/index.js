@@ -5,6 +5,8 @@ const fs = require('fs');
 const electron = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const isDev = require('electron-is-dev');
+
+require('../renderer/js/shared/ts-node'); // eslint-disable-line import/no-unassigned-import
 const appMenu = require('./menu');
 const { appUpdater } = require('./autoupdater');
 
