@@ -9,7 +9,6 @@ const isDev = require('electron-is-dev');
 require('../renderer/js/shared/ts-node'); // eslint-disable-line import/no-unassigned-import
 const appMenu = require('./menu');
 const { appUpdater } = require('./autoupdater');
-
 const { setAutoLaunch } = require('./startup');
 
 const { app, ipcMain } = electron;
