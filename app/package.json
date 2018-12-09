@@ -40,6 +40,8 @@
     "node-json-db": "0.9.1",
     "request": "2.85.0",
     "semver": "5.4.1",
+    "ts-node": "7.0.1",
+    "typescript": "3.1.1",
     "wurl": "2.5.0"
   },
   "optionalDependencies": {
