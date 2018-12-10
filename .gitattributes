@@ -1,4 +1,4 @@
-* text=auto
+* text=auto eol=lf
 
 package-lock.json binary
 app/package-lock.json binary
