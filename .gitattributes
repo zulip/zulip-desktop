@@ -2,3 +2,15 @@
 
 package-lock.json binary
 app/package-lock.json binary
+*.gif binary
+*.jpg binary
+*.jpeg binary
+*.eot binary
+*.woff binary
+*.woff2 binary
+*.svg binary
+*.ttf binary
+*.png binary
+*.otf binary
+*.tif binary
+*.ogg binary
