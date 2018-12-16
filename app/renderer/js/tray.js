@@ -99,7 +99,9 @@ const renderNativeImage = function (arg) {
 		.then(() => renderCanvas(arg))
 		.then(canvas => {
 			const pngData = nativeImage.createFromDataURL(canvas.toDataURL('image/png')).toPNG();
-			return Promise.resolve(nativeImage.createFromBuffer(pngData, config.pixelRatio));
+			return Promise.resolve(nativeImage.createFromBuffer(pngData, {
+				scaleFactor: config.pixelRatio
+			}));
 		});
 };
 
