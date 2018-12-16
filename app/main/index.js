@@ -32,18 +32,19 @@ let isQuitting = false;
 // Load this url in main window
 const mainURL = 'file://' + path.join(__dirname, '../renderer', 'main.html');
 
-const isAlreadyRunning = app.makeSingleInstance(() => {
-	if (mainWindow) {
-		if (mainWindow.isMinimized()) {
-			mainWindow.restore();
+const singleInstanceLock = app.requestSingleInstanceLock();
+if (singleInstanceLock) {
+	app.on('second-instance', () => {
+		if (mainWindow) {
+			if (mainWindow.isMinimized()) {
+				mainWindow.restore();
+			}
+
+			mainWindow.show();
 		}
-
-		mainWindow.show();
-	}
-});
-
-if (isAlreadyRunning) {
-	return app.quit();
+	});
+} else {
+	app.quit();
 }
 
 const APP_ICON = path.join(__dirname, '../resources', 'Icon');
