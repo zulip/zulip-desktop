@@ -123,7 +123,7 @@
     "assert": "1.4.1",
     "cp-file": "^5.0.0",
     "devtron": "1.4.0",
-    "electron": "2.0.9",
+    "electron": "2.0.15",
     "electron-builder": "20.28.3",
     "electron-connect": "0.6.2",
     "electron-debug": "1.4.0",
