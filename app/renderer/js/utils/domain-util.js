@@ -12,6 +12,7 @@ const Logger = require('./logger-util');
 const CertificateUtil = require(__dirname + '/certificate-util.js');
 const ProxyUtil = require(__dirname + '/proxy-util.js');
 const ConfigUtil = require(__dirname + '/config-util.js');
+const SystemUtil = require(__dirname + '/../utils/system-util.js');
 
 const logger = new Logger({
 	file: `domain-util.log`,
@@ -130,7 +131,8 @@ class DomainUtil {
 			url: domain + '/static/audio/zulip.ogg',
 			ca: (certificateLocation) ? certificateLocation : '',
 			proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : '',
-			ecdhCurve: 'auto'
+			ecdhCurve: 'auto',
+			headers: { 'User-Agent': SystemUtil.getUserAgent() }
 		};
 
 		const serverConf = {
@@ -221,7 +223,8 @@ class DomainUtil {
 			url: domain + '/api/v1/server_settings',
 			ca: (certificateLocation) ? certificateLocation : '',
 			proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : '',
-			ecdhCurve: 'auto'
+			ecdhCurve: 'auto',
+			headers: { 'User-Agent': SystemUtil.getUserAgent() }
 		};
 		return new Promise((resolve, reject) => {
 			request(serverSettingsOptions, (error, response) => {
@@ -266,7 +269,8 @@ class DomainUtil {
 			url,
 			ca: (certificateLocation) ? certificateLocation : '',
 			proxy: proxyEnabled ? ProxyUtil.getProxy(url) : '',
-			ecdhCurve: 'auto'
+			ecdhCurve: 'auto',
+			headers: { 'User-Agent': SystemUtil.getUserAgent() }
 		};
 
 		// The save will always succeed. If url is invalid, downgrade to default icon.
