@@ -448,7 +448,6 @@ class ServerManagerView {
 		this.activeTabIndex = index;
 		this.tabs[index].activate();
 
-		console.log(this.tabsForIpc);
 		ipcRenderer.send('update-menu', {
 			// JSON stringify this.tabs to avoid a crash
 			// util.inspect is being used to handle circular references
