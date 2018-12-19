@@ -372,7 +372,7 @@ class GeneralSection extends BaseSection {
 			clickHandler: () => {
 				const newValue = !ConfigUtil.getConfigItem('startMinimized');
 
-				//if both startMinimises and startInTray are true then set startInTray to false
+				// if both startMinimises and startInTray are true then set startInTray to false
 				const otherValue = ConfigUtil.getConfigItem('startInTray');
 				if (otherValue === true && newValue === true) {
 					ConfigUtil.setConfigItem('startInTray', false);
@@ -392,7 +392,7 @@ class GeneralSection extends BaseSection {
 			clickHandler: () => {
 				const newValue = !ConfigUtil.getConfigItem('startInTray');
 
-				//if both startMinimises and startInTray are true then set startMinimised to false
+				// if both startMinimises and startInTray are true then set startMinimised to false
 				const otherValue = ConfigUtil.getConfigItem('startMinimized');
 				if (otherValue === true && newValue === true) {
 					ConfigUtil.setConfigItem('startMinimized', false);
