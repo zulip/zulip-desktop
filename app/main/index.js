@@ -85,16 +85,6 @@ function createMainWindow() {
 		win.webContents.send('focus');
 	});
 
-	win.once('ready-to-show', () => {
-		if (ConfigUtil.getConfigItem('startMinimized')) {
-			win.minimize();
-		} else if (ConfigUtil.getConfigItem('startInTray')) {
-			win.hide();
-		} else {
-			win.show();
-		}
-	});
-
 	win.loadURL(mainURL);
 
 	// Keep the app running in background on close event
