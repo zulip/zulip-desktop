@@ -88,6 +88,8 @@ function createMainWindow() {
 	win.once('ready-to-show', () => {
 		if (ConfigUtil.getConfigItem('startMinimized')) {
 			win.minimize();
+		} else if (ConfigUtil.getConfigItem('startInTray')) {
+			win.hide();
 		} else {
 			win.show();
 		}
@@ -179,6 +181,8 @@ app.on('ready', () => {
 	page.on('dom-ready', () => {
 		if (ConfigUtil.getConfigItem('startMinimized')) {
 			mainWindow.minimize();
+		} else if (ConfigUtil.getConfigItem('startInTray')) {
+			mainWindow.hide();
 		} else {
 			mainWindow.show();
 		}

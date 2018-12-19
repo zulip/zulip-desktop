@@ -76,6 +76,10 @@ class GeneralSection extends BaseSection {
 						<div class="setting-description">Always start minimized</div>
 						<div class="setting-control"></div>
 					</div>
+					<div class="setting-row" id="start-inTray-option">
+						<div class="setting-description">Always start in tray</div>
+						<div class="setting-control"></div>
+					</div>
 					<div class="setting-row" id="enable-spellchecker-option">
 						<div class="setting-description">Enable spellchecker (requires restart)</div>
 						<div class="setting-control"></div>
@@ -145,6 +149,7 @@ class GeneralSection extends BaseSection {
 		this.removeCustomCSS();
 		this.downloadFolder();
 		this.showDownloadFolder();
+		this.startInTray();
 
 		// Platform specific settings
 
@@ -366,12 +371,39 @@ class GeneralSection extends BaseSection {
 			value: ConfigUtil.getConfigItem('startMinimized', false),
 			clickHandler: () => {
 				const newValue = !ConfigUtil.getConfigItem('startMinimized');
+
+				//if both startMinimises and startInTray are true then set startInTray to false
+				const otherValue = ConfigUtil.getConfigItem('startInTray');
+				if (otherValue === true && newValue === true) {
+					ConfigUtil.setConfigItem('startInTray', false);
+					this.startInTray();
+				}
+
 				ConfigUtil.setConfigItem('startMinimized', newValue);
 				this.minimizeOnStart();
 			}
 		});
 	}
 
+	startInTray() {
+		this.generateSettingOption({
+			$element: document.querySelector('#start-inTray-option .setting-control'),
+			value: ConfigUtil.getConfigItem('startInTray', false),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('startInTray');
+
+				//if both startMinimises and startInTray are true then set startMinimised to false
+				const otherValue = ConfigUtil.getConfigItem('startMinimized');
+				if (otherValue === true && newValue === true) {
+					ConfigUtil.setConfigItem('startMinimized', false);
+					this.minimizeOnStart();
+				}
+
+				ConfigUtil.setConfigItem('startInTray', newValue);
+				this.startInTray();
+			}
+		});
+	}
 	addCustomCSS() {
 		const customCSSButton = document.querySelector('#add-custom-css .custom-css-button');
 		customCSSButton.addEventListener('click', () => {

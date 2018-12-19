@@ -107,6 +107,7 @@ class ServerManagerView {
 			badgeOption: true,
 			startAtLogin: false,
 			startMinimized: false,
+			startInTray: false,
 			enableSpellchecker: true,
 			showNotification: true,
 			autoUpdate: true,
