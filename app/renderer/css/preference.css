@@ -572,6 +572,40 @@ input.toggle-round:checked+label:after {
     background: #329588;
 }
 
+
+#network-settings-center {
+    width: 100%;
+    text-align: center;
+    align-items: center;
+    padding-top: 25px;
+    margin-left: -5px;
+}
+
+#network-settings-center button {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin: auto;
+    align-items: center;
+    text-align: center;
+    color: #4EBFAC;
+    border-color: #efefef;
+    border: none;
+    background-color: #f4f7f8;
+    width: 98%;
+    height: 46px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#network-settings-center button:hover {
+    color: #329588;
+}
+
+#network-settings-center button:focus {
+    color: #329588;
+}
+
+
 .certificates-card {
     width: 80%
 }
@@ -635,6 +669,10 @@ input.toggle-round:checked+label:after {
         width: 60vw;
         padding: 40px;
         min-width: 300px;
+    }
+    #network-settings-center button {
+        margin-right: -12px;
+        width: 100%;
     }
     .server-center button {
         margin-right: -12px;

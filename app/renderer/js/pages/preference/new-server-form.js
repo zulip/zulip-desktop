@@ -3,6 +3,7 @@
 const BaseComponent = require(__dirname + '/../../components/base.js');
 const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
 const shell = require('electron').shell;
+const { ipcRenderer } = require('electron');
 
 class NewServerForm extends BaseComponent {
 	constructor(props) {
@@ -30,9 +31,17 @@ class NewServerForm extends BaseComponent {
 				<div class="server-center">
 				<div class="server-save-action">
 					<button id="open-create-org-link">Create a new organization</button>
+				</div>
+				</div>
+
+				<div id="network-settings-center" style=display:none;>
+					<button id="open-network-settings">Configure network</button>
+				</div>
 			</div>
-					</div>
-			</div>
+			
+
+
+			
 		`;
 	}
 
@@ -70,6 +79,14 @@ class NewServerForm extends BaseComponent {
 		});
 	}
 
+	networkSettingsLink() {
+		const networkSettingsId = document.getElementById('network-settings-center');
+		if (DomainUtil.getDomains().length === 0) {
+			networkSettingsId.style.display = 'block';
+			networkSettingsId.addEventListener('click', () => ipcRenderer.send('forward-message', 'open-network-settings'));
+		}
+	}
+
 	initActions() {
 		this.$saveServerButton.addEventListener('click', () => {
 			this.submitFormHandler();
@@ -83,6 +100,7 @@ class NewServerForm extends BaseComponent {
 		});
 		// open create new org link in default browser
 		this.openCreateNewOrgExternalLink();
+		this.networkSettingsLink();
 	}
 }
 

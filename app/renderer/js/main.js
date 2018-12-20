@@ -561,6 +561,10 @@ class ServerManagerView {
 			this.openSettings('AddServer');
 		});
 
+		ipcRenderer.on('open-network-settings', () => {
+			this.openSettings('Network');
+		});
+
 		ipcRenderer.on('reload-proxy', (event, showAlert) => {
 			this.loadProxy().then(() => {
 				if (showAlert) {
