@@ -87,7 +87,7 @@ function createMainWindow() {
 
 	win.once('ready-to-show', () => {
 		if (ConfigUtil.getConfigItem('startMinimized')) {
-			win.minimize();
+			win.hide();
 		} else {
 			win.show();
 		}
@@ -178,7 +178,7 @@ app.on('ready', () => {
 
 	page.on('dom-ready', () => {
 		if (ConfigUtil.getConfigItem('startMinimized')) {
-			mainWindow.minimize();
+			mainWindow.hide();
 		} else {
 			mainWindow.show();
 		}
