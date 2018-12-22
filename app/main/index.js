@@ -85,14 +85,6 @@ function createMainWindow() {
 		win.webContents.send('focus');
 	});
 
-	win.once('ready-to-show', () => {
-		if (ConfigUtil.getConfigItem('startMinimized')) {
-			win.minimize();
-		} else {
-			win.show();
-		}
-	});
-
 	win.loadURL(mainURL);
 
 	// Keep the app running in background on close event
@@ -178,7 +170,7 @@ app.on('ready', () => {
 
 	page.on('dom-ready', () => {
 		if (ConfigUtil.getConfigItem('startMinimized')) {
-			mainWindow.minimize();
+			mainWindow.hide();
 		} else {
 			mainWindow.show();
 		}
