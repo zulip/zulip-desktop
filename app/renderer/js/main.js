@@ -404,6 +404,25 @@ class ServerManagerView {
 		ConfigUtil.setConfigItem('lastActiveTab', index);
 	}
 
+	// returns this.tabs in an way that does
+	// not crash app when this.tabs is passed into
+	// ipcRenderer. Something about webview, and props.webview
+	// properties in ServerTab causes the app to crash.
+	get tabsForIpc() {
+		const tabs = [];
+		this.tabs.forEach(tab => {
+			const proto = Object.create(Object.getPrototypeOf(tab));
+			const tabClone = Object.assign(proto, tab);
+
+			tabClone.webview = { props: {} };
+			tabClone.webview.props.name = tab.webview.props.name;
+			delete tabClone.props.webview;
+			tabs.push(tabClone);
+		});
+
+		return tabs;
+	}
+
 	activateTab(index, hideOldTab = true) {
 		if (!this.tabs[index]) {
 			return;
@@ -430,7 +449,9 @@ class ServerManagerView {
 		this.tabs[index].activate();
 
 		ipcRenderer.send('update-menu', {
-			tabs: this.tabs,
+			// JSON stringify this.tabs to avoid a crash
+			// util.inspect is being used to handle circular references
+			tabs: this.tabsForIpc,
 			activeTabIndex: this.activeTabIndex,
 			// Following flag controls whether a menu item should be enabled or not
 			enableMenu: this.tabs[index].props.role === 'server'
@@ -617,7 +638,7 @@ class ServerManagerView {
 					DomainUtil.reloadDB();
 					// Update the realm name also on the Window menu
 					ipcRenderer.send('update-menu', {
-						tabs: this.tabs,
+						tabs: this.tabsForIpc,
 						activeTabIndex: this.activeTabIndex
 					});
 				}
