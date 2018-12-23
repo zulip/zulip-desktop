@@ -156,12 +156,12 @@ class ServerManagerView {
 				const domains = [];
 				const tabElements = document.querySelectorAll('#tabs-container .tab');
 				tabElements.forEach((el, index) => {
-					const oldIndex = +el.getAttribute('data-tab-id');
+					const oldIndex = +Number(el.getAttribute('data-tab-id'));
 					newTabs.push(_this.tabs[oldIndex]);
 					el.setAttribute('data-tab-id', index.toString());
 					domains.push(DomainUtil.getDomain(oldIndex));
 				});
-				for(let index = 0; index < domains.length; ++i) {
+				for (let index = 0; index < domains.length; ++index) {
 					DomainUtil.updateDomain(index, domains[index]);
 				}
 				_this.tabs = newTabs;
@@ -285,7 +285,13 @@ class ServerManagerView {
 		// To handle position of servers' tooltip due to scrolling of list of organizations
 		// This could not be handled using CSS, hence the top of the tooltip is made same
 		// as that of its parent element.
-		const { top } = this.$serverIconTooltip[index].parentElement.getBoundingClientRect();
+		let top = null;
+		const { dragged } = this.state;
+		if (dragged && index > dragged.oldIndex && index <= dragged.newIndex) {
+			top = this.$serverIconTooltip[index + (Number(dragged.direction) * 1)].parentElement.getBoundingClientRect().top;
+		} else {
+			top = this.$serverIconTooltip[index].parentElement.getBoundingClientRect().top;
+		}
 		this.$serverIconTooltip[index].style.top = top + 'px';
 	}
 
