@@ -153,13 +153,17 @@ class ServerManagerView {
 			dataIdAttr: 'data-sortable-id',
 			onEnd() {
 				const newTabs = [];
+				const domains = [];
 				const tabElements = document.querySelectorAll('#tabs-container .tab');
 				tabElements.forEach((el, index) => {
 					const oldIndex = +el.getAttribute('data-tab-id');
 					newTabs.push(_this.tabs[oldIndex]);
 					el.setAttribute('data-tab-id', index.toString());
+					domains.push(DomainUtil.getDomain(oldIndex));
 				});
-
+				for(let index = 0; index < domains.length; ++i) {
+					DomainUtil.updateDomain(index, domains[index]);
+				}
 				_this.tabs = newTabs;
 				ipcRenderer.send('update-menu', {
 					tabs: _this.tabs,
