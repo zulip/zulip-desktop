@@ -124,7 +124,7 @@
     "cp-file": "^5.0.0",
     "devtron": "1.4.0",
     "electron": "3.0.10",
-    "electron-builder": "20.28.3",
+    "electron-builder": "20.38.4",
     "electron-connect": "0.6.2",
     "electron-debug": "1.4.0",
     "google-translate-api": "2.3.0",
