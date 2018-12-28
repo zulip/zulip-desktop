@@ -1,4 +1,4 @@
-'use strict';
+W'use strict';
 
 const { ipcRenderer, remote } = require('electron');
 const isDev = require('electron-is-dev');
@@ -324,6 +324,8 @@ class ServerManagerView {
 
 		$parent.removeChild($img);
 		$parent.appendChild($altIcon);
+
+		this.addContextMenu($altIcon, $webview.getAttribute('data-tab-id'));
 	}
 
 	sidebarHoverEvent(SidebarButton, SidebarTooltip, addServer = false) {
