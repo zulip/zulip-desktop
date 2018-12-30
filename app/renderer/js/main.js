@@ -207,33 +207,10 @@ class ServerManagerView {
 	initServerActions() {
 		const $serverImgs = document.querySelectorAll('.server-icons');
 		$serverImgs.forEach(($serverImg, index) => {
-			$serverImg.addEventListener('contextmenu', e => {
-				e.preventDefault();
-				const template = [
-					{
-						label: 'Disconnect organization',
-						click: () => {
-							dialog.showMessageBox({
-								type: 'warning',
-								buttons: ['YES', 'NO'],
-								defaultId: 0,
-								message: 'Are you sure you want to disconnect this organization?'
-							}, response => {
-								if (response === 0) {
-									DomainUtil.removeDomain(index);
-									ipcRenderer.send('reload-full-app');
-								}
-							});
-						}
-					}
-				];
-				const contextMenu = Menu.buildFromTemplate(template);
-				contextMenu.popup({ window: remote.getCurrentWindow() });
-			});
+			this.addContextMenu($serverImg, index);
 			if ($serverImg.src.includes('img/icon.png')) {
 				this.displayInitialCharLogo($serverImg);
 			}
-
 			$serverImg.addEventListener('error', () => {
 				this.displayInitialCharLogo($serverImg);
 			});
@@ -295,6 +272,8 @@ class ServerManagerView {
 
 		$parent.removeChild($img);
 		$parent.appendChild($altIcon);
+
+		this.addContextMenu($altIcon, $webview.getAttribute('data-tab-id'));
 	}
 
 	sidebarHoverEvent(SidebarButton, SidebarTooltip, addServer = false) {
@@ -530,6 +509,32 @@ class ServerManagerView {
 	toggleDNDButton(alert) {
 		this.$dndTooltip.textContent = (alert ? 'Turn Off' : 'Enable') + ' Do Not Disturb';
 		this.$dndButton.querySelector('i').textContent = alert ? 'notifications_off' : 'notifications';
+	}
+
+	addContextMenu($serverImg, index) {
+		$serverImg.addEventListener('contextmenu', e => {
+			e.preventDefault();
+			const template = [
+				{
+					label: 'Disconnect organization',
+					click: () => {
+						dialog.showMessageBox({
+							type: 'warning',
+							buttons: ['YES', 'NO'],
+							defaultId: 0,
+							message: 'Are you sure you want to disconnect this organization?'
+						}, response => {
+							if (response === 0) {
+								DomainUtil.removeDomain(index);
+								ipcRenderer.send('reload-full-app');
+							}
+						});
+					}
+				}
+			];
+			const contextMenu = Menu.buildFromTemplate(template);
+			contextMenu.popup({ window: remote.getCurrentWindow() });
+		});
 	}
 
 	registerIpcs() {
