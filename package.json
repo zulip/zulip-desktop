@@ -106,8 +106,6 @@
       "publisherName": "Kandra Labs, Inc."
     },
     "nsis": {
-      "perMachine": true,
-      "oneClick": false,
       "allowToChangeInstallationDirectory": true
     }
   },
