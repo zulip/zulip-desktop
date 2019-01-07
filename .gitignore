@@ -33,6 +33,6 @@ yarn-error.log*
 config.gypi
 
 # Test generated files
-tests/package.json
+# tests/package.json
 
 .python-version

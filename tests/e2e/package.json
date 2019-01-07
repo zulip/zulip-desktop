@@ -1,185 +1,183 @@
 {
- "name": "zulip",
- "productName": "ZulipTest",
- "version": "2.3.3",
- "main": "../../app/main",
- "description": "Zulip Desktop App",
- "license": "Apache-2.0",
- "copyright": "Kandra Labs, Inc.",
- "author": {
-  "name": "Kandra Labs, Inc.",
-  "email": "support@zulipchat.com"
- },
- "repository": {
-  "type": "git",
-  "url": "https://github.com/zulip/zulip-electron.git"
- },
- "bugs": {
-  "url": "https://github.com/zulip/zulip-electron/issues"
- },
- "engines": {
-  "node": ">=6.0.0"
- },
- "scripts": {
-  "start": "electron app --disable-http-cache --no-electron-connect",
-  "reinstall": "node ./tools/reinstall-node-modules.js",
-  "postinstall": "electron-builder install-app-deps",
-  "test": "xo",
-  "test-e2e": "gulp test-e2e",
-  "dev": "gulp dev & nodemon --watch app/main --watch app/renderer --exec 'npm test' -e html,css,js",
-  "pack": "electron-builder --dir",
-  "dist": "electron-builder",
-  "mas": "electron-builder --mac mas",
-  "travis": "cd ./scripts && ./travis-build-test.sh",
-  "build-locales": "node tools/locale-helper"
- },
- "pre-commit": [
-  "test"
- ],
- "build": {
-  "appId": "org.zulip.zulip-electron",
-  "asar": true,
-  "files": [
-   "**/*",
-   "!docs${/*}",
-   "!node_modules/@paulcbetts/cld/deps/cld${/*}"
-  ],
-  "copyright": "©2017 Kandra Labs, Inc.",
-  "mac": {
-   "category": "public.app-category.productivity",
-   "artifactName": "${productName}-${version}-${arch}.${ext}"
-  },
-  "linux": {
-   "category": "Chat;GNOME;GTK;Network;InstantMessaging",
-   "packageCategory": "GNOME;GTK;Network;InstantMessaging",
-   "description": "Zulip Desktop Client for Linux",
-   "target": [
-    "deb",
-    "zip",
-    "AppImage",
-    "snap"
-   ],
-   "maintainer": "Akash Nimare <svnitakash@gmail.com>",
-   "artifactName": "${productName}-${version}-${arch}.${ext}"
-  },
-  "deb": {
-   "synopsis": "Zulip Desktop App",
-   "afterInstall": "./scripts/debian-add-repo.sh",
-   "afterRemove": "./scripts/debian-uninstaller.sh"
-  },
-  "snap": {
-   "synopsis": "Zulip Desktop App"
-  },
-  "dmg": {
-   "background": "build/appdmg.png",
-   "icon": "build/icon.icns",
-   "iconSize": 100,
-   "contents": [
-    {
-     "x": 380,
-     "y": 280,
-     "type": "link",
-     "path": "/Applications"
+    "name": "zulip",
+    "productName": "Zulip",
+    "version": "2.4.0",
+    "main": "../../app/main",
+    "description": "Zulip Desktop App",
+    "license": "Apache-2.0",
+    "copyright": "Kandra Labs, Inc.",
+    "author": {
+      "name": "Kandra Labs, Inc.",
+      "email": "support@zulipchat.com"
     },
-    {
-     "x": 110,
-     "y": 280,
-     "type": "file"
-    }
-   ],
-   "window": {
-    "width": 500,
-    "height": 500
-   }
-  },
-  "win": {
-   "target": [
-    {
-     "target": "nsis-web",
-     "arch": [
-      "x64",
-      "ia32"
-     ]
-    }
-   ],
-   "icon": "build/icon.ico",
-   "publisherName": "Kandra Labs, Inc."
-  },
-  "nsis": {
-   "perMachine": true,
-   "oneClick": false,
-   "allowToChangeInstallationDirectory": true
-  }
- },
- "keywords": [
-  "Zulip",
-  "Group Chat app",
-  "electron-app",
-  "electron",
-  "Desktop app",
-  "InstantMessaging"
- ],
- "devDependencies": {
-  "assert": "1.4.1",
-  "cp-file": "^5.0.0",
-  "devtron": "1.4.0",
-  "electron": "2.0.1",
-  "electron-builder": "20.20.4",
-  "electron-connect": "0.6.2",
-  "electron-debug": "1.4.0",
-  "google-translate-api": "2.3.0",
-  "gulp": "^4.0.0",
-  "gulp-tape": "0.0.9",
-  "is-ci": "^1.0.10",
-  "nodemon": "^1.14.11",
-  "pre-commit": "1.2.2",
-  "spectron": "3.8.0",
-  "tap-colorize": "^1.2.0",
-  "tape": "^4.8.0",
-  "xo": "0.18.2"
- },
- "xo": {
-  "parserOptions": {
-   "sourceType": "script",
-   "ecmaFeatures": {
-    "globalReturn": true
-   }
-  },
-  "esnext": true,
-  "overrides": [
-   {
-    "files": "app*/**/*.js",
-    "rules": {
-     "max-lines": [
-      "warn",
-      {
-       "max": 500,
-       "skipBlankLines": true,
-       "skipComments": true
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/zulip/zulip-electron.git"
+    },
+    "bugs": {
+      "url": "https://github.com/zulip/zulip-electron/issues"
+    },
+    "engines": {
+      "node": ">=6.0.0"
+    },
+    "scripts": {
+      "start": "electron app --disable-http-cache --no-electron-connect",
+      "reinstall": "node ./tools/reinstall-node-modules.js",
+      "postinstall": "electron-builder install-app-deps",
+      "test": "xo",
+      "test-e2e": "gulp test-e2e",
+      "dev": "gulp dev & nodemon --watch app/main --watch app/renderer --exec 'npm test' -e html,css,js",
+      "pack": "electron-builder --dir",
+      "dist": "electron-builder",
+      "mas": "electron-builder --mac mas",
+      "travis": "cd ./scripts && ./travis-build-test.sh",
+      "build-locales": "node tools/locale-helper"
+    },
+    "pre-commit": [
+      "test"
+    ],
+    "build": {
+      "appId": "org.zulip.zulip-electron",
+      "asar": true,
+      "files": [
+        "**/*",
+        "!docs${/*}",
+        "!node_modules/@paulcbetts/cld/deps/cld${/*}"
+      ],
+      "copyright": "©2017 Kandra Labs, Inc.",
+      "mac": {
+        "category": "public.app-category.productivity",
+        "artifactName": "${productName}-${version}-${arch}.${ext}"
+      },
+      "linux": {
+        "category": "Chat;GNOME;GTK;Network;InstantMessaging",
+        "packageCategory": "GNOME;GTK;Network;InstantMessaging",
+        "description": "Zulip Desktop Client for Linux",
+        "target": [
+          "deb",
+          "zip",
+          "AppImage",
+          "snap"
+        ],
+        "maintainer": "Akash Nimare <svnitakash@gmail.com>",
+        "artifactName": "${productName}-${version}-${arch}.${ext}"
+      },
+      "deb": {
+        "synopsis": "Zulip Desktop App",
+        "afterInstall": "./scripts/debian-add-repo.sh",
+        "afterRemove": "./scripts/debian-uninstaller.sh"
+      },
+      "snap": {
+        "synopsis": "Zulip Desktop App"
+      },
+      "dmg": {
+        "background": "build/appdmg.png",
+        "icon": "build/icon.icns",
+        "iconSize": 100,
+        "contents": [
+          {
+            "x": 380,
+            "y": 280,
+            "type": "link",
+            "path": "/Applications"
+          },
+          {
+            "x": 110,
+            "y": 280,
+            "type": "file"
+          }
+        ],
+        "window": {
+          "width": 500,
+          "height": 500
+        }
+      },
+      "win": {
+        "target": [
+          {
+            "target": "nsis-web",
+            "arch": [
+              "x64",
+              "ia32"
+            ]
+          }
+        ],
+        "icon": "build/icon.ico",
+        "publisherName": "Kandra Labs, Inc."
+      },
+      "nsis": {
+        "allowToChangeInstallationDirectory": true
       }
-     ],
-     "no-warning-comments": 0,
-     "object-curly-spacing": 0,
-     "capitalized-comments": 0,
-     "no-else-return": 0,
-     "no-path-concat": 0,
-     "no-alert": 0,
-     "guard-for-in": 0,
-     "prefer-promise-reject-errors": 0,
-     "import/no-unresolved": 0,
-     "import/no-extraneous-dependencies": 0,
-     "no-prototype-builtins": 0
+    },
+    "keywords": [
+      "Zulip",
+      "Group Chat app",
+      "electron-app",
+      "electron",
+      "Desktop app",
+      "InstantMessaging"
+    ],
+    "devDependencies": {
+      "assert": "1.4.1",
+      "cp-file": "^5.0.0",
+      "devtron": "1.4.0",
+      "electron": "3.0.10",
+      "electron-builder": "20.38.4",
+      "electron-connect": "0.6.2",
+      "electron-debug": "1.4.0",
+      "google-translate-api": "2.3.0",
+      "gulp": "^4.0.0",
+      "gulp-tape": "0.0.9",
+      "is-ci": "^1.0.10",
+      "nodemon": "^1.14.11",
+      "pre-commit": "1.2.2",
+      "spectron": "3.8.0",
+      "tap-colorize": "^1.2.0",
+      "tape": "^4.8.0",
+      "xo": "0.18.2"
+    },
+    "xo": {
+      "parserOptions": {
+        "sourceType": "script",
+        "ecmaFeatures": {
+          "globalReturn": true
+        }
+      },
+      "esnext": true,
+      "overrides": [
+        {
+          "files": "app*/**/*.js",
+          "rules": {
+            "max-lines": [
+              "warn",
+              {
+                "max": 600,
+                "skipBlankLines": true,
+                "skipComments": true
+              }
+            ],
+            "no-warning-comments": 0,
+            "object-curly-spacing": 0,
+            "capitalized-comments": 0,
+            "no-else-return": 0,
+            "no-path-concat": 0,
+            "no-alert": 0,
+            "guard-for-in": 0,
+            "prefer-promise-reject-errors": 0,
+            "import/no-unresolved": 0,
+            "import/no-extraneous-dependencies": 0,
+            "no-prototype-builtins": 0
+          }
+        }
+      ],
+      "ignore": [
+        "tests/*.js",
+        "tools/locale-helper/*.js"
+      ],
+      "envs": [
+        "node",
+        "browser",
+        "mocha"
+      ]
     }
-   }
-  ],
-  "ignore": [
-   "tests/e2e/*.js",
-   "tools/locale-helper/*.js"
-  ],
-  "envs": [
-   "node",
-   "browser",
-   "mocha"
-  ]
- }
-}
+  }
