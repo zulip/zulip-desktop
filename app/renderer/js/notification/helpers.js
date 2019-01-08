@@ -141,7 +141,7 @@ function parseReply(reply) {
 
 function setupReply(id) {
 	const { narrow } = window;
-	narrow.by_subject(id, { trigger: 'notification' });
+	narrow.by_topic(id, { trigger: 'notification' });
 }
 
 module.exports = {
