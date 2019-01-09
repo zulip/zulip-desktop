@@ -530,6 +530,24 @@ class ServerManagerView {
 							}
 						});
 					}
+				}, 
+				{
+					label: DomainUtil.getDomain(index).notify === true ? 'Mute' : 'Unmute' + ' organization',
+					click: () => {
+						dialog.showMessageBox({
+							type: 'warning',
+							buttons: ['YES', 'NO'],
+							defaultId: 0,
+							message: 'Are you sure you want to ' + (DomainUtil.getDomain(index).notify === true ? 'mute' : 'unmute') + ' this organization?'
+						}, response => {
+							if (response === 0) {
+								let server = DomainUtil.getDomain(index);
+								server.notify = !server.notify;
+								DomainUtil.updateDomain(index, server);
+								ipcRenderer.send('reload-full-app');
+							}
+						});
+					}
 				}
 			];
 			const contextMenu = Menu.buildFromTemplate(template);
