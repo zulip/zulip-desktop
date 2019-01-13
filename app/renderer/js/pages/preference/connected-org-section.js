@@ -4,6 +4,7 @@ const BaseSection = require(__dirname + '/base-section.js');
 const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
 const ServerInfoForm = require(__dirname + '/server-info-form.js');
 const AddCertificate = require(__dirname + '/add-certificate.js');
+const ConfigUtil = require(__dirname + '/../../utils/config-util.js');
 
 class ConnectedOrgSection extends BaseSection {
 	constructor(props) {
@@ -32,6 +33,7 @@ class ConnectedOrgSection extends BaseSection {
 		this.props.$root.innerHTML = '';
 
 		const servers = DomainUtil.getDomains();
+		const mutedOrganizations = ConfigUtil.getConfigItem('mutedOrganizations');
 		this.props.$root.innerHTML = this.template();
 
 		this.$serverInfoContainer = document.getElementById('server-info-container');
@@ -48,7 +50,7 @@ class ConnectedOrgSection extends BaseSection {
 				$root: this.$serverInfoContainer,
 				server: servers[i],
 				index: i,
-				muteText: servers[i].notify === true ? 'Mute' : 'Unmute',
+				muteText: !!mutedOrganizations[servers[i].url] ? 'Unmute' : 'Mute',
 				onChange: this.reloadApp
 			}).init();
 		}

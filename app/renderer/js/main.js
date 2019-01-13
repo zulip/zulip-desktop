@@ -120,7 +120,8 @@ class ServerManagerView {
 				silent: false
 			},
 			downloadsPath: `${app.getPath('downloads')}`,
-			showDownloadFolder: false
+			showDownloadFolder: false,
+			mutedOrganizations: {}
 		};
 
 		// Platform specific settings
@@ -512,6 +513,8 @@ class ServerManagerView {
 	}
 
 	addContextMenu($serverImg, index) {
+		let mutedOrganizations = ConfigUtil.getConfigItem('mutedOrganizations');
+		const url = DomainUtil.getDomain(index).url;
 		$serverImg.addEventListener('contextmenu', e => {
 			e.preventDefault();
 			const template = [
@@ -532,18 +535,23 @@ class ServerManagerView {
 					}
 				}, 
 				{
-					label: DomainUtil.getDomain(index).notify === true ? 'Mute' : 'Unmute' + ' organization',
+					label: (!!mutedOrganizations[url] ? 'Unmute' : 'Mute') + ' organization',
 					click: () => {
 						dialog.showMessageBox({
 							type: 'warning',
 							buttons: ['YES', 'NO'],
 							defaultId: 0,
-							message: 'Are you sure you want to ' + (DomainUtil.getDomain(index).notify === true ? 'mute' : 'unmute') + ' this organization?'
+							message: 'Are you sure you want to ' + (!!url ? 'unmute' : 'mute') + ' this organization?'
 						}, response => {
 							if (response === 0) {
 								let server = DomainUtil.getDomain(index);
-								server.notify = !server.notify;
-								DomainUtil.updateDomain(index, server);
+								if (!!mutedOrganizations[url]) {
+								// server is already muted
+								delete mutedOrganizations[url];
+								} else {
+									mutedOrganizations[url] = true;
+								}
+								ConfigUtil.setConfigItem('mutedOrganizations', mutedOrganizations);
 								ipcRenderer.send('reload-full-app');
 							}
 						});

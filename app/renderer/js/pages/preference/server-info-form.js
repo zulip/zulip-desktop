@@ -4,6 +4,7 @@ const { ipcRenderer } = require('electron');
 
 const BaseComponent = require(__dirname + '/../../components/base.js');
 const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
+const ConfigUtil = require(__dirname + '/../../utils/config-util.js');
 
 class ServerInfoForm extends BaseComponent {
 	constructor(props) {
@@ -77,10 +78,16 @@ class ServerInfoForm extends BaseComponent {
 				message: 'Are you sure you want to ' + this.props.muteText.toLowerCase() + ' this organization?'
 			}, response => {
 				if (response === 0) {
-					let server = this.props.server;
-					server.notify = !server.notify;
-					DomainUtil.updateDomain(index, server);
-					this.props.onChange(this.props.index);
+					const url = this.props.server.url;
+					let mutedOrganizations = ConfigUtil.getConfigItem('mutedOrganizations');
+					if (!!mutedOrganizations[url]) {
+						// server is already muted
+						delete mutedOrganizations[url];
+					} else {
+						mutedOrganizations[url] = true;
+					}
+					ConfigUtil.setConfigItem('mutedOrganizations', mutedOrganizations);
+					ipcRenderer.send('reload-full-app');
 				}
 			});
 		});
