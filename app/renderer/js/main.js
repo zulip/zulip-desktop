@@ -541,7 +541,7 @@ class ServerManagerView {
 							type: 'warning',
 							buttons: ['YES', 'NO'],
 							defaultId: 0,
-							message: 'Are you sure you want to ' + (!!url ? 'unmute' : 'mute') + ' this organization?'
+							message: 'Are you sure you want to ' + (!!mutedOrganizations[url] ? 'unmute' : 'mute') + ' this organization?'
 						}, response => {
 							if (response === 0) {
 								let server = DomainUtil.getDomain(index);

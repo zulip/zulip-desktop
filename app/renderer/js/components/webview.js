@@ -117,6 +117,11 @@ class WebView extends BaseComponent {
 	}
 
 	getBadgeCount(title) {
+		const mutedOrganizations = ConfigUtil.getConfigItem('mutedOrganizations');
+		const { url } = this.props;
+		if (!!mutedOrganizations[url]) {
+			return 0;
+		}
 		const messageCountInTitle = (/\(([0-9]+)\)/).exec(title);
 		return messageCountInTitle ? Number(messageCountInTitle[1]) : 0;
 	}
