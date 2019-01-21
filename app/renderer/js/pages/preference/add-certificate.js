@@ -1,6 +1,7 @@
 'use-strict';
 
 const { dialog } = require('electron').remote;
+const path = require('path');
 
 const BaseComponent = require(__dirname + '/../../components/base.js');
 const CertificateUtil = require(__dirname + '/../../utils/certificate-util.js');
@@ -41,7 +42,7 @@ class AddCertificate extends BaseComponent {
 		const serverUrl = this.serverUrl.value;
 		if (certificate !== '' && serverUrl !== '') {
 			const server = encodeURIComponent(DomainUtil.formatUrl(serverUrl));
-			const fileName = certificate.substring(certificate.lastIndexOf('/') + 1);
+			const fileName = certificate.substring(certificate.lastIndexOf(path.sep) + 1);
 			const copy = CertificateUtil.copyCertificate(server, certificate, fileName);
 			if (!copy) {
 				return;
