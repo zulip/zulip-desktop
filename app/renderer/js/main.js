@@ -513,7 +513,7 @@ class ServerManagerView {
 	}
 
 	addContextMenu($serverImg, index) {
-		let mutedOrganizations = ConfigUtil.getConfigItem('mutedOrganizations');
+		const mutedOrganizations = ConfigUtil.getConfigItem('mutedOrganizations');
 		const url = DomainUtil.getDomain(index).url;
 		$serverImg.addEventListener('contextmenu', e => {
 			e.preventDefault();
@@ -533,26 +533,26 @@ class ServerManagerView {
 							}
 						});
 					}
-				}, 
+				},
 				{
-					label: (!!mutedOrganizations[url] ? 'Unmute' : 'Mute') + ' organization',
+					label: (mutedOrganizations[url] ? 'Unmute' : 'Mute') + ' organization',
 					click: () => {
 						dialog.showMessageBox({
 							type: 'warning',
 							buttons: ['YES', 'NO'],
 							defaultId: 0,
-							message: 'Are you sure you want to ' + (!!mutedOrganizations[url] ? 'unmute' : 'mute') + ' this organization?'
+							message: 'Are you sure you want to ' + (mutedOrganizations[url] ? 'unmute' : 'mute') + ' this organization?'
 						}, response => {
 							if (response === 0) {
-								let server = DomainUtil.getDomain(index);
-								if (!!mutedOrganizations[url]) {
-								// server is already muted
-								delete mutedOrganizations[url];
+								if (mutedOrganizations[url]) {
+									// server is already muted
+									this.tabs[index].webview.updateBadgeCount(mutedOrganizations[url]);
+									delete mutedOrganizations[url];
 								} else {
-									mutedOrganizations[url] = true;
+									mutedOrganizations[url] = this.tabs[index].webview.badgeCount;
+									this.tabs[index].webview.updateBadgeCount(0);
 								}
 								ConfigUtil.setConfigItem('mutedOrganizations', mutedOrganizations);
-								ipcRenderer.send('reload-full-app');
 							}
 						});
 					}
@@ -610,6 +610,20 @@ class ServerManagerView {
 
 		ipcRenderer.on('open-org-tab', () => {
 			this.openSettings('AddServer');
+		});
+
+		ipcRenderer.on('mute-org', (event, index) => {
+			const url = this.tabs[index].webview.props.url;
+			const mutedOrganizations = ConfigUtil.getConfigItem('mutedOrganizations');
+			if (mutedOrganizations[url]) {
+				// server is already muted
+				this.tabs[index].webview.updateBadgeCount(mutedOrganizations[url]);
+				delete mutedOrganizations[url];
+			} else {
+				mutedOrganizations[url] = this.tabs[index].webview.badgeCount;
+				this.tabs[index].webview.updateBadgeCount(0);
+			}
+			ConfigUtil.setConfigItem('mutedOrganizations', mutedOrganizations);
 		});
 
 		ipcRenderer.on('reload-proxy', (event, showAlert) => {

@@ -79,15 +79,16 @@ class ServerInfoForm extends BaseComponent {
 			}, response => {
 				if (response === 0) {
 					const url = this.props.server.url;
-					let mutedOrganizations = ConfigUtil.getConfigItem('mutedOrganizations');
-					if (!!mutedOrganizations[url]) {
-						// server is already muted
-						delete mutedOrganizations[url];
+					const muteLabel = this.props.$root.children[this.props.index].children[1].children[1].children[0];
+					const mutedOrganizations = ConfigUtil.getConfigItem('mutedOrganizations');
+					if (mutedOrganizations[url]) {
+						muteLabel.innerHTML = 'Mute';
+						this.props.muteText = 'Mute';
 					} else {
-						mutedOrganizations[url] = true;
+						muteLabel.innerHTML = 'Unmute';
+						this.props.muteText = 'Unmute';
 					}
-					ConfigUtil.setConfigItem('mutedOrganizations', mutedOrganizations);
-					ipcRenderer.send('reload-full-app');
+					ipcRenderer.send('forward-message', 'mute-org', this.props.index);
 				}
 			});
 		});

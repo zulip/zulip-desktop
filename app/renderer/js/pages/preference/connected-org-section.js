@@ -44,13 +44,12 @@ class ConnectedOrgSection extends BaseSection {
 		const noServerText = 'All the connected orgnizations will appear here';
 		// Show noServerText if no servers are there otherwise hide it
 		this.$existingServers.innerHTML = servers.length === 0 ? noServerText : '';
-		
 		for (let i = 0; i < servers.length; i++) {
 			new ServerInfoForm({
 				$root: this.$serverInfoContainer,
 				server: servers[i],
 				index: i,
-				muteText: !!mutedOrganizations[servers[i].url] ? 'Unmute' : 'Mute',
+				muteText: mutedOrganizations[servers[i].url] ? 'Unmute' : 'Mute',
 				onChange: this.reloadApp
 			}).init();
 		}

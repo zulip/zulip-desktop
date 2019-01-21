@@ -116,10 +116,15 @@ class WebView extends BaseComponent {
 		});
 	}
 
+	updateBadgeCount(count) {
+		this.badgeCount = count;
+		this.props.onTitleChange();
+	}
+
 	getBadgeCount(title) {
 		const mutedOrganizations = ConfigUtil.getConfigItem('mutedOrganizations');
 		const { url } = this.props;
-		if (!!mutedOrganizations[url]) {
+		if (mutedOrganizations[url]) {
 			return 0;
 		}
 		const messageCountInTitle = (/\(([0-9]+)\)/).exec(title);
