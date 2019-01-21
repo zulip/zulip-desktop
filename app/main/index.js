@@ -186,8 +186,8 @@ app.on('ready', () => {
 
 	// Temporarily remove this event
 	// electron.powerMonitor.on('resume', () => {
-	// 	mainWindow.reload();
-	// 	page.send('destroytray');
+	//	mainWindow.reload();
+	//	page.send('destroytray');
 	// });
 
 	ipcMain.on('focus-app', () => {
@@ -273,6 +273,7 @@ app.on('ready', () => {
 		if (activeTab) {
 			mainWindow.setTitle(`Zulip - ${activeTab.webview.props.name}`);
 		}
+		page.send('update-tray', props.tabs);
 	});
 
 	ipcMain.on('toggleAutoLauncher', (event, AutoLaunchValue) => {

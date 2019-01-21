@@ -105,24 +105,38 @@ const renderNativeImage = function (arg) {
 		});
 };
 
-function sendAction(action) {
+function sendAction(action, ...params) {
 	const win = BrowserWindow.getAllWindows()[0];
 
 	if (process.platform === 'darwin') {
 		win.restore();
 	}
 
-	win.webContents.send(action);
+	win.webContents.send(action, ...params);
 }
 
-const createTray = function () {
-	window.tray = new Tray(iconPath());
-	const contextMenu = Menu.buildFromTemplate([
+const createContextMenuTemplate = function (tabs) {
+	const tabMenuItems = tabs.map(tab => {
+		return {
+			label: tab.webview.props.name,
+			click() {
+				ipcRenderer.send('focus-app');
+				sendAction('switch-server-tab', tab.props.index);
+			}
+		};
+	});
+	const windowMenuItem = [
 		{
 			label: 'Zulip',
 			click() {
 				ipcRenderer.send('focus-app');
 			}
+		}
+	];
+	const template = tabs.length > 0 ? tabMenuItems : windowMenuItem;
+	const settingsAndQuit = [
+		{
+			type: 'separator'
 		},
 		{
 			label: 'Settings',
@@ -140,7 +154,13 @@ const createTray = function () {
 				ipcRenderer.send('quit-app');
 			}
 		}
-	]);
+	];
+	return template.concat(settingsAndQuit);
+};
+
+const createTray = function () {
+	window.tray = new Tray(iconPath());
+	const contextMenu = Menu.buildFromTemplate(createContextMenuTemplate([]));
 	window.tray.setContextMenu(contextMenu);
 	if (process.platform === 'linux' || process.platform === 'win32') {
 		window.tray.on('click', () => {
@@ -148,6 +168,14 @@ const createTray = function () {
 		});
 	}
 };
+
+ipcRenderer.on('update-tray', (event, data) => {
+	if (!window.tray) {
+		return;
+	}
+	const contextMenu = Menu.buildFromTemplate(createContextMenuTemplate(data));
+	window.tray.setContextMenu(contextMenu);
+});
 
 ipcRenderer.on('destroytray', event => {
 	if (!window.tray) {
