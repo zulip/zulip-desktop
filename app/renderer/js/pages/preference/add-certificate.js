@@ -42,7 +42,7 @@ class AddCertificate extends BaseComponent {
 		const serverUrl = this.serverUrl.value;
 		if (certificate !== '' && serverUrl !== '') {
 			const server = encodeURIComponent(DomainUtil.formatUrl(serverUrl));
-			const fileName = certificate.substring(certificate.lastIndexOf(path.sep) + 1);
+			const fileName = path.basename(certificate);
 			const copy = CertificateUtil.copyCertificate(server, certificate, fileName);
 			if (!copy) {
 				return;
