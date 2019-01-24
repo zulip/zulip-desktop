@@ -610,6 +610,29 @@ input.toggle-round:checked+label:after {
     padding-right: 6px;
 }
 
+.email-input {
+    width: 100%;
+    margin-top: 10px;
+    display: inline-flex;
+}
+
+.email-input div {
+    align-self: center;
+}
+
+.email-input .setting-input-value {
+    margin-left: 10px;
+    max-width: 100%;
+}
+
+.find-account-card {
+    width: 80%;
+}
+
+#find-accounts-button {
+    margin: 10px 10px 10px 0px;
+}
+
 #open-hotkeys-link {
     text-decoration: underline;
     cursor: pointer;
