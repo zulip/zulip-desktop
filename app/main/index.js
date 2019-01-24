@@ -276,6 +276,10 @@ app.on('ready', () => {
 		page.send('update-tray', props.tabs);
 	});
 
+	ipcMain.on('update-tray', (event, tabs) => {
+		page.send('update-tray', tabs);
+	});
+
 	ipcMain.on('toggleAutoLauncher', (event, AutoLaunchValue) => {
 		setAutoLaunch(AutoLaunchValue);
 	});

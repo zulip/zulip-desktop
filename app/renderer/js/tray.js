@@ -117,8 +117,10 @@ function sendAction(action, ...params) {
 
 const createContextMenuTemplate = function (tabs) {
 	const tabMenuItems = tabs.map(tab => {
+		const { name, badgeCount } = tab.webview.props;
+		const label = badgeCount === 0 ? name : `${name} (${badgeCount})`;
 		return {
-			label: tab.webview.props.name,
+			label,
 			click() {
 				ipcRenderer.send('focus-app');
 				sendAction('switch-server-tab', tab.props.index);
