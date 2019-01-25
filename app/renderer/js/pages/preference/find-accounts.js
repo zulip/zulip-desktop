@@ -1,7 +1,6 @@
 'use-strict';
 
-const { dialog } = require('electron').remote;
-const path = require('path');
+const request = require('request');
 
 const BaseComponent = require(__dirname + '/../../components/base.js');
 
@@ -33,17 +32,37 @@ class FindAccounts extends BaseComponent {
 		`;
 	}
 
+	error() {
+		return `
+			<div class="sub-title">
+				<div>Sorry, looks like something went wrong. Try again?</div>
+			</div>
+		`;
+	}
+
 	init() {
 		this.$findAccounts = this.generateNodeFromTemplate(this.template());
 		this.$confirmation = this.generateNodeFromTemplate(this.confirmation());
+		this.$error = this.generateNodeFromTemplate(this.error());
 		this.props.$root.appendChild(this.$findAccounts);
-		this.findAccountsButton = this.$findAccounts.querySelector('#add-accounts-button');
-		this.emailList = this.$findAccounts.querySelectorAll('input.setting-input-value')[0];
+		this.findAccountsButton = this.$findAccounts.querySelector('#find-accounts-button');
+		this.emailList = this.$findAccounts.querySelector('input.setting-input-value');
 		this.initListeners();
 	}
 
 	findAccounts() {
-		// TODO: Write business logic to find accounts
+		const emails = this.emailList.value;
+		if (emails && emails !== '') {
+			const url = 'https://zulipchat.com/accounts/find?emails=' + emails;
+			request({ url }, error => {
+				if (error) {
+					this.props.$root.appendChild(this.$error);
+				} else {
+					this.props.$root.appendChild(this.$confirmation);
+					this.emailList.value = '';
+				}
+			});
+		}
 	}
 
 	initListeners() {
