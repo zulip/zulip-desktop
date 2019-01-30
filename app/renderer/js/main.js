@@ -209,10 +209,10 @@ class ServerManagerView {
 		$serverImgs.forEach(($serverImg, index) => {
 			this.addContextMenu($serverImg, index);
 			if ($serverImg.src.includes('img/icon.png')) {
-				this.displayInitialCharLogo($serverImg);
+				this.displayInitialCharLogo($serverImg, index);
 			}
 			$serverImg.addEventListener('error', () => {
-				this.displayInitialCharLogo($serverImg);
+				this.displayInitialCharLogo($serverImg, index);
 			});
 		});
 	}
@@ -253,7 +253,12 @@ class ServerManagerView {
 		return currentIndex;
 	}
 
-	displayInitialCharLogo($img) {
+	displayInitialCharLogo($img, index) {
+		/*
+			index parameter needed because webview[data-tab-id] can increment
+			beyond size of sidebar org array and throw error
+		*/
+
 		const $altIcon = document.createElement('div');
 		const $parent = $img.parentElement;
 		const $container = $parent.parentElement;
@@ -273,7 +278,7 @@ class ServerManagerView {
 		$parent.removeChild($img);
 		$parent.appendChild($altIcon);
 
-		this.addContextMenu($altIcon, $webview.getAttribute('data-tab-id'));
+		this.addContextMenu($altIcon, index);
 	}
 
 	sidebarHoverEvent(SidebarButton, SidebarTooltip, addServer = false) {
