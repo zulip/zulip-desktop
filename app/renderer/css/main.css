@@ -331,6 +331,7 @@ webview.focus {
 #dnd-tooltip,
 #back-tooltip,
 #reload-tooltip,
+#url-tooltip,
 #setting-tooltip {
     font-family: sans-serif;
     background: #222c31;
@@ -349,6 +350,7 @@ webview.focus {
 #dnd-tooltip:after,
 #back-tooltip:after,
 #reload-tooltip:after,
+#url-tooltip:after,
 #setting-tooltip:after {
     content: " ";
     border-top: 8px solid transparent;

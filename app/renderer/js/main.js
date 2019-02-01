@@ -31,6 +31,7 @@ class ServerManagerView {
 
 		const $actionsContainer = document.getElementById('actions-container');
 		this.$reloadButton = $actionsContainer.querySelector('#reload-action');
+		this.$urlButton = $actionsContainer.querySelector('#url-action');
 		this.$settingsButton = $actionsContainer.querySelector('#settings-action');
 		this.$webviewsContainer = document.getElementById('webviews-container');
 		this.$backButton = $actionsContainer.querySelector('#back-action');
@@ -38,6 +39,7 @@ class ServerManagerView {
 
 		this.$addServerTooltip = document.getElementById('add-server-tooltip');
 		this.$reloadTooltip = $actionsContainer.querySelector('#reload-tooltip');
+		this.$urlTooltip = $actionsContainer.querySelector('#url-tooltip');
 		this.$settingsTooltip = $actionsContainer.querySelector('#setting-tooltip');
 		this.$serverIconTooltip = document.getElementsByClassName('server-tooltip');
 		this.$backTooltip = $actionsContainer.querySelector('#back-tooltip');
@@ -236,6 +238,7 @@ class ServerManagerView {
 		});
 
 		this.sidebarHoverEvent(this.$addServerButton, this.$addServerTooltip, true);
+		this.sidebarHoverEvent(this.$urlButton, this.$urlTooltip);
 		this.sidebarHoverEvent(this.$settingsButton, this.$settingsTooltip);
 		this.sidebarHoverEvent(this.$reloadButton, this.$reloadTooltip);
 		this.sidebarHoverEvent(this.$backButton, this.$backTooltip);
