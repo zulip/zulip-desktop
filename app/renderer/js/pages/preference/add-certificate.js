@@ -44,6 +44,7 @@ class AddCertificate extends BaseComponent {
 			const server = encodeURIComponent(DomainUtil.formatUrl(serverUrl));
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			const fileName = path.basename(certificate);
 =======
 			const fileName = certificate.substring(certificate.lastIndexOf(path.sep) + 1);
@@ -51,6 +52,9 @@ class AddCertificate extends BaseComponent {
 =======
 			const fileName = path.basename(certificate);
 >>>>>>> 9bdc5dd... certificate: Use path.basename to get certificate file name.
+=======
+			const fileName = path.basename(certificate);
+>>>>>>> upstream/master
 			const copy = CertificateUtil.copyCertificate(server, certificate, fileName);
 			if (!copy) {
 				return;

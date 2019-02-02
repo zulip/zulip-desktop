@@ -143,6 +143,7 @@ function setupReply(id) {
 	const { narrow } = window;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	const narrowByTopic = narrow.by_topic || narrow.by_subject;
 	narrowByTopic(id, { trigger: 'notification' });
 =======
@@ -152,6 +153,10 @@ function setupReply(id) {
 	const narrowByTopic = narrow.by_topic || narrow.by_subject;
 	narrowByTopic(id, { trigger: 'notification' });
 >>>>>>> 4980c71... notification: Ensure backward compatibilty when using narrow.by_topic.
+=======
+	const narrowByTopic = narrow.by_topic || narrow.by_subject;
+	narrowByTopic(id, { trigger: 'notification' });
+>>>>>>> upstream/master
 }
 
 module.exports = {
