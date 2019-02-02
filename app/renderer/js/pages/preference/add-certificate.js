@@ -1,7 +1,6 @@
 'use-strict';
 
 const { dialog } = require('electron').remote;
-const path = require('path');
 
 const BaseComponent = require(__dirname + '/../../components/base.js');
 const CertificateUtil = require(__dirname + '/../../utils/certificate-util.js');
@@ -45,6 +44,7 @@ class AddCertificate extends BaseComponent {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 			const fileName = path.basename(certificate);
 =======
 			const fileName = certificate.substring(certificate.lastIndexOf(path.sep) + 1);
@@ -55,6 +55,9 @@ class AddCertificate extends BaseComponent {
 =======
 			const fileName = path.basename(certificate);
 >>>>>>> upstream/master
+=======
+			const fileName = certificate.substring(certificate.lastIndexOf('/') + 1);
+>>>>>>> parent of dd1ce9c... Changed saveServerIcon() to not use request() on defaultIconUrl
 			const copy = CertificateUtil.copyCertificate(server, certificate, fileName);
 			if (!copy) {
 				return;

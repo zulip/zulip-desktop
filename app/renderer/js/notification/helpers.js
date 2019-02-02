@@ -144,6 +144,7 @@ function setupReply(id) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	const narrowByTopic = narrow.by_topic || narrow.by_subject;
 	narrowByTopic(id, { trigger: 'notification' });
 =======
@@ -157,6 +158,9 @@ function setupReply(id) {
 	const narrowByTopic = narrow.by_topic || narrow.by_subject;
 	narrowByTopic(id, { trigger: 'notification' });
 >>>>>>> upstream/master
+=======
+	narrow.by_subject(id, { trigger: 'notification' });
+>>>>>>> parent of dd1ce9c... Changed saveServerIcon() to not use request() on defaultIconUrl
 }
 
 module.exports = {

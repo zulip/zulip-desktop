@@ -269,10 +269,6 @@ app.on('ready', () => {
 
 	ipcMain.on('update-menu', (event, props) => {
 		appMenu.setMenu(props);
-		const activeTab = props.tabs[props.activeTabIndex];
-		if (activeTab) {
-			mainWindow.setTitle(`Zulip - ${activeTab.webview.props.name}`);
-		}
 	});
 
 	ipcMain.on('toggleAutoLauncher', (event, AutoLaunchValue) => {
