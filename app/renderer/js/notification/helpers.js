@@ -141,7 +141,17 @@ function parseReply(reply) {
 
 function setupReply(id) {
 	const { narrow } = window;
-	narrow.by_subject(id, { trigger: 'notification' });
+<<<<<<< HEAD
+<<<<<<< HEAD
+	const narrowByTopic = narrow.by_topic || narrow.by_subject;
+	narrowByTopic(id, { trigger: 'notification' });
+=======
+	narrow.by_topic(id, { trigger: 'notification' });
+>>>>>>> 3e73511... notification: Fix reply from notification.
+=======
+	const narrowByTopic = narrow.by_topic || narrow.by_subject;
+	narrowByTopic(id, { trigger: 'notification' });
+>>>>>>> 4980c71... notification: Ensure backward compatibilty when using narrow.by_topic.
 }
 
 module.exports = {

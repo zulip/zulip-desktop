@@ -131,7 +131,7 @@
     "is-ci": "^1.0.10",
     "nodemon": "^1.14.11",
     "pre-commit": "1.2.2",
-    "spectron": "3.8.0",
+    "spectron": "^5.0.0",
     "tap-colorize": "^1.2.0",
     "tape": "^4.8.0",
     "xo": "0.18.2"
