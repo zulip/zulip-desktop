@@ -24,6 +24,10 @@
       </div>
     </div>
     <div id="actions-container">
+      <div class="action-button" id="url-action">
+        <i class="material-icons md-48">link</i>
+        <span id="url-tooltip" style="display:none">Link</span>
+      </div>
       <div class="action-button" id="dnd-action">
         <i class="material-icons md-48">notifications</i>
         <span id="dnd-tooltip" style="display:none">Do Not Disturb</span>
@@ -36,13 +40,12 @@
         <i class="material-icons md-48">arrow_back</i>
         <span id="back-tooltip" style="display:none">Go Back</span>
       </div>
-      <div class="action-button" id="url-action">
-        <i class="material-icons md-48">link</i>
-        <span id="url-tooltip" style="display:none">Link</span>
-      </div>
       <div class="action-button" id="settings-action">
         <i class="material-icons md-48">settings</i>
         <span id="setting-tooltip" style="display:none">Settings</span>
+      </div>
+      <div class="url-container" id="url-input-container">
+        <input type="hidden" class="url-input-value" autofocus="autofocus" onfocus="this.select()" />
       </div>
     </div>
   </div>

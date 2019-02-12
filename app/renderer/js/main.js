@@ -45,6 +45,9 @@ class ServerManagerView {
 		this.$backTooltip = $actionsContainer.querySelector('#back-tooltip');
 		this.$dndTooltip = $actionsContainer.querySelector('#dnd-tooltip');
 
+		this.$urlField = document.getElementById('url-input-container').children[0];
+		this.urlEnabled = false;
+
 		this.$sidebar = document.getElementById('sidebar');
 
 		this.$fullscreenPopup = document.getElementById('fullscreen-popup');
@@ -230,6 +233,9 @@ class ServerManagerView {
 		this.$addServerButton.addEventListener('click', () => {
 			this.openSettings('AddServer');
 		});
+		this.$urlButton.addEventListener('click', () => {
+			this.toggleUrlContainer();
+		});
 		this.$settingsButton.addEventListener('click', () => {
 			this.openSettings('General');
 		});
@@ -243,6 +249,19 @@ class ServerManagerView {
 		this.sidebarHoverEvent(this.$reloadButton, this.$reloadTooltip);
 		this.sidebarHoverEvent(this.$backButton, this.$backTooltip);
 		this.sidebarHoverEvent(this.$dndButton, this.$dndTooltip);
+	}
+
+	toggleUrlContainer() {
+		if (this.urlEnabled) {
+			this.$urlField.type = 'hidden';
+		} else {
+			this.$urlField.value = this.tabs[this.activeTabIndex].webview.props.url;
+			const { top, height } = this.$urlButton.getBoundingClientRect();
+			this.$urlField.style.top = top + 'px';
+			this.$urlField.style.height = (height / 2) + 'px';
+			this.$urlField.type = 'url';
+		}
+		this.urlEnabled = !this.urlEnabled;
 	}
 
 	initDNDButton() {
