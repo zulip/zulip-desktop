@@ -420,20 +420,18 @@ webview.focus {
 .url-container {
     position: absolute;
     margin-left: 53px;
+    margin-top: 5px;
 }
 
 .url-input-value {
     flex-grow: 1;
+    margin-left: 2px;
     font-size: 14px;
     border-radius: 4px;
     padding: 6px 8px;
     border: #ededed 2px solid;
     background: #fff;
     max-width: 450px;
-}
-
-.url-input-value:focus {
-    border: #4EBFAC 2px solid;
 }
 
 

@@ -251,13 +251,35 @@ class ServerManagerView {
 		this.sidebarHoverEvent(this.$dndButton, this.$dndTooltip);
 	}
 
+	isURLSaved(url) {
+		for (let i = 0; i < this.tabs.length; ++i) {
+			const tabURL = this.tabs[i].webview.props.url;
+			if (url === tabURL) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	initURLShortcut() {
+		this.$urlField.addEventListener('keypress', event => {
+			if (event.keyCode === 13) {
+				const url = this.$urlField.value;
+				const urlIndex = this.isURLSaved(url);
+				if (urlIndex >= 0) {
+					this.activateTab(urlIndex);
+				}
+			}
+		});
+	}
+
 	toggleUrlContainer() {
 		if (this.urlEnabled) {
 			this.$urlField.type = 'hidden';
 		} else {
+			this.initURLShortcut();
 			this.$urlField.value = this.tabs[this.activeTabIndex].webview.props.url;
 			const { top, height } = this.$urlButton.getBoundingClientRect();
-			this.$urlField.style.top = top + 'px';
 			this.$urlField.style.height = (height / 2) + 'px';
 			this.$urlField.type = 'url';
 		}
