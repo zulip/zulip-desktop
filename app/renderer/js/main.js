@@ -468,7 +468,9 @@ class ServerManagerView {
 				this.tabs[this.activeTabIndex].deactivate();
 			}
 		}
-
+		if (this.urlEnabled) {
+			this.toggleUrlContainer();
+		}
 		try {
 			this.tabs[index].webview.canGoBackButton();
 		} catch (err) {
