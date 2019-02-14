@@ -1,6 +1,6 @@
 'use strict';
 
-const { ipcRenderer, remote } = require('electron');
+const { ipcRenderer, remote, clipboard } = require('electron');
 const isDev = require('electron-is-dev');
 
 const { session, app, Menu, dialog } = remote;
@@ -279,9 +279,10 @@ class ServerManagerView {
 		} else {
 			this.initURLShortcut();
 			this.$urlField.value = this.tabs[this.activeTabIndex].webview.props.url;
-			const { top, height } = this.$urlButton.getBoundingClientRect();
+			const { height } = this.$urlButton.getBoundingClientRect();
 			this.$urlField.style.height = (height / 2) + 'px';
 			this.$urlField.type = 'url';
+			clipboard.writeText(this.$urlField.value);
 		}
 		this.urlEnabled = !this.urlEnabled;
 	}
