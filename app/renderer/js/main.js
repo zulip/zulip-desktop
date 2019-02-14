@@ -1,6 +1,6 @@
 'use strict';
 
-const { ipcRenderer, remote } = require('electron');
+const { ipcRenderer, remote, clipboard } = require('electron');
 const isDev = require('electron-is-dev');
 
 const { session, app, Menu, dialog } = remote;
@@ -534,6 +534,12 @@ class ServerManagerView {
 								ipcRenderer.send('reload-full-app');
 							}
 						});
+					}
+				},
+				{
+					label: 'Copy Zulip URL',
+					click: () => {
+						clipboard.writeText(DomainUtil.getDomain(index).url);
 					}
 				}
 			];
