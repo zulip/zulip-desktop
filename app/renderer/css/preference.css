@@ -309,6 +309,7 @@ img.server-info-icon {
     background: #fff;
     width: 80%;
     transition: all 0.2s;
+	 border-radius:10px; 
 }
 
 .settings-card:hover {
@@ -351,6 +352,28 @@ img.server-info-icon {
 
 .green:hover {
     background-color: #3c9f8d;
+    color: #fff;
+}
+
+
+.reset-data-button-green{
+    color: #fff;
+    background: #4EBFAC;
+    border-radius: 4px;
+    display: inline-block;
+    border: none;
+    padding: 10px;
+    width: 100px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+    text-align: center;    
+}
+
+.reset-data-button-green:hover{
+    background-color:red;
     color: #fff;
 }
 
