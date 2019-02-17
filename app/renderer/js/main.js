@@ -730,6 +730,10 @@ class ServerManagerView {
 		ipcRenderer.on('open-feedback-modal', () => {
 			feedbackHolder.classList.add('show');
 		});
+
+		ipcRenderer.on('copy-zulip-url', () => {
+			clipboard.writeText(DomainUtil.getDomain(this.activeTabIndex).url);
+		});
 	}
 }
 
