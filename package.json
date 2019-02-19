@@ -100,13 +100,21 @@
             "x64",
             "ia32"
           ]
+        },
+        {
+          "target": "msi",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
         }
       ],
       "icon": "build/icon.ico",
       "publisherName": "Kandra Labs, Inc."
     },
     "nsis": {
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false
     }
   },
   "keywords": [
