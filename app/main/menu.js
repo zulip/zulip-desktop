@@ -226,6 +226,18 @@ class AppMenu {
 					type: 'checkbox'
 				});
 			}
+			initialSubmenu.push({
+				type: 'separator'
+			});
+			initialSubmenu.push({
+				label: 'Switch to next organization',
+				accelerator: `${ShortcutKey} + Tab`,
+				click(item, focusedWindow) {
+					if (focusedWindow) {
+						AppMenu.sendAction('switch-server-tab', (activeTabIndex + 1) % tabs.length);
+					}
+				}
+			});
 		}
 
 		return initialSubmenu;
