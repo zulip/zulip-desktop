@@ -237,6 +237,14 @@ class AppMenu {
 						AppMenu.sendAction('switch-server-tab', (activeTabIndex + 1) % tabs.length);
 					}
 				}
+			}, {
+				label: 'Switch to previous organization',
+				accelerator: `${ShortcutKey} + Shift + Tab`,
+				click(item, focusedWindow) {
+					if (focusedWindow) {
+						AppMenu.sendAction('switch-server-tab', (activeTabIndex - 1) % tabs.length);
+					}
+				}
 			});
 		}
 
