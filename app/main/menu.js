@@ -162,6 +162,17 @@ class AppMenu {
 					ConfigUtil.setConfigItem('showSidebar', newValue);
 				}
 			}
+		}, {
+			label: 'Auto hide Menu bar',
+			accelerator: 'CommandOrControl+B',
+			click(item, focusedWindow) {
+				if (focusedWindow) {
+					const newValue = !ConfigUtil.getConfigItem('autoHideMenubar');
+					focusedWindow.setAutoHideMenuBar(newValue);
+					focusedWindow.setMenuBarVisibility(!newValue);
+					ConfigUtil.setConfigItem('autoHideMenubar', newValue);
+				}
+			}
 		}];
 	}
 
