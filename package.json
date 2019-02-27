@@ -125,6 +125,7 @@
     "electron-builder": "20.38.4",
     "electron-connect": "0.6.2",
     "electron-debug": "1.4.0",
+    "electron-pdf-window": "^1.0.12",
     "google-translate-api": "2.3.0",
     "gulp": "^4.0.0",
     "gulp-tape": "0.0.9",

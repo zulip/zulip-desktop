@@ -5,6 +5,7 @@ const fs = require('fs');
 const electron = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const isDev = require('electron-is-dev');
+const PDFWindow = require('electron-pdf-window');
 const appMenu = require('./menu');
 const { appUpdater } = require('./autoupdater');
 
@@ -198,31 +199,31 @@ app.on('ready', () => {
 		app.quit();
 	});
 
-	// Code to show pdf in a new BrowserWindow (currently commented out due to bug-upstream)
-	// ipcMain.on('pdf-view', (event, url) => {
-	// 	// Paddings for pdfWindow so that it fits into the main browserWindow
-	// 	const paddingWidth = 55;
-	// 	const paddingHeight = 22;
+	// Show pdf in a new BrowserWindow
+	ipcMain.on('pdf-view', (event, url) => {
+		// Paddings for pdfWindow so that it fits into the main browserWindow
+		const paddingWidth = 55;
+		const paddingHeight = 22;
 
-	// 	// Get the config of main browserWindow
-	// 	const mainWindowState = global.mainWindowState;
+		// Get the config of main browserWindow
+		const mainWindowState = global.mainWindowState;
 
-	// 	// Window to view the pdf file
-	// 	const pdfWindow = new electron.BrowserWindow({
-	// 		x: mainWindowState.x + paddingWidth,
-	// 		y: mainWindowState.y + paddingHeight,
-	// 		width: mainWindowState.width - paddingWidth,
-	// 		height: mainWindowState.height - paddingHeight,
-	// 		webPreferences: {
-	// 			plugins: true,
-	// 			partition: 'persist:webviewsession'
-	// 		}
-	// 	});
-	// 	pdfWindow.loadURL(url);
+		// Window to view the pdf file
+		const pdfWindow = new PDFWindow({
+			x: mainWindowState.x + paddingWidth,
+			y: mainWindowState.y + paddingHeight,
+			width: mainWindowState.width - paddingWidth,
+			height: mainWindowState.height - paddingHeight,
+			webPreferences: {
+				plugins: true,
+				partition: 'persist:webviewsession'
+			}
+		});
+		pdfWindow.loadURL(url);
 
-	// 	// We don't want to have the menu bar in pdf window
-	// 	pdfWindow.setMenu(null);
-	// });
+		// We don't want to have the menu bar in pdf window
+		pdfWindow.setMenu(null);
+	});
 
 	// Reload full app not just webview, useful in debugging
 	ipcMain.on('reload-full-app', () => {
