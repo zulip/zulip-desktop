@@ -122,6 +122,10 @@ class ShortcutsSection extends BaseSection {
                     <td><kbd>${userOSKey}</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd></td>
                     <td>Toggle Sidebar</td>
                   </tr>
+ 		  <tr>
+                    <td><kbd>${userOSKey}</kbd> + <kbd>Q</kbd></td>
+                    <td>ScreenShot</td>
+                  </tr>
                   <tr>
                     <td><kbd>Option</kbd><kbd>${userOSKey}</kbd><kbd>I</kbd></td>
                     <td>Toggle DevTools for Zulip App</td>
@@ -260,6 +264,10 @@ class ShortcutsSection extends BaseSection {
                   <tr>
                     <td><kbd>${userOSKey}</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd></td>
                     <td>Toggle Sidebar</td>
+                  </tr>
+		  <tr>
+                    <td><kbd>${userOSKey}</kbd> + <kbd>Q</kbd></td>
+                    <td>ScreenShot</td>
                   </tr>
                   <tr>
                     <td><kbd>${userOSKey}</kbd> + <kbd>Shift</kbd> + <kbd>I</kbd></td>
