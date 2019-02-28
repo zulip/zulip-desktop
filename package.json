@@ -179,5 +179,8 @@
       "browser",
       "mocha"
     ]
+  },
+  "dependencies": {
+    "screencapture": "^0.3.1"
   }
 }
