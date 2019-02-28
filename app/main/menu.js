@@ -11,6 +11,9 @@ const ConfigUtil = require(__dirname + '/../renderer/js/utils/config-util.js');
 const DNDUtil = require(__dirname + '/../renderer/js/utils/dnd-util.js');
 const Logger = require(__dirname + '/../renderer/js/utils/logger-util.js');
 
+var screencapture = require('screencapture');
+const os = require('os');
+
 const appName = app.getName();
 
 const logger = new Logger({
@@ -77,7 +80,41 @@ class AppMenu {
 				// Open and select the log file
 				shell.showItemInFolder(logFilePath);
 			}
-		}, {
+		},{
+			type: 'separator'
+		},{
+			label: 'Screenshot',
+			accelerator: 'Ctrl+Q',
+			click(){
+				// Capture screenShot of current screen
+				screencapture(function (err, imagePath) {showScreenshot()});// here showScreenshot is call as callback function 
+				// it shows or display the captured screenshot in default image viewer 
+				function showScreenshot(){
+					var fs = require('fs');
+					var Path = os.tmpdir();
+					fs.readdir(Path, function(err, files) {
+						if (err) { throw err; }
+						var ScreenShotFile = getNewestscreenshot(files, Path);
+							shell.openExternal("file://" +  os.tmpdir() + '/' + ScreenShotFile);
+					});
+				}
+
+				// it returns newest file in temp directory and this function is called in showScreenshot 
+				function getNewestscreenshot(files, path) {
+					var out = [];
+					files.forEach(function(file) {
+						var stats = fs.statSync(path + "/" +file);
+						if(stats.isFile()) {
+							out.push({"file":file, "mtime": stats.mtime.getTime()});
+						}
+					});
+					out.sort(function(a,b){
+						return b.mtime - a.mtime;
+					})
+					return (out.length>0) ? out[0].file : "";
+				}
+			}
+		},{
 			type: 'separator'
 		}, {
 			label: 'Toggle DevTools for Zulip App',
