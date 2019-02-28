@@ -11,7 +11,7 @@ const ConfigUtil = require(__dirname + '/../renderer/js/utils/config-util.js');
 const DNDUtil = require(__dirname + '/../renderer/js/utils/dnd-util.js');
 const Logger = require(__dirname + '/../renderer/js/utils/logger-util.js');
 
-var screencapture = require('screencapture');
+let screencapture = require('screencapture');
 const os = require('os');
 
 const appName = app.getName();
