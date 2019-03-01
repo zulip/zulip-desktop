@@ -1,7 +1,7 @@
 {
   "name": "zulip",
   "productName": "Zulip",
-  "version": "2.4.0",
+  "version": "2.5.0-beta",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
   "copyright": "Kandra Labs, Inc.",
