@@ -94,6 +94,7 @@ class WebView extends BaseComponent {
 				this.$el.classList.add('onload');
 			}
 			this.loading = false;
+			this.props.switchLoading(false, this.props.url);
 			this.show();
 
 			// Refocus text boxes after reload
@@ -112,12 +113,20 @@ class WebView extends BaseComponent {
 		});
 
 		this.$el.addEventListener('did-start-loading', () => {
+			const isSettingPage = this.props.url.includes('renderer/preference.html');
+			if (!isSettingPage) {
+				this.props.switchLoading(true, this.props.url);
+			}
 			let userAgent = SystemUtil.getUserAgent();
 			if (!userAgent) {
 				SystemUtil.setUserAgent(this.$el.getUserAgent());
 				userAgent = SystemUtil.getUserAgent();
 			}
 			this.$el.setUserAgent(userAgent);
+		});
+
+		this.$el.addEventListener('did-stop-loading', () => {
+			this.props.switchLoading(false, this.props.url);
 		});
 	}
 

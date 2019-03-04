@@ -31,6 +31,7 @@ class ServerManagerView {
 
 		const $actionsContainer = document.getElementById('actions-container');
 		this.$reloadButton = $actionsContainer.querySelector('#reload-action');
+		this.$loadingIndicator = $actionsContainer.querySelector('#loading-action');
 		this.$settingsButton = $actionsContainer.querySelector('#settings-action');
 		this.$webviewsContainer = document.getElementById('webviews-container');
 		this.$backButton = $actionsContainer.querySelector('#back-action');
@@ -38,6 +39,7 @@ class ServerManagerView {
 
 		this.$addServerTooltip = document.getElementById('add-server-tooltip');
 		this.$reloadTooltip = $actionsContainer.querySelector('#reload-tooltip');
+		this.$loadingTooltip = $actionsContainer.querySelector('#loading-tooltip');
 		this.$settingsTooltip = $actionsContainer.querySelector('#setting-tooltip');
 		this.$serverIconTooltip = document.getElementsByClassName('server-tooltip');
 		this.$backTooltip = $actionsContainer.querySelector('#back-tooltip');
@@ -49,6 +51,7 @@ class ServerManagerView {
 		this.$fullscreenEscapeKey = process.platform === 'darwin' ? '^⌘F' : 'F11';
 		this.$fullscreenPopup.innerHTML = `Press ${this.$fullscreenEscapeKey} to exit full screen`;
 
+		this.loading = {};
 		this.activeTabIndex = -1;
 		this.tabs = [];
 		this.functionalTabs = {};
@@ -191,12 +194,21 @@ class ServerManagerView {
 				isActive: () => {
 					return index === this.activeTabIndex;
 				},
+				switchLoading: (loading, url) => {
+					if (!loading && this.loading[url]) {
+						this.loading[url] = false;
+					} else if (loading && !this.loading[url]) {
+						this.loading[url] = true;
+					}
+					this.showLoading(this.loading[this.tabs[this.activeTabIndex].webview.props.url]);
+				},
 				onNetworkError: this.openNetworkTroubleshooting.bind(this),
 				onTitleChange: this.updateBadge.bind(this),
 				nodeIntegration: false,
 				preload: true
 			})
 		}));
+		this.loading[server.url] = true;
 	}
 
 	initActions() {
@@ -237,6 +249,7 @@ class ServerManagerView {
 		});
 
 		this.sidebarHoverEvent(this.$addServerButton, this.$addServerTooltip, true);
+		this.sidebarHoverEvent(this.$loadingIndicator, this.$loadingTooltip);
 		this.sidebarHoverEvent(this.$settingsButton, this.$settingsTooltip);
 		this.sidebarHoverEvent(this.$reloadButton, this.$reloadTooltip);
 		this.sidebarHoverEvent(this.$backButton, this.$backTooltip);
@@ -343,6 +356,14 @@ class ServerManagerView {
 				isActive: () => {
 					return this.functionalTabs[tabProps.name] === this.activeTabIndex;
 				},
+				switchLoading: (loading, url) => {
+					if (!loading && this.loading[url]) {
+						this.loading[url] = false;
+					} else if (loading && !this.loading[url]) {
+						this.loading[url] = true;
+					}
+					this.showLoading(this.loading[this.tabs[this.activeTabIndex].webview.props.url]);
+				},
 				onNetworkError: this.openNetworkTroubleshooting.bind(this),
 				onTitleChange: this.updateBadge.bind(this),
 				nodeIntegration: true,
@@ -434,6 +455,8 @@ class ServerManagerView {
 		this.activeTabIndex = index;
 		this.tabs[index].activate();
 
+		this.showLoading(this.loading[this.tabs[this.activeTabIndex].webview.props.url]);
+
 		ipcRenderer.send('update-menu', {
 			// JSON stringify this.tabs to avoid a crash
 			// util.inspect is being used to handle circular references
@@ -442,6 +465,16 @@ class ServerManagerView {
 			// Following flag controls whether a menu item should be enabled or not
 			enableMenu: this.tabs[index].props.role === 'server'
 		});
+	}
+
+	showLoading(loading) {
+		if (!loading) {
+			this.$reloadButton.removeAttribute('style');
+			this.$loadingIndicator.style.display = 'none';
+		} else if (loading) {
+			this.$reloadButton.style.display = 'none';
+			this.$loadingIndicator.removeAttribute('style');
+		}
 	}
 
 	destroyTab(name, index) {

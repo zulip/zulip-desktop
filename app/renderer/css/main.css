@@ -267,6 +267,18 @@ body {
     margin-bottom: 5px;
 }
 
+.refresh {
+    animation: rotate-loader 1s linear infinite;
+}
+
+@keyframes rotate-loader {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(-360deg);
+    }
+}
 
 /*******************
   *   Webview Area  *
@@ -328,6 +340,7 @@ webview.focus {
 
 /* Tooltip styling */
 
+#loading-tooltip,
 #dnd-tooltip,
 #back-tooltip,
 #reload-tooltip,
@@ -346,6 +359,7 @@ webview.focus {
     font-size: 14px;
 }
 
+#loading-tooltip::after,
 #dnd-tooltip::after,
 #back-tooltip::after,
 #reload-tooltip::after,
