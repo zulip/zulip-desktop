@@ -419,7 +419,7 @@ electron-updater - `v2.21.8`
 
 * Fixed a bug which was caused by app's shortcuts. From now on our shortcuts won't hijack other apps shortcuts
 
-* Removed [electron-localshortcut](https://github.com/parro-it/electron-localshortcut) completely. Now we only depends on menu accelerators for keyboard shortcuts
+* Removed [electron-localshortcut](https://github.com/parro-it/electron-localshortcut) completely. Now we only depend on menu accelerators for keyboard shortcuts
 
 * Handle certificate issue properly
 
@@ -634,7 +634,7 @@ electron-updater - `v2.21.8`
 
 ### v0.5.8 --2017-02-13
 
-**Enhacements**:
+**Enhancements**:
 Smaller Windows installer size
 
 <hr>
