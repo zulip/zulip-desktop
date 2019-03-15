@@ -291,6 +291,8 @@ class ServerManagerView {
 			if (addServer) {
 				const { top } = SidebarButton.getBoundingClientRect();
 				SidebarTooltip.style.top = top + 'px';
+				const { left } = SidebarButton.getBoundingClientRect();
+				SidebarTooltip.style.left = left + 'px';
 			}
 		});
 		SidebarButton.addEventListener('mouseout', () => {
@@ -307,6 +309,8 @@ class ServerManagerView {
 		// as that of its parent element.
 		const { top } = this.$serverIconTooltip[index].parentElement.getBoundingClientRect();
 		this.$serverIconTooltip[index].style.top = top + 'px';
+		const { left } = this.$serverIconTooltip[index].parentElement.getBoundingClientRect();
+		this.$serverIconTooltip[index].style.left = left + 'px';
 	}
 
 	onHoverOut(index) {
