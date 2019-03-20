@@ -226,6 +226,26 @@ class AppMenu {
 					type: 'checkbox'
 				});
 			}
+			initialSubmenu.push({
+				type: 'separator'
+			});
+			initialSubmenu.push({
+				label: 'Switch to next organization',
+				accelerator: `Ctrl + Tab`,
+				click(item, focusedWindow) {
+					if (focusedWindow) {
+						AppMenu.sendAction('switch-server-tab', (activeTabIndex + 1) % tabs.length);
+					}
+				}
+			}, {
+				label: 'Switch to previous organization',
+				accelerator: `Ctrl + Shift + Tab`,
+				click(item, focusedWindow) {
+					if (focusedWindow) {
+						AppMenu.sendAction('switch-server-tab', (activeTabIndex - 1) % tabs.length);
+					}
+				}
+			});
 		}
 
 		return initialSubmenu;
