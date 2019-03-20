@@ -131,11 +131,11 @@ class ShortcutsSection extends BaseSection {
                     <td>Toggle DevTools for Active Tab</td>
                   </tr>
                   <tr>
-                    <td><kbd>${userOSKey}</kbd> + <kbd>Tab</kbd></td>
+                    <td><kbd>Ctrl</kbd> + <kbd>Tab</kbd></td>
                     <td>Switch to next organization</td>
                   </tr>
                   <tr>
-                    <td><kbd>${userOSKey}</kbd> + <kbd>Shift</kbd> + <kbd>Tab</kbd></td>
+                    <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Tab</kbd></td>
                     <td>Switch to previous organization</td>
                   </tr>
                 </table>

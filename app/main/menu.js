@@ -231,7 +231,7 @@ class AppMenu {
 			});
 			initialSubmenu.push({
 				label: 'Switch to next organization',
-				accelerator: `${ShortcutKey} + Tab`,
+				accelerator: `Ctrl + Tab`,
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('switch-server-tab', (activeTabIndex + 1) % tabs.length);
@@ -239,7 +239,7 @@ class AppMenu {
 				}
 			}, {
 				label: 'Switch to previous organization',
-				accelerator: `${ShortcutKey} + Shift + Tab`,
+				accelerator: `Ctrl + Shift + Tab`,
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('switch-server-tab', (activeTabIndex - 1) % tabs.length);
