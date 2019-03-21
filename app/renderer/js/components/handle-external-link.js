@@ -21,19 +21,21 @@ function handleExternalLink(event) {
 	if (isWhiteListURL) {
 		event.preventDefault();
 
+		// Code to show pdf in a new BrowserWindow (currently commented out due to bug-upstream)
 		// Show pdf attachments in a new window
-
-		if (LinkUtil.isPDF(url) && isUploadsURL) {
-			ipcRenderer.send('pdf-view', url);
-			return;
-		}
+		// if (LinkUtil.isPDF(url) && isUploadsURL) {
+		// 	ipcRenderer.send('pdf-view', url);
+		// 	return;
+		// }
 
 		// download txt, mp3, mp4 etc.. by using downloadURL in the
 		// main process which allows the user to save the files to their desktop
 		// and not trigger webview reload while image in webview will
 		// do nothing and will not save it
 
-		if (!LinkUtil.isImage(url) && !LinkUtil.isPDF(url) && isUploadsURL) {
+			// Code to show pdf in a new BrowserWindow (currently commented out due to bug-upstream)
+		// if (!LinkUtil.isImage(url) && !LinkUtil.isPDF(url) && isUploadsURL) {
+		if (!LinkUtil.isImage(url) && isUploadsURL) {
 			ipcRenderer.send('downloadFile', url, downloadPath);
 			ipcRenderer.once('downloadFileCompleted', (event, filePath, fileName) => {
 				const downloadNotification = new Notification('Download Complete', {
