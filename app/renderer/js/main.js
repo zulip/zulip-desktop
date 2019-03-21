@@ -105,7 +105,7 @@ class ServerManagerView {
 			useSystemProxy: false,
 			showSidebar: true,
 			badgeOption: true,
-			startAtLogin: false,
+			startAtLogin: true,
 			startMinimized: false,
 			enableSpellchecker: true,
 			showNotification: true,

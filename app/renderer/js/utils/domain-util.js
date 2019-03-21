@@ -64,9 +64,10 @@ class DomainUtil {
 	}
 
 	addDomain(server) {
+		const ignoreCerts = server.ignoreCerts;
 		return new Promise(resolve => {
 			if (server.icon) {
-				this.saveServerIcon(server).then(localIconUrl => {
+				this.saveServerIcon(server, ignoreCerts).then(localIconUrl => {
 					server.icon = localIconUrl;
 					this.db.push('/domains[]', server, true);
 					this.reloadDB();
@@ -103,7 +104,9 @@ class DomainUtil {
 		return false;
 	}
 
-	checkDomain(domain, silent = false) {
+	// ignoreCerts parameter helps in fetching server icon and
+	// other server details when user chooses to ignore certificate warnings
+	checkDomain(domain, ignoreCerts = false, silent = false) {
 		if (!silent && this.duplicateDomain(domain)) {
 			// Do not check duplicate in silent mode
 			return Promise.reject('This server has been added.');
@@ -132,13 +135,15 @@ class DomainUtil {
 			ca: (certificateLocation) ? certificateLocation : '',
 			proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : '',
 			ecdhCurve: 'auto',
-			headers: { 'User-Agent': SystemUtil.getUserAgent() }
+			headers: { 'User-Agent': SystemUtil.getUserAgent() },
+			rejectUnauthorized: !ignoreCerts
 		};
 
 		const serverConf = {
 			icon: defaultIconUrl,
 			url: domain,
-			alias: domain
+			alias: domain,
+			ignoreCerts
 		};
 
 		return new Promise((resolve, reject) => {
@@ -155,14 +160,14 @@ class DomainUtil {
 				const certsError = error.toString().includes('certificate');
 				if (!error && response.statusCode < 400) {
 					// Correct
-					this.getServerSettings(domain).then(serverSettings => {
+					this.getServerSettings(domain, serverConf.ignoreCerts).then(serverSettings => {
 						resolve(serverSettings);
 					}, () => {
 						resolve(serverConf);
 					});
 				} else if (domain.indexOf(whitelistDomains) >= 0 || certsError) {
 					if (silent) {
-						this.getServerSettings(domain).then(serverSettings => {
+						this.getServerSettings(domain, serverConf.ignoreCerts).then(serverSettings => {
 							resolve(serverSettings);
 						}, () => {
 							resolve(serverConf);
@@ -185,7 +190,9 @@ class DomainUtil {
 							detail: certErrorDetail
 						}, response => {
 							if (response === 0) {
-								this.getServerSettings(domain).then(serverSettings => {
+								// set ignoreCerts parameter to true in case user responds with yes
+								serverConf.ignoreCerts = true;
+								this.getServerSettings(domain, serverConf.ignoreCerts).then(serverSettings => {
 									resolve(serverSettings);
 								}, () => {
 									resolve(serverConf);
@@ -205,7 +212,7 @@ class DomainUtil {
 		});
 	}
 
-	getServerSettings(domain) {
+	getServerSettings(domain, ignoreCerts = false) {
 		const certificate = CertificateUtil.getCertificate(encodeURIComponent(domain));
 		let certificateLocation = '';
 
@@ -224,8 +231,10 @@ class DomainUtil {
 			ca: (certificateLocation) ? certificateLocation : '',
 			proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : '',
 			ecdhCurve: 'auto',
-			headers: { 'User-Agent': SystemUtil.getUserAgent() }
+			headers: { 'User-Agent': SystemUtil.getUserAgent() },
+			rejectUnauthorized: !ignoreCerts
 		};
+
 		return new Promise((resolve, reject) => {
 			request(serverSettingsOptions, (error, response) => {
 				if (!error && response.statusCode === 200) {
@@ -236,7 +245,8 @@ class DomainUtil {
 							// Following check handles both the cases
 							icon: data.realm_icon.startsWith('/') ? data.realm_uri + data.realm_icon : data.realm_icon,
 							url: data.realm_uri,
-							alias: escape(data.realm_name)
+							alias: escape(data.realm_name),
+							ignoreCerts
 						});
 					}
 				} else {
@@ -246,7 +256,7 @@ class DomainUtil {
 		});
 	}
 
-	saveServerIcon(server) {
+	saveServerIcon(server, ignoreCerts = false) {
 		const url = server.icon;
 		const domain = server.url;
 
@@ -270,7 +280,8 @@ class DomainUtil {
 			ca: (certificateLocation) ? certificateLocation : '',
 			proxy: proxyEnabled ? ProxyUtil.getProxy(url) : '',
 			ecdhCurve: 'auto',
-			headers: { 'User-Agent': SystemUtil.getUserAgent() }
+			headers: { 'User-Agent': SystemUtil.getUserAgent() },
+			rejectUnauthorized: !ignoreCerts
 		};
 
 		// The save will always succeed. If url is invalid, downgrade to default icon.
@@ -305,8 +316,9 @@ class DomainUtil {
 
 	updateSavedServer(url, index) {
 		// Does not promise successful update
-		this.checkDomain(url, true).then(newServerConf => {
-			this.saveServerIcon(newServerConf).then(localIconUrl => {
+		const ignoreCerts = this.getDomain(index).ignoreCerts;
+		this.checkDomain(url, ignoreCerts, true).then(newServerConf => {
+			this.saveServerIcon(newServerConf, ignoreCerts).then(localIconUrl => {
 				newServerConf.icon = localIconUrl;
 				this.updateDomain(index, newServerConf);
 				this.reloadDB();

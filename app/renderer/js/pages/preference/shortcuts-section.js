@@ -130,6 +130,14 @@ class ShortcutsSection extends BaseSection {
                     <td><kbd>Option</kbd><kbd>${userOSKey}</kbd><kbd>U</kbd></td>
                     <td>Toggle DevTools for Active Tab</td>
                   </tr>
+                  <tr>
+                    <td><kbd>Ctrl</kbd> + <kbd>Tab</kbd></td>
+                    <td>Switch to next organization</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Tab</kbd></td>
+                    <td>Switch to previous organization</td>
+                  </tr>
                 </table>
                 <div class="setting-control"></div>
               </div>
@@ -268,6 +276,14 @@ class ShortcutsSection extends BaseSection {
                   <tr>
                     <td><kbd>${userOSKey}</kbd> + <kbd>Shift</kbd> + <kbd>U</kbd></td>
                     <td>Toggle DevTools for Active Tab</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>${userOSKey}</kbd> + <kbd>Tab</kbd></td>
+                    <td>Switch to next organization</td>
+                  </tr>
+                  <tr>
+                    <td><kbd>${userOSKey}</kbd> + <kbd>Shift</kbd> + <kbd>Tab</kbd></td>
+                    <td>Switch to previous organization</td>
                   </tr>
                 </table>
                 <div class="setting-control"></div>

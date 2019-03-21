@@ -292,7 +292,7 @@ electron-updater - `v2.21.8`
 
 * Setting page and left-sidebar UI improvements
 
-* Other minor improvments
+* Other minor improvements
 
 
 
@@ -419,7 +419,7 @@ electron-updater - `v2.21.8`
 
 * Fixed a bug which was caused by app's shortcuts. From now on our shortcuts won't hijack other apps shortcuts
 
-* Removed [electron-localshortcut](https://github.com/parro-it/electron-localshortcut) completely. Now we only depends on menu accelerators for keyboard shortcuts
+* Removed [electron-localshortcut](https://github.com/parro-it/electron-localshortcut) completely. Now we only depend on menu accelerators for keyboard shortcuts
 
 * Handle certificate issue properly
 
@@ -620,7 +620,7 @@ electron-updater - `v2.21.8`
 
 * Properly signed app for macOS
 * Toggle tray icon
-* Better error handling when no internet connenction
+* Better error handling when no internet connection
 
 
 
@@ -634,7 +634,7 @@ electron-updater - `v2.21.8`
 
 ### v0.5.8 --2017-02-13
 
-**Enhacements**:
+**Enhancements**:
 Smaller Windows installer size
 
 <hr>
@@ -650,7 +650,7 @@ Minor improvements
 ### v0.5.6 --2017-02-07
 
 
-**Enhacements**:
+**Enhancement**:
 
 - Using NSIS instead of [Squirrel.Windows](https://github.com/Squirrel/Squirrel.Windows) on Windows
 
@@ -672,9 +672,9 @@ Minor improvements
 
 **Fixes**:
 - Fixed :
-	- Auto-updates
-	- Spellchecker
-	- Zooming functionality
+    - Auto-updates
+    - Spellchecker
+    - Zooming functionality
 
 - Removed unused node modules
 - Using stable version for node modules
@@ -718,7 +718,7 @@ Minor improvements
 
 ### v0.5.1 --2016-11-23
 
-**Enhacements**:
+**Enhancement**:
 
 - Added Spellchecker support with correct spell suggestions
 
@@ -759,6 +759,6 @@ Minor improvements
 
 ### v0.0.1-alpha -- 2016-08-31
 
-**Enhacements**:
+**Enhancement**:
 
 * Added DMG installer for macOS
