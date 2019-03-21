@@ -10,19 +10,8 @@ class FindAccounts extends BaseComponent {
 		this.props = props;
 	}
 
-	template() {
-		return `
-		<div>
-			<button class="green sea w-150" id="find-accounts-button">Find accounts</button>
-		</div>
-		`;
-	}
-
 	init() {
-		this.$findAccounts = this.generateNodeFromTemplate(this.template());
-		console.log(this.$findAccounts);
-		this.props.$root.appendChild(this.$findAccounts);
-		this.findAccountsButton = this.$findAccounts.querySelector('#find-accounts-button');
+		this.$findAccountsButton = document.querySelector('#find-accounts-container').children[0];
 		this.initListener();
 	}
 
@@ -31,7 +20,7 @@ class FindAccounts extends BaseComponent {
 	}
 
 	initListener() {
-		this.findAccountsButton.addEventListener('click', () => {
+		this.$findAccountsButton.addEventListener('click', () => {
 			this.findAccounts();
 		});
 	}
