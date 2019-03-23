@@ -322,16 +322,24 @@ img.server-info-icon {
 }
 
 .red {
-    color: #ef5350;
-    padding: 8px;
-    border: rgba(239, 83, 80, 0.5) solid 1px;
+    color: rgb(240, 148, 148);
+    background: white;
     border-radius: 4px;
-    border-color: #fff;
+    display: inline-block;
+    border: 2px solid rgb(240, 148, 148);
+    padding: 10px;
+    width: 100px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+    text-align: center;
 }
 
 .red:hover {
-    background-color: rgba(230, 52, 49, 0.5);
-    color: #fff;
+    background-color: rgb(240, 148, 148);
+    color: white;
 }
 
 .green {
