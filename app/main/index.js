@@ -344,6 +344,18 @@ app.on('ready', () => {
 	ipcMain.on('realm-icon-changed', (event, serverURL, iconURL) => {
 		page.send('update-realm-icon', serverURL, iconURL);
 	});
+
+	// Update user idle status for each realm
+	// Set user idle if no activity for 60s
+	ipcMain.on('detect-presence', event => {
+		electron.powerMonitor.querySystemIdleState(60, idleState => {
+			if (idleState === 'active') {
+				event.sender.send('set-active');
+			} else {
+				event.sender.send('set-idle');
+			}
+		});
+	});
 });
 
 app.on('before-quit', () => {

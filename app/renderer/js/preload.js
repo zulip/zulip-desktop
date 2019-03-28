@@ -7,14 +7,24 @@ const ConfigUtil = require(__dirname + '/utils/config-util.js');
 const LinkUtil = require(__dirname + '/utils/link-util.js');
 const params = require(__dirname + '/utils/params-util.js');
 
+// we have and will have some non camelcase stuff
+// while working with zulip and electron bridge
+// so turning the rule off for the whole file.
+/* eslint-disable camelcase */
+
 // eslint-disable-next-line import/no-unassigned-import
 require('./notification');
 
 // Prevent drag and drop event in main process which prevents remote code executaion
 require(__dirname + '/shared/preventdrag.js');
 
-// eslint-disable-next-line camelcase
 window.electron_bridge = require('./electron-bridge');
+
+// Indicates if the user is idle or not
+window.electron_bridge.idle_on_system = false;
+
+// Indicates the time at which user was last active
+window.electron_bridge.last_active_on_system = Date.now();
 
 const logout = () => {
 	// Create the menu for the below
@@ -81,6 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		});
 	}
+
+	// Update user status after every 15s
+	setInterval(() => {
+		ipcRenderer.send('detect-presence');
+	}, 15000);
 });
 
 // Clean up spellchecker events after you navigate away from this page;
@@ -95,4 +110,15 @@ document.addEventListener('keydown', event => {
 	if (event.code === 'F5') {
 		ipcRenderer.send('forward-message', 'hard-reload');
 	}
+});
+
+// Set user as active and update the time of last activity
+ipcRenderer.on('set-active', () => {
+	window.electron_bridge.idle_on_system = false;
+	window.electron_bridge.last_active_on_system = Date.now();
+});
+
+// Set user as idle and time of last activity is left unchanged
+ipcRenderer.on('set-idle', () => {
+	window.electron_bridge.idle_on_system = true;
 });
