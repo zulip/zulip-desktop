@@ -164,7 +164,7 @@ class AppMenu {
 			}
 		}, {
 			label: 'Auto hide Menu bar',
-			accelerator: 'CommandOrControl+B',
+			checked: ConfigUtil.getConfigItem('autoHideMenubar'),
 			click(item, focusedWindow) {
 				if (focusedWindow) {
 					const newValue = !ConfigUtil.getConfigItem('autoHideMenubar');
@@ -172,7 +172,8 @@ class AppMenu {
 					focusedWindow.setMenuBarVisibility(!newValue);
 					ConfigUtil.setConfigItem('autoHideMenubar', newValue);
 				}
-			}
+			},
+			type: 'checkbox'
 		}];
 	}
 
