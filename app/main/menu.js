@@ -231,18 +231,20 @@ class AppMenu {
 			});
 			initialSubmenu.push({
 				label: 'Switch to next organization',
-				accelerator: `Ctrl + Tab`,
+				accelerator: `Ctrl+Tab`,
+				enabled: tabs[activeTabIndex].props.role === 'server',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
-						AppMenu.sendAction('switch-server-tab', (activeTabIndex + 1) % tabs.length);
+						AppMenu.sendAction('switch-server-tab', AppMenu.getNextServer(tabs, activeTabIndex));
 					}
 				}
 			}, {
 				label: 'Switch to previous organization',
-				accelerator: `Ctrl + Shift + Tab`,
+				accelerator: `Ctrl+Shift+Tab`,
+				enabled: tabs[activeTabIndex].props.role === 'server',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
-						AppMenu.sendAction('switch-server-tab', (activeTabIndex - 1) % tabs.length);
+						AppMenu.sendAction('switch-server-tab', AppMenu.getPreviousServer(tabs, activeTabIndex));
 					}
 				}
 			});
@@ -447,6 +449,23 @@ class AppMenu {
 	static checkForUpdate() {
 		appUpdater(true);
 	}
+
+	static getNextServer(tabs, activeTabIndex) {
+		do {
+			activeTabIndex = (activeTabIndex + 1) % tabs.length;
+		}
+		while (tabs[activeTabIndex].props.role !== 'server');
+		return activeTabIndex;
+	}
+
+	static getPreviousServer(tabs, activeTabIndex) {
+		do {
+			activeTabIndex = (activeTabIndex - 1 + tabs.length) % tabs.length;
+		}
+		while (tabs[activeTabIndex].props.role !== 'server');
+		return activeTabIndex;
+	}
+
 	static resetAppSettings() {
 		const resetAppSettingsMessage = 'By proceeding you will be removing all connected organizations and preferences from Zulip.';
 
