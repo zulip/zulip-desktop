@@ -198,9 +198,6 @@ app.on('ready', () => {
 		app.quit();
 	});
 
-	ipcMain.on('find-accounts', (event, url) => {
-		electron.shell.openExternal(url);
-	});
 	// Code to show pdf in a new BrowserWindow (currently commented out due to bug-upstream)
 	// ipcMain.on('pdf-view', (event, url) => {
 	// 	// Paddings for pdfWindow so that it fits into the main browserWindow

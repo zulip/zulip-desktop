@@ -22,7 +22,7 @@ class ConnectedOrgSection extends BaseSection {
 				<div class="page-title">Add Custom Certificates</div>
 				<div id="add-certificate-container"></div>
 				<div class="page-title">Find accounts by email</div>
-				<div id="find-accounts-container"><button class="green sea w-250 m-10">Find accounts</button></div>
+				<div id="find-accounts-container"></div>
 			</div>
 		`;
 	}
