@@ -165,6 +165,7 @@ class AppMenu {
 		}, {
 			label: 'Auto hide Menu bar',
 			checked: ConfigUtil.getConfigItem('autoHideMenubar'),
+			visible: process.platform !== 'darwin',
 			click(item, focusedWindow) {
 				if (focusedWindow) {
 					const newValue = !ConfigUtil.getConfigItem('autoHideMenubar');
