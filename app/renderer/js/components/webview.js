@@ -95,6 +95,11 @@ class WebView extends BaseComponent {
 			}
 			this.loading = false;
 			this.show();
+
+			// Refocus text boxes after reload
+			// Remove when upstream issue https://github.com/electron/electron/issues/14474 is fixed
+			this.$el.blur();
+			this.$el.focus();
 		});
 
 		this.$el.addEventListener('did-fail-load', event => {
