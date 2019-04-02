@@ -9,10 +9,7 @@ const escape = require('escape-html');
 
 const Logger = require('./logger-util');
 
-const CertificateUtil = require(__dirname + '/certificate-util.js');
-const ProxyUtil = require(__dirname + '/proxy-util.js');
-const ConfigUtil = require(__dirname + '/config-util.js');
-const SystemUtil = require(__dirname + '/../utils/system-util.js');
+const RequestUtil = require(__dirname + '/../utils/request-util.js');
 
 const logger = new Logger({
 	file: `domain-util.log`,
@@ -113,30 +110,9 @@ class DomainUtil {
 		}
 
 		domain = this.formatUrl(domain);
-
-		const certificate = CertificateUtil.getCertificate(encodeURIComponent(domain));
-		let certificateLocation = '';
-
-		if (certificate) {
-			// To handle case where certificate has been moved from the location in certificates.json
-			try {
-				certificateLocation = fs.readFileSync(certificate);
-			} catch (err) {
-				logger.warn('Error while trying to get certificate: ' + err);
-			}
-		}
-
-		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
-
-		// If certificate for the domain exists add it as a ca key in the request's parameter else consider only domain as the parameter for request
-		// Add proxy as a parameter if it sbeing used.
 		const checkDomain = {
 			url: domain + '/static/audio/zulip.ogg',
-			ca: (certificateLocation) ? certificateLocation : '',
-			proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : '',
-			ecdhCurve: 'auto',
-			headers: { 'User-Agent': SystemUtil.getUserAgent() },
-			rejectUnauthorized: !ignoreCerts
+			...RequestUtil.requestOptions(domain, ignoreCerts)
 		};
 
 		const serverConf = {
@@ -213,26 +189,9 @@ class DomainUtil {
 	}
 
 	getServerSettings(domain, ignoreCerts = false) {
-		const certificate = CertificateUtil.getCertificate(encodeURIComponent(domain));
-		let certificateLocation = '';
-
-		if (certificate) {
-			// To handle case where certificate has been moved from the location in certificates.json
-			try {
-				certificateLocation = fs.readFileSync(certificate);
-			} catch (err) {
-				logger.warn('Error while trying to get certificate: ' + err);
-			}
-		}
-
-		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
 		const serverSettingsOptions = {
 			url: domain + '/api/v1/server_settings',
-			ca: (certificateLocation) ? certificateLocation : '',
-			proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : '',
-			ecdhCurve: 'auto',
-			headers: { 'User-Agent': SystemUtil.getUserAgent() },
-			rejectUnauthorized: !ignoreCerts
+			...RequestUtil.requestOptions(domain, ignoreCerts)
 		};
 
 		return new Promise((resolve, reject) => {
@@ -260,28 +219,9 @@ class DomainUtil {
 		const url = server.icon;
 		const domain = server.url;
 
-		const certificate = CertificateUtil.getCertificate(encodeURIComponent(domain));
-		let certificateLocation = '';
-
-		if (certificate) {
-			// To handle case where certificate has been moved from the location in certificates.json
-			try {
-				certificateLocation = fs.readFileSync(certificate);
-			} catch (err) {
-				logger.warn('Error while trying to get certificate: ' + err);
-			}
-		}
-
-		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
-
-		// Add proxy and certificate as a parameter if its being used.
 		const serverIconOptions = {
 			url,
-			ca: (certificateLocation) ? certificateLocation : '',
-			proxy: proxyEnabled ? ProxyUtil.getProxy(url) : '',
-			ecdhCurve: 'auto',
-			headers: { 'User-Agent': SystemUtil.getUserAgent() },
-			rejectUnauthorized: !ignoreCerts
+			...RequestUtil.requestOptions(domain, ignoreCerts)
 		};
 
 		// The save will always succeed. If url is invalid, downgrade to default icon.
