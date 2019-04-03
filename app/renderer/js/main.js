@@ -512,7 +512,7 @@ class ServerManagerView {
 
 	// Toggles the dnd button icon.
 	toggleDNDButton(alert) {
-		this.$dndTooltip.textContent = (alert ? 'Turn Off' : 'Enable') + ' Do Not Disturb';
+		this.$dndTooltip.textContent = (alert ? 'Disable' : 'Enable') + ' Do Not Disturb';
 		this.$dndButton.querySelector('i').textContent = alert ? 'notifications_off' : 'notifications';
 	}
 
