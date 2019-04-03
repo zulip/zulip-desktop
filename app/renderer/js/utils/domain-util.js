@@ -105,6 +105,11 @@ class DomainUtil {
 	}
 
 	trimDomain(domain) {
+		/*
+			sometimes, the app is unable to fetch realm_name
+			we then show the first letter character after the protocol scheme
+			instead of the first character of the realm_name
+		*/
 		let subDomain = domain.substring(domain.lastIndexOf('://') + 3);
 		subDomain = subDomain.substring(0, subDomain.indexOf('.'));
 		return subDomain;
