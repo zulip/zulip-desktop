@@ -171,6 +171,7 @@ class AppMenu {
 					const newValue = !ConfigUtil.getConfigItem('autoHideMenubar');
 					focusedWindow.setAutoHideMenuBar(newValue);
 					focusedWindow.setMenuBarVisibility(!newValue);
+					focusedWindow.webContents.send('toggle-autohide-menubar', newValue);
 					ConfigUtil.setConfigItem('autoHideMenubar', newValue);
 				}
 			},

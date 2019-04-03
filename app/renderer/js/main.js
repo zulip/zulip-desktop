@@ -625,6 +625,15 @@ class ServerManagerView {
 			});
 		});
 
+		ipcRenderer.on('toggle-autohide-menubar', (event, autoHideMenubar) => {
+			const selector = 'webview:not([class*=disabled])';
+			const webview = document.querySelector(selector);
+			if (webview) {
+				const webContents = webview.getWebContents();
+				webContents.send('toggle-menubar-setting', autoHideMenubar);
+			}
+		});
+
 		ipcRenderer.on('toggle-dnd', (event, state, newSettings) => {
 			this.toggleDNDButton(state);
 			ipcRenderer.send('forward-message', 'toggle-silent', newSettings.silent);
