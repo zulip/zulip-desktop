@@ -287,7 +287,7 @@ img.server-info-icon {
 
 .settings-pane {
     flex-grow: 1;
-	min-width: 550px;
+    min-width: 550px;
 }
 
 .action:hover {
@@ -441,7 +441,7 @@ i.open-tab-button {
     visibility: hidden;
 }
 
-.toggle+label {
+.toggle + label {
     display: block;
     position: relative;
     cursor: pointer;
@@ -449,7 +449,7 @@ i.open-tab-button {
     user-select: none;
 }
 
-input.toggle-round+label {
+input.toggle-round + label {
     padding: 2px;
     width: 50px;
     height: 25px;
@@ -457,8 +457,8 @@ input.toggle-round+label {
     border-radius: 25px;
 }
 
-input.toggle-round+label:before,
-input.toggle-round+label:after {
+input.toggle-round + label:before,
+input.toggle-round + label:after {
     display: block;
     position: absolute;
     top: 2px;
@@ -467,7 +467,7 @@ input.toggle-round+label:after {
     content: "";
 }
 
-input.toggle-round+label:before {
+input.toggle-round + label:before {
     background-color: #f1f1f1;
     border-radius: 25px;
     top: 0;
@@ -476,14 +476,14 @@ input.toggle-round+label:before {
     bottom: 0px;
 }
 
-input.toggle-round+label:after {
+input.toggle-round + label:after {
     width: 25px;
     height: 25px;
     background-color: #fff;
     border-radius: 100%;
 }
 
-input.toggle-round:checked+label:before {
+input.toggle-round:checked + label:before {
     background-color: #4EBFAC;
     top: 0;
     right: 0px;
@@ -491,7 +491,7 @@ input.toggle-round:checked+label:before {
     bottom: 0px;
 }
 
-input.toggle-round:checked+label:after {
+input.toggle-round:checked + label:after {
     margin-left: 25px;
 }
 
@@ -582,7 +582,7 @@ input.toggle-round:checked+label:after {
 }
 
 .certificates-card {
-    width: 80%
+    width: 80%;
 }
 
 .certificate-input {
@@ -609,8 +609,8 @@ input.toggle-round:checked+label:after {
     padding: 0;
 }
 
-.tip:hover{
-   box-shadow: none;
+.tip:hover {
+    box-shadow: none;
 }
 
 .md-14 {

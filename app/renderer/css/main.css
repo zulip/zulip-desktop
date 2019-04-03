@@ -43,25 +43,25 @@ body {
 }
 
 #view-controls-container {
-	height: calc(100% - 208px);
-	overflow-y: hidden;
+    height: calc(100% - 208px);
+    overflow-y: hidden;
 }
 
 #view-controls-container:hover {
-	overflow-y: overlay;
+    overflow-y: overlay;
 }
 
 #view-controls-container::-webkit-scrollbar {
-	width: 4px;
+    width: 4px;
 }
 
 #view-controls-container::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
 #view-controls-container::-webkit-scrollbar-thumb {
-  background-color: darkgrey;
-  outline: 1px solid slategrey;
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
 }
 
 @font-face {
@@ -278,7 +278,7 @@ body {
     width: 100%;
 }
 
-/*Pseudo element for loading indicator*/
+/* Pseudo element for loading indicator */
 #webviews-container::before {
     content: "";
     position: absolute;
@@ -290,7 +290,7 @@ body {
     height: 100%;
 }
 
-/*When the active webview is loaded*/
+/* When the active webview is loaded */
 #webviews-container.loaded::before {
     opacity: 0;
     z-index: -1;
@@ -453,24 +453,24 @@ webview.focus {
 }
 
 send-feedback {
-  width: 60%;
-  height: 85%;
+    width: 60%;
+    height: 85%;
 }
 
 #feedback-modal {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(68, 67, 67, 0.81);
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  transition: all 1s ease-out;
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(68, 67, 67, 0.81);
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: all 1s ease-out;
 }
 
 #feedback-modal.show {
-  display: flex;
+    display: flex;
 }
