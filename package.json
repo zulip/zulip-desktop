@@ -24,7 +24,7 @@
     "start": "electron app --disable-http-cache --no-electron-connect",
     "reinstall": "node ./tools/reinstall-node-modules.js",
     "postinstall": "electron-builder install-app-deps",
-    "test": "xo",
+    "test": "stylelint app/renderer/css/*.css && xo",
     "test-e2e": "gulp test-e2e",
     "dev": "gulp dev & nodemon --watch app/main --watch app/renderer --exec 'npm test' -e html,css,js",
     "pack": "electron-builder --dir",
@@ -132,6 +132,7 @@
     "nodemon": "^1.14.11",
     "pre-commit": "1.2.2",
     "spectron": "^5.0.0",
+    "stylelint": "^9.10.1",
     "tap-colorize": "^1.2.0",
     "tape": "^4.8.0",
     "xo": "0.18.2"
@@ -179,5 +180,65 @@
       "browser",
       "mocha"
     ]
+  },
+  "stylelint": {
+    "rules": {
+      "function-comma-space-after": "always",
+      "function-comma-space-before": "never",
+      "function-max-empty-lines": 0,
+      "function-whitespace-after": "always",
+
+      "value-keyword-case": "lower",
+      "value-list-comma-newline-after": "always-multi-line",
+      "value-list-comma-space-after": "always-single-line",
+      "value-list-comma-space-before": "never",
+      "value-list-max-empty-lines": 0,
+
+      "unit-case": "lower",
+      "property-case": "lower",
+
+      "declaration-bang-space-before": "always",
+      "declaration-colon-newline-after": "always-multi-line",
+      "declaration-colon-space-after": "always-single-line",
+      "declaration-colon-space-before": "never",
+      "declaration-block-semicolon-newline-after": "always",
+      "declaration-block-semicolon-space-before": "never",
+      "declaration-block-trailing-semicolon": "always",
+
+      "block-closing-brace-empty-line-before": "never",
+      "block-closing-brace-newline-after": "always",
+      "block-closing-brace-newline-before": "always",
+      "block-opening-brace-newline-after": "always",
+      "block-opening-brace-space-before": "always",
+
+      "selector-attribute-brackets-space-inside": "never",
+      "selector-attribute-operator-space-after": "never",
+      "selector-attribute-operator-space-before": "never",
+      "selector-combinator-space-after": "always",
+      "selector-combinator-space-before": "always",
+      "selector-descendant-combinator-no-non-space": true,
+      "selector-pseudo-class-parentheses-space-inside": "never",
+      "selector-pseudo-element-case": "lower",
+      "selector-type-case": "lower",
+      "selector-list-comma-newline-after": "always",
+      "selector-list-comma-space-before": "never",
+
+      "media-feature-colon-space-after": "always",
+      "media-feature-colon-space-before": "never",
+      "media-feature-name-case": "lower",
+      "media-feature-parentheses-space-inside": "never",
+      "media-feature-range-operator-space-after": "always",
+      "media-feature-range-operator-space-before": "always",
+      "media-query-list-comma-newline-after": "always",
+      "media-query-list-comma-space-before": "never",
+
+      "at-rule-name-case": "lower",
+      "at-rule-name-space-after": "always",
+      "at-rule-semicolon-newline-after": "always",
+      "at-rule-semicolon-space-before": "never",
+
+      "comment-whitespace-inside": "always",
+      "indentation": 4
+    }
   }
 }
