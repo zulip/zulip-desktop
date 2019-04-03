@@ -1,6 +1,6 @@
 'use strict';
 
-const { ipcRenderer, remote } = require('electron');
+const { ipcRenderer, remote, clipboard } = require('electron');
 const isDev = require('electron-is-dev');
 
 const { session, app, Menu, dialog } = remote;
@@ -535,6 +535,12 @@ class ServerManagerView {
 							}
 						});
 					}
+				},
+				{
+					label: 'Copy Zulip URL',
+					click: () => {
+						clipboard.writeText(DomainUtil.getDomain(index).url);
+					}
 				}
 			];
 			const contextMenu = Menu.buildFromTemplate(template);
@@ -723,6 +729,10 @@ class ServerManagerView {
 
 		ipcRenderer.on('open-feedback-modal', () => {
 			feedbackHolder.classList.add('show');
+		});
+
+		ipcRenderer.on('copy-zulip-url', () => {
+			clipboard.writeText(DomainUtil.getDomain(this.activeTabIndex).url);
 		});
 	}
 }

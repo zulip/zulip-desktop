@@ -285,6 +285,14 @@ class AppMenu {
 					AppMenu.sendAction('toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
 				}
 			}, {
+				label: 'Copy Zulip URL',
+				accelerator: 'Cmd+Shift+C',
+				click(item, focusedWindow) {
+					if (focusedWindow) {
+						AppMenu.sendAction('copy-zulip-url');
+					}
+				}
+			}, {
 				label: 'Log Out',
 				accelerator: 'Cmd+L',
 				enabled: enableMenu,
@@ -380,6 +388,14 @@ class AppMenu {
 				click() {
 					const dndUtil = DNDUtil.toggle();
 					AppMenu.sendAction('toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
+				}
+			}, {
+				label: 'Copy Zulip URL',
+				accelerator: 'Ctrl+Shift+C',
+				click(item, focusedWindow) {
+					if (focusedWindow) {
+						AppMenu.sendAction('copy-zulip-url');
+					}
 				}
 			}, {
 				label: 'Log Out',
