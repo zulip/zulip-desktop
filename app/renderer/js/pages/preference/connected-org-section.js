@@ -4,6 +4,7 @@ const BaseSection = require(__dirname + '/base-section.js');
 const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
 const ServerInfoForm = require(__dirname + '/server-info-form.js');
 const AddCertificate = require(__dirname + '/add-certificate.js');
+const ConfigUtil = require(__dirname + '/../../utils/config-util.js');
 
 class ConnectedOrgSection extends BaseSection {
 	constructor(props) {
@@ -32,6 +33,7 @@ class ConnectedOrgSection extends BaseSection {
 		this.props.$root.innerHTML = '';
 
 		const servers = DomainUtil.getDomains();
+		const mutedOrganizations = ConfigUtil.getConfigItem('mutedOrganizations');
 		this.props.$root.innerHTML = this.template();
 
 		this.$serverInfoContainer = document.getElementById('server-info-container');
@@ -42,12 +44,12 @@ class ConnectedOrgSection extends BaseSection {
 		const noServerText = 'All the connected orgnizations will appear here';
 		// Show noServerText if no servers are there otherwise hide it
 		this.$existingServers.innerHTML = servers.length === 0 ? noServerText : '';
-
 		for (let i = 0; i < servers.length; i++) {
 			new ServerInfoForm({
 				$root: this.$serverInfoContainer,
 				server: servers[i],
 				index: i,
+				muteText: mutedOrganizations[servers[i].url] ? 'Unmute' : 'Mute',
 				onChange: this.reloadApp
 			}).init();
 		}

@@ -179,6 +179,11 @@ td:nth-child(odd) {
     margin-top: 10px;
 }
 
+.add-server-mute-notifications {
+    display: flex;
+    margin-top: 8px 0 0 0;
+}
+
 .sub-title {
     padding: 4px 0 6px 0;
     font-weight: bold;
@@ -360,6 +365,19 @@ img.server-info-icon {
 
 .green:hover {
     background-color: #3c9f8d;
+    color: #fff;
+}
+
+.gray {
+    color: #9E9E9E;
+    padding: 8px;
+    border: rgba(192, 192, 192, 0.3) solid 1px;
+    border-radius: 4px;
+    border-color: #fff;
+}
+
+.gray:hover {
+    background-color: rgba(192, 192, 192, 0.3);
     color: #fff;
 }
 
