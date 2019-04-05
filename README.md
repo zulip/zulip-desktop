@@ -11,7 +11,7 @@ Desktop client for Zulip. Available for Mac, Linux, and Windows.
 # Download
 Please see the [installation guide](https://zulipchat.com/help/desktop-app-install-guide).
 
-# Features
+# Feature
 * Sign in to multiple organizations
 * Desktop notifications with inline reply
 * Tray/dock integration
