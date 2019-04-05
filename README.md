@@ -8,7 +8,7 @@ Desktop client for Zulip. Available for Mac, Linux, and Windows.
 
 <img src="http://i.imgur.com/ChzTq4F.png"/>
 
-# Download
+# Downloads
 Please see the [installation guide](https://zulipchat.com/help/desktop-app-install-guide).
 
 # Features
