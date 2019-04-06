@@ -132,7 +132,7 @@ Now you are ready for next step [: Get Zulip Electron Code.](https://paper.dropb
           git clone https://github.com/YOURUSERNAME/zulip-electron.git
 
 
-    Don’t forget to replace YOURUSERNAME with your git username
+Don’t forget to replace YOURUSERNAME with your git username
 
 
 ## Connect your fork to zulip-electron upstream
