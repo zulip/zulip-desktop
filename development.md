@@ -26,7 +26,7 @@ Jump to:
   **Node JS**
   Go to the [Node.js Downloads page](https://nodejs.org/en/download/). Download Node.js for MacOS (`v6.9.0` or above recommended). Run the downloaded Node.js `.pkg` Installer. You're finished! To ensure Node.js has been installed, run `node -v` in your terminal - you should get something like `v6.9.0` or above 
 
-****
+
   **if** [**NPM**](https://www.npmjs.com/get-npm) **and** [**node-gyp**](https://github.com/nodejs/node-gyp#installation) **don't come bundled with your Node.js installation, Download manually** 
 
 
@@ -45,28 +45,28 @@ after pasting you can jump to next step [: Get Zulip Electron Code](https://gith
 
 **For a step-by-step explanation, read on.**
 
-  
 1. **Node JS**
-    you can install from `apt`:
-            $ sudo apt-get install nodejs
 
+	`$ sudo apt-get install nodejs`
 
 2. **Install** [**Node-gyp**](https://github.com/nodejs/node-gyp#installation) 
 
-
 3. **Python (v2.7.x recommended)**
-            $ sudo apt install python2.7
 
+	`$ sudo apt install python2.7`
 
 4. **C++ compiler compatible with C++11**
-            $ sudo apt install build-essential
+
+	`$ sudo apt install build-essential`
   
 5. **Snapcraft**
-            $ sudo apt install snapcraft
 
+	`$ sudo apt install snapcraft`
 
 6. **Development** **headers**
-            $ sudo apt install libxext-dev libxtst-dev libxkbfile-dev libgconf-2-4
+
+	`$ sudo apt install libxext-dev libxtst-dev libxkbfile-dev libgconf-2-4`
+
 
 **if** [**NPM**](https://www.npmjs.com/get-npm) **don't come bundled with your Node.js installation, Download manually** 
 
