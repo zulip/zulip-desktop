@@ -26,6 +26,8 @@ if (isDev) {
 // Prevent window being garbage collected
 let mainWindow;
 let badgeCount;
+let deepLinkingUrl;
+let execPath;
 
 let isQuitting = false;
 
@@ -34,7 +36,12 @@ const mainURL = 'file://' + path.join(__dirname, '../renderer', 'main.html');
 
 const singleInstanceLock = app.requestSingleInstanceLock();
 if (singleInstanceLock) {
-	app.on('second-instance', () => {
+	app.on('second-instance', (event, argv, cwd) => {
+		// uri scheme handler for windows
+		if (process.platform === 'win32') {
+			deepLinkingUrl = argv.slice(1);
+		}
+
 		if (mainWindow) {
 			if (mainWindow.isMinimized()) {
 				mainWindow.restore();
@@ -128,6 +135,17 @@ function createMainWindow() {
 
 // Decrease load on GPU (experimental)
 app.disableHardwareAcceleration();
+
+if (process.platform === 'win32') {
+	execPath = 'C:\\Program Files\\Zulip\\Zulip.exe';
+}
+app.setAsDefaultProtocolClient('zulip', execPath);
+
+// uri scheme handler for macOS
+app.on('open-url', (event, url) => {
+	event.preventDefault();
+	deepLinkingUrl = url;
+});
 
 // Temporary fix for Electron render colors differently
 // More info here - https://github.com/electron/electron/issues/10732
