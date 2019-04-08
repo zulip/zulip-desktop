@@ -16,6 +16,7 @@ const DNDUtil = require(__dirname + '/js/utils/dnd-util.js');
 const ReconnectUtil = require(__dirname + '/js/utils/reconnect-util.js');
 const Logger = require(__dirname + '/js/utils/logger-util.js');
 const CommonUtil = require(__dirname + '/js/utils/common-util.js');
+const LinkUtil = require(__dirname + '/js/utils/link-util.js');
 
 const { feedbackHolder } = require(__dirname + '/js/feedback.js');
 
@@ -550,16 +551,6 @@ class ServerManagerView {
 		});
 	}
 
-	isURLNarrow(url) {
-		const domains = DomainUtil.getDomains();
-		for (const domain in domains) {
-			if (url.startsWith(domains[domain].url)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	registerIpcs() {
 		const webviewListeners = {
 			'webview-reload': 'reload',
@@ -659,10 +650,11 @@ class ServerManagerView {
 				// remove / character at the end of the url
 				url = url.slice(0, -1);
 			}
-			if (this.isURLNarrow(url)) {
+			if (LinkUtil.isURLNarrow(url)) {
 				for (const tab in this.tabs) {
 					if (url.startsWith(this.tabs[tab].webview.props.url)) {
 						this.activateTab(tab);
+						this.tabs[tab].webview.redirect(url);
 					}
 				}
 			}

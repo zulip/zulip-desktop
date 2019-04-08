@@ -20,6 +20,7 @@ class WebView extends BaseComponent {
 		this.zoomFactor = 1.0;
 		this.loading = true;
 		this.badgeCount = 0;
+		this.redirected = false;
 		this.customCSS = ConfigUtil.getConfigItem('customCSS');
 		this.$webviewsContainer = document.querySelector('#webviews-container').classList;
 	}
@@ -128,10 +129,10 @@ class WebView extends BaseComponent {
 
 	show() {
 		// Do not show WebView if another tab was selected and this tab should be in background.
-		if (!this.props.isActive()) {
+		if (!this.props.isActive() && !this.redirected) {
 			return;
 		}
-
+		this.redirected = false;
 		// To show or hide the loading indicator in the the active tab
 		if (this.loading) {
 			this.$webviewsContainer.remove('loaded');
@@ -250,6 +251,12 @@ class WebView extends BaseComponent {
 		this.$webviewsContainer.remove('loaded');
 		this.loading = true;
 		this.$el.reload();
+	}
+
+	redirect(url) {
+		this.loading = true;
+		this.$el.src = url;
+		this.redirected = true;
 	}
 
 	send(...param) {
