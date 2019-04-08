@@ -550,6 +550,16 @@ class ServerManagerView {
 		});
 	}
 
+	isURLNarrow(url) {
+		const domains = DomainUtil.getDomains();
+		for (const domain in domains) {
+			if (url.startsWith(domains[domain].url)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	registerIpcs() {
 		const webviewListeners = {
 			'webview-reload': 'reload',
@@ -640,6 +650,22 @@ class ServerManagerView {
 			const webview = document.querySelector(selector);
 			const webContents = webview.getWebContents();
 			webContents.send('toggle-dnd', state, newSettings);
+		});
+
+		ipcRenderer.on('deep-linking-url', (event, deepLinkingUrl) => {
+			let url = 'https' + deepLinkingUrl[0].substring(5);
+			if (url.charAt(url.length - 1) === '/') {
+				// invoked when url is directly entered in browser
+				// remove / character at the end of the url
+				url = url.slice(0, -1);
+			}
+			if (this.isURLNarrow(url)) {
+				for (const tab in this.tabs) {
+					if (url.startsWith(this.tabs[tab].webview.props.url)) {
+						this.activateTab(tab);
+					}
+				}
+			}
 		});
 
 		ipcRenderer.on('update-realm-name', (event, serverURL, realmName) => {

@@ -36,10 +36,13 @@ const mainURL = 'file://' + path.join(__dirname, '../renderer', 'main.html');
 
 const singleInstanceLock = app.requestSingleInstanceLock();
 if (singleInstanceLock) {
-	app.on('second-instance', (event, argv, cwd) => {
+	app.on('second-instance', (event, argv) => {
 		// uri scheme handler for windows
 		if (process.platform === 'win32') {
 			deepLinkingUrl = argv.slice(1);
+			if (mainWindow) {
+				mainWindow.webContents.send('deep-linking-url', deepLinkingUrl);
+			}
 		}
 
 		if (mainWindow) {
@@ -145,6 +148,9 @@ app.setAsDefaultProtocolClient('zulip', execPath);
 app.on('open-url', (event, url) => {
 	event.preventDefault();
 	deepLinkingUrl = url;
+	if (mainWindow) {
+		mainWindow.webContents.send('deep-linking-url', deepLinkingUrl);
+	}
 });
 
 // Temporary fix for Electron render colors differently
