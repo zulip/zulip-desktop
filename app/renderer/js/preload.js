@@ -91,8 +91,15 @@ window.addEventListener('beforeunload', () => {
 
 // electron's globalShortcut can cause unexpected results
 // so adding the reload shortcut in the old-school way
+// Zoom from numpad keys is not supported by electron, so adding it through listeners.
 document.addEventListener('keydown', event => {
 	if (event.code === 'F5') {
 		ipcRenderer.send('forward-message', 'hard-reload');
+	} else if (event.ctrlKey && event.code === 'NumpadAdd') {
+		ipcRenderer.send('forward-message', 'zoomIn');
+	} else if (event.ctrlKey && event.code === 'NumpadSubtract') {
+		ipcRenderer.send('forward-message', 'zoomOut');
+	} else if (event.ctrlKey && event.code === 'Numpad0') {
+		ipcRenderer.send('forward-message', 'zoomActualSize');
 	}
 });
