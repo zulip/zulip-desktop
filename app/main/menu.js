@@ -259,6 +259,21 @@ class AppMenu {
 		return [{
 			label: `${app.getName()}`,
 			submenu: [{
+				label: 'Add Organization',
+				accelerator: 'Cmd+Shift+N',
+				click(item, focusedWindow) {
+					if (focusedWindow) {
+						AppMenu.sendAction('new-server');
+					}
+				}
+			}, {
+				label: 'Toggle Do Not Disturb',
+				accelerator: 'Cmd+Shift+M',
+				click() {
+					const dndUtil = DNDUtil.toggle();
+					AppMenu.sendAction('toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
+				}
+			}, {
 				label: 'Desktop Settings',
 				accelerator: 'Cmd+,',
 				click(item, focusedWindow) {
@@ -278,13 +293,6 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
-				label: 'Toggle Do Not Disturb',
-				accelerator: 'Command+Shift+M',
-				click() {
-					const dndUtil = DNDUtil.toggle();
-					AppMenu.sendAction('toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
-				}
-			}, {
 				label: 'Copy Zulip URL',
 				accelerator: 'Cmd+Shift+C',
 				click(item, focusedWindow) {
@@ -293,7 +301,7 @@ class AppMenu {
 					}
 				}
 			}, {
-				label: 'Log Out',
+				label: 'Log Out of Organization',
 				accelerator: 'Cmd+L',
 				enabled: enableMenu,
 				click(item, focusedWindow) {
@@ -316,6 +324,10 @@ class AppMenu {
 				role: 'unhide'
 			}, {
 				type: 'separator'
+			}, {
+				role: 'minimize'
+			}, {
+				role: 'close'
 			}, {
 				role: 'quit'
 			}]
@@ -362,22 +374,11 @@ class AppMenu {
 		return [{
 			label: '&File',
 			submenu: [{
-				label: 'Desktop Settings',
-				accelerator: 'Ctrl+,',
+				label: 'Add Organization',
+				accelerator: 'Ctrl+Shift+N',
 				click(item, focusedWindow) {
 					if (focusedWindow) {
-						AppMenu.sendAction('open-settings');
-					}
-				}
-			}, {
-				type: 'separator'
-			}, {
-				label: 'Keyboard Shortcuts',
-				accelerator: 'Ctrl+Shift+K',
-				enabled: enableMenu,
-				click(item, focusedWindow) {
-					if (focusedWindow) {
-						AppMenu.sendAction('shortcut');
+						AppMenu.sendAction('new-server');
 					}
 				}
 			}, {
@@ -390,6 +391,25 @@ class AppMenu {
 					AppMenu.sendAction('toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
 				}
 			}, {
+				label: 'Desktop Settings',
+				accelerator: 'Ctrl+,',
+				click(item, focusedWindow) {
+					if (focusedWindow) {
+						AppMenu.sendAction('open-settings');
+					}
+				}
+			}, {
+				label: 'Keyboard Shortcuts',
+				accelerator: 'Ctrl+Shift+K',
+				enabled: enableMenu,
+				click(item, focusedWindow) {
+					if (focusedWindow) {
+						AppMenu.sendAction('shortcut');
+					}
+				}
+			}, {
+				type: 'separator'
+			}, {
 				label: 'Copy Zulip URL',
 				accelerator: 'Ctrl+Shift+C',
 				click(item, focusedWindow) {
@@ -398,7 +418,7 @@ class AppMenu {
 					}
 				}
 			}, {
-				label: 'Log Out',
+				label: 'Log Out of Organization',
 				accelerator: 'Ctrl+L',
 				enabled: enableMenu,
 				click(item, focusedWindow) {
@@ -408,6 +428,10 @@ class AppMenu {
 				}
 			}, {
 				type: 'separator'
+			}, {
+				role: 'minimize'
+			}, {
+				role: 'close'
 			}, {
 				role: 'quit',
 				accelerator: 'Ctrl+Q'
