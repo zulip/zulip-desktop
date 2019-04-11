@@ -178,6 +178,7 @@ class ShortcutsSection extends BaseSection {
 
 		return `
             <div class="settings-pane">
+            <div class="settings-card tip"><p><b><i class="material-icons md-14">settings</i>Tip:  </b>These desktop app shortcuts extend the Zulip webapp's <span id="open-hotkeys-link"> keyboard shortcuts</span>.</p></div>
               <div class="title">Application Shortcuts</div>
               <div class="settings-card">
                 <table>
@@ -316,7 +317,6 @@ class ShortcutsSection extends BaseSection {
                 </table>
                 <div class="setting-control"></div>
               </div>
-              <div class="tip"><b><i class="material-icons md-14">lightbulb_outline</i>Tip: </b>These desktop app shortcuts extend the Zulip webapp's <span id="open-hotkeys-link">keyboard shortcuts</span>.</div>
             </div>
 		`;
 	}
