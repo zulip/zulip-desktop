@@ -605,8 +605,6 @@ input.toggle-round:checked+label:after {
 }
 
 .tip {
-    display: flex;
-    justify-content: center;
     background: none;
     padding: 0;
 }
