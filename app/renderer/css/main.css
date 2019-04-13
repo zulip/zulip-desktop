@@ -267,6 +267,10 @@ body {
     margin-bottom: 5px;
 }
 
+.invalid-input-value:focus {
+    border: #ef5350 2px solid;
+}
+
 
 /*******************
   *   Webview Area  *

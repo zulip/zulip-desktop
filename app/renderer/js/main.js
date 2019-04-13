@@ -268,8 +268,14 @@ class ServerManagerView {
 				const urlIndex = this.isURLSaved(url);
 				if (urlIndex >= 0) {
 					this.activateTab(urlIndex);
+				} else {
+					this.$urlField.classList.add('invalid-input-value');
 				}
 			}
+		});
+
+		this.$urlField.addEventListener('input', () => {
+			this.$urlField.classList.remove('invalid-input-value');
 		});
 	}
 
