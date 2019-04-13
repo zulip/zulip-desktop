@@ -254,6 +254,8 @@ class WebView extends BaseComponent {
 	}
 
 	redirect(url) {
+		this.hide();
+		this.$webviewsContainer.remove('loaded');
 		this.loading = true;
 		this.$el.src = url;
 		this.redirected = true;
