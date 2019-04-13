@@ -644,7 +644,7 @@ class ServerManagerView {
 		});
 
 		ipcRenderer.on('deep-linking-url', (event, deepLinkingUrl) => {
-			let url = 'https' + deepLinkingUrl[0].substring(5);
+			let url = 'https' + deepLinkingUrl.substring(5);
 			if (url.charAt(url.length - 1) === '/') {
 				// invoked when url is directly entered in browser
 				// remove / character at the end of the url

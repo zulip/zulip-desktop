@@ -27,7 +27,6 @@ if (isDev) {
 let mainWindow;
 let badgeCount;
 let deepLinkingUrl;
-let execPath;
 
 let isQuitting = false;
 
@@ -41,7 +40,7 @@ if (singleInstanceLock) {
 		if (process.platform === 'win32') {
 			deepLinkingUrl = argv.slice(1);
 			if (mainWindow) {
-				mainWindow.webContents.send('deep-linking-url', deepLinkingUrl);
+				mainWindow.webContents.send('deep-linking-url', deepLinkingUrl[isDev ? 1 : 0]);
 			}
 		}
 
@@ -139,10 +138,11 @@ function createMainWindow() {
 // Decrease load on GPU (experimental)
 app.disableHardwareAcceleration();
 
-if (process.platform === 'win32') {
-	execPath = 'C:\\Program Files\\Zulip\\Zulip.exe';
+if (process.platform === 'win32' && isDev) {
+	app.setAsDefaultProtocolClient('zulip', process.execPath, [path.resolve(process.argv[1])]);
+} else {
+	app.setAsDefaultProtocolClient('zulip');
 }
-app.setAsDefaultProtocolClient('zulip', execPath);
 
 // uri scheme handler for macOS
 app.on('open-url', (event, url) => {
