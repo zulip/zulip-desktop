@@ -24,7 +24,9 @@
     "start": "electron app --disable-http-cache --no-electron-connect",
     "reinstall": "node ./tools/reinstall-node-modules.js",
     "postinstall": "electron-builder install-app-deps",
-    "test": "xo",
+    "lint-css": "stylelint app/renderer/css/*.css",
+    "lint-js": "xo",
+    "test": "npm run lint-css && npm run lint-js",
     "test-e2e": "gulp test-e2e",
     "dev": "gulp dev & nodemon --watch app/main --watch app/renderer --exec 'npm test' -e html,css,js",
     "pack": "electron-builder --dir",
@@ -132,6 +134,7 @@
     "nodemon": "^1.14.11",
     "pre-commit": "1.2.2",
     "spectron": "^5.0.0",
+    "stylelint": "^9.10.1",
     "tap-colorize": "^1.2.0",
     "tape": "^4.8.0",
     "xo": "0.18.2"

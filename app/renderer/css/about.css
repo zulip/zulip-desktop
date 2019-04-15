@@ -1,66 +1,66 @@
 body {
-	background: #fafafa;
-	font-family: menu, "Helvetica Neue", sans-serif;
-	-webkit-font-smoothing: subpixel-antialiased;
+    background: #fafafa;
+    font-family: menu, "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: subpixel-antialiased;
 }
 
 .logo {
-	display: block;
-	margin: -40px auto;
+    display: block;
+    margin: -40px auto;
 }
 
 #version {
-	color: #444343;
-	font-size: 1.3em;
-	padding-top: 40px;
+    color: #444343;
+    font-size: 1.3em;
+    padding-top: 40px;
 }
 
 .about {
-	margin: 25vh auto;
-	height: 25vh;
-	text-align: center;
+    margin: 25vh auto;
+    height: 25vh;
+    text-align: center;
 }
 
 .about p {
-	font-size: 20px;
-	color: rgba(0, 0, 0, 0.62);
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.62);
 }
 
 .about img {
-	width: 150px;
+    width: 150px;
 }
 
 .detail {
-	text-align: center;
+    text-align: center;
 }
 
 .detail.maintainer {
-	font-size: 1.2em;
-	font-weight: 500;
+    font-size: 1.2em;
+    font-weight: 500;
 }
 
 .detail.license {
-	font-size: 0.8em;
+    font-size: 0.8em;
 }
 
 .maintenance-info {
-	cursor: pointer;
-	position: absolute;
-	width: 100%;
-	left: 0px;
-	color: #444;
+    cursor: pointer;
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    color: #444;
 }
 
 .maintenance-info p {
-	margin: 0;
-	font-size: 1em;
-	width: 100%;
+    margin: 0;
+    font-size: 1em;
+    width: 100%;
 }
 
 p.detail a {
-	color: #355f4c;
+    color: #355f4c;
 }
 
 p.detail a:hover {
-	text-decoration: underline;
+    text-decoration: underline;
 }
