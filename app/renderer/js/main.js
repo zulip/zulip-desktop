@@ -186,6 +186,7 @@ class ServerManagerView {
 				index,
 				tabIndex,
 				url: server.url,
+				role: 'server',
 				name: CommonUtil.decodeString(server.alias),
 				isActive: () => {
 					return index === this.activeTabIndex;
@@ -337,6 +338,7 @@ class ServerManagerView {
 				index: this.functionalTabs[tabProps.name],
 				tabIndex,
 				url: tabProps.url,
+				role: 'function',
 				name: tabProps.name,
 				isActive: () => {
 					return this.functionalTabs[tabProps.name] === this.activeTabIndex;
