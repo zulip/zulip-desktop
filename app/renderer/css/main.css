@@ -267,6 +267,10 @@ body {
     margin-bottom: 5px;
 }
 
+.invalid-input-value:focus {
+    border: #ef5350 2px solid;
+}
+
 
 /*******************
   *   Webview Area  *
@@ -331,6 +335,7 @@ webview.focus {
 #dnd-tooltip,
 #back-tooltip,
 #reload-tooltip,
+#url-tooltip,
 #setting-tooltip {
     font-family: sans-serif;
     background: #222c31;
@@ -349,6 +354,7 @@ webview.focus {
 #dnd-tooltip:after,
 #back-tooltip:after,
 #reload-tooltip:after,
+#url-tooltip:after,
 #setting-tooltip:after {
     content: " ";
     border-top: 8px solid transparent;
@@ -413,6 +419,23 @@ webview.focus {
 
 .hidden {
     display: none !important;
+}
+
+.url-container {
+    position: absolute;
+    margin-left: 53px;
+    margin-top: 5px;
+}
+
+.url-input-value {
+    flex-grow: 1;
+    margin-left: 2px;
+    font-size: 14px;
+    border-radius: 4px;
+    padding: 6px 8px;
+    border: #ededed 2px solid;
+    background: #fff;
+    max-width: 450px;
 }
 
 

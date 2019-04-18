@@ -31,6 +31,7 @@ class ServerManagerView {
 
 		const $actionsContainer = document.getElementById('actions-container');
 		this.$reloadButton = $actionsContainer.querySelector('#reload-action');
+		this.$urlButton = $actionsContainer.querySelector('#url-action');
 		this.$settingsButton = $actionsContainer.querySelector('#settings-action');
 		this.$webviewsContainer = document.getElementById('webviews-container');
 		this.$backButton = $actionsContainer.querySelector('#back-action');
@@ -38,10 +39,14 @@ class ServerManagerView {
 
 		this.$addServerTooltip = document.getElementById('add-server-tooltip');
 		this.$reloadTooltip = $actionsContainer.querySelector('#reload-tooltip');
+		this.$urlTooltip = $actionsContainer.querySelector('#url-tooltip');
 		this.$settingsTooltip = $actionsContainer.querySelector('#setting-tooltip');
 		this.$serverIconTooltip = document.getElementsByClassName('server-tooltip');
 		this.$backTooltip = $actionsContainer.querySelector('#back-tooltip');
 		this.$dndTooltip = $actionsContainer.querySelector('#dnd-tooltip');
+
+		this.$urlField = document.getElementById('url-input-container').children[0];
+		this.urlEnabled = false;
 
 		this.$sidebar = document.getElementById('sidebar');
 
@@ -229,6 +234,9 @@ class ServerManagerView {
 		this.$addServerButton.addEventListener('click', () => {
 			this.openSettings('AddServer');
 		});
+		this.$urlButton.addEventListener('click', () => {
+			this.toggleUrlContainer();
+		});
 		this.$settingsButton.addEventListener('click', () => {
 			this.openSettings('General');
 		});
@@ -237,10 +245,53 @@ class ServerManagerView {
 		});
 
 		this.sidebarHoverEvent(this.$addServerButton, this.$addServerTooltip, true);
+		this.sidebarHoverEvent(this.$urlButton, this.$urlTooltip);
 		this.sidebarHoverEvent(this.$settingsButton, this.$settingsTooltip);
 		this.sidebarHoverEvent(this.$reloadButton, this.$reloadTooltip);
 		this.sidebarHoverEvent(this.$backButton, this.$backTooltip);
 		this.sidebarHoverEvent(this.$dndButton, this.$dndTooltip);
+	}
+
+	isURLSaved(url) {
+		for (let i = 0; i < this.tabs.length; ++i) {
+			const tabURL = this.tabs[i].webview.props.url;
+			if (url === tabURL) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	initURLShortcut() {
+		this.$urlField.addEventListener('keypress', event => {
+			if (event.keyCode === 13) {
+				const url = this.$urlField.value;
+				const urlIndex = this.isURLSaved(url);
+				if (urlIndex >= 0) {
+					this.activateTab(urlIndex);
+				} else {
+					this.$urlField.classList.add('invalid-input-value');
+				}
+			}
+		});
+
+		this.$urlField.addEventListener('input', () => {
+			this.$urlField.classList.remove('invalid-input-value');
+		});
+	}
+
+	toggleUrlContainer() {
+		if (this.urlEnabled) {
+			this.$urlField.type = 'hidden';
+		} else {
+			this.initURLShortcut();
+			this.$urlField.value = this.tabs[this.activeTabIndex].webview.props.url;
+			const { height } = this.$urlButton.getBoundingClientRect();
+			this.$urlField.style.height = (height / 2) + 'px';
+			this.$urlField.type = 'url';
+			clipboard.writeText(this.$urlField.value);
+		}
+		this.urlEnabled = !this.urlEnabled;
 	}
 
 	initDNDButton() {
@@ -425,7 +476,9 @@ class ServerManagerView {
 				this.tabs[this.activeTabIndex].deactivate();
 			}
 		}
-
+		if (this.urlEnabled) {
+			this.toggleUrlContainer();
+		}
 		try {
 			this.tabs[index].webview.canGoBackButton();
 		} catch (err) {
