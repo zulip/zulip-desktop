@@ -132,11 +132,11 @@ class ShortcutsSection extends BaseSection {
                   </tr>
                   <tr>
                     <td><kbd>Ctrl</kbd> + <kbd>Tab</kbd></td>
-                    <td>Switch to next organization</td>
+                    <td>Switch to Next Organization</td>
                   </tr>
                   <tr>
                     <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Tab</kbd></td>
-                    <td>Switch to previous organization</td>
+                    <td>Switch to Previous Organization</td>
                   </tr>
                 </table>
                 <div class="setting-control"></div>
@@ -280,11 +280,11 @@ class ShortcutsSection extends BaseSection {
                   </tr>
                   <tr>
                     <td><kbd>${userOSKey}</kbd> + <kbd>Tab</kbd></td>
-                    <td>Switch to next organization</td>
+                    <td>Switch to Next Organization</td>
                   </tr>
                   <tr>
                     <td><kbd>${userOSKey}</kbd> + <kbd>Shift</kbd> + <kbd>Tab</kbd></td>
-                    <td>Switch to previous organization</td>
+                    <td>Switch to Previous Organization</td>
                   </tr>
                 </table>
                 <div class="setting-control"></div>

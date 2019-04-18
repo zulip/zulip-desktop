@@ -230,7 +230,7 @@ class AppMenu {
 				type: 'separator'
 			});
 			initialSubmenu.push({
-				label: 'Switch to next organization',
+				label: 'Switch to Next Organization',
 				accelerator: `Ctrl+Tab`,
 				enabled: tabs[activeTabIndex].props.role === 'server',
 				click(item, focusedWindow) {
@@ -239,7 +239,7 @@ class AppMenu {
 					}
 				}
 			}, {
-				label: 'Switch to previous organization',
+				label: 'Switch to Previous Organization',
 				accelerator: `Ctrl+Shift+Tab`,
 				enabled: tabs[activeTabIndex].props.role === 'server',
 				click(item, focusedWindow) {
