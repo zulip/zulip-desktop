@@ -24,7 +24,7 @@ class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="menubar-option" style= "display:${process.platform === 'darwin' ? 'none' : ''}">
-						<div class="setting-description">Auto hide Menubar (Press Alt key to display)</div>
+						<div class="setting-description">Auto hide menu bar (Press Alt key to display)</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="sidebar-option">
@@ -47,7 +47,7 @@ class GeneralSection extends BaseSection {
 				<div class="title">Desktop Notifications</div>
 				<div class="settings-card">
 					<div class="setting-row" id="show-notification-option">
-						<div class="setting-description">Show Desktop Notifications</div>
+						<div class="setting-description">Show desktop notifications</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="silent-option">
