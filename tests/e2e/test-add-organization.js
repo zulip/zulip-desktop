@@ -11,7 +11,7 @@ test('add-organization', function (t) {
     .then(() => app.client.click('.server-save-action'))
     .then(() => setup.wait(5000))
     .then(() => app.client.windowByIndex(0)) // Switch focus back to main win
-    .then(() => app.client.windowByIndex(1)) // Switch focus back to org webview
+    .then(() => app.client.windowByIndex(2)) // Switch focus back to czo org webview
     .then(() => app.client.waitForExist('//*[@id="id_username"]'))
     .then(() => setup.endTest(app, t),
           (err) => setup.endTest(app, t, err || 'error'))
