@@ -1,5 +1,5 @@
 body {
-    background: #fafafa;
+    background: rgba(250, 250, 250, 1.000);
     font-family: menu, "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: subpixel-antialiased;
 }
@@ -10,7 +10,7 @@ body {
 }
 
 #version {
-    color: #444343;
+    color: rgba(68, 67, 67, 1.000);
     font-size: 1.3em;
     padding-top: 40px;
 }
@@ -48,7 +48,7 @@ body {
     position: absolute;
     width: 100%;
     left: 0px;
-    color: #444;
+    color: rgba(68, 68, 68, 1.000);
 }
 
 .maintenance-info p {
@@ -58,7 +58,7 @@ body {
 }
 
 p.detail a {
-    color: #355f4c;
+    color: rgba(53, 95, 76, 1.000);
 }
 
 p.detail a:hover {

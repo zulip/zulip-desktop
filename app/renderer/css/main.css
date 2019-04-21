@@ -16,7 +16,7 @@ body {
 }
 
 .toggle-sidebar {
-    background: #222c31;
+    background: rgba(34, 44, 49, 1.000);
     width: 54px;
     padding: 27px 0 20px 0;
     justify-content: space-between;
@@ -60,8 +60,8 @@ body {
 }
 
 #view-controls-container::-webkit-scrollbar-thumb {
-    background-color: darkgrey;
-    outline: 1px solid slategrey;
+    background-color: rgba(169, 169, 169, 1.000);
+    outline: 1px solid rgba(169, 169, 169, 1.000);
 }
 
 @font-face {
@@ -119,12 +119,12 @@ body {
 }
 
 .action-button i {
-    color: #6c8592;
+    color: rgba(108, 133, 146, 1.000);
     font-size: 28px;
 }
 
 .action-button:hover i {
-    color: #98a9b3;
+    color: rgba(152, 169, 179, 1.000);
 }
 
 .action-button.disable {
@@ -136,18 +136,18 @@ body {
 }
 
 .action-button.disable:hover i {
-    color: #6c8592;
+    color: rgba(108, 133, 146, 1.000);
 }
 
 .action-button.active {
     /* background-color: rgba(255, 255, 255, 0.25); */
-    background-color: #efefef;
+    background-color: rgba(239, 239, 239, 1.000);
     opacity: 0.9;
     padding-right: 14px;
 }
 
 .action-button.active i {
-    color: #1c262b;
+    color: rgba(28, 38, 43, 1.000);
 }
 
 .tab:first-child {
@@ -177,7 +177,7 @@ body {
     margin-top: 5px;
     z-index: 11;
     line-height: 31px;
-    color: #eee;
+    color: rgba(238, 238, 238, 1.000);
     text-align: center;
     overflow: hidden;
     opacity: 0.6;
@@ -188,7 +188,7 @@ body {
     font-family: Verdana;
     font-weight: 600;
     font-size: 22px;
-    border: 2px solid #222c31;
+    border: 2px solid rgba(34, 44, 49, 1.000);
     margin-left: 17%;
     width: 35px;
     border-radius: 4px;
@@ -216,7 +216,7 @@ body {
 
 .tab.active .server-tab {
     opacity: 1;
-    background-color: #648478;
+    background-color: rgba(100, 132, 120, 1.000);
 }
 
 .tab .server-tab-badge.active {
@@ -224,7 +224,7 @@ body {
     min-width: 11px;
     padding: 0 3px;
     height: 17px;
-    background-color: #f44336;
+    background-color: rgba(244, 67, 54, 1.000);
     font-size: 10px;
     font-family: sans-serif;
     position: absolute;
@@ -232,7 +232,7 @@ body {
     z-index: 15;
     top: 6px;
     float: right;
-    color: #fff;
+    color: rgba(255, 255, 255, 1.000);
     text-align: center;
     line-height: 17px;
     display: block;
@@ -260,7 +260,7 @@ body {
 }
 
 .tab .server-tab-shortcut {
-    color: #648478;
+    color: rgba(100, 132, 120, 1.000);
     font-size: 12px;
     text-align: center;
     font-family: sans-serif;
@@ -283,7 +283,7 @@ body {
     content: "";
     position: absolute;
     z-index: 1;
-    background: #fff url(../img/ic_loading.gif) no-repeat;
+    background: rgba(255, 255, 255, 1.000) url(../img/ic_loading.gif) no-repeat;
     background-size: 60px 60px;
     background-position: center;
     width: 100%;
@@ -333,27 +333,27 @@ webview.focus {
 #reload-tooltip,
 #setting-tooltip {
     font-family: sans-serif;
-    background: #222c31;
+    background: rgba(34, 44, 49, 1.000);
     margin-left: 48px;
     padding: 6px 8px;
     position: absolute;
     margin-top: 0px;
     z-index: 1000;
-    color: white;
+    color: rgba(255, 255, 255, 1.000);
     border-radius: 4px;
     text-align: center;
     width: 55px;
     font-size: 14px;
 }
 
-#dnd-tooltip:after,
-#back-tooltip:after,
-#reload-tooltip:after,
-#setting-tooltip:after {
+#dnd-tooltip::after,
+#back-tooltip::after,
+#reload-tooltip::after,
+#setting-tooltip::after {
     content: " ";
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
-    border-right: 8px solid #222c31;
+    border-right: 8px solid rgba(34, 44, 49, 1.000);
     position: absolute;
     top: 7px;
     right: 68px;
@@ -362,25 +362,25 @@ webview.focus {
 #add-server-tooltip,
 .server-tooltip {
     font-family: 'arial';
-    background: #222c31;
+    background: rgba(34, 44, 49, 1.000);
     left: 56px;
     padding: 10px 20px;
     position: fixed;
     margin-top: 11px;
     z-index: 5000 !important;
-    color: #fff;
+    color: rgba(255, 255, 255, 1.000);
     border-radius: 4px;
     text-align: center;
     width: max-content;
     font-size: 14px;
 }
 
-#add-server-tooltip:after,
-.server-tooltip:after {
+#add-server-tooltip::after,
+.server-tooltip::after {
     content: " ";
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
-    border-right: 8px solid #222c31;
+    border-right: 8px solid rgba(34, 44, 49, 1.000);
     position: absolute;
     top: 10px;
     left: -5px;
@@ -392,14 +392,14 @@ webview.focus {
     position: absolute;
     width: 24px;
     height: 24px;
-    background: #222c31;
+    background: rgba(34, 44, 49, 1.000);
     border-radius: 20px;
     cursor: pointer;
-    box-shadow: #999 1px 1px;
+    box-shadow: rgba(153, 153, 153, 1.000) 1px 1px;
 }
 
 #collapse-button i {
-    color: #efefef;
+    color: rgba(239, 239, 239, 1.000);
 }
 
 #main-container {
@@ -420,8 +420,8 @@ webview.focus {
 
 .popup .popuptext {
     visibility: hidden;
-    background-color: #555;
-    color: #fff;
+    background-color: rgba(85, 85, 85, 1.000);
+    color: rgba(255, 255, 255, 1.000);
     text-align: center;
     border-radius: 6px;
     padding: 9px 0;
