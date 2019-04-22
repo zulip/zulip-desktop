@@ -83,6 +83,10 @@ class GeneralSection extends BaseSection {
 				</div>
 				<div class="title">Advanced</div>
 				<div class="settings-card">
+				<div class="setting-row" id="enable-error-reporting">
+					<div class="setting-description">Enable error reporting (requires restart)</div>
+					<div class="setting-control"></div>
+				</div>
 				<div class="setting-row" id="show-download-folder">
 					<div class="setting-description">Show downloaded files in file manager</div>
 					<div class="setting-control"></div>
@@ -145,6 +149,7 @@ class GeneralSection extends BaseSection {
 		this.removeCustomCSS();
 		this.downloadFolder();
 		this.showDownloadFolder();
+		this.enableErrorReporting();
 
 		// Platform specific settings
 
@@ -315,6 +320,18 @@ class GeneralSection extends BaseSection {
 				const newValue = !ConfigUtil.getConfigItem('enableSpellchecker');
 				ConfigUtil.setConfigItem('enableSpellchecker', newValue);
 				this.enableSpellchecker();
+			}
+		});
+	}
+
+	enableErrorReporting() {
+		this.generateSettingOption({
+			$element: document.querySelector('#enable-error-reporting .setting-control'),
+			value: ConfigUtil.getConfigItem('errorReporting', true),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('errorReporting');
+				ConfigUtil.setConfigItem('errorReporting', newValue);
+				this.enableErrorReporting();
 			}
 		});
 	}
