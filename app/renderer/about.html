@@ -1,46 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="css/about.css">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="css/about.css">
+        <title>Zulip - About</title>
+    </head>
 
-<body>
-	<div class="about">
-		<img class="logo" src="../resources/zulip.png" />
-		<p class="detail" id="version">v?.?.?</p>
-		<div class="maintenance-info">
-			<p class="detail maintainer">
-				Maintained by
-				<a onclick="linkInBrowser('website')">Zulip</a>
-			</p>
-			<p class="detail license">
-				Available under the
-				<a onclick="linkInBrowser('license')">Apache 2.0 License</a>
-			</p>
-		</div>
-	</div>
-	<script>
+    <body>
+        <div class="about">
+            <img class="logo" src="../resources/zulip.png" />
+            <p class="detail" id="version">v?.?.?</p>
+            <div class="maintenance-info">
+                <p class="detail maintainer">
+                    Maintained by
+                    <a onclick="linkInBrowser('website')">Zulip</a>
+                </p>
+                <p class="detail license">
+                    Available under the
+                    <a onclick="linkInBrowser('license')">Apache 2.0 License</a>
+                </p>
+            </div>
+        </div>
+        <script>
 
-		const { app } = require('electron').remote;
-		const { shell } = require('electron');
-		const version_tag = document.querySelector('#version');
-		version_tag.innerHTML = 'v' + app.getVersion();
+            const { app } = require('electron').remote;
+            const { shell } = require('electron');
+            const version_tag = document.querySelector('#version');
+            version_tag.innerHTML = 'v' + app.getVersion();
 
-		function linkInBrowser(type) {
-			let url;
-			switch (type) {
-				case 'website':
-					url = "https://zulipchat.com";
-					break;
-				case 'license':
-					url = "https://github.com/zulip/zulip-electron/blob/master/LICENSE";
-					break;
-			}
-			shell.openExternal(url);
-		}
-	</script>
-	<script>require('./js/shared/preventdrag.js')</script>
-</body>
+            function linkInBrowser(type) {
+                let url;
+                switch (type) {
+                    case 'website':
+                        url = "https://zulipchat.com";
+                        break;
+                    case 'license':
+                        url = "https://github.com/zulip/zulip-electron/blob/master/LICENSE";
+                        break;
+                }
+                shell.openExternal(url);
+            }
+        </script>
+        <script>require('./js/shared/preventdrag.js')</script>
+    </body>
 </html>
