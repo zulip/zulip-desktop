@@ -625,7 +625,14 @@ class ServerManagerView {
 			});
 		});
 
-		ipcRenderer.on('toggle-autohide-menubar', (event, autoHideMenubar) => {
+		ipcRenderer.on('toggle-autohide-menubar', (event, autoHideMenubar, updateMenu) => {
+			if (updateMenu) {
+				ipcRenderer.send('update-menu', {
+					tabs: this.tabsForIpc,
+					activeTabIndex: this.activeTabIndex
+				});
+				return;
+			}
 			const selector = 'webview:not([class*=disabled])';
 			const webview = document.querySelector(selector);
 			if (webview) {
