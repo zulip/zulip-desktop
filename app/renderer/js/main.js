@@ -100,6 +100,7 @@ class ServerManagerView {
 	initDefaultSettings() {
 		// Default settings which should be respected
 		const settingOptions = {
+			autoHideMenubar: false,
 			trayIcon: true,
 			useManualProxy: false,
 			useSystemProxy: false,
