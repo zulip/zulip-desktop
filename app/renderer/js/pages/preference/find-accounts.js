@@ -58,6 +58,14 @@ class FindAccounts extends BaseComponent {
 				this.findAccounts(this.$serverUrlField.value);
 			}
 		});
+
+		this.$serverUrlField.addEventListener('input', () => {
+			if (this.$serverUrlField.value) {
+				this.$serverUrlField.classList.remove('invalid-input-value');
+			} else {
+				this.$serverUrlField.classList.add('invalid-input-value');
+			}
+		});
 	}
 }
 
