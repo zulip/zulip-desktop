@@ -225,6 +225,7 @@ class WebView extends BaseComponent {
 	back() {
 		if (this.$el.canGoBack()) {
 			this.$el.goBack();
+			this.focus();
 		}
 	}
 
