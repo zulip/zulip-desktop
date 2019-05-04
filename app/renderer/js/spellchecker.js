@@ -32,14 +32,7 @@ class SetupSpellChecker {
 
 			const userLanguage = ConfigUtil.getConfigItem('spellcheckerLanguage');
 
-			// eslint-disable-next-line no-unused-expressions
-			process.platform === 'darwin' ?
-				// On macOS, spellchecker fails to auto-detect the lanugage user is typing in
-				// that's why we need to mention it explicitly
-				this.SpellCheckHandler.switchLanguage(userLanguage) :
-				// On Linux and Windows, spellchecker can automatically detects the language the user is typing in
-				// and silently switches on the fly; thus we can start off as US English
-				this.SpellCheckHandler.switchLanguage('en-US');
+			this.SpellCheckHandler.switchLanguage(userLanguage);
 		}
 
 		const contextMenuBuilder = new ContextMenuBuilder(this.SpellCheckHandler);
