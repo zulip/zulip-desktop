@@ -325,10 +325,6 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
-				role: 'minimize'
-			}, {
-				role: 'close'
-			}, {
 				role: 'quit'
 			}]
 		}, {
@@ -428,10 +424,6 @@ class AppMenu {
 				}
 			}, {
 				type: 'separator'
-			}, {
-				role: 'minimize'
-			}, {
-				role: 'close'
 			}, {
 				role: 'quit',
 				accelerator: 'Ctrl+Q'
