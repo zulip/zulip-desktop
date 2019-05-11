@@ -106,6 +106,7 @@
         }
       ],
       "icon": "build/icon.ico",
+      "artifactName": "${productName}-Web-Setup-${version}.${ext}",
       "publisherName": "Kandra Labs, Inc."
     },
     "nsis": {
