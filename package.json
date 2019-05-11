@@ -109,7 +109,9 @@
       "publisherName": "Kandra Labs, Inc."
     },
     "nsis": {
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false,
+      "perMachine": false
     }
   },
   "keywords": [
