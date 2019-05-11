@@ -47,7 +47,7 @@
       "!docs${/*}",
       "!node_modules/@paulcbetts/cld/deps/cld${/*}"
     ],
-    "copyright": "©2017 Kandra Labs, Inc.",
+    "copyright": "©2019 Kandra Labs, Inc.",
     "mac": {
       "category": "public.app-category.productivity",
       "artifactName": "${productName}-${version}-${arch}.${ext}"
@@ -62,7 +62,7 @@
         "AppImage",
         "snap"
       ],
-      "maintainer": "Akash Nimare <svnitakash@gmail.com>",
+      "maintainer": "Akash Nimare <akash@zulipchat.com>",
       "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "deb": {
@@ -159,7 +159,7 @@
           "max-lines": [
             "warn",
             {
-              "max": 600,
+              "max": 700,
               "skipBlankLines": true,
               "skipComments": true
             }
