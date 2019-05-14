@@ -9,10 +9,7 @@ const escape = require('escape-html');
 
 const Logger = require('./logger-util');
 
-const CertificateUtil = require(__dirname + '/certificate-util.js');
-const ProxyUtil = require(__dirname + '/proxy-util.js');
-const ConfigUtil = require(__dirname + '/config-util.js');
-const SystemUtil = require(__dirname + '/../utils/system-util.js');
+const RequestUtil = require(__dirname + '/../utils/request-util.js');
 
 const logger = new Logger({
 	file: `domain-util.log`,
@@ -64,9 +61,10 @@ class DomainUtil {
 	}
 
 	addDomain(server) {
+		const ignoreCerts = server.ignoreCerts;
 		return new Promise(resolve => {
 			if (server.icon) {
-				this.saveServerIcon(server).then(localIconUrl => {
+				this.saveServerIcon(server, ignoreCerts).then(localIconUrl => {
 					server.icon = localIconUrl;
 					this.db.push('/domains[]', server, true);
 					this.reloadDB();
@@ -103,42 +101,25 @@ class DomainUtil {
 		return false;
 	}
 
-	checkDomain(domain, silent = false) {
+	// ignoreCerts parameter helps in fetching server icon and
+	// other server details when user chooses to ignore certificate warnings
+	checkDomain(domain, ignoreCerts = false, silent = false) {
 		if (!silent && this.duplicateDomain(domain)) {
 			// Do not check duplicate in silent mode
 			return Promise.reject('This server has been added.');
 		}
 
 		domain = this.formatUrl(domain);
-
-		const certificate = CertificateUtil.getCertificate(encodeURIComponent(domain));
-		let certificateLocation = '';
-
-		if (certificate) {
-			// To handle case where certificate has been moved from the location in certificates.json
-			try {
-				certificateLocation = fs.readFileSync(certificate);
-			} catch (err) {
-				logger.warn('Error while trying to get certificate: ' + err);
-			}
-		}
-
-		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
-
-		// If certificate for the domain exists add it as a ca key in the request's parameter else consider only domain as the parameter for request
-		// Add proxy as a parameter if it sbeing used.
 		const checkDomain = {
 			url: domain + '/static/audio/zulip.ogg',
-			ca: (certificateLocation) ? certificateLocation : '',
-			proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : '',
-			ecdhCurve: 'auto',
-			headers: { 'User-Agent': SystemUtil.getUserAgent() }
+			...RequestUtil.requestOptions(domain, ignoreCerts)
 		};
 
 		const serverConf = {
 			icon: defaultIconUrl,
 			url: domain,
-			alias: domain
+			alias: domain,
+			ignoreCerts
 		};
 
 		return new Promise((resolve, reject) => {
@@ -155,14 +136,14 @@ class DomainUtil {
 				const certsError = error.toString().includes('certificate');
 				if (!error && response.statusCode < 400) {
 					// Correct
-					this.getServerSettings(domain).then(serverSettings => {
+					this.getServerSettings(domain, serverConf.ignoreCerts).then(serverSettings => {
 						resolve(serverSettings);
 					}, () => {
 						resolve(serverConf);
 					});
 				} else if (domain.indexOf(whitelistDomains) >= 0 || certsError) {
 					if (silent) {
-						this.getServerSettings(domain).then(serverSettings => {
+						this.getServerSettings(domain, serverConf.ignoreCerts).then(serverSettings => {
 							resolve(serverSettings);
 						}, () => {
 							resolve(serverConf);
@@ -185,7 +166,9 @@ class DomainUtil {
 							detail: certErrorDetail
 						}, response => {
 							if (response === 0) {
-								this.getServerSettings(domain).then(serverSettings => {
+								// set ignoreCerts parameter to true in case user responds with yes
+								serverConf.ignoreCerts = true;
+								this.getServerSettings(domain, serverConf.ignoreCerts).then(serverSettings => {
 									resolve(serverSettings);
 								}, () => {
 									resolve(serverConf);
@@ -205,27 +188,12 @@ class DomainUtil {
 		});
 	}
 
-	getServerSettings(domain) {
-		const certificate = CertificateUtil.getCertificate(encodeURIComponent(domain));
-		let certificateLocation = '';
-
-		if (certificate) {
-			// To handle case where certificate has been moved from the location in certificates.json
-			try {
-				certificateLocation = fs.readFileSync(certificate);
-			} catch (err) {
-				logger.warn('Error while trying to get certificate: ' + err);
-			}
-		}
-
-		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
+	getServerSettings(domain, ignoreCerts = false) {
 		const serverSettingsOptions = {
 			url: domain + '/api/v1/server_settings',
-			ca: (certificateLocation) ? certificateLocation : '',
-			proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : '',
-			ecdhCurve: 'auto',
-			headers: { 'User-Agent': SystemUtil.getUserAgent() }
+			...RequestUtil.requestOptions(domain, ignoreCerts)
 		};
+
 		return new Promise((resolve, reject) => {
 			request(serverSettingsOptions, (error, response) => {
 				if (!error && response.statusCode === 200) {
@@ -236,7 +204,8 @@ class DomainUtil {
 							// Following check handles both the cases
 							icon: data.realm_icon.startsWith('/') ? data.realm_uri + data.realm_icon : data.realm_icon,
 							url: data.realm_uri,
-							alias: escape(data.realm_name)
+							alias: escape(data.realm_name),
+							ignoreCerts
 						});
 					}
 				} else {
@@ -246,31 +215,13 @@ class DomainUtil {
 		});
 	}
 
-	saveServerIcon(server) {
+	saveServerIcon(server, ignoreCerts = false) {
 		const url = server.icon;
 		const domain = server.url;
 
-		const certificate = CertificateUtil.getCertificate(encodeURIComponent(domain));
-		let certificateLocation = '';
-
-		if (certificate) {
-			// To handle case where certificate has been moved from the location in certificates.json
-			try {
-				certificateLocation = fs.readFileSync(certificate);
-			} catch (err) {
-				logger.warn('Error while trying to get certificate: ' + err);
-			}
-		}
-
-		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
-
-		// Add proxy and certificate as a parameter if its being used.
 		const serverIconOptions = {
 			url,
-			ca: (certificateLocation) ? certificateLocation : '',
-			proxy: proxyEnabled ? ProxyUtil.getProxy(url) : '',
-			ecdhCurve: 'auto',
-			headers: { 'User-Agent': SystemUtil.getUserAgent() }
+			...RequestUtil.requestOptions(domain, ignoreCerts)
 		};
 
 		// The save will always succeed. If url is invalid, downgrade to default icon.
@@ -305,8 +256,9 @@ class DomainUtil {
 
 	updateSavedServer(url, index) {
 		// Does not promise successful update
-		this.checkDomain(url, true).then(newServerConf => {
-			this.saveServerIcon(newServerConf).then(localIconUrl => {
+		const ignoreCerts = this.getDomain(index).ignoreCerts;
+		this.checkDomain(url, ignoreCerts, true).then(newServerConf => {
+			this.saveServerIcon(newServerConf, ignoreCerts).then(localIconUrl => {
 				newServerConf.icon = localIconUrl;
 				this.updateDomain(index, newServerConf);
 				this.reloadDB();

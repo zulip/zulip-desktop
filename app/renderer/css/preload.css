@@ -1,9 +1,9 @@
 /* Override css rules */
 
-.portico-wrap>.header {
+.portico-wrap > .header {
     display: none;
 }
 
-.portico-container>.footer {
+.portico-container > .footer {
     display: none;
 }

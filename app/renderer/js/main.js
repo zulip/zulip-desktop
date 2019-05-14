@@ -1,6 +1,6 @@
 'use strict';
 
-const { ipcRenderer, remote } = require('electron');
+const { ipcRenderer, remote, clipboard } = require('electron');
 const isDev = require('electron-is-dev');
 
 const { session, app, Menu, dialog } = remote;
@@ -105,7 +105,7 @@ class ServerManagerView {
 			useSystemProxy: false,
 			showSidebar: true,
 			badgeOption: true,
-			startAtLogin: false,
+			startAtLogin: true,
 			startMinimized: false,
 			enableSpellchecker: true,
 			showNotification: true,
@@ -186,6 +186,7 @@ class ServerManagerView {
 				index,
 				tabIndex,
 				url: server.url,
+				role: 'server',
 				name: CommonUtil.decodeString(server.alias),
 				isActive: () => {
 					return index === this.activeTabIndex;
@@ -337,6 +338,7 @@ class ServerManagerView {
 				index: this.functionalTabs[tabProps.name],
 				tabIndex,
 				url: tabProps.url,
+				role: 'function',
 				name: tabProps.name,
 				isActive: () => {
 					return this.functionalTabs[tabProps.name] === this.activeTabIndex;
@@ -512,7 +514,7 @@ class ServerManagerView {
 
 	// Toggles the dnd button icon.
 	toggleDNDButton(alert) {
-		this.$dndTooltip.textContent = (alert ? 'Turn Off' : 'Enable') + ' Do Not Disturb';
+		this.$dndTooltip.textContent = (alert ? 'Disable' : 'Enable') + ' Do Not Disturb';
 		this.$dndButton.querySelector('i').textContent = alert ? 'notifications_off' : 'notifications';
 	}
 
@@ -534,6 +536,12 @@ class ServerManagerView {
 								ipcRenderer.send('reload-full-app');
 							}
 						});
+					}
+				},
+				{
+					label: 'Copy Zulip URL',
+					click: () => {
+						clipboard.writeText(DomainUtil.getDomain(index).url);
 					}
 				}
 			];
@@ -723,6 +731,14 @@ class ServerManagerView {
 
 		ipcRenderer.on('open-feedback-modal', () => {
 			feedbackHolder.classList.add('show');
+		});
+
+		ipcRenderer.on('copy-zulip-url', () => {
+			clipboard.writeText(DomainUtil.getDomain(this.activeTabIndex).url);
+		});
+
+		ipcRenderer.on('new-server', () => {
+			this.openSettings('AddServer');
 		});
 	}
 }

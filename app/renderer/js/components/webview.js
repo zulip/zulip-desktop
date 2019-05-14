@@ -95,6 +95,11 @@ class WebView extends BaseComponent {
 			}
 			this.loading = false;
 			this.show();
+
+			// Refocus text boxes after reload
+			// Remove when upstream issue https://github.com/electron/electron/issues/14474 is fixed
+			this.$el.blur();
+			this.$el.focus();
 		});
 
 		this.$el.addEventListener('did-fail-load', event => {
@@ -165,7 +170,13 @@ class WebView extends BaseComponent {
 	focus() {
 		// focus Webview and it's contents when Window regain focus.
 		const webContents = this.$el.getWebContents();
-		if (webContents && !webContents.isFocused()) {
+		// HACK: webContents.isFocused() seems to be true even without the element
+		// being in focus. So, we check against `document.activeElement`.
+		if (webContents && this.$el !== document.activeElement) {
+			// HACK: Looks like blur needs to be called on the previously focused
+			// element to transfer focus correctly, in Electron v3.0.10
+			// See https://github.com/electron/electron/issues/15718
+			document.activeElement.blur();
 			this.$el.focus();
 			webContents.focus();
 		}
@@ -214,6 +225,7 @@ class WebView extends BaseComponent {
 	back() {
 		if (this.$el.canGoBack()) {
 			this.$el.goBack();
+			this.focus();
 		}
 	}
 

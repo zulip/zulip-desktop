@@ -1,7 +1,7 @@
 {
   "name": "zulip",
   "productName": "Zulip",
-  "version": "2.4.0",
+  "version": "2.5.0-beta",
   "main": "./app/main",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
@@ -24,7 +24,10 @@
     "start": "electron app --disable-http-cache --no-electron-connect",
     "reinstall": "node ./tools/reinstall-node-modules.js",
     "postinstall": "electron-builder install-app-deps",
-    "test": "xo",
+    "lint-css": "stylelint app/renderer/css/*.css",
+    "lint-html": "./node_modules/.bin/htmlhint \"app/renderer/*.html\" ",
+    "lint-js": "xo",
+    "test": "npm run lint-html && npm run lint-css && npm run lint-js",
     "test-e2e": "gulp test-e2e",
     "dev": "gulp dev & nodemon --watch app/main --watch app/renderer --exec 'npm test' -e html,css,js",
     "pack": "electron-builder --dir",
@@ -44,7 +47,7 @@
       "!docs${/*}",
       "!node_modules/@paulcbetts/cld/deps/cld${/*}"
     ],
-    "copyright": "©2017 Kandra Labs, Inc.",
+    "copyright": "©2019 Kandra Labs, Inc.",
     "mac": {
       "category": "public.app-category.productivity",
       "artifactName": "${productName}-${version}-${arch}.${ext}"
@@ -59,7 +62,7 @@
         "AppImage",
         "snap"
       ],
-      "maintainer": "Akash Nimare <svnitakash@gmail.com>",
+      "maintainer": "Akash Nimare <akash@zulipchat.com>",
       "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "deb": {
@@ -110,11 +113,13 @@
         }
       ],
       "icon": "build/icon.ico",
+      "artifactName": "${productName}-Web-Setup-${version}.${ext}",
       "publisherName": "Kandra Labs, Inc."
     },
     "nsis": {
       "allowToChangeInstallationDirectory": true,
       "oneClick": false
+      "perMachine": false
     }
   },
   "keywords": [
@@ -127,21 +132,23 @@
   ],
   "devDependencies": {
     "assert": "1.4.1",
-    "cp-file": "^5.0.0",
+    "cp-file": "5.0.0",
     "devtron": "1.4.0",
     "electron": "3.0.10",
-    "electron-builder": "20.38.4",
+    "electron-builder": "20.40.2",
     "electron-connect": "0.6.2",
     "electron-debug": "1.4.0",
     "google-translate-api": "2.3.0",
-    "gulp": "^4.0.0",
+    "gulp": "4.0.0",
     "gulp-tape": "0.0.9",
-    "is-ci": "^1.0.10",
-    "nodemon": "^1.14.11",
+    "htmlhint": "0.11.0",
+    "is-ci": "1.0.10",
+    "nodemon": "1.14.11",
     "pre-commit": "1.2.2",
-    "spectron": "^5.0.0",
-    "tap-colorize": "^1.2.0",
-    "tape": "^4.8.0",
+    "spectron": "5.0.0",
+    "stylelint": "9.10.1",
+    "tap-colorize": "1.2.0",
+    "tape": "4.8.0",
     "xo": "0.18.2"
   },
   "xo": {
@@ -159,7 +166,7 @@
           "max-lines": [
             "warn",
             {
-              "max": 600,
+              "max": 700,
               "skipBlankLines": true,
               "skipComments": true
             }

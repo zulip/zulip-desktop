@@ -6,7 +6,7 @@ The following is a set of guidelines for contributing to Zulip Electron Desktop 
 
 ## Getting Started
 
-Zulip-Desktop app is built on top of [Electron](http://electron.atom.io/). If you are new to Electron, please head over to [this](http://jlord.us/essential-electron/) great article.
+Zulip-Desktop app is built on top of [Electron](http://electron.atom.io/). If you are new to Electron, please head over to [this](https://jlord.dev/blog/essential-electron) great article.
 
 ## Community
 

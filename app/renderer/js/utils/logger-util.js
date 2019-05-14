@@ -1,5 +1,6 @@
 const NodeConsole = require('console').Console;
 const fs = require('fs');
+const os = require('os');
 const isDev = require('electron-is-dev');
 const { initSetUp } = require('./default-util');
 const { sentryInit, captureException } = require('./sentry-util');
@@ -28,6 +29,13 @@ class Logger {
 		file = `${logDir}/${file}`;
 		if (timestamp === true) {
 			timestamp = this.getTimestamp;
+		}
+
+		// Trim log according to type of process
+		if (process.type === 'renderer') {
+			requestIdleCallback(() => this.trimLog(file));
+		} else {
+			process.nextTick(() => this.trimLog(file));
 		}
 
 		const fileStream = fs.createWriteStream(file, { flags: 'a' });
@@ -87,6 +95,24 @@ class Logger {
 
 	reportSentry(err) {
 		captureException(err);
+	}
+
+	trimLog(file) {
+		fs.readFile(file, 'utf8', (err, data) => {
+			if (err) {
+				throw err;
+			}
+			const MAX_LOG_FILE_LINES = 500;
+			const logs = data.split(os.EOL);
+			const logLength = logs.length - 1;
+
+			// Keep bottom MAX_LOG_FILE_LINES of each log instance
+			if (logLength > MAX_LOG_FILE_LINES) {
+				const trimmedLogs = logs.slice(logLength - MAX_LOG_FILE_LINES);
+				const toWrite = trimmedLogs.join(os.EOL);
+				fs.writeFileSync(file, toWrite);
+			}
+		});
 	}
 }
 

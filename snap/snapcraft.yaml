@@ -1,5 +1,5 @@
 name: zulip
-version: 2.0.0
+version: 2.3.82
 summary: Zulip Desktop Client for Linux
 description: Zulip combines the immediacy of Slack with an email threading model. With Zulip, you can catch up on important conversations while ignoring irrelevant ones.
 confinement: strict
@@ -34,4 +34,4 @@ parts:
       - libxtst6
     source: dist/linux-unpacked
     after:
-      - desktop-gtk2
+      - desktop-gtk3
