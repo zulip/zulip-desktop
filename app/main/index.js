@@ -159,7 +159,10 @@ app.on('ready', () => {
 	}
 
 	// Initialize sentry for main process
-	sentryInit();
+	const errorReporting = ConfigUtil.getConfigItem('errorReporting');
+	if (errorReporting) {
+		sentryInit();
+	}
 
 	const isSystemProxy = ConfigUtil.getConfigItem('useSystemProxy');
 
@@ -343,6 +346,12 @@ app.on('ready', () => {
 
 	ipcMain.on('realm-icon-changed', (event, serverURL, iconURL) => {
 		page.send('update-realm-icon', serverURL, iconURL);
+	});
+
+	// Using event.sender.send instead of page.send here to
+	// make sure the value of errorReporting is sent only once on load.
+	ipcMain.on('error-reporting', event => {
+		event.sender.send('error-reporting-val', errorReporting);
 	});
 });
 

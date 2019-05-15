@@ -52,7 +52,7 @@ class ProxyUtil {
 	resolveSystemProxy(mainWindow) {
 		const page = mainWindow.webContents;
 		const ses = page.session;
-		const resolveProxyUrl = 'www.google.com';
+		const resolveProxyUrl = 'www.example.com';
 
 		// Check HTTP Proxy
 		const httpProxy = new Promise(resolve => {

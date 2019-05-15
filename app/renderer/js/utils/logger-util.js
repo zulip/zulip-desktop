@@ -6,10 +6,23 @@ const { initSetUp } = require('./default-util');
 const { sentryInit, captureException } = require('./sentry-util');
 
 initSetUp();
-sentryInit();
+
 let app = null;
+let reportErrors = true;
 if (process.type === 'renderer') {
 	app = require('electron').remote.app;
+
+	// Report Errors to Sentry only if it is enabled in settings
+	// Gets the value of reportErrors from config-util for renderer process
+	// For main process, sentryInit() is handled in index.js
+	const { ipcRenderer } = require('electron');
+	ipcRenderer.send('error-reporting');
+	ipcRenderer.on('error-reporting-val', (event, errorReporting) => {
+		reportErrors = errorReporting;
+		if (reportErrors) {
+			sentryInit();
+		}
+	});
 } else {
 	app = require('electron').app;
 }
@@ -94,7 +107,9 @@ class Logger {
 	}
 
 	reportSentry(err) {
-		captureException(err);
+		if (reportErrors) {
+			captureException(err);
+		}
 	}
 
 	trimLog(file) {
