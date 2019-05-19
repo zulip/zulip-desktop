@@ -1,10 +1,10 @@
 # How to install
 
-**Note:** If you download from the [releases page](https://github.com/zulip/zulip-electron/releases), be careful what version you pick. Releases that end with `-beta` are beta releases and the rest are stable.
+**Note:** If you download from the [releases page](https://github.com/zulip/zulip-desktop/releases), be careful what version you pick. Releases that end with `-beta` are beta releases and the rest are stable.
 - **beta:** these releases are the right balance between getting new features early while staying away from nasty bugs.
 - **stable:** these releases are more thoroughly tested; they receive new features later, but there's a lower chance that things will go wrong.
 
-[LR]: https://github.com/zulip/zulip-electron/releases
+[LR]: https://github.com/zulip/zulip-desktop/releases
 
 ## OS X
 

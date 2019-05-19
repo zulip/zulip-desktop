@@ -12,10 +12,10 @@ Zulip-Desktop app is built on top of [Electron](http://electron.atom.io/). If yo
 
 * The whole Zulip documentation, such as setting up a development environment, setting up with the Zulip webapp project, and testing, can be read [here](https://zulip.readthedocs.io).
 
-* If you have any questions regarding zulip-electron, open an [issue](https://github.com/zulip/zulip-electron/issues/new/) or ask it on [chat.zulip.org](https://chat.zulip.org/#narrow/stream/16-desktop).
+* If you have any questions regarding zulip-desktop, open an [issue](https://github.com/zulip/zulip-desktop/issues/new/) or ask it on [chat.zulip.org](https://chat.zulip.org/#narrow/stream/16-desktop).
 
 ## Issue
-Ensure the bug was not already reported by searching on GitHub under [issues](https://github.com/zulip/zulip-electron/issues). If you're unable to find an open issue addressing the bug, open a [new issue](https://github.com/zulip/zulip-electron/issues/new).
+Ensure the bug was not already reported by searching on GitHub under [issues](https://github.com/zulip/zulip-desktop/issues). If you're unable to find an open issue addressing the bug, open a [new issue](https://github.com/zulip/zulip-desktop/issues/new).
 
 The [zulipbot](https://github.com/zulip/zulipbot) helps to claim an issue by commenting the following in the comment section: "**@zulipbot** claim". **@zulipbot** will assign you to the issue and label the issue as **in progress**. For more details, check out [**@zulipbot**](https://github.com/zulip/zulipbot).
 
@@ -38,7 +38,7 @@ For example:
 
 
 ## Pull Requests
-Pull Requests are always welcome. 
+Pull Requests are always welcome.
 
 1. When you edit the code, please run `npm run test` to check the formatting of your code before you `git commit`.
 2. Ensure the PR description clearly describes the problem and solution. It should include:

@@ -49,7 +49,7 @@ class AppMenu {
 		{
 			label: `Release Notes`,
 			click() {
-				shell.openExternal(`https://github.com/zulip/zulip-electron/releases/tag/v${app.getVersion()}`);
+				shell.openExternal(`https://github.com/zulip/zulip-desktop/releases/tag/v${app.getVersion()}`);
 			}
 		}, {
 			type: 'separator'

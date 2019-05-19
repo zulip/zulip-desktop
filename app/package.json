@@ -11,10 +11,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/zulip/zulip-electron.git"
+    "url": "https://github.com/zulip/zulip-desktop.git"
   },
   "bugs": {
-    "url": "https://github.com/zulip/zulip-electron/issues"
+    "url": "https://github.com/zulip/zulip-desktop/issues"
   },
   "main": "main/index.js",
   "keywords": [
