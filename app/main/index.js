@@ -36,11 +36,12 @@ const mainURL = 'file://' + path.join(__dirname, '../renderer', 'main.html');
 const singleInstanceLock = app.requestSingleInstanceLock();
 if (singleInstanceLock) {
 	app.on('second-instance', (event, argv) => {
-		// uri scheme handler for windows
-		if (process.platform === 'win32') {
+		// uri scheme handler for windows and linux
+		if (process.platform !== 'darwin') {
 			deepLinkingUrl = argv.slice(1);
 			if (mainWindow) {
-				mainWindow.webContents.send('deep-linking-url', deepLinkingUrl[isDev ? 1 : 0]);
+				mainWindow.webContents.focus();
+				mainWindow.webContents.send('deep-linking-url', deepLinkingUrl[(isDev && process.platform === 'win32') ? 1 : 0]);
 			}
 		}
 
