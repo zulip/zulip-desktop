@@ -2,7 +2,7 @@
 
 Thanks for taking the time to contribute!
 
-The following is a set of guidelines for contributing to Zulip Electron Desktop Client. These are just guidelines, not rules, so use your best judgement and feel free to propose changes to this document in a pull request.
+The following is a set of guidelines for contributing to Zulip's desktop Client. These are just guidelines, not rules, so use your best judgement and feel free to propose changes to this document in a pull request.
 
 ## Getting Started
 

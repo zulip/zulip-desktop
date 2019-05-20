@@ -30,7 +30,7 @@ Jump to:
   **if** [**NPM**](https://www.npmjs.com/get-npm) **and** [**node-gyp**](https://github.com/nodejs/node-gyp#installation) **don't come bundled with your Node.js installation, Download manually**
 
 
-  Now you are ready for next step [: Get Zulip Electron Code.](https://github.com/zulip/zulip-desktop/blob/master/development.md#get-zulip-desktop-code)
+  Now you are ready for next step [: Get Zulip Desktop Code.](https://github.com/zulip/zulip-desktop/blob/master/development.md#get-zulip-desktop-code)
 
 
 ## Ubuntu/Debian
@@ -40,7 +40,7 @@ If you’re in a hurry, you can copy and paste the following into your terminal
 
     sudo apt install git nodejs node-gyp python build-essential snapcraft libxext-dev libxtst-dev lib   xkbfile-dev libgconf-2-4
 
-after pasting you can jump to next step [: Get Zulip Electron Code](https://github.com/zulip/zulip-desktop/blob/master/development.md#get-zulip-desktop-code).
+after pasting you can jump to next step [: Get Zulip Desktop Code](https://github.com/zulip/zulip-desktop/blob/master/development.md#get-zulip-desktop-code).
 
 
 **For a step-by-step explanation, read on.**
@@ -71,7 +71,7 @@ after pasting you can jump to next step [: Get Zulip Electron Code](https://gith
 **if** [**NPM**](https://www.npmjs.com/get-npm) **don't come bundled with your Node.js installation, Download manually**
 
 
-Now you are ready for next step [: Get Zulip Electron Code.](https://github.com/zulip/zulip-desktop/blob/master/development.md#get-zulip-desktop-code)
+Now you are ready for next step [: Get Zulip Desktop Code.](https://github.com/zulip/zulip-desktop/blob/master/development.md#get-zulip-desktop-code)
 
 
 ## Windows
@@ -107,14 +107,14 @@ Now you are ready for next step [: Get Zulip Electron Code.](https://github.com/
 
 **if** [**NPM**](https://www.npmjs.com/get-npm) **and** [**node-gyp**](https://github.com/nodejs/node-gyp#installation) **don't come bundled with your Node.js installation, Download manually**
 
-Now you are ready for next step [: Get Zulip Electron Code.](https://github.com/zulip/zulip-desktop/blob/master/development.md#get-zulip-desktop-code)
+Now you are ready for next step [: Get Zulip Desktop Code.](https://github.com/zulip/zulip-desktop/blob/master/development.md#get-zulip-desktop-code)
 
 
-# Get Zulip Electron Code
+# Get Zulip Desktop Code
 
 1. In your browser, visit https://github.com/zulip/zulip-desktop and click the `fork` button. You will need to be logged in to GitHub to do this.
 2. Open Terminal (macOS/Ubuntu) or Git BASH (Windows; must **run as an Administrator**).
-3. In Terminal/Git BASH, [clone your fork of the zulip-desktop repository](https://github.com/zulip/zulip-desktop/blob/master/development.md#clone-to-your-machine) and [connect the zulip-deskktop upstream repository](https://github.com/zulip/zulip-desktop/blob/master/development.md#connect-your-fork-to-zulip-desktop-upstream)
+3. In Terminal/Git BASH, [clone your fork of the zulip-desktop repository](https://github.com/zulip/zulip-desktop/blob/master/development.md#clone-to-your-machine) and [connect the zulip-desktop upstream repository](https://github.com/zulip/zulip-desktop/blob/master/development.md#connect-your-fork-to-zulip-desktop-upstream)
 
 
 ## Clone to your machine
