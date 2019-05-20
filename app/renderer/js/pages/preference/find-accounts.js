@@ -1,5 +1,7 @@
 'use-strict';
 
+const { shell } = require('electron');
+
 const BaseComponent = require(__dirname + '/../../components/base.js');
 
 class FindAccounts extends BaseComponent {
@@ -25,6 +27,31 @@ class FindAccounts extends BaseComponent {
 	init() {
 		this.$findAccounts = this.generateNodeFromTemplate(this.template());
 		this.props.$root.appendChild(this.$findAccounts);
+		this.$findAccountsButton = this.$findAccounts.querySelector('#find-accounts-button');
+		this.$serverUrlField = this.$findAccounts.querySelectorAll('input.setting-input-value')[0];
+		this.initListeners();
+	}
+
+	findAccounts(url) {
+		if (!url) {
+			return;
+		}
+		if (!url.startsWith('http')) {
+			url = 'https://' + url;
+		}
+		shell.openExternal(url + '/accounts/find');
+	}
+
+	initListeners() {
+		this.$findAccountsButton.addEventListener('click', () => {
+			this.findAccounts(this.$serverUrlField.value);
+		});
+
+		this.$serverUrlField.addEventListener('keypress', event => {
+			if (event.keyCode === 13) {
+				this.findAccounts(this.$serverUrlField.value);
+			}
+		});
 	}
 }
 
