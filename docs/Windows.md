@@ -21,8 +21,8 @@ C:\Windows\system32> npm install --global --production windows-build-tools
 Clone the source locally:
 
 ```sh
-$ git clone https://github.com/zulip/zulip-electron
-$ cd zulip-electron
+$ git clone https://github.com/zulip/zulip-desktop
+$ cd zulip-desktop
 ```
 
 Install project dependencies:

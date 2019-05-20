@@ -48,10 +48,10 @@ envSetup()
 
 	# Set name of upstreamRemote
 	cd $workingDir
-	git remote -v | grep "github\.com.zulip.zulip-electron.git (fetch)" > /dev/null 2>&1
+	git remote -v | grep "github\.com.zulip.zulip-desktop.git (fetch)" > /dev/null 2>&1
 	if [ $? -eq 0 ]
 	then
-		upstreamRemote=`git remote -v | grep "github\.com.zulip.zulip-electron.git (fetch)" | awk '{ print $1 }'`
+		upstreamRemote=`git remote -v | grep "github\.com.zulip.zulip-desktop.git (fetch)" | awk '{ print $1 }'`
 	else
 		upstreamRemote="origin"
 	fi

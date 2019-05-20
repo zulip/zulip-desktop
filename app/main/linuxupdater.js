@@ -14,7 +14,7 @@ const logger = new Logger({
 });
 
 function linuxUpdateNotification() {
-	let	url = 'https://api.github.com/repos/zulip/zulip-electron/releases';
+	let	url = 'https://api.github.com/repos/zulip/zulip-desktop/releases';
 	url = ConfigUtil.getConfigItem('betaUpdate') ? url : url + '/latest';
 	const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
 
