@@ -47,6 +47,12 @@ class FindAccounts extends BaseComponent {
 			this.findAccounts(this.$serverUrlField.value);
 		});
 
+		this.$serverUrlField.addEventListener('click', () => {
+			if (this.$serverUrlField.value === 'zulipchat.com') {
+				this.$serverUrlField.setSelectionRange(0, 0);
+			}
+		});
+
 		this.$serverUrlField.addEventListener('keypress', event => {
 			if (event.keyCode === 13) {
 				this.findAccounts(this.$serverUrlField.value);
