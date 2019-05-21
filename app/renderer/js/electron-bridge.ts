@@ -9,7 +9,20 @@ type ListenerType = ((...args: any[]) => void);
 // for the whole file.
 /* eslint-disable @typescript-eslint/camelcase */
 class ElectronBridge extends events {
-	send_notification_reply_message_supported = false;
+	send_notification_reply_message_supported: boolean;
+	idle_on_system: boolean;
+	last_active_on_system: number;
+
+	constructor() {
+		super();
+		this.send_notification_reply_message_supported = false;
+		// Indicates if the user is idle or not
+		this.idle_on_system = false;
+
+		// Indicates the time at which user was last active
+		this.last_active_on_system = Date.now();
+	}
+
 	send_event(eventName: string | symbol, ...args: any[]): void {
 		this.emit(eventName, ...args);
 	}

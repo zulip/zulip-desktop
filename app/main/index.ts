@@ -362,6 +362,22 @@ app.on('ready', () => {
 	ipcMain.on('save-last-tab', (_event: Electron.IpcMessageEvent, index: number) => {
 		ConfigUtil.setConfigItem('lastActiveTab', index);
 	});
+
+	// Update user idle status for each realm after every 15s
+	// Set user idle if no activity for idleThreshold time in seconds
+	// Do a check every idleCheckInterval ms.
+	const idleCheckInterval = 15000;
+	setInterval(() => {
+		const idleThreshold = 60;
+		// Remove typecast to any when querySystemIdleState gets added to electron typings
+		(electron.powerMonitor as any).querySystemIdleState(idleThreshold, (idleState: string) => {
+			if (idleState === 'active') {
+				page.send('set-active');
+			} else {
+				page.send('set-idle');
+			}
+		});
+	}, idleCheckInterval);
 });
 
 app.on('before-quit', () => {
