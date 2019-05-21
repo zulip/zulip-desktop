@@ -2,6 +2,77 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v3.0.0 --2019-05-20
+
+**New features**:
+* Add context menu in left sidebar.
+* Enable per-user installation on Windows.
+* Switch to next server on Ctrl+Tab.
+* Add option to copy zulip URL.
+* Allow zoom options from numpad.
+* Use server language for spellchecker for all platforms.
+* Allow installing app without admin privileges.
+* Allow insecure requests on user request.
+* Unify case across menus and settings.
+
+**Enhancements**:
+* Remove Found bug button.
+* Set custom css to false by default.
+* Disable beta updates if auto updates disabled
+* Update menu items on setting page.
+* Include certificates in all requests for icon.
+* Document show sidebar shortcut properly.
+* Improve organization page.
+* Improve wording of adding a new org button.
+* Increase width of add a new org button.
+* Add eol for linebreaks on windows.
+* Teach git to ignore unnecessary binary files.
+* Send user-agent with request.
+* Minimize to tray on startup.
+* Update test config files.
+* Ensure backward compatibility when using narrow.by_topic.
+* Use path.sep for path separator to support Windows.
+* Change the window title to contain active Realm's name.
+* Use path.basename to get certificate file name.
+* Disable pdf-viewer window.
+* Default to starting app on login.
+* Modify reset app data button.
+* Add requestOptions to replace request instances.
+* Workaround buggy focus switching in Electron 3.0.10.
+* Reorder file menu and add option to Add Organization.
+* Improve development guide.
+* Implement CSS linting with stylelint.
+* Add "role" key to webview property.
+* Implement HTML Linting with htmlhint and fix indent.
+* Limit the number of lines in log files.
+* Fix focus after clicking back button.
+* Remove minimize and close from File menu.
+* Add config for installer name.
+
+**Fixes**:
+* Fix `request` ecdhCurve mismatch errors
+* Fix typo in network error message.
+* Fix context menu not working on adding new org.
+* Fix reply from notification.
+* Fix shorcut section horizontal alignment.
+* Fix broken link in docs.
+* Fix grammatical errors.
+* Fix typo error in issue template.
+* Fix text for Toggle DND in sidebar on hover.
+* Fix focus after soft reload.
+* Fix tip's place for Windows & Linux.
+
+
+**Module updates**:
+* Update node-json-db to v0.9.1.
+* Update sentry to v0.12.1.
+* Update electron-window-state to v5.0.3.
+* Update electron to v3.0.10.
+* Update electron-builder to v20.40.2.
+* Update electron-sentry to v0.14.0.
+* Update dependencies to fix minor dev security alerts.
+* Update snap config.
+
 ### v2.3.82 --2018-09-25
 
 **New features**:
