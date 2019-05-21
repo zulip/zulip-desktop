@@ -11,7 +11,7 @@ All notable changes to the Zulip desktop app are documented in this file.
 * Add option to copy zulip URL.
 * Allow zoom options from numpad.
 * Use server language for spellchecker for all platforms.
-* Allow installing app without admin previliges.
+* Allow installing app without admin privileges.
 * Allow insecure requests on user request.
 * Unify case across menus and settings.
 
@@ -30,7 +30,7 @@ All notable changes to the Zulip desktop app are documented in this file.
 * Send user-agent with request.
 * Minimize to tray on startup.
 * Update test config files.
-* Ensure backward compatibilty when using narrow.by_topic.
+* Ensure backward compatibility when using narrow.by_topic.
 * Use path.sep for path separator to support Windows.
 * Change the window title to contain active Realm's name.
 * Use path.basename to get certificate file name.
@@ -38,7 +38,7 @@ All notable changes to the Zulip desktop app are documented in this file.
 * Default to starting app on login.
 * Modify reset app data button.
 * Add requestOptions to replace request instances.
-* Work around buggy focus switching in Electron 3.0.10.
+* Workaround buggy focus switching in Electron 3.0.10.
 * Reorder file menu and add option to Add Organization.
 * Improve development guide.
 * Implement CSS linting with stylelint.
@@ -47,7 +47,7 @@ All notable changes to the Zulip desktop app are documented in this file.
 * Limit the number of lines in log files.
 * Fix focus after clicking back button.
 * Remove minimize and close from File menu.
-* Add a config for installer name.
+* Add config for installer name.
 
 **Fixes**:
 * Fix `request` ecdhCurve mismatch errors
