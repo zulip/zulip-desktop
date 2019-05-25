@@ -9,7 +9,7 @@ test('add-organization', function (t) {
     .then(() => app.client.windowByIndex(1)) // focus on webview
     .then(() => app.client.setValue('.setting-input-value', 'chat.zulip.org'))
     .then(() => app.client.click('.server-save-action'))
-    .then(() => setup.wait(5000))
+    .then(() => setup.wait(10000))
     .then(() => app.client.windowByIndex(0)) // Switch focus back to main win
     .then(() => app.client.windowByIndex(2)) // Switch focus back to czo org webview
     .then(() => app.client.waitForExist('//*[@id="id_username"]'))

@@ -15,6 +15,11 @@ fi
 
 npm run test
 
-# if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-#     npm run test-e2e
-# fi
+# Remove this condition when unit test for linux is added
+if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    npm run test-unit
+fi
+
+# Disabling e2e tests on Travis as spectron tests timeout on their hardware
+# npm run test-e2e
+

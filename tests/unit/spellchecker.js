@@ -1,5 +1,6 @@
 const ConfigUtil = require('js/utils/config-util.js');
 const SetupSpellChecker = require('js/spellchecker')
+const assert = require('assert');
 
 if(process.platform === 'darwin') {
 	describe('test spell checker', function () {
@@ -8,15 +9,16 @@ if(process.platform === 'darwin') {
 	  ConfigUtil.setConfigItem('spellcheckerLanguage', 'en');
 	  var dictionary = ['apple', 'pear', 'banana', 'pie'];
 		// console.log(dictionary);  
+
 	  SetupSpellChecker.init(dictionary);  // re-initialize after setting update
 	  const spellCheckHandler = SetupSpellChecker.SpellCheckHandler
 
 	  it('mark misspelled word', function () {
-	    expect(spellCheckHandler.isMisspelled('asdasdasdw')).toBe(true)
+	    assert(spellCheckHandler.isMisspelled('asdasdasdw'))
 	  })
 
 	  it('verify properly spelled word', function () {
-	    expect(spellCheckHandler.isMisspelled('help')).toBe(false)
+	    assert(spellCheckHandler.isMisspelled('help') === false)
 	  })
 	})
 }
