@@ -3,8 +3,11 @@
 const { SpellCheckHandler, ContextMenuListener, ContextMenuBuilder } = require('electron-spellchecker');
 
 const LanguageDetect = require('languagedetect');
+
 const lngDetector = new LanguageDetect();
+
 const ISO6391 = require('iso-639-1');
+
 const ConfigUtil = require(__dirname + '/utils/config-util.js');
 const Logger = require(__dirname + '/utils/logger-util.js');
 
@@ -33,7 +36,7 @@ class SetupSpellChecker {
 		if (this.SpellCheckHandler) {
 			setTimeout(() => this.SpellCheckHandler.attachToInput(), 1000);
 			const langname = lngDetector.detect(input, 1);
-			const langcode = ISO6391.getCode(langname)
+			const langcode = ISO6391.getCode(langname);
 			this.SpellCheckHandler.switchLanguage(langcode);
 		}
 

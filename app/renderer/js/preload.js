@@ -3,7 +3,7 @@
 const { ipcRenderer, shell } = require('electron');
 const SetupSpellChecker = require('./spellchecker');
 
-const ConfigUtil = require(__dirname + '/utils/config-util.js');
+// const ConfigUtil = require(__dirname + '/utils/config-util.js');
 const LinkUtil = require(__dirname + '/utils/link-util.js');
 const params = require(__dirname + '/utils/params-util.js');
 
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		// 	// Set spellcheker language
 		// 	ConfigUtil.setConfigItem('spellcheckerLanguage', serverLanguage);
 		// 	// Init spellchecker
-		//SetupSpellChecker.init();
+		// SetupSpellChecker.init();
 		// }
 		// redirect users to network troubleshooting page
 		const getRestartButton = document.querySelector('.restart_get_events_button');
@@ -104,8 +104,8 @@ document.addEventListener('keydown', event => {
 	}
 });
 
-document.addEventListener('keydown', e =>{
-	if(e.keyCode === 32 || e.code === 'space') {
+document.addEventListener('keydown', e => {
+	if (e.keyCode === 32 || e.code === 'space') {
 		SetupSpellChecker.init(document.getElementById('compose-textarea').value);
 	}
 });
