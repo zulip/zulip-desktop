@@ -45,13 +45,13 @@ process.once('loaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
 	if (params.isPageParams()) {
 	// Get the default language of the server
-		const serverLanguage = page_params.default_language; // eslint-disable-line no-undef, camelcase
-		if (serverLanguage) {
-			// Set spellcheker language
-			ConfigUtil.setConfigItem('spellcheckerLanguage', serverLanguage);
-			// Init spellchecker
-			SetupSpellChecker.init();
-		}
+		// const serverLanguage = page_params.default_language; // eslint-disable-line no-undef, camelcase
+		// if (serverLanguage) {
+		// 	// Set spellcheker language
+		// 	ConfigUtil.setConfigItem('spellcheckerLanguage', serverLanguage);
+		// 	// Init spellchecker
+		//SetupSpellChecker.init();
+		// }
 		// redirect users to network troubleshooting page
 		const getRestartButton = document.querySelector('.restart_get_events_button');
 		if (getRestartButton) {
@@ -101,5 +101,11 @@ document.addEventListener('keydown', event => {
 		ipcRenderer.send('forward-message', 'zoomOut');
 	} else if (event.ctrlKey && event.code === 'Numpad0') {
 		ipcRenderer.send('forward-message', 'zoomActualSize');
+	}
+});
+
+document.addEventListener('keydown', e =>{
+	if(e.keyCode === 32 || e.code === 'space') {
+		SetupSpellChecker.init(document.getElementById('compose-textarea').value);
 	}
 });
