@@ -101,6 +101,17 @@ class DomainUtil {
 		return false;
 	}
 
+	trimDomain(domain) {
+		/*
+			sometimes, the app is unable to fetch realm_name
+			we then show the first letter character after the protocol scheme
+			instead of the first character of the realm_name
+		*/
+		let subDomain = domain.substring(domain.lastIndexOf('://') + 3);
+		subDomain = subDomain.substring(0, subDomain.indexOf('.'));
+		return subDomain;
+	}
+
 	// ignoreCerts parameter helps in fetching server icon and
 	// other server details when user chooses to ignore certificate warnings
 	checkDomain(domain, ignoreCerts = false, silent = false) {
@@ -118,7 +129,7 @@ class DomainUtil {
 		const serverConf = {
 			icon: defaultIconUrl,
 			url: domain,
-			alias: domain,
+			alias: this.trimDomain(domain),
 			ignoreCerts
 		};
 
