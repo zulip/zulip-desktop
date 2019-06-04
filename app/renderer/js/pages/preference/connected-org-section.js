@@ -4,6 +4,7 @@ const BaseSection = require(__dirname + '/base-section.js');
 const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
 const ServerInfoForm = require(__dirname + '/server-info-form.js');
 const AddCertificate = require(__dirname + '/add-certificate.js');
+const FindAccounts = require(__dirname + '/find-accounts.js');
 
 class ConnectedOrgSection extends BaseSection {
 	constructor(props) {
@@ -20,6 +21,8 @@ class ConnectedOrgSection extends BaseSection {
 				<div id="new-org-button"><button class="green sea w-250">Connect to another organization</button></div>
 				<div class="page-title">Add Custom Certificates</div>
 				<div id="add-certificate-container"></div>
+				<div class="page-title">Find accounts by email</div>
+				<div id="find-accounts-container"></div>
 			</div>
 		`;
 	}
@@ -38,6 +41,7 @@ class ConnectedOrgSection extends BaseSection {
 		this.$existingServers = document.getElementById('existing-servers');
 		this.$newOrgButton = document.getElementById('new-org-button');
 		this.$addCertificateContainer = document.getElementById('add-certificate-container');
+		this.$findAccountsContainer = document.getElementById('find-accounts-container');
 
 		const noServerText = 'All the connected orgnizations will appear here';
 		// Show noServerText if no servers are there otherwise hide it
@@ -59,6 +63,7 @@ class ConnectedOrgSection extends BaseSection {
 		});
 
 		this.initAddCertificate();
+		this.initFindAccounts();
 	}
 
 	initAddCertificate() {
@@ -67,6 +72,11 @@ class ConnectedOrgSection extends BaseSection {
 		}).init();
 	}
 
+	initFindAccounts() {
+		new FindAccounts({
+			$root: this.$findAccountsContainer
+		}).init();
+	}
 }
 
 module.exports = ConnectedOrgSection;

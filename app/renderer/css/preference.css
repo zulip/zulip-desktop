@@ -259,6 +259,10 @@ img.server-info-icon {
     border: rgba(78, 191, 172, 1.000) 2px solid;
 }
 
+.invalid-input-value:focus {
+    border: rgba(239, 83, 80, 1) 2px solid;
+}
+
 .manual-proxy-block {
     width: 96%;
 }
