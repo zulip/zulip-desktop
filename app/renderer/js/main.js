@@ -615,10 +615,7 @@ class ServerManagerView {
 			this.toggleSidebar(show);
 
 			// Toggle sidebar switch in the general settings
-			const selector = 'webview:not([class*=disabled])';
-			const webview = document.querySelector(selector);
-			const webContents = webview.getWebContents();
-			webContents.send('toggle-sidebar-setting', show);
+			this.updateGeneralSettings('toggle-sidebar-setting', show);
 		});
 
 		ipcRenderer.on('toggle-silent', (event, state) => {
