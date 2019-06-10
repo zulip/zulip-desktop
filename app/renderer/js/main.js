@@ -503,6 +503,15 @@ class ServerManagerView {
 		ipcRenderer.send('update-badge', messageCountAll);
 	}
 
+	updateGeneralSettings(setting, value) {
+		const selector = 'webview:not([class*=disabled])';
+		const webview = document.querySelector(selector);
+		if (webview) {
+			const webContents = webview.getWebContents();
+			webContents.send(setting, value);
+		}
+	}
+
 	toggleSidebar(show) {
 		if (show) {
 			this.$sidebar.classList.remove('sidebar-hide');
@@ -634,12 +643,7 @@ class ServerManagerView {
 				});
 				return;
 			}
-			const selector = 'webview:not([class*=disabled])';
-			const webview = document.querySelector(selector);
-			if (webview) {
-				const webContents = webview.getWebContents();
-				webContents.send('toggle-menubar-setting', autoHideMenubar);
-			}
+			this.updateGeneralSettings('toggle-menubar-setting', autoHideMenubar);
 		});
 
 		ipcRenderer.on('toggle-dnd', (event, state, newSettings) => {
