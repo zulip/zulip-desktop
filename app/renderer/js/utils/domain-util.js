@@ -10,6 +10,7 @@ const escape = require('escape-html');
 const Logger = require('./logger-util');
 
 const RequestUtil = require(__dirname + '/../utils/request-util.js');
+const Messages = require(__dirname + '/../../../resources/messages.js');
 
 const logger = new Logger({
 	file: `domain-util.log`,
@@ -101,19 +102,50 @@ class DomainUtil {
 		return false;
 	}
 
+	async checkCertError(domain, serverConf, error, silent) {
+		if (silent) {
+			// since getting server settings has already failed
+			return serverConf;
+		} else {
+			// Report error to sentry to get idea of possible certificate errors
+			// users get when adding the servers
+			logger.reportSentry(new Error(error));
+			const certErrorMessage = Messages.certErrorMessage(domain, error);
+			const certErrorDetail = Messages.certErrorDetail();
+
+			const response = await dialog.showMessageBox({
+				type: 'warning',
+				buttons: ['Yes', 'No'],
+				defaultId: 1,
+				message: certErrorMessage,
+				detail: certErrorDetail
+			});
+			if (response === 0) {
+				// set ignoreCerts parameter to true in case user responds with yes
+				serverConf.ignoreCerts = true;
+				try {
+					return await this.getServerSettings(domain, serverConf.ignoreCerts);
+				} catch (err) {
+					if (error === Messages.noOrgsError(domain)) {
+						throw new Error(error);
+					}
+					return serverConf;
+				}
+			} else {
+				throw new Error('Untrusted certificate.');
+			}
+		}
+	}
+
 	// ignoreCerts parameter helps in fetching server icon and
 	// other server details when user chooses to ignore certificate warnings
-	checkDomain(domain, ignoreCerts = false, silent = false) {
+	async checkDomain(domain, ignoreCerts = false, silent = false) {
 		if (!silent && this.duplicateDomain(domain)) {
 			// Do not check duplicate in silent mode
-			return Promise.reject('This server has been added.');
+			throw new Error('This server has been added.');
 		}
 
 		domain = this.formatUrl(domain);
-		const checkDomain = {
-			url: domain + '/static/audio/zulip.ogg',
-			...RequestUtil.requestOptions(domain, ignoreCerts)
-		};
 
 		const serverConf = {
 			icon: defaultIconUrl,
@@ -122,70 +154,29 @@ class DomainUtil {
 			ignoreCerts
 		};
 
-		return new Promise((resolve, reject) => {
-			request(checkDomain, (error, response) => {
-				// If the domain contains following strings we just bypass the server
-				const whitelistDomains = [
-					'zulipdev.org'
-				];
+		try {
+			return await this.getServerSettings(domain, serverConf.ignoreCerts);
+		} catch (err) {
+			// If the domain contains following strings we just bypass the server
+			const whitelistDomains = [
+				'zulipdev.org'
+			];
 
-				// make sure that error is an error or string not undefined
-				// so validation does not throw error.
-				error = error || '';
+			// make sure that error is an error or string not undefined
+			// so validation does not throw error.
+			const error = err || '';
 
-				const certsError = error.toString().includes('certificate');
-				if (!error && response.statusCode < 400) {
-					// Correct
-					this.getServerSettings(domain, serverConf.ignoreCerts).then(serverSettings => {
-						resolve(serverSettings);
-					}, () => {
-						resolve(serverConf);
-					});
-				} else if (domain.indexOf(whitelistDomains) >= 0 || certsError) {
-					if (silent) {
-						this.getServerSettings(domain, serverConf.ignoreCerts).then(serverSettings => {
-							resolve(serverSettings);
-						}, () => {
-							resolve(serverConf);
-						});
-					} else {
-						// Report error to sentry to get idea of possible certificate errors
-						// users get when adding the servers
-						logger.reportSentry(new Error(error));
-						const certErrorMessage = `Do you trust certificate from ${domain}? \n ${error}`;
-						const certErrorDetail = `The organization you're connecting to is either someone impersonating the Zulip server you entered, or the server you're trying to connect to is configured in an insecure way.
-						\nIf you have a valid certificate please add it from Settings>Organizations and try to add the organization again.
-						\nUnless you have a good reason to believe otherwise, you should not proceed.
-						\nYou can click here if you'd like to proceed with the connection.`;
-
-						dialog.showMessageBox({
-							type: 'warning',
-							buttons: ['Yes', 'No'],
-							defaultId: 1,
-							message: certErrorMessage,
-							detail: certErrorDetail
-						}, response => {
-							if (response === 0) {
-								// set ignoreCerts parameter to true in case user responds with yes
-								serverConf.ignoreCerts = true;
-								this.getServerSettings(domain, serverConf.ignoreCerts).then(serverSettings => {
-									resolve(serverSettings);
-								}, () => {
-									resolve(serverConf);
-								});
-							} else {
-								reject('Untrusted Certificate.');
-							}
-						});
-					}
-				} else {
-					const invalidZulipServerError = `${domain} does not appear to be a valid Zulip server. Make sure that \
-					\n (1) you can connect to that URL in a web browser and \n (2) if you need a proxy to connect to the Internet, that you've configured your proxy in the Network settings \n (3) its a zulip server \
-					\n (4) the server has a valid certificate, you can add custom certificates in Settings>Organizations`;
-					reject(invalidZulipServerError);
+			const certsError = error.toString().includes('certificate');
+			if (domain.indexOf(whitelistDomains) >= 0 || certsError) {
+				try {
+					return await this.checkCertError(domain, serverConf, error, silent);
+				} catch (err) {
+					throw err;
 				}
-			});
-		});
+			} else {
+				throw Messages.invalidZulipServerError(domain);
+			}
+		}
 	}
 
 	getServerSettings(domain, ignoreCerts = false) {
@@ -207,9 +198,11 @@ class DomainUtil {
 							alias: escape(data.realm_name),
 							ignoreCerts
 						});
+					} else {
+						reject(Messages.noOrgsError(domain));
 					}
 				} else {
-					reject('Zulip server version < 1.6.');
+					reject(response);
 				}
 			});
 		});
