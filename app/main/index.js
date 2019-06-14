@@ -209,6 +209,14 @@ app.on('ready', () => {
 		}
 	});
 
+	if (process.platform !== 'darwin') {
+		deepLinkingUrl = process.argv.slice(1);
+		if (mainWindow) {
+			mainWindow.webContents.focus();
+			mainWindow.webContents.send('deep-linking-url', deepLinkingUrl[(isDev && process.platform === 'win32') ? 1 : 0]);
+		}
+	}
+
 	// Temporarily remove this event
 	// electron.powerMonitor.on('resume', () => {
 	// 	mainWindow.reload();
