@@ -162,6 +162,20 @@ class AppMenu {
 					ConfigUtil.setConfigItem('showSidebar', newValue);
 				}
 			}
+		}, {
+			label: 'Auto hide Menu bar',
+			checked: ConfigUtil.getConfigItem('autoHideMenubar', false),
+			visible: process.platform !== 'darwin',
+			click(item, focusedWindow) {
+				if (focusedWindow) {
+					const newValue = !ConfigUtil.getConfigItem('autoHideMenubar');
+					focusedWindow.setAutoHideMenuBar(newValue);
+					focusedWindow.setMenuBarVisibility(!newValue);
+					focusedWindow.webContents.send('toggle-autohide-menubar', newValue);
+					ConfigUtil.setConfigItem('autoHideMenubar', newValue);
+				}
+			},
+			type: 'checkbox'
 		}];
 	}
 

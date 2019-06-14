@@ -254,6 +254,7 @@ app.on('ready', () => {
 	ipcMain.on('toggle-menubar', (event, showMenubar) => {
 		mainWindow.setAutoHideMenuBar(showMenubar);
 		mainWindow.setMenuBarVisibility(!showMenubar);
+		page.send('toggle-autohide-menubar', showMenubar, true);
 	});
 
 	ipcMain.on('update-badge', (event, messageCount) => {

@@ -94,6 +94,10 @@ class PreferenceView extends BaseComponent {
 			this.handleToggle('sidebar-option', state);
 		});
 
+		ipcRenderer.on('toggle-menubar-setting', (event, state) => {
+			this.handleToggle('menubar-option', state);
+		});
+
 		ipcRenderer.on('toggletray', (event, state) => {
 			this.handleToggle('tray-option', state);
 		});
