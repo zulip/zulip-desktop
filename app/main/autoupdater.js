@@ -3,7 +3,7 @@ const { app, dialog, shell } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const isDev = require('electron-is-dev');
 
-const ConfigUtil = require('./../renderer/js/utils/config-util.js');
+const ConfigUtil = require('./../renderer/js/utils/config-util');
 
 function appUpdater(updateFromMenu = false) {
 	// Don't initiate auto-updates in development

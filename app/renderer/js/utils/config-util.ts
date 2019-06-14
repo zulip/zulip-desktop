@@ -1,10 +1,10 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const process = require('process');
-const JsonDB = require('node-json-db');
-const Logger = require('./logger-util');
+import * as fs from 'fs';
+import * as path from 'path';
+import * as process from 'process';
+import * as JsonDB from 'node-json-db';
+import Logger from './logger-util';
 
 const logger = new Logger({
 	file: 'config-util.log',
@@ -26,7 +26,7 @@ if (process.type === 'renderer') {
 	app = electron.app;
 }
 
-class ConfigUtil {
+export class ConfigUtil {
 	constructor() {
 		if (instance) {
 			return instance;
@@ -95,5 +95,3 @@ class ConfigUtil {
 		this.db = new JsonDB(settingsJsonPath, true, true);
 	}
 }
-
-module.exports = new ConfigUtil();

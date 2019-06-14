@@ -1,11 +1,11 @@
 'use strict';
 
-const { app, dialog } = require('electron').remote;
-const fs = require('fs');
-const path = require('path');
-const JsonDB = require('node-json-db');
-const Logger = require('./logger-util');
-const { initSetUp } = require('./default-util');
+import { app, dialog } from 'electron.remote';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as JsonDB from 'node-json-db';
+import * as Logger from './logger-util';
+import { initSetUp } from './default-util';
 
 initSetUp();
 
@@ -17,7 +17,7 @@ const logger = new Logger({
 let instance = null;
 const certificatesDir = `${app.getPath('userData')}/certificates`;
 
-class CertificateUtil {
+export class CertificateUtil {
 	constructor() {
 		if (instance) {
 			return instance;
@@ -82,5 +82,3 @@ class CertificateUtil {
 		this.db = new JsonDB(settingsJsonPath, true, true);
 	}
 }
-
-module.exports = new CertificateUtil();
