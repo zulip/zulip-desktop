@@ -39,10 +39,7 @@ if (singleInstanceLock) {
 		// uri scheme handler for windows and linux
 		if (process.platform !== 'darwin') {
 			deepLinkingUrl = argv.slice(1);
-			if (mainWindow) {
-				mainWindow.webContents.focus();
-				mainWindow.webContents.send('deep-linking-url', deepLinkingUrl[(isDev && process.platform === 'win32') ? 1 : 0]);
-			}
+			handleDeepLink(deepLinkingUrl[(isDev && process.platform === 'win32') ? 1 : 0]);
 		}
 
 		if (mainWindow) {
@@ -62,6 +59,13 @@ const APP_ICON = path.join(__dirname, '../resources', 'Icon');
 const iconPath = () => {
 	return APP_ICON + (process.platform === 'win32' ? '.ico' : '.png');
 };
+
+function handleDeepLink(deepLinkingUrl) {
+	if (mainWindow) {
+		mainWindow.webContents.focus();
+		mainWindow.webContents.send('deep-linking-url', deepLinkingUrl);
+	}
+}
 
 function createMainWindow() {
 	// Load the previous state with fallback to defaults
@@ -211,10 +215,7 @@ app.on('ready', () => {
 
 	if (process.platform !== 'darwin') {
 		deepLinkingUrl = process.argv.slice(1);
-		if (mainWindow) {
-			mainWindow.webContents.focus();
-			mainWindow.webContents.send('deep-linking-url', deepLinkingUrl[(isDev && process.platform === 'win32') ? 1 : 0]);
-		}
+		handleDeepLink(deepLinkingUrl[(isDev && process.platform === 'win32') ? 1 : 0]);
 	}
 
 	// Temporarily remove this event
