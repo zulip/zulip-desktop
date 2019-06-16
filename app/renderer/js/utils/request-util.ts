@@ -4,7 +4,7 @@ import Logger from './logger-util';
 import { CertificateUtil } from './certificate-util';
 import { ProxyUtil } from './proxy-util';
 import { ConfigUtil } from './config-util';
-import { SystemUtil } from './system-util';
+import SystemUtil from './system-util';
 
 const logger = new Logger({
 	file: `request-util.log`,
