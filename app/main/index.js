@@ -5,7 +5,7 @@ const fs = require('fs');
 const electron = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const isDev = require('electron-is-dev');
-const appMenu = require('./menu');
+const { appMenu } = require('./menu');
 const { appUpdater } = require('./autoupdater');
 
 const { setAutoLaunch } = require('./startup');
