@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "commonjs",
+    "esModuleInterop": true,
+
+    /* Strict type-checking */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": false,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+
+    /* Additional checks */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+  },
+  "include":[
+    "app/**/*",
+    "typings.d.ts"
+  ],
+  "exclude":[
+    "node_modules",
+    "app/node_modules"
+  ],
+}

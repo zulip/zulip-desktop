@@ -21,7 +21,9 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "start": "electron app --disable-http-cache --no-electron-connect",
+    "start": "concurrently --kill-others npm:start-app npm:watch-ts",
+    "start-app": "electron app --disable-http-cache --no-electron-connect",
+    "watch-ts": "tsc -w",
     "reinstall": "node ./tools/reinstall-node-modules.js",
     "postinstall": "electron-builder install-app-deps",
     "lint-css": "stylelint app/renderer/css/*.css",
@@ -124,13 +126,18 @@
     "InstantMessaging"
   ],
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "1.10.2",
+    "@typescript-eslint/parser": "1.10.2",
+    "@types/node": "10.1.0",
     "assert": "1.4.1",
+    "concurrently": "4.1.0",
     "cp-file": "5.0.0",
     "devtron": "1.4.0",
     "electron": "3.1.10",
     "electron-builder": "20.40.2",
     "electron-connect": "0.6.2",
     "electron-debug": "1.4.0",
+    "eslint-config-xo-typescript": "0.14.0",
     "fs-extra": "8.1.0",
     "google-translate-api": "2.3.0",
     "gulp": "4.0.0",
@@ -143,19 +150,26 @@
     "stylelint": "9.10.1",
     "tap-colorize": "1.2.0",
     "tape": "4.8.0",
-    "xo": "0.18.2"
+    "typescript": "3.5.2",
+    "xo": "0.22.0"
   },
   "xo": {
+    "extends": "xo-typescript",
+    "extensions": [
+      "ts"
+    ],
     "parserOptions": {
-      "sourceType": "script",
+      "ecmaVersion": 6,
+      "sourceType": "module",
       "ecmaFeatures": {
-        "globalReturn": true
+        "globalReturn": true,
+        "modules": true
       }
     },
     "esnext": true,
     "overrides": [
       {
-        "files": "app*/**/*.js",
+        "files": "app/**/*.ts",
         "rules": {
           "max-lines": [
             "warn",
@@ -181,7 +195,9 @@
     ],
     "ignore": [
       "tests/*.js",
-      "tools/locale-helper/*.js"
+      "tools/locale-helper/*.js",
+      "*/**/*.js",
+      "*.js"
     ],
     "envs": [
       "node",
