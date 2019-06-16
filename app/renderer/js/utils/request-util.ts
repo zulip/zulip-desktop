@@ -1,29 +1,38 @@
-const fs = require('fs');
-const Logger = require('./logger-util');
+import * as fs from 'fs';
+import Logger from './logger-util';
 
-const CertificateUtil = require(__dirname + '/certificate-util.js');
-const ProxyUtil = require(__dirname + '/proxy-util.js');
-const ConfigUtil = require(__dirname + '/config-util.js');
-const SystemUtil = require(__dirname + '/../utils/system-util.js');
+import { CertificateUtil } from './certificate-util';
+import { ProxyUtil } from './proxy-util';
+import { ConfigUtil } from './config-util';
+import { SystemUtil } from './system-util';
 
 const logger = new Logger({
 	file: `request-util.log`,
 	timestamp: true
 });
 
-let instance = null;
+let instance: null | RequestUtil = null;
+
+interface RequestUtilResponse {
+	ca: string;
+	proxy: string;
+	ecdhCurve: 'auto';
+	headers: { 'User-Agent': string };
+	rejectUnauthorized: boolean;
+}
 
 class RequestUtil {
 	constructor() {
 		if (!instance) {
 			instance = this;
 		}
+
 		return instance;
 	}
 
 	// ignoreCerts parameter helps in fetching server icon and
 	// other server details when user chooses to ignore certificate warnings
-	requestOptions(domain, ignoreCerts) {
+	requestOptions(domain: string, ignoreCerts: boolean): RequestUtilResponse {
 		domain = this.formatUrl(domain);
 		const certificate = CertificateUtil.getCertificate(
 			encodeURIComponent(domain)
@@ -32,9 +41,9 @@ class RequestUtil {
 		if (certificate) {
 			// To handle case where certificate has been moved from the location in certificates.json
 			try {
-				certificateLocation = fs.readFileSync(certificate);
+				certificateLocation = fs.readFileSync(certificate, 'utf8');
 			} catch (err) {
-				logger.warn('Error while trying to get certificate: ' + err);
+				logger.warn(`Error while trying to get certificate: ${err}`);
 			}
 		}
 		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
@@ -49,14 +58,15 @@ class RequestUtil {
 		};
 	}
 
-	formatUrl(domain) {
-		const hasPrefix = (domain.indexOf('http') === 0);
+	formatUrl(domain: string): string {
+		const hasPrefix = domain.startsWith('http', 0);
 		if (hasPrefix) {
 			return domain;
 		} else {
-			return (domain.indexOf('localhost:') >= 0) ? `http://${domain}` : `https://${domain}`;
+			return domain.includes('localhost:') ? `http://${domain}` : `https://${domain}`;
 		}
 	}
 }
 
-module.exports = new RequestUtil();
+const requestUtil = new RequestUtil();
+export = requestUtil;
