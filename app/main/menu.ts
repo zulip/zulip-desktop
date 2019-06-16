@@ -1,15 +1,16 @@
 'use strict';
-const path = require('path');
+import * as path from 'path';
 
-const { app, shell, BrowserWindow, Menu, dialog } = require('electron');
+import { app, shell, BrowserWindow, Menu, dialog } from 'electron';
 
-const fs = require('fs-extra');
-const AdmZip = require('adm-zip');
-const { appUpdater } = require('./autoupdater');
+import * as fs from 'fs-extra';
+import * as AdmZip from 'adm-zip';
 
-const ConfigUtil = require(__dirname + '/../renderer/js/utils/config-util.js');
-const DNDUtil = require(__dirname + '/../renderer/js/utils/dnd-util.js');
-const Logger = require(__dirname + '/../renderer/js/utils/logger-util.js');
+import * as DNDUtil from '../renderer/js/utils/dnd-util';
+import { appUpdater } from './autoupdater';
+
+import Logger = require('../renderer/js/utils/logger-util');
+import ConfigUtil = require('../renderer/js/utils/config-util');
 
 const appName = app.getName();
 
@@ -19,12 +20,12 @@ const logger = new Logger({
 });
 
 class AppMenu {
-	getHistorySubmenu(enableMenu) {
+	getHistorySubmenu(enableMenu: boolean): Electron.MenuItemConstructorOptions[] {
 		return [{
 			label: 'Back',
 			accelerator: process.platform === 'darwin' ? 'Command+Left' : 'Alt+Left',
 			enabled: enableMenu,
-			click(item, focusedWindow) {
+			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					AppMenu.sendAction('back');
 				}
@@ -33,7 +34,7 @@ class AppMenu {
 			label: 'Forward',
 			accelerator: process.platform === 'darwin' ? 'Command+Right' : 'Alt+Right',
 			enabled: enableMenu,
-			click(item, focusedWindow) {
+			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					AppMenu.sendAction('forward');
 				}
@@ -41,58 +42,64 @@ class AppMenu {
 		}];
 	}
 
-	getToolsSubmenu() {
+	getToolsSubmenu(): Electron.MenuItemConstructorOptions[] {
 		return [{
-			label: `Check for Updates`,
+			label: 'Check for Updates',
 			click() {
 				AppMenu.checkForUpdate();
 			}
 		},
 		{
-			label: `Release Notes`,
+			label: 'Release Notes',
 			click() {
 				shell.openExternal(`https://github.com/zulip/zulip-desktop/releases/tag/v${app.getVersion()}`);
 			}
-		}, {
+		},
+		{
 			type: 'separator'
-		}, {
+		},
+		{
 			label: 'Factory Reset',
 			accelerator: process.platform === 'darwin' ? 'Command+Shift+D' : 'Ctrl+Shift+D',
 			click() {
 				AppMenu.resetAppSettings();
 			}
-		}, {
+		},
+		{
 			label: 'Download App Logs',
 			click() {
 				const zip = new AdmZip();
-				let date = new Date();
-				date = date.toLocaleDateString().replace(/\//g, '-');
+				const date = new Date();
+				const dateString = date.toLocaleDateString().replace(/\//g, '-');
 
 				// Create a zip file of all the logs and config data
 				zip.addLocalFolder(`${app.getPath('appData')}/${appName}/Logs`);
 				zip.addLocalFolder(`${app.getPath('appData')}/${appName}/config`);
 
 				// Put the log file in downloads folder
-				const logFilePath = `${app.getPath('downloads')}/Zulip-logs-${date}.zip`;
+				const logFilePath = `${app.getPath('downloads')}/Zulip-logs-${dateString}.zip`;
 				zip.writeZip(logFilePath);
 
 				// Open and select the log file
 				shell.showItemInFolder(logFilePath);
 			}
-		}, {
+		},
+		{
 			type: 'separator'
-		}, {
+		},
+		{
 			label: 'Toggle DevTools for Zulip App',
 			accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-			click(item, focusedWindow) {
+			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					focusedWindow.webContents.toggleDevTools();
 				}
 			}
-		}, {
+		},
+		{
 			label: 'Toggle DevTools for Active Tab',
 			accelerator: process.platform === 'darwin' ? 'Alt+Command+U' : 'Ctrl+Shift+U',
-			click(item, focusedWindow) {
+			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					AppMenu.sendAction('tab-devtools');
 				}
@@ -100,11 +107,11 @@ class AppMenu {
 		}];
 	}
 
-	getViewSubmenu() {
+	getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 		return [{
 			label: 'Reload',
 			accelerator: 'CommandOrControl+R',
-			click(item, focusedWindow) {
+			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					AppMenu.sendAction('reload-current-viewer');
 				}
@@ -112,7 +119,7 @@ class AppMenu {
 		}, {
 			label: 'Hard Reload',
 			accelerator: 'CommandOrControl+Shift+R',
-			click(item, focusedWindow) {
+			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					AppMenu.sendAction('hard-reload');
 				}
@@ -124,7 +131,7 @@ class AppMenu {
 		}, {
 			label: 'Zoom In',
 			accelerator: process.platform === 'darwin' ? 'Command+Plus' : 'Control+=',
-			click(item, focusedWindow) {
+			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					AppMenu.sendAction('zoomIn');
 				}
@@ -132,7 +139,7 @@ class AppMenu {
 		}, {
 			label: 'Zoom Out',
 			accelerator: 'CommandOrControl+-',
-			click(item, focusedWindow) {
+			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					AppMenu.sendAction('zoomOut');
 				}
@@ -140,7 +147,7 @@ class AppMenu {
 		}, {
 			label: 'Actual Size',
 			accelerator: 'CommandOrControl+0',
-			click(item, focusedWindow) {
+			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					AppMenu.sendAction('zoomActualSize');
 				}
@@ -149,7 +156,7 @@ class AppMenu {
 			type: 'separator'
 		}, {
 			label: 'Toggle Tray Icon',
-			click(item, focusedWindow) {
+			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					focusedWindow.webContents.send('toggletray');
 				}
@@ -157,7 +164,7 @@ class AppMenu {
 		}, {
 			label: 'Toggle Sidebar',
 			accelerator: 'CommandOrControl+Shift+S',
-			click(item, focusedWindow) {
+			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					const newValue = !ConfigUtil.getConfigItem('showSidebar');
 					focusedWindow.webContents.send('toggle-sidebar', newValue);
@@ -168,7 +175,7 @@ class AppMenu {
 			label: 'Auto hide Menu bar',
 			checked: ConfigUtil.getConfigItem('autoHideMenubar', false),
 			visible: process.platform !== 'darwin',
-			click(item, focusedWindow) {
+			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					const newValue = !ConfigUtil.getConfigItem('autoHideMenubar');
 					focusedWindow.setAutoHideMenuBar(newValue);
@@ -181,7 +188,7 @@ class AppMenu {
 		}];
 	}
 
-	getHelpSubmenu() {
+	getHelpSubmenu(): Electron.MenuItemConstructorOptions[] {
 		return [
 			{
 				label: `${appName + ' Desktop'} v${app.getVersion()}`,
@@ -189,7 +196,7 @@ class AppMenu {
 			},
 			{
 				label: 'About Zulip',
-				click(item, focusedWindow) {
+				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
 						AppMenu.sendAction('open-about');
 					}
@@ -202,7 +209,8 @@ class AppMenu {
 						AppMenu.sendAction('open-help');
 					}
 				}
-			}, {
+			},
+			{
 				label: 'Report an Issue',
 				click() {
 					// the goal is to notify the main.html BrowserWindow
@@ -211,11 +219,12 @@ class AppMenu {
 						window.webContents.send('open-feedback-modal');
 					});
 				}
-			}];
+			}
+		];
 	}
 
-	getWindowSubmenu(tabs, activeTabIndex, enableMenu) {
-		const initialSubmenu = [{
+	getWindowSubmenu(tabs: any[], activeTabIndex: number, enableMenu: boolean): Electron.MenuItemConstructorOptions[] {
+		const initialSubmenu: any[] = [{
 			role: 'minimize'
 		}, {
 			role: 'close'
@@ -226,24 +235,24 @@ class AppMenu {
 			initialSubmenu.push({
 				type: 'separator'
 			});
-			for (let i = 0; i < tabs.length; i++) {
+			tabs.forEach(tab => {
 				// Do not add functional tab settings to list of windows in menu bar
-				if (tabs[i].props.role === 'function' && tabs[i].webview.props.name === 'Settings') {
-					continue;
+				if (tab.props.role === 'function' && tab.webview.props.name === 'Settings') {
+					return;
 				}
 
 				initialSubmenu.push({
-					label: tabs[i].webview.props.name,
-					accelerator: tabs[i].props.role === 'function' ? '' : `${ShortcutKey} + ${tabs[i].props.index + 1}`,
-					checked: tabs[i].props.index === activeTabIndex,
-					click(item, focusedWindow) {
+					label: tab.webview.props.name,
+					accelerator: tab.props.role === 'function' ? '' : `${ShortcutKey} + ${tab.props.index + 1}`,
+					checked: tab.props.index === activeTabIndex,
+					click(_item: any, focusedWindow: any) {
 						if (focusedWindow) {
-							AppMenu.sendAction('switch-server-tab', tabs[i].props.index);
+							AppMenu.sendAction('switch-server-tab', tab.props.index);
 						}
 					},
 					type: 'checkbox'
 				});
-			}
+			});
 			initialSubmenu.push({
 				type: 'separator'
 			});
@@ -251,7 +260,7 @@ class AppMenu {
 				label: 'Switch to Next Organization',
 				accelerator: `Ctrl+Tab`,
 				enabled: enableMenu,
-				click(item, focusedWindow) {
+				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
 						AppMenu.sendAction('switch-server-tab', AppMenu.getNextServer(tabs, activeTabIndex));
 					}
@@ -260,7 +269,7 @@ class AppMenu {
 				label: 'Switch to Previous Organization',
 				accelerator: `Ctrl+Shift+Tab`,
 				enabled: enableMenu,
-				click(item, focusedWindow) {
+				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
 						AppMenu.sendAction('switch-server-tab', AppMenu.getPreviousServer(tabs, activeTabIndex));
 					}
@@ -271,7 +280,7 @@ class AppMenu {
 		return initialSubmenu;
 	}
 
-	getDarwinTpl(props) {
+	getDarwinTpl(props: any): Electron.MenuItemConstructorOptions[] {
 		const { tabs, activeTabIndex, enableMenu } = props;
 
 		return [{
@@ -279,7 +288,7 @@ class AppMenu {
 			submenu: [{
 				label: 'Add Organization',
 				accelerator: 'Cmd+Shift+N',
-				click(item, focusedWindow) {
+				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
 						AppMenu.sendAction('new-server');
 					}
@@ -294,7 +303,7 @@ class AppMenu {
 			}, {
 				label: 'Desktop Settings',
 				accelerator: 'Cmd+,',
-				click(item, focusedWindow) {
+				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
 						AppMenu.sendAction('open-settings');
 					}
@@ -303,7 +312,7 @@ class AppMenu {
 				label: 'Keyboard Shortcuts',
 				accelerator: 'Cmd+Shift+K',
 				enabled: enableMenu,
-				click(item, focusedWindow) {
+				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
 						AppMenu.sendAction('shortcut');
 					}
@@ -314,7 +323,7 @@ class AppMenu {
 				label: 'Copy Zulip URL',
 				accelerator: 'Cmd+Shift+C',
 				enabled: enableMenu,
-				click(item, focusedWindow) {
+				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
 						AppMenu.sendAction('copy-zulip-url');
 					}
@@ -323,7 +332,7 @@ class AppMenu {
 				label: 'Log Out of Organization',
 				accelerator: 'Cmd+L',
 				enabled: enableMenu,
-				click(item, focusedWindow) {
+				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
 						AppMenu.sendAction('log-out');
 					}
@@ -383,7 +392,7 @@ class AppMenu {
 		}];
 	}
 
-	getOtherTpl(props) {
+	getOtherTpl(props: any): Electron.MenuItemConstructorOptions[] {
 		const { tabs, activeTabIndex, enableMenu } = props;
 
 		return [{
@@ -391,7 +400,7 @@ class AppMenu {
 			submenu: [{
 				label: 'Add Organization',
 				accelerator: 'Ctrl+Shift+N',
-				click(item, focusedWindow) {
+				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
 						AppMenu.sendAction('new-server');
 					}
@@ -408,7 +417,7 @@ class AppMenu {
 			}, {
 				label: 'Desktop Settings',
 				accelerator: 'Ctrl+,',
-				click(item, focusedWindow) {
+				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
 						AppMenu.sendAction('open-settings');
 					}
@@ -417,7 +426,7 @@ class AppMenu {
 				label: 'Keyboard Shortcuts',
 				accelerator: 'Ctrl+Shift+K',
 				enabled: enableMenu,
-				click(item, focusedWindow) {
+				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
 						AppMenu.sendAction('shortcut');
 					}
@@ -428,7 +437,7 @@ class AppMenu {
 				label: 'Copy Zulip URL',
 				accelerator: 'Ctrl+Shift+C',
 				enabled: enableMenu,
-				click(item, focusedWindow) {
+				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
 						AppMenu.sendAction('copy-zulip-url');
 					}
@@ -437,7 +446,7 @@ class AppMenu {
 				label: 'Log Out of Organization',
 				accelerator: 'Ctrl+L',
 				enabled: enableMenu,
-				click(item, focusedWindow) {
+				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
 						AppMenu.sendAction('log-out');
 					}
@@ -488,7 +497,7 @@ class AppMenu {
 		}];
 	}
 
-	static sendAction(action, ...params) {
+	static sendAction(action: any, ...params: any[]): void {
 		const win = BrowserWindow.getAllWindows()[0];
 
 		if (process.platform === 'darwin') {
@@ -498,11 +507,11 @@ class AppMenu {
 		win.webContents.send(action, ...params);
 	}
 
-	static checkForUpdate() {
+	static checkForUpdate(): void {
 		appUpdater(true);
 	}
 
-	static getNextServer(tabs, activeTabIndex) {
+	static getNextServer(tabs: any[], activeTabIndex: number): number {
 		do {
 			activeTabIndex = (activeTabIndex + 1) % tabs.length;
 		}
@@ -510,7 +519,7 @@ class AppMenu {
 		return activeTabIndex;
 	}
 
-	static getPreviousServer(tabs, activeTabIndex) {
+	static getPreviousServer(tabs: any[], activeTabIndex: number): number {
 		do {
 			activeTabIndex = (activeTabIndex - 1 + tabs.length) % tabs.length;
 		}
@@ -518,7 +527,7 @@ class AppMenu {
 		return activeTabIndex;
 	}
 
-	static resetAppSettings() {
+	static resetAppSettings(): void {
 		const resetAppSettingsMessage = 'By proceeding you will be removing all connected organizations and preferences from Zulip.';
 
 		// We save App's settings/configurations in following files
@@ -534,7 +543,7 @@ class AppMenu {
 			if (response === 0) {
 				settingFiles.forEach(settingFileName => {
 					const getSettingFilesPath = path.join(app.getPath('appData'), appName, settingFileName);
-					fs.access(getSettingFilesPath, error => {
+					fs.access(getSettingFilesPath, (error: any) => {
 						if (error) {
 							logger.error('Error while resetting app settings.');
 							logger.error(error);
@@ -549,11 +558,11 @@ class AppMenu {
 		});
 	}
 
-	setMenu(props) {
+	setMenu(props: any): void {
 		const tpl = process.platform === 'darwin' ? this.getDarwinTpl(props) : this.getOtherTpl(props);
 		const menu = Menu.buildFromTemplate(tpl);
 		Menu.setApplicationMenu(menu);
 	}
 }
 
-module.exports = new AppMenu();
+export = new AppMenu();
