@@ -1,5 +1,6 @@
-const isOnline = require('is-online');
-const Logger = require('./logger-util');
+import * as isOnline from 'is-online';
+
+import Logger = require('./logger-util');
 
 const logger = new Logger({
 	file: `domain-util.log`,
@@ -7,16 +8,22 @@ const logger = new Logger({
 });
 
 class ReconnectUtil {
-	constructor(serverManagerView) {
+	// TODO: TypeScript - Figure out how to annotate serverManagerView
+	// it should be ServerManagerView; maybe make it a generic so we can
+	// pass the class from main.js
+	serverManagerView: any;
+	alreadyReloaded: boolean;
+
+	constructor(serverManagerView: any) {
 		this.serverManagerView = serverManagerView;
 		this.alreadyReloaded = false;
 	}
 
-	clearState() {
+	clearState(): void {
 		this.alreadyReloaded = false;
 	}
 
-	pollInternetAndReload() {
+	pollInternetAndReload(): void {
 		const pollInterval = setInterval(() => {
 			this._checkAndReload()
 				.then(status => {
@@ -28,11 +35,12 @@ class ReconnectUtil {
 		}, 1500);
 	}
 
-	_checkAndReload() {
+	// TODO: Make this a async function
+	_checkAndReload(): Promise<boolean> {
 		return new Promise(resolve => {
 			if (!this.alreadyReloaded) { // eslint-disable-line no-negated-condition
 				isOnline()
-					.then(online => {
+					.then((online: boolean) => {
 						if (online) {
 							if (!this.alreadyReloaded) {
 								this.serverManagerView.reloadView();
@@ -57,4 +65,4 @@ class ReconnectUtil {
 	}
 }
 
-module.exports = ReconnectUtil;
+export = ReconnectUtil;
