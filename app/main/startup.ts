@@ -1,10 +1,10 @@
 'use strict';
-const { app } = require('electron');
-const AutoLaunch = require('auto-launch');
-const isDev = require('electron-is-dev');
-const ConfigUtil = require('./../renderer/js/utils/config-util.js');
+import { app } from 'electron';
+import * as AutoLaunch from 'auto-launch';
+import * as isDev from 'electron-is-dev';
+import { ConfigUtil } from '../renderer/js/utils/config-util';
 
-const setAutoLaunch = AutoLaunchValue => {
+export const setAutoLaunch = (AutoLaunchValue: boolean): void => {
 	// Don't run this in development
 	if (isDev) {
 		return;
@@ -27,8 +27,4 @@ const setAutoLaunch = AutoLaunchValue => {
 	} else {
 		ZulipAutoLauncher.disable();
 	}
-};
-
-module.exports = {
-	setAutoLaunch
 };
