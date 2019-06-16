@@ -1,12 +1,16 @@
 'use strict';
 
-const {app} = require('electron').remote;
+import { remote } from 'electron';
+import * as os from 'os';
 
-const os = require('os');
-
-let instance = null;
+const { app } = remote;
+let instance: null | SystemUtil = null;
 
 class SystemUtil {
+	connectivityERR: string[];
+
+	userAgent: string | null;
+
 	constructor() {
 		if (instance) {
 			return instance;
@@ -27,29 +31,30 @@ class SystemUtil {
 		return instance;
 	}
 
-	getOS() {
-		if (os.platform() === 'darwin') {
+	getOS(): string {
+		const platform = os.platform();
+		if (platform === 'darwin') {
 			return 'Mac';
-		}
-		if (os.platform() === 'linux') {
+		} else if (platform === 'linux') {
 			return 'Linux';
-		}
-		if (os.platform() === 'win32' || os.platform() === 'win64') {
+		} else if (platform === 'win32') {
 			if (parseFloat(os.release()) < 6.2) {
 				return 'Windows 7';
 			} else {
 				return 'Windows 10';
 			}
+		} else {
+			return '';
 		}
 	}
 
-	setUserAgent(webViewUserAgent) {
-		this.userAgent = 'ZulipElectron/' + app.getVersion() + ' ' + webViewUserAgent;
+	setUserAgent(webViewUserAgent: string): void {
+		this.userAgent = `ZulipElectron/'${app.getVersion()}${webViewUserAgent}`;
 	}
 
-	getUserAgent() {
+	getUserAgent(): string | null {
 		return this.userAgent;
 	}
 }
 
-module.exports = new SystemUtil();
+export = new SystemUtil();
