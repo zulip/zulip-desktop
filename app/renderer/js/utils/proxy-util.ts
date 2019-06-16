@@ -1,9 +1,15 @@
 'use strict';
 
-const url = require('url');
-const ConfigUtil = require('./config-util.js');
+import * as url from 'url';
 
-let instance = null;
+import ConfigUtil = require('./config-util');
+
+let instance: null | ProxyUtil = null;
+
+interface ProxyRule {
+	hostname?: string;
+	port?: number;
+}
 
 class ProxyUtil {
 	constructor() {
@@ -17,8 +23,13 @@ class ProxyUtil {
 	}
 
 	// Return proxy to be used for a particular uri, to be used for request
-	getProxy(uri) {
-		uri = url.parse(uri);
+	getProxy(_uri: string): ProxyRule | void {
+		const parsedUri = url.parse(_uri);
+		if (parsedUri === null) {
+			return;
+		}
+
+		const uri = parsedUri;
 		const proxyRules = ConfigUtil.getConfigItem('proxyRules', '').split(';');
 		// If SPS is on and system uses no proxy then request should not try to use proxy from
 		// environment. NO_PROXY = '*' makes request ignore all environment proxy variables.
@@ -27,9 +38,9 @@ class ProxyUtil {
 			return;
 		}
 
-		const proxyRule = {};
+		const proxyRule: any = {};
 		if (uri.protocol === 'http:') {
-			proxyRules.forEach(proxy => {
+			proxyRules.forEach((proxy: string) => {
 				if (proxy.includes('http=')) {
 					proxyRule.hostname = proxy.split('http=')[1].trim().split(':')[0];
 					proxyRule.port = proxy.split('http=')[1].trim().split(':')[1];
@@ -39,7 +50,7 @@ class ProxyUtil {
 		}
 
 		if (uri.protocol === 'https:') {
-			proxyRules.forEach(proxy => {
+			proxyRules.forEach((proxy: string) => {
 				if (proxy.includes('https=')) {
 					proxyRule.hostname = proxy.split('https=')[1].trim().split(':')[0];
 					proxyRule.port = proxy.split('https=')[1].trim().split(':')[1];
@@ -49,14 +60,15 @@ class ProxyUtil {
 		}
 	}
 
-	resolveSystemProxy(mainWindow) {
+	// TODO: Refactor to async function
+	resolveSystemProxy(mainWindow: Electron.BrowserWindow): void {
 		const page = mainWindow.webContents;
 		const ses = page.session;
 		const resolveProxyUrl = 'www.example.com';
 
 		// Check HTTP Proxy
 		const httpProxy = new Promise(resolve => {
-			ses.resolveProxy('http://' + resolveProxyUrl, proxy => {
+			ses.resolveProxy('http://' + resolveProxyUrl, (proxy: string) => {
 				let httpString = '';
 				if (proxy !== 'DIRECT') {
 					// in case of proxy HTTPS url:port, windows gives first word as HTTPS while linux gives PROXY
@@ -70,7 +82,7 @@ class ProxyUtil {
 		});
 		// Check HTTPS Proxy
 		const httpsProxy = new Promise(resolve => {
-			ses.resolveProxy('https://' + resolveProxyUrl, proxy => {
+			ses.resolveProxy('https://' + resolveProxyUrl, (proxy: string) => {
 				let httpsString = '';
 				if (proxy !== 'DIRECT' || proxy.includes('HTTPS')) {
 					// in case of proxy HTTPS url:port, windows gives first word as HTTPS while linux gives PROXY
@@ -85,7 +97,7 @@ class ProxyUtil {
 
 		// Check FTP Proxy
 		const ftpProxy = new Promise(resolve => {
-			ses.resolveProxy('ftp://' + resolveProxyUrl, proxy => {
+			ses.resolveProxy('ftp://' + resolveProxyUrl, (proxy: string) => {
 				let ftpString = '';
 				if (proxy !== 'DIRECT') {
 					if (proxy.includes('PROXY')) {
@@ -98,7 +110,7 @@ class ProxyUtil {
 
 		// Check SOCKS Proxy
 		const socksProxy = new Promise(resolve => {
-			ses.resolveProxy('socks4://' + resolveProxyUrl, proxy => {
+			ses.resolveProxy('socks4://' + resolveProxyUrl, (proxy: string) => {
 				let socksString = '';
 				if (proxy !== 'DIRECT') {
 					if (proxy.includes('SOCKS5')) {
@@ -127,4 +139,4 @@ class ProxyUtil {
 	}
 }
 
-module.exports = new ProxyUtil();
+export = new ProxyUtil();
