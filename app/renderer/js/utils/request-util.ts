@@ -1,9 +1,9 @@
 import * as fs from 'fs';
 import Logger from './logger-util';
 
-import ProxyUtil from './proxy-util';
 import ConfigUtil from './config-util';
 
+import ProxyUtil = require('./proxy-util');
 import CertificateUtil = require('./certificate-util');
 import SystemUtil = require('./system-util');
 
@@ -14,9 +14,11 @@ const logger = new Logger({
 
 let instance: null | RequestUtil = null;
 
+// TODO: TypeScript - Use ProxyRule for the proxy property
+// we can do this now since we use export = ProxyUtil syntax
 interface RequestUtilResponse {
 	ca: string;
-	proxy: string;
+	proxy: string | void | object;
 	ecdhCurve: 'auto';
 	headers: { 'User-Agent': string };
 	rejectUnauthorized: boolean;
