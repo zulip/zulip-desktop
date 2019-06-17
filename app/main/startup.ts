@@ -2,7 +2,8 @@
 import { app } from 'electron';
 import * as AutoLaunch from 'auto-launch';
 import * as isDev from 'electron-is-dev';
-import { ConfigUtil } from '../renderer/js/utils/config-util';
+
+import ConfigUtil = require('../renderer/js/utils/config-util');
 
 export const setAutoLaunch = (AutoLaunchValue: boolean): void => {
 	// Don't run this in development
