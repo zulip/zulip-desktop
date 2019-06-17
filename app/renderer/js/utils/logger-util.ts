@@ -1,37 +1,57 @@
-const NodeConsole = require('console').Console;
-const fs = require('fs');
-const os = require('os');
-const isDev = require('electron-is-dev');
-const { initSetUp } = require('./default-util');
-const { sentryInit, captureException } = require('./sentry-util');
+import { Console as NodeConsole } from 'console'; // eslint-disable-line node/prefer-global/console
+import * as fs from 'fs';
+import * as os from 'os';
+import * as isDev from 'electron-is-dev';
+import { initSetUp } from './default-util';
+import { sentryInit, captureException } from './sentry-util';
+
+import electron = require('electron');
+// this interface adds [key: string]: any so
+// we can do console[type] later on in the code
+interface PatchedConsole extends Console {
+	[key: string]: any;
+}
+
+interface LoggerOptions {
+	timestamp?: any;
+	file?: string;
+	level?: boolean;
+	logInDevMode?: boolean;
+}
 
 initSetUp();
 
-let app = null;
+let app: Electron.App = null;
 let reportErrors = true;
 if (process.type === 'renderer') {
-	app = require('electron').remote.app;
+	app = electron.remote.app;
 
 	// Report Errors to Sentry only if it is enabled in settings
 	// Gets the value of reportErrors from config-util for renderer process
 	// For main process, sentryInit() is handled in index.js
-	const { ipcRenderer } = require('electron');
+	const { ipcRenderer } = electron;
 	ipcRenderer.send('error-reporting');
-	ipcRenderer.on('error-reporting-val', (event, errorReporting) => {
+	ipcRenderer.on('error-reporting-val', (_event: any, errorReporting: boolean) => {
 		reportErrors = errorReporting;
 		if (reportErrors) {
 			sentryInit();
 		}
 	});
 } else {
-	app = require('electron').app;
+	app = electron.app;
 }
 
-const browserConsole = console;
+const browserConsole: PatchedConsole = console;
 const logDir = `${app.getPath('userData')}/Logs`;
 
 class Logger {
-	constructor(opts = {}) {
+	nodeConsole: PatchedConsole;
+	timestamp: any; // TODO: TypeScript - Figure out how to make this work with string | Function.
+	level: boolean;
+	logInDevMode: boolean;
+	[key: string]: any;
+
+	constructor(opts: LoggerOptions = {}) {
 		let {
 			timestamp = true,
 			file = 'console.log',
@@ -61,7 +81,7 @@ class Logger {
 		this.setUpConsole();
 	}
 
-	_log(type, ...args) {
+	_log(type: string, ...args: any[]): void {
 		const {
 			nodeConsole, timestamp, level, logInDevMode
 		} = this;
@@ -77,7 +97,7 @@ class Logger {
 
 			case isDev || logInDevMode:
 				nodeConsoleLog = nodeConsole[type] || nodeConsole.log;
-				nodeConsoleLog.apply(null, args);
+				nodeConsoleLog.apply(null, args); // eslint-disable-line prefer-spread
 
 			default: break;
 		}
@@ -86,19 +106,19 @@ class Logger {
 		browserConsole[type].apply(null, args);
 	}
 
-	setUpConsole() {
+	setUpConsole(): void {
 		for (const type in browserConsole) {
 			this.setupConsoleMethod(type);
 		}
 	}
 
-	setupConsoleMethod(type) {
-		this[type] = (...args) => {
-			this._log(type, ...args);
+	setupConsoleMethod(type: string): void {
+		this[type] = (...args: any[]) => {
+			this._log(null, [type].concat(args));
 		};
 	}
 
-	getTimestamp() {
+	getTimestamp(): string {
 		const date = new Date();
 		const timestamp =
 			`${date.getMonth()}/${date.getDate()} ` +
@@ -106,13 +126,13 @@ class Logger {
 		return timestamp;
 	}
 
-	reportSentry(err) {
+	reportSentry(err: string): void {
 		if (reportErrors) {
 			captureException(err);
 		}
 	}
 
-	trimLog(file) {
+	trimLog(file: string): void{
 		fs.readFile(file, 'utf8', (err, data) => {
 			if (err) {
 				throw err;
@@ -131,4 +151,4 @@ class Logger {
 	}
 }
 
-module.exports = Logger;
+export = Logger;

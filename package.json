@@ -216,5 +216,6 @@
       "browser",
       "mocha"
     ]
-  }
+  },
+  "dependencies": {}
 }
