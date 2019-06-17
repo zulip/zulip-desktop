@@ -1,8 +1,7 @@
 import * as fs from 'fs';
-import Logger from './logger-util';
-
 import ConfigUtil from './config-util';
 
+import Logger = require('./logger-util');
 import ProxyUtil = require('./proxy-util');
 import CertificateUtil = require('./certificate-util');
 import SystemUtil = require('./system-util');
