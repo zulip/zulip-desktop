@@ -4,8 +4,9 @@ import { remote } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
 import JsonDB from 'node-json-db';
-import Logger from './logger-util';
 import { initSetUp } from './default-util';
+
+import Logger = require('./logger-util');
 
 const { app, dialog } = remote;
 
