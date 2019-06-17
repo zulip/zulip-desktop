@@ -1,19 +1,19 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const process = require('process');
-const JsonDB = require('node-json-db');
-const Logger = require('./logger-util');
+import * as fs from 'fs';
+import * as path from 'path';
+import * as process from 'process';
+import JsonDB from 'node-json-db';
+import { Logger } from './logger-util';
 
 const logger = new Logger({
 	file: 'config-util.log',
 	timestamp: true
 });
 
-let instance = null;
-let dialog = null;
-let app = null;
+let instance: any = null;
+let dialog: any = null;
+let app: any = null;
 
 /* To make the util runnable in both main and renderer process */
 if (process.type === 'renderer') {
@@ -27,6 +27,8 @@ if (process.type === 'renderer') {
 }
 
 class ConfigUtil {
+	db: any;
+
 	constructor() {
 		if (instance) {
 			return instance;
@@ -38,7 +40,7 @@ class ConfigUtil {
 		return instance;
 	}
 
-	getConfigItem(key, defaultValue = null) {
+	getConfigItem(key: any, defaultValue: any = null): any {
 		try {
 			this.db.reload();
 		} catch (err) {
@@ -53,8 +55,9 @@ class ConfigUtil {
 			return value;
 		}
 	}
+	
 	// This function returns whether a key exists in the configuration file (settings.json)
-	isConfigItemExists(key) {
+	isConfigItemExists(key: any): boolean {
 		try {
 			this.db.reload();
 		} catch (err) {
@@ -65,17 +68,17 @@ class ConfigUtil {
 		return (value !== undefined);
 	}
 
-	setConfigItem(key, value) {
+	setConfigItem(key: any, value: any): void {
 		this.db.push(`/${key}`, value, true);
 		this.db.save();
 	}
 
-	removeConfigItem(key) {
+	removeConfigItem(key: any): void {
 		this.db.delete(`/${key}`);
 		this.db.save();
 	}
 
-	reloadDB() {
+	reloadDB(): void {
 		const settingsJsonPath = path.join(app.getPath('userData'), '/config/settings.json');
 		try {
 			const file = fs.readFileSync(settingsJsonPath, 'utf8');
@@ -96,4 +99,4 @@ class ConfigUtil {
 	}
 }
 
-module.exports = new ConfigUtil();
+export = new ConfigUtil();
