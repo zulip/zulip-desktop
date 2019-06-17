@@ -1,32 +1,34 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const process = require('process');
-const JsonDB = require('node-json-db');
-const Logger = require('./logger-util');
+import * as fs from 'fs';
+import * as path from 'path';
+import JsonDB from 'node-json-db';
+
+import electron = require('electron');
+import Logger = require('./logger-util');
 
 const logger = new Logger({
 	file: 'config-util.log',
 	timestamp: true
 });
 
-let instance = null;
-let dialog = null;
-let app = null;
+let instance: null | ConfigUtil = null;
+let dialog: Electron.Dialog = null;
+let app: Electron.App = null;
 
 /* To make the util runnable in both main and renderer process */
 if (process.type === 'renderer') {
-	const remote = require('electron').remote;
+	const { remote } = electron;
 	dialog = remote.dialog;
 	app = remote.app;
 } else {
-	const electron = require('electron');
 	dialog = electron.dialog;
 	app = electron.app;
 }
 
 class ConfigUtil {
+	db: any;
+
 	constructor() {
 		if (instance) {
 			return instance;
@@ -38,7 +40,7 @@ class ConfigUtil {
 		return instance;
 	}
 
-	getConfigItem(key, defaultValue = null) {
+	getConfigItem(key: string, defaultValue: any = null): any {
 		try {
 			this.db.reload();
 		} catch (err) {
@@ -53,8 +55,9 @@ class ConfigUtil {
 			return value;
 		}
 	}
+
 	// This function returns whether a key exists in the configuration file (settings.json)
-	isConfigItemExists(key) {
+	isConfigItemExists(key: string): boolean {
 		try {
 			this.db.reload();
 		} catch (err) {
@@ -65,17 +68,17 @@ class ConfigUtil {
 		return (value !== undefined);
 	}
 
-	setConfigItem(key, value) {
+	setConfigItem(key: string, value: any): void {
 		this.db.push(`/${key}`, value, true);
 		this.db.save();
 	}
 
-	removeConfigItem(key) {
+	removeConfigItem(key: string): void {
 		this.db.delete(`/${key}`);
 		this.db.save();
 	}
 
-	reloadDB() {
+	reloadDB(): void {
 		const settingsJsonPath = path.join(app.getPath('userData'), '/config/settings.json');
 		try {
 			const file = fs.readFileSync(settingsJsonPath, 'utf8');
@@ -96,4 +99,4 @@ class ConfigUtil {
 	}
 }
 
-module.exports = new ConfigUtil();
+export = new ConfigUtil();
