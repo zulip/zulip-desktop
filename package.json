@@ -138,6 +138,7 @@
     "electron-connect": "0.6.2",
     "electron-debug": "1.4.0",
     "eslint-config-xo-typescript": "^0.14.0",
+    "getroot": "^1.0.0",
     "google-translate-api": "2.3.0",
     "gulp": "4.0.0",
     "gulp-tape": "0.0.9",
@@ -204,5 +205,6 @@
       "browser",
       "mocha"
     ]
-  }
+  },
+  "dependencies": {}
 }

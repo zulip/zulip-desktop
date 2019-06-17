@@ -1,14 +1,34 @@
-const NodeConsole = require('console').Console;
-const fs = require('fs');
-const os = require('os');
-const isDev = require('electron-is-dev');
-const { initSetUp } = require('./default-util');
-const { sentryInit, captureException } = require('./sentry-util');
+import { Console as NodeConsole } from 'console';
+import * as fs from 'fs';
+import * as os from 'os';
+import * as isDev from 'electron-is-dev';
+import { root } from 'getroot';
+import { initSetUp } from './default-util';
+import { sentryInit, captureException } from './sentry-util';
+
+export interface LoggerOptions {
+	timestamp?: any;
+	file?: string;
+	level?: boolean;
+	logInDevMode?: boolean;
+}
+
+export interface Logger {
+	nodeConsole: any;
+	timestamp: any;
+	level: boolean;
+	logInDevMode: boolean;
+	[key: string]: any;
+}
+
+export interface Console {
+	[key: string]: any;
+}
 
 initSetUp();
 
-let app = null;
-let reportErrors = true;
+let app: any = null;
+let reportErrors: boolean = true;
 if (process.type === 'renderer') {
 	app = require('electron').remote.app;
 
@@ -17,7 +37,7 @@ if (process.type === 'renderer') {
 	// For main process, sentryInit() is handled in index.js
 	const { ipcRenderer } = require('electron');
 	ipcRenderer.send('error-reporting');
-	ipcRenderer.on('error-reporting-val', (event, errorReporting) => {
+	ipcRenderer.on('error-reporting-val', (_event: any, errorReporting: boolean) => {
 		reportErrors = errorReporting;
 		if (reportErrors) {
 			sentryInit();
@@ -27,11 +47,11 @@ if (process.type === 'renderer') {
 	app = require('electron').app;
 }
 
-const browserConsole = console;
+const browserConsole: Console = console;
 const logDir = `${app.getPath('userData')}/Logs`;
 
-class Logger {
-	constructor(opts = {}) {
+export class Logger {
+	constructor(opts: LoggerOptions = {}) {
 		let {
 			timestamp = true,
 			file = 'console.log',
@@ -46,7 +66,7 @@ class Logger {
 
 		// Trim log according to type of process
 		if (process.type === 'renderer') {
-			requestIdleCallback(() => this.trimLog(file));
+			root.requestIdleCallback(() => this.trimLog(file));
 		} else {
 			process.nextTick(() => this.trimLog(file));
 		}
@@ -61,7 +81,7 @@ class Logger {
 		this.setUpConsole();
 	}
 
-	_log(type, ...args) {
+	_log(type: string, ...args: any[]): void {
 		const {
 			nodeConsole, timestamp, level, logInDevMode
 		} = this;
@@ -86,19 +106,19 @@ class Logger {
 		browserConsole[type].apply(null, args);
 	}
 
-	setUpConsole() {
+	setUpConsole(): void {
 		for (const type in browserConsole) {
 			this.setupConsoleMethod(type);
 		}
 	}
 
-	setupConsoleMethod(type) {
-		this[type] = (...args) => {
+	setupConsoleMethod(type: string): void {
+		this[type] = (...args: any[]) => {
 			this._log(type, ...args);
 		};
 	}
 
-	getTimestamp() {
+	getTimestamp(): string {
 		const date = new Date();
 		const timestamp =
 			`${date.getMonth()}/${date.getDate()} ` +
@@ -106,13 +126,13 @@ class Logger {
 		return timestamp;
 	}
 
-	reportSentry(err) {
+	reportSentry(err: string): void {
 		if (reportErrors) {
 			captureException(err);
 		}
 	}
 
-	trimLog(file) {
+	trimLog(file: string): void{
 		fs.readFile(file, 'utf8', (err, data) => {
 			if (err) {
 				throw err;
@@ -130,5 +150,3 @@ class Logger {
 		});
 	}
 }
-
-module.exports = Logger;
