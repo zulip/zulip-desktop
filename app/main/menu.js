@@ -195,8 +195,10 @@ class AppMenu {
 			},
 			{
 				label: `Help Center`,
-				click() {
-					shell.openExternal('https://zulipchat.com/help/');
+				click(focusedWindow) {
+					if (focusedWindow) {
+						AppMenu.sendAction('open-help');
+					}
 				}
 			}, {
 				label: 'Report an Issue',

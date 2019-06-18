@@ -1,6 +1,6 @@
 'use strict';
 
-const { ipcRenderer, remote, clipboard } = require('electron');
+const { ipcRenderer, remote, clipboard, shell } = require('electron');
 const isDev = require('electron-is-dev');
 
 const { session, app, Menu, dialog } = remote;
@@ -622,6 +622,11 @@ class ServerManagerView {
 		});
 
 		ipcRenderer.on('open-about', this.openAbout.bind(this));
+
+		ipcRenderer.on('open-help', () => {
+			// Open help page of current active server
+			shell.openExternal(DomainUtil.getDomain(this.activeTabIndex).url + '/help');
+		});
 
 		ipcRenderer.on('reload-viewer', this.reloadView.bind(this, this.tabs[this.activeTabIndex].props.index));
 
