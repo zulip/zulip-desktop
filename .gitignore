@@ -36,3 +36,14 @@ config.gypi
 # tests/package.json
 
 .python-version
+
+# typescript compiled js files
+app/main/menu.js
+app/main/startup.js
+app/renderer/js/utils/config-util.js
+app/renderer/js/utils/logger-util.js
+app/renderer/js/utils/proxy-util.js
+app/renderer/js/utils/reconnect-util.js
+app/renderer/js/utils/request-util.js
+app/renderer/js/utils/sentry-util.js
+app/renderer/js/utils/system-util.js
