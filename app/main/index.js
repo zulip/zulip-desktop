@@ -5,7 +5,7 @@ const fs = require('fs');
 const electron = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const isDev = require('electron-is-dev');
-const { appMenu } = require('./menu');
+const AppMenu = require('./menu');
 const { appUpdater } = require('./autoupdater');
 
 const { setAutoLaunch } = require('./startup');
@@ -146,7 +146,7 @@ app.on('activate', () => {
 });
 
 app.on('ready', () => {
-	appMenu.setMenu({
+	AppMenu.setMenu({
 		tabs: []
 	});
 	mainWindow = createMainWindow();
@@ -272,7 +272,7 @@ app.on('ready', () => {
 	});
 
 	ipcMain.on('update-menu', (event, props) => {
-		appMenu.setMenu(props);
+		AppMenu.setMenu(props);
 		const activeTab = props.tabs[props.activeTabIndex];
 		if (activeTab) {
 			mainWindow.setTitle(`Zulip - ${activeTab.webview.props.name}`);

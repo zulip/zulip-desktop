@@ -7,7 +7,7 @@ const JsonDB = require('node-json-db');
 const request = require('request');
 const escape = require('escape-html');
 
-const Logger = require('./logger-util');
+const { Logger } = require('./logger-util');
 
 const RequestUtil = require(__dirname + '/../utils/request-util.js');
 const Messages = require(__dirname + '/../../../resources/messages.js');

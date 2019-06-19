@@ -1,5 +1,4 @@
 import * as fs from 'fs';
-import Logger from './logger-util';
 
 import ProxyUtil from './proxy-util';
 import ConfigUtil from './config-util';

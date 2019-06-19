@@ -13,8 +13,8 @@ const ServerTab = require(__dirname + '/js/components/server-tab.js');
 const FunctionalTab = require(__dirname + '/js/components/functional-tab.js');
 const ConfigUtil = require(__dirname + '/js/utils/config-util.js');
 const DNDUtil = require(__dirname + '/js/utils/dnd-util.js');
-const ReconnectUtil = require(__dirname + '/js/utils/reconnect-util.js');
-const Logger = require(__dirname + '/js/utils/logger-util.js');
+const { ReconnectUtil } = require(__dirname + '/js/utils/reconnect-util.js');
+const { Logger } = require(__dirname + '/js/utils/logger-util.js');
 const CommonUtil = require(__dirname + '/js/utils/common-util.js');
 
 const { feedbackHolder } = require(__dirname + '/js/feedback.js');
