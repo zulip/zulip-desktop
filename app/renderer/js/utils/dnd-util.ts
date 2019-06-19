@@ -1,17 +1,30 @@
 'use strict';
 
-const ConfigUtil = require(__dirname + '/config-util.js');
+import ConfigUtil = require('./config-util');
 
-function toggle() {
+// TODO: TypeScript - add to Setting interface
+// the list of settings since we have fixed amount of them
+// We want to do this by creating a new module that exports
+// this interface
+interface Setting {
+	[key: string]: any;
+}
+
+interface Toggle {
+	dnd: boolean;
+	newSettings: Setting;
+}
+
+export function toggle(): Toggle {
 	const dnd = !ConfigUtil.getConfigItem('dnd', false);
 	const dndSettingList = ['showNotification', 'silent'];
 	if (process.platform === 'win32') {
 		dndSettingList.push('flashTaskbarOnMessage');
 	}
 
-	let newSettings;
+	let newSettings: Setting;
 	if (dnd) {
-		const oldSettings = {};
+		const oldSettings: Setting = {};
 		newSettings = {};
 
 		// Iterate through the dndSettingList.
@@ -35,7 +48,3 @@ function toggle() {
 	ConfigUtil.setConfigItem('dnd', dnd);
 	return {dnd, newSettings};
 }
-
-module.exports = {
-	toggle
-};
