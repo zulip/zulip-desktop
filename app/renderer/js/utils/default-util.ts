@@ -1,6 +1,6 @@
-const fs = require('fs');
+import * as fs from 'fs';
 
-let app = null;
+let app: Electron.App;
 let setupCompleted = false;
 if (process.type === 'renderer') {
 	app = require('electron').remote.app;
@@ -12,7 +12,7 @@ const zulipDir = app.getPath('userData');
 const logDir = `${zulipDir}/Logs/`;
 const certificatesDir = `${zulipDir}/certificates/`;
 const configDir = `${zulipDir}/config/`;
-const initSetUp = () => {
+export const initSetUp = (): void => {
 	// if it is the first time the app is running
 	// create zulip dir in userData folder to
 	// avoid errors
@@ -71,8 +71,4 @@ const initSetUp = () => {
 
 		setupCompleted = true;
 	}
-};
-
-module.exports = {
-	initSetUp
 };
