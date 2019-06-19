@@ -1,11 +1,13 @@
 'use strict';
 
-const { app, dialog } = require('electron').remote;
-const fs = require('fs');
-const path = require('path');
-const JsonDB = require('node-json-db');
-const Logger = require('./logger-util');
-const { initSetUp } = require('./default-util');
+import { remote } from 'electron';
+import * as fs from 'fs';
+import * as path from 'path';
+import JsonDB from 'node-json-db';
+import Logger from './logger-util';
+import { initSetUp } from './default-util';
+
+const { app, dialog } = remote;
 
 initSetUp();
 
@@ -14,10 +16,16 @@ const logger = new Logger({
 	timestamp: true
 });
 
-let instance = null;
+let instance: null | CertificateUtil = null;
 const certificatesDir = `${app.getPath('userData')}/certificates`;
 
 class CertificateUtil {
+	// TODO: TypeScript - annotate this to JsonDB; can't do it now
+	// because node-json-db doesn't declare types in package.json
+	// even though it ships with a JsonDB.d.ts and we use decalre module * in
+	// typings.d.ts
+	db: any;
+
 	constructor() {
 		if (instance) {
 			return instance;
@@ -28,7 +36,8 @@ class CertificateUtil {
 		this.reloadDB();
 		return instance;
 	}
-	getCertificate(server, defaultValue = null) {
+
+	getCertificate(server: string, defaultValue: any = null): any {
 		this.reloadDB();
 		const value = this.db.getData('/')[server];
 		if (value === undefined) {
@@ -37,8 +46,9 @@ class CertificateUtil {
 			return value;
 		}
 	}
+
 	// Function to copy the certificate to userData folder
-	copyCertificate(server, location, fileName) {
+	copyCertificate(_server: string, location: string, fileName: string): boolean {
 		let copied = false;
 		const filePath = `${certificatesDir}/${fileName}`;
 		try {
@@ -54,16 +64,19 @@ class CertificateUtil {
 		}
 		return copied;
 	}
-	setCertificate(server, fileName) {
+
+	setCertificate(server: string, fileName: string): void {
 		const filePath = `${certificatesDir}/${fileName}`;
 		this.db.push(`/${server}`, filePath, true);
 		this.reloadDB();
 	}
-	removeCertificate(server) {
+
+	removeCertificate(server: string): void {
 		this.db.delete(`/${server}`);
 		this.reloadDB();
 	}
-	reloadDB() {
+
+	reloadDB(): void {
 		const settingsJsonPath = path.join(app.getPath('userData'), '/config/certificates.json');
 		try {
 			const file = fs.readFileSync(settingsJsonPath, 'utf8');
@@ -83,4 +96,4 @@ class CertificateUtil {
 	}
 }
 
-module.exports = new CertificateUtil();
+export = new CertificateUtil();
