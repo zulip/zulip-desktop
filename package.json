@@ -150,7 +150,7 @@
     "tap-colorize": "1.2.0",
     "tape": "4.8.0",
     "typescript": "3.5.2",
-    "xo": "0.22.0"
+    "xo": "0.24.0"
   },
   "xo": {
     "extends": "xo-typescript",
@@ -190,8 +190,12 @@
           "import/no-extraneous-dependencies": 0,
           "no-prototype-builtins": 0,
           "lines-between-class-members": 0,
+          "padding-line-between-statements": 0,
+          "quotes": 0,
+          "unicorn/catch-error-name": 0,
+          "node/no-deprecated-api": 0,
           "@typescript-eslint/member-ordering": "never",
-          "@typescript-eslint/restrict-plus-operands": "never"          
+          "@typescript-eslint/restrict-plus-operands": "never"
         }
       }
     ],
@@ -199,7 +203,8 @@
       "tests/*.js",
       "tools/locale-helper/*.js",
       "*/**/*.js",
-      "*.js"
+      "*.js",
+      "typings.d.ts"
     ],
     "envs": [
       "node",
