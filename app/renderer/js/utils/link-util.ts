@@ -1,8 +1,14 @@
 'use strict';
 
-const wurl = require('wurl');
+// TODO: TypeScript - Add @types/
+import * as wurl from 'wurl';
 
-let instance = null;
+let instance: null | LinkUtil = null;
+
+interface IsInternalResponse {
+	isInternalUrl: boolean;
+	isUploadsUrl: boolean;
+}
 
 class LinkUtil {
 	constructor() {
@@ -15,7 +21,7 @@ class LinkUtil {
 		return instance;
 	}
 
-	isInternal(currentUrl, newUrl) {
+	isInternal(currentUrl: string, newUrl: string): IsInternalResponse {
 		const currentDomain = wurl('hostname', currentUrl);
 		const newDomain = wurl('hostname', newUrl);
 
@@ -29,17 +35,17 @@ class LinkUtil {
 		};
 	}
 
-	isImage(url) {
+	isImage(url: string): boolean {
 		// test for images extension as well as urls like .png?s=100
 		const isImageUrl = /\.(bmp|gif|jpg|jpeg|png|webp)\?*.*$/i;
 		return isImageUrl.test(url);
 	}
 
-	isPDF(url) {
+	isPDF(url: string): boolean {
 		// test for pdf extension
 		const isPDFUrl = /\.(pdf)\?*.*$/i;
 		return isPDFUrl.test(url);
 	}
 }
 
-module.exports = new LinkUtil();
+export = new LinkUtil();
