@@ -1,6 +1,6 @@
 'use strict';
 
-let instance = null;
+let instance: null | CommonUtil = null;
 
 class CommonUtil {
 	constructor() {
@@ -13,13 +13,13 @@ class CommonUtil {
 	}
 
 	// unescape already encoded/escaped strings
-	decodeString(string) {
+	decodeString(stringInput: string): string {
 		const parser = new DOMParser();
 		const dom = parser.parseFromString(
-			'<!doctype html><body>' + string,
+			'<!doctype html><body>' + stringInput,
 			'text/html');
 		return dom.body.textContent;
 	}
 }
 
-module.exports = new CommonUtil();
+export = new CommonUtil();
