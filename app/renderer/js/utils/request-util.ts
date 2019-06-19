@@ -1,10 +1,10 @@
 import * as fs from 'fs';
 import Logger from './logger-util';
 
-import { CertificateUtil } from './certificate-util';
 import { ProxyUtil } from './proxy-util';
 import { ConfigUtil } from './config-util';
 
+import CertificateUtil = require('./certificate-util');
 import SystemUtil = require('./system-util');
 
 const logger = new Logger({
