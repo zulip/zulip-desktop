@@ -189,7 +189,9 @@
           "import/no-unresolved": 0,
           "import/no-extraneous-dependencies": 0,
           "no-prototype-builtins": 0,
-          "lines-between-class-members": 0
+          "lines-between-class-members": 0,
+          "@typescript-eslint/member-ordering": "never",
+          "@typescript-eslint/restrict-plus-operands": "never"          
         }
       }
     ],
