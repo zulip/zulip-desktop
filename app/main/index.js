@@ -354,6 +354,10 @@ app.on('ready', () => {
 	ipcMain.on('error-reporting', event => {
 		event.sender.send('error-reporting-val', errorReporting);
 	});
+
+	ipcMain.on('save-last-tab', (event, index) => {
+		ConfigUtil.setConfigItem('lastActiveTab', index);
+	});
 });
 
 app.on('before-quit', () => {

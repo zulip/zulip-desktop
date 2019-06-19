@@ -409,8 +409,8 @@ class ServerManagerView {
 	activateLastTab(index) {
 		// Open all the tabs in background, also activate the tab based on the index
 		this.activateTab(index);
-		// Save last active tab
-		ConfigUtil.setConfigItem('lastActiveTab', index);
+		// Save last active tab via main process to avoid JSON DB errors
+		ipcRenderer.send('save-last-tab', index);
 	}
 
 	// returns this.tabs in an way that does
