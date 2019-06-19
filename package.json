@@ -188,7 +188,8 @@
           "prefer-promise-reject-errors": 0,
           "import/no-unresolved": 0,
           "import/no-extraneous-dependencies": 0,
-          "no-prototype-builtins": 0
+          "no-prototype-builtins": 0,
+          "lines-between-class-members": 0
         }
       }
     ],
