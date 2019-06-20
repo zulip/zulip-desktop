@@ -1,6 +1,6 @@
 'use strict';
 
-const { ipcRenderer, remote, clipboard } = require('electron');
+const { ipcRenderer, remote, clipboard, shell } = require('electron');
 const isDev = require('electron-is-dev');
 
 const { session, app, Menu, dialog } = remote;
@@ -267,6 +267,10 @@ class ServerManagerView {
 		const currentIndex = this.tabIndex;
 		this.tabIndex++;
 		return currentIndex;
+	}
+
+	getCurrentActiveServer() {
+		return this.tabs[this.activeTabIndex].webview.props.url;
 	}
 
 	displayInitialCharLogo($img, index) {
@@ -623,6 +627,12 @@ class ServerManagerView {
 
 		ipcRenderer.on('open-about', this.openAbout.bind(this));
 
+		ipcRenderer.on('open-help', () => {
+			// Open help page of current active server
+			const helpPage = this.getCurrentActiveServer() + '/help';
+			shell.openExternal(helpPage);
+		});
+
 		ipcRenderer.on('reload-viewer', this.reloadView.bind(this, this.tabs[this.activeTabIndex].props.index));
 
 		ipcRenderer.on('reload-current-viewer', this.reloadCurrentView.bind(this));
@@ -786,7 +796,7 @@ class ServerManagerView {
 		});
 
 		ipcRenderer.on('copy-zulip-url', () => {
-			clipboard.writeText(DomainUtil.getDomain(this.activeTabIndex).url);
+			clipboard.writeText(this.getCurrentActiveServer());
 		});
 
 		ipcRenderer.on('new-server', () => {
