@@ -40,3 +40,4 @@ config.gypi
 # Ignore all the typescript compiled files
 app/renderer/js/utils/*.js
 app/main/*.js
+app/renderer/js/shared/*.js
