@@ -5,7 +5,7 @@
 // It doesn't affect the compose box so that users can still
 // use drag and drop event to share files etc
 
-const preventDragAndDrop = () => {
+const preventDragAndDrop = (): void => {
 	const preventEvents = ['dragover', 'drop'];
 	preventEvents.forEach(dragEvents => {
 		document.addEventListener(dragEvents, event => {
