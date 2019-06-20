@@ -1,12 +1,14 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const process = require('process');
+import fs from 'fs';
+import path from 'path';
+import JsonDB from 'node-json-db';
+
+import electron = require('electron');
+import Logger = require('./logger-util');
+
 const remote =
-	process.type === 'renderer' ? require('electron').remote : require('electron');
-const JsonDB = require('node-json-db');
-const Logger = require('./logger-util');
+	process.type === 'renderer' ? electron.remote : electron;
 
 const logger = new Logger({
 	file: 'linux-update-util.log',
@@ -15,10 +17,11 @@ const logger = new Logger({
 
 /* To make the util runnable in both main and renderer process */
 const { dialog, app } = remote;
-
-let instance = null;
+let instance: null | LinuxUpdateUtil = null;
 
 class LinuxUpdateUtil {
+	db: any; // TODO: TypeScript - Figure out how to annotate to JsonDB
+
 	constructor() {
 		if (instance) {
 			return instance;
@@ -30,7 +33,7 @@ class LinuxUpdateUtil {
 		return instance;
 	}
 
-	getUpdateItem(key, defaultValue = null) {
+	getUpdateItem(key: string, defaultValue: any = null): any {
 		this.reloadDB();
 		const value = this.db.getData('/')[key];
 		if (value === undefined) {
@@ -41,17 +44,17 @@ class LinuxUpdateUtil {
 		}
 	}
 
-	setUpdateItem(key, value) {
+	setUpdateItem(key: string, value: any): void {
 		this.db.push(`/${key}`, value, true);
 		this.reloadDB();
 	}
 
-	removeUpdateItem(key) {
+	removeUpdateItem(key: string): void {
 		this.db.delete(`/${key}`);
 		this.reloadDB();
 	}
 
-	reloadDB() {
+	reloadDB(): void {
 		const linuxUpdateJsonPath = path.join(app.getPath('userData'), '/config/updates.json');
 		try {
 			const file = fs.readFileSync(linuxUpdateJsonPath, 'utf8');
