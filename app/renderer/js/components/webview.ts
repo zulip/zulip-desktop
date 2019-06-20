@@ -1,22 +1,35 @@
 'use strict';
 
-const path = require('path');
-const fs = require('fs');
+import path from 'path';
+import fs from 'fs';
+import { remote } from 'electron';
 
-const ConfigUtil = require(__dirname + '/../utils/config-util.js');
-const SystemUtil = require(__dirname + '/../utils/system-util.js');
-const { app, dialog } = require('electron').remote;
+import ConfigUtil = require('../utils/config-util');
+import SystemUtil = require('../utils/system-util');
+import BaseComponent = require('../components/base');
+import handleExternalLink = require('../components/handle-external-link');
 
-const BaseComponent = require(__dirname + '/../components/base.js');
-const handleExternalLink = require(__dirname + '/../components/handle-external-link.js');
+const { app, dialog } = remote;
 
 const shouldSilentWebview = ConfigUtil.getConfigItem('silent');
+
+// TODO: TypeScript - Type annotate WebViewProps.
+interface WebViewProps {
+	[key: string]: any;
+}
+
 class WebView extends BaseComponent {
-	constructor(props) {
+	props: any;
+	zoomFactor: number;
+	badgeCount: number;
+	loading: boolean;
+	customCSS: string;
+	$webviewsContainer: DOMTokenList;
+	$el: Electron.WebviewTag;
+	constructor(props: WebViewProps) {
 		super();
 
 		this.props = props;
-
 		this.zoomFactor = 1.0;
 		this.loading = true;
 		this.badgeCount = 0;
@@ -24,7 +37,7 @@ class WebView extends BaseComponent {
 		this.$webviewsContainer = document.querySelector('#webviews-container').classList;
 	}
 
-	template() {
+	template(): string {
 		return `<webview
 					class="disabled"
 					data-tab-id="${this.props.tabIndex}"
@@ -38,14 +51,14 @@ class WebView extends BaseComponent {
 				</webview>`;
 	}
 
-	init() {
-		this.$el = this.generateNodeFromTemplate(this.template());
-		this.props.$root.appendChild(this.$el);
+	init(): void {
+		this.$el = this.generateNodeFromTemplate(this.template()) as Electron.WebviewTag;
+		this.props.$root.append(this.$el);
 
 		this.registerListeners();
 	}
 
-	registerListeners() {
+	registerListeners(): void {
 		this.$el.addEventListener('new-window', event => {
 			handleExternalLink.call(this, event);
 		});
@@ -105,7 +118,7 @@ class WebView extends BaseComponent {
 
 		this.$el.addEventListener('did-fail-load', event => {
 			const { errorDescription } = event;
-			const hasConnectivityErr = (SystemUtil.connectivityERR.indexOf(errorDescription) >= 0);
+			const hasConnectivityErr = SystemUtil.connectivityERR.includes(errorDescription);
 			if (hasConnectivityErr) {
 				console.error('error', errorDescription);
 				this.props.onNetworkError();
@@ -130,12 +143,12 @@ class WebView extends BaseComponent {
 		});
 	}
 
-	getBadgeCount(title) {
-		const messageCountInTitle = (/\(([0-9]+)\)/).exec(title);
+	getBadgeCount(title: string): number {
+		const messageCountInTitle = (/\((\d+)\)/).exec(title);
 		return messageCountInTitle ? Number(messageCountInTitle[1]) : 0;
 	}
 
-	show() {
+	show(): void {
 		// Do not show WebView if another tab was selected and this tab should be in background.
 		if (!this.props.isActive()) {
 			return;
@@ -176,7 +189,7 @@ class WebView extends BaseComponent {
 		}
 	}
 
-	focus() {
+	focus(): void {
 		// focus Webview and it's contents when Window regain focus.
 		const webContents = this.$el.getWebContents();
 		// HACK: webContents.isFocused() seems to be true even without the element
@@ -185,18 +198,18 @@ class WebView extends BaseComponent {
 			// HACK: Looks like blur needs to be called on the previously focused
 			// element to transfer focus correctly, in Electron v3.0.10
 			// See https://github.com/electron/electron/issues/15718
-			document.activeElement.blur();
+			(document.activeElement as HTMLElement).blur();
 			this.$el.focus();
 			webContents.focus();
 		}
 	}
 
-	hide() {
+	hide(): void {
 		this.$el.classList.add('disabled');
 		this.$el.classList.remove('active');
 	}
 
-	load() {
+	load(): void {
 		if (this.$el) {
 			this.show();
 		} else {
@@ -204,41 +217,41 @@ class WebView extends BaseComponent {
 		}
 	}
 
-	zoomIn() {
+	zoomIn(): void {
 		this.zoomFactor += 0.1;
 		this.$el.setZoomFactor(this.zoomFactor);
 	}
 
-	zoomOut() {
+	zoomOut(): void {
 		this.zoomFactor -= 0.1;
 		this.$el.setZoomFactor(this.zoomFactor);
 	}
 
-	zoomActualSize() {
+	zoomActualSize(): void {
 		this.zoomFactor = 1.0;
 		this.$el.setZoomFactor(this.zoomFactor);
 	}
 
-	logOut() {
+	logOut(): void {
 		this.$el.executeJavaScript('logout()');
 	}
 
-	showShortcut() {
+	showShortcut(): void {
 		this.$el.executeJavaScript('shortcut()');
 	}
 
-	openDevTools() {
+	openDevTools(): void {
 		this.$el.openDevTools();
 	}
 
-	back() {
+	back(): void {
 		if (this.$el.canGoBack()) {
 			this.$el.goBack();
 			this.focus();
 		}
 	}
 
-	canGoBackButton() {
+	canGoBackButton(): void {
 		const $backButton = document.querySelector('#actions-container #back-action');
 		if (this.$el.canGoBack()) {
 			$backButton.classList.remove('disable');
@@ -247,13 +260,13 @@ class WebView extends BaseComponent {
 		}
 	}
 
-	forward() {
+	forward(): void {
 		if (this.$el.canGoForward()) {
 			this.$el.goForward();
 		}
 	}
 
-	reload() {
+	reload(): void {
 		this.hide();
 		// Shows the loading indicator till the webview is reloaded
 		this.$webviewsContainer.remove('loaded');
@@ -261,9 +274,9 @@ class WebView extends BaseComponent {
 		this.$el.reload();
 	}
 
-	send(...param) {
-		this.$el.send(...param);
+	send(channel: string, ...param: any[]): void {
+		this.$el.send(channel, ...param);
 	}
 }
 
-module.exports = WebView;
+export = WebView;
