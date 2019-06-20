@@ -37,7 +37,7 @@
     "electron-window-state": "5.0.3",
     "escape-html": "1.0.3",
     "is-online": "7.0.0",
-    "node-json-db": "0.9.1",
+    "node-json-db": "0.9.2",
     "request": "2.85.0",
     "semver": "5.4.1",
     "wurl": "2.5.0"
