@@ -4,6 +4,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "commonjs",
     "esModuleInterop": true,
+    "skipLibCheck": true,
 
     /* Strict type-checking */
     "strict": true,
@@ -15,7 +16,7 @@
     /* Additional checks */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true,
+    "noImplicitReturns": true
   },
   "include":[
     "app/**/*",

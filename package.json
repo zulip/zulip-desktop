@@ -193,9 +193,11 @@
           "padding-line-between-statements": 0,
           "quotes": 0,
           "unicorn/catch-error-name": 0,
+          "unicorn/no-console-spaces": 0,
           "node/no-deprecated-api": 0,
           "@typescript-eslint/member-ordering": "never",
-          "@typescript-eslint/restrict-plus-operands": "never"
+          "@typescript-eslint/restrict-plus-operands": "never",
+          "import/default": 0
         }
       }
     ],
@@ -211,6 +213,5 @@
       "browser",
       "mocha"
     ]
-  },
-  "dependencies": {}
+  }
 }
