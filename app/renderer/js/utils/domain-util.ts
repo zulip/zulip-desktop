@@ -24,7 +24,7 @@ let instance: null | DomainUtil = null;
 const defaultIconUrl = '../renderer/img/icon.png';
 
 class DomainUtil {
-	db: any;
+	db: JsonDB;
 	constructor() {
 		if (instance) {
 			return instance;

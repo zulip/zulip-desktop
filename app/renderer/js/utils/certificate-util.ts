@@ -21,11 +21,7 @@ let instance: null | CertificateUtil = null;
 const certificatesDir = `${app.getPath('userData')}/certificates`;
 
 class CertificateUtil {
-	// TODO: TypeScript - annotate this to JsonDB; can't do it now
-	// because node-json-db doesn't declare types in package.json
-	// even though it ships with a JsonDB.d.ts and we use decalre module * in
-	// typings.d.ts
-	db: any;
+	db: JsonDB;
 
 	constructor() {
 		if (instance) {
