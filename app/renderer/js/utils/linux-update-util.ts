@@ -74,4 +74,4 @@ class LinuxUpdateUtil {
 	}
 }
 
-module.exports = new LinuxUpdateUtil();
+export = new LinuxUpdateUtil();
