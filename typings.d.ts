@@ -4,5 +4,7 @@
 // are not supported
 declare module '*';
 
+declare var page_params: object;
+
 // since requestIdleCallback didn't make it into lib.dom.d.ts yet
 declare function requestIdleCallback(callback: Function, options?: object): void;
