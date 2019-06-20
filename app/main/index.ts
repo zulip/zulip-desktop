@@ -360,7 +360,7 @@ app.on('ready', () => {
 		event.sender.send('error-reporting-val', errorReporting);
 	});
 
-	ipcMain.on('save-last-tab', (event, index) => {
+	ipcMain.on('save-last-tab', (_event: Electron.IpcMessageEvent, index: number) => {
 		ConfigUtil.setConfigItem('lastActiveTab', index);
 	});
 });
