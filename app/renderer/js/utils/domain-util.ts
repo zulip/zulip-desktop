@@ -1,27 +1,30 @@
 'use strict';
 
-const { app, dialog } = require('electron').remote;
-const fs = require('fs');
-const path = require('path');
-const JsonDB = require('node-json-db');
-const request = require('request');
-const escape = require('escape-html');
+import fs from 'fs';
+import path from 'path';
+import JsonDB from 'node-json-db';
+import * as request from 'request';
+import * as escape from 'escape-html';
 
-const Logger = require('./logger-util');
+import Logger = require('./logger-util');
+import electron = require('electron');
 
-const RequestUtil = require(__dirname + '/../utils/request-util.js');
-const Messages = require(__dirname + '/../../../resources/messages.js');
+import RequestUtil = require('./request-util.js');
+import Messages = require('../../../resources/messages');
+
+const { app, dialog } = electron.remote;
 
 const logger = new Logger({
 	file: `domain-util.log`,
 	timestamp: true
 });
 
-let instance = null;
+let instance: null | DomainUtil = null;
 
 const defaultIconUrl = '../renderer/img/icon.png';
 
 class DomainUtil {
+	db: any;
 	constructor() {
 		if (instance) {
 			return instance;
@@ -42,7 +45,7 @@ class DomainUtil {
 		return instance;
 	}
 
-	getDomains() {
+	getDomains(): any {
 		this.reloadDB();
 		if (this.db.getData('/').domains === undefined) {
 			return [];
@@ -51,18 +54,18 @@ class DomainUtil {
 		}
 	}
 
-	getDomain(index) {
+	getDomain(index: number): any {
 		this.reloadDB();
 		return this.db.getData(`/domains[${index}]`);
 	}
 
-	updateDomain(index, server) {
+	updateDomain(index: number, server: object): void {
 		this.reloadDB();
 		this.db.push(`/domains[${index}]`, server, true);
 	}
 
-	addDomain(server) {
-		const ignoreCerts = server.ignoreCerts;
+	addDomain(server: any): Promise<void> {
+		const { ignoreCerts } = server;
 		return new Promise(resolve => {
 			if (server.icon) {
 				this.saveServerIcon(server, ignoreCerts).then(localIconUrl => {
@@ -80,18 +83,18 @@ class DomainUtil {
 		});
 	}
 
-	removeDomains() {
+	removeDomains(): void {
 		this.db.delete('/domains');
 		this.reloadDB();
 	}
 
-	removeDomain(index) {
+	removeDomain(index: number): void {
 		this.db.delete(`/domains[${index}]`);
 		this.reloadDB();
 	}
 
 	// Check if domain is already added
-	duplicateDomain(domain) {
+	duplicateDomain(domain: any): boolean {
 		domain = this.formatUrl(domain);
 		const servers = this.getDomains();
 		for (const i in servers) {
@@ -102,30 +105,30 @@ class DomainUtil {
 		return false;
 	}
 
-	async checkCertError(domain, serverConf, error, silent) {
+	async checkCertError(domain: object, serverConf: any, error: string, silent: boolean): Promise<string | object> {
 		if (silent) {
 			// since getting server settings has already failed
 			return serverConf;
 		} else {
 			// Report error to sentry to get idea of possible certificate errors
 			// users get when adding the servers
-			logger.reportSentry(new Error(error));
+			logger.reportSentry(new Error(error).toString());
 			const certErrorMessage = Messages.certErrorMessage(domain, error);
 			const certErrorDetail = Messages.certErrorDetail();
 
-			const response = await dialog.showMessageBox({
+			const response = await (dialog.showMessageBox({
 				type: 'warning',
 				buttons: ['Yes', 'No'],
 				defaultId: 1,
 				message: certErrorMessage,
 				detail: certErrorDetail
-			});
+			}) as any); // TODO: TypeScript - Figure this out
 			if (response === 0) {
 				// set ignoreCerts parameter to true in case user responds with yes
 				serverConf.ignoreCerts = true;
 				try {
 					return await this.getServerSettings(domain, serverConf.ignoreCerts);
-				} catch (err) {
+				} catch (_) {
 					if (error === Messages.noOrgsError(domain)) {
 						throw new Error(error);
 					}
@@ -139,7 +142,7 @@ class DomainUtil {
 
 	// ignoreCerts parameter helps in fetching server icon and
 	// other server details when user chooses to ignore certificate warnings
-	async checkDomain(domain, ignoreCerts = false, silent = false) {
+	async checkDomain(domain: any, ignoreCerts = false, silent = false): Promise<any> {
 		if (!silent && this.duplicateDomain(domain)) {
 			// Do not check duplicate in silent mode
 			throw new Error('This server has been added.');
@@ -168,25 +171,21 @@ class DomainUtil {
 
 			const certsError = error.toString().includes('certificate');
 			if (domain.indexOf(whitelistDomains) >= 0 || certsError) {
-				try {
-					return await this.checkCertError(domain, serverConf, error, silent);
-				} catch (err) {
-					throw err;
-				}
+				return this.checkCertError(domain, serverConf, error, silent);
 			} else {
 				throw Messages.invalidZulipServerError(domain);
 			}
 		}
 	}
 
-	getServerSettings(domain, ignoreCerts = false) {
+	getServerSettings(domain: any, ignoreCerts = false): Promise<object | string> {
 		const serverSettingsOptions = {
 			url: domain + '/api/v1/server_settings',
 			...RequestUtil.requestOptions(domain, ignoreCerts)
 		};
 
 		return new Promise((resolve, reject) => {
-			request(serverSettingsOptions, (error, response) => {
+			request(serverSettingsOptions, (error: string, response: any) => {
 				if (!error && response.statusCode === 200) {
 					const data = JSON.parse(response.body);
 					if (data.hasOwnProperty('realm_icon') && data.realm_icon) {
@@ -208,7 +207,7 @@ class DomainUtil {
 		});
 	}
 
-	saveServerIcon(server, ignoreCerts = false) {
+	saveServerIcon(server: any, ignoreCerts = false): Promise<string> {
 		const url = server.icon;
 		const domain = server.url;
 
@@ -222,8 +221,8 @@ class DomainUtil {
 			const filePath = this.generateFilePath(url);
 			const file = fs.createWriteStream(filePath);
 			try {
-				request(serverIconOptions).on('response', response => {
-					response.on('error', err => {
+				request(serverIconOptions).on('response', (response: any) => {
+					response.on('error', (err: string) => {
 						logger.log('Could not get server icon.');
 						logger.log(err);
 						logger.reportSentry(err);
@@ -232,7 +231,7 @@ class DomainUtil {
 					response.pipe(file).on('finish', () => {
 						resolve(filePath);
 					});
-				}).on('error', err => {
+				}).on('error', (err: string) => {
 					logger.log('Could not get server icon.');
 					logger.log(err);
 					logger.reportSentry(err);
@@ -247,9 +246,9 @@ class DomainUtil {
 		});
 	}
 
-	updateSavedServer(url, index) {
+	updateSavedServer(url: string, index: number): void {
 		// Does not promise successful update
-		const ignoreCerts = this.getDomain(index).ignoreCerts;
+		const { ignoreCerts } = this.getDomain(index);
 		this.checkDomain(url, ignoreCerts, true).then(newServerConf => {
 			this.saveServerIcon(newServerConf, ignoreCerts).then(localIconUrl => {
 				newServerConf.icon = localIconUrl;
@@ -259,7 +258,7 @@ class DomainUtil {
 		});
 	}
 
-	reloadDB() {
+	reloadDB(): void {
 		const domainJsonPath = path.join(app.getPath('userData'), 'config/domain.json');
 		try {
 			const file = fs.readFileSync(domainJsonPath, 'utf8');
@@ -280,7 +279,7 @@ class DomainUtil {
 		this.db = new JsonDB(domainJsonPath, true, true);
 	}
 
-	generateFilePath(url) {
+	generateFilePath(url: string): string {
 		const dir = `${app.getPath('userData')}/server-icons`;
 		const extension = path.extname(url).split('?')[0];
 
@@ -299,7 +298,7 @@ class DomainUtil {
 		return `${dir}/${hash >>> 0}${extension}`;
 	}
 
-	formatUrl(domain) {
+	formatUrl(domain: any): string {
 		const hasPrefix = (domain.indexOf('http') === 0);
 		if (hasPrefix) {
 			return domain;
