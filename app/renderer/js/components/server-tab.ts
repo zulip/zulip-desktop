@@ -1,12 +1,14 @@
 'use strict';
 
-const Tab = require(__dirname + '/../components/tab.js');
-const SystemUtil = require(__dirname + '/../utils/system-util.js');
+import { ipcRenderer } from 'electron';
 
-const {ipcRenderer} = require('electron');
+import Tab = require('./tab');
+import SystemUtil = require('../utils/system-util');
 
 class ServerTab extends Tab {
-	template() {
+	$badge: Element;
+
+	template(): string {
 		return `<div class="tab" data-tab-id="${this.props.tabIndex}">
 					<div class="server-tooltip" style="display:none">${this.props.name}</div>
 					<div class="server-tab-badge"></div>
@@ -17,16 +19,15 @@ class ServerTab extends Tab {
 				</div>`;
 	}
 
-	init() {
+	init(): void {
 		super.init();
 
-		this.$badge = this.$el.getElementsByClassName('server-tab-badge')[0];
+		this.$badge = this.$el.querySelectorAll('.server-tab-badge')[0];
 	}
 
-	updateBadge(count) {
+	updateBadge(count: number): void {
 		if (count > 0) {
-			const formattedCount = count > 999 ? '1K+' : count;
-
+			const formattedCount = count > 999 ? '1K+' : count.toString();
 			this.$badge.innerHTML = formattedCount;
 			this.$badge.classList.add('active');
 		} else {
@@ -34,7 +35,7 @@ class ServerTab extends Tab {
 		}
 	}
 
-	generateShortcutText() {
+	generateShortcutText(): string {
 		// Only provide shortcuts for server [0..10]
 		if (this.props.index >= 10) {
 			return '';
@@ -57,4 +58,4 @@ class ServerTab extends Tab {
 	}
 }
 
-module.exports = ServerTab;
+export = ServerTab;
