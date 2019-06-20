@@ -1,6 +1,7 @@
 'use strict';
 
-import BaseComponent = require('./base');
+import WebView from './webview';
+import BaseComponent from './base';
 
 // TODO: TypeScript - Type annotate props
 interface TabProps {
@@ -9,7 +10,7 @@ interface TabProps {
 
 class Tab extends BaseComponent {
 	props: TabProps;
-	webview: any;
+	webview: WebView;
 	$el: Element;
 	constructor(props: TabProps) {
 		super();
