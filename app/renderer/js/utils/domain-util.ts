@@ -3,8 +3,8 @@
 import fs from 'fs';
 import path from 'path';
 import JsonDB from 'node-json-db';
-import * as request from 'request';
-import * as escape from 'escape-html';
+import request from 'request';
+import escape from 'escape-html';
 
 import Logger = require('./logger-util');
 import electron = require('electron');

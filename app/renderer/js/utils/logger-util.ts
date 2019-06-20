@@ -114,7 +114,8 @@ class Logger {
 
 	setupConsoleMethod(type: string): void {
 		this[type] = (...args: any[]) => {
-			this._log(null, [type].concat(args));
+			const log = this._log.bind(this, type, ...args);
+			log();
 		};
 	}
 
