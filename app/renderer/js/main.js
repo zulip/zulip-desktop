@@ -269,6 +269,10 @@ class ServerManagerView {
 		return currentIndex;
 	}
 
+	getCurrentActiveServer() {
+		return this.tabs[this.activeTabIndex].webview.props.url;
+	}
+
 	displayInitialCharLogo($img, index) {
 		/*
 			index parameter needed because webview[data-tab-id] can increment
@@ -625,7 +629,8 @@ class ServerManagerView {
 
 		ipcRenderer.on('open-help', () => {
 			// Open help page of current active server
-			shell.openExternal(DomainUtil.getDomain(this.activeTabIndex).url + '/help');
+			const helpPage = this.getCurrentActiveServer() + '/help';
+			shell.openExternal(helpPage);
 		});
 
 		ipcRenderer.on('reload-viewer', this.reloadView.bind(this, this.tabs[this.activeTabIndex].props.index));
@@ -791,7 +796,7 @@ class ServerManagerView {
 		});
 
 		ipcRenderer.on('copy-zulip-url', () => {
-			clipboard.writeText(DomainUtil.getDomain(this.activeTabIndex).url);
+			clipboard.writeText(this.getCurrentActiveServer());
 		});
 
 		ipcRenderer.on('new-server', () => {
