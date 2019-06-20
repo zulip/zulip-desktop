@@ -1,18 +1,20 @@
 'use strict';
-const { app, dialog, shell } = require('electron');
-const { autoUpdater } = require('electron-updater');
-const isDev = require('electron-is-dev');
+import { app, dialog, shell } from 'electron';
+import { autoUpdater } from 'electron-updater';
+import * as isDev from 'electron-is-dev';
+import log from 'electron-log';
 
-const ConfigUtil = require('./../renderer/js/utils/config-util.js');
+import { linuxUpdateNotification } from './linuxupdater';	// Required only in case of linux
 
-function appUpdater(updateFromMenu = false) {
+import ConfigUtil = require('../renderer/js/utils/config-util');
+
+export function appUpdater(updateFromMenu = false): void {
 	// Don't initiate auto-updates in development
 	if (isDev) {
 		return;
 	}
 
 	if (process.platform === 'linux' && !process.env.APPIMAGE) {
-		const { linuxUpdateNotification } = require('./linuxupdater');
 		linuxUpdateNotification();
 		return;
 	}
@@ -23,8 +25,6 @@ function appUpdater(updateFromMenu = false) {
 	const LogsDir = `${app.getPath('userData')}/Logs`;
 
 	// Log whats happening
-	const log = require('electron-log');
-
 	log.transports.file.file = `${LogsDir}/updates.log`;
 	log.transports.file.level = 'info';
 	autoUpdater.logger = log;
@@ -84,7 +84,6 @@ Current Version: ${app.getVersion()}`
 	});
 
 	// Ask the user if update is available
-	// eslint-disable-next-line no-unused-vars
 	autoUpdater.on('update-downloaded', event => {
 		// Ask user to update the app
 		dialog.showMessageBox({
@@ -106,7 +105,3 @@ Current Version: ${app.getVersion()}`
 	// Init for updates
 	autoUpdater.checkForUpdates();
 }
-
-module.exports = {
-	appUpdater
-};
