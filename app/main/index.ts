@@ -1,21 +1,26 @@
 'use strict';
-const path = require('path');
-const fs = require('fs');
+import * as path from 'path';
+import * as fs from 'fs';
+import windowStateKeeper from 'electron-window-state';
+import * as isDev from 'electron-is-dev';
 
-const electron = require('electron');
-const windowStateKeeper = require('electron-window-state');
-const isDev = require('electron-is-dev');
-const appMenu = require('./menu');
-const { appUpdater } = require('./autoupdater');
+import { sentryInit } from '../renderer/js/utils/sentry-util';
+import { appUpdater } from './autoupdater';
+import { setAutoLaunch } from './startup';
 
-const { setAutoLaunch } = require('./startup');
-
+import electron = require('electron');
 const { app, ipcMain } = electron;
 
-const BadgeSettings = require('./../renderer/js/pages/preference/badge-settings.js');
-const ConfigUtil = require('./../renderer/js/utils/config-util.js');
-const ProxyUtil = require('./../renderer/js/utils/proxy-util.js');
-const { sentryInit } = require('./../renderer/js/utils/sentry-util.js');
+import AppMenu = require('./menu');
+import BadgeSettings = require('../renderer/js/pages/preference/badge-settings');
+import ConfigUtil = require('../renderer/js/utils/config-util');
+import ProxyUtil = require('../renderer/js/utils/proxy-util');
+
+interface PatchedGlobal extends NodeJS.Global {
+	mainWindowState: windowStateKeeper.State;
+}
+
+const globalPatched = global as PatchedGlobal;
 
 // Adds debug features like hotkeys for triggering dev tools and reload
 // in development mode
@@ -24,8 +29,8 @@ if (isDev) {
 }
 
 // Prevent window being garbage collected
-let mainWindow;
-let badgeCount;
+let mainWindow: Electron.BrowserWindow;
+let badgeCount: number;
 
 let isQuitting = false;
 
@@ -49,20 +54,20 @@ if (singleInstanceLock) {
 
 const APP_ICON = path.join(__dirname, '../resources', 'Icon');
 
-const iconPath = () => {
+const iconPath = (): string => {
 	return APP_ICON + (process.platform === 'win32' ? '.ico' : '.png');
 };
 
-function createMainWindow() {
+function createMainWindow(): Electron.BrowserWindow {
 	// Load the previous state with fallback to defaults
-	const mainWindowState = windowStateKeeper({
+	const mainWindowState: windowStateKeeper.State = windowStateKeeper({
 		defaultWidth: 1100,
 		defaultHeight: 720,
 		path: `${app.getPath('userData')}/config`
 	});
 
 	// Let's keep the window position global so that we can access it in other process
-	global.mainWindowState = mainWindowState;
+	globalPatched.mainWindowState = mainWindowState;
 
 	const win = new electron.BrowserWindow({
 		// This settings needs to be saved in config
@@ -134,7 +139,7 @@ app.disableHardwareAcceleration();
 app.commandLine.appendSwitch('force-color-profile', 'srgb');
 
 // eslint-disable-next-line max-params
-app.on('certificate-error', (event, webContents, url, error, certificate, callback) => {
+app.on('certificate-error', (event: Event, _webContents: Electron.WebContents, _url: string, _error: string, _certificate: any, callback) => {
 	event.preventDefault();
 	callback(true);
 });
@@ -146,7 +151,7 @@ app.on('activate', () => {
 });
 
 app.on('ready', () => {
-	appMenu.setMenu({
+	AppMenu.setMenu({
 		tabs: []
 	});
 	mainWindow = createMainWindow();
@@ -234,7 +239,7 @@ app.on('ready', () => {
 	});
 
 	ipcMain.on('clear-app-settings', () => {
-		global.mainWindowState.unmanage(mainWindow);
+		globalPatched.mainWindowState.unmanage();
 		app.relaunch();
 		app.exit();
 	});
@@ -251,49 +256,49 @@ app.on('ready', () => {
 		BadgeSettings.updateBadge(badgeCount, mainWindow);
 	});
 
-	ipcMain.on('toggle-menubar', (event, showMenubar) => {
+	ipcMain.on('toggle-menubar', (_event: Electron.IpcMessageEvent, showMenubar: boolean) => {
 		mainWindow.setAutoHideMenuBar(showMenubar);
 		mainWindow.setMenuBarVisibility(!showMenubar);
 		page.send('toggle-autohide-menubar', showMenubar, true);
 	});
 
-	ipcMain.on('update-badge', (event, messageCount) => {
+	ipcMain.on('update-badge', (_event: Electron.IpcMessageEvent, messageCount: number) => {
 		badgeCount = messageCount;
 		BadgeSettings.updateBadge(badgeCount, mainWindow);
 		page.send('tray', messageCount);
 	});
 
-	ipcMain.on('update-taskbar-icon', (event, data, text) => {
+	ipcMain.on('update-taskbar-icon', (_event: Electron.IpcMessageEvent, data: any, text: string) => {
 		BadgeSettings.updateTaskbarIcon(data, text, mainWindow);
 	});
 
-	ipcMain.on('forward-message', (event, listener, ...params) => {
+	ipcMain.on('forward-message', (_event: Electron.IpcMessageEvent, listener: any, ...params: any[]) => {
 		page.send(listener, ...params);
 	});
 
-	ipcMain.on('update-menu', (event, props) => {
-		appMenu.setMenu(props);
+	ipcMain.on('update-menu', (_event: Electron.IpcMessageEvent, props: any) => {
+		AppMenu.setMenu(props);
 		const activeTab = props.tabs[props.activeTabIndex];
 		if (activeTab) {
 			mainWindow.setTitle(`Zulip - ${activeTab.webview.props.name}`);
 		}
 	});
 
-	ipcMain.on('toggleAutoLauncher', (event, AutoLaunchValue) => {
+	ipcMain.on('toggleAutoLauncher', (_event: Electron.IpcMessageEvent, AutoLaunchValue: boolean) => {
 		setAutoLaunch(AutoLaunchValue);
 	});
 
-	ipcMain.on('downloadFile', (event, url, downloadPath) => {
+	ipcMain.on('downloadFile', (_event: Electron.IpcMessageEvent, url: string, downloadPath: string) => {
 		page.downloadURL(url);
-		page.session.once('will-download', (event, item) => {
+		page.session.once('will-download', (_event: Event, item) => {
 			const filePath = path.join(downloadPath, item.getFilename());
 
-			const getTimeStamp = () => {
+			const getTimeStamp = (): any => {
 				const date = new Date();
 				return date.getTime();
 			};
 
-			const formatFile = filePath => {
+			const formatFile = (filePath: string): string => {
 				const fileExtension = path.extname(filePath);
 				const baseName = path.basename(filePath, fileExtension);
 				return `${baseName}-${getTimeStamp()}${fileExtension}`;
@@ -307,7 +312,7 @@ app.on('ready', () => {
 
 			item.setSavePath(setFilePath);
 
-			item.on('updated', (event, state) => {
+			item.on('updated', (_event: Event, state) => {
 				switch (state) {
 					case 'interrupted': {
 						// Can interrupted to due to network error, cancel download then
@@ -327,7 +332,7 @@ app.on('ready', () => {
 					}
 				}
 			});
-			item.once('done', (event, state) => {
+			item.once('done', (_event: Event, state) => {
 				const getFileName = fs.existsSync(filePath) ? formatFile(filePath) : item.getFilename();
 				if (state === 'completed') {
 					page.send('downloadFileCompleted', item.getSavePath(), getFileName);
@@ -341,17 +346,17 @@ app.on('ready', () => {
 		});
 	});
 
-	ipcMain.on('realm-name-changed', (event, serverURL, realmName) => {
+	ipcMain.on('realm-name-changed', (_event: Electron.IpcMessageEvent, serverURL: string, realmName: string) => {
 		page.send('update-realm-name', serverURL, realmName);
 	});
 
-	ipcMain.on('realm-icon-changed', (event, serverURL, iconURL) => {
+	ipcMain.on('realm-icon-changed', (_event: Electron.IpcMessageEvent, serverURL: string, iconURL: string) => {
 		page.send('update-realm-icon', serverURL, iconURL);
 	});
 
 	// Using event.sender.send instead of page.send here to
 	// make sure the value of errorReporting is sent only once on load.
-	ipcMain.on('error-reporting', event => {
+	ipcMain.on('error-reporting', (event: Electron.IpcMessageEvent) => {
 		event.sender.send('error-reporting-val', errorReporting);
 	});
 
