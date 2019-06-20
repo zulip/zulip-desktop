@@ -20,7 +20,7 @@ const { dialog, app } = remote;
 let instance: null | LinuxUpdateUtil = null;
 
 class LinuxUpdateUtil {
-	db: any; // TODO: TypeScript - Figure out how to annotate to JsonDB
+	db: JsonDB;
 
 	constructor() {
 		if (instance) {
