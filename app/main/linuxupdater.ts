@@ -1,19 +1,18 @@
-const { app } = require('electron');
-const { Notification } = require('electron');
+import { app, Notification } from 'electron';
+import request from 'request';
+import semver from 'semver';
 
-const request = require('request');
-const semver = require('semver');
-const ConfigUtil = require('../renderer/js/utils/config-util');
-const ProxyUtil = require('../renderer/js/utils/proxy-util');
-const LinuxUpdateUtil = require('../renderer/js/utils/linux-update-util');
-const Logger = require('../renderer/js/utils/logger-util');
+import ConfigUtil = require('../renderer/js/utils/config-util');
+import ProxyUtil = require('../renderer/js/utils/proxy-util');
+import LinuxUpdateUtil = require('../renderer/js/utils/linux-update-util');
+import Logger = require('../renderer/js/utils/logger-util');
 
 const logger = new Logger({
 	file: 'linux-update-util.log',
 	timestamp: true
 });
 
-function linuxUpdateNotification() {
+export function linuxUpdateNotification(): void {
 	let	url = 'https://api.github.com/repos/zulip/zulip-desktop/releases';
 	url = ConfigUtil.getConfigItem('betaUpdate') ? url : url + '/latest';
 	const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
@@ -25,7 +24,7 @@ function linuxUpdateNotification() {
 		ecdhCurve: 'auto'
 	};
 
-	request(options, (error, response, body) => {
+	request(options, (error: any, response: any, body: any) => {
 		if (error) {
 			logger.error('Linux update error.');
 			logger.error(error);
@@ -47,7 +46,3 @@ function linuxUpdateNotification() {
 		}
 	});
 }
-
-module.exports = {
-	linuxUpdateNotification
-};
