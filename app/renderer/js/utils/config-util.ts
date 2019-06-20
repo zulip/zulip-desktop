@@ -27,7 +27,7 @@ if (process.type === 'renderer') {
 }
 
 class ConfigUtil {
-	db: any;
+	db: JsonDB;
 
 	constructor() {
 		if (instance) {
