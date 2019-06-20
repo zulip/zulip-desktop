@@ -1,9 +1,10 @@
 'use strict';
 
-const Tab = require(__dirname + '/../components/tab.js');
+import Tab = require('./tab');
 
 class FunctionalTab extends Tab {
-	template() {
+	$closeButton: Element;
+	template(): string {
 		return `<div class="tab functional-tab" data-tab-id="${this.props.tabIndex}">
 					<div class="server-tab-badge close-button">
 						<i class="material-icons">close</i>
@@ -14,16 +15,16 @@ class FunctionalTab extends Tab {
 				</div>`;
 	}
 
-	init() {
+	init(): void {
 		this.$el = this.generateNodeFromTemplate(this.template());
 		if (this.props.name !== 'Settings') {
-			this.props.$root.appendChild(this.$el);
-			this.$closeButton = this.$el.getElementsByClassName('server-tab-badge')[0];
+			this.props.$root.append(this.$el);
+			this.$closeButton = this.$el.querySelectorAll('.server-tab-badge')[0];
 			this.registerListeners();
 		}
 	}
 
-	registerListeners() {
+	registerListeners(): void {
 		super.registerListeners();
 
 		this.$el.addEventListener('mouseover', () => {
@@ -34,11 +35,11 @@ class FunctionalTab extends Tab {
 			this.$closeButton.classList.remove('active');
 		});
 
-		this.$closeButton.addEventListener('click', e => {
+		this.$closeButton.addEventListener('click', (e: Event) => {
 			this.props.onDestroy();
 			e.stopPropagation();
 		});
 	}
 }
 
-module.exports = FunctionalTab;
+export = FunctionalTab;
