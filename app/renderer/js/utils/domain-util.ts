@@ -308,4 +308,4 @@ class DomainUtil {
 	}
 }
 
-module.exports = new DomainUtil();
+export = new DomainUtil();
