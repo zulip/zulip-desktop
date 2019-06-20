@@ -1,11 +1,11 @@
 'use strict';
 
 class BaseComponent {
-	generateNodeFromTemplate(template) {
+	generateNodeFromTemplate(template: string): Element | null {
 		const wrapper = document.createElement('div');
 		wrapper.innerHTML = template;
 		return wrapper.firstElementChild;
 	}
 }
 
-module.exports = BaseComponent;
+export = BaseComponent;
