@@ -39,5 +39,4 @@ config.gypi
 
 # Ignore all the typescript compiled files
 app/renderer/js/utils/*.js
-app/main/menu.js
-app/main/startup.js
+app/main/*.js
