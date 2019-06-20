@@ -1,12 +1,15 @@
-const { ipcRenderer } = require('electron');
-const { shell, app } = require('electron').remote;
-const LinkUtil = require('../utils/link-util');
-const DomainUtil = require('../utils/domain-util');
-const ConfigUtil = require('../utils/config-util');
+import { ipcRenderer, remote } from 'electron';
+
+import LinkUtil = require('../utils/link-util');
+import DomainUtil = require('../utils/domain-util');
+import ConfigUtil = require('../utils/config-util');
+
+const { shell, app } = remote;
 
 const dingSound = new Audio('../resources/sounds/ding.ogg');
 
-function handleExternalLink(event) {
+// TODO: TypeScript - Figure out a way to pass correct type here.
+function handleExternalLink(this: any, event: any): void {
 	const { url } = event;
 	const domainPrefix = DomainUtil.getDomain(this.props.index).url;
 	const downloadPath = ConfigUtil.getConfigItem('downloadsPath', `${app.getPath('downloads')}`);
@@ -33,11 +36,11 @@ function handleExternalLink(event) {
 		// and not trigger webview reload while image in webview will
 		// do nothing and will not save it
 
-			// Code to show pdf in a new BrowserWindow (currently commented out due to bug-upstream)
+		// Code to show pdf in a new BrowserWindow (currently commented out due to bug-upstream)
 		// if (!LinkUtil.isImage(url) && !LinkUtil.isPDF(url) && isUploadsURL) {
 		if (!LinkUtil.isImage(url) && isUploadsURL) {
 			ipcRenderer.send('downloadFile', url, downloadPath);
-			ipcRenderer.once('downloadFileCompleted', (event, filePath, fileName) => {
+			ipcRenderer.once('downloadFileCompleted', (_event: Event, filePath: string, fileName: string) => {
 				const downloadNotification = new Notification('Download Complete', {
 					body: shouldShowInFolder ? `Click to show ${fileName} in folder` : `Click to open ${fileName}`,
 					silent: true // We'll play our own sound - ding.ogg
@@ -48,7 +51,7 @@ function handleExternalLink(event) {
 					dingSound.play();
 				}
 
-				downloadNotification.onclick = () => {
+				downloadNotification.addEventListener('click', () => {
 					if (shouldShowInFolder) {
 						// Reveal file in download folder
 						shell.showItemInFolder(filePath);
@@ -56,7 +59,7 @@ function handleExternalLink(event) {
 						// Open file in the default native app
 						shell.openItem(filePath);
 					}
-				};
+				});
 				ipcRenderer.removeAllListeners('downloadFileFailed');
 			});
 
@@ -77,4 +80,4 @@ function handleExternalLink(event) {
 	}
 }
 
-module.exports = handleExternalLink;
+export = handleExternalLink;
