@@ -15,6 +15,12 @@ class FunctionalTab extends Tab {
 				</div>`;
 	}
 
+	// TODO: Typescript - This type for props should be TabProps
+	constructor(props: any) {
+		super(props);
+		this.init();
+	}
+
 	init(): void {
 		this.$el = this.generateNodeFromTemplate(this.template());
 		if (this.props.name !== 'Settings') {

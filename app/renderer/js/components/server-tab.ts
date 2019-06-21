@@ -19,9 +19,16 @@ class ServerTab extends Tab {
 				</div>`;
 	}
 
-	init(): void {
-		super.init();
+	// TODO: Typescript - This type for props should be TabProps
+	constructor(props: any) {
+		super(props);
+		this.init();
+	}
 
+	init(): void {
+		this.$el = this.generateNodeFromTemplate(this.template());
+		this.props.$root.append(this.$el);
+		this.registerListeners();
 		this.$badge = this.$el.querySelectorAll('.server-tab-badge')[0];
 	}
 

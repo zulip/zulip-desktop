@@ -16,14 +16,6 @@ class Tab extends BaseComponent {
 
 		this.props = props;
 		this.webview = this.props.webview;
-
-		this.init();
-	}
-
-	init(): void {
-		this.$el = this.generateNodeFromTemplate(this.template());
-		this.props.$root.append(this.$el);
-		this.registerListeners();
 	}
 
 	registerListeners(): void {
