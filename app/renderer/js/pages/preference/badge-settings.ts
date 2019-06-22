@@ -1,10 +1,10 @@
 'use strict';
-const electron = require('electron');
-const { app } = require('electron');
+import { app } from 'electron';
 
-const ConfigUtil = require(__dirname + '/../../utils/config-util.js');
+import electron = require('electron');
+import ConfigUtil = require('../../utils/config-util');
 
-let instance = null;
+let instance: BadgeSettings | any = null;
 
 class BadgeSettings {
 	constructor() {
@@ -17,7 +17,7 @@ class BadgeSettings {
 		return instance;
 	}
 
-	showBadgeCount(messageCount, mainWindow) {
+	showBadgeCount(messageCount: number, mainWindow: electron.BrowserWindow): void {
 		if (process.platform === 'darwin') {
 			app.setBadgeCount(messageCount);
 		}
@@ -26,7 +26,7 @@ class BadgeSettings {
 		}
 	}
 
-	hideBadgeCount(mainWindow) {
+	hideBadgeCount(mainWindow: electron.BrowserWindow): void {
 		if (process.platform === 'darwin') {
 			app.setBadgeCount(0);
 		}
@@ -35,7 +35,7 @@ class BadgeSettings {
 		}
 	}
 
-	updateBadge(badgeCount, mainWindow) {
+	updateBadge(badgeCount: number, mainWindow: electron.BrowserWindow): void {
 		if (ConfigUtil.getConfigItem('badgeOption', true)) {
 			this.showBadgeCount(badgeCount, mainWindow);
 		} else {
@@ -43,7 +43,7 @@ class BadgeSettings {
 		}
 	}
 
-	updateOverlayIcon(messageCount, mainWindow) {
+	updateOverlayIcon(messageCount: number, mainWindow: electron.BrowserWindow): void {
 		if (!mainWindow.isFocused()) {
 			mainWindow.flashFrame(ConfigUtil.getConfigItem('flashTaskbarOnMessage'));
 		}
@@ -54,10 +54,10 @@ class BadgeSettings {
 		}
 	}
 
-	updateTaskbarIcon(data, text, mainWindow) {
+	updateTaskbarIcon(data: string, text: string, mainWindow: electron.BrowserWindow): void {
 		const img = electron.nativeImage.createFromDataURL(data);
 		mainWindow.setOverlayIcon(img, text);
 	}
 }
 
-module.exports = new BadgeSettings();
+export = new BadgeSettings();
