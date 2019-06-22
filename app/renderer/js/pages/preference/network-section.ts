@@ -1,17 +1,24 @@
 'use strict';
 
-const {ipcRenderer} = require('electron');
+import { ipcRenderer } from 'electron';
 
-const BaseSection = require(__dirname + '/base-section.js');
-const ConfigUtil = require(__dirname + '/../../utils/config-util.js');
+import BaseSection = require('./base-section.js');
+import ConfigUtil = require('../../utils/config-util.js');
 
 class NetworkSection extends BaseSection {
-	constructor(props) {
+	// TODO: TypeScript - Here props should be object type
+	props: any;
+	$proxyPAC: HTMLInputElement;
+	$proxyRules: HTMLInputElement;
+	$proxyBypass: HTMLInputElement;
+	$proxySaveAction: Element;
+	$manualProxyBlock: Element;
+	constructor(props: any) {
 		super();
 		this.props = props;
 	}
 
-	template() {
+	template(): string {
 		return `
             <div class="settings-pane">
                 <div class="title">Proxy</div>
@@ -48,12 +55,12 @@ class NetworkSection extends BaseSection {
 		`;
 	}
 
-	init() {
+	init(): void {
 		this.props.$root.innerHTML = this.template();
 		this.$proxyPAC = document.querySelector('#proxy-pac-option .setting-input-value');
 		this.$proxyRules = document.querySelector('#proxy-rules-option .setting-input-value');
 		this.$proxyBypass = document.querySelector('#proxy-bypass-option .setting-input-value');
-		this.$proxySaveAction = document.getElementById('proxy-save-action');
+		this.$proxySaveAction = document.querySelector('#proxy-save-action');
 		this.$manualProxyBlock = this.props.$root.querySelector('.manual-proxy-block');
 		this.initProxyOption();
 
@@ -70,14 +77,14 @@ class NetworkSection extends BaseSection {
 		});
 	}
 
-	initProxyOption() {
+	initProxyOption(): void {
 		const manualProxyEnabled = ConfigUtil.getConfigItem('useManualProxy', false);
 		this.toggleManualProxySettings(manualProxyEnabled);
 
 		this.updateProxyOption();
 	}
 
-	toggleManualProxySettings(option) {
+	toggleManualProxySettings(option: boolean): void {
 		if (option) {
 			this.$manualProxyBlock.classList.remove('hidden');
 		} else {
@@ -85,7 +92,7 @@ class NetworkSection extends BaseSection {
 		}
 	}
 
-	updateProxyOption() {
+	updateProxyOption(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#use-system-settings .setting-control'),
 			value: ConfigUtil.getConfigItem('useSystemProxy', false),
@@ -125,4 +132,4 @@ class NetworkSection extends BaseSection {
 	}
 }
 
-module.exports = NetworkSection;
+export = NetworkSection;
