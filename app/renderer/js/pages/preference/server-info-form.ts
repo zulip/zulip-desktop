@@ -1,17 +1,26 @@
 'use strict';
-const { dialog } = require('electron').remote;
-const { ipcRenderer } = require('electron');
 
-const BaseComponent = require(__dirname + '/../../components/base.js');
-const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
+import { remote, ipcRenderer } from 'electron';
+
+import BaseComponent = require('../../components/base');
+import DomainUtil = require('../../utils/domain-util');
+
+const { dialog } = remote;
 
 class ServerInfoForm extends BaseComponent {
-	constructor(props) {
+	// TODO: TypeScript - Here props should be object type
+	props: any;
+	$serverInfoForm: Element;
+	$serverInfoAlias: Element;
+	$serverIcon: Element;
+	$deleteServerButton: Element;
+	$openServerButton: Element;
+	constructor(props: any) {
 		super();
 		this.props = props;
 	}
 
-	template() {
+	template(): string {
 		return `
 			<div class="settings-card">
 				<div class="server-info-left">
@@ -35,21 +44,21 @@ class ServerInfoForm extends BaseComponent {
 		`;
 	}
 
-	init() {
+	init(): void {
 		this.initForm();
 		this.initActions();
 	}
 
-	initForm() {
+	initForm(): void {
 		this.$serverInfoForm = this.generateNodeFromTemplate(this.template());
-		this.$serverInfoAlias = this.$serverInfoForm.getElementsByClassName('server-info-alias')[0];
-		this.$serverIcon = this.$serverInfoForm.getElementsByClassName('server-info-icon')[0];
-		this.$deleteServerButton = this.$serverInfoForm.getElementsByClassName('server-delete-action')[0];
-		this.$openServerButton = this.$serverInfoForm.getElementsByClassName('open-tab-button')[0];
-		this.props.$root.appendChild(this.$serverInfoForm);
+		this.$serverInfoAlias = this.$serverInfoForm.querySelectorAll('.server-info-alias')[0];
+		this.$serverIcon = this.$serverInfoForm.querySelectorAll('.server-info-icon')[0];
+		this.$deleteServerButton = this.$serverInfoForm.querySelectorAll('.server-delete-action')[0];
+		this.$openServerButton = this.$serverInfoForm.querySelectorAll('.open-tab-button')[0];
+		this.props.$root.append(this.$serverInfoForm);
 	}
 
-	initActions() {
+	initActions(): void {
 		this.$deleteServerButton.addEventListener('click', () => {
 			dialog.showMessageBox({
 				type: 'warning',
@@ -76,7 +85,6 @@ class ServerInfoForm extends BaseComponent {
 			ipcRenderer.send('forward-message', 'switch-server-tab', this.props.index);
 		});
 	}
-
 }
 
-module.exports = ServerInfoForm;
+export = ServerInfoForm;
