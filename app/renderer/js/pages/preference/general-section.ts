@@ -1,20 +1,23 @@
 'use strict';
-const path = require('path');
-const { ipcRenderer, remote } = require('electron');
-const fs = require('fs-extra');
+import path from 'path';
+import { ipcRenderer, remote, OpenDialogOptions } from 'electron';
+import fs from 'fs-extra';
 
 const { app, dialog } = remote;
 const currentBrowserWindow = remote.getCurrentWindow();
-const BaseSection = require(__dirname + '/base-section.js');
-const ConfigUtil = require(__dirname + '/../../utils/config-util.js');
+
+import BaseSection = require('./base-section');
+import ConfigUtil = require('../../utils/config-util');
 
 class GeneralSection extends BaseSection {
-	constructor(props) {
+	// TODO: TypeScript - Here props should be object type
+	props: any;
+	constructor(props: any) {
 		super();
 		this.props = props;
 	}
 
-	template() {
+	template(): string {
 		return `
             <div class="settings-pane">
                 <div class="title">Appearance</div>
@@ -131,7 +134,7 @@ class GeneralSection extends BaseSection {
 		`;
 	}
 
-	init() {
+	init(): void {
 		this.props.$root.innerHTML = this.template();
 		this.updateTrayOption();
 		this.updateBadgeOption();
@@ -168,7 +171,7 @@ class GeneralSection extends BaseSection {
 		}
 	}
 
-	updateTrayOption() {
+	updateTrayOption(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#tray-option .setting-control'),
 			value: ConfigUtil.getConfigItem('trayIcon', true),
@@ -181,7 +184,7 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	updateMenubarOption() {
+	updateMenubarOption(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#menubar-option .setting-control'),
 			value: ConfigUtil.getConfigItem('autoHideMenubar', false),
@@ -194,7 +197,7 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	updateBadgeOption() {
+	updateBadgeOption(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#badge-option .setting-control'),
 			value: ConfigUtil.getConfigItem('badgeOption', true),
@@ -207,7 +210,7 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	updateDockBouncing() {
+	updateDockBouncing(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#dock-bounce-option .setting-control'),
 			value: ConfigUtil.getConfigItem('dockBouncing', true),
@@ -219,7 +222,7 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	updateFlashTaskbar() {
+	updateFlashTaskbar(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#flash-taskbar-option .setting-control'),
 			value: ConfigUtil.getConfigItem('flashTaskbarOnMessage', true),
@@ -231,7 +234,7 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	autoUpdateOption() {
+	autoUpdateOption(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#autoupdate-option .setting-control'),
 			value: ConfigUtil.getConfigItem('autoUpdate', true),
@@ -247,7 +250,7 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	betaUpdateOption() {
+	betaUpdateOption(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#betaupdate-option .setting-control'),
 			value: ConfigUtil.getConfigItem('betaUpdate', false),
@@ -261,7 +264,7 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	updateSilentOption() {
+	updateSilentOption(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#silent-option .setting-control'),
 			value: ConfigUtil.getConfigItem('silent', false),
@@ -269,12 +272,14 @@ class GeneralSection extends BaseSection {
 				const newValue = !ConfigUtil.getConfigItem('silent', true);
 				ConfigUtil.setConfigItem('silent', newValue);
 				this.updateSilentOption();
-				currentBrowserWindow.send('toggle-silent', newValue);
+				// TODO: TypeScript: currentWindow of type BrowserWindow doesn't
+				// have a .send() property per typescript.
+				(currentBrowserWindow as any).send('toggle-silent', newValue);
 			}
 		});
 	}
 
-	showDesktopNotification() {
+	showDesktopNotification(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#show-notification-option .setting-control'),
 			value: ConfigUtil.getConfigItem('showNotification', true),
@@ -286,7 +291,7 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	updateSidebarOption() {
+	updateSidebarOption(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#sidebar-option .setting-control'),
 			value: ConfigUtil.getConfigItem('showSidebar', true),
@@ -299,7 +304,7 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	updateStartAtLoginOption() {
+	updateStartAtLoginOption(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#startAtLogin-option .setting-control'),
 			value: ConfigUtil.getConfigItem('startAtLogin', false),
@@ -312,7 +317,7 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	enableSpellchecker() {
+	enableSpellchecker(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#enable-spellchecker-option .setting-control'),
 			value: ConfigUtil.getConfigItem('enableSpellchecker', true),
@@ -324,7 +329,7 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	enableErrorReporting() {
+	enableErrorReporting(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#enable-error-reporting .setting-control'),
 			value: ConfigUtil.getConfigItem('errorReporting', true),
@@ -336,7 +341,7 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	clearAppDataDialog() {
+	clearAppDataDialog(): void {
 		const clearAppDataMessage = 'By clicking proceed you will be removing all added accounts and preferences from Zulip. When the application restarts, it will be as if you are starting Zulip for the first time.';
 		const getAppPath = path.join(app.getPath('appData'), app.getName());
 
@@ -354,8 +359,8 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	customCssDialog() {
-		const showDialogOptions = {
+	customCssDialog(): void {
+		const showDialogOptions: OpenDialogOptions = {
 			title: 'Select file',
 			properties: ['openFile'],
 			filters: [{ name: 'CSS file', extensions: ['css'] }]
@@ -369,14 +374,14 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	updateResetDataOption() {
+	updateResetDataOption(): void {
 		const resetDataButton = document.querySelector('#resetdata-option .reset-data-button');
 		resetDataButton.addEventListener('click', () => {
 			this.clearAppDataDialog();
 		});
 	}
 
-	minimizeOnStart() {
+	minimizeOnStart(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#start-minimize-option .setting-control'),
 			value: ConfigUtil.getConfigItem('startMinimized', false),
@@ -388,30 +393,30 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	addCustomCSS() {
+	addCustomCSS(): void {
 		const customCSSButton = document.querySelector('#add-custom-css .custom-css-button');
 		customCSSButton.addEventListener('click', () => {
 			this.customCssDialog();
 		});
 	}
 
-	showCustomCSSPath() {
+	showCustomCSSPath(): void {
 		if (!ConfigUtil.getConfigItem('customCSS')) {
-			const cssPATH = document.getElementById('remove-custom-css');
+			const cssPATH: HTMLElement = document.querySelector('#remove-custom-css');
 			cssPATH.style.display = 'none';
 		}
 	}
 
-	removeCustomCSS() {
-		const removeCSSButton = document.getElementById('css-delete-action');
+	removeCustomCSS(): void {
+		const removeCSSButton = document.querySelector('#css-delete-action');
 		removeCSSButton.addEventListener('click', () => {
-			ConfigUtil.setConfigItem('customCSS');
+			ConfigUtil.setConfigItem('customCSS', "");
 			ipcRenderer.send('forward-message', 'hard-reload');
 		});
 	}
 
-	downloadFolderDialog() {
-		const showDialogOptions = {
+	downloadFolderDialog(): void {
+		const showDialogOptions: OpenDialogOptions = {
 			title: 'Select Download Location',
 			properties: ['openDirectory']
 		};
@@ -419,19 +424,19 @@ class GeneralSection extends BaseSection {
 		dialog.showOpenDialog(showDialogOptions, selectedFolder => {
 			if (selectedFolder) {
 				ConfigUtil.setConfigItem('downloadsPath', selectedFolder[0]);
-				const downloadFolderPath = document.querySelector('.download-folder-path');
+				const downloadFolderPath: HTMLElement = document.querySelector('.download-folder-path');
 				downloadFolderPath.innerText = selectedFolder[0];
 			}
 		});
 	}
-	downloadFolder() {
+	downloadFolder(): void {
 		const downloadFolder = document.querySelector('#download-folder .download-folder-button');
 		downloadFolder.addEventListener('click', () => {
 			this.downloadFolderDialog();
 		});
 	}
 
-	showDownloadFolder() {
+	showDownloadFolder(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#show-download-folder .setting-control'),
 			value: ConfigUtil.getConfigItem('showDownloadFolder', false),
@@ -442,7 +447,6 @@ class GeneralSection extends BaseSection {
 			}
 		});
 	}
-
 }
 
-module.exports = GeneralSection;
+export = GeneralSection;
