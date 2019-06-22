@@ -1,12 +1,12 @@
 'use strict';
 
-const {
-  remote: { app }
-} = require('electron');
+import { remote } from 'electron';
 
-const params = require('../utils/params-util.js');
-const DefaultNotification = require('./default-notification');
-const { appId, loadBots } = require('./helpers');
+import * as params from '../utils/params-util';
+import DefaultNotification from './default-notification';
+import { appId, loadBots } from './helpers';
+
+const { app } = remote;
 
 // From https://github.com/felixrieseberg/electron-windows-notifications#appusermodelid
 // On windows 8 we have to explicitly set the appUserModelId otherwise notification won't work.
@@ -15,12 +15,11 @@ app.setAppUserModelId(appId);
 window.Notification = DefaultNotification;
 
 if (process.platform === 'darwin') {
-	const DarwinNotification = require('./darwin-notifications');
-	window.Notification = DarwinNotification;
+	window.Notification = require('./darwin-notifications');
 }
 
 window.addEventListener('load', () => {
-	// eslint-disable-next-line no-undef, camelcase
+	// eslint-disable-next-line no-undef, @typescript-eslint/camelcase
 	if (params.isPageParams() && page_params.realm_uri) {
 		loadBots();
 	}
