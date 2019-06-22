@@ -1,20 +1,28 @@
 'use-strict';
 
-const { dialog } = require('electron').remote;
-const path = require('path');
+import { remote, OpenDialogOptions } from 'electron';
+import path from 'path';
 
-const BaseComponent = require(__dirname + '/../../components/base.js');
-const CertificateUtil = require(__dirname + '/../../utils/certificate-util.js');
-const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
+import BaseComponent = require('../../components/base');
+import CertificateUtil = require('../../utils/certificate-util');
+import DomainUtil = require('../../utils/domain-util');
+
+const { dialog } = remote;
 
 class AddCertificate extends BaseComponent {
-	constructor(props) {
+	// TODO: TypeScript - Here props should be object type
+	props: any;
+	_certFile: string;
+	$addCertificate: Element | null;
+	addCertificateButton: Element | null;
+	serverUrl: HTMLInputElement | null;
+	constructor(props: any) {
 		super();
 		this.props = props;
 		this._certFile = '';
 	}
 
-	template() {
+	template(): string {
 		return `
 			<div class="settings-card certificates-card">
 				<div class="certificate-input">
@@ -29,15 +37,15 @@ class AddCertificate extends BaseComponent {
 		`;
 	}
 
-	init() {
+	init(): void {
 		this.$addCertificate = this.generateNodeFromTemplate(this.template());
-		this.props.$root.appendChild(this.$addCertificate);
+		this.props.$root.append(this.$addCertificate);
 		this.addCertificateButton = this.$addCertificate.querySelector('#add-certificate-button');
-		this.serverUrl = this.$addCertificate.querySelectorAll('input.setting-input-value')[0];
+		this.serverUrl = this.$addCertificate.querySelectorAll('input.setting-input-value')[0] as HTMLInputElement;
 		this.initListeners();
 	}
 
-	validateAndAdd() {
+	validateAndAdd(): void {
 		const certificate = this._certFile;
 		const serverUrl = this.serverUrl.value;
 		if (certificate !== '' && serverUrl !== '') {
@@ -55,12 +63,12 @@ class AddCertificate extends BaseComponent {
 			this.serverUrl.value = '';
 		} else {
 			dialog.showErrorBox('Error', `Please, ${serverUrl === '' ?
-      'Enter an Organization URL' : 'Choose certificate file'}`);
+				'Enter an Organization URL' : 'Choose certificate file'}`);
 		}
 	}
 
-	addHandler() {
-		const showDialogOptions = {
+	addHandler(): void {
+		const showDialogOptions: OpenDialogOptions = {
 			title: 'Select file',
 			properties: ['openFile'],
 			filters: [{ name: 'crt, pem', extensions: ['crt', 'pem'] }]
@@ -73,7 +81,7 @@ class AddCertificate extends BaseComponent {
 		});
 	}
 
-	initListeners() {
+	initListeners(): void {
 		this.addCertificateButton.addEventListener('click', () => {
 			this.addHandler();
 		});
@@ -88,4 +96,4 @@ class AddCertificate extends BaseComponent {
 	}
 }
 
-module.exports = AddCertificate;
+export = AddCertificate;
