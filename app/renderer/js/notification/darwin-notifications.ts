@@ -1,18 +1,27 @@
 'use strict';
 
-const { ipcRenderer } = require('electron');
-const url = require('url');
-const MacNotifier = require('node-mac-notifier');
-const ConfigUtil = require('../utils/config-util');
-const {
+import { ipcRenderer } from 'electron';
+import url from 'url';
+import MacNotifier from 'node-mac-notifier';
+import ConfigUtil from '../utils/config-util';
+import {
 	appId, customReply, focusCurrentServer, parseReply, setupReply
-} = require('./helpers');
+} from './helpers';
 
-let replyHandler;
-let clickHandler;
+type ReplyHandler = (response: string) => void;
+type ClickHandler = () => void;
+let replyHandler: ReplyHandler;
+let clickHandler: ClickHandler;
+
+interface NotificationHandlerArgs {
+	response: string;
+}
+
 class DarwinNotification {
-	constructor(title, opts) {
-		const silent = ConfigUtil.getConfigItem('silent') || false;
+	tag: string;
+
+	constructor(title: string, opts: NotificationOptions) {
+		const silent: boolean = ConfigUtil.getConfigItem('silent') || false;
 		const { host, protocol } = location;
 		const { icon } = opts;
 		const profilePic = url.resolve(`${protocol}//${host}`, icon);
@@ -39,45 +48,45 @@ class DarwinNotification {
 		notification.addEventListener('reply', this.notificationHandler);
 	}
 
-	static requestPermission() {
+	static requestPermission(): void {
 		return; // eslint-disable-line no-useless-return
 	}
 
 	// Override default Notification permission
-	static get permission() {
+	static get permission(): NotificationPermission {
 		return ConfigUtil.getConfigItem('showNotification') ? 'granted' : 'denied';
 	}
 
-	set onreply(handler) {
+	set onreply(handler: ReplyHandler) {
 		replyHandler = handler;
 	}
 
-	get onreply() {
+	get onreply(): ReplyHandler {
 		return replyHandler;
 	}
 
-	set onclick(handler) {
+	set onclick(handler: ClickHandler) {
 		clickHandler = handler;
 	}
 
-	get onclick() {
+	get onclick(): ClickHandler {
 		return clickHandler;
 	}
 
 	// not something that is common or
 	// used by zulip server but added to be
 	// future proff.
-	addEventListener(event, handler) {
+	addEventListener(event: string, handler: ClickHandler | ReplyHandler): void {
 		if (event === 'click') {
-			clickHandler = handler;
+			clickHandler = handler as ClickHandler;
 		}
 
 		if (event === 'reply') {
-			replyHandler = handler;
+			replyHandler = handler as ReplyHandler;
 		}
 	}
 
-	notificationHandler({ response }) {
+	notificationHandler({ response }: NotificationHandlerArgs): void {
 		response = parseReply(response);
 		focusCurrentServer();
 		setupReply(this.tag);
@@ -92,7 +101,7 @@ class DarwinNotification {
 
 	// method specific to notification api
 	// used by zulip
-	close() {
+	close(): void {
 		return; // eslint-disable-line no-useless-return
 	}
 }
