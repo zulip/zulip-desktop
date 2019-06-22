@@ -1,16 +1,22 @@
 'use strict';
 
-const BaseComponent = require(__dirname + '/../../components/base.js');
-const DomainUtil = require(__dirname + '/../../utils/domain-util.js');
-const shell = require('electron').shell;
+import { shell } from 'electron';
+
+import BaseComponent = require('../../components/base');
+import DomainUtil = require('../../utils/domain-util');
 
 class NewServerForm extends BaseComponent {
-	constructor(props) {
+	// TODO: TypeScript - Here props should be object type
+	props: any;
+	$newServerForm: Element;
+	$saveServerButton: HTMLButtonElement;
+	$newServerUrl: HTMLInputElement;
+	constructor(props: any) {
 		super();
 		this.props = props;
 	}
 
-	template() {
+	template(): string {
 		return `
 			<div class="server-input-container">
 				<div class="title">Organization URL</div>
@@ -36,21 +42,20 @@ class NewServerForm extends BaseComponent {
 		`;
 	}
 
-	init() {
+	init(): void {
 		this.initForm();
 		this.initActions();
 	}
 
-	initForm() {
+	initForm(): void {
 		this.$newServerForm = this.generateNodeFromTemplate(this.template());
-		this.$saveServerButton = this.$newServerForm.getElementsByClassName('server-save-action')[0];
+		this.$saveServerButton = this.$newServerForm.querySelectorAll('.server-save-action')[0] as HTMLButtonElement;
 		this.props.$root.innerHTML = '';
-		this.props.$root.appendChild(this.$newServerForm);
-
-		this.$newServerUrl = this.$newServerForm.querySelectorAll('input.setting-input-value')[0];
+		this.props.$root.append(this.$newServerForm);
+		this.$newServerUrl = this.$newServerForm.querySelectorAll('input.setting-input-value')[0] as HTMLInputElement;
 	}
 
-	submitFormHandler() {
+	submitFormHandler(): void {
 		this.$saveServerButton.children[0].innerHTML = 'Connecting...';
 		DomainUtil.checkDomain(this.$newServerUrl.value).then(serverConf => {
 			DomainUtil.addDomain(serverConf).then(() => {
@@ -62,15 +67,15 @@ class NewServerForm extends BaseComponent {
 		});
 	}
 
-	openCreateNewOrgExternalLink() {
+	openCreateNewOrgExternalLink(): void {
 		const link = 'https://zulipchat.com/new/';
-		const externalCreateNewOrgEl = document.getElementById('open-create-org-link');
+		const externalCreateNewOrgEl = document.querySelector('#open-create-org-link');
 		externalCreateNewOrgEl.addEventListener('click', () => {
 			shell.openExternal(link);
 		});
 	}
 
-	initActions() {
+	initActions(): void {
 		this.$saveServerButton.addEventListener('click', () => {
 			this.submitFormHandler();
 		});
@@ -86,4 +91,4 @@ class NewServerForm extends BaseComponent {
 	}
 }
 
-module.exports = NewServerForm;
+export = NewServerForm;
