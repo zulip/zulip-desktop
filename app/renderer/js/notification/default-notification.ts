@@ -1,12 +1,12 @@
 'use strict';
 
-const { ipcRenderer } = require('electron');
-const ConfigUtil = require('../utils/config-util');
-const { focusCurrentServer } = require('./helpers');
+import { ipcRenderer } from 'electron';
+import ConfigUtil from '../utils/config-util';
+import { focusCurrentServer } from './helpers';
 
 const NativeNotification = window.Notification;
 class BaseNotification extends NativeNotification {
-	constructor(title, opts) {
+	constructor(title: string, opts: NotificationOptions) {
 		opts.silent = true;
 		super(title, opts);
 
@@ -18,14 +18,14 @@ class BaseNotification extends NativeNotification {
 		});
 	}
 
-	static requestPermission() {
+	static requestPermission(): void {
 		return; // eslint-disable-line no-useless-return
 	}
 
 	// Override default Notification permission
-	static get permission() {
+	static get permission(): NotificationPermission {
 		return ConfigUtil.getConfigItem('showNotification') ? 'granted' : 'denied';
 	}
 }
 
-module.exports = BaseNotification;
+export = BaseNotification;
