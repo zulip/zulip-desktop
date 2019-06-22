@@ -1,24 +1,29 @@
 'use strict';
 
-const BaseComponent = require(__dirname + '/js/components/base.js');
-const { ipcRenderer } = require('electron');
+import { ipcRenderer } from 'electron';
 
-const Nav = require(__dirname + '/js/pages/preference/nav.js');
-const ServersSection = require(__dirname + '/js/pages/preference/servers-section.js');
-const GeneralSection = require(__dirname + '/js/pages/preference/general-section.js');
-const NetworkSection = require(__dirname + '/js/pages/preference/network-section.js');
-const ConnectedOrgSection = require(__dirname + '/js/pages/preference/connected-org-section.js');
-const ShortcutsSection = require(__dirname + '/js/pages/preference/shortcuts-section.js');
+import BaseComponent = require('./js/components/base');
+import Nav = require('./js/pages/preference/nav');
+import ServersSection = require('./js/pages/preference/servers-section');
+import GeneralSection = require('./js/pages/preference/general-section');
+import NetworkSection = require('./js/pages/preference/network-section');
+import ConnectedOrgSection = require('./js/pages/preference/connected-org-section');
+import ShortcutsSection = require('./js/pages/preference/shortcuts-section');
+
+type Section = typeof ServersSection | typeof GeneralSection | typeof NetworkSection | typeof ConnectedOrgSection | typeof ShortcutsSection;
 
 class PreferenceView extends BaseComponent {
+	$sidebarContainer: Element;
+	$settingsContainer: Element;
+	nav: typeof Nav;
+	section: Section;
 	constructor() {
 		super();
-
-		this.$sidebarContainer = document.getElementById('sidebar');
-		this.$settingsContainer = document.getElementById('settings-container');
+		this.$sidebarContainer = document.querySelector('#sidebar');
+		this.$settingsContainer = document.querySelector('#settings-container');
 	}
 
-	init() {
+	init(): void {
 		this.nav = new Nav({
 			$root: this.$sidebarContainer,
 			onItemSelected: this.handleNavigation.bind(this)
@@ -28,7 +33,7 @@ class PreferenceView extends BaseComponent {
 		this.registerIpcs();
 	}
 
-	setDefaultView() {
+	setDefaultView(): void {
 		let nav = 'General';
 		const hasTag = window.location.hash;
 		if (hasTag) {
@@ -37,7 +42,7 @@ class PreferenceView extends BaseComponent {
 		this.handleNavigation(nav);
 	}
 
-	handleNavigation(navItem) {
+	handleNavigation(navItem: string): void {
 		this.nav.select(navItem);
 		switch (navItem) {
 			case 'AddServer': {
@@ -77,32 +82,32 @@ class PreferenceView extends BaseComponent {
 	}
 
 	// Handle toggling and reflect changes in preference page
-	handleToggle(elementName, state) {
+	handleToggle(elementName: string, state: boolean): void {
 		const inputSelector = `#${elementName} .action .switch input`;
-		const input = document.querySelector(inputSelector);
+		const input: HTMLInputElement = document.querySelector(inputSelector);
 		if (input) {
 			input.checked = state;
 		}
 	}
 
-	registerIpcs() {
-		ipcRenderer.on('switch-settings-nav', (event, navItem) => {
+	registerIpcs(): void {
+		ipcRenderer.on('switch-settings-nav', (_event: Event, navItem: string) => {
 			this.handleNavigation(navItem);
 		});
 
-		ipcRenderer.on('toggle-sidebar-setting', (event, state) => {
+		ipcRenderer.on('toggle-sidebar-setting', (_event: Event, state: boolean) => {
 			this.handleToggle('sidebar-option', state);
 		});
 
-		ipcRenderer.on('toggle-menubar-setting', (event, state) => {
+		ipcRenderer.on('toggle-menubar-setting', (_event: Event, state: boolean) => {
 			this.handleToggle('menubar-option', state);
 		});
 
-		ipcRenderer.on('toggletray', (event, state) => {
+		ipcRenderer.on('toggletray', (_event: Event, state: boolean) => {
 			this.handleToggle('tray-option', state);
 		});
 
-		ipcRenderer.on('toggle-dnd', (event, state, newSettings) => {
+		ipcRenderer.on('toggle-dnd', (_event: Event, _state: boolean, newSettings: any) => {
 			this.handleToggle('show-notification-option', newSettings.showNotification);
 			this.handleToggle('silent-option', newSettings.silent);
 
@@ -113,7 +118,9 @@ class PreferenceView extends BaseComponent {
 	}
 }
 
-window.onload = () => {
+window.addEventListener('load', () => {
 	const preferenceView = new PreferenceView();
 	preferenceView.init();
-};
+});
+
+export = PreferenceView;
