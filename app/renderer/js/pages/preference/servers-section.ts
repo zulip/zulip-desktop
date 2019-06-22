@@ -1,15 +1,18 @@
 'use strict';
 
-const BaseSection = require(__dirname + '/base-section.js');
-const NewServerForm = require(__dirname + '/new-server-form.js');
+import BaseSection = require('./base-section');
+import NewServerForm = require('./new-server-form');
 
 class ServersSection extends BaseSection {
-	constructor(props) {
+	// TODO: TypeScript - Here props should be object type
+	props: any;
+	$newServerContainer: Element;
+	constructor(props: any) {
 		super();
 		this.props = props;
 	}
 
-	template() {
+	template(): string {
 		return `
 		<div class="add-server-modal">
 			<div class="modal-container">
@@ -22,20 +25,20 @@ class ServersSection extends BaseSection {
 		`;
 	}
 
-	init() {
+	init(): void {
 		this.initServers();
 	}
 
-	initServers() {
+	initServers(): void {
 		this.props.$root.innerHTML = '';
 
 		this.props.$root.innerHTML = this.template();
-		this.$newServerContainer = document.getElementById('new-server-container');
+		this.$newServerContainer = document.querySelector('#new-server-container');
 
 		this.initNewServerForm();
 	}
 
-	initNewServerForm() {
+	initNewServerForm(): void {
 		new NewServerForm({
 			$root: this.$newServerContainer,
 			onChange: this.reloadApp
