@@ -1,20 +1,21 @@
 'use strict';
 
-const {ipcRenderer} = require('electron');
+import { ipcRenderer } from 'electron';
 
 class NetworkTroubleshootingView {
+	$reconnectButton: Element;
 	constructor() {
-		this.$reconnectButton = document.getElementById('reconnect');
+		this.$reconnectButton = document.querySelector('#reconnect');
 	}
 
-	init() {
+	init(): void {
 		this.$reconnectButton.addEventListener('click', () => {
 			ipcRenderer.send('forward-message', 'reload-viewer');
 		});
 	}
 }
 
-window.onload = () => {
+window.addEventListener('load', () => {
 	const networkTroubleshootingView = new NetworkTroubleshootingView();
 	networkTroubleshootingView.init();
-};
+});
