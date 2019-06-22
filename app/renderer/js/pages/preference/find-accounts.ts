@@ -1,16 +1,21 @@
 'use-strict';
 
-const { shell } = require('electron');
+import { shell } from 'electron';
 
-const BaseComponent = require(__dirname + '/../../components/base.js');
+import BaseComponent = require('../../components/base');
 
 class FindAccounts extends BaseComponent {
-	constructor(props) {
+	// TODO: TypeScript - Here props should be object type
+	props: any;
+	$findAccounts: Element | null;
+	$findAccountsButton: Element | null;
+	$serverUrlField: HTMLInputElement | null;
+	constructor(props: any) {
 		super();
 		this.props = props;
 	}
 
-	template() {
+	template(): string {
 		return `
 			<div class="settings-card certificate-card">
 				<div class="certificate-input">
@@ -24,15 +29,15 @@ class FindAccounts extends BaseComponent {
 		`;
 	}
 
-	init() {
+	init(): void {
 		this.$findAccounts = this.generateNodeFromTemplate(this.template());
-		this.props.$root.appendChild(this.$findAccounts);
+		this.props.$root.append(this.$findAccounts);
 		this.$findAccountsButton = this.$findAccounts.querySelector('#find-accounts-button');
-		this.$serverUrlField = this.$findAccounts.querySelectorAll('input.setting-input-value')[0];
+		this.$serverUrlField = this.$findAccounts.querySelectorAll('input.setting-input-value')[0] as HTMLInputElement;
 		this.initListeners();
 	}
 
-	findAccounts(url) {
+	findAccounts(url: string): void {
 		if (!url) {
 			return;
 		}
@@ -42,7 +47,7 @@ class FindAccounts extends BaseComponent {
 		shell.openExternal(url + '/accounts/find');
 	}
 
-	initListeners() {
+	initListeners(): void {
 		this.$findAccountsButton.addEventListener('click', () => {
 			this.findAccounts(this.$serverUrlField.value);
 		});
@@ -69,4 +74,4 @@ class FindAccounts extends BaseComponent {
 	}
 }
 
-module.exports = FindAccounts;
+export = FindAccounts;
