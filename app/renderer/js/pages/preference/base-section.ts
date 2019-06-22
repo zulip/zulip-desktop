@@ -1,22 +1,23 @@
 'use strict';
 
-const {ipcRenderer} = require('electron');
+import { ipcRenderer } from 'electron';
 
-const BaseComponent = require(__dirname + '/../../components/base.js');
+import BaseComponent = require('../../components/base.js');
 
 class BaseSection extends BaseComponent {
-	generateSettingOption(props) {
+	// TODO: TypeScript - Here props should be object type
+	generateSettingOption(props: any): void {
 		const {$element, value, clickHandler} = props;
 
 		$element.innerHTML = '';
 
 		const $optionControl = this.generateNodeFromTemplate(this.generateOptionTemplate(value));
-		$element.appendChild($optionControl);
+		$element.append($optionControl);
 
 		$optionControl.addEventListener('click', clickHandler);
 	}
 
-	generateOptionTemplate(settingOption) {
+	generateOptionTemplate(settingOption: boolean): string {
 		if (settingOption) {
 			return `
 				<div class="action">
@@ -38,9 +39,9 @@ class BaseSection extends BaseComponent {
 		}
 	}
 
-	reloadApp() {
+	reloadApp(): void {
 		ipcRenderer.send('forward-message', 'reload-viewer');
 	}
 }
 
-module.exports = BaseSection;
+export = BaseSection;
