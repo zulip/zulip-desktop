@@ -4,7 +4,18 @@
 // are not supported
 declare module '*';
 
-declare var page_params: object;
+interface PageParamsObject {
+    realm_uri: string;
+    default_language: string;
+}
+declare var page_params: PageParamsObject;
 
 // since requestIdleCallback didn't make it into lib.dom.d.ts yet
 declare function requestIdleCallback(callback: Function, options?: object): void;
+
+interface ZulipWebWindow extends Window {
+    electron_bridge: any;
+    tray: any;
+    $: any;
+    lightbox: any;
+}
