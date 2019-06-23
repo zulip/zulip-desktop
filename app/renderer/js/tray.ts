@@ -1,17 +1,15 @@
 'use strict';
-const path = require('path');
+import path from 'path';
+import { ipcRenderer, remote, WebviewTag, NativeImage } from 'electron';
 
-const electron = require('electron');
-
-const { ipcRenderer, remote } = electron;
-
+import ConfigUtil = require('./utils/config-util.js');
 const { Tray, Menu, nativeImage, BrowserWindow } = remote;
 
 const APP_ICON = path.join(__dirname, '../../resources/tray', 'tray');
 
-const ConfigUtil = require(__dirname + '/utils/config-util.js');
+declare let window: ZulipWebWindow;
 
-const iconPath = () => {
+const iconPath = (): string => {
 	if (process.platform === 'linux') {
 		return APP_ICON + 'linux.png';
 	}
@@ -20,7 +18,7 @@ const iconPath = () => {
 
 let unread = 0;
 
-const trayIconSize = () => {
+const trayIconSize = (): number => {
 	switch (process.platform) {
 		case 'darwin':
 			return 20;
@@ -45,7 +43,7 @@ const config = {
 	thick: process.platform === 'win32'
 };
 
-const renderCanvas = function (arg) {
+const renderCanvas = function (arg: number): Promise<HTMLCanvasElement> {
 	config.unreadCount = arg;
 
 	return new Promise(resolve => {
@@ -79,10 +77,10 @@ const renderCanvas = function (arg) {
 				ctx.fillText('99+', CENTER, CENTER + (SIZE * 0.15));
 			} else if (config.unreadCount < 10) {
 				ctx.font = `${config.thick ? 'bold ' : ''}${SIZE * 0.5}px Helvetica`;
-				ctx.fillText(config.unreadCount, CENTER, CENTER + (SIZE * 0.20));
+				ctx.fillText(String(config.unreadCount), CENTER, CENTER + (SIZE * 0.20));
 			} else {
 				ctx.font = `${config.thick ? 'bold ' : ''}${SIZE * 0.5}px Helvetica`;
-				ctx.fillText(config.unreadCount, CENTER, CENTER + (SIZE * 0.15));
+				ctx.fillText(String(config.unreadCount), CENTER, CENTER + (SIZE * 0.15));
 			}
 
 			resolve(canvas);
@@ -94,7 +92,7 @@ const renderCanvas = function (arg) {
  * @param arg: Unread count
  * @return the native image
  */
-const renderNativeImage = function (arg) {
+const renderNativeImage = function (arg: number): Promise<NativeImage> {
 	return Promise.resolve()
 		.then(() => renderCanvas(arg))
 		.then(canvas => {
@@ -105,7 +103,7 @@ const renderNativeImage = function (arg) {
 		});
 };
 
-function sendAction(action) {
+function sendAction(action: string): void {
 	const win = BrowserWindow.getAllWindows()[0];
 
 	if (process.platform === 'darwin') {
@@ -115,7 +113,7 @@ function sendAction(action) {
 	win.webContents.send(action);
 }
 
-const createTray = function () {
+const createTray = function (): void {
 	window.tray = new Tray(iconPath());
 	const contextMenu = Menu.buildFromTemplate([
 		{
@@ -149,9 +147,9 @@ const createTray = function () {
 	}
 };
 
-ipcRenderer.on('destroytray', event => {
+ipcRenderer.on('destroytray', (event: Event): Event => {
 	if (!window.tray) {
-		return;
+		return undefined;
 	}
 
 	window.tray.destroy();
@@ -164,7 +162,7 @@ ipcRenderer.on('destroytray', event => {
 	return event;
 });
 
-ipcRenderer.on('tray', (event, arg) => {
+ipcRenderer.on('tray', (_event: Event, arg: number): void => {
 	if (!window.tray) {
 		return;
 	}
@@ -184,7 +182,7 @@ ipcRenderer.on('tray', (event, arg) => {
 	}
 });
 
-function toggleTray() {
+function toggleTray(): void {
 	let state;
 	if (window.tray) {
 		state = false;
@@ -205,7 +203,7 @@ function toggleTray() {
 		ConfigUtil.setConfigItem('trayIcon', true);
 	}
 	const selector = 'webview:not([class*=disabled])';
-	const webview = document.querySelector(selector);
+	const webview: WebviewTag = document.querySelector(selector);
 	const webContents = webview.getWebContents();
 	webContents.send('toggletray', state);
 }
