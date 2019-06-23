@@ -1,7 +1,11 @@
-const { app } = require('electron').remote;
-const path = require('path');
-const fs = require('fs');
-const SendFeedback = require('@electron-elements/send-feedback');
+import { remote } from 'electron';
+import path from 'path';
+import fs from 'fs';
+import SendFeedback from '@electron-elements/send-feedback';
+
+const { app } = remote;
+
+type SendFeedbackType = typeof SendFeedback;
 
 // make the button color match zulip app's theme
 SendFeedback.customStyles = `
@@ -22,7 +26,7 @@ button {
 `;
 
 customElements.define('send-feedback', SendFeedback);
-const sendFeedback = document.querySelector('send-feedback');
+const sendFeedback: SendFeedbackType = document.querySelector('send-feedback');
 const feedbackHolder = sendFeedback.parentElement;
 
 // customize the fields of custom elements
@@ -38,9 +42,9 @@ sendFeedback.useReporter('emailReporter', {
 	email: 'akash@zulipchat.com'
 });
 
-feedbackHolder.addEventListener('click', e => {
-  // only remove the class if the grey out faded
-  // part is clicked and not the feedback element itself
+feedbackHolder.addEventListener('click', (e: Event) => {
+	// only remove the class if the grey out faded
+	// part is clicked and not the feedback element itself
 	if (e.target === e.currentTarget) {
 		feedbackHolder.classList.remove('show');
 	}
@@ -56,7 +60,7 @@ const dataDir = app.getPath('userData');
 const logsDir = path.join(dataDir, '/Logs');
 sendFeedback.logs.push(...fs.readdirSync(logsDir).map(file => path.join(logsDir, file)));
 
-module.exports = {
+export = {
 	feedbackHolder,
 	sendFeedback
 };
