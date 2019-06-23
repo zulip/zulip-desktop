@@ -1,10 +1,17 @@
 'use strict';
 
-const { ipcRenderer, shell } = require('electron');
-const SetupSpellChecker = require('./spellchecker');
+import { ipcRenderer, shell } from 'electron';
+import SetupSpellChecker from './spellchecker';
 
-const LinkUtil = require(__dirname + '/utils/link-util.js');
-const params = require(__dirname + '/utils/params-util.js');
+import LinkUtil = require('./utils/link-util');
+import params = require('./utils/params-util');
+
+interface PatchedGlobal extends NodeJS.Global {
+	logout: () => void;
+	shortcut: () => void;
+}
+
+const globalPatched = global as PatchedGlobal;
 
 // eslint-disable-next-line import/no-unassigned-import
 require('./notification');
@@ -12,39 +19,43 @@ require('./notification');
 // Prevent drag and drop event in main process which prevents remote code executaion
 require(__dirname + '/shared/preventdrag.js');
 
-// eslint-disable-next-line camelcase
+declare let window: ZulipWebWindow;
+
+// eslint-disable-next-line @typescript-eslint/camelcase
 window.electron_bridge = require('./electron-bridge');
 
-const logout = () => {
+const logout = (): void => {
 	// Create the menu for the below
-	document.querySelector('.dropdown-toggle').click();
+	const dropdown: HTMLElement = document.querySelector('.dropdown-toggle');
+	dropdown.click();
 
-	const nodes = document.querySelectorAll('.dropdown-menu li:last-child a');
+	const nodes: NodeListOf<HTMLElement> = document.querySelectorAll('.dropdown-menu li:last-child a');
 	nodes[nodes.length - 1].click();
 };
 
-const shortcut = () => {
+const shortcut = (): void => {
 	// Create the menu for the below
-	const node = document.querySelector('a[data-overlay-trigger=keyboard-shortcuts]');
+	const node: HTMLElement = document.querySelector('a[data-overlay-trigger=keyboard-shortcuts]');
 	// Additional check
-	if (node.text.trim().toLowerCase() === 'keyboard shortcuts (?)') {
+	if (node.textContent.trim().toLowerCase() === 'keyboard shortcuts (?)') {
 		node.click();
 	} else {
 		// Atleast click the dropdown
-		document.querySelector('.dropdown-toggle').click();
+		const dropdown: HTMLElement = document.querySelector('.dropdown-toggle');
+		dropdown.click();
 	}
 };
 
-process.once('loaded', () => {
-	global.logout = logout;
-	global.shortcut = shortcut;
+process.once('loaded', (): void => {
+	globalPatched.logout = logout;
+	globalPatched.shortcut = shortcut;
 });
 
 // To prevent failing this script on linux we need to load it after the document loaded
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', (): void => {
 	if (params.isPageParams()) {
 	// Get the default language of the server
-		const serverLanguage = page_params.default_language; // eslint-disable-line no-undef, camelcase
+		const serverLanguage = page_params.default_language; // eslint-disable-line no-undef, @typescript-eslint/camelcase
 		if (serverLanguage) {
 			// Init spellchecker
 			SetupSpellChecker.init(serverLanguage);
@@ -58,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 		// Open image attachment link in the lightbox instead of opening in the default browser
 		const { $, lightbox } = window;
-		$('#main_div').on('click', '.message_content p a', function (e) {
+		$('#main_div').on('click', '.message_content p a', function (this: HTMLElement, e: Event) {
 			const url = $(this).attr('href');
 
 			if (LinkUtil.isImage(url)) {
@@ -82,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Clean up spellchecker events after you navigate away from this page;
 // otherwise, you may experience errors
-window.addEventListener('beforeunload', () => {
+window.addEventListener('beforeunload', (): void => {
 	SetupSpellChecker.unsubscribeSpellChecker();
 });
 
