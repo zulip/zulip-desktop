@@ -1,9 +1,9 @@
 'use strict';
 
-const { SpellCheckHandler, ContextMenuListener, ContextMenuBuilder } = require('electron-spellchecker');
+import { SpellCheckHandler, ContextMenuListener, ContextMenuBuilder } from 'electron-spellchecker';
 
-const ConfigUtil = require(__dirname + '/utils/config-util.js');
-const Logger = require(__dirname + '/utils/logger-util.js');
+import ConfigUtil = require('./utils/config-util');
+import Logger = require('./utils/logger-util');
 
 const logger = new Logger({
 	file: 'errors.log',
@@ -11,14 +11,16 @@ const logger = new Logger({
 });
 
 class SetupSpellChecker {
-	init(serverLanguage) {
+	SpellCheckHandler: typeof SpellCheckHandler;
+	contextMenuListener: typeof ContextMenuListener;
+	init(serverLanguage: string): void {
 		if (ConfigUtil.getConfigItem('enableSpellchecker')) {
 			this.enableSpellChecker();
 		}
 		this.enableContextMenu(serverLanguage);
 	}
 
-	enableSpellChecker() {
+	enableSpellChecker(): void {
 		try {
 			this.SpellCheckHandler = new SpellCheckHandler();
 		} catch (err) {
@@ -26,7 +28,7 @@ class SetupSpellChecker {
 		}
 	}
 
-	enableContextMenu(serverLanguage) {
+	enableContextMenu(serverLanguage: string): void {
 		if (this.SpellCheckHandler) {
 			this.SpellCheckHandler.attachToInput();
 			this.SpellCheckHandler.switchLanguage(serverLanguage);
@@ -36,13 +38,12 @@ class SetupSpellChecker {
 		}
 
 		const contextMenuBuilder = new ContextMenuBuilder(this.SpellCheckHandler);
-		this.contextMenuListener = new ContextMenuListener(info => {
+		this.contextMenuListener = new ContextMenuListener((info: object) => {
 			contextMenuBuilder.showPopupMenu(info);
 		});
 	}
 
-	unsubscribeSpellChecker() {
-		// eslint-disable-next-line no-undef
+	unsubscribeSpellChecker(): void {
 		if (this.SpellCheckHandler) {
 			this.SpellCheckHandler.unsubscribe();
 		}
@@ -52,4 +53,4 @@ class SetupSpellChecker {
 	}
 }
 
-module.exports = new SetupSpellChecker();
+export = new SetupSpellChecker();
