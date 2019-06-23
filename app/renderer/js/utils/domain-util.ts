@@ -105,7 +105,7 @@ class DomainUtil {
 		return false;
 	}
 
-	async checkCertError(domain: object, serverConf: any, error: string, silent: boolean): Promise<string | object> {
+	async checkCertError(domain: any, serverConf: any, error: string, silent: boolean): Promise<string | object> {
 		if (silent) {
 			// since getting server settings has already failed
 			return serverConf;
