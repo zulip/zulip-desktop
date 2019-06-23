@@ -1,17 +1,19 @@
-const events = require('events');
-const { ipcRenderer } = require('electron');
+import events from 'events';
+import { ipcRenderer } from 'electron';
+
+type ListenerType = ((...args: any[]) => void);
 
 // we have and will have some non camelcase stuff
 // while working with zulip so just turning the rule off
 // for the whole file.
-/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
 class ElectronBridge extends events {
-	send_event(...args) {
-		this.emit(...args);
+	send_event(eventName: string | symbol, ...args: any[]): void {
+		this.emit(eventName, ...args);
 	}
 
-	on_event(...args) {
-		this.on(...args);
+	on_event(eventName: string, listener: ListenerType): void {
+		this.on(eventName, listener);
 	}
 }
 
@@ -37,4 +39,6 @@ electron_bridge.on('realm_icon_url', iconURL => {
 // functions zulip side will emit event using ElectronBrigde.send_event
 // which is alias of .emit and on this side we can handle the data by adding
 // a listener for the event.
-module.exports = electron_bridge;
+export = electron_bridge;
+
+/* eslint-enable @typescript-eslint/camelcase */
