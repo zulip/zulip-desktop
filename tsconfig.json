@@ -15,7 +15,7 @@
 
     /* Additional checks */
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "noImplicitReturns": true
   },
   "include":[
