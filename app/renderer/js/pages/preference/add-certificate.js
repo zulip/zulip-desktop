@@ -62,7 +62,6 @@ class AddCertificate extends BaseComponent {
 	addHandler() {
 		const showDialogOptions = {
 			title: 'Select file',
-			defaultId: 1,
 			properties: ['openFile'],
 			filters: [{ name: 'crt, pem', extensions: ['crt', 'pem'] }]
 		};

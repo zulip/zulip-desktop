@@ -357,7 +357,6 @@ class GeneralSection extends BaseSection {
 	customCssDialog() {
 		const showDialogOptions = {
 			title: 'Select file',
-			defaultId: 1,
 			properties: ['openFile'],
 			filters: [{ name: 'CSS file', extensions: ['css'] }]
 		};
@@ -414,7 +413,6 @@ class GeneralSection extends BaseSection {
 	downloadFolderDialog() {
 		const showDialogOptions = {
 			title: 'Select Download Location',
-			defaultId: 1,
 			properties: ['openDirectory']
 		};
 
