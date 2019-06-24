@@ -75,7 +75,7 @@ class ProxyUtil {
 				if (proxy !== 'DIRECT' || proxy.includes('HTTPS')) {
 					// in case of proxy HTTPS url:port, windows gives first word as HTTPS while linux gives PROXY
 					// for all other HTTP or direct url:port both uses PROXY
-					if (proxy.includes('PROXY' || proxy.includes('HTTPS'))) {
+					if (proxy.includes('PROXY') || proxy.includes('HTTPS')) {
 						httpsString += 'https=' + proxy.split('PROXY')[1] + ';';
 					}
 				}
