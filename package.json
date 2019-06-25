@@ -173,7 +173,7 @@
           "max-lines": [
             "warn",
             {
-              "max": 700,
+              "max": 800,
               "skipBlankLines": true,
               "skipComments": true
             }
@@ -197,7 +197,8 @@
           "node/no-deprecated-api": 0,
           "@typescript-eslint/member-ordering": "never",
           "@typescript-eslint/restrict-plus-operands": "never",
-          "import/default": 0
+          "import/default": 0,
+          "@typescript-eslint/no-unused-vars": 0
         }
       }
     ],
