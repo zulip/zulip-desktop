@@ -1,4 +1,4 @@
-const translate = require('google-translate-api');
+const translate = require('@vitalets/google-translate-api');
 const path = require('path');
 const fs = require('fs');
 
@@ -26,5 +26,7 @@ for (let locale in supportedLocales) {
 
             writeJSON(localeFile, translationJSON);
             console.log(`create: ${localeFile}`);
+        }).catch(err => {
+            console.error(err);
         });
 }
