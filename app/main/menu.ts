@@ -8,6 +8,7 @@ import path = require('path');
 import DNDUtil = require('../renderer/js/utils/dnd-util');
 import Logger = require('../renderer/js/utils/logger-util');
 import ConfigUtil = require('../renderer/js/utils/config-util');
+import t = require('../renderer/js/utils/translation-util');
 
 const appName = app.getName();
 
@@ -19,7 +20,7 @@ const logger = new Logger({
 class AppMenu {
 	getHistorySubmenu(enableMenu: boolean): Electron.MenuItemConstructorOptions[] {
 		return [{
-			label: 'Back',
+			label: t.__('Back'),
 			accelerator: process.platform === 'darwin' ? 'Command+Left' : 'Alt+Left',
 			enabled: enableMenu,
 			click(_item: any, focusedWindow: any) {
@@ -28,7 +29,7 @@ class AppMenu {
 				}
 			}
 		}, {
-			label: 'Forward',
+			label: t.__('Forward'),
 			accelerator: process.platform === 'darwin' ? 'Command+Right' : 'Alt+Right',
 			enabled: enableMenu,
 			click(_item: any, focusedWindow: any) {
@@ -41,13 +42,13 @@ class AppMenu {
 
 	getToolsSubmenu(): Electron.MenuItemConstructorOptions[] {
 		return [{
-			label: 'Check for Updates',
+			label: t.__(`Check for Updates`),
 			click() {
 				AppMenu.checkForUpdate();
 			}
 		},
 		{
-			label: 'Release Notes',
+			label: t.__(`Release Notes`),
 			click() {
 				shell.openExternal(`https://github.com/zulip/zulip-desktop/releases/tag/v${app.getVersion()}`);
 			}
@@ -56,14 +57,14 @@ class AppMenu {
 			type: 'separator'
 		},
 		{
-			label: 'Factory Reset',
+			label: t.__('Factory Reset'),
 			accelerator: process.platform === 'darwin' ? 'Command+Shift+D' : 'Ctrl+Shift+D',
 			click() {
 				AppMenu.resetAppSettings();
 			}
 		},
 		{
-			label: 'Download App Logs',
+			label: t.__('Download App Logs'),
 			click() {
 				const zip = new AdmZip();
 				const date = new Date();
@@ -85,7 +86,7 @@ class AppMenu {
 			type: 'separator'
 		},
 		{
-			label: 'Toggle DevTools for Zulip App',
+			label: t.__('Toggle DevTools for Zulip App'),
 			accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
@@ -94,7 +95,7 @@ class AppMenu {
 			}
 		},
 		{
-			label: 'Toggle DevTools for Active Tab',
+			label: t.__('Toggle DevTools for Active Tab'),
 			accelerator: process.platform === 'darwin' ? 'Alt+Command+U' : 'Ctrl+Shift+U',
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
@@ -106,7 +107,7 @@ class AppMenu {
 
 	getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 		return [{
-			label: 'Reload',
+			label: t.__('Reload'),
 			accelerator: 'CommandOrControl+R',
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
@@ -114,7 +115,7 @@ class AppMenu {
 				}
 			}
 		}, {
-			label: 'Hard Reload',
+			label: t.__('Hard Reload'),
 			accelerator: 'CommandOrControl+Shift+R',
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
@@ -124,9 +125,10 @@ class AppMenu {
 		}, {
 			type: 'separator'
 		}, {
+			label: t.__('Toggle Full Screen'),
 			role: 'togglefullscreen'
 		}, {
-			label: 'Zoom In',
+			label: t.__('Zoom In'),
 			role: 'zoomin',
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
@@ -134,7 +136,7 @@ class AppMenu {
 				}
 			}
 		}, {
-			label: 'Zoom Out',
+			label: t.__('Zoom Out'),
 			accelerator: 'CommandOrControl+-',
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
@@ -142,7 +144,7 @@ class AppMenu {
 				}
 			}
 		}, {
-			label: 'Actual Size',
+			label: t.__('Actual Size'),
 			accelerator: 'CommandOrControl+0',
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
@@ -152,14 +154,14 @@ class AppMenu {
 		}, {
 			type: 'separator'
 		}, {
-			label: 'Toggle Tray Icon',
+			label: t.__('Toggle Tray Icon'),
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					focusedWindow.webContents.send('toggletray');
 				}
 			}
 		}, {
-			label: 'Toggle Sidebar',
+			label: t.__('Toggle Sidebar'),
 			accelerator: 'CommandOrControl+Shift+S',
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
@@ -192,7 +194,7 @@ class AppMenu {
 				enabled: false
 			},
 			{
-				label: 'About Zulip',
+				label: t.__('About Zulip'),
 				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
 						AppMenu.sendAction('open-about');
@@ -200,7 +202,7 @@ class AppMenu {
 				}
 			},
 			{
-				label: `Help Center`,
+				label: t.__(`Help Center`),
 				click(focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('open-help');
@@ -208,7 +210,7 @@ class AppMenu {
 				}
 			},
 			{
-				label: 'Report an Issue',
+				label: t.__('Report an Issue'),
 				click() {
 					// the goal is to notify the main.html BrowserWindow
 					// which may not be the focused window.
@@ -222,8 +224,10 @@ class AppMenu {
 
 	getWindowSubmenu(tabs: any[], activeTabIndex: number, enableMenu: boolean): Electron.MenuItemConstructorOptions[] {
 		const initialSubmenu: any[] = [{
+			label: t.__('Minimize'),
 			role: 'minimize'
 		}, {
+			label: t.__('Close'),
 			role: 'close'
 		}];
 
@@ -254,7 +258,7 @@ class AppMenu {
 				type: 'separator'
 			});
 			initialSubmenu.push({
-				label: 'Switch to Next Organization',
+				label: t.__('Switch to Next Organization'),
 				accelerator: `Ctrl+Tab`,
 				enabled: tabs.length > 1,
 				click(_item: any, focusedWindow: any) {
@@ -263,7 +267,7 @@ class AppMenu {
 					}
 				}
 			}, {
-				label: 'Switch to Previous Organization',
+				label: t.__('Switch to Previous Organization'),
 				accelerator: `Ctrl+Shift+Tab`,
 				enabled: tabs.length > 1,
 				click(_item: any, focusedWindow: any) {
@@ -283,7 +287,7 @@ class AppMenu {
 		return [{
 			label: `${app.getName()}`,
 			submenu: [{
-				label: 'Add Organization',
+				label: t.__('Add Organization'),
 				accelerator: 'Cmd+Shift+N',
 				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
@@ -291,14 +295,14 @@ class AppMenu {
 					}
 				}
 			}, {
-				label: 'Toggle Do Not Disturb',
+				label: t.__('Toggle Do Not Disturb'),
 				accelerator: 'Cmd+Shift+M',
 				click() {
 					const dndUtil = DNDUtil.toggle();
 					AppMenu.sendAction('toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
 				}
 			}, {
-				label: 'Desktop Settings',
+				label: t.__('Desktop Settings'),
 				accelerator: 'Cmd+,',
 				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
@@ -306,7 +310,7 @@ class AppMenu {
 					}
 				}
 			}, {
-				label: 'Keyboard Shortcuts',
+				label: t.__('Keyboard Shortcuts'),
 				accelerator: 'Cmd+Shift+K',
 				enabled: enableMenu,
 				click(_item: any, focusedWindow: any) {
@@ -317,7 +321,7 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
-				label: 'Copy Zulip URL',
+				label: t.__('Copy Zulip URL'),
 				accelerator: 'Cmd+Shift+C',
 				enabled: enableMenu,
 				click(_item: any, focusedWindow: any) {
@@ -326,7 +330,7 @@ class AppMenu {
 					}
 				}
 			}, {
-				label: 'Log Out of Organization',
+				label: t.__('Log Out of Organization'),
 				accelerator: 'Cmd+L',
 				enabled: enableMenu,
 				click(_item: any, focusedWindow: any) {
@@ -337,53 +341,72 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
+				label: t.__('Services'),
 				role: 'services',
 				submenu: []
 			}, {
 				type: 'separator'
 			}, {
+				label: t.__('Hide'),
 				role: 'hide'
 			}, {
+				label: t.__('Hide Others'),
 				role: 'hideothers'
 			}, {
+				label: t.__('Unhide'),
 				role: 'unhide'
 			}, {
 				type: 'separator'
 			}, {
+				label: t.__('Minimize'),
+				role: 'minimize'
+			}, {
+				label: t.__('Close'),
+				role: 'close'
+			}, {
+				label: t.__('Quit'),
 				role: 'quit'
 			}]
 		}, {
-			label: 'Edit',
+			label: t.__('Edit'),
 			submenu: [{
+				label: t.__('Undo'),
 				role: 'undo'
 			}, {
+				label: t.__('Redo'),
 				role: 'redo'
 			}, {
 				type: 'separator'
 			}, {
+				label: t.__('Cut'),
 				role: 'cut'
 			}, {
+				label: t.__('Copy'),
 				role: 'copy'
 			}, {
+				label: t.__('Paste'),
 				role: 'paste'
 			}, {
+				label: t.__('Paste and Match Style'),
 				role: 'pasteandmatchstyle'
 			}, {
+				label: t.__('Select All'),
 				role: 'selectall'
 			}]
 		}, {
-			label: 'View',
+			label: t.__('View'),
 			submenu: this.getViewSubmenu()
 		}, {
-			label: 'History',
+			label: t.__('History'),
 			submenu: this.getHistorySubmenu(enableMenu)
 		}, {
-			label: 'Window',
+			label: t.__('Window'),
 			submenu: this.getWindowSubmenu(tabs, activeTabIndex, enableMenu)
 		}, {
-			label: 'Tools',
+			label: t.__('Tools'),
 			submenu: this.getToolsSubmenu()
 		}, {
+			label: t.__('Help'),
 			role: 'help',
 			submenu: this.getHelpSubmenu()
 		}];
@@ -393,9 +416,9 @@ class AppMenu {
 		const { tabs, activeTabIndex, enableMenu } = props;
 
 		return [{
-			label: '&File',
+			label: t.__('File'),
 			submenu: [{
-				label: 'Add Organization',
+				label: t.__('Add Organization'),
 				accelerator: 'Ctrl+Shift+N',
 				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
@@ -405,14 +428,14 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
-				label: 'Toggle Do Not Disturb',
+				label: t.__('Toggle Do Not Disturb'),
 				accelerator: 'Ctrl+Shift+M',
 				click() {
 					const dndUtil = DNDUtil.toggle();
 					AppMenu.sendAction('toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
 				}
 			}, {
-				label: 'Desktop Settings',
+				label: t.__('Desktop Settings'),
 				accelerator: 'Ctrl+,',
 				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
@@ -420,7 +443,7 @@ class AppMenu {
 					}
 				}
 			}, {
-				label: 'Keyboard Shortcuts',
+				label: t.__('Keyboard Shortcuts'),
 				accelerator: 'Ctrl+Shift+K',
 				enabled: enableMenu,
 				click(_item: any, focusedWindow: any) {
@@ -431,7 +454,7 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
-				label: 'Copy Zulip URL',
+				label: t.__('Copy Zulip URL'),
 				accelerator: 'Ctrl+Shift+C',
 				enabled: enableMenu,
 				click(_item: any, focusedWindow: any) {
@@ -440,7 +463,7 @@ class AppMenu {
 					}
 				}
 			}, {
-				label: 'Log Out of Organization',
+				label: t.__('Log Out of Organization'),
 				accelerator: 'Ctrl+L',
 				enabled: enableMenu,
 				click(_item: any, focusedWindow: any) {
@@ -451,44 +474,58 @@ class AppMenu {
 			}, {
 				type: 'separator'
 			}, {
+				label: t.__('Minimize'),
+				role: 'minimize'
+			}, {
+				label: t.__('Close'),
+				role: 'close'
+			}, {
+				label: t.__('Quit'),
 				role: 'quit',
 				accelerator: 'Ctrl+Q'
 			}]
 		}, {
-			label: '&Edit',
+			label: t.__('Edit'),
 			submenu: [{
+				label: t.__('Undo'),
 				role: 'undo'
 			}, {
+				label: t.__('Redo'),
 				role: 'redo'
 			}, {
 				type: 'separator'
 			}, {
+				label: t.__('Cut'),
 				role: 'cut'
 			}, {
+				label: t.__('Copy'),
 				role: 'copy'
 			}, {
+				label: t.__('Paste'),
 				role: 'paste'
 			}, {
+				label: t.__('Paste and Match Style'),
 				role: 'pasteandmatchstyle'
 			}, {
 				type: 'separator'
 			}, {
+				label: t.__('Select All'),
 				role: 'selectall'
 			}]
 		}, {
-			label: '&View',
+			label: t.__('View'),
 			submenu: this.getViewSubmenu()
 		}, {
-			label: '&History',
+			label: t.__('History'),
 			submenu: this.getHistorySubmenu(enableMenu)
 		}, {
-			label: '&Window',
+			label: t.__('Window'),
 			submenu: this.getWindowSubmenu(tabs, activeTabIndex, enableMenu)
 		}, {
-			label: '&Tools',
+			label: t.__('Tools'),
 			submenu: this.getToolsSubmenu()
 		}, {
-			label: '&Help',
+			label: t.__('Help'),
 			role: 'help',
 			submenu: this.getHelpSubmenu()
 		}];
