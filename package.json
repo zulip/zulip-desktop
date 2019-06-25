@@ -21,8 +21,7 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "start": "concurrently --kill-others npm:start-app npm:watch-ts",
-    "start-app": "electron app --disable-http-cache --no-electron-connect",
+    "start": "node tools/run-dev",
     "watch-ts": "tsc -w",
     "reinstall": "node ./tools/reinstall-node-modules.js",
     "postinstall": "electron-builder install-app-deps",
@@ -135,7 +134,6 @@
     "@typescript-eslint/eslint-plugin": "1.10.2",
     "@typescript-eslint/parser": "1.10.2",
     "assert": "1.4.1",
-    "concurrently": "4.1.0",
     "cp-file": "5.0.0",
     "devtron": "1.4.0",
     "electron": "3.1.10",
