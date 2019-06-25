@@ -3,7 +3,6 @@
 const { ipcRenderer, shell } = require('electron');
 const SetupSpellChecker = require('./spellchecker');
 
-const ConfigUtil = require(__dirname + '/utils/config-util.js');
 const LinkUtil = require(__dirname + '/utils/link-util.js');
 const params = require(__dirname + '/utils/params-util.js');
 
@@ -47,10 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	// Get the default language of the server
 		const serverLanguage = page_params.default_language; // eslint-disable-line no-undef, camelcase
 		if (serverLanguage) {
-			// Set spellcheker language
-			ConfigUtil.setConfigItem('spellcheckerLanguage', serverLanguage);
 			// Init spellchecker
-			SetupSpellChecker.init();
+			SetupSpellChecker.init(serverLanguage);
 		}
 		// redirect users to network troubleshooting page
 		const getRestartButton = document.querySelector('.restart_get_events_button');
