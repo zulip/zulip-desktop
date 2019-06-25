@@ -11,6 +11,7 @@ declare module 'electron-spellchecker';
 declare module 'escape-html';
 declare module 'fs-extra';
 declare module 'wurl';
+declare module 'i18n';
 
 interface PageParamsObject {
     realm_uri: string;
