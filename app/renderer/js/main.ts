@@ -1,53 +1,124 @@
 'use strict';
 
-const { ipcRenderer, remote, clipboard, shell } = require('electron');
-const isDev = require('electron-is-dev');
+import { ipcRenderer, remote, clipboard, shell } from 'electron';
+import isDev from 'electron-is-dev';
+import escape from 'escape-html';
+import electronConnect from 'electron-connect';
+import feedbackHolder from './js/feedback';
 
 const { session, app, Menu, dialog } = remote;
-const escape = require('escape-html');
 
-require(__dirname + '/js/tray.js');
-const DomainUtil = require(__dirname + '/js/utils/domain-util.js');
-const WebView = require(__dirname + '/js/components/webview.js');
-const ServerTab = require(__dirname + '/js/components/server-tab.js');
-const FunctionalTab = require(__dirname + '/js/components/functional-tab.js');
-const ConfigUtil = require(__dirname + '/js/utils/config-util.js');
-const DNDUtil = require(__dirname + '/js/utils/dnd-util.js');
-const ReconnectUtil = require(__dirname + '/js/utils/reconnect-util.js');
-const Logger = require(__dirname + '/js/utils/logger-util.js');
-const CommonUtil = require(__dirname + '/js/utils/common-util.js');
+// eslint-disable-next-line import/no-unassigned-import
+require('./js/tray');
 
-const { feedbackHolder } = require(__dirname + '/js/feedback.js');
+import DomainUtil = require('./js/utils/domain-util');
+import WebView = require('./js/components/webview');
+import ServerTab = require('./js/components/server-tab');
+import FunctionalTab = require('./js/components/functional-tab');
+import ConfigUtil = require('./js/utils/config-util');
+import DNDUtil = require('./js/utils/dnd-util');
+import ReconnectUtil = require('./js/utils/reconnect-util');
+import Logger = require('./js/utils/logger-util');
+import CommonUtil = require('./js/utils/common-util');
 
 const logger = new Logger({
 	file: 'errors.log',
 	timestamp: true
 });
 
-class ServerManagerView {
-	constructor() {
-		this.$addServerButton = document.getElementById('add-tab');
-		this.$tabsContainer = document.getElementById('tabs-container');
+interface FunctionalTabProps {
+	name: string;
+	materialIcon: string;
+	url: string;
+}
 
-		const $actionsContainer = document.getElementById('actions-container');
+interface AnyObject {
+	[key: string]: any;
+}
+
+interface SettingsOptions {
+	autoHideMenubar: boolean;
+	trayIcon: boolean;
+	useManualProxy: boolean;
+	useSystemProxy: boolean;
+	showSidebar: boolean;
+	badgeOption: boolean;
+	startAtLogin: boolean;
+	startMinimized: boolean;
+	enableSpellchecker: boolean;
+	showNotification: boolean;
+	autoUpdate: boolean;
+	betaUpdate: boolean;
+	errorReporting: boolean;
+	customCSS: boolean;
+	silent: boolean;
+	lastActiveTab: number;
+	dnd: boolean;
+	dndPreviousSettings: {
+		showNotification: boolean;
+		silent: boolean;
+		flashTaskbarOnMessage?: boolean;
+	};
+	downloadsPath: string;
+	showDownloadFolder: boolean;
+	flashTaskbarOnMessage?: boolean;
+	dockBouncing?: boolean;
+	loading?: AnyObject;
+}
+
+class ServerManagerView {
+	$addServerButton: HTMLButtonElement;
+	$tabsContainer: Element;
+	$reloadButton: HTMLButtonElement;
+	$loadingIndicator: HTMLButtonElement;
+	$settingsButton: HTMLButtonElement;
+	$webviewsContainer: Element;
+	$backButton: HTMLButtonElement;
+	$dndButton: HTMLButtonElement;
+	$addServerTooltip: HTMLElement;
+	$reloadTooltip: HTMLElement;
+	$loadingTooltip: HTMLElement;
+	$settingsTooltip: HTMLElement;
+	$serverIconTooltip: HTMLCollectionOf<HTMLElement>;
+	$backTooltip: HTMLElement;
+	$dndTooltip: HTMLElement;
+	$sidebar: Element;
+	$fullscreenPopup: Element;
+	$fullscreenEscapeKey: string;
+	loading: AnyObject;
+	activeTabIndex: number;
+	tabs: Array<typeof ServerTab>;
+	functionalTabs: AnyObject;
+	tabIndex: number;
+	constructor() {
+		this.$addServerButton = document.querySelector('#add-tab');
+		this.$tabsContainer = document.querySelector('#tabs-container');
+
+		const $actionsContainer = document.querySelector('#actions-container');
 		this.$reloadButton = $actionsContainer.querySelector('#reload-action');
 		this.$loadingIndicator = $actionsContainer.querySelector('#loading-action');
 		this.$settingsButton = $actionsContainer.querySelector('#settings-action');
-		this.$webviewsContainer = document.getElementById('webviews-container');
+		this.$webviewsContainer = document.querySelector('#webviews-container');
 		this.$backButton = $actionsContainer.querySelector('#back-action');
 		this.$dndButton = $actionsContainer.querySelector('#dnd-action');
 
-		this.$addServerTooltip = document.getElementById('add-server-tooltip');
+		this.$addServerTooltip = document.querySelector('#add-server-tooltip');
 		this.$reloadTooltip = $actionsContainer.querySelector('#reload-tooltip');
 		this.$loadingTooltip = $actionsContainer.querySelector('#loading-tooltip');
 		this.$settingsTooltip = $actionsContainer.querySelector('#setting-tooltip');
-		this.$serverIconTooltip = document.getElementsByClassName('server-tooltip');
+
+		// TODO: This should have been querySelector but the problem is that
+		// querySelector doesn't return elements not present in dom whereas somehow
+		// getElementsByClassName does. To fix this we need to call this after this.initTabs
+		// is called in this.init.
+		// eslint-disable-next-line unicorn/prefer-query-selector
+		this.$serverIconTooltip = document.getElementsByClassName('server-tooltip') as HTMLCollectionOf<HTMLElement>;
 		this.$backTooltip = $actionsContainer.querySelector('#back-tooltip');
 		this.$dndTooltip = $actionsContainer.querySelector('#dnd-tooltip');
 
-		this.$sidebar = document.getElementById('sidebar');
+		this.$sidebar = document.querySelector('#sidebar');
 
-		this.$fullscreenPopup = document.getElementById('fullscreen-popup');
+		this.$fullscreenPopup = document.querySelector('#fullscreen-popup');
 		this.$fullscreenEscapeKey = process.platform === 'darwin' ? '^⌘F' : 'F11';
 		this.$fullscreenPopup.innerHTML = `Press ${this.$fullscreenEscapeKey} to exit full screen`;
 
@@ -58,7 +129,7 @@ class ServerManagerView {
 		this.tabIndex = 0;
 	}
 
-	init() {
+	init(): void {
 		this.loadProxy().then(() => {
 			this.initSidebar();
 			this.initTabs();
@@ -68,7 +139,7 @@ class ServerManagerView {
 		});
 	}
 
-	loadProxy() {
+	loadProxy(): Promise<boolean> {
 		return new Promise(resolve => {
 			// To change proxyEnable to useManualProxy in older versions
 			const proxyEnabledOld = ConfigUtil.isConfigItemExists('useProxy');
@@ -100,9 +171,9 @@ class ServerManagerView {
 	// Settings are initialized only when user clicks on General/Server/Network section settings
 	// In case, user doesn't visit these section, those values set to be null automatically
 	// This will make sure the default settings are correctly set to either true or false
-	initDefaultSettings() {
+	initDefaultSettings(): void {
 		// Default settings which should be respected
-		const settingOptions = {
+		const settingOptions: SettingsOptions = {
 			autoHideMenubar: false,
 			trayIcon: true,
 			useManualProxy: false,
@@ -146,18 +217,19 @@ class ServerManagerView {
 		}
 
 		for (const i in settingOptions) {
+			const setting = i as keyof SettingsOptions;
 			if (ConfigUtil.getConfigItem(i) === null) {
-				ConfigUtil.setConfigItem(i, settingOptions[i]);
+				ConfigUtil.setConfigItem(i, settingOptions[setting]);
 			}
 		}
 	}
 
-	initSidebar() {
+	initSidebar(): void {
 		const showSidebar = ConfigUtil.getConfigItem('showSidebar', true);
 		this.toggleSidebar(showSidebar);
 	}
 
-	initTabs() {
+	initTabs(): void {
 		const servers = DomainUtil.getDomains();
 		if (servers.length > 0) {
 			for (let i = 0; i < servers.length; i++) {
@@ -174,7 +246,7 @@ class ServerManagerView {
 		}
 	}
 
-	initServer(server, index) {
+	initServer(server: typeof DomainUtil, index: number): void {
 		const tabIndex = this.getTabIndex();
 		this.tabs.push(new ServerTab({
 			role: 'server',
@@ -196,7 +268,7 @@ class ServerManagerView {
 				isActive: () => {
 					return index === this.activeTabIndex;
 				},
-				switchLoading: (loading, url) => {
+				switchLoading: (loading: boolean, url: string) => {
 					if (!loading && this.loading[url]) {
 						this.loading[url] = false;
 					} else if (loading && !this.loading[url]) {
@@ -213,14 +285,14 @@ class ServerManagerView {
 		this.loading[server.url] = true;
 	}
 
-	initActions() {
+	initActions(): void {
 		this.initDNDButton();
 		this.initServerActions();
 		this.initLeftSidebarEvents();
 	}
 
-	initServerActions() {
-		const $serverImgs = document.querySelectorAll('.server-icons');
+	initServerActions(): void {
+		const $serverImgs: NodeListOf<HTMLImageElement> = document.querySelectorAll('.server-icons');
 		$serverImgs.forEach(($serverImg, index) => {
 			this.addContextMenu($serverImg, index);
 			if ($serverImg.src.includes('img/icon.png')) {
@@ -232,7 +304,7 @@ class ServerManagerView {
 		});
 	}
 
-	initLeftSidebarEvents() {
+	initLeftSidebarEvents(): void {
 		this.$dndButton.addEventListener('click', () => {
 			const dndUtil = DNDUtil.toggle();
 			ipcRenderer.send('forward-message', 'toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
@@ -258,22 +330,22 @@ class ServerManagerView {
 		this.sidebarHoverEvent(this.$dndButton, this.$dndTooltip);
 	}
 
-	initDNDButton() {
+	initDNDButton(): void {
 		const dnd = ConfigUtil.getConfigItem('dnd', false);
 		this.toggleDNDButton(dnd);
 	}
 
-	getTabIndex() {
+	getTabIndex(): number {
 		const currentIndex = this.tabIndex;
 		this.tabIndex++;
 		return currentIndex;
 	}
 
-	getCurrentActiveServer() {
+	getCurrentActiveServer(): string {
 		return this.tabs[this.activeTabIndex].webview.props.url;
 	}
 
-	displayInitialCharLogo($img, index) {
+	displayInitialCharLogo($img: HTMLImageElement, index: number): void {
 		/*
 			index parameter needed because webview[data-tab-id] can increment
 			beyond size of sidebar org array and throw error
@@ -296,12 +368,12 @@ class ServerManagerView {
 		$altIcon.classList.add('alt-icon');
 
 		$parent.removeChild($img);
-		$parent.appendChild($altIcon);
+		$parent.append($altIcon);
 
-		this.addContextMenu($altIcon, index);
+		this.addContextMenu($altIcon as HTMLImageElement, index);
 	}
 
-	sidebarHoverEvent(SidebarButton, SidebarTooltip, addServer = false) {
+	sidebarHoverEvent(SidebarButton: HTMLButtonElement, SidebarTooltip: HTMLElement, addServer = false): void {
 		SidebarButton.addEventListener('mouseover', () => {
 			SidebarTooltip.removeAttribute('style');
 			// To handle position of add server tooltip due to scrolling of list of organizations
@@ -318,7 +390,7 @@ class ServerManagerView {
 		});
 	}
 
-	onHover(index) {
+	onHover(index: number): void {
 		// this.$serverIconTooltip[index].innerHTML already has realm name, so we are just
 		// removing the style.
 		this.$serverIconTooltip[index].removeAttribute('style');
@@ -329,11 +401,11 @@ class ServerManagerView {
 		this.$serverIconTooltip[index].style.top = top + 'px';
 	}
 
-	onHoverOut(index) {
+	onHoverOut(index: number): void {
 		this.$serverIconTooltip[index].style.display = 'none';
 	}
 
-	openFunctionalTab(tabProps) {
+	openFunctionalTab(tabProps: FunctionalTabProps): void {
 		if (this.functionalTabs[tabProps.name] !== undefined) {
 			this.activateTab(this.functionalTabs[tabProps.name]);
 			return;
@@ -362,7 +434,7 @@ class ServerManagerView {
 				isActive: () => {
 					return this.functionalTabs[tabProps.name] === this.activeTabIndex;
 				},
-				switchLoading: (loading, url) => {
+				switchLoading: (loading: AnyObject, url: string) => {
 					if (!loading && this.loading[url]) {
 						this.loading[url] = false;
 					} else if (loading && !this.loading[url]) {
@@ -384,7 +456,7 @@ class ServerManagerView {
 		this.activateTab(this.functionalTabs[tabProps.name]);
 	}
 
-	openSettings(nav = 'General') {
+	openSettings(nav = 'General'): void {
 		this.openFunctionalTab({
 			name: 'Settings',
 			materialIcon: 'settings',
@@ -394,7 +466,7 @@ class ServerManagerView {
 		this.tabs[this.functionalTabs.Settings].webview.send('switch-settings-nav', nav);
 	}
 
-	openAbout() {
+	openAbout(): void {
 		this.openFunctionalTab({
 			name: 'About',
 			materialIcon: 'sentiment_very_satisfied',
@@ -402,7 +474,7 @@ class ServerManagerView {
 		});
 	}
 
-	openNetworkTroubleshooting() {
+	openNetworkTroubleshooting(): void {
 		this.openFunctionalTab({
 			name: 'Network Troubleshooting',
 			materialIcon: 'network_check',
@@ -410,7 +482,7 @@ class ServerManagerView {
 		});
 	}
 
-	activateLastTab(index) {
+	activateLastTab(index: number): void {
 		// Open all the tabs in background, also activate the tab based on the index
 		this.activateTab(index);
 		// Save last active tab via main process to avoid JSON DB errors
@@ -421,8 +493,8 @@ class ServerManagerView {
 	// not crash app when this.tabs is passed into
 	// ipcRenderer. Something about webview, and props.webview
 	// properties in ServerTab causes the app to crash.
-	get tabsForIpc() {
-		const tabs = [];
+	get tabsForIpc(): Array<typeof ServerTab> {
+		const tabs: Array<typeof ServerTab> = [];
 		this.tabs.forEach(tab => {
 			const proto = Object.create(Object.getPrototypeOf(tab));
 			const tabClone = Object.assign(proto, tab);
@@ -436,7 +508,7 @@ class ServerManagerView {
 		return tabs;
 	}
 
-	activateTab(index, hideOldTab = true) {
+	activateTab(index: number, hideOldTab = true): void {
 		if (!this.tabs[index]) {
 			return;
 		}
@@ -473,7 +545,7 @@ class ServerManagerView {
 		});
 	}
 
-	showLoading(loading) {
+	showLoading(loading: boolean): void {
 		if (!loading) {
 			this.$reloadButton.removeAttribute('style');
 			this.$loadingIndicator.style.display = 'none';
@@ -483,7 +555,7 @@ class ServerManagerView {
 		}
 	}
 
-	destroyTab(name, index) {
+	destroyTab(name: string, index: number): void {
 		if (this.tabs[index].webview.loading) {
 			return;
 		}
@@ -499,7 +571,7 @@ class ServerManagerView {
 		}
 	}
 
-	destroyView() {
+	destroyView(): void {
 		// Show loading indicator
 		this.$webviewsContainer.classList.remove('loaded');
 
@@ -513,7 +585,7 @@ class ServerManagerView {
 		this.$webviewsContainer.innerHTML = '';
 	}
 
-	reloadView() {
+	reloadView(): void {
 		// Save and remember the index of last active tab so that we can use it later
 		const lastActiveTab = this.tabs[this.activeTabIndex].props.index;
 		ConfigUtil.setConfigItem('lastActiveTab', lastActiveTab);
@@ -526,33 +598,33 @@ class ServerManagerView {
 
 	// This will trigger when pressed CTRL/CMD + R [WIP]
 	// It won't reload the current view properly when you add/delete a server.
-	reloadCurrentView() {
+	reloadCurrentView(): void {
 		this.$reloadButton.click();
 	}
 
-	updateBadge() {
+	updateBadge(): void {
 		let messageCountAll = 0;
-		for (let i = 0; i < this.tabs.length; i++) {
-			if (this.tabs[i] && this.tabs[i].updateBadge) {
-				const count = this.tabs[i].webview.badgeCount;
+		for (const tab of this.tabs) {
+			if (tab && tab.updateBadge) {
+				const count = tab.webview.badgeCount;
 				messageCountAll += count;
-				this.tabs[i].updateBadge(count);
+				tab.updateBadge(count);
 			}
 		}
 
 		ipcRenderer.send('update-badge', messageCountAll);
 	}
 
-	updateGeneralSettings(setting, value) {
+	updateGeneralSettings(setting: string, value: any): void {
 		const selector = 'webview:not([class*=disabled])';
-		const webview = document.querySelector(selector);
+		const webview: Electron.WebviewTag = document.querySelector(selector);
 		if (webview) {
 			const webContents = webview.getWebContents();
 			webContents.send(setting, value);
 		}
 	}
 
-	toggleSidebar(show) {
+	toggleSidebar(show: boolean): void {
 		if (show) {
 			this.$sidebar.classList.remove('sidebar-hide');
 		} else {
@@ -561,12 +633,12 @@ class ServerManagerView {
 	}
 
 	// Toggles the dnd button icon.
-	toggleDNDButton(alert) {
+	toggleDNDButton(alert: boolean): void {
 		this.$dndTooltip.textContent = (alert ? 'Disable' : 'Enable') + ' Do Not Disturb';
 		this.$dndButton.querySelector('i').textContent = alert ? 'notifications_off' : 'notifications';
 	}
 
-	addContextMenu($serverImg, index) {
+	addContextMenu($serverImg: HTMLImageElement, index: number): void {
 		$serverImg.addEventListener('contextmenu', e => {
 			e.preventDefault();
 			const template = [
@@ -598,8 +670,8 @@ class ServerManagerView {
 		});
 	}
 
-	registerIpcs() {
-		const webviewListeners = {
+	registerIpcs(): void {
+		const webviewListeners: AnyObject = {
 			'webview-reload': 'reload',
 			back: 'back',
 			focus: 'focus',
@@ -621,7 +693,7 @@ class ServerManagerView {
 			});
 		}
 
-		ipcRenderer.on('open-settings', (event, settingNav) => {
+		ipcRenderer.on('open-settings', (event: Event, settingNav: string) => {
 			this.openSettings(settingNav);
 		});
 
@@ -645,7 +717,7 @@ class ServerManagerView {
 			ipcRenderer.send('clear-app-settings');
 		});
 
-		ipcRenderer.on('switch-server-tab', (event, index) => {
+		ipcRenderer.on('switch-server-tab', (event: Event, index: number) => {
 			this.activateLastTab(index);
 		});
 
@@ -653,7 +725,7 @@ class ServerManagerView {
 			this.openSettings('AddServer');
 		});
 
-		ipcRenderer.on('reload-proxy', (event, showAlert) => {
+		ipcRenderer.on('reload-proxy', (event: Event, showAlert: boolean) => {
 			this.loadProxy().then(() => {
 				if (showAlert) {
 					alert('Proxy settings saved!');
@@ -662,7 +734,7 @@ class ServerManagerView {
 			});
 		});
 
-		ipcRenderer.on('toggle-sidebar', (event, show) => {
+		ipcRenderer.on('toggle-sidebar', (event: Event, show: boolean) => {
 			// Toggle the left sidebar
 			this.toggleSidebar(show);
 
@@ -670,8 +742,8 @@ class ServerManagerView {
 			this.updateGeneralSettings('toggle-sidebar-setting', show);
 		});
 
-		ipcRenderer.on('toggle-silent', (event, state) => {
-			const webviews = document.querySelectorAll('webview');
+		ipcRenderer.on('toggle-silent', (event: Event, state: boolean) => {
+			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');
 			webviews.forEach(webview => {
 				try {
 					webview.setAudioMuted(state);
@@ -684,7 +756,7 @@ class ServerManagerView {
 			});
 		});
 
-		ipcRenderer.on('toggle-autohide-menubar', (event, autoHideMenubar, updateMenu) => {
+		ipcRenderer.on('toggle-autohide-menubar', (event: Event, autoHideMenubar: boolean, updateMenu: boolean) => {
 			if (updateMenu) {
 				ipcRenderer.send('update-menu', {
 					tabs: this.tabsForIpc,
@@ -695,17 +767,17 @@ class ServerManagerView {
 			this.updateGeneralSettings('toggle-menubar-setting', autoHideMenubar);
 		});
 
-		ipcRenderer.on('toggle-dnd', (event, state, newSettings) => {
+		ipcRenderer.on('toggle-dnd', (event: Event, state: boolean, newSettings: SettingsOptions) => {
 			this.toggleDNDButton(state);
 			ipcRenderer.send('forward-message', 'toggle-silent', newSettings.silent);
 			const selector = 'webview:not([class*=disabled])';
-			const webview = document.querySelector(selector);
+			const webview: Electron.WebviewTag = document.querySelector(selector);
 			const webContents = webview.getWebContents();
 			webContents.send('toggle-dnd', state, newSettings);
 		});
 
-		ipcRenderer.on('update-realm-name', (event, serverURL, realmName) => {
-			DomainUtil.getDomains().forEach((domain, index) => {
+		ipcRenderer.on('update-realm-name', (event: Event, serverURL: string, realmName: string) => {
+			DomainUtil.getDomains().forEach((domain: typeof DomainUtil, index: number) => {
 				if (domain.url.includes(serverURL)) {
 					const serverTooltipSelector = `.tab .server-tooltip`;
 					const serverTooltips = document.querySelectorAll(serverTooltipSelector);
@@ -725,12 +797,12 @@ class ServerManagerView {
 			});
 		});
 
-		ipcRenderer.on('update-realm-icon', (event, serverURL, iconURL) => {
-			DomainUtil.getDomains().forEach((domain, index) => {
+		ipcRenderer.on('update-realm-icon', (event: Event, serverURL: string, iconURL: string) => {
+			DomainUtil.getDomains().forEach((domain: typeof DomainUtil, index: number) => {
 				if (domain.url.includes(serverURL)) {
-					DomainUtil.saveServerIcon(iconURL).then(localIconUrl => {
+					DomainUtil.saveServerIcon(iconURL).then((localIconUrl: string) => {
 						const serverImgsSelector = `.tab .server-icons`;
-						const serverImgs = document.querySelectorAll(serverImgsSelector);
+						const serverImgs: NodeListOf<HTMLImageElement> = document.querySelectorAll(serverImgsSelector);
 						serverImgs[index].src = localIconUrl;
 
 						domain.icon = localIconUrl;
@@ -750,21 +822,21 @@ class ServerManagerView {
 			this.$fullscreenPopup.classList.remove('show');
 		});
 
-		ipcRenderer.on('focus-webview-with-id', (event, webviewId) => {
-			const webviews = document.querySelectorAll('webview');
+		ipcRenderer.on('focus-webview-with-id', (event: Event, webviewId: number) => {
+			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');
 			webviews.forEach(webview => {
 				const currentId = webview.getWebContents().id;
 				const tabId = webview.getAttribute('data-tab-id');
-				const concurrentTab = document.querySelector(`div[data-tab-id="${tabId}"]`);
+				const concurrentTab: HTMLButtonElement = document.querySelector(`div[data-tab-id="${tabId}"]`);
 				if (currentId === webviewId) {
 					concurrentTab.click();
 				}
 			});
 		});
 
-		ipcRenderer.on('render-taskbar-icon', (event, messageCount) => {
+		ipcRenderer.on('render-taskbar-icon', (event: Event, messageCount: number) => {
 			// Create a canvas from unread messagecounts
-			function createOverlayIcon(messageCount) {
+			function createOverlayIcon(messageCount: number): HTMLCanvasElement {
 				const canvas = document.createElement('canvas');
 				canvas.height = 128;
 				canvas.width = 128;
@@ -805,7 +877,7 @@ class ServerManagerView {
 	}
 }
 
-window.onload = () => {
+window.addEventListener('load', () => {
 	const serverManagerView = new ServerManagerView();
 	const reconnectUtil = new ReconnectUtil(serverManagerView);
 	serverManagerView.init();
@@ -824,7 +896,8 @@ window.onload = () => {
 	// `--no-electron-connect`
 	const mainProcessArgv = remote.getGlobal('process').argv;
 	if (isDev && !mainProcessArgv.includes('--no-electron-connect')) {
-		const electronConnect = require('electron-connect');
 		electronConnect.client.create();
 	}
-};
+});
+
+export = new ServerManagerView();
