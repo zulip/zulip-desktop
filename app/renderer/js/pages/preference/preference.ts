@@ -2,20 +2,20 @@
 
 import { ipcRenderer } from 'electron';
 
-import BaseComponent = require('./js/components/base');
-import Nav = require('./js/pages/preference/nav');
-import ServersSection = require('./js/pages/preference/servers-section');
-import GeneralSection = require('./js/pages/preference/general-section');
-import NetworkSection = require('./js/pages/preference/network-section');
-import ConnectedOrgSection = require('./js/pages/preference/connected-org-section');
-import ShortcutsSection = require('./js/pages/preference/shortcuts-section');
+import BaseComponent = require('../../components/base');
+import Nav = require('./nav');
+import ServersSection = require('./servers-section');
+import GeneralSection = require('./general-section');
+import NetworkSection = require('./network-section');
+import ConnectedOrgSection = require('./connected-org-section');
+import ShortcutsSection = require('./shortcuts-section');
 
-type Section = typeof ServersSection | typeof GeneralSection | typeof NetworkSection | typeof ConnectedOrgSection | typeof ShortcutsSection;
+type Section = ServersSection | GeneralSection | NetworkSection | ConnectedOrgSection | ShortcutsSection;
 
 class PreferenceView extends BaseComponent {
 	$sidebarContainer: Element;
 	$settingsContainer: Element;
-	nav: typeof Nav;
+	nav: Nav;
 	section: Section;
 	constructor() {
 		super();
