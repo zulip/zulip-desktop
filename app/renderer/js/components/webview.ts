@@ -26,6 +26,11 @@ class WebView extends BaseComponent {
 	customCSS: string;
 	$webviewsContainer: DOMTokenList;
 	$el: Electron.WebviewTag;
+
+	// This is required because in main.js we access WebView.method as
+	// webview[method].
+	[key: string]: any;
+
 	constructor(props: WebViewProps) {
 		super();
 

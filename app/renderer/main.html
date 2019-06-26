@@ -55,6 +55,11 @@
             <send-feedback></send-feedback>
         </div>
     </body>
-    <script src="js/main.js"></script>
+    
+    <script>
+        // we don't use src='./js/main' in the script tag because
+        // it messes up require module path resolution
+        require('./js/main');
+    </script>
     <script>require('./js/shared/preventdrag.js')</script>
 </html>
