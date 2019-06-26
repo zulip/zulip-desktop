@@ -5,7 +5,11 @@ import SendFeedback from '@electron-elements/send-feedback';
 
 const { app } = remote;
 
-type SendFeedbackType = typeof SendFeedback;
+interface SendFeedback extends HTMLElement {
+	[key: string]: any;
+}
+
+type SendFeedbackType = SendFeedback;
 
 // make the button color match zulip app's theme
 SendFeedback.customStyles = `
@@ -26,8 +30,8 @@ button {
 `;
 
 customElements.define('send-feedback', SendFeedback);
-const sendFeedback: SendFeedbackType = document.querySelector('send-feedback');
-const feedbackHolder = sendFeedback.parentElement;
+export const sendFeedback: SendFeedbackType = document.querySelector('send-feedback');
+export const feedbackHolder = sendFeedback.parentElement;
 
 // customize the fields of custom elements
 sendFeedback.title = 'Report Issue';
@@ -59,8 +63,3 @@ sendFeedback.addEventListener('feedback-submitted', () => {
 const dataDir = app.getPath('userData');
 const logsDir = path.join(dataDir, '/Logs');
 sendFeedback.logs.push(...fs.readdirSync(logsDir).map(file => path.join(logsDir, file)));
-
-export = {
-	feedbackHolder,
-	sendFeedback
-};
