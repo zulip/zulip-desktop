@@ -4,7 +4,6 @@ import { ipcRenderer, remote, clipboard, shell } from 'electron';
 import path from 'path';
 import isDev from 'electron-is-dev';
 import escape from 'escape-html';
-import electronConnect from 'electron-connect';
 import { feedbackHolder } from './feedback';
 
 const { session, app, Menu, dialog } = remote;
@@ -902,7 +901,7 @@ window.addEventListener('load', () => {
 	// `--no-electron-connect`
 	const mainProcessArgv = remote.getGlobal('process').argv;
 	if (isDev && !mainProcessArgv.includes('--no-electron-connect')) {
-		electronConnect.client.create();
+		require('electron-connect').client.create();
 	}
 });
 
