@@ -1,8 +1,8 @@
 'use strict';
-import * as path from 'path';
-import * as fs from 'fs';
+import path from 'path';
+import fs from 'fs';
 import windowStateKeeper from 'electron-window-state';
-import * as isDev from 'electron-is-dev';
+import isDev from 'electron-is-dev';
 
 import { sentryInit } from '../renderer/js/utils/sentry-util';
 import { appUpdater } from './autoupdater';
