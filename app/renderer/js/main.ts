@@ -1,25 +1,26 @@
 'use strict';
 
 import { ipcRenderer, remote, clipboard, shell } from 'electron';
+import path from 'path';
 import isDev from 'electron-is-dev';
 import escape from 'escape-html';
 import electronConnect from 'electron-connect';
-import feedbackHolder from './js/feedback';
+import { feedbackHolder } from './feedback';
 
 const { session, app, Menu, dialog } = remote;
 
 // eslint-disable-next-line import/no-unassigned-import
-require('./js/tray');
+require('./tray');
 
-import DomainUtil = require('./js/utils/domain-util');
-import WebView = require('./js/components/webview');
-import ServerTab = require('./js/components/server-tab');
-import FunctionalTab = require('./js/components/functional-tab');
-import ConfigUtil = require('./js/utils/config-util');
-import DNDUtil = require('./js/utils/dnd-util');
-import ReconnectUtil = require('./js/utils/reconnect-util');
-import Logger = require('./js/utils/logger-util');
-import CommonUtil = require('./js/utils/common-util');
+import DomainUtil = require('./utils/domain-util');
+import WebView = require('./components/webview');
+import ServerTab = require('./components/server-tab');
+import FunctionalTab = require('./components/functional-tab');
+import ConfigUtil = require('./utils/config-util');
+import DNDUtil = require('./utils/dnd-util');
+import ReconnectUtil = require('./utils/reconnect-util');
+import Logger = require('./utils/logger-util');
+import CommonUtil = require('./utils/common-util');
 
 const logger = new Logger({
 	file: 'errors.log',
@@ -66,6 +67,9 @@ interface SettingsOptions {
 	loading?: AnyObject;
 }
 
+const rendererDirectory = path.resolve(__dirname, '..');
+type ServerOrFunctionalTab = ServerTab | FunctionalTab;
+
 class ServerManagerView {
 	$addServerButton: HTMLButtonElement;
 	$tabsContainer: Element;
@@ -87,7 +91,7 @@ class ServerManagerView {
 	$fullscreenEscapeKey: string;
 	loading: AnyObject;
 	activeTabIndex: number;
-	tabs: Array<typeof ServerTab>;
+	tabs: ServerOrFunctionalTab[];
 	functionalTabs: AnyObject;
 	tabIndex: number;
 	constructor() {
@@ -246,7 +250,7 @@ class ServerManagerView {
 		}
 	}
 
-	initServer(server: typeof DomainUtil, index: number): void {
+	initServer(server: any, index: number): void {
 		const tabIndex = this.getTabIndex();
 		this.tabs.push(new ServerTab({
 			role: 'server',
@@ -460,7 +464,7 @@ class ServerManagerView {
 		this.openFunctionalTab({
 			name: 'Settings',
 			materialIcon: 'settings',
-			url: `file://${__dirname}/preference.html#${nav}`
+			url: `file://${rendererDirectory}/preference.html#${nav}`
 		});
 		this.$settingsButton.classList.add('active');
 		this.tabs[this.functionalTabs.Settings].webview.send('switch-settings-nav', nav);
@@ -470,7 +474,7 @@ class ServerManagerView {
 		this.openFunctionalTab({
 			name: 'About',
 			materialIcon: 'sentiment_very_satisfied',
-			url: `file://${__dirname}/about.html`
+			url: `file://${rendererDirectory}/about.html`
 		});
 	}
 
@@ -478,7 +482,7 @@ class ServerManagerView {
 		this.openFunctionalTab({
 			name: 'Network Troubleshooting',
 			materialIcon: 'network_check',
-			url: `file://${__dirname}/network.html`
+			url: `file://${rendererDirectory}/network.html`
 		});
 	}
 
@@ -493,9 +497,9 @@ class ServerManagerView {
 	// not crash app when this.tabs is passed into
 	// ipcRenderer. Something about webview, and props.webview
 	// properties in ServerTab causes the app to crash.
-	get tabsForIpc(): Array<typeof ServerTab> {
-		const tabs: Array<typeof ServerTab> = [];
-		this.tabs.forEach(tab => {
+	get tabsForIpc(): ServerOrFunctionalTab[] {
+		const tabs: ServerOrFunctionalTab[] = [];
+		this.tabs.forEach((tab: ServerOrFunctionalTab) => {
 			const proto = Object.create(Object.getPrototypeOf(tab));
 			const tabClone = Object.assign(proto, tab);
 
@@ -605,7 +609,7 @@ class ServerManagerView {
 	updateBadge(): void {
 		let messageCountAll = 0;
 		for (const tab of this.tabs) {
-			if (tab && tab.updateBadge) {
+			if (tab && tab instanceof ServerTab && tab.updateBadge) {
 				const count = tab.webview.badgeCount;
 				messageCountAll += count;
 				tab.updateBadge(count);
@@ -688,7 +692,7 @@ class ServerManagerView {
 			ipcRenderer.on(key, () => {
 				const activeWebview = this.tabs[this.activeTabIndex].webview;
 				if (activeWebview) {
-					activeWebview[webviewListeners[key]]();
+					activeWebview[webviewListeners[key] as string]();
 				}
 			});
 		}
@@ -777,7 +781,8 @@ class ServerManagerView {
 		});
 
 		ipcRenderer.on('update-realm-name', (event: Event, serverURL: string, realmName: string) => {
-			DomainUtil.getDomains().forEach((domain: typeof DomainUtil, index: number) => {
+			// TODO: TypeScript - Type annotate getDomains() or this domain paramter.
+			DomainUtil.getDomains().forEach((domain: any, index: number) => {
 				if (domain.url.includes(serverURL)) {
 					const serverTooltipSelector = `.tab .server-tooltip`;
 					const serverTooltips = document.querySelectorAll(serverTooltipSelector);
@@ -798,7 +803,8 @@ class ServerManagerView {
 		});
 
 		ipcRenderer.on('update-realm-icon', (event: Event, serverURL: string, iconURL: string) => {
-			DomainUtil.getDomains().forEach((domain: typeof DomainUtil, index: number) => {
+			// TODO: TypeScript - Type annotate getDomains() or this domain paramter.
+			DomainUtil.getDomains().forEach((domain: any, index: number) => {
 				if (domain.url.includes(serverURL)) {
 					DomainUtil.saveServerIcon(iconURL).then((localIconUrl: string) => {
 						const serverImgsSelector = `.tab .server-icons`;
