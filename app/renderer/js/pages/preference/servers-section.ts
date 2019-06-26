@@ -46,4 +46,4 @@ class ServersSection extends BaseSection {
 	}
 }
 
-module.exports = ServersSection;
+export = ServersSection;
