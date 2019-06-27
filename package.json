@@ -33,9 +33,9 @@
     "test-e2e": "gulp test-e2e",
     "compile": "gulp compile",
     "dev": "gulp dev && npm test",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "mas": "electron-builder --mac mas",
+    "pack": "tsc && electron-builder --dir",
+    "dist": "tsc && electron-builder",
+    "mas": "tsc && electron-builder --mac mas",
     "travis": "cd ./scripts && ./travis-build-test.sh",
     "build-locales": "node tools/locale-helper"
   },
