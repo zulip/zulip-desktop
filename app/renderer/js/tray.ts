@@ -1,7 +1,7 @@
 'use strict';
-import path from 'path';
 import { ipcRenderer, remote, WebviewTag, NativeImage } from 'electron';
 
+import path = require('path');
 import ConfigUtil = require('./utils/config-util.js');
 const { Tray, Menu, nativeImage, BrowserWindow } = remote;
 
@@ -97,6 +97,11 @@ const renderNativeImage = function (arg: number): Promise<NativeImage> {
 		.then(() => renderCanvas(arg))
 		.then(canvas => {
 			const pngData = nativeImage.createFromDataURL(canvas.toDataURL('image/png')).toPNG();
+
+			// TODO: Fix the function to correctly use Promise correctly.
+			// the Promise.resolve().then(...) above is useless we should
+			// start with renderCanvas(arg).then
+			// eslint-disable-next-line promise/no-return-wrap
 			return Promise.resolve(nativeImage.createFromBuffer(pngData, {
 				scaleFactor: config.pixelRatio
 			}));

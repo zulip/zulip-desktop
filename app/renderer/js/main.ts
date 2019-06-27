@@ -1,11 +1,11 @@
 'use strict';
 
 import { ipcRenderer, remote, clipboard, shell } from 'electron';
-import path from 'path';
-import isDev from 'electron-is-dev';
-import escape from 'escape-html';
 import { feedbackHolder } from './feedback';
 
+import path = require('path');
+import escape = require('escape-html');
+import isDev = require('electron-is-dev');
 const { session, app, Menu, dialog } = remote;
 
 // eslint-disable-next-line import/no-unassigned-import

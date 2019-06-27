@@ -1,8 +1,9 @@
 'use strict';
 
 import { ipcRenderer } from 'electron';
-import ConfigUtil from '../utils/config-util';
 import { focusCurrentServer } from './helpers';
+
+import ConfigUtil = require('../utils/config-util');
 
 const NativeNotification = window.Notification;
 class BaseNotification extends NativeNotification {

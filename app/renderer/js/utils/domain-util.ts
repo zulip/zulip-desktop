@@ -1,15 +1,14 @@
 'use strict';
-
-import fs from 'fs';
-import path from 'path';
 import JsonDB from 'node-json-db';
-import request from 'request';
-import escape from 'escape-html';
 
+import escape = require('escape-html');
+import request = require('request');
+import fs = require('fs');
+import path = require('path');
 import Logger = require('./logger-util');
 import electron = require('electron');
 
-import RequestUtil = require('./request-util.js');
+import RequestUtil = require('./request-util');
 import Messages = require('../../../resources/messages');
 
 const { app, dialog } = electron.remote;

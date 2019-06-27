@@ -1,14 +1,11 @@
 'use strict';
-import * as path from 'path';
-
 import { app, shell, BrowserWindow, Menu, dialog } from 'electron';
-
-import * as fs from 'fs-extra';
-import * as AdmZip from 'adm-zip';
-
-import * as DNDUtil from '../renderer/js/utils/dnd-util';
 import { appUpdater } from './autoupdater';
 
+import AdmZip = require('adm-zip');
+import fs = require('fs-extra');
+import path = require('path');
+import DNDUtil = require('../renderer/js/utils/dnd-util');
 import Logger = require('../renderer/js/utils/logger-util');
 import ConfigUtil = require('../renderer/js/utils/config-util');
 
