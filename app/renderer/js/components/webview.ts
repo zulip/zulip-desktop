@@ -1,9 +1,8 @@
 'use strict';
-
-import path from 'path';
-import fs from 'fs';
 import { remote } from 'electron';
 
+import path = require('path');
+import fs = require('fs');
 import ConfigUtil = require('../utils/config-util');
 import SystemUtil = require('../utils/system-util');
 import BaseComponent = require('../components/base');

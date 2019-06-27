@@ -1,7 +1,7 @@
 import { app, Notification } from 'electron';
-import request from 'request';
-import semver from 'semver';
 
+import request = require('request');
+import semver = require('semver');
 import ConfigUtil = require('../renderer/js/utils/config-util');
 import ProxyUtil = require('../renderer/js/utils/proxy-util');
 import LinuxUpdateUtil = require('../renderer/js/utils/linux-update-util');

@@ -1,9 +1,8 @@
 'use strict';
-
-import * as fs from 'fs';
-import * as path from 'path';
 import JsonDB from 'node-json-db';
 
+import fs = require('fs');
+import path = require('path');
 import electron = require('electron');
 import Logger = require('./logger-util');
 

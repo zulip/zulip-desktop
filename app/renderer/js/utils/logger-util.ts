@@ -1,10 +1,10 @@
 import { Console as NodeConsole } from 'console'; // eslint-disable-line node/prefer-global/console
-import * as fs from 'fs';
-import * as os from 'os';
-import * as isDev from 'electron-is-dev';
 import { initSetUp } from './default-util';
 import { sentryInit, captureException } from './sentry-util';
 
+import fs = require('fs');
+import os = require('os');
+import isDev = require('electron-is-dev');
 import electron = require('electron');
 // this interface adds [key: string]: any so
 // we can do console[type] later on in the code

@@ -1,7 +1,7 @@
 'use strict';
 
-import WebView from './webview';
-import BaseComponent from './base';
+import WebView = require('./webview');
+import BaseComponent = require('./base');
 
 // TODO: TypeScript - Type annotate props
 interface TabProps {

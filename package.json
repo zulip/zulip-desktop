@@ -127,6 +127,7 @@
     "InstantMessaging"
   ],
   "devDependencies": {
+    "@types/adm-zip": "^0.4.32",
     "@types/node": "10.1.0",
     "@typescript-eslint/eslint-plugin": "1.10.2",
     "@typescript-eslint/parser": "1.10.2",

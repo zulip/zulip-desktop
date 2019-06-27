@@ -1,11 +1,10 @@
 'use strict';
 
 import { remote } from 'electron';
-
 import * as params from '../utils/params-util';
-import DefaultNotification from './default-notification';
 import { appId, loadBots } from './helpers';
 
+import DefaultNotification = require('./default-notification');
 const { app } = remote;
 
 // From https://github.com/felixrieseberg/electron-windows-notifications#appusermodelid

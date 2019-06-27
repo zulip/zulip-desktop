@@ -1,7 +1,7 @@
 'use strict';
-import path from 'path';
 import { ipcRenderer, remote, WebviewTag, NativeImage } from 'electron';
 
+import path = require('path');
 import ConfigUtil = require('./utils/config-util.js');
 const { Tray, Menu, nativeImage, BrowserWindow } = remote;
 

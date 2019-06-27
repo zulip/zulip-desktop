@@ -2,8 +2,8 @@
 
 import { ipcRenderer } from 'electron';
 
-import BaseSection = require('./base-section.js');
-import ConfigUtil = require('../../utils/config-util.js');
+import BaseSection = require('./base-section');
+import ConfigUtil = require('../../utils/config-util');
 
 class NetworkSection extends BaseSection {
 	// TODO: TypeScript - Here props should be object type

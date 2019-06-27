@@ -1,6 +1,6 @@
 'use strict';
 
-import * as url from 'url';
+import url = require('url');
 
 import ConfigUtil = require('./config-util');
 

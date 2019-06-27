@@ -1,7 +1,8 @@
 'use strict';
-import path from 'path';
 import { ipcRenderer, remote, OpenDialogOptions } from 'electron';
-import fs from 'fs-extra';
+
+import path = require('path');
+import fs = require('fs-extra');
 
 const { app, dialog } = remote;
 const currentBrowserWindow = remote.getCurrentWindow();

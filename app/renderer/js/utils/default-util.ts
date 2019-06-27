@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import fs = require('fs');
 
 let app: Electron.App;
 let setupCompleted = false;
