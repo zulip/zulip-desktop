@@ -74,7 +74,7 @@ async function main() {
 
   await Promise.all([
     run('Electron app', `npx ${pkg.scripts['start-app']}`),
-    run('TypeScript watch mode', 'npx tsc -w')
+    run('TypeScript watch mode', 'npx tsc --watch --pretty')
   ]);
 }
 
