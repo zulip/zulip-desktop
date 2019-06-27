@@ -2,7 +2,7 @@
 
 import { ipcRenderer } from 'electron';
 
-import BaseComponent = require('../../components/base.js');
+import BaseComponent = require('../../components/base');
 
 class BaseSection extends BaseComponent {
 	// TODO: TypeScript - Here props should be object type

@@ -1,11 +1,11 @@
 'use strict';
 
 import { remote } from 'electron';
-import * as fs from 'fs';
-import * as path from 'path';
 import JsonDB from 'node-json-db';
 import { initSetUp } from './default-util';
 
+import fs = require('fs');
+import path = require('path');
 import Logger = require('./logger-util');
 
 const { app, dialog } = remote;

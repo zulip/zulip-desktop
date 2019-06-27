@@ -1,8 +1,8 @@
 'use strict';
 import { app } from 'electron';
-import * as AutoLaunch from 'auto-launch';
-import * as isDev from 'electron-is-dev';
 
+import AutoLaunch = require('auto-launch');
+import isDev = require('electron-is-dev');
 import ConfigUtil = require('../renderer/js/utils/config-util');
 
 export const setAutoLaunch = (AutoLaunchValue: boolean): void => {

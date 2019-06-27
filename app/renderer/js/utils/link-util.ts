@@ -1,7 +1,7 @@
 'use strict';
 
 // TODO: TypeScript - Add @types/
-import * as wurl from 'wurl';
+import wurl = require('wurl');
 
 let instance: null | LinkUtil = null;
 

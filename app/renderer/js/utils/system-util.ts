@@ -1,7 +1,7 @@
 'use strict';
-
 import { remote } from 'electron';
-import * as os from 'os';
+
+import os = require('os');
 
 const { app } = remote;
 let instance: null | SystemUtil = null;

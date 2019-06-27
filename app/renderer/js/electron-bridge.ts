@@ -1,5 +1,6 @@
-import events from 'events';
 import { ipcRenderer } from 'electron';
+
+import events = require('events');
 
 type ListenerType = ((...args: any[]) => void);
 

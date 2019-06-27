@@ -1,5 +1,4 @@
-import * as isOnline from 'is-online';
-
+import isOnline = require('is-online');
 import Logger = require('./logger-util');
 
 const logger = new Logger({

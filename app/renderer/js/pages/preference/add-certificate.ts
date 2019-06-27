@@ -1,8 +1,8 @@
 'use-strict';
 
 import { remote, OpenDialogOptions } from 'electron';
-import path from 'path';
 
+import path = require('path');
 import BaseComponent = require('../../components/base');
 import CertificateUtil = require('../../utils/certificate-util');
 import DomainUtil = require('../../utils/domain-util');
