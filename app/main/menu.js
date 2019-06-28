@@ -19,10 +19,11 @@ const logger = new Logger({
 });
 
 class AppMenu {
-	getHistorySubmenu() {
+	getHistorySubmenu(enableMenu) {
 		return [{
 			label: 'Back',
 			accelerator: process.platform === 'darwin' ? 'Command+Left' : 'Alt+Left',
+			enabled: enableMenu,
 			click(item, focusedWindow) {
 				if (focusedWindow) {
 					AppMenu.sendAction('back');
@@ -31,6 +32,7 @@ class AppMenu {
 		}, {
 			label: 'Forward',
 			accelerator: process.platform === 'darwin' ? 'Command+Right' : 'Alt+Right',
+			enabled: enableMenu,
 			click(item, focusedWindow) {
 				if (focusedWindow) {
 					AppMenu.sendAction('forward');
@@ -212,7 +214,7 @@ class AppMenu {
 			}];
 	}
 
-	getWindowSubmenu(tabs, activeTabIndex) {
+	getWindowSubmenu(tabs, activeTabIndex, enableMenu) {
 		const initialSubmenu = [{
 			role: 'minimize'
 		}, {
@@ -248,7 +250,7 @@ class AppMenu {
 			initialSubmenu.push({
 				label: 'Switch to Next Organization',
 				accelerator: `Ctrl+Tab`,
-				enabled: tabs[activeTabIndex].props.role === 'server',
+				enabled: enableMenu,
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('switch-server-tab', AppMenu.getNextServer(tabs, activeTabIndex));
@@ -257,7 +259,7 @@ class AppMenu {
 			}, {
 				label: 'Switch to Previous Organization',
 				accelerator: `Ctrl+Shift+Tab`,
-				enabled: tabs[activeTabIndex].props.role === 'server',
+				enabled: enableMenu,
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('switch-server-tab', AppMenu.getPreviousServer(tabs, activeTabIndex));
@@ -311,6 +313,7 @@ class AppMenu {
 			}, {
 				label: 'Copy Zulip URL',
 				accelerator: 'Cmd+Shift+C',
+				enabled: enableMenu,
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('copy-zulip-url');
@@ -367,10 +370,10 @@ class AppMenu {
 			submenu: this.getViewSubmenu()
 		}, {
 			label: 'History',
-			submenu: this.getHistorySubmenu()
+			submenu: this.getHistorySubmenu(enableMenu)
 		}, {
 			label: 'Window',
-			submenu: this.getWindowSubmenu(tabs, activeTabIndex)
+			submenu: this.getWindowSubmenu(tabs, activeTabIndex, enableMenu)
 		}, {
 			label: 'Tools',
 			submenu: this.getToolsSubmenu()
@@ -424,6 +427,7 @@ class AppMenu {
 			}, {
 				label: 'Copy Zulip URL',
 				accelerator: 'Ctrl+Shift+C',
+				enabled: enableMenu,
 				click(item, focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('copy-zulip-url');
@@ -470,10 +474,10 @@ class AppMenu {
 			submenu: this.getViewSubmenu()
 		}, {
 			label: '&History',
-			submenu: this.getHistorySubmenu()
+			submenu: this.getHistorySubmenu(enableMenu)
 		}, {
 			label: '&Window',
-			submenu: this.getWindowSubmenu(tabs, activeTabIndex)
+			submenu: this.getWindowSubmenu(tabs, activeTabIndex, enableMenu)
 		}, {
 			label: '&Tools',
 			submenu: this.getToolsSubmenu()
