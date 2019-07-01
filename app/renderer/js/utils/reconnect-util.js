@@ -35,7 +35,7 @@ class ReconnectUtil {
 					.then(online => {
 						if (online) {
 							if (!this.alreadyReloaded) {
-								this.serverManagerView.reloadView();
+								this.serverManagerView.reloadCurrentView();
 							}
 							logger.log('You\'re back online.');
 							return resolve(true);
