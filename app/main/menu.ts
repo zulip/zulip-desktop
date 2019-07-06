@@ -171,7 +171,7 @@ class AppMenu {
 				}
 			}
 		}, {
-			label: 'Auto hide Menu bar',
+			label: t.__('Auto hide Menu bar'),
 			checked: ConfigUtil.getConfigItem('autoHideMenubar', false),
 			visible: process.platform !== 'darwin',
 			click(_item: any, focusedWindow: any) {
@@ -414,7 +414,6 @@ class AppMenu {
 
 	getOtherTpl(props: any): Electron.MenuItemConstructorOptions[] {
 		const { tabs, activeTabIndex, enableMenu } = props;
-
 		return [{
 			label: t.__('File'),
 			submenu: [{
