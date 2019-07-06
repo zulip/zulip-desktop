@@ -10,6 +10,7 @@ const currentBrowserWindow = remote.getCurrentWindow();
 import BaseSection = require('./base-section');
 import ConfigUtil = require('../../utils/config-util');
 import EnterpriseUtil = require('./../../utils/enterprise-util');
+import t = require('../../utils/translation-util');
 
 class GeneralSection extends BaseSection {
 	// TODO: TypeScript - Here props should be object type
@@ -22,100 +23,101 @@ class GeneralSection extends BaseSection {
 	template(): string {
 		return `
             <div class="settings-pane">
-                <div class="title">Appearance</div>
+                <div class="title">${t.__('Appearance')}</div>
                 <div id="appearance-option-settings" class="settings-card">
 					<div class="setting-row" id="tray-option">
-						<div class="setting-description">Show app icon in system tray</div>
+						<div class="setting-description">${t.__('Show app icon in system tray')}</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="menubar-option" style= "display:${process.platform === 'darwin' ? 'none' : ''}">
-						<div class="setting-description">Auto hide menu bar (Press Alt key to display)</div>
+						<div class="setting-description">${t.__('Auto hide menu bar (Press Alt key to display)')}</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="sidebar-option">
-						<div class="setting-description">Show sidebar (<span class="code">${process.platform === 'darwin' ? 'Cmd+Shift+S' : 'Ctrl+Shift+S'}</span>)</div>
+						<div class="setting-description">${t.__('Show sidebar')} (<span class="code">${process.platform === 'darwin' ? 'Cmd+Shift+S' : 'Ctrl+Shift+S'}</span>)</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="badge-option">
-						<div class="setting-description">Show app unread badge</div>
+						<div class="setting-description">${t.__('Show app unread badge')}</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="dock-bounce-option" style= "display:${process.platform === 'darwin' ? '' : 'none'}">
-						<div class="setting-description">Bounce dock on new private message</div>
+						<div class="setting-description">${t.__('Bounce dock on new private message')})}</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="flash-taskbar-option" style= "display:${process.platform === 'win32' ? '' : 'none'}">
-						<div class="setting-description">Flash taskbar on new message</div>
+						<div class="setting-description">${t.__('Flash taskbar on new message')}</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>
-				<div class="title">Desktop Notifications</div>
+				<div class="title">${t.__('Desktop Notifications')}</div>
 				<div class="settings-card">
 					<div class="setting-row" id="show-notification-option">
-						<div class="setting-description">Show desktop notifications</div>
+						<div class="setting-description">${t.__('Show desktop notifications')}</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="silent-option">
-						<div class="setting-description">Mute all sounds from Zulip</div>
+						<div class="setting-description">${t.__('Mute all sounds from Zulip')}</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>
-				<div class="title">App Updates</div>
+				<div class="title">${t.__('App Updates')}</div>
 				<div class="settings-card">
 				<div class="setting-row" id="autoupdate-option">
-						<div class="setting-description">Enable auto updates</div>
+						<div class="setting-description">${t.__('Enable auto updates')}</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="betaupdate-option">
-						<div class="setting-description">Get beta updates</div>
+						<div class="setting-description">${t.__('Get beta updates')}</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>
-				<div class="title">Functionality</div>
+				<div class="title">${t.__('Functionality')}</div>
                 <div class="settings-card">
 					<div class="setting-row" id="startAtLogin-option">
-						<div class="setting-description">Start app at login</div>
+						<div class="setting-description">${t.__('Start app at login')}</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="start-minimize-option">
-						<div class="setting-description">Always start minimized</div>
+						<div class="setting-description">${t.__('Always start minimized')}</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="enable-spellchecker-option">
-						<div class="setting-description">Enable spellchecker (requires restart)</div>
+						<div class="setting-description">${t.__('Enable spellchecker (requires restart)')}</div>
 						<div class="setting-control"></div>
 					</div>
 				</div>
-				<div class="title">Advanced</div>
+				<div class="title">${t.__('Advanced')}</div>
 				<div class="settings-card">
 				<div class="setting-row" id="enable-error-reporting">
-					<div class="setting-description">Enable error reporting (requires restart)</div>
+					<div class="setting-description">${t.__('Enable error reporting (requires restart)')}</div>
 					<div class="setting-control"></div>
 				</div>
 				<div class="setting-row" id="show-download-folder">
-					<div class="setting-description">Show downloaded files in file manager</div>
+					<div class="setting-description">${t.__('Show downloaded files in file manager')}</div>
 					<div class="setting-control"></div>
 				</div>
 				<div class="setting-row" id="add-custom-css">
 				<div class="setting-description">
-					Add custom CSS
+					${t.__('Add custom CSS')}
 				</div>
-				<button class="custom-css-button green">Upload</button>
+				<button class="custom-css-button green">${t.__('Upload')}</button>
 			</div>
 			<div class="setting-row" id="remove-custom-css">
+		"S
 				<div class="setting-description">
 					<div class="selected-css-path" id="custom-css-path">${ConfigUtil.getConfigItem('customCSS')}</div>
 				</div>
 				<div class="action red" id="css-delete-action">
 					<i class="material-icons">indeterminate_check_box</i>
-					<span>Delete</span>
+					<span>${t.__('Delete')}</span>
 				</div>
 			</div>
 					<div class="setting-row" id="download-folder">
 						<div class="setting-description">
-							Default download location
+							${t.__('Default download location')}
 						</div>
-						<button class="download-folder-button green">Change</button>
+						<button class="download-folder-button green">${t.__('Change')}</button>
 					</div>
 					<div class="setting-row">
 						<div class="setting-description">
@@ -124,12 +126,12 @@ class GeneralSection extends BaseSection {
 					</div>
 
 				</div>
-				<div class="title">Reset Application Data</div>
+				<div class="title">${t.__('Reset Application Data')}</div>
                 <div class="settings-card">
 					<div class="setting-row" id="resetdata-option">
-						<div class="setting-description">This will delete all application data including all added accounts and preferences
+						<div class="setting-description">${t.__('This will delete all application data including all added accounts and preferences')}
 						</div>
-						<button class="reset-data-button red w-150">Reset App Data</button>
+						<button class="reset-data-button red w-150">${t.__('Reset App Data')}</button>
 					</div>
 				</div>
             </div>
