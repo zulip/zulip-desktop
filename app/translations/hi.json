@@ -20,10 +20,12 @@
 	"Change": "परिवर्तन",
 	"Check for Updates": "अद्यतन के लिए जाँच",
 	"Close": "बंद करे",
+	"Connect": "जुडिये",
 	"Connect to another organization": "किसी अन्य संगठन से कनेक्ट करें",
 	"Connected organizations": "जुड़े हुए संगठन",
 	"Copy": "प्रतिलिपि",
 	"Copy Zulip URL": "Zulip URL को कॉपी करें",
+	"Create a new organization": "एक नया संगठन बनाएं",
 	"Cut": "कट गया",
 	"Default download location": "डिफ़ॉल्ट डाउनलोड स्थान",
 	"Delete": "हटाना",
@@ -59,6 +61,7 @@
 	"Mute all sounds from Zulip": "ज़ूलिप से सभी ध्वनियों को म्यूट करें",
 	"NO": "नहीं",
 	"Network": "नेटवर्क",
+	"OR": "या",
 	"Organization URL": "संगठन का URL",
 	"Organizations": "संगठन",
 	"Paste": "चिपकाएं",
@@ -111,7 +114,5 @@
 	"Zulip Help": "Zulip मदद",
 	"keyboard shortcuts": "कुंजीपटल अल्प मार्ग",
 	"script": "लिपि",
-	"AddServer": "AddServer",
-	"All the connected orgnizations will appear here.": "All the connected orgnizations will appear here.",
-	"All the connected orgnizations will appear here": "All the connected orgnizations will appear here"
+	"AddServer": "AddServer"
 }
