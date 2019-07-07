@@ -6,6 +6,7 @@ import path = require('path');
 import BaseComponent = require('../../components/base');
 import CertificateUtil = require('../../utils/certificate-util');
 import DomainUtil = require('../../utils/domain-util');
+import t = require('../../utils/translation-util');
 
 const { dialog } = remote;
 
@@ -26,12 +27,12 @@ class AddCertificate extends BaseComponent {
 		return `
 			<div class="settings-card certificates-card">
 				<div class="certificate-input">
-					<div>Organization URL</div>
+					<div>${t.__('Organization URL')}</div>
 					<input class="setting-input-value" autofocus placeholder="your-organization.zulipchat.com or zulip.your-organization.com"/>
 				</div>
 				<div class="certificate-input">
-					<div>Certificate file</div>
-					<button class="green" id="add-certificate-button">Upload</button>
+					<div>${t.__('Certificate file')}</div>
+					<button class="green" id="add-certificate-button">${t.__('Upload')}</button>
 				</div>
 			</div>
 		`;
