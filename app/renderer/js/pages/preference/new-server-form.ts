@@ -4,6 +4,7 @@ import { shell } from 'electron';
 
 import BaseComponent = require('../../components/base');
 import DomainUtil = require('../../utils/domain-util');
+import t = require('../../utils/translation-util');
 
 class NewServerForm extends BaseComponent {
 	// TODO: TypeScript - Here props should be object type
@@ -19,23 +20,23 @@ class NewServerForm extends BaseComponent {
 	template(): string {
 		return `
 			<div class="server-input-container">
-				<div class="title">Organization URL</div>
+				<div class="title">${t.__('Organization URL')}</div>
 				<div class="add-server-info-row">
 					<input class="setting-input-value" autofocus placeholder="your-organization.zulipchat.com or zulip.your-organization.com"/>
 				</div>
 				<div class="server-center">
 					<div class="server-save-action">
-						<button id="connect">Connect</button>
+						<button id="connect">${t.__('Connect')}</button>
 					</div>
 				</div>
 				<div class="server-center">
 				<div class="divider">
-					<hr class="left"/>OR<hr class="right" />
+					<hr class="left"/>${t.__('OR')}<hr class="right" />
 				</div>
 				</div>
 				<div class="server-center">
 				<div class="server-save-action">
-					<button id="open-create-org-link">Create a new organization</button>
+					<button id="open-create-org-link">${t.__('Create a new organization')}</button>
 			</div>
 					</div>
 			</div>
