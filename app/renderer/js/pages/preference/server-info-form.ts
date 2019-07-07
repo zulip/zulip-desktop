@@ -5,6 +5,7 @@ import { remote, ipcRenderer } from 'electron';
 import BaseComponent = require('../../components/base');
 import DomainUtil = require('../../utils/domain-util');
 import Messages = require('./../../../../resources/messages');
+import t = require('../../utils/translation-util');
 
 const { dialog } = remote;
 
@@ -37,7 +38,7 @@ class ServerInfoForm extends BaseComponent {
 					</div>
 					<div class="server-info-row">
 						<div class="action red server-delete-action">
-							<span>Disconnect</span>
+							<span>${t.__('Disconnect')}</span>
 						</div>
 					</div>
 				</div>
@@ -63,9 +64,9 @@ class ServerInfoForm extends BaseComponent {
 		this.$deleteServerButton.addEventListener('click', () => {
 			dialog.showMessageBox({
 				type: 'warning',
-				buttons: ['YES', 'NO'],
+				buttons: [t.__('YES'), t.__('NO')],
 				defaultId: 0,
-				message: 'Are you sure you want to disconnect this organization?'
+				message: t.__('Are you sure you want to disconnect this organization?')
 			}, response => {
 				if (response === 0) {
 					if (DomainUtil.removeDomain(this.props.index)) {

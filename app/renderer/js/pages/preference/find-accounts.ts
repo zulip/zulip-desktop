@@ -3,6 +3,7 @@
 import { shell } from 'electron';
 
 import BaseComponent = require('../../components/base');
+import t = require('../../utils/translation-util');
 
 class FindAccounts extends BaseComponent {
 	// TODO: TypeScript - Here props should be object type
@@ -19,11 +20,11 @@ class FindAccounts extends BaseComponent {
 		return `
 			<div class="settings-card certificate-card">
 				<div class="certificate-input">
-					<div>Organization URL</div>
+					<div>${t.__('Organization URL')}</div>
 					<input class="setting-input-value" value="zulipchat.com"/>
 				</div>
 				<div class="certificate-input">
-					<button class="green w-150" id="find-accounts-button">Find accounts</button>
+					<button class="green w-150" id="find-accounts-button">${t.__('Find accounts')}</button>
 				</div>
 			</div>
 		`;

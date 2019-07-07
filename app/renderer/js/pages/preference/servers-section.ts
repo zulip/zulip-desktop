@@ -2,6 +2,7 @@
 
 import BaseSection = require('./base-section');
 import NewServerForm = require('./new-server-form');
+import t = require('../../utils/translation-util');
 
 class ServersSection extends BaseSection {
 	// TODO: TypeScript - Here props should be object type
@@ -17,7 +18,7 @@ class ServersSection extends BaseSection {
 		<div class="add-server-modal">
 			<div class="modal-container">
 				<div class="settings-pane" id="server-settings-pane">
-					<div class="page-title">Add a Zulip organization</div>
+					<div class="page-title">${t.__('Add a Zulip organization')}</div>
 					<div id="new-server-container"></div>
 				</div>
 			</div>
