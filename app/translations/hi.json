@@ -44,6 +44,7 @@
 	"Flash taskbar on new message": "नए संदेश पर फ्लैश टास्कबार",
 	"Forward": "आगे",
 	"Functionality": "कार्यक्षमता",
+	"General": "सामान्य",
 	"Get beta updates": "बीटा अपडेट प्राप्त करें",
 	"Hard Reload": "हार्ड रीलोड",
 	"Help": "मदद",
@@ -57,7 +58,9 @@
 	"Minimize": "छोटा करना",
 	"Mute all sounds from Zulip": "ज़ूलिप से सभी ध्वनियों को म्यूट करें",
 	"NO": "नहीं",
+	"Network": "नेटवर्क",
 	"Organization URL": "संगठन का URL",
+	"Organizations": "संगठन",
 	"Paste": "चिपकाएं",
 	"Paste and Match Style": "पेस्ट और मैच स्टाइल",
 	"Proxy": "प्रतिनिधि",
@@ -75,6 +78,7 @@
 	"Save": "बचाना",
 	"Select All": "सभी का चयन करे",
 	"Settings": "सेटिंग्स",
+	"Shortcuts": "शॉर्टकट",
 	"Show App Logs": "ऐप लॉग दिखाएं",
 	"Show app icon in system tray": "सिस्टम ट्रे में ऐप आइकन दिखाएं",
 	"Show app unread badge": "ऐप अपठित बैज दिखाएं",
@@ -107,6 +111,7 @@
 	"Zulip Help": "Zulip मदद",
 	"keyboard shortcuts": "कुंजीपटल अल्प मार्ग",
 	"script": "लिपि",
+	"AddServer": "AddServer",
 	"All the connected orgnizations will appear here.": "All the connected orgnizations will appear here.",
 	"All the connected orgnizations will appear here": "All the connected orgnizations will appear here"
 }
