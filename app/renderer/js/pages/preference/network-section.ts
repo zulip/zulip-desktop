@@ -4,6 +4,7 @@ import { ipcRenderer } from 'electron';
 
 import BaseSection = require('./base-section');
 import ConfigUtil = require('../../utils/config-util');
+import t = require('../../utils/translation-util');
 
 class NetworkSection extends BaseSection {
 	// TODO: TypeScript - Here props should be object type
@@ -21,32 +22,32 @@ class NetworkSection extends BaseSection {
 	template(): string {
 		return `
             <div class="settings-pane">
-                <div class="title">Proxy</div>
+                <div class="title">${t.__('Proxy')}</div>
                 <div id="appearance-option-settings" class="settings-card">
 					<div class="setting-row" id="use-system-settings">
-						<div class="setting-description">Use system proxy settings (requires restart)</div>
+						<div class="setting-description">${t.__('Use system proxy settings (requires restart)')}</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="use-manual-settings">
-						<div class="setting-description">Manual proxy configuration</div>
+						<div class="setting-description">${t.__('Manual proxy configuration')}</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="manual-proxy-block">
 						<div class="setting-row" id="proxy-pac-option">
-							<span class="setting-input-key">PAC script</span>
+							<span class="setting-input-key">PAC ${t.__('script')}</span>
 							<input class="setting-input-value" placeholder="e.g. foobar.com/pacfile.js"/>
 						</div>
 						<div class="setting-row" id="proxy-rules-option">
-							<span class="setting-input-key">Proxy rules</span>
+							<span class="setting-input-key">${t.__('Proxy rules')}</span>
 							<input class="setting-input-value" placeholder="e.g. http=foopy:80;ftp=foopy2"/>
 						</div>
 						<div class="setting-row" id="proxy-bypass-option">
-							<span class="setting-input-key">Proxy bypass rules</span>
+							<span class="setting-input-key">${t.__('Proxy bypass rules')}</span>
 							<input class="setting-input-value" placeholder="e.g. foobar.com"/>
 						</div>
 						<div class="setting-row">
 							<div class="action green" id="proxy-save-action">
-								<span>Save</span>
+								<span>${t.__('Save')}</span>
 							</div>
 						</div>
 					</div>
