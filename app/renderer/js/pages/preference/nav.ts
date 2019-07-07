@@ -1,6 +1,7 @@
 'use strict';
 
 import BaseComponent = require('../../components/base');
+import t = require('../../utils/translation-util');
 
 class PreferenceNav extends BaseComponent {
 	// TODO: TypeScript - Here props should be object type
@@ -17,12 +18,12 @@ class PreferenceNav extends BaseComponent {
 	template(): string {
 		let navItemsTemplate = '';
 		for (const navItem of this.navItems) {
-			navItemsTemplate += `<div class="nav" id="nav-${navItem}">${navItem}</div>`;
+			navItemsTemplate += `<div class="nav" id="nav-${navItem}">${t.__(navItem)}</div>`;
 		}
 
 		return `
 			<div>
-				<div id="settings-header">Settings</div>
+				<div id="settings-header">${t.__('Settings')}</div>
 				<div id="nav-container">${navItemsTemplate}</div>
 			</div>
 		`;
