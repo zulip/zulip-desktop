@@ -42,6 +42,9 @@
   "build": {
     "appId": "org.zulip.zulip-electron",
     "asar": true,
+    "asarUnpack": [
+      "**/*.node"
+    ],
     "files": [
       "**/*",
       "!docs${/*}",
