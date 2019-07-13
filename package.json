@@ -22,6 +22,7 @@
   },
   "scripts": {
     "start": "node tools/run-dev",
+    "clean-ts-files": "git clean app/*.js -xf",
     "watch-ts": "tsc -w",
     "reinstall": "node ./tools/reinstall-node-modules.js",
     "postinstall": "electron-builder install-app-deps",
