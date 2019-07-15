@@ -49,7 +49,7 @@ class SystemUtil {
 	}
 
 	setUserAgent(webViewUserAgent: string): void {
-		this.userAgent = `ZulipElectron/'${app.getVersion()}${webViewUserAgent}`;
+		this.userAgent = `ZulipElectron/${app.getVersion()} ${webViewUserAgent}`;
 	}
 
 	getUserAgent(): string | null {
