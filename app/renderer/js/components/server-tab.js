@@ -11,7 +11,7 @@ class ServerTab extends Tab {
 					<div class="server-tooltip" style="display:none">${this.props.name}</div>
 					<div class="server-tab-badge"></div>
 					<div class="server-tab">
-					<img class="server-icons" src='${this.props.icon}'/>
+					<img class="server-icons" src='${this.props.icon}' alt="" data-content='${this.props.name[0]}'/>
 					</div>
 					<div class="server-tab-shortcut">${this.generateShortcutText()}</div>
 				</div>`;

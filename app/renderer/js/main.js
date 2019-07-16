@@ -292,11 +292,12 @@ class ServerManagerView {
 		}
 
 		$altIcon.textContent = realmName.charAt(0) || 'Z';
-		$altIcon.classList.add('server-icon');
+		$altIcon.classList.add('server-icons');
 		$altIcon.classList.add('alt-icon');
 
 		$parent.removeChild($img);
 		$parent.appendChild($altIcon);
+		$parent.setAttribute('data-content', '');
 
 		this.addContextMenu($altIcon, index);
 	}
