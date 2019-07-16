@@ -221,28 +221,33 @@ class DomainUtil {
 		return new Promise(resolve => {
 			const filePath = this.generateFilePath(url);
 			const file = fs.createWriteStream(filePath);
-			try {
-				request(serverIconOptions).on('response', response => {
-					response.on('error', err => {
+			if (serverIconOptions.url === defaultIconUrl) {
+				logger.log('Could not get server icon.');
+				resolve(defaultIconUrl);
+			} else {
+				try {
+					request(serverIconOptions).on('response', response => {
+						response.on('error', err => {
+							logger.log('Could not get server icon.');
+							logger.log(err);
+							logger.reportSentry(err);
+							resolve(defaultIconUrl);
+						});
+						response.pipe(file).on('finish', () => {
+							resolve(filePath);
+						});
+					}).on('error', err => {
 						logger.log('Could not get server icon.');
 						logger.log(err);
 						logger.reportSentry(err);
 						resolve(defaultIconUrl);
 					});
-					response.pipe(file).on('finish', () => {
-						resolve(filePath);
-					});
-				}).on('error', err => {
+				} catch (err) {
 					logger.log('Could not get server icon.');
 					logger.log(err);
 					logger.reportSentry(err);
 					resolve(defaultIconUrl);
-				});
-			} catch (err) {
-				logger.log('Could not get server icon.');
-				logger.log(err);
-				logger.reportSentry(err);
-				resolve(defaultIconUrl);
+				}
 			}
 		});
 	}
