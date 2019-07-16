@@ -53,6 +53,7 @@
     "copyright": "©2019 Kandra Labs, Inc.",
     "mac": {
       "category": "public.app-category.productivity",
+      "darkModeSupport": true,
       "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "linux": {
