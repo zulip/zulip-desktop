@@ -26,6 +26,7 @@ if (isDev) {
 // Prevent window being garbage collected
 let mainWindow;
 let badgeCount;
+let deepLinkingUrl;
 
 let isQuitting = false;
 
@@ -34,7 +35,13 @@ const mainURL = 'file://' + path.join(__dirname, '../renderer', 'main.html');
 
 const singleInstanceLock = app.requestSingleInstanceLock();
 if (singleInstanceLock) {
-	app.on('second-instance', () => {
+	app.on('second-instance', (event, argv) => {
+		// uri scheme handler for windows and linux
+		if (process.platform !== 'darwin') {
+			deepLinkingUrl = argv.slice(1);
+			handleDeepLink(deepLinkingUrl[(isDev && process.platform === 'win32') ? 1 : 0]);
+		}
+
 		if (mainWindow) {
 			if (mainWindow.isMinimized()) {
 				mainWindow.restore();
@@ -52,6 +59,13 @@ const APP_ICON = path.join(__dirname, '../resources', 'Icon');
 const iconPath = () => {
 	return APP_ICON + (process.platform === 'win32' ? '.ico' : '.png');
 };
+
+function handleDeepLink(deepLinkingUrl) {
+	if (mainWindow) {
+		mainWindow.webContents.focus();
+		mainWindow.webContents.send('deep-linking-url', deepLinkingUrl);
+	}
+}
 
 function createMainWindow() {
 	// Load the previous state with fallback to defaults
@@ -129,6 +143,21 @@ function createMainWindow() {
 // Decrease load on GPU (experimental)
 app.disableHardwareAcceleration();
 
+if (process.platform === 'win32' && isDev) {
+	app.setAsDefaultProtocolClient('zulip', process.execPath, [path.resolve(process.argv[1])]);
+} else {
+	app.setAsDefaultProtocolClient('zulip');
+}
+
+// uri scheme handler for macOS
+app.on('open-url', (event, url) => {
+	event.preventDefault();
+	deepLinkingUrl = url;
+	if (mainWindow) {
+		mainWindow.webContents.send('deep-linking-url', deepLinkingUrl);
+	}
+});
+
 // Temporary fix for Electron render colors differently
 // More info here - https://github.com/electron/electron/issues/10732
 app.commandLine.appendSwitch('force-color-profile', 'srgb');
@@ -186,6 +215,11 @@ app.on('ready', () => {
 			appUpdater();
 		}
 	});
+
+	if (process.platform !== 'darwin') {
+		deepLinkingUrl = process.argv.slice(1);
+		handleDeepLink(deepLinkingUrl[(isDev && process.platform === 'win32') ? 1 : 0]);
+	}
 
 	// Temporarily remove this event
 	// electron.powerMonitor.on('resume', () => {

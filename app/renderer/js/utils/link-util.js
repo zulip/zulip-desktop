@@ -1,6 +1,7 @@
 'use strict';
 
 const wurl = require('wurl');
+const DomainUtil = require('./domain-util.js');
 
 let instance = null;
 
@@ -13,6 +14,16 @@ class LinkUtil {
 		}
 
 		return instance;
+	}
+
+	isURLNarrow(url) {
+		const domains = DomainUtil.getDomains();
+		for (const domain in domains) {
+			if (url.startsWith(domains[domain].url)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	isInternal(currentUrl, newUrl) {

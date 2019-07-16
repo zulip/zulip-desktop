@@ -16,6 +16,7 @@ const DNDUtil = require(__dirname + '/js/utils/dnd-util.js');
 const ReconnectUtil = require(__dirname + '/js/utils/reconnect-util.js');
 const Logger = require(__dirname + '/js/utils/logger-util.js');
 const CommonUtil = require(__dirname + '/js/utils/common-util.js');
+const LinkUtil = require(__dirname + '/js/utils/link-util.js');
 
 const { feedbackHolder } = require(__dirname + '/js/feedback.js');
 
@@ -702,6 +703,23 @@ class ServerManagerView {
 			const webview = document.querySelector(selector);
 			const webContents = webview.getWebContents();
 			webContents.send('toggle-dnd', state, newSettings);
+		});
+
+		ipcRenderer.on('deep-linking-url', (event, deepLinkingUrl) => {
+			let url = 'https' + deepLinkingUrl.substring(5);
+			if (url.charAt(url.length - 1) === '/') {
+				// invoked when url is directly entered in browser
+				// remove / character at the end of the url
+				url = url.slice(0, -1);
+			}
+			if (LinkUtil.isURLNarrow(url)) {
+				for (const tab in this.tabs) {
+					if (url.startsWith(this.tabs[tab].webview.props.url)) {
+						this.activateTab(tab);
+						this.tabs[tab].webview.redirect(url);
+					}
+				}
+			}
 		});
 
 		ipcRenderer.on('update-realm-name', (event, serverURL, realmName) => {

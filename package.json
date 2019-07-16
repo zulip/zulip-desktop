@@ -50,6 +50,12 @@
       "!docs${/*}",
       "!node_modules/@paulcbetts/cld/deps/cld${/*}"
     ],
+    "protocols": [
+      {
+        "name": "Zulip",
+        "schemes": ["zulip"]
+      }
+    ],
     "copyright": "©2019 Kandra Labs, Inc.",
     "mac": {
       "category": "public.app-category.productivity",
