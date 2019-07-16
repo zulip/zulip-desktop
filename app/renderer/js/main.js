@@ -429,6 +429,7 @@ class ServerManagerView {
 
 			tabClone.webview = { props: {} };
 			tabClone.webview.props.name = tab.webview.props.name;
+			tabClone.webview.props.badgeCount = tab.webview.badgeCount;
 			delete tabClone.props.webview;
 			tabs.push(tabClone);
 		});
@@ -539,7 +540,7 @@ class ServerManagerView {
 				this.tabs[i].updateBadge(count);
 			}
 		}
-
+		ipcRenderer.send('update-tray', this.tabsForIpc);
 		ipcRenderer.send('update-badge', messageCountAll);
 	}
 
