@@ -2,6 +2,40 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v3.1.0-beta --2019-07-19
+
+**New features**:
+* Add option to find accounts by email.
+* Add option to hide Menu bar to View menu.
+* Show a loading indicator in the sidebar.
+* Update Help Center to open help page of the currently active server.
+* Improve auto-detection of spellchecker language.
+* Disable menu items on non-server pages.
+* Support dark mode on macOS.
+
+**Fixes**:
+* Updated, more robust server validation logic.
+* Fix JSON DB errors observed when switching tabs.
+* Remove unused `isLoading` function from `Tab`.
+* Remove unused `defaultId` parameter.
+* Fix syntax error in `proxy-util.js`.
+* Fix issue with creation of large `.node` files in the `Temp` folder on Windows machines.
+* Fix issue where drafts were not saved properly.
+
+**Development**:
+* Migrate codebase to TypeScript.
+* Set the indent_size in `.editconfig` to 4.
+* Use `.env` file for reading Sentry DSN.
+
+**Documentation**:
+* Improve development guide.
+
+**Module updates**:
+* Upgrade xo to v0.24.0.
+* Upgrade node-json-db to v0.9.2.
+* Upgrade electron to v3.1.10.
+* Add missing transitive dependencies.
+
 ### v3.0.0 --2019-05-20
 
 **New features**:
