@@ -132,6 +132,7 @@
   ],
   "devDependencies": {
     "@types/adm-zip": "^0.4.32",
+    "@types/dotenv": "6.1.1",
     "@typescript-eslint/eslint-plugin": "1.10.2",
     "@typescript-eslint/parser": "1.10.2",
     "assert": "1.4.1",
