@@ -1,3 +1,4 @@
+import ViewManager = require('./viewmanager');
 
 import electron, {app, dialog, ipcMain, session} from 'electron';
 import fs from 'fs';
@@ -337,6 +338,10 @@ ${error}`
 		page.send('toggle-autohide-menubar', showMenubar, true);
 	});
 
+	ipcMain.on('toggle-sidebar', () => {
+		ViewManager.fixBounds();
+	});
+
 	ipcMain.on('update-badge', (_event: Electron.IpcMainEvent, messageCount: number) => {
 		badgeCount = messageCount;
 		BadgeSettings.updateBadge(badgeCount, mainWindow);
@@ -355,7 +360,7 @@ ${error}`
 		AppMenu.setMenu(props);
 		const activeTab = props.tabs[props.activeTabIndex];
 		if (activeTab) {
-			mainWindow.setTitle(`Zulip - ${activeTab.webviewName}`);
+			mainWindow.setTitle(`Zulip - ${activeTab.name}`);
 		}
 	});
 
