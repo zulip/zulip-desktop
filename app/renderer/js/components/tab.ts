@@ -1,6 +1,5 @@
 'use strict';
 
-import WebView = require('./webview');
 import BaseComponent = require('./base');
 
 // TODO: TypeScript - Type annotate props
@@ -10,13 +9,10 @@ interface TabProps {
 
 class Tab extends BaseComponent {
 	props: TabProps;
-	webview: WebView;
 	$el: Element;
 	constructor(props: TabProps) {
 		super();
-
 		this.props = props;
-		this.webview = this.props.webview;
 	}
 
 	registerListeners(): void {
@@ -31,17 +27,14 @@ class Tab extends BaseComponent {
 
 	activate(): void {
 		this.$el.classList.add('active');
-		this.webview.load();
 	}
 
 	deactivate(): void {
 		this.$el.classList.remove('active');
-		this.webview.hide();
 	}
 
 	destroy(): void {
 		this.$el.parentNode.removeChild(this.$el);
-		this.webview.$el.parentNode.removeChild(this.webview.$el);
 	}
 }
 
