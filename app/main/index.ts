@@ -14,6 +14,7 @@ import AppMenu = require('./menu');
 import BadgeSettings = require('../renderer/js/pages/preference/badge-settings');
 import ConfigUtil = require('../renderer/js/utils/config-util');
 import ProxyUtil = require('../renderer/js/utils/proxy-util');
+import ViewManager = require('./viewmanager');
 
 interface PatchedGlobal extends NodeJS.Global {
 	mainWindowState: windowStateKeeper.State;
@@ -261,6 +262,10 @@ app.on('ready', () => {
 		page.send('toggle-autohide-menubar', showMenubar, true);
 	});
 
+	ipcMain.on('toggle-sidebar', () => {
+		ViewManager.fixBounds();
+	});
+
 	ipcMain.on('update-badge', (_event: Electron.IpcMessageEvent, messageCount: number) => {
 		badgeCount = messageCount;
 		BadgeSettings.updateBadge(badgeCount, mainWindow);
@@ -279,7 +284,7 @@ app.on('ready', () => {
 		AppMenu.setMenu(props);
 		const activeTab = props.tabs[props.activeTabIndex];
 		if (activeTab) {
-			mainWindow.setTitle(`Zulip - ${activeTab.webview.props.name}`);
+			mainWindow.setTitle(`Zulip - ${activeTab.props.name}`);
 		}
 	});
 
