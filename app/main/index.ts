@@ -9,6 +9,7 @@ import * as BadgeSettings from '../renderer/js/pages/preference/badge-settings';
 import * as ConfigUtil from '../renderer/js/utils/config-util';
 import * as ProxyUtil from '../renderer/js/utils/proxy-util';
 import {sentryInit} from '../renderer/js/utils/sentry-util';
+import ViewManager = require('./viewmanager');
 
 import {appUpdater} from './autoupdater';
 import * as AppMenu from './menu';
@@ -283,6 +284,10 @@ ${error}`
 		page.send('toggle-autohide-menubar', showMenubar, true);
 	});
 
+	ipcMain.on('toggle-sidebar', () => {
+		ViewManager.fixBounds();
+	});
+
 	ipcMain.on('update-badge', (_event: Electron.IpcMainEvent, messageCount: number) => {
 		badgeCount = messageCount;
 		BadgeSettings.updateBadge(badgeCount, mainWindow);
@@ -301,7 +306,7 @@ ${error}`
 		AppMenu.setMenu(props);
 		const activeTab = props.tabs[props.activeTabIndex];
 		if (activeTab) {
-			mainWindow.setTitle(`Zulip - ${activeTab.webviewName}`);
+			mainWindow.setTitle(`Zulip - ${activeTab.name}`);
 		}
 	});
 
