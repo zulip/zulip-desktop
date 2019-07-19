@@ -20,6 +20,7 @@ import DNDUtil = require('./utils/dnd-util');
 import ReconnectUtil = require('./utils/reconnect-util');
 import Logger = require('./utils/logger-util');
 import CommonUtil = require('./utils/common-util');
+import EnterpriseUtil = require('./utils/enterprise-util');
 
 const logger = new Logger({
 	file: 'errors.log',
@@ -135,6 +136,7 @@ class ServerManagerView {
 	init(): void {
 		this.loadProxy().then(() => {
 			this.initSidebar();
+			this.initPresetOrgs();
 			this.initTabs();
 			this.initActions();
 			this.registerIpcs();
@@ -230,6 +232,40 @@ class ServerManagerView {
 	initSidebar(): void {
 		const showSidebar = ConfigUtil.getConfigItem('showSidebar', true);
 		this.toggleSidebar(showSidebar);
+	}
+
+	async queueDomain(domain: any): Promise<boolean> {
+		// allows us to start adding multiple domains to the app simultaneously
+		// promise of addition resolves in both cases, but we consider it rejected
+		// if the resolved value is false
+		try {
+			const serverConf = await DomainUtil.checkDomain(domain);
+			await DomainUtil.addDomain(serverConf);
+			return true;
+		} catch (err) {
+			logger.error(err);
+			logger.error('Could not add ' + domain + '. Please contact your system administrator.');
+			return false;
+		}
+	}
+
+	async initPresetOrgs(): Promise<void> {
+		// read preset organizations from global_config.json and queues them
+		// for addition to the app's domains
+		const presetOrgs = EnterpriseUtil.getConfigItem('presetOrganizations', []);
+		// set to true if at least one new domain is added
+		const domainPromises = [];
+		for (const url in presetOrgs) {
+			if (DomainUtil.duplicateDomain(presetOrgs[url])) {
+				continue;
+			}
+			domainPromises.push(this.queueDomain(presetOrgs[url]));
+		}
+		const domainsAdded = await Promise.all(domainPromises);
+		if (domainsAdded.includes(true)) {
+			// at least one domain was resolved
+			ipcRenderer.send('reload-full-app');
+		}
 	}
 
 	initTabs(): void {
