@@ -1,5 +1,4 @@
 import BaseComponent from './base';
-import WebView from './webview';
 
 export interface TabProps {
 	role: string;
@@ -11,9 +10,9 @@ export interface TabProps {
 	tabIndex: number;
 	onHover?: () => void;
 	onHoverOut?: () => void;
-	webview: WebView;
 	materialIcon?: string;
 	onDestroy?: () => void;
+	url?: string;
 }
 
 export default class Tab extends BaseComponent {
@@ -30,9 +29,9 @@ export default class Tab extends BaseComponent {
 		this.$el.addEventListener('mouseout', this.props.onHoverOut);
 	}
 
-	showNetworkError(): void {
-		this.webview.forceLoad();
-	}
+	// showNetworkError(): void { // TODO: Find the replacement
+	// 	this.webview.forceLoad();
+	// }
 
 	activate(): void {
 		this.$el.classList.add('active');

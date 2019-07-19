@@ -41,12 +41,9 @@ class ViewManager {
 		});
 
 		ipcMain.on('call-view-function', (e: Event, name: string, ...params: any[]) => {
-			const fn = this.views[this.selectedIndex][name as keyof View];
-			if (typeof fn === 'function') {
-				// Type checking requires spread elements to match up with a rest parameter.
-				// So, using a workaround here.
-				(fn as any)(...params);
-			}
+			// Type checking requires spread elements to match up with a rest parameter.
+			// So, using a workaround here.
+			(this.views[this.selectedIndex] as any)[name as keyof View](...params);
 		});
 	}
 
@@ -67,6 +64,7 @@ class ViewManager {
 			return;
 		}
 		this.selectedIndex = index;
+		mainWindow.setBrowserView(null);
 		if (!view.webContents.getURL()) {
 			const { url } = view;
 			view.webContents.loadURL(url);
