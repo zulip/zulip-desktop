@@ -262,7 +262,7 @@ app.on('ready', () => {
 		page.send('toggle-autohide-menubar', showMenubar, true);
 	});
 
-	ipcMain.on('toggle-sidebar', () => {
+	ipcMain.on('fix-bounds', () => {
 		ViewManager.fixBounds();
 	});
 
