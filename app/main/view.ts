@@ -1,6 +1,6 @@
 'use strict';
 
-import { BrowserView } from 'electron';
+import { BrowserView, BrowserWindow } from 'electron';
 
 import ConfigUtil = require('../renderer/js/utils/config-util');
 const shouldSilentWebview = ConfigUtil.getConfigItem('silent');
@@ -17,7 +17,7 @@ export class View extends BrowserView {
 	index: number;
 	url: string;
 	zoomFactor: number;
-	loading: true;
+	loading: boolean;
 	badgeCount: number;
 	customCSS: boolean;
 
@@ -33,7 +33,7 @@ export class View extends BrowserView {
 		this.index = props.index;
 		this.url = props.url;
 		this.zoomFactor = 1.0;
-		this.loading = true;
+		this.loading = false;
 		this.badgeCount = 0;
 		this.customCSS = ConfigUtil.getConfigItem('customCSS');
 		this.registerListeners();
@@ -45,6 +45,34 @@ export class View extends BrowserView {
 				this.webContents.setAudioMuted(true);
 			});
 		}
+
+		this.webContents.addListener('did-navigate-in-page', () => {
+			const isSettingsPage = this.url.includes('renderer/preference.html');
+			if (isSettingsPage) {
+				return;
+			}
+			this.canGoBackButton();
+		});
+
+		this.webContents.addListener('did-navigate', () => {
+			this.canGoBackButton();
+		});
+
+		this.webContents.addListener('did-start-loading', () => {
+			const isSettingsPage = this.url.includes('renderer/preference.html');
+			if (!isSettingsPage) {
+				this.sendAction('switch-loading', true, this.url);
+			}
+		});
+
+		this.webContents.addListener('dom-ready', () => {
+			this.loading = false;
+			this.sendAction('switch-loading', false, this.url);
+		});
+
+		this.webContents.addListener('did-stop-loading', () => {
+			this.sendAction('switch-loading', false, this.url);
+		});
 	}
 
 	zoomIn(): void {
@@ -89,5 +117,23 @@ export class View extends BrowserView {
 
 	toggleDevTools(): void {
 		this.webContents.toggleDevTools();
+	}
+
+	canGoBackButton(): void {
+		if (this.webContents.canGoBack()) {
+			this.sendAction('switch-back', true);
+		} else {
+			this.sendAction('switch-back', false);
+		}
+	}
+
+	sendAction(action: any, ...params: any[]): void {
+		const win = BrowserWindow.getAllWindows()[0];
+
+		if (process.platform === 'darwin') {
+			win.restore();
+		}
+
+		win.webContents.send(action, ...params);
 	}
 }

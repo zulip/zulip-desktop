@@ -12,6 +12,7 @@ export interface TabProps {
 	onHoverOut?: () => void;
 	materialIcon?: string;
 	onDestroy?: () => void;
+	url?: string;
 }
 
 export default class Tab extends BaseComponent {
