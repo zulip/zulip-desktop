@@ -9,6 +9,7 @@ type ListenerType = ((...args: any[]) => void);
 // for the whole file.
 /* eslint-disable @typescript-eslint/camelcase */
 class ElectronBridge extends events {
+	send_notification_reply_message_supported = false;
 	send_event(eventName: string | symbol, ...args: any[]): void {
 		this.emit(eventName, ...args);
 	}
