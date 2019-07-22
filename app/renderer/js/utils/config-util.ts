@@ -5,6 +5,7 @@ import fs = require('fs');
 import path = require('path');
 import electron = require('electron');
 import Logger = require('./logger-util');
+import EnterpriseUtil = require('./enterprise-util');
 
 const logger = new Logger({
 	file: 'config-util.log',
@@ -67,7 +68,11 @@ class ConfigUtil {
 		return (value !== undefined);
 	}
 
-	setConfigItem(key: string, value: any): void {
+	setConfigItem(key: string, value: any, override? : boolean): void {
+		if (EnterpriseUtil.configItemExists(key) && !override) {
+			// if item is in global config and we're not trying to override
+			return;
+		}
 		this.db.push(`/${key}`, value, true);
 		this.db.save();
 	}
