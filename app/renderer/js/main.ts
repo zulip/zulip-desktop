@@ -138,12 +138,12 @@ class ServerManagerView {
 
 	init(): void {
 		this.loadProxy().then(() => {
+			this.initDefaultSettings();
 			this.initSidebar();
 			this.initPresetOrgs();
 			this.initTabs();
 			this.initActions();
 			this.registerIpcs();
-			this.initDefaultSettings();
 		});
 	}
 
@@ -226,8 +226,11 @@ class ServerManagerView {
 
 		for (const i in settingOptions) {
 			const setting = i as keyof SettingsOptions;
-			if (ConfigUtil.getConfigItem(i) === null) {
-				ConfigUtil.setConfigItem(i, settingOptions[setting]);
+			// give preference to defaults defined in global_config.json
+			if (EnterpriseUtil.configItemExists(setting)) {
+				ConfigUtil.setConfigItem(setting, EnterpriseUtil.getConfigItem(setting));
+			} else if (ConfigUtil.getConfigItem(setting) === null) {
+				ConfigUtil.setConfigItem(setting, settingOptions[setting]);
 			}
 		}
 	}
