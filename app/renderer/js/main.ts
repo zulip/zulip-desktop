@@ -91,6 +91,7 @@ class ServerManagerView {
 	$fullscreenPopup: Element;
 	$fullscreenEscapeKey: string;
 	loading: AnyObject;
+	badgeCounts: AnyObject;
 	activeTabIndex: number;
 	tabs: ServerOrFunctionalTab[];
 	functionalTabs: AnyObject;
@@ -129,6 +130,7 @@ class ServerManagerView {
 		this.$fullscreenPopup.innerHTML = `Press ${this.$fullscreenEscapeKey} to exit full screen`;
 
 		this.loading = {};
+		this.badgeCounts = {};
 		this.activeTabIndex = -1;
 		this.tabs = [];
 		this.presetOrgs = [];
@@ -658,15 +660,15 @@ class ServerManagerView {
 	}
 
 	updateBadge(): void {
-		// let messageCountAll = 0;
-		// for (const tab of this.tabs) {
-		// if (tab && tab instanceof ServerTab && tab.updateBadge) {
-		// const count = tab.webview.badgeCount;
-		// messageCountAll += count;
-		// tab.updateBadge(count);
-		// }
-		// }
-		// ipcRenderer.send('update-badge', messageCountAll);
+		let messageCountAll = 0;
+		for (const tab of this.tabs) {
+			if (tab && tab instanceof ServerTab && tab.updateBadge) {
+				const count = this.badgeCounts[tab.props.url];
+				messageCountAll += count;
+				tab.updateBadge(count);
+			}
+		}
+		ipcRenderer.send('update-badge', messageCountAll);
 	}
 
 	updateGeneralSettings(setting: string, value: any): void {
@@ -983,6 +985,11 @@ class ServerManagerView {
 				this.loading[url] = true;
 			}
 			this.showLoading(this.loading[this.tabs[this.activeTabIndex].props.url]);
+		});
+
+		ipcRenderer.on('update-badge-count', (e: Event, count: number, url: string) => {
+			this.badgeCounts[url] = count;
+			this.updateBadge();
 		});
 	}
 }
