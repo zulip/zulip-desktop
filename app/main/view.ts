@@ -18,7 +18,6 @@ export class View extends BrowserView {
 	url: string;
 	zoomFactor: number;
 	loading: boolean;
-	badgeCount: number;
 	customCSS: boolean;
 
 	constructor(public props: ViewProps) {
@@ -34,7 +33,6 @@ export class View extends BrowserView {
 		this.url = props.url;
 		this.zoomFactor = 1.0;
 		this.loading = false;
-		this.badgeCount = 0;
 		this.customCSS = ConfigUtil.getConfigItem('customCSS');
 		this.registerListeners();
 	}
@@ -72,6 +70,11 @@ export class View extends BrowserView {
 
 		this.webContents.addListener('did-stop-loading', () => {
 			this.sendAction('switch-loading', false, this.url);
+		});
+
+		this.webContents.addListener('page-title-updated', (e: Event, title: string) => {
+			const badgeCount = this.getBadgeCount(title);
+			this.sendAction('update-badge-count', badgeCount, this.url);
 		});
 	}
 
@@ -125,6 +128,11 @@ export class View extends BrowserView {
 		} else {
 			this.sendAction('switch-back', false);
 		}
+	}
+
+	getBadgeCount(title: string): number {
+		const messageCountInTitle = (/\((\d+)\)/).exec(title);
+		return messageCountInTitle ? Number(messageCountInTitle[1]) : 0;
 	}
 
 	sendAction(action: any, ...params: any[]): void {
