@@ -79,13 +79,6 @@ class ServerManagerView {
 	$webviewsContainer: Element;
 	$backButton: HTMLButtonElement;
 	$dndButton: HTMLButtonElement;
-	$addServerTooltip: HTMLElement;
-	$reloadTooltip: HTMLElement;
-	$loadingTooltip: HTMLElement;
-	$settingsTooltip: HTMLElement;
-	$serverIconTooltip: HTMLCollectionOf<HTMLElement>;
-	$backTooltip: HTMLElement;
-	$dndTooltip: HTMLElement;
 	$sidebar: Element;
 	$fullscreenPopup: Element;
 	$fullscreenEscapeKey: string;
@@ -107,20 +100,6 @@ class ServerManagerView {
 		this.$webviewsContainer = document.querySelector('#webviews-container');
 		this.$backButton = $actionsContainer.querySelector('#back-action');
 		this.$dndButton = $actionsContainer.querySelector('#dnd-action');
-
-		this.$addServerTooltip = document.querySelector('#add-server-tooltip');
-		this.$reloadTooltip = $actionsContainer.querySelector('#reload-tooltip');
-		this.$loadingTooltip = $actionsContainer.querySelector('#loading-tooltip');
-		this.$settingsTooltip = $actionsContainer.querySelector('#setting-tooltip');
-
-		// TODO: This should have been querySelector but the problem is that
-		// querySelector doesn't return elements not present in dom whereas somehow
-		// getElementsByClassName does. To fix this we need to call this after this.initTabs
-		// is called in this.init.
-		// eslint-disable-next-line unicorn/prefer-query-selector
-		this.$serverIconTooltip = document.getElementsByClassName('server-tooltip') as HTMLCollectionOf<HTMLElement>;
-		this.$backTooltip = $actionsContainer.querySelector('#back-tooltip');
-		this.$dndTooltip = $actionsContainer.querySelector('#dnd-tooltip');
 
 		this.$sidebar = document.querySelector('#sidebar');
 
@@ -350,8 +329,6 @@ class ServerManagerView {
 			onClick: this.activateLastTab.bind(this, index),
 			index,
 			tabIndex,
-			onHover: this.onHover.bind(this, index),
-			onHoverOut: this.onHoverOut.bind(this, index),
 			url: server.url
 		}));
 		const props = {
@@ -402,13 +379,6 @@ class ServerManagerView {
 		this.$backButton.addEventListener('click', () => {
 			ipcRenderer.send('call-view-function', 'back');
 		});
-
-		this.sidebarHoverEvent(this.$addServerButton, this.$addServerTooltip, true);
-		this.sidebarHoverEvent(this.$loadingIndicator, this.$loadingTooltip);
-		this.sidebarHoverEvent(this.$settingsButton, this.$settingsTooltip);
-		this.sidebarHoverEvent(this.$reloadButton, this.$reloadTooltip);
-		this.sidebarHoverEvent(this.$backButton, this.$backTooltip);
-		this.sidebarHoverEvent(this.$dndButton, this.$dndTooltip);
 	}
 
 	initDNDButton(): void {
@@ -452,38 +422,6 @@ class ServerManagerView {
 		$parent.append($altIcon);
 
 		this.addContextMenu($altIcon as HTMLImageElement, index);
-	}
-
-	sidebarHoverEvent(SidebarButton: HTMLButtonElement, SidebarTooltip: HTMLElement, addServer = false): void {
-		SidebarButton.addEventListener('mouseover', () => {
-			SidebarTooltip.removeAttribute('style');
-			// To handle position of add server tooltip due to scrolling of list of organizations
-			// This could not be handled using CSS, hence the top of the tooltip is made same
-			// as that of its parent element.
-			// This needs to handled only for the add server tooltip and not others.
-			if (addServer) {
-				const { top } = SidebarButton.getBoundingClientRect();
-				SidebarTooltip.style.top = top + 'px';
-			}
-		});
-		SidebarButton.addEventListener('mouseout', () => {
-			SidebarTooltip.style.display = 'none';
-		});
-	}
-
-	onHover(index: number): void {
-		// this.$serverIconTooltip[index].innerHTML already has realm name, so we are just
-		// removing the style.
-		this.$serverIconTooltip[index].removeAttribute('style');
-		// To handle position of servers' tooltip due to scrolling of list of organizations
-		// This could not be handled using CSS, hence the top of the tooltip is made same
-		// as that of its parent element.
-		const { top } = this.$serverIconTooltip[index].parentElement.getBoundingClientRect();
-		this.$serverIconTooltip[index].style.top = top + 'px';
-	}
-
-	onHoverOut(index: number): void {
-		this.$serverIconTooltip[index].style.display = 'none';
 	}
 
 	openFunctionalTab(tabProps: FunctionalTabProps): void {
@@ -690,7 +628,7 @@ class ServerManagerView {
 
 	// Toggles the dnd button icon.
 	toggleDNDButton(alert: boolean): void {
-		this.$dndTooltip.textContent = (alert ? 'Disable' : 'Enable') + ' Do Not Disturb';
+		this.$dndButton.title = (alert ? 'Disable' : 'Enable') + ' Do Not Disturb';
 		this.$dndButton.querySelector('i').textContent = alert ? 'notifications_off' : 'notifications';
 	}
 
@@ -836,11 +774,10 @@ class ServerManagerView {
 			// TODO: TypeScript - Type annotate getDomains() or this domain paramter.
 			DomainUtil.getDomains().forEach((domain: any, index: number) => {
 				if (domain.url.includes(serverURL)) {
-					const serverTooltipSelector = `.tab .server-tooltip`;
-					const serverTooltips = document.querySelectorAll(serverTooltipSelector);
-					serverTooltips[index].innerHTML = escape(realmName);
+					const serverTabSelector = `.server-tab`;
+					const serverTabs = document.querySelectorAll(serverTabSelector);
+					(serverTabs[index] as HTMLElement).title = escape(realmName);
 					this.tabs[index].props.name = escape(realmName);
-					// this.tabs[index].webview.props.name = realmName;
 
 					domain.alias = escape(realmName);
 					DomainUtil.db.push(`/domains[${index}]`, domain, true);
