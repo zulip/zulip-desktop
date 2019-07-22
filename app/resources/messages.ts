@@ -23,9 +23,20 @@ class Messages {
 		\nYou can click here if you'd like to proceed with the connection.`;
 	}
 
-	enterpriseOrgError(length: number): any {
+	enterpriseOrgError(length: number, domains: string[]): any {
+		let domainList = '';
+		for (const domain of domains) {
+			domainList += `• ${domain}\n`;
+		}
 		return {
-			title: `Could not add ${length} ${length === 1 ? `organization` : `organizations`}`,
+			title: `Could not add the following ${length === 1 ? `organization` : `organizations`}`,
+			content: `${domainList}\nPlease contact your system administrator.`
+		};
+	}
+
+	orgRemovalError(url: string): any {
+		return {
+			title: `Removing ${url} is a restricted operation.`,
 			content: `Please contact your system administrator.`
 		};
 	}

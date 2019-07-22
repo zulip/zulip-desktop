@@ -4,6 +4,7 @@ import { remote, ipcRenderer } from 'electron';
 
 import BaseComponent = require('../../components/base');
 import DomainUtil = require('../../utils/domain-util');
+import Messages = require('./../../../../resources/messages');
 
 const { dialog } = remote;
 
@@ -67,8 +68,12 @@ class ServerInfoForm extends BaseComponent {
 				message: 'Are you sure you want to disconnect this organization?'
 			}, response => {
 				if (response === 0) {
-					DomainUtil.removeDomain(this.props.index);
-					this.props.onChange(this.props.index);
+					if (DomainUtil.removeDomain(this.props.index)) {
+						ipcRenderer.send('reload-full-app');
+					} else {
+						const { title, content } = Messages.orgRemovalError(DomainUtil.getDomain(this.props.index).url);
+						dialog.showErrorBox(title, content);
+					}
 				}
 			});
 		});

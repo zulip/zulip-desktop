@@ -52,6 +52,19 @@ class EnterpriseUtil {
 		this.reloadDB();
 		return (this.enterpriseSettings[key] !== undefined);
 	}
+
+	isPresetOrg(url: string): boolean {
+		if (!this.configItemExists('presetOrganizations')) {
+			return false;
+		}
+		const presetOrgs = this.enterpriseSettings.presetOrganizations;
+		for (const org of presetOrgs) {
+			if (url.includes(org)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
 
 export = new EnterpriseUtil();
