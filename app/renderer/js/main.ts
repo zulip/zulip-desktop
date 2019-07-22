@@ -288,6 +288,10 @@ class ServerManagerView {
 			// no enterprise domains added
 			const { title, content } = Messages.enterpriseOrgError(domainsAdded.length);
 			dialog.showErrorBox(title, content);
+			if (DomainUtil.getDomains().length === 0) {
+				// no orgs present, stop showing loading gif
+				this.openSettings('AddServer');
+			}
 		}
 	}
 
