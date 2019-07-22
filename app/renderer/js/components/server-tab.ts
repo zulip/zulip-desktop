@@ -14,9 +14,8 @@ export default class ServerTab extends Tab {
 
 	template(): string {
 		return `<div class="tab" data-tab-id="${this.props.tabIndex}">
-					<div class="server-tooltip" style="display:none">${this.props.name}</div>
 					<div class="server-tab-badge"></div>
-					<div class="server-tab">
+					<div class="server-tab" title="${this.props.name}">
 					<img class="server-icons" src='${this.props.icon}'/>
 					</div>
 					<div class="server-tab-shortcut">${this.generateShortcutText()}</div>
