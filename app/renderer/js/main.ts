@@ -21,6 +21,7 @@ import ReconnectUtil = require('./utils/reconnect-util');
 import Logger = require('./utils/logger-util');
 import CommonUtil = require('./utils/common-util');
 import EnterpriseUtil = require('./utils/enterprise-util');
+import Messages = require('./../../resources/messages');
 
 const logger = new Logger({
 	file: 'errors.log',
@@ -283,6 +284,10 @@ class ServerManagerView {
 			} else {
 				ipcRenderer.send('reload-full-app');
 			}
+		} else if (domainsAdded.length > 0) {
+			// no enterprise domains added
+			const { title, content } = Messages.enterpriseOrgError(domainsAdded.length);
+			dialog.showErrorBox(title, content);
 		}
 	}
 

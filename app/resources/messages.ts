@@ -22,6 +22,13 @@ class Messages {
 		\nUnless you have a good reason to believe otherwise, you should not proceed.
 		\nYou can click here if you'd like to proceed with the connection.`;
 	}
+
+	enterpriseOrgError(length: number): any {
+		return {
+			title: `Could not add ${length} ${length === 1 ? `organization` : `organizations`}`,
+			content: `Please contact your system administrator.`
+		};
+	}
 }
 
 export = new Messages();
