@@ -20,7 +20,7 @@ class BaseSection extends BaseComponent {
 	}
 
 	generateOptionTemplate(settingOption: boolean, disabled: boolean): string {
-		const label = disabled ? `<label class="disallowed" />` : `<label/>`;
+		const label = disabled ? `<label class="disallowed" title="Setting locked by system administrator."/>` : `<label/>`;
 		if (settingOption) {
 			return `
 				<div class="action">
