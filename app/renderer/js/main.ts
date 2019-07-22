@@ -285,8 +285,15 @@ class ServerManagerView {
 				ipcRenderer.send('reload-full-app');
 			}
 		} else if (domainsAdded.length > 0) {
-			// no enterprise domains added
-			const { title, content } = Messages.enterpriseOrgError(domainsAdded.length);
+			// find all orgs that failed
+			const failedDomains: string[] = [];
+			for (const org of this.presetOrgs) {
+				if (DomainUtil.duplicateDomain(org)) {
+					continue;
+				}
+				failedDomains.push(org);
+			}
+			const { title, content } = Messages.enterpriseOrgError(domainsAdded.length, failedDomains);
 			dialog.showErrorBox(title, content);
 			if (DomainUtil.getDomains().length === 0) {
 				// no orgs present, stop showing loading gif
@@ -721,8 +728,12 @@ class ServerManagerView {
 							message: 'Are you sure you want to disconnect this organization?'
 						}, response => {
 							if (response === 0) {
-								DomainUtil.removeDomain(index);
-								ipcRenderer.send('reload-full-app');
+								if (DomainUtil.removeDomain(index)) {
+									ipcRenderer.send('reload-full-app');
+								} else {
+									const { title, content } = Messages.orgRemovalError(DomainUtil.getDomain(index).url);
+									dialog.showErrorBox(title, content);
+								}
 							}
 						});
 					}

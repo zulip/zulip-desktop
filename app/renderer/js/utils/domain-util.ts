@@ -9,6 +9,7 @@ import Logger = require('./logger-util');
 import electron = require('electron');
 
 import RequestUtil = require('./request-util');
+import EnterpriseUtil = require('./enterprise-util');
 import Messages = require('../../../resources/messages');
 
 const { app, dialog } = electron.remote;
@@ -87,9 +88,13 @@ class DomainUtil {
 		this.reloadDB();
 	}
 
-	removeDomain(index: number): void {
+	removeDomain(index: number): boolean {
+		if (EnterpriseUtil.isPresetOrg(this.getDomain(index).url)) {
+			return false;
+		}
 		this.db.delete(`/domains[${index}]`);
 		this.reloadDB();
+		return true;
 	}
 
 	// Check if domain is already added
