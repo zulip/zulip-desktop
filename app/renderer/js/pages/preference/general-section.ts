@@ -9,6 +9,7 @@ const currentBrowserWindow = remote.getCurrentWindow();
 
 import BaseSection = require('./base-section');
 import ConfigUtil = require('../../utils/config-util');
+import EnterpriseUtil = require('./../../utils/enterprise-util');
 
 class GeneralSection extends BaseSection {
 	// TODO: TypeScript - Here props should be object type
@@ -238,6 +239,7 @@ class GeneralSection extends BaseSection {
 	autoUpdateOption(): void {
 		this.generateSettingOption({
 			$element: document.querySelector('#autoupdate-option .setting-control'),
+			disabled: EnterpriseUtil.configItemExists('autoUpdate'),
 			value: ConfigUtil.getConfigItem('autoUpdate', true),
 			clickHandler: () => {
 				const newValue = !ConfigUtil.getConfigItem('autoUpdate');

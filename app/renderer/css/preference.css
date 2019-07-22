@@ -453,6 +453,11 @@ i.open-tab-button {
     user-select: none;
 }
 
+.disallowed:hover {
+    background-color: rgba(241, 241, 241, 1.000);
+    cursor: not-allowed;
+}
+
 input.toggle-round + label {
     padding: 2px;
     width: 50px;
