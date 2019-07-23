@@ -711,12 +711,12 @@ class ServerManagerView {
 			zoomActualSize: 'zoomActualSize',
 			'log-out': 'logOut',
 			shortcut: 'showShortcut',
-			'tab-devtools': 'openDevTools'
+			'tab-devtools': 'toggleDevTools'
 		};
 
 		for (const key in webviewListeners) {
 			ipcRenderer.on(key, () => {
-				ipcRenderer.send('view-call-function', webviewListeners[key]);
+				ipcRenderer.send('call-view-function', webviewListeners[key]);
 			});
 		}
 

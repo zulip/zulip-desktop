@@ -1,6 +1,6 @@
 'use strict';
 
-import { BrowserView, BrowserWindow } from 'electron';
+import { BrowserView, BrowserWindow, app } from 'electron';
 
 import ConfigUtil = require('../renderer/js/utils/config-util');
 const shouldSilentWebview = ConfigUtil.getConfigItem('silent');
@@ -75,6 +75,19 @@ export class View extends BrowserView {
 		this.webContents.addListener('page-title-updated', (e: Event, title: string) => {
 			const badgeCount = this.getBadgeCount(title);
 			this.sendAction('update-badge-count', badgeCount, this.url);
+		});
+
+		this.webContents.addListener('page-favicon-updated', (e: Event, favicons: string[]) => {
+			// This returns a string of favicons URL. If there is a PM counts in unread messages then the URL would be like
+			// https://chat.zulip.org/static/images/favicon/favicon-pms.png
+			if (favicons[0].indexOf('favicon-pms') > 0 && process.platform === 'darwin') {
+				// This api is only supported on macOS
+				app.dock.setBadge('●');
+				// bounce the dock
+				if (ConfigUtil.getConfigItem('dockBouncing')) {
+					app.dock.bounce();
+				}
+			}
 		});
 	}
 
