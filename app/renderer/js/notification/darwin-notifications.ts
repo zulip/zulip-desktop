@@ -13,6 +13,7 @@ type ClickHandler = () => void;
 let replyHandler: ReplyHandler;
 let clickHandler: ClickHandler;
 
+declare const window: ZulipWebWindow;
 interface NotificationHandlerArgs {
 	response: string;
 }
@@ -89,8 +90,12 @@ class DarwinNotification {
 	notificationHandler({ response }: NotificationHandlerArgs): void {
 		response = parseReply(response);
 		focusCurrentServer();
-		setupReply(this.tag);
+		if (window.electron_bridge.send_notification_reply_message_supported) {
+			window.electron_bridge.send_event('send_notification_reply_message', this.tag, response);
+			return;
+		}
 
+		setupReply(this.tag);
 		if (replyHandler) {
 			replyHandler(response);
 			return;
