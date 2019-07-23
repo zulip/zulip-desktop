@@ -1,3 +1,8 @@
+interface DialogBoxError {
+	title: string;
+	content: string;
+}
+
 class Messages {
 	invalidZulipServerError(domain: string): string {
 		return `${domain} does not appear to be a valid Zulip server. Make sure that
@@ -23,7 +28,7 @@ class Messages {
 		\nYou can click here if you'd like to proceed with the connection.`;
 	}
 
-	enterpriseOrgError(length: number, domains: string[]): any {
+	enterpriseOrgError(length: number, domains: string[]): DialogBoxError {
 		let domainList = '';
 		for (const domain of domains) {
 			domainList += `• ${domain}\n`;
@@ -34,7 +39,7 @@ class Messages {
 		};
 	}
 
-	orgRemovalError(url: string): any {
+	orgRemovalError(url: string): DialogBoxError {
 		return {
 			title: `Removing ${url} is a restricted operation.`,
 			content: `Please contact your system administrator.`
