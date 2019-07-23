@@ -275,6 +275,7 @@ class WebView extends BaseComponent {
 		// Shows the loading indicator till the webview is reloaded
 		this.$webviewsContainer.remove('loaded');
 		this.loading = true;
+		this.props.switchLoading(true, this.props.url);
 		this.$el.reload();
 	}
 
