@@ -89,7 +89,7 @@ class AppMenu {
 			accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
-					focusedWindow.webContents.toggleDevTools();
+					focusedWindow.webContents.openDevTools({mode: 'undocked'});
 				}
 			}
 		},
@@ -127,7 +127,7 @@ class AppMenu {
 			role: 'togglefullscreen'
 		}, {
 			label: 'Zoom In',
-			accelerator: process.platform === 'darwin' ? 'Command+Plus' : 'Control+=',
+			accelerator: process.platform === 'darwin' ? 'Command+=' : 'Control+=',
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					AppMenu.sendAction('zoomIn');
@@ -234,12 +234,12 @@ class AppMenu {
 			});
 			tabs.forEach(tab => {
 				// Do not add functional tab settings to list of windows in menu bar
-				if (tab.props.role === 'function' && tab.webview.props.name === 'Settings') {
+				if (tab.props.role === 'function' && tab.props.name === 'Settings') {
 					return;
 				}
 
 				initialSubmenu.push({
-					label: tab.webview.props.name,
+					label: tab.props.name,
 					accelerator: tab.props.role === 'function' ? '' : `${ShortcutKey} + ${tab.props.index + 1}`,
 					checked: tab.props.index === activeTabIndex,
 					click(_item: any, focusedWindow: any) {
