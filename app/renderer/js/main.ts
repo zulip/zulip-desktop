@@ -647,6 +647,8 @@ class ServerManagerView {
 						}, response => {
 							if (response === 0) {
 								if (DomainUtil.removeDomain(index)) {
+									// Set lastActiveTab to 0th index
+									ConfigUtil.setConfigItem('lastActiveTab', 0);
 									ipcRenderer.send('reload-full-app');
 								} else {
 									const { title, content } = Messages.orgRemovalError(DomainUtil.getDomain(index).url);
