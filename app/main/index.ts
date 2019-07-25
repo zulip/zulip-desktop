@@ -260,6 +260,7 @@ ${error}`
 
 	// Reload full app not just webview, useful in debugging
 	ipcMain.on('reload-full-app', () => {
+		ViewManager.destroyAll();
 		mainWindow.reload();
 		page.send('destroytray');
 	});

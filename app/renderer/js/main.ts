@@ -662,7 +662,9 @@ class ServerManagerView {
 							message: 'Are you sure you want to disconnect this organization?'
 						});
 						if (response === 0) {
+							// Set lastActiveTab to 0th index
 							if (DomainUtil.removeDomain(index)) {
+								ConfigUtil.setConfigItem('lastActiveTab', 0);
 								ipcRenderer.send('reload-full-app');
 							} else {
 								const {title, content} = Messages.orgRemovalError(DomainUtil.getDomain(index).url);
