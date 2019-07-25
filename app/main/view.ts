@@ -17,7 +17,6 @@ export class View extends BrowserView {
 	index: number;
 	url: string;
 	zoomFactor: number;
-	loading: boolean;
 	customCSS: boolean;
 
 	constructor(public props: ViewProps) {
@@ -32,7 +31,6 @@ export class View extends BrowserView {
 		this.index = props.index;
 		this.url = props.url;
 		this.zoomFactor = 1.0;
-		this.loading = false;
 		this.customCSS = ConfigUtil.getConfigItem('customCSS');
 		this.registerListeners();
 	}
@@ -57,19 +55,15 @@ export class View extends BrowserView {
 		});
 
 		this.webContents.addListener('did-start-loading', () => {
-			const isSettingsPage = this.url.includes('renderer/preference.html');
-			if (!isSettingsPage) {
-				this.sendAction('switch-loading', true, this.url);
-			}
+			this.switchLoadingIndicator(true);
 		});
 
 		this.webContents.addListener('dom-ready', () => {
-			this.loading = false;
 			this.sendAction('switch-loading', false, this.url);
 		});
 
 		this.webContents.addListener('did-stop-loading', () => {
-			this.sendAction('switch-loading', false, this.url);
+			this.switchLoadingIndicator(false);
 		});
 
 		this.webContents.addListener('page-title-updated', (e: Event, title: string) => {
@@ -107,8 +101,15 @@ export class View extends BrowserView {
 	}
 
 	reload(): void {
-		this.loading = true;
+		this.switchLoadingIndicator(true);
 		this.webContents.reload();
+	}
+
+	switchLoadingIndicator(state: boolean): void {
+		const isSettingsPage = this.url.includes('renderer/preference.html');
+		if (!isSettingsPage) {
+			this.sendAction('switch-loading', state, this.url);
+		}
 	}
 
 	forward(): void {
