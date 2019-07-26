@@ -16,23 +16,23 @@ class ViewManager {
 	}
 
 	registerIpcs(): void {
-		ipcMain.on('view-create', (e: Event, props: ViewProps) => {
+		ipcMain.on('create-view', (e: Event, props: ViewProps) => {
 			this.create(props);
 		});
 
-		ipcMain.on('view-select', (e: Event, index: number) => {
+		ipcMain.on('select-view', (e: Event, index: number) => {
 			this.select(index);
 		});
 
-		ipcMain.on('view-destroy', (e: Event, index: number) => {
+		ipcMain.on('destroy-view', (e: Event, index: number) => {
 			this.destroy(index);
 		});
 
-		ipcMain.on('view-destroy-all', () => {
+		ipcMain.on('destroy-all-views', () => {
 			this.destroyAll();
 		});
 
-		ipcMain.on('forward-message-view', (e: Event, name: string, ...params: any[]) => {
+		ipcMain.on('forward-view-message', (e: Event, name: string, ...params: any[]) => {
 			this.views[this.selectedIndex].webContents.send(name, ...params);
 		});
 
@@ -75,6 +75,7 @@ class ViewManager {
 	}
 
 	fixBounds(): void {
+		// Any updates to the sidebar width should reflect both here and in css
 		const SIDEBAR_WIDTH = 54;
 		const view = this.views[this.selectedIndex];
 		const showSidebar = ConfigUtil.getConfigItem('showSidebar', true);
