@@ -339,7 +339,7 @@ class ServerManagerView {
 			nodeIntegration: false,
 			preload: true
 		};
-		ipcRenderer.send('view-create', props);
+		ipcRenderer.send('create-view', props);
 		this.loading[server.url] = true;
 	}
 
@@ -453,7 +453,7 @@ class ServerManagerView {
 			nodeIntegration: true,
 			preload: false
 		};
-		ipcRenderer.send('view-create', props);
+		ipcRenderer.send('create-view', props);
 		// To show loading indicator the first time a functional tab is opened, indicator is
 		// closed when the functional tab DOM is ready, handled in webview.js
 		this.$webviewsContainer.classList.remove('loaded');
@@ -468,7 +468,7 @@ class ServerManagerView {
 			url: `file://${rendererDirectory}/preference.html#${nav}`
 		});
 		this.$settingsButton.classList.add('active');
-		ipcRenderer.send('forward-message-view', 'switch-settings-nav', nav);
+		ipcRenderer.send('forward-view-message', 'switch-settings-nav', nav);
 	}
 
 	openAbout(): void {
@@ -528,7 +528,7 @@ class ServerManagerView {
 
 		this.activeTabIndex = index;
 		this.tabs[index].activate();
-		ipcRenderer.send('view-select', index);
+		ipcRenderer.send('select-view', index);
 		this.showLoading(this.loading[this.tabs[this.activeTabIndex].props.url]);
 		ipcRenderer.send('call-view-function', 'canGoBackButton');
 		ipcRenderer.send('update-menu', {
@@ -567,7 +567,7 @@ class ServerManagerView {
 		// Show loading indicator
 		this.$webviewsContainer.classList.remove('loaded');
 
-		ipcRenderer.send('view-destroy-all');
+		ipcRenderer.send('destroy-all-views');
 
 		// Clear global variables
 		this.activeTabIndex = -1;
@@ -609,7 +609,7 @@ class ServerManagerView {
 	}
 
 	updateGeneralSettings(setting: string, value: any): void {
-		ipcRenderer.send('forward-message-view', setting, value);
+		ipcRenderer.send('forward-view-message', setting, value);
 	}
 
 	toggleSidebar(show: boolean): void {
@@ -769,7 +769,7 @@ class ServerManagerView {
 		ipcRenderer.on('toggle-dnd', (event: Event, state: boolean, newSettings: SettingsOptions) => {
 			this.toggleDNDButton(state);
 			ipcRenderer.send('forward-message', 'toggle-silent', newSettings.silent);
-			ipcRenderer.send('forward-message-view', 'toggle-dnd', state, newSettings);
+			ipcRenderer.send('forward-view-message', 'toggle-dnd', state, newSettings);
 		});
 
 		ipcRenderer.on('update-realm-name', (event: Event, serverURL: string, realmName: string) => {
