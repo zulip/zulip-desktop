@@ -5,7 +5,30 @@ import * as LinkUtil from '../utils/link-util';
 
 import type WebView from './webview';
 
+<<<<<<< HEAD
 const {shell, app} = remote;
+=======
+const dingSound = new Audio('../resources/sounds/ding.ogg');
+
+function handleExternalLink(index: number, url: string): void {
+	const domainPrefix = DomainUtil.getDomain(index).url;
+	const downloadPath = ConfigUtil.getConfigItem('downloadsPath', `${app.getPath('downloads')}`);
+	const shouldShowInFolder = ConfigUtil.getConfigItem('showDownloadFolder', false);
+
+	// Whitelist URLs which are allowed to be opened in the app
+	const {
+		isInternalUrl: isWhiteListURL,
+		isUploadsUrl: isUploadsURL
+	} = LinkUtil.isInternal(domainPrefix, url);
+
+	if (isWhiteListURL) {
+		// Code to show pdf in a new BrowserWindow (currently commented out due to bug-upstream)
+		// Show pdf attachments in a new window
+		// if (LinkUtil.isPDF(url) && isUploadsURL) {
+		// 	ipcRenderer.send('pdf-view', url);
+		// 	return;
+		// }
+>>>>>>> BrowserView: Add logic to handle external links.
 
 const dingSound = new Audio('../resources/sounds/ding.ogg');
 
@@ -23,9 +46,17 @@ export default function handleExternalLink(this: WebView, event: Electron.NewWin
 				silent: true // We'll play our own sound - ding.ogg
 			});
 
+<<<<<<< HEAD
 			downloadNotification.addEventListener('click', () => {
 				// Reveal file in download folder
 				shell.showItemInFolder(filePath);
+=======
+			ipcRenderer.once('downloadFileFailed', () => {
+				// Automatic download failed, so show save dialog prompt and download
+				// through webview
+				ipcRenderer.send('call-specific-view-function', index, 'downloadUrl', url);
+				ipcRenderer.removeAllListeners('downloadFileCompleted');
+>>>>>>> BrowserView: Add logic to handle external links.
 			});
 			ipcRenderer.removeAllListeners('downloadFileFailed');
 
@@ -53,9 +84,16 @@ export default function handleExternalLink(this: WebView, event: Electron.NewWin
 				}
 			}
 
+<<<<<<< HEAD
 			ipcRenderer.removeAllListeners('downloadFileCompleted');
 		});
 	} else {
 		(async () => LinkUtil.openBrowser(url))();
+=======
+		// open internal urls inside the current webview.
+		ipcRenderer.send('call-specific-view-function', index, 'loadUrl', url);
+	} else {
+		shell.openExternal(url);
+>>>>>>> BrowserView: Add logic to handle external links.
 	}
 }

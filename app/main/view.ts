@@ -83,6 +83,11 @@ export class View extends BrowserView {
 				}
 			}
 		});
+
+		this.webContents.addListener('new-window', (e: Event, urlToOpen: string) => {
+			e.preventDefault();
+			this.sendAction('handle-link', this.index, urlToOpen);
+		});
 	}
 
 	zoomIn(): void {
@@ -147,6 +152,14 @@ export class View extends BrowserView {
 	getBadgeCount(title: string): number {
 		const messageCountInTitle = (/\((\d+)\)/).exec(title);
 		return messageCountInTitle ? Number(messageCountInTitle[1]) : 0;
+	}
+
+	downloadUrl(url: string): void {
+		this.webContents.downloadURL(url);
+	}
+
+	loadUrl(url: string): void {
+		this.webContents.loadURL(url);
 	}
 
 	sendAction(action: any, ...params: any[]): void {

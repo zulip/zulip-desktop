@@ -8,7 +8,6 @@ import * as Messages from '../../resources/messages';
 
 import FunctionalTab from './components/functional-tab';
 import ServerTab from './components/server-tab';
-import WebView from './components/webview';
 import {feedbackHolder} from './feedback';
 import * as CommonUtil from './utils/common-util';
 import * as ConfigUtil from './utils/config-util';
@@ -19,10 +18,10 @@ import * as EnterpriseUtil from './utils/enterprise-util';
 import * as LinkUtil from './utils/link-util';
 import Logger from './utils/logger-util';
 import ReconnectUtil from './utils/reconnect-util';
+import handleExternalLink = require('./components/handle-external-link');
 
 // eslint-disable-next-line import/no-unassigned-import
 import './tray';
-
 const {session, app, Menu, dialog} = remote;
 
 interface FunctionalTabProps {
@@ -966,6 +965,10 @@ class ServerManagerView {
 		ipcRenderer.on('update-badge-count', (e: Event, count: number, url: string) => {
 			this.badgeCounts[url] = count;
 			this.updateBadge();
+		});
+
+		ipcRenderer.on('handle-link', (e: Event, index: number, url: string) => {
+			handleExternalLink(index, url);
 		});
 	}
 }

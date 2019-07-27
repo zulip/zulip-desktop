@@ -2,8 +2,17 @@ import {ipcRenderer, remote} from 'electron';
 import fs from 'fs';
 import path from 'path';
 
+<<<<<<< HEAD
 import * as ConfigUtil from '../utils/config-util';
 import * as SystemUtil from '../utils/system-util';
+=======
+import path = require('path');
+import fs = require('fs');
+import ConfigUtil = require('../utils/config-util');
+import SystemUtil = require('../utils/system-util');
+import BaseComponent = require('../components/base');
+// import handleExternalLink = require('../components/handle-external-link');
+>>>>>>> BrowserView: Add logic to handle external links.
 
 import BaseComponent from './base';
 import {contextMenu} from './context-menu';
@@ -79,7 +88,7 @@ export default class WebView extends BaseComponent {
 
 	registerListeners(): void {
 		this.$el.addEventListener('new-window', event => {
-			handleExternalLink.call(this, event);
+			// handleExternalLink.call(this, event);
 		});
 
 		if (shouldSilentWebview) {

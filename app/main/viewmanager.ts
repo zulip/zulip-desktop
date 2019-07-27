@@ -45,6 +45,12 @@ class ViewManager {
 			// So, using a workaround here.
 			(this.views[this.selectedIndex] as any)[name as keyof View](...params);
 		});
+
+		ipcMain.on('call-specific-view-function', (e: Event, index: number, name: string, ...params: any[]) => {
+			// Type checking requires spread elements to match up with a rest parameter.
+			// So, using a workaround here.
+			(this.views[index] as any)[name as keyof View](...params);
+		});
 	}
 
 	create(props: ViewProps): void {
