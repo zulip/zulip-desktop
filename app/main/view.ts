@@ -47,11 +47,11 @@ export class View extends BrowserView {
 			if (isSettingsPage) {
 				return;
 			}
-			this.canGoBackButton();
+			this.maybeEnableGoBackButton();
 		});
 
 		this.webContents.addListener('did-navigate', () => {
-			this.canGoBackButton();
+			this.maybeEnableGoBackButton();
 		});
 
 		this.webContents.addListener('did-start-loading', () => {
@@ -141,7 +141,7 @@ export class View extends BrowserView {
 		this.webContents.toggleDevTools();
 	}
 
-	canGoBackButton(): void {
+	maybeEnableGoBackButton(): void {
 		if (this.webContents.canGoBack()) {
 			this.sendAction('switch-back', true);
 		} else {

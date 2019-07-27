@@ -70,6 +70,7 @@ class ViewManager {
 			return;
 		}
 		this.selectedIndex = index;
+		// Unset old view before setting new view
 		mainWindow.setBrowserView(null);
 		if (!view.webContents.getURL()) {
 			const { url } = view;

@@ -531,7 +531,7 @@ class ServerManagerView {
 		this.tabs[index].activate();
 		ipcRenderer.send('select-view', index);
 		this.showLoading(this.loading[this.tabs[this.activeTabIndex].props.url]);
-		ipcRenderer.send('call-view-function', 'canGoBackButton');
+		ipcRenderer.send('call-view-function', 'maybeEnableGoBackButton');
 		ipcRenderer.send('update-menu', {
 			// JSON stringify this.tabs to avoid a crash
 			// util.inspect is being used to handle circular references
