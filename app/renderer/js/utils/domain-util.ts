@@ -247,12 +247,15 @@ class DomainUtil {
 
 	updateSavedServer(url: string, index: number): void {
 		// Does not promise successful update
+		const oldIcon = this.getDomain(index).icon;
 		const { ignoreCerts } = this.getDomain(index);
 		this.checkDomain(url, ignoreCerts, true).then(newServerConf => {
 			this.saveServerIcon(newServerConf, ignoreCerts).then(localIconUrl => {
-				newServerConf.icon = localIconUrl;
-				this.updateDomain(index, newServerConf);
-				this.reloadDB();
+				if (!oldIcon || localIconUrl !== '../renderer/img/icon.png') {
+					newServerConf.icon = localIconUrl;
+					this.updateDomain(index, newServerConf);
+					this.reloadDB();
+				}
 			});
 		});
 	}
