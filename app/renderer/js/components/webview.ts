@@ -6,7 +6,7 @@ import fs = require('fs');
 import ConfigUtil = require('../utils/config-util');
 import SystemUtil = require('../utils/system-util');
 import BaseComponent = require('../components/base');
-import handleExternalLink = require('../components/handle-external-link');
+// import handleExternalLink = require('../components/handle-external-link');
 
 const { app, dialog } = remote;
 
@@ -64,7 +64,7 @@ class WebView extends BaseComponent {
 
 	registerListeners(): void {
 		this.$el.addEventListener('new-window', event => {
-			handleExternalLink.call(this, event);
+			// handleExternalLink.call(this, event);
 		});
 
 		if (shouldSilentWebview) {

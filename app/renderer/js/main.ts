@@ -21,6 +21,7 @@ import Logger = require('./utils/logger-util');
 import CommonUtil = require('./utils/common-util');
 import EnterpriseUtil = require('./utils/enterprise-util');
 import Messages = require('./../../resources/messages');
+import handleExternalLink = require('./components/handle-external-link');
 
 interface FunctionalTabProps {
 	name: string;
@@ -929,6 +930,10 @@ class ServerManagerView {
 		ipcRenderer.on('update-badge-count', (e: Event, count: number, url: string) => {
 			this.badgeCounts[url] = count;
 			this.updateBadge();
+		});
+
+		ipcRenderer.on('handle-link', (e: Event, index: number, url: string) => {
+			handleExternalLink(index, url);
 		});
 	}
 }
