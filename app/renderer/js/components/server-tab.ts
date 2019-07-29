@@ -2,8 +2,8 @@
 
 import { ipcRenderer } from 'electron';
 
+import os = require('os');
 import Tab = require('./tab');
-import SystemUtil = require('../utils/system-util');
 
 class ServerTab extends Tab {
 	$badge: Element;
@@ -51,7 +51,7 @@ class ServerTab extends Tab {
 
 		let shortcutText = '';
 
-		if (SystemUtil.getOS() === 'Mac') {
+		if (os.platform() === 'darwin') {
 			shortcutText = `⌘ ${shownIndex}`;
 		} else {
 			shortcutText = `Ctrl+${shownIndex}`;
