@@ -1,10 +1,9 @@
 'use strict';
-import { remote } from 'electron';
+import { app } from 'electron';
 
 import os = require('os');
 import ConfigUtil = require('./config-util');
 
-const { app } = remote;
 let instance: null | SystemUtil = null;
 
 class SystemUtil {
@@ -49,8 +48,9 @@ class SystemUtil {
 		}
 	}
 
-	setUserAgent(webViewUserAgent: string): void {
-		this.userAgent = `ZulipElectron/${app.getVersion()} ${webViewUserAgent}`;
+	setUserAgent(viewUserAgent: string): void {
+		const appVersion = app.getVersion();
+		this.userAgent = 'ZulipElectron/' + appVersion + ' ' + viewUserAgent;
 	}
 
 	getUserAgent(): string | null {

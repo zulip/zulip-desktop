@@ -3,6 +3,7 @@
 import { BrowserView, BrowserWindow, app } from 'electron';
 
 import ConfigUtil = require('../renderer/js/utils/config-util');
+import SystemUtil = require('../renderer/js/utils/system-util');
 const shouldSilentWebview = ConfigUtil.getConfigItem('silent');
 
 export interface ViewProps {
@@ -33,6 +34,7 @@ export class View extends BrowserView {
 		this.zoomFactor = 1.0;
 		this.customCSS = ConfigUtil.getConfigItem('customCSS');
 		this.registerListeners();
+		this.setUserAgent();
 	}
 
 	registerListeners(): void {
@@ -62,13 +64,17 @@ export class View extends BrowserView {
 			this.sendAction('switch-loading', false, this.url);
 		});
 
+		this.webContents.addListener('did-finish-load', () => {
+			const title = this.webContents.getTitle();
+			this.updateBadgeCount(title);
+		});
+
 		this.webContents.addListener('did-stop-loading', () => {
 			this.switchLoadingIndicator(false);
 		});
 
 		this.webContents.addListener('page-title-updated', (e: Event, title: string) => {
-			const badgeCount = this.getBadgeCount(title);
-			this.sendAction('update-badge-count', badgeCount, this.url);
+			this.updateBadgeCount(title);
 		});
 
 		this.webContents.addListener('page-favicon-updated', (e: Event, favicons: string[]) => {
@@ -88,6 +94,16 @@ export class View extends BrowserView {
 			e.preventDefault();
 			this.sendAction('handle-link', this.index, urlToOpen);
 		});
+	}
+
+	setUserAgent(): void {
+		let userAgent = SystemUtil.getUserAgent();
+		if (!userAgent) {
+			const viewUserAgent = this.webContents.getUserAgent();
+			SystemUtil.setUserAgent(viewUserAgent);
+			userAgent = SystemUtil.getUserAgent();
+		}
+		this.webContents.setUserAgent(userAgent);
 	}
 
 	zoomIn(): void {
@@ -160,6 +176,11 @@ export class View extends BrowserView {
 
 	loadUrl(url: string): void {
 		this.webContents.loadURL(url);
+	}
+
+	updateBadgeCount(title: string): void {
+		const badgeCount = this.getBadgeCount(title);
+		this.sendAction('update-badge-count', badgeCount, this.url);
 	}
 
 	sendAction(action: any, ...params: any[]): void {
