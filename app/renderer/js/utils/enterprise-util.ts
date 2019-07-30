@@ -13,6 +13,7 @@ let instance: null | EnterpriseUtil = null;
 class EnterpriseUtil {
 	// todo: replace enterpriseSettings type with an interface once settings are final
 	enterpriseSettings: any;
+	configFile: boolean;
 	constructor() {
 		if (instance) {
 			return instance;
@@ -30,6 +31,7 @@ class EnterpriseUtil {
 
 		enterpriseFile = path.resolve(enterpriseFile);
 		if (fs.existsSync(enterpriseFile)) {
+			this.configFile = true;
 			try {
 				const file = fs.readFileSync(enterpriseFile, 'utf8');
 				this.enterpriseSettings = JSON.parse(file);
@@ -37,11 +39,16 @@ class EnterpriseUtil {
 				logger.log('Error while JSON parsing global_config.json: ');
 				logger.log(err);
 			}
+		} else {
+			this.configFile = false;
 		}
 	}
 
 	getConfigItem(key: string, defaultValue?: any): any {
 		this.reloadDB();
+		if (!this.configFile) {
+			return defaultValue;
+		}
 		if (defaultValue === undefined) {
 			defaultValue = null;
 		}
@@ -50,11 +57,14 @@ class EnterpriseUtil {
 
 	configItemExists(key: string): boolean {
 		this.reloadDB();
+		if (!this.configFile) {
+			return false;
+		}
 		return (this.enterpriseSettings[key] !== undefined);
 	}
 
 	isPresetOrg(url: string): boolean {
-		if (!this.configItemExists('presetOrganizations')) {
+		if (!this.configFile || !this.configItemExists('presetOrganizations')) {
 			return false;
 		}
 		const presetOrgs = this.enterpriseSettings.presetOrganizations;

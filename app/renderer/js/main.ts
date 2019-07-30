@@ -140,7 +140,9 @@ class ServerManagerView {
 		this.loadProxy().then(() => {
 			this.initDefaultSettings();
 			this.initSidebar();
-			this.initPresetOrgs();
+			if (EnterpriseUtil.configFile) {
+				this.initPresetOrgs();
+			}
 			this.initTabs();
 			this.initActions();
 			this.registerIpcs();
