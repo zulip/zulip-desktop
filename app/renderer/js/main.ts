@@ -23,11 +23,6 @@ import CommonUtil = require('./utils/common-util');
 import EnterpriseUtil = require('./utils/enterprise-util');
 import Messages = require('./../../resources/messages');
 
-const logger = new Logger({
-	file: 'errors.log',
-	timestamp: true
-});
-
 interface FunctionalTabProps {
 	name: string;
 	materialIcon: string;
@@ -67,6 +62,11 @@ interface SettingsOptions {
 	dockBouncing?: boolean;
 	loading?: AnyObject;
 }
+
+const logger = new Logger({
+	file: 'errors.log',
+	timestamp: true
+});
 
 const rendererDirectory = path.resolve(__dirname, '..');
 type ServerOrFunctionalTab = ServerTab | FunctionalTab;
@@ -569,6 +569,8 @@ class ServerManagerView {
 	}
 
 	openNetworkTroubleshooting(index: number): void {
+		const reconnectUtil = new ReconnectUtil(this.tabs[index].webview);
+		reconnectUtil.pollInternetAndReload();
 		this.tabs[index].webview.props.url = `file://${rendererDirectory}/network.html`;
 		this.tabs[index].showNetworkError();
 	}
@@ -996,17 +998,7 @@ class ServerManagerView {
 
 window.addEventListener('load', () => {
 	const serverManagerView = new ServerManagerView();
-	const reconnectUtil = new ReconnectUtil(serverManagerView);
 	serverManagerView.init();
-	window.addEventListener('online', () => {
-		reconnectUtil.pollInternetAndReload();
-	});
-
-	window.addEventListener('offline', () => {
-		reconnectUtil.clearState();
-		logger.log('No internet connection, you are offline.');
-	});
-
 	// only start electron-connect (auto reload on change) when its ran
 	// from `npm run dev` or `gulp dev` and not from `npm start` when
 	// app is started `npm start` main process's proces.argv will have

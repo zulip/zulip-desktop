@@ -59,6 +59,16 @@ class DomainUtil {
 		return this.db.getData(`/domains[${index}]`);
 	}
 
+	shouldIgnoreCerts(url: string): boolean {
+		const domains = this.getDomains();
+		for (const domain of domains) {
+			if (domain.url === url) {
+				return domain.ignoreCerts;
+			}
+		}
+		return null;
+	}
+
 	updateDomain(index: number, server: object): void {
 		this.reloadDB();
 		this.db.push(`/domains[${index}]`, server, true);
