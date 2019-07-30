@@ -13,7 +13,7 @@ organization you want to add. You can also specify multiple organizations.
 ```json
 {
 	"presetOrganizations": ["https://chat.zulip.org"],
-	"autoUpdate": true
+	"autoUpdate": false
 }
 ```
 
@@ -22,6 +22,6 @@ Users can add new organizations at all times, but cannot remove any organization
 
 If you'd like to remove organizations and have admin access, you'll need to change the config file and remove the concerned URL from the `value` field.
 
-It also turns on automatic updates for every Zulip user on the same machine. 
+It also turns off automatic updates for every Zulip user on the same machine. 
 
 > Currently, we only support `presetOrganizations` and `autoUpdate` settings. We are working on other settings as well, and will update this page when we add support for more.
