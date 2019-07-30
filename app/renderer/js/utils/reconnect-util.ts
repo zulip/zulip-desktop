@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron';
 
+import backoff = require('backoff');
 import request = require('request');
 import Logger = require('./logger-util');
 import RequestUtil = require('./request-util');
@@ -17,15 +18,20 @@ class ReconnectUtil {
 	webview: any;
 	url: string;
 	alreadyReloaded: boolean;
+	fibonacciBackoff: any;
 
 	constructor(webview: any) {
 		this.webview = webview;
 		this.url = webview.props.url;
 		this.alreadyReloaded = false;
+		this.clearState();
 	}
 
 	clearState(): void {
-		this.alreadyReloaded = false;
+		this.fibonacciBackoff = backoff.fibonacci({
+			initialDelay: 5000,
+			maxDelay: 300000
+		});
 	}
 
 	isOnline(): Promise<boolean> {
@@ -53,15 +59,16 @@ class ReconnectUtil {
 	}
 
 	pollInternetAndReload(): void {
-		const pollInterval = setInterval(() => {
-			this._checkAndReload()
-				.then(status => {
-					if (status) {
-						this.alreadyReloaded = true;
-						clearInterval(pollInterval);
-					}
-				});
-		}, 1500);
+		this.fibonacciBackoff.backoff();
+		this.fibonacciBackoff.on('ready', () => {
+			this._checkAndReload().then(status => {
+				if (status) {
+					this.fibonacciBackoff.reset();
+				} else {
+					this.fibonacciBackoff.backoff();
+				}
+			});
+		});
 	}
 
 	// TODO: Make this a async function
@@ -71,9 +78,7 @@ class ReconnectUtil {
 				this.isOnline()
 					.then((online: boolean) => {
 						if (online) {
-							if (!this.alreadyReloaded) {
-								ipcRenderer.send('forward-message', 'reload-viewer');
-							}
+							ipcRenderer.send('forward-message', 'reload-viewer');
 							logger.log('You\'re back online.');
 							return resolve(true);
 						}
