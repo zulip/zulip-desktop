@@ -410,10 +410,7 @@ class ServerManagerView {
 
 		const $altIcon = document.createElement('div');
 		const $parent = $img.parentElement;
-		const $container = $parent.parentElement;
-		const webviewId = $container.dataset.tabId;
-		const $webview = document.querySelector(`webview[data-tab-id="${CSS.escape(webviewId)}"]`);
-		const realmName = $webview.getAttribute('name');
+		const realmName = this.tabs[index].props.name;
 
 		if (realmName === null) {
 			$img.src = '/img/icon.png';
@@ -960,6 +957,10 @@ class ServerManagerView {
 		ipcRenderer.on('update-badge-count', (e: Event, count: number, url: string) => {
 			this.badgeCounts[url] = count;
 			this.updateBadge();
+		});
+
+		ipcRenderer.on('network-error', () => {
+			this.openNetworkTroubleshooting();
 		});
 	}
 }
