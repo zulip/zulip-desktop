@@ -61,7 +61,15 @@ export class View extends BrowserView {
 		});
 
 		this.webContents.addListener('dom-ready', () => {
-			this.sendAction('switch-loading', false, this.url);
+			this.switchLoadingIndicator(false);
+		});
+
+		this.webContents.addListener('did-fail-load', (e: Event, errorCode: number, errorDescription: string) => {
+			const hasConnectivityErr = SystemUtil.connectivityERR.includes(errorDescription);
+			if (hasConnectivityErr) {
+				console.error('error', errorDescription);
+				this.sendAction('network-error');
+			}
 		});
 
 		this.webContents.addListener('did-finish-load', () => {
