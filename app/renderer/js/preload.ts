@@ -133,7 +133,8 @@ window.addEventListener('load', (event: any): void => {
 
 // electron's globalShortcut can cause unexpected results
 // so adding the reload shortcut in the old-school way
-// Zoom from numpad keys is not supported by electron, so adding it through listeners.
+// electron does not support adding multiple accelerators for a menu item
+// so adding numpad shortcuts here
 document.addEventListener('keydown', event => {
 	const cmdOrCtrl = event.ctrlKey || event.metaKey;
 	if (event.code === 'F5') {

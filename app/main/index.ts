@@ -82,7 +82,7 @@ function createMainWindow(): Electron.BrowserWindow {
 		webPreferences: {
 			plugins: true,
 			nodeIntegration: true,
-			partition: 'persist:webviewsession'
+			partition: 'persist:viewsession'
 		},
 		show: false
 	});
