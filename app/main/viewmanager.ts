@@ -76,9 +76,9 @@ class ViewManager {
 			const { url } = view;
 			view.webContents.loadURL(url);
 		}
+		this.fixBounds();
 		mainWindow.setBrowserView(view);
 		view.webContents.focus();
-		this.fixBounds();
 	}
 
 	fixBounds(): void {
@@ -87,7 +87,6 @@ class ViewManager {
 		const view = this.views[this.selectedIndex];
 		const showSidebar = ConfigUtil.getConfigItem('showSidebar', true);
 		if (!view || view.isDestroyed()) {
-			console.log('Attempt to fix bounds for a view that does not exist.');
 			return;
 		}
 		const mainWindow = BrowserWindow.getAllWindows()[0];
