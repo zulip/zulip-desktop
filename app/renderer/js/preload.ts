@@ -104,7 +104,7 @@ document.addEventListener('keydown', event => {
 	const cmdOrCtrl = event.ctrlKey || event.metaKey;
 	if (event.code === 'F5') {
 		ipcRenderer.send('forward-message', 'hard-reload');
-	} else if (cmdOrCtrl && event.code === 'NumpadAdd') {
+	} else if (cmdOrCtrl && (event.code === 'NumpadAdd' || event.code === 'Equal')) {
 		ipcRenderer.send('forward-message', 'zoomIn');
 	} else if (cmdOrCtrl && event.code === 'NumpadSubtract') {
 		ipcRenderer.send('forward-message', 'zoomOut');
