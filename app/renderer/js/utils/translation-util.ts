@@ -28,7 +28,7 @@ class TranslationUtil {
 	}
 
 	__(phrase: string): string {
-		return i18n.__({ phrase, locale: app.getLocale() });
+		return i18n.__({ phrase, locale: app.getLocale() ? app.getLocale() : 'en' });
 	}
 }
 
