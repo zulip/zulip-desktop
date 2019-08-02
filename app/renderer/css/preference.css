@@ -399,8 +399,17 @@ i.open-tab-button {
     cursor: pointer;
 }
 
-.css-delete-action {
-    margin-bottom: 10px;
+#css-delete-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+
+    /*
+        .action class will add extra margin to right which
+        we don't want for a button; the extra margin is intended for radio buttons
+    */
+    margin-right: 0px;
 }
 
 .selected-css-path,
