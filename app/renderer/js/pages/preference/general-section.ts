@@ -104,14 +104,10 @@ class GeneralSection extends BaseSection {
 				<button class="custom-css-button green">${t.__('Upload')}</button>
 			</div>
 			<div class="setting-row" id="remove-custom-css">
-		"S
 				<div class="setting-description">
 					<div class="selected-css-path" id="custom-css-path">${ConfigUtil.getConfigItem('customCSS')}</div>
 				</div>
-				<div class="action red" id="css-delete-action">
-					<i class="material-icons">indeterminate_check_box</i>
-					<span>${t.__('Delete')}</span>
-				</div>
+				<button class="red" id="css-delete-action">${t.__('Delete')}</button>
 			</div>
 					<div class="setting-row" id="download-folder">
 						<div class="setting-description">
