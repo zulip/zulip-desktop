@@ -104,7 +104,6 @@ class GeneralSection extends BaseSection {
 				<button class="custom-css-button green">${t.__('Upload')}</button>
 			</div>
 			<div class="setting-row" id="remove-custom-css">
-		"S
 				<div class="setting-description">
 					<div class="selected-css-path" id="custom-css-path">${ConfigUtil.getConfigItem('customCSS')}</div>
 				</div>
