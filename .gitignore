@@ -42,3 +42,6 @@ config.gypi
 
 # Ignore all the typescript compiled files
 app/**/*.js
+
+# text editor files
+.vscode/
