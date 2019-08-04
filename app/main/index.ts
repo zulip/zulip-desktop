@@ -89,8 +89,7 @@ function createMainWindow(): Electron.BrowserWindow {
 		webPreferences: {
 			enableRemoteModule: true,
 			nodeIntegration: true,
-			partition: 'persist:webviewsession',
-			webviewTag: true
+			partition: 'persist:viewsession' // May be persist:view
 		},
 		show: false
 	});
@@ -286,7 +285,7 @@ ${error}`
 	});
 
 	ipcMain.on('fix-bounds', () => {
-		ViewManager.fixBounds();
+		ViewManager.fixBounds(mainWindow);
 	});
 
 	ipcMain.on('update-badge', (_event: Electron.IpcMainEvent, messageCount: number) => {
