@@ -330,6 +330,7 @@ class ServerManagerView {
 		} else {
 			this.showLoading(true);
 		}
+		this.initTabsComplete();
 	}
 
 	initServer(server: DomainUtil.ServerConf, index: number): void {
@@ -398,6 +399,10 @@ class ServerManagerView {
 	initDNDButton(): void {
 		const dnd = ConfigUtil.getConfigItem('dnd', false);
 		this.toggleDNDButton(dnd);
+	}
+
+	initTabsComplete(): void {
+		ipcRenderer.send('server-load-complete');
 	}
 
 	getTabIndex(): number {

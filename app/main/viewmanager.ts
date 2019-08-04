@@ -5,13 +5,15 @@ import { View, ViewProps } from './view';
 
 import ConfigUtil = require('../renderer/js/utils/config-util');
 
+let refreshViews: any = null;
+
 class ViewManager {
 	views: { [key: number]: View };
 	selectedIndex: number;
 
 	constructor() {
 		this.views = {};
-		this.selectedIndex = 0;
+		this.selectedIndex = -1;
 		this.registerIpcs();
 	}
 
@@ -51,6 +53,30 @@ class ViewManager {
 			// So, using a workaround here.
 			(this.views[index] as any)[name as keyof View](...params);
 		});
+
+		ipcMain.on('server-load-complete', () => {
+			let viewIsNull = true;
+			let viewIndex = -1;
+			const mainWindow = BrowserWindow.getAllWindows()[0];
+			refreshViews = setInterval(() => {
+				const view = this.views[this.selectedIndex];
+				if (!view || view.isDestroyed()) {
+					return;
+				}
+				if (view.loading === false) {
+					if ((viewIsNull) || (viewIndex !== view.index)) {
+						viewIsNull = false;
+						viewIndex = view.index;
+						mainWindow.setBrowserView(view);
+						this.fixBounds(mainWindow);
+					}
+				} else if (viewIsNull === false) {
+					viewIsNull = true;
+					viewIndex = -1;
+					mainWindow.setBrowserView(null);
+				}
+			}, 200);
+		});
 	}
 
 	create(props: ViewProps): void {
@@ -63,24 +89,19 @@ class ViewManager {
 	}
 
 	select(index: number): void {
-		const mainWindow = BrowserWindow.getAllWindows()[0];
 		const view = this.views[index];
 		if (!view || view.isDestroyed()) {
 			console.log('Attempt to select a view that does not exist.');
 			return;
 		}
 		this.selectedIndex = index;
-		mainWindow.setBrowserView(null);
 		if (!view.webContents.getURL()) {
 			const { url } = view;
 			view.webContents.loadURL(url);
 		}
-		this.fixBounds();
-		mainWindow.setBrowserView(view);
-		view.webContents.focus();
 	}
 
-	fixBounds(): void {
+	fixBounds(mainWindow: Electron.BrowserWindow): void {
 		// Any updates to the sidebar width should reflect both here and in css
 		const SIDEBAR_WIDTH = 54;
 		const view = this.views[this.selectedIndex];
@@ -88,7 +109,6 @@ class ViewManager {
 		if (!view || view.isDestroyed()) {
 			return;
 		}
-		const mainWindow = BrowserWindow.getAllWindows()[0];
 		const { width, height } = mainWindow.getContentBounds();
 
 		view.setBounds({
@@ -119,6 +139,9 @@ class ViewManager {
 		mainWindow.setBrowserView(null);
 		for (const id in this.views) {
 			this.destroy(this.views[id].index);
+		}
+		if (refreshViews) {
+			clearInterval(refreshViews);
 		}
 	}
 

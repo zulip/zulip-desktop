@@ -340,7 +340,7 @@ ${error}`
 	});
 
 	ipcMain.on('fix-bounds', () => {
-		ViewManager.fixBounds();
+		ViewManager.fixBounds(mainWindow);
 	});
 
 	ipcMain.on('update-badge', (_event: Electron.IpcMainEvent, messageCount: number) => {

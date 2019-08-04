@@ -17,7 +17,8 @@ export class View extends BrowserView {
 	index: number;
 	url: string;
 	zoomFactor: number;
-	customCSS: boolean;
+	customCSS: string | null;
+	loading: boolean;
 
 	constructor(public props: ViewProps) {
 		super({
@@ -31,6 +32,7 @@ export class View extends BrowserView {
 		this.index = props.index;
 		this.url = props.url;
 		this.zoomFactor = 1.0;
+		this.loading = false;
 		this.customCSS = ConfigUtil.getConfigItem('customCSS');
 		this.registerListeners();
 	}
@@ -119,6 +121,7 @@ export class View extends BrowserView {
 	}
 
 	switchLoadingIndicator(state: boolean): void {
+		this.loading = state;
 		const isSettingsPage = this.url.includes('renderer/preference.html');
 		if (!isSettingsPage) {
 			this.sendAction('switch-loading', state, this.url);
