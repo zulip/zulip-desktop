@@ -1,4 +1,4 @@
-import {ipcRenderer, remote, WebviewTag, NativeImage} from 'electron';
+import {ipcRenderer, remote, NativeImage} from 'electron';
 import path from 'path';
 
 import * as ConfigUtil from './utils/config-util';
@@ -210,11 +210,7 @@ function toggleTray(): void {
 
 		ConfigUtil.setConfigItem('trayIcon', true);
 	}
-
-	const selector = 'webview:not([class*=disabled])';
-	const webview: WebviewTag = document.querySelector(selector);
-	const webContents = remote.webContents.fromId(webview.getWebContentsId());
-	webContents.send('toggletray', state);
+	ipcRenderer.send('forward-view-message', 'toggletray', state);
 }
 
 ipcRenderer.on('toggletray', toggleTray);

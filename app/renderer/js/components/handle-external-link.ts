@@ -36,8 +36,7 @@ export default function handleExternalLink(this: WebView, event: Electron.NewWin
 		});
 
 		ipcRenderer.once('downloadFileFailed', (_event: Event, state: string) => {
-			// Automatic download failed, so show save dialog prompt and download
-			// through webview
+			// Automatic download failed, so show save dialog prompt and download through  browsersview
 			// Only do this if it is the automatic download, otherwise show an error (so we aren't showing two save
 			// prompts right after each other)
 			// Check that the download is not cancelled by user
