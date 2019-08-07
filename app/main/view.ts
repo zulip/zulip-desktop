@@ -3,7 +3,8 @@
 import { BrowserView, BrowserWindow, app } from 'electron';
 
 import ConfigUtil = require('../renderer/js/utils/config-util');
-const shouldSilentWebview = ConfigUtil.getConfigItem('silent');
+import SystemUtil = require('../renderer/js/utils/system-util');
+const shouldSilentView = ConfigUtil.getConfigItem('silent');
 
 export interface ViewProps {
 	index: number;
@@ -38,7 +39,7 @@ export class View extends BrowserView {
 	}
 
 	registerListeners(): void {
-		if (shouldSilentWebview) {
+		if (shouldSilentView) {
 			this.webContents.addListener('dom-ready', () => {
 				this.webContents.setAudioMuted(true);
 			});
@@ -113,6 +114,10 @@ export class View extends BrowserView {
 	zoomActualSize(): void {
 		this.zoomFactor = 1.0;
 		this.webContents.setZoomFactor(this.zoomFactor);
+	}
+
+	focus(): void {
+		this.webContents.focus();
 	}
 
 	reload(): void {

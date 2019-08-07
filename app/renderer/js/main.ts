@@ -75,7 +75,7 @@ class ServerManagerView {
 	$reloadButton: HTMLButtonElement;
 	$loadingIndicator: HTMLButtonElement;
 	$settingsButton: HTMLButtonElement;
-	$webviewsContainer: Element;
+	$viewsContainer: Element;
 	$backButton: HTMLButtonElement;
 	$dndButton: HTMLButtonElement;
 	$sidebar: Element;
@@ -96,7 +96,7 @@ class ServerManagerView {
 		this.$reloadButton = $actionsContainer.querySelector('#reload-action');
 		this.$loadingIndicator = $actionsContainer.querySelector('#loading-action');
 		this.$settingsButton = $actionsContainer.querySelector('#settings-action');
-		this.$webviewsContainer = document.querySelector('#webviews-container');
+		this.$viewsContainer = document.querySelector('#views-container');
 		this.$backButton = $actionsContainer.querySelector('#back-action');
 		this.$dndButton = $actionsContainer.querySelector('#dnd-action');
 
@@ -470,8 +470,8 @@ class ServerManagerView {
 		};
 		ipcRenderer.send('create-view', props);
 		// To show loading indicator the first time a functional tab is opened, indicator is
-		// closed when the functional tab DOM is ready, handled in webview.js
-		this.$webviewsContainer.classList.remove('loaded');
+		// overlapped by the view when the functional tab DOM is ready
+		this.$viewsContainer.classList.remove('loaded');
 
 		this.activateTab(this.functionalTabs.get(tabProps.name));
 	}
@@ -579,7 +579,7 @@ class ServerManagerView {
 
 	destroyView(): void {
 		// Show loading indicator
-		this.$webviewsContainer.classList.remove('loaded');
+		this.$viewsContainer.classList.remove('loaded');
 
 		ipcRenderer.send('destroy-all-views');
 
@@ -590,7 +590,7 @@ class ServerManagerView {
 
 		// Clear DOM elements
 		this.$tabsContainer.innerHTML = '';
-		this.$webviewsContainer.innerHTML = '';
+		this.$viewsContainer.innerHTML = '';
 	}
 
 	async reloadView(): Promise<void> {
@@ -705,7 +705,7 @@ class ServerManagerView {
 		const webviewListeners: any = { // Reverts commit 73fec72. So find a way back.
 			// 'webview-reload': 'reload',
 			back: 'back',
-			// focus: 'focus',
+			focus: 'focus',
 			forward: 'forward',
 			zoomIn: 'zoomIn',
 			zoomOut: 'zoomOut',
@@ -715,9 +715,9 @@ class ServerManagerView {
 			'tab-devtools': 'toggleDevTools'
 		};
 
-		for (const key in webviewListeners) {
+		for (const key in viewListeners) {
 			ipcRenderer.on(key, () => {
-				ipcRenderer.send('call-view-function', webviewListeners[key]);
+				ipcRenderer.send('call-view-function', viewListeners[key]);
 			});
 		}
 
@@ -795,20 +795,6 @@ class ServerManagerView {
 			this.updateGeneralSettings('toggle-sidebar-setting', show);
 		});
 
-		ipcRenderer.on('toggle-silent', (event: Event, state: boolean) => {
-			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');
-			webviews.forEach(webview => {
-				try {
-					webview.setAudioMuted(state);
-				} catch {
-					// Webview is not ready yet
-					webview.addEventListener('dom-ready', () => {
-						webview.setAudioMuted(state);
-					});
-				}
-			});
-		});
-
 		ipcRenderer.on('toggle-autohide-menubar', (event: Event, autoHideMenubar: boolean, updateMenu: boolean) => {
 			if (updateMenu) {
 				ipcRenderer.send('update-menu', {
@@ -825,7 +811,7 @@ class ServerManagerView {
 
 		ipcRenderer.on('toggle-dnd', (event: Event, state: boolean, newSettings: DNDSettings) => {
 			this.toggleDNDButton(state);
-			ipcRenderer.send('forward-message', 'toggle-silent', newSettings.silent);
+			ipcRenderer.send('toggle-silent', newSettings.silent);
 			ipcRenderer.send('forward-view-message', 'toggle-dnd', state, newSettings);
 		});
 
@@ -873,16 +859,8 @@ class ServerManagerView {
 			this.$fullscreenPopup.classList.remove('show');
 		});
 
-		ipcRenderer.on('focus-webview-with-id', (event: Event, webviewId: number) => {
-			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');
-			webviews.forEach(webview => {
-				const currentId = webview.getWebContentsId();
-				const tabId = webview.getAttribute('data-tab-id');
-				const concurrentTab: HTMLButtonElement = document.querySelector(`div[data-tab-id="${tabId}"]`);
-				if (currentId === webviewId) {
-					concurrentTab.click();
-				}
-			});
+		ipcRenderer.on('focus-view-with-contents', (event: Event, contents: Electron.webContents) => {
+			ipcRenderer.send('focus-view-with-contents', contents);
 		});
 
 		ipcRenderer.on('render-taskbar-icon', (event: Event, messageCount: number) => {

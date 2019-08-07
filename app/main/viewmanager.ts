@@ -1,6 +1,6 @@
 'use strict';
 
-import { BrowserWindow, ipcMain } from 'electron';
+import { BrowserWindow, ipcMain, BrowserView } from 'electron';
 import { View, ViewProps } from './view';
 
 import ConfigUtil = require('../renderer/js/utils/config-util');
@@ -52,6 +52,25 @@ class ViewManager {
 			// Type checking requires spread elements to match up with a rest parameter.
 			// So, using a workaround here.
 			(this.views[index] as any)[name as keyof View](...params);
+		});
+
+		ipcMain.on('toggle-silent', (e: Event, state: boolean) => {
+			for (const id in this.views) {
+				const view = this.views[id];
+				try {
+					view.webContents.setAudioMuted(state);
+				} catch (err) {
+					// view is not ready yet
+					view.addListener('dom-ready', () => {
+						view.webContents.setAudioMuted(state);
+					});
+				}
+			}
+		});
+
+		ipcMain.on('focus-view-with-contents', (e: Event, contents: Electron.webContents) => {
+			const view = BrowserView.fromWebContents(contents);
+			view.webContents.focus();
 		});
 
 		ipcMain.on('server-load-complete', () => {
