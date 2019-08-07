@@ -281,17 +281,17 @@ body {
 }
 
 /*******************
-  *   Webview Area  *
+  *   View Area  *
   *******************/
 
-#webviews-container {
+#views-container {
     display: flex;
     height: 100%;
     width: 100%;
 }
 
 /* Pseudo element for loading indicator */
-#webviews-container::before {
+#views-container::before {
     content: "";
     position: absolute;
     z-index: 1;
@@ -303,7 +303,7 @@ body {
 }
 
 /* When the active webview is loaded */
-#webviews-container.loaded::before {
+#views-container.loaded::before {
     opacity: 0;
     z-index: -1;
     visibility: hidden;
