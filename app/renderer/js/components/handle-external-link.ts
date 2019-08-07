@@ -29,7 +29,7 @@ function handleExternalLink(index: number, url: string): void {
 
 		// download txt, mp3, mp4 etc.. by using downloadURL in the
 		// main process which allows the user to save the files to their desktop
-		// and not trigger webview reload while image in webview will
+		// and not trigger view reload while image in view will
 		// do nothing and will not save it
 
 		// Code to show pdf in a new BrowserWindow (currently commented out due to bug-upstream)
@@ -61,14 +61,14 @@ function handleExternalLink(index: number, url: string): void {
 
 			ipcRenderer.once('downloadFileFailed', () => {
 				// Automatic download failed, so show save dialog prompt and download
-				// through webview
+				// through view
 				ipcRenderer.send('call-specific-view-function', index, 'downloadUrl', url);
 				ipcRenderer.removeAllListeners('downloadFileCompleted');
 			});
 			return;
 		}
 
-		// open internal urls inside the current webview.
+		// open internal urls inside the current view.
 		ipcRenderer.send('call-specific-view-function', index, 'loadUrl', url);
 	} else {
 		shell.openExternal(url);
