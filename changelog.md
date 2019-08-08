@@ -2,6 +2,27 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v4.0.0 --2019-08-08
+
+**New features**:
+* Add enterprise support using a custom config file for all Zulip users on a given machine. Documentation can be found [here](https://github.com/zulip/zulip-desktop/blob/master/docs/Enterprise.md).
+* Support specification of preset organizations and automatic update preferences.
+* Show setting tooltip when trying to change an admin-locked setting.
+* Change translation API to handle Google Translate's rate limits.
+* Change menu and language of all settings pages based on system locale.
+* Disable the Window sub-menu.
+
+**Fixes**:
+* Use newer Darwin notification API in `electron_bridge`. 
+* Revert to fallback character icon for an organization only when the icon is not available either on the Zulip server or stored offline on the disk.
+* Fix issues with the Zoom In shortcut. 
+* Sync the sidebar loading indicator with the loading GIF in the main view. 
+* Fix shortcut symbol for Zoom In. 
+
+**Development**:
+* Add meta key for ⌘ on macOS.
+
+
 ### v3.1.0-beta --2019-07-19
 
 **New features**:
