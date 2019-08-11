@@ -326,7 +326,7 @@ class ServerManagerView {
 		this.tabs.push(new ServerTab({
 			role: 'server',
 			icon: server.icon,
-			name: server.alias,
+			name: CommonUtil.decodeString(server.alias),
 			$root: this.$tabsContainer,
 			onClick: this.activateLastTab.bind(this, index),
 			index,
