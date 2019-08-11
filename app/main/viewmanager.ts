@@ -43,9 +43,7 @@ class ViewManager {
 		});
 
 		ipcMain.on('call-view-function', (e: Event, name: string, ...params: any[]) => {
-			// Type checking requires spread elements to match up with a rest parameter.
-			// So, using a workaround here.
-			(this.views[this.selectedIndex] as any)[name as keyof View](...params);
+			this.callViewFunction(this.selectedIndex, name, ...params);
 		});
 
 		// This call will be used in handle external link logic
@@ -55,6 +53,10 @@ class ViewManager {
 		// 	(this.views[index] as any)[name as keyof View](...params);
 		// });
 
+		ipcMain.on('call-specific-view-function', (e: Event, index: number, name: string, ...params: any[]) => {
+			this.callViewFunction(index, name, ...params);
+		});
+
 		ipcMain.on('toggle-silent', (e: Event, state: boolean) => {
 			for (const id in this.views) {
 				const view = this.views[id];
@@ -62,7 +64,7 @@ class ViewManager {
 					view.webContents.setAudioMuted(state);
 				} catch (err) {
 					// view is not ready yet
-					view.addListener('dom-ready', () => {
+					view.webContents.addListener('dom-ready', () => {
 						view.webContents.setAudioMuted(state);
 					});
 				}
@@ -71,7 +73,9 @@ class ViewManager {
 
 		ipcMain.on('focus-view-with-contents', (e: Event, contents: Electron.webContents) => {
 			const view = BrowserView.fromWebContents(contents);
-			view.webContents.focus();
+			if (view.webContents) {
+				view.webContents.focus();
+			}
 		});
 
 		ipcMain.on('server-load-complete', () => {
@@ -163,6 +167,14 @@ class ViewManager {
 		if (refreshViews) {
 			clearInterval(refreshViews);
 		}
+	}
+
+	callViewFunction(index: number, name: string, ...params: any[]): void {
+		const view = this.views[index];
+		if (!view || view.isDestroyed()) {
+			return;
+		}
+		(view as any)[name as keyof View](...params);
 	}
 
 	forwardMessageAll(name: string, ...args: any[]): void {
