@@ -72,23 +72,18 @@ class ViewManager {
 		});
 
 		ipcMain.on('server-load-complete', () => {
-			let viewIsNull = true;
 			let viewIndex = -1;
 			const mainWindow = BrowserWindow.getAllWindows()[0];
 			refreshViews = setInterval(() => {
 				const view = this.views[this.selectedIndex];
-				if (!view || view.isDestroyed()) {
-					return;
-				}
-				if (view.loading === false) {
-					if ((viewIsNull) || (viewIndex !== view.index)) {
-						viewIsNull = false;
+				if (view && view.loading === false) {
+					if (viewIndex !== view.index) {
 						viewIndex = view.index;
 						mainWindow.setBrowserView(view);
 						this.fixBounds(mainWindow);
+						view.webContents.focus();
 					}
-				} else if (viewIsNull === false) {
-					viewIsNull = true;
+				} else if (viewIndex !== -1) {
 					viewIndex = -1;
 					mainWindow.setBrowserView(null);
 				}
