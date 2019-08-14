@@ -37,7 +37,9 @@ class DomainUtil {
 		if (this.db.getData('/').domain) {
 			this.addDomain({
 				alias: 'Zulip',
-				url: this.db.getData('/domain')
+				url: this.db.getData('/domain'),
+				muted: false,
+				badgeCount: -1
 			});
 			this.db.delete('/domain');
 		}
@@ -50,6 +52,7 @@ class DomainUtil {
 		if (this.db.getData('/').domains === undefined) {
 			return [];
 		} else {
+			console.warn(this.db.getData('/domains'));
 			return this.db.getData('/domains');
 		}
 	}
@@ -57,6 +60,16 @@ class DomainUtil {
 	getDomain(index: number): any {
 		this.reloadDB();
 		return this.db.getData(`/domains[${index}]`);
+	}
+
+	updateMute(index: number, value: boolean): void {
+		this.reloadDB();
+		this.db.push(`/domains[${index}]/muted`, value, true);
+	}
+
+	updateBadgeCount(index: number, value: number): void {
+		this.reloadDB();
+		this.db.push(`/domains[${index}]/badgeCount`, value, true);
 	}
 
 	updateDomain(index: number, server: object): void {
@@ -158,6 +171,8 @@ class DomainUtil {
 			icon: defaultIconUrl,
 			url: domain,
 			alias: domain,
+			muted: false,
+			badgeCount: -1,
 			ignoreCerts
 		};
 
@@ -199,6 +214,8 @@ class DomainUtil {
 							icon: data.realm_icon.startsWith('/') ? data.realm_uri + data.realm_icon : data.realm_icon,
 							url: data.realm_uri,
 							alias: escape(data.realm_name),
+							muted: false,
+							badgeCount: -1,
 							ignoreCerts
 						});
 					} else {

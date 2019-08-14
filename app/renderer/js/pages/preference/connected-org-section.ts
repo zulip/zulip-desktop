@@ -62,6 +62,7 @@ class ConnectedOrgSection extends BaseSection {
 				$root: this.$serverInfoContainer,
 				server: servers[i],
 				index: i,
+				muteText: DomainUtil.getDomain(i).muted ? 'Unmute' : 'Mute',
 				onChange: this.reloadApp
 			}).init();
 		}

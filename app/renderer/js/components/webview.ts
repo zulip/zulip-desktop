@@ -7,6 +7,7 @@ import ConfigUtil = require('../utils/config-util');
 import SystemUtil = require('../utils/system-util');
 import BaseComponent = require('../components/base');
 import handleExternalLink = require('../components/handle-external-link');
+import DomainUtil = require("../utils/domain-util");
 
 const { app, dialog } = remote;
 
@@ -147,7 +148,16 @@ class WebView extends BaseComponent {
 		});
 	}
 
+	updateBadgeCount(count: number): void {
+		this.badgeCount = count;
+		this.props.onTitleChange();
+	}
+
 	getBadgeCount(title: string): number {
+		const { index } = this.props;
+		if (DomainUtil.getDomain(index).muted) {
+			return 0;
+		}
 		const messageCountInTitle = (/\((\d+)\)/).exec(title);
 		return messageCountInTitle ? Number(messageCountInTitle[1]) : 0;
 	}

@@ -744,6 +744,33 @@ class ServerManagerView {
 					}
 				},
 				{
+					label: (DomainUtil.getDomain(index).muted ? 'Unmute' : 'Mute'),
+					click: () => {
+						console.warn("HIII");
+						console.log(index);
+						console.warn(DomainUtil.getDomain(index).muted);
+						dialog.showMessageBox({
+							type: 'warning',
+							buttons: ['YES', 'NO'],
+							defaultId: 0,
+							message: 'Are you sure you want to ' + (DomainUtil.getDomain(index).muted ? 'unmute' : 'mute') + ' this organization?'
+						}, response => {
+							if (response === 0) {
+								if (DomainUtil.getDomain(index).muted) {
+									// server is already muted
+									this.tabs[index].webview.updateBadgeCount(DomainUtil.getDomain(index).badgeCount);
+									DomainUtil.updateBadgeCount(index, -1);
+									DomainUtil.updateMute(index, false);
+								} else {
+									DomainUtil.updateBadgeCount(index, this.tabs[index].webview.badgeCount);
+									DomainUtil.updateMute(index, true);
+									this.tabs[index].webview.updateBadgeCount(0);
+								}
+							}
+						});
+					}
+				},
+				{
 					label: 'Copy Zulip URL',
 					click: () => {
 						clipboard.writeText(DomainUtil.getDomain(index).url);
@@ -960,6 +987,19 @@ class ServerManagerView {
 
 		ipcRenderer.on('new-server', () => {
 			this.openSettings('AddServer');
+		});
+
+		ipcRenderer.on('mute-org', (event: Event, index: number) => {
+			if (DomainUtil.getDomain(index).muted) {
+				// server is already muted
+				this.tabs[index].webview.updateBadgeCount(DomainUtil.getDomain(index).badgeCount);
+				DomainUtil.updateBadgeCount(index, -1);
+				DomainUtil.updateMute(index, false);
+			} else {
+				DomainUtil.updateBadgeCount(index, this.tabs[index].webview.badgeCount);
+				DomainUtil.updateMute(index, true);
+				this.tabs[index].webview.updateBadgeCount(0);
+			}
 		});
 	}
 }

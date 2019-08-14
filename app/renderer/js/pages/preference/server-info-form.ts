@@ -17,6 +17,7 @@ class ServerInfoForm extends BaseComponent {
 	$serverIcon: Element;
 	$deleteServerButton: Element;
 	$openServerButton: Element;
+	$muteServerButton: Element;
 	constructor(props: any) {
 		super();
 		this.props = props;
@@ -35,6 +36,11 @@ class ServerInfoForm extends BaseComponent {
 				<div class="server-info-right">
 					<div class="server-info-row server-url">
 						<span class="server-url-info" title="${this.props.server.url}">${this.props.server.url}</span>
+					</div>
+					<div class="server-info-row">
+						<div class="action red server-mute-action">
+							<span>${this.props.muteText}</span>
+						</div>
 					</div>
 					<div class="server-info-row">
 						<div class="action red server-delete-action">
@@ -57,6 +63,7 @@ class ServerInfoForm extends BaseComponent {
 		this.$serverIcon = this.$serverInfoForm.querySelectorAll('.server-info-icon')[0];
 		this.$deleteServerButton = this.$serverInfoForm.querySelectorAll('.server-delete-action')[0];
 		this.$openServerButton = this.$serverInfoForm.querySelectorAll('.open-tab-button')[0];
+		this.$muteServerButton = this.$serverInfoForm.querySelectorAll('.server-mute-action')[0];
 		this.props.$root.append(this.$serverInfoForm);
 	}
 
@@ -89,6 +96,27 @@ class ServerInfoForm extends BaseComponent {
 
 		this.$serverIcon.addEventListener('click', () => {
 			ipcRenderer.send('forward-message', 'switch-server-tab', this.props.index);
+		});
+
+		this.$muteServerButton.addEventListener('click', () => {
+			dialog.showMessageBox({
+				type: 'warning',
+				buttons: [t.__('YES'), t.__('NO')],
+				defaultId: 0,
+				message: t.__('Are you sure you want to ' + this.props.muteText.toLowerCase() + ' this organization?')
+			}, response => {
+				if (response === 0) {
+					const muteLabel = this.props.$root.children[this.props.index].children[1].children[1].children[0];
+					if (DomainUtil.getDomain(this.props.index).muted) {
+						muteLabel.innerHTML = 'Mute';
+						this.props.muteText = 'Mute';
+					} else {
+						muteLabel.innerHTML = 'Unmute';
+						this.props.muteText = 'Unmute';
+					}
+					ipcRenderer.send('forward-message', 'mute-org', this.props.index);
+				}
+			});
 		});
 	}
 }
