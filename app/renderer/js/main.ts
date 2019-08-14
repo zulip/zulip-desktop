@@ -426,6 +426,18 @@ class ServerManagerView {
 		return this.tabs[this.activeTabIndex].webview.props.url;
 	}
 
+	muteOrg(index: number): void {
+		this.tabs[index].webview.updateBadgeCount(DomainUtil.getDomain(index).badgeCount);
+		DomainUtil.updateBadgeCount(index, -1);
+		DomainUtil.updateMute(index, false);
+	}
+
+	unMuteOrg(index: number): void {
+		DomainUtil.updateBadgeCount(index, this.tabs[index].webview.badgeCount);
+		DomainUtil.updateMute(index, true);
+		this.tabs[index].webview.updateBadgeCount(0);
+	}
+
 	displayInitialCharLogo($img: HTMLImageElement, index: number): void {
 		/*
 			index parameter needed because webview[data-tab-id] can increment
@@ -755,13 +767,9 @@ class ServerManagerView {
 							if (response === 0) {
 								if (DomainUtil.getDomain(index).muted) {
 									// server is already muted
-									this.tabs[index].webview.updateBadgeCount(DomainUtil.getDomain(index).badgeCount);
-									DomainUtil.updateBadgeCount(index, -1);
-									DomainUtil.updateMute(index, false);
+									this.muteOrg(index);
 								} else {
-									DomainUtil.updateBadgeCount(index, this.tabs[index].webview.badgeCount);
-									DomainUtil.updateMute(index, true);
-									this.tabs[index].webview.updateBadgeCount(0);
+									this.unMuteOrg(index);
 								}
 							}
 						});
@@ -989,13 +997,9 @@ class ServerManagerView {
 		ipcRenderer.on('mute-org', (event: Event, index: number) => {
 			if (DomainUtil.getDomain(index).muted) {
 				// server is already muted
-				this.tabs[index].webview.updateBadgeCount(DomainUtil.getDomain(index).badgeCount);
-				DomainUtil.updateBadgeCount(index, -1);
-				DomainUtil.updateMute(index, false);
+				this.muteOrg(index);
 			} else {
-				DomainUtil.updateBadgeCount(index, this.tabs[index].webview.badgeCount);
-				DomainUtil.updateMute(index, true);
-				this.tabs[index].webview.updateBadgeCount(0);
+				this.unMuteOrg(index);
 			}
 		});
 	}

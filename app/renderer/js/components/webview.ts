@@ -7,7 +7,7 @@ import ConfigUtil = require('../utils/config-util');
 import SystemUtil = require('../utils/system-util');
 import BaseComponent = require('../components/base');
 import handleExternalLink = require('../components/handle-external-link');
-import DomainUtil = require("../utils/domain-util");
+import DomainUtil = require('../utils/domain-util');
 
 const { app, dialog } = remote;
 
