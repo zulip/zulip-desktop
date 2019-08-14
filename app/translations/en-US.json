@@ -104,5 +104,9 @@
 	"Edit Shortcuts": "Edit Shortcuts",
 	"View Shortcuts": "View Shortcuts",
 	"History Shortcuts": "History Shortcuts",
-	"Window Shortcuts": "Window Shortcuts"
+	"Window Shortcuts": "Window Shortcuts",
+	"YES": "YES",
+	"NO": "NO",
+	"Are you sure you want to mute this organization?": "Are you sure you want to mute this organization?",
+	"Are you sure you want to unmute this organization?": "Are you sure you want to unmute this organization?"
 }

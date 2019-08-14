@@ -52,7 +52,6 @@ class DomainUtil {
 		if (this.db.getData('/').domains === undefined) {
 			return [];
 		} else {
-			console.warn(this.db.getData('/domains'));
 			return this.db.getData('/domains');
 		}
 	}

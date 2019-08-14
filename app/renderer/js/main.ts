@@ -746,9 +746,6 @@ class ServerManagerView {
 				{
 					label: (DomainUtil.getDomain(index).muted ? 'Unmute' : 'Mute'),
 					click: () => {
-						console.warn("HIII");
-						console.log(index);
-						console.warn(DomainUtil.getDomain(index).muted);
 						dialog.showMessageBox({
 							type: 'warning',
 							buttons: ['YES', 'NO'],
