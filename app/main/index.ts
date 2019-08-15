@@ -14,6 +14,7 @@ import AppMenu = require('./menu');
 import BadgeSettings = require('../renderer/js/pages/preference/badge-settings');
 import ConfigUtil = require('../renderer/js/utils/config-util');
 import ProxyUtil = require('../renderer/js/utils/proxy-util');
+import leveldb = require('./leveldb');
 
 interface PatchedGlobal extends NodeJS.Global {
 	mainWindowState: windowStateKeeper.State;
@@ -361,6 +362,14 @@ app.on('ready', () => {
 
 	ipcMain.on('save-last-tab', (_event: Electron.IpcMessageEvent, index: number) => {
 		ConfigUtil.setConfigItem('lastActiveTab', index);
+	});
+
+	ipcMain.on('db-set-item', (_event: Electron.IpcMessageEvent, key: string, value: any) => {
+		leveldb.settings.setItem(key, value);
+	});
+
+	ipcMain.on('db-delete-item', (_event: Electron.IpcMessageEvent, key: string) => {
+		leveldb.settings.deleteItem(key);
 	});
 });
 
