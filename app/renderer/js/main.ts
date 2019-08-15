@@ -778,6 +778,10 @@ class ServerManagerView {
 			});
 		}
 
+		ipcRenderer.on('config-update', (event: Event, settings: any) => {
+			ConfigUtil.updateSettings(settings);
+		});
+
 		ipcRenderer.on('open-settings', (event: Event, settingNav: string) => {
 			this.openSettings(settingNav);
 		});
