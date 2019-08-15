@@ -12,6 +12,7 @@ declare module 'escape-html';
 declare module 'fs-extra';
 declare module 'wurl';
 declare module 'i18n';
+declare module 'level';
 
 interface PageParamsObject {
     realm_uri: string;
