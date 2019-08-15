@@ -29,7 +29,8 @@ if (isDev) {
 }
 
 // Prevent window being garbage collected
-let mainWindow: Electron.BrowserWindow;
+// eslint-disable-next-line import/no-mutable-exports
+export let mainWindow: Electron.BrowserWindow;
 let badgeCount: number;
 
 let isQuitting = false;
@@ -271,7 +272,7 @@ app.on('ready', () => {
 	});
 
 	ipcMain.on('fix-bounds', () => {
-		ViewManager.fixBounds(mainWindow);
+		ViewManager.fixBounds();
 	});
 
 	ipcMain.on('update-badge', (_event: Electron.IpcMessageEvent, messageCount: number) => {
