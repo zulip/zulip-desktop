@@ -1,16 +1,12 @@
 'use strict';
-import { ipcRenderer } from 'electron';
-
+import LevelDBUtil = require('./leveldb-util');
 import EnterpriseUtil = require('./enterprise-util');
-import DataStore = require('../../../main/datastore');
-import LevelDB = require('../../../main/leveldb');
 
 class ConfigUtil {
 	settings: any;
 
 	constructor() {
 		this.settings = {};
-		DataStore.loadSettings();
 	}
 
 	getConfigItem(key: string, defaultValue: any = null): any {
@@ -35,20 +31,12 @@ class ConfigUtil {
 			return;
 		}
 		this.settings[key] = value;
-		if (process.type === 'renderer') {
-			ipcRenderer.send('leveldb-set-item', key, value);
-			return;
-		}
-		LevelDB.settings.setItem(key, value);
+		LevelDBUtil.setConfigItem(key, value);
 	}
 
 	removeConfigItem(key: string): void {
 		this.settings.delete(key);
-		if (process.type === 'renderer') {
-			ipcRenderer.send('leveldb-delete-item', key);
-			return;
-		}
-		LevelDB.settings.deleteItem(key);
+		LevelDBUtil.removeConfigItem(key);
 	}
 
 	updateSettings(settings: any): void {
