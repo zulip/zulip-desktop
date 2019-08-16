@@ -18,11 +18,11 @@ class BadgeSettings {
 	}
 
 	showBadgeCount(messageCount: number, mainWindow: electron.BrowserWindow): void {
-		if (process.platform === 'darwin') {
-			app.setBadgeCount(messageCount);
-		}
 		if (process.platform === 'win32') {
 			this.updateOverlayIcon(messageCount, mainWindow);
+		} else {
+			// This should work on both macOS and Linux
+			app.setBadgeCount(messageCount);
 		}
 	}
 
