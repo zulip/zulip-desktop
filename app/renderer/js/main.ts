@@ -853,8 +853,9 @@ class ServerManagerView {
 			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');
 			webviews.forEach(webview => {
 				webview.send('set-idle');
+			});
 		});
-		
+
 		ipcRenderer.on('switch-back', (e: Event, state: boolean) => {
 			if (state === true) {
 				this.$backButton.classList.remove('disable');

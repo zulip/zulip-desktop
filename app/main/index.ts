@@ -110,10 +110,12 @@ function createMainWindow(): Electron.BrowserWindow {
 	win.setTitle('Zulip');
 
 	win.on('enter-full-screen', () => {
+		ViewManager.fixBounds();
 		win.webContents.send('enter-fullscreen');
 	});
 
 	win.on('leave-full-screen', () => {
+		ViewManager.fixBounds();
 		win.webContents.send('leave-fullscreen');
 	});
 

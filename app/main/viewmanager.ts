@@ -6,6 +6,7 @@ import { mainWindow } from '.';
 
 import ConfigUtil = require('../renderer/js/utils/config-util');
 
+// ViewManager Class allows us to create, delete and manage several instances of View class
 class ViewManager {
 	views: { [key: number]: View };
 	selectedIndex: number;
@@ -33,18 +34,22 @@ class ViewManager {
 			this.destroyAll();
 		});
 
+		// Sends a message to the selected View's webContents.
 		ipcMain.on('forward-view-message', (e: Event, name: string, ...params: any[]) => {
 			this.views[this.selectedIndex].webContents.send(name, ...params);
 		});
 
+		// Sends a message to each View's webContents.
 		ipcMain.on('forward-message-all', (e: Event, name: string, ...params: any[]) => {
 			this.forwardMessageAll(name, ...params);
 		});
 
+		// Calls a function for the selected View.
 		ipcMain.on('call-view-function', (e: Event, name: string, ...params: any[]) => {
 			this.callViewFunction(this.selectedIndex, name, ...params);
 		});
 
+		// Calls a function for the View with the given index.
 		ipcMain.on('call-specific-view-function', (e: Event, index: number, name: string, ...params: any[]) => {
 			this.callViewFunction(index, name, ...params);
 		});
@@ -71,6 +76,7 @@ class ViewManager {
 		});
 	}
 
+	// Creates a new View and appends it to this.views.
 	create(props: ViewProps): void {
 		if (this.views[props.index]) {
 			return;
@@ -78,8 +84,10 @@ class ViewManager {
 		const view = new View(props);
 		this.views[props.index] = view;
 		view.webContents.loadURL(props.url);
+		view.setAutoResize({ width: true, height: true });
 	}
 
+	// Selects a view with the specified index.
 	select(index: number): void {
 		const view = this.views[index];
 		if (!view || view.isDestroyed()) {
@@ -95,6 +103,8 @@ class ViewManager {
 		}
 	}
 
+	// BrowserView is like a separate BrowserWindow displayed inside the mainWindow
+	// So, it requires its bounds to be set everytime it is selected.
 	fixBounds(): void {
 		// Any updates to the sidebar width should reflect both here and in css
 		const SIDEBAR_WIDTH = 54;
@@ -111,9 +121,9 @@ class ViewManager {
 			width: showSidebar ? width - SIDEBAR_WIDTH : width,
 			height
 		});
-		view.setAutoResize({ width: true, height: true });
 	}
 
+	// Destroys View with specified index.
 	destroy(index: number): void {
 		const view = this.views[index];
 		if (!view || view.isDestroyed()) {
@@ -127,6 +137,7 @@ class ViewManager {
 		delete this.views[index];
 	}
 
+	// Destroys all Views.
 	destroyAll(): void {
 		mainWindow.setBrowserView(null);
 		for (const id in this.views) {
@@ -134,6 +145,7 @@ class ViewManager {
 		}
 	}
 
+	// Calls a function in View class of a specified index.
 	callViewFunction(index: number, name: string, ...params: any[]): void {
 		const view = this.views[index];
 		if (!view || view.isDestroyed()) {
@@ -142,6 +154,7 @@ class ViewManager {
 		(view as any)[name as keyof View](...params);
 	}
 
+	// Forwards a message to webContents of each view.
 	forwardMessageAll(name: string, ...args: any[]): void {
 		for (const id in this.views) {
 			this.views[id].webContents.send(name, ...args);
