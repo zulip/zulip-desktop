@@ -33,14 +33,17 @@ export default class Tab extends BaseComponent {
 	// 	this.webview.forceLoad();
 	// }
 
+	// Add active highlight to tab.
 	activate(): void {
 		this.$el.classList.add('active');
 	}
 
+	// Remove active highlight from tab.
 	deactivate(): void {
 		this.$el.classList.remove('active');
 	}
 
+	// Remove the tab from DOM when it is removed.
 	destroy(): void {
 		this.$el.remove();
 	}
