@@ -14,6 +14,7 @@ class DataStore {
 	constructor() {
 		this.settings = {};
 		this.settingsDB = LevelDB.settings.db;
+		this.loadSettings();
 	}
 
 	loadSettings(): void {

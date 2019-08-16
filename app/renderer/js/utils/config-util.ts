@@ -7,6 +7,15 @@ class ConfigUtil {
 
 	constructor() {
 		this.settings = {};
+		this.reloadDB();
+	}
+
+	reloadDB(): void {
+		if (process.type === 'renderer') {
+			LevelDBUtil.initConfigUtil().then(settings => {
+				this.settings = settings;
+			});
+		}
 	}
 
 	getConfigItem(key: string, defaultValue: any = null): any {
