@@ -14,6 +14,8 @@ export interface ViewProps {
 	preload: boolean;
 }
 
+// Class View is a wrapper around electron's BrowserView
+// Multiples views are handled by ViewManager
 export class View extends BrowserView {
 	index: number;
 	url: string;
@@ -178,6 +180,12 @@ export class View extends BrowserView {
 		this.webContents.loadURL(url);
 	}
 
+	updateBadgeCount(title: string): void {
+		const badgeCount = this.getBadgeCount(title);
+		this.sendAction('update-badge-count', badgeCount, this.url);
+	}
+
+	// Send an action to renderer process.
 	sendAction(action: any, ...params: any[]): void {
 		const win = BrowserWindow.getAllWindows()[0];
 
