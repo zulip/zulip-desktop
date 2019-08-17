@@ -10,6 +10,7 @@ const logger = new Logger({
 });
 
 const settingsJsonPath = path.join(app.getPath('userData'), 'config/settings');
+const domainsJsonPath = path.join(app.getPath('userData'), 'config/domains');
 
 class LevelDB {
 	// TODO: change this to a proper type
@@ -68,5 +69,6 @@ class LevelDB {
 }
 
 export = {
-	settings: new LevelDB(settingsJsonPath)
+	settings: new LevelDB(settingsJsonPath),
+	domains: new LevelDB(domainsJsonPath)
 };
