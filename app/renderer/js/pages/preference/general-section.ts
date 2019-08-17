@@ -42,7 +42,7 @@ class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="dock-bounce-option" style= "display:${process.platform === 'darwin' ? '' : 'none'}">
-						<div class="setting-description">${t.__('Bounce dock on new private message')})}</div>
+						<div class="setting-description">${t.__('Bounce dock on new private message')}</div>
 						<div class="setting-control"></div>
 					</div>
 					<div class="setting-row" id="flash-taskbar-option" style= "display:${process.platform === 'win32' ? '' : 'none'}">
