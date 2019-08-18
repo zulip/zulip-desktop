@@ -104,5 +104,9 @@
 	"Edit Shortcuts": "Edit Shortcuts",
 	"View Shortcuts": "View Shortcuts",
 	"History Shortcuts": "History Shortcuts",
-	"Window Shortcuts": "Window Shortcuts"
+	"Window Shortcuts": "Window Shortcuts",
+	"Add a Zulip organization": "Add a Zulip organization",
+	"Connect": "Connect",
+	"OR": "OR",
+	"Create a new organization": "Create a new organization"
 }

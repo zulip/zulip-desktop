@@ -12,6 +12,7 @@ declare module 'escape-html';
 declare module 'fs-extra';
 declare module 'wurl';
 declare module 'i18n';
+declare module 'level';
 
 interface PageParamsObject {
     realm_uri: string;
@@ -52,4 +53,22 @@ interface ZulipWebWindow extends Window {
     tray: any;
     $: any;
     lightbox: any;
+}
+
+interface Domain {
+  icon: string;
+  url: string;
+  alias: string;
+  ignoreCerts: boolean;
+}
+
+enum BatchOperation {
+  'del',
+  'put'
+}
+
+interface DomainBatchOperation {
+  type: BatchOperation;
+  key: string;
+  value: Domain;
 }
