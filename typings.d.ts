@@ -61,3 +61,14 @@ interface Domain {
   alias: string;
   ignoreCerts: boolean;
 }
+
+enum BatchOperation {
+  'del',
+  'put'
+}
+
+interface DomainBatchOperation {
+  type: BatchOperation;
+  key: string;
+  value: Domain;
+}

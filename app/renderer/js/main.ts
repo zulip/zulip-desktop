@@ -782,6 +782,10 @@ class ServerManagerView {
 			ConfigUtil.updateSettings(settings);
 		});
 
+		ipcRenderer.on('domain-update', (event: Event, domains: Domain[]) => {
+			DomainUtil.updateDomainUtil(domains);
+		});
+
 		ipcRenderer.on('open-settings', (event: Event, settingNav: string) => {
 			this.openSettings(settingNav);
 		});
@@ -876,7 +880,7 @@ class ServerManagerView {
 					this.tabs[index].webview.props.name = realmName;
 
 					domain.alias = escape(realmName);
-					DomainUtil.db.push(`/domains[${index}]`, domain, true);
+					DomainUtil.updateDomain(index, domain);
 					DomainUtil.reloadDB();
 					// Update the realm name also on the Window menu
 					ipcRenderer.send('update-menu', {
@@ -897,7 +901,7 @@ class ServerManagerView {
 						serverImgs[index].src = localIconUrl;
 
 						domain.icon = localIconUrl;
-						DomainUtil.db.push(`/domains[${index}]`, domain, true);
+						DomainUtil.updateDomain(index, domain);
 						DomainUtil.reloadDB();
 					});
 				}

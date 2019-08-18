@@ -1,4 +1,5 @@
 import electron = require('electron');
+import Logger = require('./logger-util');
 let LevelDB: any = null;
 let ipcRenderer: Electron.IpcRenderer = null;
 if (process.type === 'browser') {
@@ -7,11 +8,23 @@ if (process.type === 'browser') {
 	ipcRenderer = electron.ipcRenderer;
 }
 
+const logger = new Logger({
+	file: 'leveldb-util.log',
+	timestamp: true
+});
+
 class LevelDBUtil {
 	initConfigUtil(): Promise<any> {
 		return new Promise(resolve => {
 			const settings = ipcRenderer.sendSync('get-settings');
 			resolve(settings);
+		});
+	}
+
+	initDomainUtil(): Promise<Domain[]> {
+		return new Promise(resolve => {
+			const domains = ipcRenderer.sendSync('get-domains');
+			resolve(domains);
 		});
 	}
 
@@ -31,6 +44,17 @@ class LevelDBUtil {
 			return;
 		}
 		LevelDB.settings.deleteItem(key);
+	}
+
+	async updateDomains(domains: Domain[]): Promise<void> {
+		logger.log(JSON.stringify(domains));
+		if (process.type === 'renderer') {
+			const { ipcRenderer } = electron;
+			ipcRenderer.sendSync('db-update-domains', domains);
+			return;
+		}
+		await LevelDB.domains.deleteItem('domains');
+		await LevelDB.domains.setItem('domains', domains);
 	}
 }
 

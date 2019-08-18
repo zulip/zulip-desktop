@@ -35,7 +35,7 @@ class LevelDB {
 				// null or undefined values in database.
 				value = '__null__';
 			}
-			return await this.db.put(key, value);
+			await this.db.put(key, value);
 		} catch (err) {
 			logger.error(err);
 			logger.reportSentry(err.toString());

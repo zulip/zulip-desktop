@@ -43,7 +43,7 @@ class BaseSection extends BaseComponent {
 	}
 
 	reloadApp(): void {
-		ipcRenderer.send('forward-message', 'reload-viewer');
+		ipcRenderer.send('reload-full-app');
 	}
 }
 

@@ -11,10 +11,17 @@ const logger = new Logger({
 class DataStore {
 	settingsDB: any;
 	settings: any;
+	domainsDB: any;
+	domains: Domain[];
 	constructor() {
 		this.settings = {};
+		this.domains = [];
+
 		this.settingsDB = LevelDB.settings.db;
+		this.domainsDB = LevelDB.domains.db;
+
 		this.loadSettings();
+		this.loadDomains();
 	}
 
 	loadSettings(): void {
@@ -23,21 +30,30 @@ class DataStore {
 				configItem.value = null;
 			}
 			this.settings[configItem.key] = configItem.value;
-			this.updateConfigUtil();
+			this.updateUtil('config-update');
 		}).on('error', (err: Error) => {
 			logger.error(err);
 		});
 	}
 
-	updateConfigUtil(): void {
+	loadDomains(): void {
+		this.domainsDB.createReadStream().on('data', (domains: any) => {
+			this.domains = domains.value;
+			this.updateUtil('domain-update');
+		}).on('error', (err: Error) => {
+			logger.error(err);
+		});
+	}
+
+	updateUtil(message: string): void {
 		const win = BrowserWindow.getAllWindows()[0];
 		if (process.platform === 'darwin') {
 			win.restore();
 		}
 		if (process.type === 'browser') {
-			win.webContents.send('config-update', this.settings);
+			win.webContents.send(message, this.settings);
 		} else {
-			win.webContents.send('forward-message', 'config-update', this.settings);
+			win.webContents.send('forward-message', message, this.settings);
 		}
 	}
 }

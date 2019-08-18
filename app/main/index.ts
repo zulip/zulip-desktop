@@ -378,6 +378,17 @@ app.on('ready', () => {
 	ipcMain.on('get-settings', (_event: Electron.IpcMessageEvent) => {
 		_event.returnValue = DataStore.settings;
 	});
+
+	ipcMain.on('get-domains', (_event: Electron.IpcMessageEvent) => {
+		_event.returnValue = DataStore.domains;
+	});
+
+	ipcMain.on('db-update-domains', async (_event: Electron.IpcMessageEvent, domains: Domain[]) => {
+		DataStore.domains = domains;
+		await leveldb.domains.deleteItem('domains');
+		await leveldb.domains.setItem('domains', domains);
+		_event.returnValue = true;
+	});
 });
 
 app.on('before-quit', () => {
