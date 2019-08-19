@@ -38,6 +38,12 @@ electron_bridge.on('total_unread_count', (...args) => {
 	ipcRenderer.send('unread-count', ...args);
 });
 
+electron_bridge.on('unread_pm_count', unreadPMs => {
+	const unreadPMCount = unreadPMs.unread_pm_count;
+	const realmUri = unreadPMs.realm_uri;
+	ipcRenderer.send('forward-message', 'unread-pm-count', unreadPMCount, realmUri);
+});
+
 electron_bridge.on('realm_name', realmName => {
 	const serverURL = location.origin;
 	ipcRenderer.send('realm-name-changed', serverURL, realmName);

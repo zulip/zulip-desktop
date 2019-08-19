@@ -91,21 +91,6 @@ class WebView extends BaseComponent {
 			this.canGoBackButton();
 		});
 
-		this.$el.addEventListener('page-favicon-updated', event => {
-			const { favicons } = event;
-
-			// This returns a string of favicons URL. If there is a PM counts in unread messages then the URL would be like
-			// https://chat.zulip.org/static/images/favicon/favicon-pms.png
-			if (favicons[0].indexOf('favicon-pms') > 0 && process.platform === 'darwin') {
-				// This api is only supported on macOS
-				app.dock.setBadge('●');
-				// bounce the dock
-				if (ConfigUtil.getConfigItem('dockBouncing')) {
-					app.dock.bounce();
-				}
-			}
-		});
-
 		this.$el.addEventListener('dom-ready', () => {
 			if (this.props.role === 'server') {
 				this.$el.classList.add('onload');
@@ -194,6 +179,16 @@ class WebView extends BaseComponent {
 			}
 
 			this.$el.insertCSS(fs.readFileSync(path.resolve(__dirname, this.customCSS), 'utf8'));
+		}
+	}
+
+	updatePMCount(count: number): void {
+		if (process.platform === 'darwin') {
+			app.dock.setBadge(count.toString());
+			if (ConfigUtil.getConfigItem('dockBouncing') && ConfigUtil.getConfigItem('showNotification')) {
+				app.dock.bounce();
+			}
+			this.props.unreadPmCount = count;
 		}
 	}
 
