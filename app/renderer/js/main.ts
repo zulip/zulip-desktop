@@ -961,6 +961,20 @@ class ServerManagerView {
 		ipcRenderer.on('new-server', () => {
 			this.openSettings('AddServer');
 		});
+
+		ipcRenderer.on('set-active', () => {
+			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');
+			webviews.forEach(webview => {
+				webview.send('set-active');
+			});
+		});
+
+		ipcRenderer.on('set-idle', () => {
+			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');
+			webviews.forEach(webview => {
+				webview.send('set-idle');
+			});
+		});
 	}
 }
 
