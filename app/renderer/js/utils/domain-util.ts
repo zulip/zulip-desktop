@@ -52,10 +52,18 @@ export function getDomain(index: number): ServerConf {
 	return db.getData(`/domains[${index}]`);
 }
 
+
 export function updateDomain(index: number, server: ServerConf): void {
 	reloadDB();
 	db.push(`/domains[${index}]`, server, true);
 }
+
+	batchUpdateDomain(servers: Domain[]): void {
+		this.db.delete('/domains');
+		for (const server of servers) {
+			this.db.push('/domains[]', server, true);
+		}
+	}
 
 export async function addDomain(server: ServerConf): Promise<void> {
 	if (server.icon) {
