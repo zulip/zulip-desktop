@@ -1,6 +1,7 @@
 'use strict';
 
 import { ipcRenderer, remote, clipboard, shell } from 'electron';
+import Sortable from 'sortablejs';
 import { feedbackHolder } from './feedback';
 
 import path = require('path');
@@ -79,6 +80,7 @@ class ServerManagerView {
 	$settingsButton: HTMLButtonElement;
 	$webviewsContainer: Element;
 	$backButton: HTMLButtonElement;
+	$orgsList: HTMLElement;
 	$dndButton: HTMLButtonElement;
 	$addServerTooltip: HTMLElement;
 	$reloadTooltip: HTMLElement;
@@ -90,8 +92,10 @@ class ServerManagerView {
 	$sidebar: Element;
 	$fullscreenPopup: Element;
 	$fullscreenEscapeKey: string;
+	$sortableList: any;
 	loading: AnyObject;
 	activeTabIndex: number;
+	servers: Domain[];
 	tabs: ServerOrFunctionalTab[];
 	functionalTabs: AnyObject;
 	tabIndex: number;
@@ -123,6 +127,7 @@ class ServerManagerView {
 		this.$dndTooltip = $actionsContainer.querySelector('#dnd-tooltip');
 
 		this.$sidebar = document.querySelector('#sidebar');
+		this.$orgsList = document.querySelector('#tabs-container');
 
 		this.$fullscreenPopup = document.querySelector('#fullscreen-popup');
 		this.$fullscreenEscapeKey = process.platform === 'darwin' ? '^⌘F' : 'F11';
@@ -131,6 +136,7 @@ class ServerManagerView {
 		this.loading = {};
 		this.activeTabIndex = -1;
 		this.tabs = [];
+		this.servers = DomainUtil.getDomains();
 		this.presetOrgs = [];
 		this.functionalTabs = {};
 		this.tabIndex = 0;
@@ -237,9 +243,26 @@ class ServerManagerView {
 		}
 	}
 
+	onEnd(): void {
+		const newServers: Domain[] = [];
+		const tabElements = document.querySelectorAll('#tabs-container .tab');
+		tabElements.forEach((el, index) => {
+			const oldIndex = Number(el.getAttribute('data-tab-id')) % this.servers.length;
+			newServers.push(this.servers[oldIndex]);
+			// TODO: Change this to read data from in-memory store or DomainUtil.
+			el.setAttribute('data-tab-id', index.toString());
+		});
+		this.servers = newServers;
+		this.reloadView(false);
+	}
+
 	initSidebar(): void {
 		const showSidebar = ConfigUtil.getConfigItem('showSidebar', true);
 		this.toggleSidebar(showSidebar);
+		this.$sortableList = Sortable.create(this.$orgsList, {
+			dataIdattr: 'data-sortable-id',
+			onEnd: this.onEnd.bind(this)
+		});
 	}
 
 	async queueDomain(domain: any): Promise<boolean> {
@@ -307,12 +330,14 @@ class ServerManagerView {
 		}
 	}
 
-	initTabs(): void {
-		const servers = DomainUtil.getDomains();
-		if (servers.length > 0) {
-			for (let i = 0; i < servers.length; i++) {
-				this.initServer(servers[i], i);
-				DomainUtil.updateSavedServer(servers[i].url, i);
+	initTabs(refresh: boolean = true): void {
+		if (refresh) {
+			this.servers = DomainUtil.getDomains();
+		}
+		if (this.servers.length > 0) {
+			for (let i = 0; i < this.servers.length; i++) {
+				this.initServer(this.servers[i], i);
+				DomainUtil.updateSavedServer(this.servers[i].url, i);
 				this.activateTab(i);
 			}
 			// Open last active tab
@@ -666,14 +691,14 @@ class ServerManagerView {
 		this.$webviewsContainer.innerHTML = '';
 	}
 
-	reloadView(): void {
+	reloadView(refresh: boolean = true): void {
 		// Save and remember the index of last active tab so that we can use it later
 		const lastActiveTab = this.tabs[this.activeTabIndex].props.index;
 		ConfigUtil.setConfigItem('lastActiveTab', lastActiveTab);
 
 		// Destroy the current view and re-initiate it
 		this.destroyView();
-		this.initTabs();
+		this.initTabs(refresh);
 		this.initServerActions();
 	}
 
