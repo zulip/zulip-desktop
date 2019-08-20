@@ -64,6 +64,13 @@ class DomainUtil {
 		this.db.push(`/domains[${index}]`, server, true);
 	}
 
+	batchUpdateDomain(servers: Domain[]): void {
+		this.db.delete('/domains');
+		for (const server of servers) {
+			this.db.push('/domains[]', server, true);
+		}
+	}
+
 	addDomain(server: any): Promise<void> {
 		const { ignoreCerts } = server;
 		return new Promise(resolve => {

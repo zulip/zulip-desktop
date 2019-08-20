@@ -253,6 +253,7 @@ class ServerManagerView {
 			el.setAttribute('data-tab-id', index.toString());
 		});
 		this.servers = newServers;
+		DomainUtil.batchUpdateDomain(this.servers);
 		this.reloadView(false);
 	}
 
