@@ -2,6 +2,7 @@ import {ipcRenderer, remote, clipboard} from 'electron';
 import path from 'path';
 
 import isDev from 'electron-is-dev';
+import Sortable from 'sortablejs';
 
 import * as Messages from '../../resources/messages';
 
@@ -76,6 +77,7 @@ class ServerManagerView {
 	$settingsButton: HTMLButtonElement;
 	$webviewsContainer: Element;
 	$backButton: HTMLButtonElement;
+	$orgsList: HTMLElement;
 	$dndButton: HTMLButtonElement;
 	$addServerTooltip: HTMLElement;
 	$reloadTooltip: HTMLElement;
@@ -87,8 +89,10 @@ class ServerManagerView {
 	$sidebar: Element;
 	$fullscreenPopup: Element;
 	$fullscreenEscapeKey: string;
+	$sortableList: any;
 	loading: Set<string>;
 	activeTabIndex: number;
+	servers: Domain[];
 	tabs: ServerOrFunctionalTab[];
 	functionalTabs: Map<string, number>;
 	tabIndex: number;
@@ -120,6 +124,7 @@ class ServerManagerView {
 		this.$dndTooltip = $actionsContainer.querySelector('#dnd-tooltip');
 
 		this.$sidebar = document.querySelector('#sidebar');
+		this.$orgsList = document.querySelector('#tabs-container');
 
 		this.$fullscreenPopup = document.querySelector('#fullscreen-popup');
 		this.$fullscreenEscapeKey = process.platform === 'darwin' ? '^⌘F' : 'F11';
@@ -128,6 +133,7 @@ class ServerManagerView {
 		this.loading = new Set();
 		this.activeTabIndex = -1;
 		this.tabs = [];
+		this.servers = DomainUtil.getDomains();
 		this.presetOrgs = [];
 		this.functionalTabs = new Map();
 		this.tabIndex = 0;
@@ -232,9 +238,26 @@ class ServerManagerView {
 		}
 	}
 
+	onEnd(): void {
+		const newServers: Domain[] = [];
+		const tabElements = document.querySelectorAll('#tabs-container .tab');
+		tabElements.forEach((el, index) => {
+			const oldIndex = Number(el.getAttribute('data-tab-id')) % this.servers.length;
+			newServers.push(this.servers[oldIndex]);
+			// TODO: Change this to read data from in-memory store or DomainUtil.
+			el.setAttribute('data-tab-id', index.toString());
+		});
+		this.servers = newServers;
+		this.reloadView(false);
+	}
+
 	initSidebar(): void {
 		const showSidebar = ConfigUtil.getConfigItem('showSidebar', true);
 		this.toggleSidebar(showSidebar);
+		this.$sortableList = Sortable.create(this.$orgsList, {
+			dataIdattr: 'data-sortable-id',
+			onEnd: this.onEnd.bind(this)
+		});
 	}
 
 	// Remove the stale UA string from the disk if the app is not freshly
@@ -311,23 +334,25 @@ class ServerManagerView {
 		}
 	}
 
-	async initTabs(): Promise<void> {
-		const servers = DomainUtil.getDomains();
-		if (servers.length > 0) {
-			for (const [i, server] of servers.entries()) {
+	async initTabs(refresh: boolean = true): Promise<void> {
+		if (refresh) {
+			this.servers = DomainUtil.getDomains();
+		}
+		if (this.servers.length > 0) {
+			for (const [i, server] of this.servers.entries()) {
 				this.initServer(server, i);
 			}
 
 			// Open last active tab
 			let lastActiveTab = ConfigUtil.getConfigItem('lastActiveTab');
-			if (lastActiveTab >= servers.length) {
+			if (lastActiveTab >= this.servers.length) {
 				lastActiveTab = 0;
 			}
 
 			// `checkDomain()` and `webview.load()` for lastActiveTab before the others
-			await DomainUtil.updateSavedServer(servers[lastActiveTab].url, lastActiveTab);
+			await DomainUtil.updateSavedServer(this.servers[lastActiveTab].url, lastActiveTab);
 			this.activateTab(lastActiveTab);
-			await Promise.all(servers.map(async (server, i) => {
+			await Promise.all(this.servers.map(async (server, i) => {
 				// After the lastActiveTab is activated, we load the others in the background
 				// without activating them, to prevent flashing of server icons
 				if (i === lastActiveTab) {
@@ -682,14 +707,14 @@ class ServerManagerView {
 		this.$webviewsContainer.textContent = '';
 	}
 
-	async reloadView(): Promise<void> {
+	async reloadView(refresh: boolean = true): Promise<void> {
 		// Save and remember the index of last active tab so that we can use it later
 		const lastActiveTab = this.tabs[this.activeTabIndex].props.index;
 		ConfigUtil.setConfigItem('lastActiveTab', lastActiveTab);
 
 		// Destroy the current view and re-initiate it
 		this.destroyView();
-		await this.initTabs();
+		await this.initTabs(refresh);
 		this.initServerActions();
 	}
 
