@@ -744,6 +744,13 @@ class ServerManagerView {
 					}
 				},
 				{
+					label: 'Notification settings',
+					click: () => {
+						this.activateTab(index);
+						this.tabs[this.activeTabIndex].webview.showNotificationSettings();
+					}
+				},
+				{
 					label: 'Copy Zulip URL',
 					click: () => {
 						clipboard.writeText(DomainUtil.getDomain(index).url);
