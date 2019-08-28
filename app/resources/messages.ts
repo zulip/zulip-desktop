@@ -12,6 +12,13 @@ class Messages {
 			\n • The server has a valid certificate. (You can add custom certificates in Settings > Organizations).`;
 	}
 
+	postValidationServerError(domain: string): string {
+		return `Looks like ${domain} is no longer a Zulip server. We suggest you
+		\n • Contact your server administrator to confirm the server URL.\
+		\n • Click Yes below to remove this faulty organization and re-add it later.\
+		`;
+	}
+
 	noOrgsError(domain: string): string {
 		return `${domain} does not have any organizations added.\
 		\nPlease contact your server administrator.`;

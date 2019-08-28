@@ -12,6 +12,7 @@ import RequestUtil = require('./request-util');
 import EnterpriseUtil = require('./enterprise-util');
 import Messages = require('../../../resources/messages');
 
+const { ipcRenderer } = electron;
 const { app, dialog } = electron.remote;
 
 const logger = new Logger({
@@ -88,8 +89,8 @@ class DomainUtil {
 		this.reloadDB();
 	}
 
-	removeDomain(index: number): boolean {
-		if (EnterpriseUtil.isPresetOrg(this.getDomain(index).url)) {
+	removeDomain(index: number, override: boolean = false): boolean {
+		if (EnterpriseUtil.isPresetOrg(this.getDomain(index).url) && !override) {
 			return false;
 		}
 		this.db.delete(`/domains[${index}]`);
@@ -250,19 +251,32 @@ class DomainUtil {
 		});
 	}
 
-	updateSavedServer(url: string, index: number): void {
+	async updateSavedServer(url: string, index: number): Promise<void> {
 		// Does not promise successful update
 		const oldIcon = this.getDomain(index).icon;
 		const { ignoreCerts } = this.getDomain(index);
-		this.checkDomain(url, ignoreCerts, true).then(newServerConf => {
-			this.saveServerIcon(newServerConf, ignoreCerts).then(localIconUrl => {
-				if (!oldIcon || localIconUrl !== '../renderer/img/icon.png') {
-					newServerConf.icon = localIconUrl;
-					this.updateDomain(index, newServerConf);
-					this.reloadDB();
+		try {
+			const newServerConf = await this.checkDomain(url, ignoreCerts, true);
+			const localIconUrl = await this.saveServerIcon(newServerConf, ignoreCerts);
+			if (!oldIcon || localIconUrl !== '../renderer/img/icon.png') {
+				newServerConf.icon = localIconUrl;
+				this.updateDomain(index, newServerConf);
+				this.reloadDB();
+			}
+		} catch (err) {
+			dialog.showMessageBox({
+				type: 'warning',
+				buttons: ['YES', 'NO'],
+				defaultId: 0,
+				message: Messages.postValidationServerError(url)
+			}, response => {
+				if (response === 0) {
+					// force override to remove faulty organization
+					this.removeDomain(index, true);
+					ipcRenderer.send('reload-full-app');
 				}
 			});
-		});
+		}
 	}
 
 	reloadDB(): void {
