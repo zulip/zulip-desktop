@@ -264,6 +264,7 @@ class DomainUtil {
 				this.reloadDB();
 			}
 		} catch (err) {
+			ipcRenderer.send('forward-message', 'postvalidation-server-error', index);
 			dialog.showMessageBox({
 				type: 'warning',
 				buttons: ['YES', 'NO'],

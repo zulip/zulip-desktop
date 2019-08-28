@@ -373,7 +373,8 @@ class ServerManagerView {
 				onNetworkError: this.openNetworkTroubleshooting.bind(this),
 				onTitleChange: this.updateBadge.bind(this),
 				nodeIntegration: false,
-				preload: true
+				preload: true,
+				rendererDirectory
 			})
 		}));
 		this.loading[server.url] = true;
@@ -539,7 +540,8 @@ class ServerManagerView {
 				onNetworkError: this.openNetworkTroubleshooting.bind(this),
 				onTitleChange: this.updateBadge.bind(this),
 				nodeIntegration: true,
-				preload: false
+				preload: false,
+				rendererDirectory
 			})
 		}));
 
@@ -790,6 +792,10 @@ class ServerManagerView {
 				}
 			});
 		}
+
+		ipcRenderer.on('postvalidation-server-error', (event: Event, index: number) => {
+			this.tabs[index].webview.showInvalidServer();
+		});
 
 		ipcRenderer.on('open-settings', (event: Event, settingNav: string) => {
 			this.openSettings(settingNav);

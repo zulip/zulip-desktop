@@ -147,6 +147,10 @@ class WebView extends BaseComponent {
 		});
 	}
 
+	showInvalidServer(): void {
+		this.$el.src = `file://${this.props.rendererDirectory}/invalid-server.html`;
+	}
+
 	getBadgeCount(title: string): number {
 		const messageCountInTitle = (/\((\d+)\)/).exec(title);
 		return messageCountInTitle ? Number(messageCountInTitle[1]) : 0;
