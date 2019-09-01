@@ -17,27 +17,43 @@ body {
 }
 
 #title {
+    text-align: left;
     font-size: 24px;
     font-weight: bold;
     margin: 20px 0;
 }
 
+#subtitle {
+    font-size: 20px;
+    text-align: left;
+    margin: 12px 0;
+}
+
 #description {
+    text-align: left;
     font-size: 16px;
+    list-style-position: inside;
 }
 
 #reconnect {
+    float: left;
+}
+
+#settings {
+    margin-left: 116px;
+}
+
+.button {
     font-size: 16px;
     background: rgba(0, 150, 136, 1.000);
     color: rgba(255, 255, 255, 1.000);
-    width: 84px;
+    width: 96px;
     height: 32px;
     border-radius: 5px;
     line-height: 32px;
-    margin: 20px auto 0;
     cursor: pointer;
 }
 
-#reconnect:hover {
+.button:hover {
     opacity: 0.8;
 }
