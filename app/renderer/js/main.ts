@@ -796,6 +796,10 @@ class ServerManagerView {
 			});
 		}
 
+		ipcRenderer.on('show-network-error', (event: Event, index: number) => {
+			this.openNetworkTroubleshooting(index);
+		});
+
 		ipcRenderer.on('open-settings', (event: Event, settingNav: string) => {
 			this.openSettings(settingNav);
 		});
