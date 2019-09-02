@@ -485,8 +485,8 @@ class ServerManagerView {
 	openNetworkTroubleshooting(index: number): void {
 		const reconnectUtil = new ReconnectUtil(this.tabs[index].props.url);
 		reconnectUtil.pollInternetAndReload();
-		this.tabs[index].props.url = `file://${rendererDirectory}/network.html`;
-		// this.tabs[index].showNetworkError();
+		const errorUrl = `file://${rendererDirectory}/network.html`;
+		ipcRenderer.send('switch-url', index, errorUrl);
 	}
 
 	activateLastTab(index: number): void {
@@ -607,7 +607,9 @@ class ServerManagerView {
 				tab.updateBadge(count);
 			}
 		}
-		ipcRenderer.send('update-badge', messageCountAll);
+		if (Number.isInteger(messageCountAll)) {
+			ipcRenderer.send('update-badge', messageCountAll);
+		}
 	}
 
 	updateGeneralSettings(setting: string, value: unknown): void {
@@ -634,15 +636,8 @@ class ServerManagerView {
 		this.$dndButton.querySelector('i').textContent = alert ? 'notifications_off' : 'notifications';
 	}
 
-	// isLoggedIn(tabIndex: number): boolean {
-	// 	const url = this.tabs[tabIndex].webview.$el.src;
-	// 	return !(url.endsWith('/login/') || this.tabs[tabIndex].webview.loading);
-	// }
-
-	getActiveWebview(): Electron.WebviewTag {
-		const selector = 'webview:not(.disabled)';
-		const webview: Electron.WebviewTag = document.querySelector(selector);
-		return webview;
+	isLoggedIn(tabIndex: number): boolean {
+		return true;
 	}
 
 	addContextMenu($serverImg: HTMLImageElement, index: number): void {
@@ -896,10 +891,10 @@ class ServerManagerView {
 			await this.openSettings('AddServer');
 		});
 
-		// Redo and undo functionality since the default API doesn't work on macOS
-		ipcRenderer.on('undo', () => this.getActiveWebview().undo());
+		// Redo and undo functionality since the default API doesn't work on macOS - Find alternative
+		// ipcRenderer.on('undo', () => this.getActiveWebview().undo());
 
-		ipcRenderer.on('redo', () => this.getActiveWebview().redo());
+		// ipcRenderer.on('redo', () => this.getActiveWebview().redo());
 
 		ipcRenderer.on('set-active', async () => {
 			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');
@@ -937,8 +932,8 @@ class ServerManagerView {
 			this.updateBadge();
 		});
 
-		ipcRenderer.on('network-error', () => {
-			this.openNetworkTroubleshooting();
+		ipcRenderer.on('handle-link', (e: Event, index: number, url: string) => {
+			// handleExternalLink(index, url); // Find logic to handle-external-links
 		});
 	}
 }
