@@ -12,17 +12,12 @@ const logger = new Logger({
 });
 
 class ReconnectUtil {
-	// TODO: TypeScript - Figure out how to annotate webview
-	// it should be WebView; maybe make it a generic so we can
-	// pass the class from main.ts
-	webview: any;
 	url: string;
 	alreadyReloaded: boolean;
 	fibonacciBackoff: any;
 
-	constructor(webview: any) {
-		this.webview = webview;
-		this.url = webview.props.url;
+	constructor(url: string) {
+		this.url = url;
 		this.alreadyReloaded = false;
 		this.clearState();
 	}
