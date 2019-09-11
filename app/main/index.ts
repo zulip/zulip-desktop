@@ -8,7 +8,7 @@ import path = require('path');
 import fs = require('fs');
 import isDev = require('electron-is-dev');
 import electron = require('electron');
-const { app, ipcMain } = electron;
+const { app, ipcMain, session } = electron;
 
 import AppMenu = require('./menu');
 import BadgeSettings = require('../renderer/js/pages/preference/badge-settings');
@@ -181,6 +181,10 @@ app.on('ready', () => {
 			mainWindow.hide();
 		} else {
 			mainWindow.show();
+		}
+		if (!ConfigUtil.isConfigItemExists('userAgent')) {
+			const userAgent = session.fromPartition('webview:persistsession').getUserAgent();
+			ConfigUtil.setConfigItem('userAgent', userAgent);
 		}
 	});
 
