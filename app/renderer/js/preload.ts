@@ -1,8 +1,14 @@
+// we have and will have some non camelcase stuff
+// while working with zulip and electron bridge
+// so turning the rule off for the whole file.
+/* eslint-disable @typescript-eslint/camelcase */
+
 'use strict';
 
 import { ipcRenderer, shell } from 'electron';
 import SetupSpellChecker from './spellchecker';
 
+import isDev = require('electron-is-dev');
 import LinkUtil = require('./utils/link-util');
 import params = require('./utils/params-util');
 
@@ -22,7 +28,6 @@ require(__dirname + '/shared/preventdrag.js');
 
 declare let window: ZulipWebWindow;
 
-// eslint-disable-next-line @typescript-eslint/camelcase
 window.electron_bridge = require('./electron-bridge');
 
 const logout = (): void => {
@@ -72,8 +77,8 @@ process.once('loaded', (): void => {
 // To prevent failing this script on linux we need to load it after the document loaded
 document.addEventListener('DOMContentLoaded', (): void => {
 	if (params.isPageParams()) {
-		// Get the default language of the server
-		const serverLanguage = page_params.default_language; // eslint-disable-line no-undef, @typescript-eslint/camelcase
+	// Get the default language of the server
+		const serverLanguage = page_params.default_language; // eslint-disable-line no-undef
 		if (serverLanguage) {
 			// Init spellchecker
 			SetupSpellChecker.init(serverLanguage);
@@ -129,4 +134,21 @@ document.addEventListener('keydown', event => {
 	} else if (cmdOrCtrl && event.code === 'Numpad0') {
 		ipcRenderer.send('forward-message', 'zoomActualSize');
 	}
+});
+
+// Set user as active and update the time of last activity
+ipcRenderer.on('set-active', () => {
+	if (isDev) {
+		console.log('active');
+	}
+	window.electron_bridge.idle_on_system = false;
+	window.electron_bridge.last_active_on_system = Date.now();
+});
+
+// Set user as idle and time of last activity is left unchanged
+ipcRenderer.on('set-idle', () => {
+	if (isDev) {
+		console.log('idle');
+	}
+	window.electron_bridge.idle_on_system = true;
 });

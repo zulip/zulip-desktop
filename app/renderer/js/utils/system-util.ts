@@ -2,6 +2,7 @@
 import { remote } from 'electron';
 
 import os = require('os');
+import ConfigUtil = require('./config-util');
 
 const { app } = remote;
 let instance: null | SystemUtil = null;
@@ -53,6 +54,9 @@ class SystemUtil {
 	}
 
 	getUserAgent(): string | null {
+		if (!this.userAgent) {
+			this.setUserAgent(ConfigUtil.getConfigItem('userAgent', null));
+		}
 		return this.userAgent;
 	}
 }

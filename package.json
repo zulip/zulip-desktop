@@ -61,6 +61,7 @@
     },
     "linux": {
       "category": "Chat;GNOME;GTK;Network;InstantMessaging",
+      "icon": "build/icon.icns",
       "packageCategory": "GNOME;GTK;Network;InstantMessaging",
       "description": "Zulip Desktop Client for Linux",
       "target": [
