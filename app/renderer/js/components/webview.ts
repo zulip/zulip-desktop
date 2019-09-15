@@ -153,7 +153,7 @@ class WebView extends BaseComponent {
 	}
 
 	showNotificationSettings(): void {
-		this.$el.src = `${this.props.url}/#settings/notifications`;
+		this.$el.executeJavaScript('showNotificationSettings()');
 	}
 
 	show(): void {

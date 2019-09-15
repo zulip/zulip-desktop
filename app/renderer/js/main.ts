@@ -746,7 +746,6 @@ class ServerManagerView {
 				{
 					label: 'Notification settings',
 					click: () => {
-						this.activateTab(index);
 						this.tabs[this.activeTabIndex].webview.showNotificationSettings();
 					}
 				},
