@@ -152,6 +152,10 @@ class WebView extends BaseComponent {
 		return messageCountInTitle ? Number(messageCountInTitle[1]) : 0;
 	}
 
+	showNotificationSettings(): void {
+		this.$el.executeJavaScript('showNotificationSettings()');
+	}
+
 	show(): void {
 		// Do not show WebView if another tab was selected and this tab should be in background.
 		if (!this.props.isActive()) {

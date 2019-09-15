@@ -15,6 +15,7 @@ import params = require('./utils/params-util');
 interface PatchedGlobal extends NodeJS.Global {
 	logout: () => void;
 	shortcut: () => void;
+	showNotificationSettings: () => void;
 }
 
 const globalPatched = global as PatchedGlobal;
@@ -51,9 +52,26 @@ const shortcut = (): void => {
 	}
 };
 
+const showNotificationSettings = (): void => {
+	// Create the menu for the below
+	const dropdown: HTMLElement = document.querySelector('.dropdown-toggle');
+	dropdown.click();
+
+	const nodes: NodeListOf<HTMLElement> = document.querySelectorAll('.dropdown-menu li a');
+	nodes[2].click();
+
+	const notificationItem: NodeListOf<HTMLElement> = document.querySelectorAll('.normal-settings-list li div');
+
+	// wait until the notification dom element shows up
+	setTimeout(() => {
+		notificationItem[2].click();
+	}, 100);
+};
+
 process.once('loaded', (): void => {
 	globalPatched.logout = logout;
 	globalPatched.shortcut = shortcut;
+	globalPatched.showNotificationSettings = showNotificationSettings;
 });
 
 // To prevent failing this script on linux we need to load it after the document loaded
