@@ -24,4 +24,4 @@ If you'd like to remove organizations and have admin access, you'll need to chan
 
 It also turns off automatic updates for every Zulip user on the same machine. 
 
-> Currently, we only support `presetOrganizations` and `autoUpdate` settings. We are working on other settings as well, and will update this page when we add support for more.
+Currently, we only support `presetOrganizations` and `autoUpdate` settings. We are working on other settings as well, and will update this page when we add support for more.
