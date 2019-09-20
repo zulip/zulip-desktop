@@ -59,6 +59,18 @@ class DomainUtil {
 		return this.db.getData(`/domains[${index}]`);
 	}
 
+	getIndex(url: string): number {
+		const domains = this.getDomains();
+		for (let i = 0; i < domains.length; i++) {
+			const domain = domains[i];
+			if (domain.url === url) {
+				return i;
+			}
+		}
+		// invalid index, use check in calling function
+		return -1;
+	}
+
 	updateDomain(index: number, server: object): void {
 		this.reloadDB();
 		this.db.push(`/domains[${index}]`, server, true);

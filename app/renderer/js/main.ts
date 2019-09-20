@@ -373,7 +373,8 @@ class ServerManagerView {
 				onNetworkError: this.openNetworkTroubleshooting.bind(this),
 				onTitleChange: this.updateBadge.bind(this),
 				nodeIntegration: false,
-				preload: true
+				preload: true,
+				unreadPMCount: 0
 			})
 		}));
 		this.loading[server.url] = true;
@@ -993,6 +994,13 @@ class ServerManagerView {
 			webviews.forEach(webview => {
 				webview.send('set-idle');
 			});
+		});
+
+		ipcRenderer.on('unread-pm-count', (event: Event, unreadPMCount: number, realmUri: string) => {
+			const tabIndex = DomainUtil.getIndex(realmUri);
+			if (tabIndex < 0) {
+				this.tabs[tabIndex].webview.updatePMCount(unreadPMCount);
+			}
 		});
 	}
 }
