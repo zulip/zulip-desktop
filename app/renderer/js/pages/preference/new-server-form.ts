@@ -1,6 +1,6 @@
 'use strict';
 
-import { shell } from 'electron';
+import { shell, ipcRenderer } from 'electron';
 
 import BaseComponent = require('../../components/base');
 import DomainUtil = require('../../utils/domain-util');
@@ -30,15 +30,21 @@ class NewServerForm extends BaseComponent {
 					</div>
 				</div>
 				<div class="server-center">
-				<div class="divider">
-					<hr class="left"/>${t.__('OR')}<hr class="right" />
-				</div>
+					<div class="divider">
+						<hr class="left"/>${t.__('OR')}<hr class="right" />
+					</div>
 				</div>
 				<div class="server-center">
-				<div class="server-save-action">
-					<button id="open-create-org-link">${t.__('Create a new organization')}</button>
-			</div>
+					<div class="server-save-action">
+						<button id="open-create-org-link">${t.__('Create a new organization')}</button>
 					</div>
+				</div>
+				<div class="server-center">
+					<div class="server-network-option">
+						<span id="open-network-settings">${t.__('Network and Proxy Settings')}</span>
+						<i class="material-icons open-network-button">open_in_new</i>
+					</div>
+				</div>
 			</div>
 		`;
 	}
@@ -76,6 +82,11 @@ class NewServerForm extends BaseComponent {
 		});
 	}
 
+	networkSettingsLink(): void {
+		const networkSettingsId = document.querySelectorAll('.server-network-option')[0];
+		networkSettingsId.addEventListener('click', () => ipcRenderer.send('forward-message', 'open-network-settings'));
+	}
+
 	initActions(): void {
 		this.$saveServerButton.addEventListener('click', () => {
 			this.submitFormHandler();
@@ -89,6 +100,7 @@ class NewServerForm extends BaseComponent {
 		});
 		// open create new org link in default browser
 		this.openCreateNewOrgExternalLink();
+		this.networkSettingsLink();
 	}
 }
 

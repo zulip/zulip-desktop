@@ -642,6 +642,26 @@ input.toggle-round:checked + label::after {
     cursor: pointer;
 }
 
+.server-network-option {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    padding-top: 15px;
+    align-items: center;
+    text-align: center;
+    color: rgb(78, 191, 172);
+    width: 98%;
+    height: 46px;
+    cursor: pointer;
+}
+
+i.open-network-button {
+    font-size: 16px;
+    cursor: pointer;
+    padding-left: 5px;
+    position: absolute;
+}
+
 /* responsive grid */
 
 @media (max-width: 650px) {

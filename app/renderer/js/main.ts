@@ -994,6 +994,10 @@ class ServerManagerView {
 				webview.send('set-idle');
 			});
 		});
+
+		ipcRenderer.on('open-network-settings', () => {
+			this.openSettings('Network');
+		});
 	}
 }
 
