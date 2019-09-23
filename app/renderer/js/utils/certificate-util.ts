@@ -63,7 +63,7 @@ class CertificateUtil {
 	}
 
 	setCertificate(server: string, fileName: string): void {
-		const filePath = `${certificatesDir}/${fileName}`;
+		const filePath = `${fileName}`;
 		this.db.push(`/${server}`, filePath, true);
 		this.reloadDB();
 	}

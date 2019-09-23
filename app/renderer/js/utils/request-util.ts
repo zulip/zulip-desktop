@@ -1,9 +1,14 @@
+import { remote } from 'electron';
+
 import fs = require('fs');
+import path = require('path');
 import ConfigUtil = require('./config-util');
 import Logger = require('./logger-util');
 import ProxyUtil = require('./proxy-util');
 import CertificateUtil = require('./certificate-util');
 import SystemUtil = require('./system-util');
+
+const { app } = remote;
 
 const logger = new Logger({
 	file: `request-util.log`,
@@ -38,11 +43,13 @@ class RequestUtil {
 		const certificate = CertificateUtil.getCertificate(
 			encodeURIComponent(domain)
 		);
+		const certificateFile = path.join(`${app.getPath('userData')}/certificates`, certificate);
+
 		let certificateLocation = '';
 		if (certificate) {
 			// To handle case where certificate has been moved from the location in certificates.json
 			try {
-				certificateLocation = fs.readFileSync(certificate, 'utf8');
+				certificateLocation = fs.readFileSync(certificateFile, 'utf8');
 			} catch (err) {
 				logger.warn(`Error while trying to get certificate: ${err}`);
 			}
