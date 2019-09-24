@@ -12,6 +12,8 @@ import isDev = require('electron-is-dev');
 import LinkUtil = require('./utils/link-util');
 import params = require('./utils/params-util');
 
+import NetworkError = require('./pages/network');
+
 interface PatchedGlobal extends NodeJS.Global {
 	logout: () => void;
 	shortcut: () => void;
@@ -118,6 +120,15 @@ document.addEventListener('DOMContentLoaded', (): void => {
 // otherwise, you may experience errors
 window.addEventListener('beforeunload', (): void => {
 	SetupSpellChecker.unsubscribeSpellChecker();
+});
+
+window.addEventListener('load', (event: any): void => {
+	if (!event.target.URL.includes('app/renderer/network.html')) {
+		return;
+	}
+	const $reconnectButton = document.querySelector('#reconnect');
+	const $settingsButton = document.querySelector('#settings');
+	NetworkError.init($reconnectButton, $settingsButton);
 });
 
 // electron's globalShortcut can cause unexpected results

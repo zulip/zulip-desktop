@@ -125,7 +125,9 @@ class WebView extends BaseComponent {
 			const hasConnectivityErr = SystemUtil.connectivityERR.includes(errorDescription);
 			if (hasConnectivityErr) {
 				console.error('error', errorDescription);
-				this.props.onNetworkError();
+				if (!this.props.url.includes('network.html')) {
+					this.props.onNetworkError(this.props.index);
+				}
 			}
 		});
 
@@ -281,6 +283,10 @@ class WebView extends BaseComponent {
 		this.loading = true;
 		this.props.switchLoading(true, this.props.url);
 		this.$el.reload();
+	}
+
+	forceLoad(): void {
+		this.init();
 	}
 
 	send(channel: string, ...param: any[]): void {

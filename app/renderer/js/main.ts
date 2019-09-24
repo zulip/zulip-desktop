@@ -23,11 +23,6 @@ import CommonUtil = require('./utils/common-util');
 import EnterpriseUtil = require('./utils/enterprise-util');
 import Messages = require('./../../resources/messages');
 
-const logger = new Logger({
-	file: 'errors.log',
-	timestamp: true
-});
-
 interface FunctionalTabProps {
 	name: string;
 	materialIcon: string;
@@ -67,6 +62,11 @@ interface SettingsOptions {
 	dockBouncing?: boolean;
 	loading?: AnyObject;
 }
+
+const logger = new Logger({
+	file: 'errors.log',
+	timestamp: true
+});
 
 const rendererDirectory = path.resolve(__dirname, '..');
 type ServerOrFunctionalTab = ServerTab | FunctionalTab;
@@ -370,7 +370,7 @@ class ServerManagerView {
 					}
 					this.showLoading(this.loading[this.tabs[this.activeTabIndex].webview.props.url]);
 				},
-				onNetworkError: this.openNetworkTroubleshooting.bind(this),
+				onNetworkError: (index: number) => this.openNetworkTroubleshooting(index),
 				onTitleChange: this.updateBadge.bind(this),
 				nodeIntegration: false,
 				preload: true
@@ -536,7 +536,7 @@ class ServerManagerView {
 					}
 					this.showLoading(this.loading[this.tabs[this.activeTabIndex].webview.props.url]);
 				},
-				onNetworkError: this.openNetworkTroubleshooting.bind(this),
+				onNetworkError: (index: number) => this.openNetworkTroubleshooting(index),
 				onTitleChange: this.updateBadge.bind(this),
 				nodeIntegration: true,
 				preload: false
@@ -568,12 +568,11 @@ class ServerManagerView {
 		});
 	}
 
-	openNetworkTroubleshooting(): void {
-		this.openFunctionalTab({
-			name: 'Network Troubleshooting',
-			materialIcon: 'network_check',
-			url: `file://${rendererDirectory}/network.html`
-		});
+	openNetworkTroubleshooting(index: number): void {
+		const reconnectUtil = new ReconnectUtil(this.tabs[index].webview);
+		reconnectUtil.pollInternetAndReload();
+		this.tabs[index].webview.props.url = `file://${rendererDirectory}/network.html`;
+		this.tabs[index].showNetworkError();
 	}
 
 	activateLastTab(index: number): void {
@@ -797,6 +796,10 @@ class ServerManagerView {
 			});
 		}
 
+		ipcRenderer.on('show-network-error', (event: Event, index: number) => {
+			this.openNetworkTroubleshooting(index);
+		});
+
 		ipcRenderer.on('open-settings', (event: Event, settingNav: string) => {
 			this.openSettings(settingNav);
 		});
@@ -999,17 +1002,7 @@ class ServerManagerView {
 
 window.addEventListener('load', () => {
 	const serverManagerView = new ServerManagerView();
-	const reconnectUtil = new ReconnectUtil(serverManagerView);
 	serverManagerView.init();
-	window.addEventListener('online', () => {
-		reconnectUtil.pollInternetAndReload();
-	});
-
-	window.addEventListener('offline', () => {
-		reconnectUtil.clearState();
-		logger.log('No internet connection, you are offline.');
-	});
-
 	// only start electron-connect (auto reload on change) when its ran
 	// from `npm run dev` or `gulp dev` and not from `npm start` when
 	// app is started `npm start` main process's proces.argv will have

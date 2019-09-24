@@ -25,6 +25,10 @@ class Tab extends BaseComponent {
 		this.$el.addEventListener('mouseout', this.props.onHoverOut);
 	}
 
+	showNetworkError(): void {
+		this.webview.forceLoad();
+	}
+
 	activate(): void {
 		this.$el.classList.add('active');
 		this.webview.load();

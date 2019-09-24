@@ -3,19 +3,14 @@
 import { ipcRenderer } from 'electron';
 
 class NetworkTroubleshootingView {
-	$reconnectButton: Element;
-	constructor() {
-		this.$reconnectButton = document.querySelector('#reconnect');
-	}
-
-	init(): void {
-		this.$reconnectButton.addEventListener('click', () => {
+	init($reconnectButton: Element, $settingsButton: Element): void {
+		$reconnectButton.addEventListener('click', () => {
 			ipcRenderer.send('forward-message', 'reload-viewer');
+		});
+		$settingsButton.addEventListener('click', () => {
+			ipcRenderer.send('forward-message', 'open-settings');
 		});
 	}
 }
 
-window.addEventListener('load', () => {
-	const networkTroubleshootingView = new NetworkTroubleshootingView();
-	networkTroubleshootingView.init();
-});
+export = new NetworkTroubleshootingView();

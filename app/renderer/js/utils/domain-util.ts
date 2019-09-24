@@ -12,6 +12,7 @@ import RequestUtil = require('./request-util');
 import EnterpriseUtil = require('./enterprise-util');
 import Messages = require('../../../resources/messages');
 
+const { ipcRenderer } = electron;
 const { app, dialog } = electron.remote;
 
 const logger = new Logger({
@@ -57,6 +58,16 @@ class DomainUtil {
 	getDomain(index: number): any {
 		this.reloadDB();
 		return this.db.getData(`/domains[${index}]`);
+	}
+
+	shouldIgnoreCerts(url: string): boolean {
+		const domains = this.getDomains();
+		for (const domain of domains) {
+			if (domain.url === url) {
+				return domain.ignoreCerts;
+			}
+		}
+		return null;
 	}
 
 	updateDomain(index: number, server: object): void {
@@ -250,19 +261,21 @@ class DomainUtil {
 		});
 	}
 
-	updateSavedServer(url: string, index: number): void {
+	async updateSavedServer(url: string, index: number): Promise<void> {
 		// Does not promise successful update
 		const oldIcon = this.getDomain(index).icon;
 		const { ignoreCerts } = this.getDomain(index);
-		this.checkDomain(url, ignoreCerts, true).then(newServerConf => {
-			this.saveServerIcon(newServerConf, ignoreCerts).then(localIconUrl => {
-				if (!oldIcon || localIconUrl !== '../renderer/img/icon.png') {
-					newServerConf.icon = localIconUrl;
-					this.updateDomain(index, newServerConf);
-					this.reloadDB();
-				}
-			});
-		});
+		try {
+			const newServerConf = await this.checkDomain(url, ignoreCerts, true);
+			const localIconUrl = await this.saveServerIcon(newServerConf, ignoreCerts);
+			if (!oldIcon || localIconUrl !== '../renderer/img/icon.png') {
+				newServerConf.icon = localIconUrl;
+				this.updateDomain(index, newServerConf);
+				this.reloadDB();
+			}
+		} catch (err) {
+			ipcRenderer.send('forward-message', 'show-network-error', index);
+		}
 	}
 
 	reloadDB(): void {
