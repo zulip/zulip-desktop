@@ -731,6 +731,11 @@ class ServerManagerView {
 		this.$dndButton.querySelector('i').textContent = alert ? 'notifications_off' : 'notifications';
 	}
 
+	isLoggedIn(tabIndex: number): boolean {
+		const url = this.tabs[tabIndex].webview.$el.src;
+		return !(url.endsWith('/login/') || this.tabs[tabIndex].webview.loading);
+	}
+
 	addContextMenu($serverImg: HTMLImageElement, index: number): void {
 		$serverImg.addEventListener('contextmenu', e => {
 			e.preventDefault();
@@ -757,6 +762,7 @@ class ServerManagerView {
 				},
 				{
 					label: 'Notification settings',
+					enabled: this.isLoggedIn(index),
 					click: () => {
 						this.tabs[this.activeTabIndex].webview.showNotificationSettings();
 					}
