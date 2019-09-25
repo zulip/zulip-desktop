@@ -764,7 +764,9 @@ class ServerManagerView {
 					label: 'Notification settings',
 					enabled: this.isLoggedIn(index),
 					click: () => {
-						this.tabs[this.activeTabIndex].webview.showNotificationSettings();
+						// switch to tab whose icon was right-clicked
+						this.activateTab(index);
+						this.tabs[index].webview.showNotificationSettings();
 					}
 				},
 				{
