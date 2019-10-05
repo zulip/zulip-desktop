@@ -94,6 +94,9 @@ function createMainWindow(): Electron.BrowserWindow {
 
 	// Keep the app running in background on close event
 	win.on('close', e => {
+		if (ConfigUtil.getConfigItem("quitOnClose")) {
+			app.quit();
+		}
 		if (!isQuitting) {
 			e.preventDefault();
 
