@@ -8,7 +8,7 @@ import path = require('path');
 import fs = require('fs');
 import isDev = require('electron-is-dev');
 import electron = require('electron');
-const { app, ipcMain, session } = electron;
+const { app, ipcMain, session, dialog } = electron;
 
 import AppMenu = require('./menu');
 import BadgeSettings = require('../renderer/js/pages/preference/badge-settings');
@@ -297,24 +297,39 @@ app.on('ready', () => {
 	ipcMain.on('downloadFile', (_event: Electron.IpcMessageEvent, url: string, downloadPath: string) => {
 		page.downloadURL(url);
 		page.session.once('will-download', (_event: Event, item) => {
-			const filePath = path.join(downloadPath, item.getFilename());
+			let setFilePath: string;
+			let shortFileName: string;
+			if (ConfigUtil.getConfigItem('promptDownload', false)) {
+				const showDialogOptions: object = {
+					defaultPath: path.join(downloadPath, item.getFilename())
+				};
 
-			const getTimeStamp = (): any => {
-				const date = new Date();
-				return date.getTime();
-			};
+				setFilePath = dialog.showSaveDialog(mainWindow, showDialogOptions);
+				if (setFilePath === undefined) {
+					// User hit "cancel"
+					item.cancel();
+					return;
+				}
+				shortFileName = path.basename(setFilePath);
+			} else {
+				const getTimeStamp = (): any => {
+					const date = new Date();
+					return date.getTime();
+				};
 
-			const formatFile = (filePath: string): string => {
-				const fileExtension = path.extname(filePath);
-				const baseName = path.basename(filePath, fileExtension);
-				return `${baseName}-${getTimeStamp()}${fileExtension}`;
-			};
+				const formatFile = (filePath: string): string => {
+					const fileExtension = path.extname(filePath);
+					const baseName = path.basename(filePath, fileExtension);
+					return `${baseName}-${getTimeStamp()}${fileExtension}`;
+				};
 
-			// Update the name and path of the file if it already exists
+				const filePath = path.join(downloadPath, item.getFilename());
 
-			const updatedFilePath = path.join(downloadPath, formatFile(filePath));
-
-			const setFilePath = fs.existsSync(filePath) ? updatedFilePath : filePath;
+				// Update the name and path of the file if it already exists
+				const updatedFilePath = path.join(downloadPath, formatFile(filePath));
+				setFilePath = fs.existsSync(filePath) ? updatedFilePath : filePath;
+				shortFileName = fs.existsSync(filePath) ? formatFile(filePath) : item.getFilename();
+			}
 
 			item.setSavePath(setFilePath);
 
@@ -339,9 +354,8 @@ app.on('ready', () => {
 				}
 			});
 			item.once('done', (_event: Event, state) => {
-				const getFileName = fs.existsSync(filePath) ? formatFile(filePath) : item.getFilename();
 				if (state === 'completed') {
-					page.send('downloadFileCompleted', item.getSavePath(), getFileName);
+					page.send('downloadFileCompleted', item.getSavePath(), shortFileName);
 				} else {
 					console.log('Download failed state: ', state);
 					page.send('downloadFileFailed');

@@ -66,7 +66,17 @@ function handleExternalLink(this: any, event: any): void {
 			ipcRenderer.once('downloadFileFailed', () => {
 				// Automatic download failed, so show save dialog prompt and download
 				// through webview
-				this.$el.downloadURL(url);
+				// Only do this if it is the automatic download, otherwise show an error (so we aren't showing two save
+				// prompts right after each other)
+				if (ConfigUtil.getConfigItem("promptDownload", false)) {
+					// We need to create a "new Notification" to display it, but just `Notification(...)` on its own
+					// doesn't work
+					new Notification('Download Complete', { // eslint-disable-line no-new
+						body: 'Download failed'
+					});
+				} else {
+					this.$el.downloadURL(url);
+				}
 				ipcRenderer.removeAllListeners('downloadFileCompleted');
 			});
 			return;
