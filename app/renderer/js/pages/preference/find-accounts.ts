@@ -60,7 +60,7 @@ class FindAccounts extends BaseComponent {
 		});
 
 		this.$serverUrlField.addEventListener('keypress', event => {
-			if (event.keyCode === 13) {
+			if (event.key === 'Enter') {
 				this.findAccounts(this.$serverUrlField.value);
 			}
 		});

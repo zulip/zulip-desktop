@@ -414,7 +414,7 @@ class GeneralSection extends BaseSection {
 	removeCustomCSS(): void {
 		const removeCSSButton = document.querySelector('#css-delete-action');
 		removeCSSButton.addEventListener('click', () => {
-			ConfigUtil.setConfigItem('customCSS', "");
+			ConfigUtil.setConfigItem('customCSS', '');
 			ipcRenderer.send('forward-message', 'hard-reload');
 		});
 	}
@@ -429,7 +429,7 @@ class GeneralSection extends BaseSection {
 			if (selectedFolder) {
 				ConfigUtil.setConfigItem('downloadsPath', selectedFolder[0]);
 				const downloadFolderPath: HTMLElement = document.querySelector('.download-folder-path');
-				downloadFolderPath.innerText = selectedFolder[0];
+				downloadFolderPath.textContent = selectedFolder[0];
 			}
 		});
 	}

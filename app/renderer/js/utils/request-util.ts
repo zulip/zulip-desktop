@@ -6,7 +6,7 @@ import CertificateUtil = require('./certificate-util');
 import SystemUtil = require('./system-util');
 
 const logger = new Logger({
-	file: `request-util.log`,
+	file: 'request-util.log',
 	timestamp: true
 });
 

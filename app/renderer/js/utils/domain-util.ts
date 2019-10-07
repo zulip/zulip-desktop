@@ -16,7 +16,7 @@ const { ipcRenderer } = electron;
 const { app, dialog } = electron.remote;
 
 const logger = new Logger({
-	file: `domain-util.log`,
+	file: 'domain-util.log',
 	timestamp: true
 });
 
@@ -185,7 +185,7 @@ class DomainUtil {
 			const error = err || '';
 
 			const certsError = error.toString().includes('certificate');
-			if (domain.indexOf(whitelistDomains) >= 0 || certsError) {
+			if (domain.includes(whitelistDomains) || certsError) {
 				return this.checkCertError(domain, serverConf, error, silent);
 			} else {
 				throw Messages.invalidZulipServerError(domain);
@@ -319,11 +319,11 @@ class DomainUtil {
 	}
 
 	formatUrl(domain: any): string {
-		const hasPrefix = (domain.indexOf('http') === 0);
+		const hasPrefix = domain.indexOf('http') === 0;
 		if (hasPrefix) {
 			return domain;
 		} else {
-			return (domain.indexOf('localhost:') >= 0) ? `http://${domain}` : `https://${domain}`;
+			return domain.includes('localhost:') ? `http://${domain}` : `https://${domain}`;
 		}
 	}
 }

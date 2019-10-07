@@ -59,7 +59,7 @@ class AddCertificate extends BaseComponent {
 			CertificateUtil.setCertificate(server, fileName);
 			dialog.showMessageBox({
 				title: 'Success',
-				message: `Certificate saved!`
+				message: 'Certificate saved!'
 			});
 			this.serverUrl.value = '';
 		} else {
@@ -88,9 +88,7 @@ class AddCertificate extends BaseComponent {
 		});
 
 		this.serverUrl.addEventListener('keypress', event => {
-			const EnterkeyCode = event.keyCode;
-
-			if (EnterkeyCode === 13) {
+			if (event.key === 'Enter') {
 				this.addHandler();
 			}
 		});

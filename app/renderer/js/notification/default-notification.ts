@@ -5,7 +5,7 @@ import { focusCurrentServer } from './helpers';
 
 import ConfigUtil = require('../utils/config-util');
 
-const NativeNotification = window.Notification;
+const NativeNotification: Window['Notification'] = window.Notification;
 class BaseNotification extends NativeNotification {
 	constructor(title: string, opts: NotificationOptions) {
 		opts.silent = true;

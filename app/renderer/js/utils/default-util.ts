@@ -41,19 +41,19 @@ export const initSetUp = (): void => {
 			const configData = [
 				{
 					path: domainJson,
-					fileName: `domain.json`
+					fileName: 'domain.json'
 				},
 				{
 					path: certificatesJson,
-					fileName: `certificates.json`
+					fileName: 'certificates.json'
 				},
 				{
 					path: settingsJson,
-					fileName: `settings.json`
+					fileName: 'settings.json'
 				},
 				{
 					path: updatesJson,
-					fileName: `updates.json`
+					fileName: 'updates.json'
 				}
 			];
 			configData.forEach(data => {

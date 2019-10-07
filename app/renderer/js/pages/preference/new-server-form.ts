@@ -92,9 +92,8 @@ class NewServerForm extends BaseComponent {
 			this.submitFormHandler();
 		});
 		this.$newServerUrl.addEventListener('keypress', event => {
-			const EnterkeyCode = event.keyCode;
 			// Submit form when Enter key is pressed
-			if (EnterkeyCode === 13) {
+			if (event.key === 'Enter') {
 				this.submitFormHandler();
 			}
 		});

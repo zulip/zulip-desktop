@@ -13,7 +13,7 @@ const { app, dialog } = remote;
 initSetUp();
 
 const logger = new Logger({
-	file: `certificate-util.log`,
+	file: 'certificate-util.log',
 	timestamp: true
 });
 

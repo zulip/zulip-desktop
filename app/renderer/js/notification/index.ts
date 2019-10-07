@@ -11,7 +11,7 @@ const { app } = remote;
 // On windows 8 we have to explicitly set the appUserModelId otherwise notification won't work.
 app.setAppUserModelId(appId);
 
-window.Notification = DefaultNotification;
+(window.Notification as Window['Notification']) = DefaultNotification;
 
 if (process.platform === 'darwin') {
 	window.Notification = require('./darwin-notifications');

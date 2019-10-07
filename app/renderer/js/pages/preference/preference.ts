@@ -37,7 +37,7 @@ class PreferenceView extends BaseComponent {
 		let nav = 'General';
 		const hasTag = window.location.hash;
 		if (hasTag) {
-			nav = hasTag.substring(1);
+			nav = hasTag.slice(1);
 		}
 		this.handleNavigation(nav);
 	}

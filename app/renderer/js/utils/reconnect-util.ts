@@ -7,7 +7,7 @@ import RequestUtil = require('./request-util');
 import DomainUtil = require('./domain-util');
 
 const logger = new Logger({
-	file: `domain-util.log`,
+	file: 'domain-util.log',
 	timestamp: true
 });
 

@@ -34,7 +34,7 @@ class Messages {
 			domainList += `• ${domain}\n`;
 		}
 		return {
-			title: `Could not add the following ${length === 1 ? `organization` : `organizations`}`,
+			title: `Could not add the following ${length === 1 ? 'organization' : 'organizations'}`,
 			content: `${domainList}\nPlease contact your system administrator.`
 		};
 	}
@@ -42,7 +42,7 @@ class Messages {
 	orgRemovalError(url: string): DialogBoxError {
 		return {
 			title: `Removing ${url} is a restricted operation.`,
-			content: `Please contact your system administrator.`
+			content: 'Please contact your system administrator.'
 		};
 	}
 }
