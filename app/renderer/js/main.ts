@@ -628,7 +628,17 @@ class ServerManagerView {
 	}
 
 	isLoggedIn(tabIndex: number): boolean {
-		return true;
+		const domains = DomainUtil.getDomains();
+		for (const domain of domains) {
+			if (domain.url === this.tabs[tabIndex].props.url) {
+				if (domain.loggedIn && !this.loading[domain.url]) {
+					return true;
+				}
+				// match returned false
+				return false;
+			}
+		}
+		return false;
 	}
 
 	addContextMenu($serverImg: HTMLImageElement, index: number): void {
@@ -696,6 +706,12 @@ class ServerManagerView {
 				ipcRenderer.send('call-view-function', viewListeners[key]);
 			});
 		}
+
+		ipcRenderer.on('set-logged-in', (event: Event, loggedIn: boolean, index: number) => {
+			const domain = DomainUtil.getDomain(index);
+			domain.loggedIn = loggedIn;
+			DomainUtil.updateDomain(index, domain);
+		});
 
 		ipcRenderer.on('show-network-error', (event: Event, index: number) => {
 			this.openNetworkTroubleshooting(index);
