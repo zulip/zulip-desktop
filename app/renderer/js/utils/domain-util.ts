@@ -15,6 +15,7 @@ export interface ServerConf {
 	url: string;
 	alias?: string;
 	icon?: string;
+	loggedIn?: boolean;
 }
 
 const logger = new Logger({
