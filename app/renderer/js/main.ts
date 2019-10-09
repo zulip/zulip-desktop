@@ -673,6 +673,7 @@ class ServerManagerView {
 					click: () => {
 						// switch to tab whose icon was right-clicked
 						this.activateTab(index);
+						ipcRenderer.send('show-notification-settings', index);
 					}
 				},
 				{

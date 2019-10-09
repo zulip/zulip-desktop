@@ -195,6 +195,10 @@ export class View extends BrowserView {
 		this.webContents.executeJavaScript('shortcut()');
 	}
 
+	showNotificationSettings(): void {
+		this.webContents.executeJavaScript('showNotificationSettings()');
+	}
+
 	toggleDevTools(): void {
 		this.webContents.toggleDevTools();
 	}
