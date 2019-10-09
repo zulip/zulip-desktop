@@ -1,10 +1,18 @@
 'use strict';
-import { app } from 'electron';
-
+import electron = require('electron');
 import os = require('os');
 import ConfigUtil = require('./config-util');
 
 let instance: null | SystemUtil = null;
+let app: Electron.App = null;
+
+/* To make the util runnable in both main and renderer process */
+if (process.type === 'renderer') {
+	const { remote } = electron;
+	app = remote.app;
+} else {
+	app = electron.app;
+}
 
 class SystemUtil {
 	connectivityERR: string[];
