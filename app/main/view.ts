@@ -56,6 +56,9 @@ export class View extends BrowserView {
 		});
 
 		this.webContents.addListener('did-navigate', () => {
+			const url = this.webContents.getURL();
+			const loggedIn = !url.endsWith('/login/');
+			this.sendAction('set-logged-in', loggedIn, this.index);
 			this.canGoBackButton();
 		});
 

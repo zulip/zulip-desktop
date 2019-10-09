@@ -123,7 +123,8 @@ export async function checkDomain(domain: string, silent = false): Promise<Serve
 	const serverConf = {
 		icon: defaultIconUrl,
 		url: domain,
-		alias: domain
+		alias: domain,
+		loggedIn: false
 	};
 
 	try {
