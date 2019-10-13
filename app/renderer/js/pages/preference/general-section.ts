@@ -82,6 +82,10 @@ class GeneralSection extends BaseSection {
 						<div class="setting-description">${t.__('Always start minimized')}</div>
 						<div class="setting-control"></div>
 					</div>
+					<div class="setting-row" id="quitOnClose-option">
+						<div class="setting-description">${t.__('Quit when the window is closed')}</div>
+						<div class="setting-control"></div>
+					</div>
 					<div class="setting-row" id="enable-spellchecker-option">
 						<div class="setting-description">${t.__('Enable spellchecker (requires restart)')}</div>
 						<div class="setting-control"></div>
@@ -155,6 +159,7 @@ class GeneralSection extends BaseSection {
 		this.removeCustomCSS();
 		this.downloadFolder();
 		this.showDownloadFolder();
+		this.updateQuitOnCloseOption();
 		this.enableErrorReporting();
 
 		// Platform specific settings
@@ -317,6 +322,18 @@ class GeneralSection extends BaseSection {
 				ConfigUtil.setConfigItem('startAtLogin', newValue);
 				ipcRenderer.send('toggleAutoLauncher', newValue);
 				this.updateStartAtLoginOption();
+			}
+		});
+	}
+
+	updateQuitOnCloseOption(): void {
+		this.generateSettingOption({
+			$element: document.querySelector('#quitOnClose-option .setting-control'),
+			value: ConfigUtil.getConfigItem('quitOnClose', false),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('quitOnClose');
+				ConfigUtil.setConfigItem('quitOnClose', newValue);
+				this.updateQuitOnCloseOption();
 			}
 		});
 	}
