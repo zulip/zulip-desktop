@@ -43,6 +43,7 @@
     "test"
   ],
   "build": {
+    "afterSign": "scripts/notarize.js",
     "appId": "org.zulip.zulip-electron",
     "asar": true,
     "asarUnpack": [
@@ -57,7 +58,11 @@
     "mac": {
       "category": "public.app-category.productivity",
       "darkModeSupport": true,
-      "artifactName": "${productName}-${version}-${arch}.${ext}"
+      "artifactName": "${productName}-${version}-${arch}.${ext}",
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "gatekeeperAssess": false
     },
     "linux": {
       "category": "Chat;GNOME;GTK;Network;InstantMessaging",
@@ -148,9 +153,10 @@
     "cp-file": "5.0.0",
     "devtron": "1.4.0",
     "electron": "3.1.10",
-    "electron-builder": "20.40.2",
+    "electron-builder": "20.43.0",
     "electron-connect": "0.6.2",
     "electron-debug": "1.4.0",
+    "electron-notarize": "0.1.1",
     "eslint-config-xo-typescript": "0.14.0",
     "fs-extra": "8.1.0",
     "gulp": "4.0.0",
