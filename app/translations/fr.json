@@ -37,6 +37,7 @@
 	"Edit": "Édition",
 	"Edit Shortcuts": "Modifier les raccourcis",
 	"Enable auto updates": "Activer les mises à jour automatiques",
+	"Enable Do Not Disturb": "Activer Ne Pas Déranger",
 	"Enable error reporting (requires restart)": "Activer le signalement des erreurs (nécessite un redémarrage)",
 	"Enable spellchecker (requires restart)": "Activer le correcteur orthographique (nécessite un redémarrage)",
 	"Factory Reset": "Retour aux paramètres d'usine",
@@ -113,5 +114,11 @@
 	"Zoom Out": "Réduire",
 	"Zulip Help": "Aide Zulip",
 	"keyboard shortcuts": "Raccourcis clavier",
-	"script": "scénario"
+	"script": "scénario",
+	"Services": "Services",
+	"Hide": "Masquer",
+	"Hide Others": "Masquer les autres",
+	"Unhide": "Ne plus masquer",
+	"AddServer": "AddServer",
+	"Quit when the window is closed": "Quit when the window is closed"
 }
