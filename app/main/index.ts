@@ -38,8 +38,20 @@ const mainURL = 'file://' + path.join(__dirname, '../renderer', 'main.html');
 
 const singleInstanceLock = app.requestSingleInstanceLock();
 if (singleInstanceLock) {
-	app.on('second-instance', () => {
-		if (mainWindow) {
+	// @ts-ignore
+	app.on('second-instance', (event, argv) => {
+		// uri scheme handler for windows and linux
+		if (process.platform !== 'darwin') {
+			const NotifArgs = argv.slice(1);
+			if (NotifArgs[1].startsWith("zulip://send")) {
+				handleNotifCall(NotifArgs[1]);
+			} else if (mainWindow) {
+				if (mainWindow.isMinimized()) {
+					mainWindow.restore();
+				}
+				mainWindow.show();
+			}
+		} else if (mainWindow) {
 			if (mainWindow.isMinimized()) {
 				mainWindow.restore();
 			}
@@ -56,6 +68,14 @@ const APP_ICON = path.join(__dirname, '../resources', 'Icon');
 const iconPath = (): string => {
 	return APP_ICON + (process.platform === 'win32' ? '.ico' : '.png');
 };
+
+function handleNotifCall(NotifArgs: any): void {
+	// if (mainWindow) {
+	// 	mainWindow.webContents.focus();
+	// 	mainWindow.webContents.send('deep-linking-url', deepLinkingUrl);
+	// }
+	console.log(decodeURIComponent(NotifArgs));
+}
 
 function createMainWindow(): Electron.BrowserWindow {
 	// Load the previous state with fallback to defaults
@@ -136,6 +156,10 @@ function createMainWindow(): Electron.BrowserWindow {
 // Decrease load on GPU (experimental)
 app.disableHardwareAcceleration();
 
+if (process.platform === 'win32' && isDev) {
+	console.log('Protocol handler set');
+	app.setAsDefaultProtocolClient('zulip', process.execPath, [path.resolve(process.argv[1])]);
+}
 // Temporary fix for Electron render colors differently
 // More info here - https://github.com/electron/electron/issues/10732
 app.commandLine.appendSwitch('force-color-profile', 'srgb');
