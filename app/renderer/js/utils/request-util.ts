@@ -43,7 +43,14 @@ class RequestUtil {
 		const certificate = CertificateUtil.getCertificate(
 			encodeURIComponent(domain)
 		);
-		const certificateFile = path.join(`${app.getPath('userData')}/certificates`, certificate);
+
+		let certificateFile = null;
+		if (certificate && certificate.includes('/')) {
+			// certificate saved using old app version
+			certificateFile = certificate;
+		} else if (certificate) {
+			certificateFile = path.join(`${app.getPath('userData')}/certificates`, certificate);
+		}
 
 		let certificateLocation = '';
 		if (certificate) {
