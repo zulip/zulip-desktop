@@ -1,28 +1,14 @@
 'use strict';
 // import { ipcRenderer } from 'electron';
-// import { appId } from './helpers';
 import { remote } from 'electron';
-import {
-	appId, customReply, focusCurrentServer, parseReply, setupReply
-} from './helpers';
+import { appId } from './helpers';
 
-declare const window: ZulipWebWindow;
 
 // import url = require('url');
 import WinRTNotifier = require('electron-windows-notifications');
 import DefaultNotification = require('./default-notification');
 import ConfigUtil = require('../utils/config-util');
 
-export function notificationHandler(response: string, tag: string): void {
-	response = parseReply(response);
-	focusCurrentServer();
-	if (window.electron_bridge.send_notification_reply_message_supported) {
-		window.electron_bridge.send_event('send_notification_reply_message', tag, response);
-		return;
-	}
-	setupReply(tag);
-	customReply(response);
-}
 
 function showNotif(title: string, opts: NotificationOptions): void {
 	const profilePic = "F:\\GitHub\\zulip-desktop\\app\\renderer\\img\\icon.png";
@@ -51,16 +37,11 @@ function showNotif(title: string, opts: NotificationOptions): void {
 }
 
 class WinRTNotification extends DefaultNotification {
-	// tag: string;
 	constructor(title: string, opts: NotificationOptions) {
 		opts.silent = true;
 		super(title, opts);
-		// this.tag = opts.tag;
 		opts.silent = false;
-		console.log(title);
-		console.log(opts);
 		showNotif(title, opts);
-		console.log("Created notification");
 	}
 
 	static requestPermission(): void {
@@ -76,10 +57,6 @@ class WinRTNotification extends DefaultNotification {
 		return; // eslint-disable-line no-useless-return
 	}
 
-	// show(): void{
-	// 	this.notification2.show();
-	// 	return;
-	// }
 }
 
 module.exports = WinRTNotification;
