@@ -953,6 +953,10 @@ class ServerManagerView {
 			});
 		});
 
+		ipcRenderer.on('notifCall', (event: Event, notifObject: object) => {
+			console.log(notifObject);
+		});
+
 		ipcRenderer.on('render-taskbar-icon', (event: Event, messageCount: number) => {
 			// Create a canvas from unread messagecounts
 			function createOverlayIcon(messageCount: number): HTMLCanvasElement {

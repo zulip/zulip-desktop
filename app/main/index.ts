@@ -43,9 +43,9 @@ if (singleInstanceLock) {
 		// uri scheme handler for windows and linux
 		if (process.platform !== 'darwin') {
 			const NotifArgs = argv.slice(1);
-			if (NotifArgs[1].startsWith("zulip://send")) {
+			if (NotifArgs[1].startsWith("zulip://NotifSend")) {
 				handleNotifCall(NotifArgs[1]);
-			} else if (mainWindow) {
+			} else if (NotifArgs[1].startsWith("zulip://NotifDismiss") === false && mainWindow) {
 				if (mainWindow.isMinimized()) {
 					mainWindow.restore();
 				}
@@ -69,12 +69,16 @@ const iconPath = (): string => {
 	return APP_ICON + (process.platform === 'win32' ? '.ico' : '.png');
 };
 
-function handleNotifCall(NotifArgs: any): void {
-	// if (mainWindow) {
-	// 	mainWindow.webContents.focus();
-	// 	mainWindow.webContents.send('deep-linking-url', deepLinkingUrl);
-	// }
-	console.log(decodeURIComponent(NotifArgs));
+function handleNotifCall(NotifArgs: string): void {
+	const split = NotifArgs.split("&");
+	const startIndex = split[3].indexOf("value") + 12;
+	const endIndex = split[3].indexOf("}") - 4;
+	const notifCall = { url: split[1].substr(4), tag: split[2].substr(4), response: split[3].substr(startIndex, endIndex - startIndex + 1) };
+	notifCall.response = decodeURIComponent(notifCall.response);
+	if (mainWindow) {
+		mainWindow.webContents.focus();
+		mainWindow.webContents.send('notifCall', notifCall);
+	}
 }
 
 function createMainWindow(): Electron.BrowserWindow {
@@ -157,7 +161,6 @@ function createMainWindow(): Electron.BrowserWindow {
 app.disableHardwareAcceleration();
 
 if (process.platform === 'win32' && isDev) {
-	console.log('Protocol handler set');
 	app.setAsDefaultProtocolClient('zulip', process.execPath, [path.resolve(process.argv[1])]);
 }
 // Temporary fix for Electron render colors differently
