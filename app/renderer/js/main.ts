@@ -22,7 +22,7 @@ import Logger = require('./utils/logger-util');
 import CommonUtil = require('./utils/common-util');
 import EnterpriseUtil = require('./utils/enterprise-util');
 import Messages = require('./../../resources/messages');
-import { notificationHandler } from './notification/winrt-helper';
+// import { notificationHandler } from './notification/winrt-helper';
 
 interface FunctionalTabProps {
 	name: string;
@@ -955,25 +955,28 @@ class ServerManagerView {
 		});
 
 		interface NotifObject{
-			url: string,
-			tag: string,
-			response: string
-		};
+			url: string;
+			tag: string;
+			response: string;
+		}
 		ipcRenderer.on('notifCall', (event: Event, notifObject: NotifObject) => {
 			console.log(notifObject);
-			let url = notifObject.url;
-			if (url.charAt(url.length - 1) === '/') {
+			let {url} = notifObject;
+			if (url.endsWith('/')) {
 				// remove / character at the end of the url
 				url = url.slice(0, -1);
 			}
 			console.log(url);
-			for (let tab=0; tab<this.tabs.length; ++tab) {
+			for (let tab = 0; tab < this.tabs.length; ++tab) {
 				if (url.startsWith(this.tabs[tab].webview.props.url)) {
 					console.log(this.tabs[tab].webview.props.url);
 					this.activateTab(tab);
 				}
 			}
-			notificationHandler(notifObject.response, notifObject.tag);
+			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');
+			webviews.forEach(webview => {
+				webview.send('notifCall', notifObject);
+			});
 		});
 
 		ipcRenderer.on('render-taskbar-icon', (event: Event, messageCount: number) => {

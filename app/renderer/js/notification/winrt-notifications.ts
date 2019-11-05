@@ -1,14 +1,11 @@
 'use strict';
-// import { ipcRenderer } from 'electron';
 import { remote } from 'electron';
 import { appId } from './helpers';
-
 
 // import url = require('url');
 import WinRTNotifier = require('electron-windows-notifications');
 import DefaultNotification = require('./default-notification');
 import ConfigUtil = require('../utils/config-util');
-
 
 function showNotif(title: string, opts: NotificationOptions): void {
 	const profilePic = "F:\\GitHub\\zulip-desktop\\app\\renderer\\img\\icon.png";
@@ -56,7 +53,6 @@ class WinRTNotification extends DefaultNotification {
 	close(): void {
 		return; // eslint-disable-line no-useless-return
 	}
-
 }
 
 module.exports = WinRTNotification;

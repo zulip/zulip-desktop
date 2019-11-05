@@ -4,6 +4,8 @@ import {
 
 declare const window: ZulipWebWindow;
 
+// window.addEventListener()
+
 export function notificationHandler(response: string, tag: string): void {
 	response = parseReply(response);
 	focusCurrentServer();
