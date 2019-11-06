@@ -5,8 +5,9 @@
 
 'use strict';
 
-import { ipcRenderer, shell } from 'electron';
+import { ipcRenderer, shell, remote } from 'electron';
 import SetupSpellChecker from './spellchecker';
+import { notificationHandler } from './notification/winrt-helper';
 
 import isDev = require('electron-is-dev');
 import LinkUtil = require('./utils/link-util');
@@ -162,4 +163,11 @@ ipcRenderer.on('set-idle', () => {
 		console.log('idle');
 	}
 	window.electron_bridge.idle_on_system = true;
+});
+
+ipcRenderer.on('notifCall', (event: any, args: any) => {
+	console.log(args);
+	if (remote.getCurrentWebContents().getURL().startsWith(args.url)) {
+		notificationHandler(args.response, args.tag);
+	}
 });

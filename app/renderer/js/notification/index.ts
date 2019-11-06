@@ -5,6 +5,7 @@ import * as params from '../utils/params-util';
 import { appId, loadBots } from './helpers';
 
 import DefaultNotification = require('./default-notification');
+import InteractiveNotif = require('electron-windows-interactive-notifications');
 const { app } = remote;
 
 // From https://github.com/felixrieseberg/electron-windows-notifications#appusermodelid
@@ -12,6 +13,17 @@ const { app } = remote;
 app.setAppUserModelId(appId);
 
 window.Notification = DefaultNotification;
+
+if (process.platform === 'win32') {
+	const version = require('os').release().split('.');
+	// Windows 10 and above only.
+	if (version[0] >= 10) {
+		const shortcutPath = 'Microsoft\\Windows\\Start Menu\\Programs\\Zulip Electron.lnk';
+		InteractiveNotif.registerAppForNotificationSupport(shortcutPath, appId);
+		InteractiveNotif.registerActivator();
+		window.Notification = require('./winrt-notifications');
+	}
+}
 
 if (process.platform === 'darwin') {
 	window.Notification = require('./darwin-notifications');

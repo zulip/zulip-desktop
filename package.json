@@ -151,6 +151,7 @@
     "electron-builder": "20.40.2",
     "electron-connect": "0.6.2",
     "electron-debug": "1.4.0",
+    "electron-rebuild": "^1.8.6",
     "eslint-config-xo-typescript": "0.14.0",
     "fs-extra": "8.1.0",
     "gulp": "4.0.0",
@@ -229,5 +230,9 @@
       "browser",
       "mocha"
     ]
+  },
+  "dependencies": {
+    "electron-windows-interactive-notifications": "^0.7.7",
+    "electron-windows-notifications": "^3.0.2"
   }
 }

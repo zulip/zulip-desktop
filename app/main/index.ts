@@ -38,8 +38,20 @@ const mainURL = 'file://' + path.join(__dirname, '../renderer', 'main.html');
 
 const singleInstanceLock = app.requestSingleInstanceLock();
 if (singleInstanceLock) {
-	app.on('second-instance', () => {
-		if (mainWindow) {
+	// @ts-ignore
+	app.on('second-instance', (event, argv) => {
+		// uri scheme handler for windows and linux
+		if (process.platform !== 'darwin') {
+			const NotifArgs = argv.slice(1);
+			if (NotifArgs[1].startsWith("zulip://NotifSend")) {
+				handleNotifCall(NotifArgs[1]);
+			} else if (NotifArgs[1].startsWith("zulip://NotifDismiss") === false && mainWindow) {
+				if (mainWindow.isMinimized()) {
+					mainWindow.restore();
+				}
+				mainWindow.show();
+			}
+		} else if (mainWindow) {
 			if (mainWindow.isMinimized()) {
 				mainWindow.restore();
 			}
@@ -56,6 +68,18 @@ const APP_ICON = path.join(__dirname, '../resources', 'Icon');
 const iconPath = (): string => {
 	return APP_ICON + (process.platform === 'win32' ? '.ico' : '.png');
 };
+
+function handleNotifCall(NotifArgs: string): void {
+	const split = NotifArgs.split("&");
+	const startIndex = split[3].indexOf("value") + 12;
+	const endIndex = split[3].indexOf("}") - 4;
+	const notifCall = { url: split[1].substr(4), tag: split[2].substr(4), response: split[3].substr(startIndex, endIndex - startIndex + 1) };
+	notifCall.response = decodeURIComponent(notifCall.response);
+	if (mainWindow) {
+		mainWindow.webContents.focus();
+		mainWindow.webContents.send('notifCall', notifCall);
+	}
+}
 
 function createMainWindow(): Electron.BrowserWindow {
 	// Load the previous state with fallback to defaults
@@ -136,6 +160,9 @@ function createMainWindow(): Electron.BrowserWindow {
 // Decrease load on GPU (experimental)
 app.disableHardwareAcceleration();
 
+if (process.platform === 'win32' && isDev) {
+	app.setAsDefaultProtocolClient('zulip', process.execPath, [path.resolve(process.argv[1])]);
+}
 // Temporary fix for Electron render colors differently
 // More info here - https://github.com/electron/electron/issues/10732
 app.commandLine.appendSwitch('force-color-profile', 'srgb');

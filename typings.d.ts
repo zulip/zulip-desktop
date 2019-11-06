@@ -13,6 +13,8 @@ declare module 'fs-extra';
 declare module 'wurl';
 declare module 'i18n';
 declare module 'backoff';
+declare module 'electron-windows-notifications';
+declare module 'electron-windows-interactive-notifications';
 
 interface PageParamsObject {
     realm_uri: string;
