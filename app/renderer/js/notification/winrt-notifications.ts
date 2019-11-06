@@ -2,13 +2,12 @@
 import { remote } from 'electron';
 import { appId } from './helpers';
 
-// import url = require('url');
 import WinRTNotifier = require('electron-windows-notifications');
 import DefaultNotification = require('./default-notification');
 import ConfigUtil = require('../utils/config-util');
 
 function showNotif(title: string, opts: NotificationOptions): void {
-	const profilePic = "F:\\GitHub\\zulip-desktop\\app\\renderer\\img\\icon.png";
+	const profilePic = remote.app.getAppPath().concat('\\renderer\\img\\icon.png');
 	const url = remote.getCurrentWebContents().getURL();
 	// console.log(`"NotifSend&url='${url}'&tag='${opts.tag}'"`);
 	const notification2 = new WinRTNotifier.ToastNotification({

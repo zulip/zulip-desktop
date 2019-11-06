@@ -960,18 +960,10 @@ class ServerManagerView {
 			response: string;
 		}
 		ipcRenderer.on('notifCall', (event: Event, notifObject: NotifObject) => {
-			console.log(notifObject);
 			let {url} = notifObject;
 			if (url.endsWith('/')) {
 				// remove / character at the end of the url
 				url = url.slice(0, -1);
-			}
-			console.log(url);
-			for (let tab = 0; tab < this.tabs.length; ++tab) {
-				if (url.startsWith(this.tabs[tab].webview.props.url)) {
-					console.log(this.tabs[tab].webview.props.url);
-					this.activateTab(tab);
-				}
 			}
 			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');
 			webviews.forEach(webview => {
