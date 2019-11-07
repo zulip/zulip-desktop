@@ -2,10 +2,12 @@
 
 import { remote } from 'electron';
 import { JsonDB } from 'node-json-db';
+import { pki } from 'node-forge';
 import { initSetUp } from './default-util';
 
 import fs from 'fs';
 import path from 'path';
+import ca from 'win-ca';
 import Logger from './logger-util';
 
 const { app, dialog } = remote;
@@ -22,6 +24,26 @@ const certificatesDir = `${app.getPath('userData')}/certificates`;
 let db: JsonDB;
 
 reloadDB();
+
+export function checkSystemCertificate(domain: string): string {
+	let res = null;
+	ca({
+		format: ca.der2.pem,
+		ondata: (pem: any) => {
+			try {
+				const cert = pki.certificateFromPem(pem);
+				const subject = cert.subject.attributes.map((attribute: any) => [attribute.shortName, attribute.value].join('=')).join(', ');
+				if (subject.includes(domain)) {
+					res = pem;
+					return;
+				}
+			} catch (err) {
+				console.error(err);
+			}
+		}
+	});
+	return res;
+}
 
 export function getCertificate(server: string, defaultValue: any = null): any {
 	reloadDB();

@@ -39,15 +39,23 @@ export function requestOptions(domain: string, ignoreCerts: boolean): RequestUti
 		certificateFile = path.join(`${app.getPath('userData')}/certificates`, certificate);
 	}
 
+	let systemCerts = true;
 	let certificateLocation = '';
 	if (certificate) {
 		// To handle case where certificate has been moved from the location in certificates.json
 		try {
 			certificateLocation = fs.readFileSync(certificateFile, 'utf8');
+			systemCerts = false;
 		} catch (err) {
 			logger.warn(`Error while trying to get certificate: ${err}`);
 		}
 	}
+
+	if (systemCerts) {
+		const shortenedDomain = domain.slice(domain.indexOf('://') + 3);
+		certificateLocation = CertificateUtil.checkSystemCertificate(shortenedDomain);
+	}
+
 	const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
 	// If certificate for the domain exists add it as a ca key in the request's parameter else consider only domain as the parameter for request
 	// Add proxy as a parameter if it is being used.
