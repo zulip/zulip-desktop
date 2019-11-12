@@ -43,7 +43,7 @@
     "test"
   ],
   "build": {
-    "afterSign": "scripts/notarize.js",
+    "afterSign": "./scripts/notarize.js",
     "appId": "org.zulip.zulip-electron",
     "asar": true,
     "asarUnpack": [
