@@ -23,7 +23,7 @@ Please see the [installation guide](https://zulipchat.com/help/desktop-app-insta
 This desktop client shares most of its code with the Zulip webapp.
 Issues in an individual organization's Zulip window should be reported
 in the [Zulip server and webapp
-project](https://github.com/zulip/zulip-desktop/issues/new).  Other
+project](https://github.com/zulip/zulip/issues/new).  Other
 issues in the desktop app and its settings should be reported [in this
 project](https://github.com/zulip/zulip-desktop/issues/new).
 

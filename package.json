@@ -1,7 +1,7 @@
 {
   "name": "zulip",
   "productName": "Zulip",
-  "version": "4.0.1",
+  "version": "4.0.2-beta",
   "main": "./app/main",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
@@ -43,6 +43,7 @@
     "test"
   ],
   "build": {
+    "afterSign": "./scripts/notarize.js",
     "appId": "org.zulip.zulip-electron",
     "asar": true,
     "asarUnpack": [
@@ -57,7 +58,11 @@
     "mac": {
       "category": "public.app-category.productivity",
       "darkModeSupport": true,
-      "artifactName": "${productName}-${version}-${arch}.${ext}"
+      "artifactName": "${productName}-${version}-${arch}.${ext}",
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "gatekeeperAssess": false
     },
     "linux": {
       "category": "Chat;GNOME;GTK;Network;InstantMessaging",

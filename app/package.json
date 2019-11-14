@@ -1,7 +1,7 @@
 {
   "name": "zulip",
   "productName": "Zulip",
-  "version": "4.0.1",
+  "version": "4.0.2-beta",
   "desktopName": "zulip.desktop",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",

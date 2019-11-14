@@ -9,7 +9,9 @@ class Messages {
 			\n • You can connect to that URL in a web browser.\
 			\n • If you need a proxy to connect to the Internet, that you've configured your proxy in the Network settings.\
 			\n • It's a Zulip server. (The oldest supported version is 1.6).\
-			\n • The server has a valid certificate. (You can add custom certificates in Settings > Organizations).`;
+			\n • The server has a valid certificate. (You can add custom certificates in Settings > Organizations). \
+			\n • The SSL is correctly configured for the certificate. Check out the SSL troubleshooting guide -
+			\n https://zulip.readthedocs.io/en/stable/production/ssl-certificates.html`;
 	}
 
 	noOrgsError(domain: string): string {
