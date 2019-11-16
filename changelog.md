@@ -2,6 +2,39 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v4.0.2-beta --2019-11-13
+
+**New features**:
+* Add support for MSI installers.
+* Show badge count on Linux.
+* Sync system presence info to web app.
+* Add option to open notification settings from the context menu of organization icons in the sidebar. 
+* Tackle network issues with each Zulip organization independently. 
+* Add option to quit on closing the window.
+* Make certificate location dynamic.
+* Add option to specify network settings when adding a new organization.
+
+**Enhancements**:
+* Load last active tab before others, speeding up user experience and eliminating flashing of server icons. 
+* Improve UX for notification settings.
+* Set User-Agent from the main process for communication with the Zulip API.
+* Add SSL troubleshooting guide in error message when adding an organization fails.
+
+**Fixes**:
+* Fix translations for `ru` locales.
+* Fix trailing brackets in settings page. 
+* Fix broken icon issue faced by the snap package on Linux. 
+* Reactivate `network.js` script.
+* Enable notarization for macOS Catalina. 
+
+**Documentation**:
+* Document enterprise configuration features. 
+* Update the Electron tutorial guide. 
+* Explicitly address where to report bugs in `README.md`. 
+* Fix typo in the link to server/webapp repository in `README.md`. 
+* Add documentation for translation.
+
+
 ### v4.0.0 --2019-08-08
 
 **New features**:
