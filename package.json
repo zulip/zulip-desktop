@@ -165,6 +165,7 @@
     "electron-window-state": "^5.0.3",
     "escape-html": "^1.0.3",
     "i18n": "^0.8.5",
+    "mac-ca": "^1.0.4",
     "node-forge": "^0.9.1",
     "node-json-db": "^1.0.3",
     "request": "^2.88.2",
