@@ -14,6 +14,8 @@ if (process.platform === 'darwin') {
 	ca = require('mac-ca');
 } else if (process.platform === 'win32') {
 	ca = require('win-ca');
+} else {
+	ca = require('./linux-ca');
 }
 
 const { app, dialog } = remote;
@@ -46,14 +48,7 @@ function matchPemToDomain(domain: string, pem: string): boolean {
 
 export function checkSystemCertificate(domain: string): string {
 	let res = null;
-	if (process.platform === 'darwin') {
-		for (const pem of ca.all(ca.der2.pem)) {
-			if (matchPemToDomain(domain, pem)) {
-				res = pem;
-				return res;
-			}
-		}
-	} else if (process.platform === 'win32') {
+	if (process.platform === 'win32') {
 		ca({
 			format: ca.der2.pem,
 			ondata: (pem: any) => {
@@ -69,6 +64,14 @@ export function checkSystemCertificate(domain: string): string {
 				}
 			}
 		});
+	} else {
+		// custom linux-ca module matches mac-ca's methods
+		for (const pem of ca.all(ca.der2.pem)) {
+			if (matchPemToDomain(domain, pem)) {
+				res = pem;
+				return res;
+			}
+		}
 	}
 	return res;
 }
