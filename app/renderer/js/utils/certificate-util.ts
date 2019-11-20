@@ -7,8 +7,14 @@ import { initSetUp } from './default-util';
 
 import fs from 'fs';
 import path from 'path';
-import ca from 'win-ca';
 import Logger from './logger-util';
+
+let ca: any = null;
+if (process.platform === 'darwin') {
+	ca = require('mac-ca');
+} else if (process.platform === 'win32') {
+	ca = require('win-ca');
+}
 
 const { app, dialog } = remote;
 
@@ -25,23 +31,45 @@ let db: JsonDB;
 
 reloadDB();
 
+function matchPemToDomain(domain: string, pem: string): boolean {
+	try {
+		const cert = pki.certificateFromPem(pem);
+		const subject = cert.subject.attributes.map((attribute: any) => [attribute.shortName, attribute.value].join('=')).join(', ');
+		if (subject.includes(domain)) {
+			return true;
+		}
+	} catch (err) {
+		console.error(err);
+	}
+	return false;
+}
+
 export function checkSystemCertificate(domain: string): string {
 	let res = null;
-	ca({
-		format: ca.der2.pem,
-		ondata: (pem: any) => {
-			try {
-				const cert = pki.certificateFromPem(pem);
-				const subject = cert.subject.attributes.map((attribute: any) => [attribute.shortName, attribute.value].join('=')).join(', ');
-				if (subject.includes(domain)) {
-					res = pem;
-					return;
-				}
-			} catch (err) {
-				console.error(err);
+	if (process.platform === 'darwin') {
+		for (const pem of ca.all(ca.der2.pem)) {
+			if (matchPemToDomain(domain, pem)) {
+				res = pem;
+				return res;
 			}
 		}
-	});
+	} else if (process.platform === 'win32') {
+		ca({
+			format: ca.der2.pem,
+			ondata: (pem: any) => {
+				try {
+					const cert = pki.certificateFromPem(pem);
+					const subject = cert.subject.attributes.map((attribute: any) => [attribute.shortName, attribute.value].join('=')).join(', ');
+					if (subject.includes(domain)) {
+						res = pem;
+						return;
+					}
+				} catch (err) {
+					console.error(err);
+				}
+			}
+		});
+	}
 	return res;
 }
 
