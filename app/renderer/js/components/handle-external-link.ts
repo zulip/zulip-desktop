@@ -8,10 +8,8 @@ const { shell, app } = remote;
 
 const dingSound = new Audio('../resources/sounds/ding.ogg');
 
-// TODO: TypeScript - Figure out a way to pass correct type here.
-function handleExternalLink(this: any, event: any): void {
-	const { url } = event;
-	const domainPrefix = DomainUtil.getDomain(this.props.index).url;
+function handleExternalLink(index: number, url: string): void {
+	const domainPrefix = DomainUtil.getDomain(index).url;
 	const downloadPath = ConfigUtil.getConfigItem('downloadsPath', `${app.getPath('downloads')}`);
 	const shouldShowInFolder = ConfigUtil.getConfigItem('showDownloadFolder', false);
 
@@ -22,8 +20,6 @@ function handleExternalLink(this: any, event: any): void {
 	} = LinkUtil.isInternal(domainPrefix, url);
 
 	if (isWhiteListURL) {
-		event.preventDefault();
-
 		// Code to show pdf in a new BrowserWindow (currently commented out due to bug-upstream)
 		// Show pdf attachments in a new window
 		// if (LinkUtil.isPDF(url) && isUploadsURL) {
@@ -33,7 +29,7 @@ function handleExternalLink(this: any, event: any): void {
 
 		// download txt, mp3, mp4 etc.. by using downloadURL in the
 		// main process which allows the user to save the files to their desktop
-		// and not trigger webview reload while image in webview will
+		// and not trigger view reload while image in view will
 		// do nothing and will not save it
 
 		// Code to show pdf in a new BrowserWindow (currently commented out due to bug-upstream)
@@ -65,17 +61,16 @@ function handleExternalLink(this: any, event: any): void {
 
 			ipcRenderer.once('downloadFileFailed', () => {
 				// Automatic download failed, so show save dialog prompt and download
-				// through webview
-				this.$el.downloadURL(url);
+				// through view
+				ipcRenderer.send('call-specific-view-function', index, 'downloadUrl', url);
 				ipcRenderer.removeAllListeners('downloadFileCompleted');
 			});
 			return;
 		}
 
-		// open internal urls inside the current webview.
-		this.$el.loadURL(url);
+		// open internal urls inside the current view.
+		ipcRenderer.send('call-specific-view-function', index, 'loadUrl', url);
 	} else {
-		event.preventDefault();
 		shell.openExternal(url);
 	}
 }

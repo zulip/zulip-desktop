@@ -2,17 +2,16 @@
 
 import { ipcRenderer } from 'electron';
 
+import os = require('os');
 import Tab = require('./tab');
-import SystemUtil = require('../utils/system-util');
 
 class ServerTab extends Tab {
 	$badge: Element;
 
 	template(): string {
 		return `<div class="tab" data-tab-id="${this.props.tabIndex}">
-					<div class="server-tooltip" style="display:none">${this.props.name}</div>
 					<div class="server-tab-badge"></div>
-					<div class="server-tab">
+					<div class="server-tab" title="${this.props.name}">
 					<img class="server-icons" src='${this.props.icon}'/>
 					</div>
 					<div class="server-tab-shortcut">${this.generateShortcutText()}</div>
@@ -52,7 +51,7 @@ class ServerTab extends Tab {
 
 		let shortcutText = '';
 
-		if (SystemUtil.getOS() === 'Mac') {
+		if (os.platform() === 'darwin') {
 			shortcutText = `⌘ ${shownIndex}`;
 		} else {
 			shortcutText = `Ctrl+${shownIndex}`;

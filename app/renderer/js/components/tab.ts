@@ -1,6 +1,5 @@
 'use strict';
 
-import WebView = require('./webview');
 import BaseComponent = require('./base');
 
 // TODO: TypeScript - Type annotate props
@@ -10,13 +9,10 @@ interface TabProps {
 
 class Tab extends BaseComponent {
 	props: TabProps;
-	webview: WebView;
 	$el: Element;
 	constructor(props: TabProps) {
 		super();
-
 		this.props = props;
-		this.webview = this.props.webview;
 	}
 
 	registerListeners(): void {
@@ -25,23 +21,19 @@ class Tab extends BaseComponent {
 		this.$el.addEventListener('mouseout', this.props.onHoverOut);
 	}
 
-	showNetworkError(): void {
-		this.webview.forceLoad();
-	}
-
+	// Add active highlight to tab.
 	activate(): void {
 		this.$el.classList.add('active');
-		this.webview.load();
 	}
 
+	// Remove active highlight from tab.
 	deactivate(): void {
 		this.$el.classList.remove('active');
-		this.webview.hide();
 	}
 
+	// Remove the tab from DOM when it is removed.
 	destroy(): void {
 		this.$el.parentNode.removeChild(this.$el);
-		this.webview.$el.parentNode.removeChild(this.webview.$el);
 	}
 }
 

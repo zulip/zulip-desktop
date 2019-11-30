@@ -14,6 +14,7 @@ import AppMenu = require('./menu');
 import BadgeSettings = require('../renderer/js/pages/preference/badge-settings');
 import ConfigUtil = require('../renderer/js/utils/config-util');
 import ProxyUtil = require('../renderer/js/utils/proxy-util');
+import ViewManager = require('./viewmanager');
 
 interface PatchedGlobal extends NodeJS.Global {
 	mainWindowState: windowStateKeeper.State;
@@ -28,7 +29,8 @@ if (isDev) {
 }
 
 // Prevent window being garbage collected
-let mainWindow: Electron.BrowserWindow;
+// eslint-disable-next-line import/no-mutable-exports
+export let mainWindow: Electron.BrowserWindow;
 let badgeCount: number;
 
 let isQuitting = false;
@@ -81,7 +83,7 @@ function createMainWindow(): Electron.BrowserWindow {
 		webPreferences: {
 			plugins: true,
 			nodeIntegration: true,
-			partition: 'persist:webviewsession'
+			partition: 'persist:viewsession'
 		},
 		show: false
 	});
@@ -111,10 +113,12 @@ function createMainWindow(): Electron.BrowserWindow {
 	win.setTitle('Zulip');
 
 	win.on('enter-full-screen', () => {
+		ViewManager.fixBounds();
 		win.webContents.send('enter-fullscreen');
 	});
 
 	win.on('leave-full-screen', () => {
+		ViewManager.fixBounds();
 		win.webContents.send('leave-fullscreen');
 	});
 
@@ -229,7 +233,7 @@ app.on('ready', () => {
 	// 		height: mainWindowState.height - paddingHeight,
 	// 		webPreferences: {
 	// 			plugins: true,
-	// 			partition: 'persist:webviewsession'
+	// 			partition: 'persist:viewsession'
 	// 		}
 	// 	});
 	// 	pdfWindow.loadURL(url);
@@ -238,8 +242,9 @@ app.on('ready', () => {
 	// 	pdfWindow.setMenu(null);
 	// });
 
-	// Reload full app not just webview, useful in debugging
+	// Reload full app not just view, useful in debugging
 	ipcMain.on('reload-full-app', () => {
+		ViewManager.destroyAll();
 		mainWindow.reload();
 		page.send('destroytray');
 	});
@@ -268,6 +273,10 @@ app.on('ready', () => {
 		page.send('toggle-autohide-menubar', showMenubar, true);
 	});
 
+	ipcMain.on('fix-bounds', () => {
+		ViewManager.fixBounds();
+	});
+
 	ipcMain.on('update-badge', (_event: Electron.IpcMessageEvent, messageCount: number) => {
 		badgeCount = messageCount;
 		BadgeSettings.updateBadge(badgeCount, mainWindow);
@@ -286,7 +295,7 @@ app.on('ready', () => {
 		AppMenu.setMenu(props);
 		const activeTab = props.tabs[props.activeTabIndex];
 		if (activeTab) {
-			mainWindow.setTitle(`Zulip - ${activeTab.webview.props.name}`);
+			mainWindow.setTitle(`Zulip - ${activeTab.props.name}`);
 		}
 	});
 

@@ -74,15 +74,14 @@ export function customReply(reply: string): void {
 }
 
 const currentWindow = remote.getCurrentWindow();
-const webContents = remote.getCurrentWebContents();
-const webContentsId = webContents.id;
+const contents = remote.getCurrentWebContents();
 
 // this function will focus the server that sent
 // the notification. Main function implemented in main.js
 export function focusCurrentServer(): void {
 	// TODO: TypeScript: currentWindow of type BrowserWindow doesn't
 	// have a .send() property per typescript.
-	(currentWindow as any).send('focus-webview-with-id', webContentsId);
+	(currentWindow as any).send('focus-view-with-contents', contents);
 }
 // this function parses the reply from to notification
 // making it easier to reply from notification eg

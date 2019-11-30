@@ -1,11 +1,18 @@
 'use strict';
-import { remote } from 'electron';
-
+import electron = require('electron');
 import os = require('os');
 import ConfigUtil = require('./config-util');
 
-const { app } = remote;
 let instance: null | SystemUtil = null;
+let app: Electron.App = null;
+
+/* To make the util runnable in both main and renderer process */
+if (process.type === 'renderer') {
+	const { remote } = electron;
+	app = remote.app;
+} else {
+	app = electron.app;
+}
 
 class SystemUtil {
 	connectivityERR: string[];
@@ -49,8 +56,9 @@ class SystemUtil {
 		}
 	}
 
-	setUserAgent(webViewUserAgent: string): void {
-		this.userAgent = `ZulipElectron/${app.getVersion()} ${webViewUserAgent}`;
+	setUserAgent(viewUserAgent: string): void {
+		const appVersion = app.getVersion();
+		this.userAgent = 'ZulipElectron/' + appVersion + ' ' + viewUserAgent;
 	}
 
 	getUserAgent(): string | null {

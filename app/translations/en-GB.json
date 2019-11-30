@@ -1,4 +1,5 @@
 {
+	"File": "File",
 	"Add Organization": "Add Organization",
 	"Toggle Do Not Disturb": "Toggle Do Not Disturb",
 	"Desktop Settings": "Desktop Settings",
@@ -114,5 +115,10 @@
 	"Emoji & Symbols": "Emoji & Symbols",
 	"View Shortcuts": "View Shortcuts",
 	"Enter Full Screen": "Enter Full Screen",
-	"History Shortcuts": "History Shortcuts"
+	"History Shortcuts": "History Shortcuts",
+	"Add a Zulip organization": "Add a Zulip organization",
+	"Organization URL": "Organization URL",
+	"Connect": "Connect",
+	"OR": "OR",
+	"Create a new organization": "Create a new organization"
 }
