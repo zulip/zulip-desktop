@@ -283,7 +283,8 @@ class ServerManagerView {
 					buttons: ['Yes', 'Later'],
 					defaultId: 0,
 					message: 'New server' + (domainsAdded.length > 1 ? 's' : '') + ' added. Reload app now?'
-				}, response => {
+				}).then(res => {
+					const { response } = res;
 					if (response === 0) {
 						ipcRenderer.send('reload-full-app');
 					}
@@ -750,7 +751,8 @@ class ServerManagerView {
 							buttons: ['YES', 'NO'],
 							defaultId: 0,
 							message: 'Are you sure you want to disconnect this organization?'
-						}, response => {
+						}).then(res => {
+							const { response } = res;
 							if (response === 0) {
 								if (DomainUtil.removeDomain(index)) {
 									ipcRenderer.send('reload-full-app');
