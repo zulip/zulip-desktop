@@ -168,13 +168,17 @@ class ServerManagerView {
 					pacScript: ConfigUtil.getConfigItem('proxyPAC', ''),
 					proxyRules: ConfigUtil.getConfigItem('proxyRules', ''),
 					proxyBypassRules: ConfigUtil.getConfigItem('proxyBypass', '')
-				}, resolve);
+				}).then(res => {
+					resolve();
+				});
 			} else {
 				session.fromPartition('persist:webviewsession').setProxy({
 					pacScript: '',
 					proxyRules: '',
 					proxyBypassRules: ''
-				}, resolve);
+				}).then(res => {
+					resolve();
+				});
 			}
 		});
 	}
