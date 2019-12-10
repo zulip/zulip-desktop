@@ -572,7 +572,8 @@ class AppMenu {
 			defaultId: 0,
 			message: 'Are you sure?',
 			detail: resetAppSettingsMessage
-		}, response => {
+		}).then(res => {
+			const { response } = res;
 			if (response === 0) {
 				settingFiles.forEach(settingFileName => {
 					const getSettingFilesPath = path.join(app.getPath('appData'), appName, settingFileName);
