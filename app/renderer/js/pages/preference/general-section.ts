@@ -388,9 +388,10 @@ class GeneralSection extends BaseSection {
 			filters: [{ name: 'CSS file', extensions: ['css'] }]
 		};
 
-		dialog.showOpenDialog(showDialogOptions, (selectedFile: any) => {
-			if (selectedFile) {
-				ConfigUtil.setConfigItem('customCSS', selectedFile[0]);
+		dialog.showOpenDialog(showDialogOptions).then((res: Electron.OpenDialogReturnValue) => {
+			const { filePaths } = res;
+			if (filePaths && filePaths.length > 0) {
+				ConfigUtil.setConfigItem('customCSS', filePaths[0]);
 				ipcRenderer.send('forward-message', 'hard-reload');
 			}
 		});
@@ -443,11 +444,12 @@ class GeneralSection extends BaseSection {
 			properties: ['openDirectory']
 		};
 
-		dialog.showOpenDialog(showDialogOptions, (selectedFolder: any) => {
-			if (selectedFolder) {
-				ConfigUtil.setConfigItem('downloadsPath', selectedFolder[0]);
+		dialog.showOpenDialog(showDialogOptions).then((res: Electron.OpenDialogReturnValue) => {
+			const { filePaths } = res;
+			if (filePaths && filePaths.length > 0) {
+				ConfigUtil.setConfigItem('downloadsPath', filePaths[0]);
 				const downloadFolderPath: HTMLElement = document.querySelector('.download-folder-path');
-				downloadFolderPath.innerText = selectedFolder[0];
+				downloadFolderPath.innerText = filePaths[0];
 			}
 		});
 	}
