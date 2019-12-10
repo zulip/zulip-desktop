@@ -67,7 +67,8 @@ class ServerInfoForm extends BaseComponent {
 				buttons: [t.__('YES'), t.__('NO')],
 				defaultId: 0,
 				message: t.__('Are you sure you want to disconnect this organization?')
-			}, response => {
+			}).then(res => {
+				const { response } = res;
 				if (response === 0) {
 					if (DomainUtil.removeDomain(this.props.index)) {
 						ipcRenderer.send('reload-full-app');

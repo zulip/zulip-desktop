@@ -372,7 +372,8 @@ class GeneralSection extends BaseSection {
 			defaultId: 0,
 			message: 'Are you sure',
 			detail: clearAppDataMessage
-		}, response => {
+		}).then(res => {
+			const { response } = res;
 			if (response === 0) {
 				fs.remove(getAppPath);
 				setTimeout(() => ipcRenderer.send('forward-message', 'hard-reload'), 1000);
