@@ -68,7 +68,7 @@ class ProxyUtil {
 
 		// Check HTTP Proxy
 		const httpProxy = new Promise(resolve => {
-			ses.resolveProxy('http://' + resolveProxyUrl, (proxy: string) => {
+			ses.resolveProxy('http://' + resolveProxyUrl).then((proxy: string) => {
 				let httpString = '';
 				if (proxy !== 'DIRECT') {
 					// in case of proxy HTTPS url:port, windows gives first word as HTTPS while linux gives PROXY
@@ -82,7 +82,7 @@ class ProxyUtil {
 		});
 		// Check HTTPS Proxy
 		const httpsProxy = new Promise(resolve => {
-			ses.resolveProxy('https://' + resolveProxyUrl, (proxy: string) => {
+			ses.resolveProxy('https://' + resolveProxyUrl).then((proxy: string) => {
 				let httpsString = '';
 				if (proxy !== 'DIRECT' || proxy.includes('HTTPS')) {
 					// in case of proxy HTTPS url:port, windows gives first word as HTTPS while linux gives PROXY
@@ -97,7 +97,7 @@ class ProxyUtil {
 
 		// Check FTP Proxy
 		const ftpProxy = new Promise(resolve => {
-			ses.resolveProxy('ftp://' + resolveProxyUrl, (proxy: string) => {
+			ses.resolveProxy('ftp://' + resolveProxyUrl).then((proxy: string) => {
 				let ftpString = '';
 				if (proxy !== 'DIRECT') {
 					if (proxy.includes('PROXY')) {
@@ -110,7 +110,7 @@ class ProxyUtil {
 
 		// Check SOCKS Proxy
 		const socksProxy = new Promise(resolve => {
-			ses.resolveProxy('socks4://' + resolveProxyUrl, (proxy: string) => {
+			ses.resolveProxy('socks4://' + resolveProxyUrl).then((proxy: string) => {
 				let socksString = '';
 				if (proxy !== 'DIRECT') {
 					if (proxy.includes('SOCKS5')) {
