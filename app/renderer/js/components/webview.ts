@@ -142,6 +142,16 @@ class WebView extends BaseComponent {
 				userAgent = SystemUtil.getUserAgent();
 			}
 			this.$el.setUserAgent(userAgent);
+
+			this.$el.getWebContents().session.webRequest.onBeforeSendHeaders((details, callback) => {
+				let googleLoginURLs = ['accounts.google.com/signin/oauth', 'accounts.google.com/ServiceLogin']
+				googleLoginURLs.forEach((loginURL) => {
+					if (details.url.indexOf(loginURL) > -1) {
+						this.$el.setUserAgent('Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:70.0) Gecko/20100101 Firefox/70.0')
+					}
+				});
+			});
+
 		});
 
 		this.$el.addEventListener('did-stop-loading', () => {
