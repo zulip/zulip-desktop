@@ -74,6 +74,10 @@ class WebView extends BaseComponent {
 		}
 
 		this.$el.addEventListener('page-title-updated', event => {
+			const url = this.$el.getWebContents().getURL();
+			if (url.startsWith('https://accounts.google.com')) {
+				// TODO: Implement OAuth login functionality.
+			}
 			const { title } = event;
 			this.badgeCount = this.getBadgeCount(title);
 			this.props.onTitleChange();
