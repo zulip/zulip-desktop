@@ -11,6 +11,7 @@ import SetupSpellChecker from './spellchecker';
 import isDev = require('electron-is-dev');
 import LinkUtil = require('./utils/link-util');
 import params = require('./utils/params-util');
+import AppAuthUtil = require('./utils/appauth-util');
 
 import NetworkError = require('./pages/network');
 
@@ -79,7 +80,21 @@ process.once('loaded', (): void => {
 // To prevent failing this script on linux we need to load it after the document loaded
 document.addEventListener('DOMContentLoaded', (): void => {
 	if (params.isPageParams()) {
-	// Get the default language of the server
+		const $signInButtons = document.querySelectorAll('.login-social');
+		for (const $signInButton of $signInButtons) {
+			$signInButton.addEventListener('click', event => {
+				event.preventDefault();
+				const appAuthUtil = new AppAuthUtil();
+				appAuthUtil.fetchServiceConfiguration().then(res => {
+					return appAuthUtil.makeAuthorizationRequest();
+				});
+				appAuthUtil.authStateEmitter.on('on_token_response', event => {
+					console.log(event);
+				});
+			});
+		}
+
+		// Get the default language of the server
 		const serverLanguage = page_params.default_language; // eslint-disable-line no-undef
 		if (serverLanguage) {
 			// Init spellchecker

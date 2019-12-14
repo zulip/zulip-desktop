@@ -3,7 +3,6 @@ import { remote } from 'electron';
 
 import path = require('path');
 import fs = require('fs');
-import AppAuthUtil = require('../utils/appauth-util');
 import ConfigUtil = require('../utils/config-util');
 import SystemUtil = require('../utils/system-util');
 import BaseComponent = require('../components/base');
@@ -75,13 +74,6 @@ class WebView extends BaseComponent {
 		}
 
 		this.$el.addEventListener('page-title-updated', event => {
-			const url = this.$el.getWebContents().getURL();
-			if (url.startsWith('https://accounts.google.com')) {
-				const appAuthUtil = new AppAuthUtil();
-				appAuthUtil.fetchServiceConfiguration().then(res => {
-					return appAuthUtil.makeAuthorizationRequest();
-				});
-			}
 			const { title } = event;
 			this.badgeCount = this.getBadgeCount(title);
 			this.props.onTitleChange();
