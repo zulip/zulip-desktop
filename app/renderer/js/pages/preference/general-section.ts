@@ -372,7 +372,8 @@ class GeneralSection extends BaseSection {
 			defaultId: 0,
 			message: 'Are you sure',
 			detail: clearAppDataMessage
-		}, response => {
+		}).then(res => {
+			const { response } = res;
 			if (response === 0) {
 				fs.remove(getAppPath);
 				setTimeout(() => ipcRenderer.send('forward-message', 'hard-reload'), 1000);
@@ -387,7 +388,7 @@ class GeneralSection extends BaseSection {
 			filters: [{ name: 'CSS file', extensions: ['css'] }]
 		};
 
-		dialog.showOpenDialog(showDialogOptions, selectedFile => {
+		dialog.showOpenDialog(showDialogOptions, (selectedFile: any) => {
 			if (selectedFile) {
 				ConfigUtil.setConfigItem('customCSS', selectedFile[0]);
 				ipcRenderer.send('forward-message', 'hard-reload');
@@ -442,7 +443,7 @@ class GeneralSection extends BaseSection {
 			properties: ['openDirectory']
 		};
 
-		dialog.showOpenDialog(showDialogOptions, selectedFolder => {
+		dialog.showOpenDialog(showDialogOptions, (selectedFolder: any) => {
 			if (selectedFolder) {
 				ConfigUtil.setConfigItem('downloadsPath', selectedFolder[0]);
 				const downloadFolderPath: HTMLElement = document.querySelector('.download-folder-path');

@@ -129,7 +129,7 @@ class AppMenu {
 			role: 'togglefullscreen'
 		}, {
 			label: t.__('Zoom In'),
-			role: 'zoomin',
+			role: 'zoomIn',
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					AppMenu.sendAction('zoomIn');
@@ -351,7 +351,7 @@ class AppMenu {
 				role: 'hide'
 			}, {
 				label: t.__('Hide Others'),
-				role: 'hideothers'
+				role: 'hideOthers'
 			}, {
 				label: t.__('Unhide'),
 				role: 'unhide'
@@ -388,10 +388,10 @@ class AppMenu {
 				role: 'paste'
 			}, {
 				label: t.__('Paste and Match Style'),
-				role: 'pasteandmatchstyle'
+				role: 'pasteAndMatchStyle'
 			}, {
 				label: t.__('Select All'),
-				role: 'selectall'
+				role: 'selectAll'
 			}]
 		}, {
 			label: t.__('View'),
@@ -504,12 +504,12 @@ class AppMenu {
 				role: 'paste'
 			}, {
 				label: t.__('Paste and Match Style'),
-				role: 'pasteandmatchstyle'
+				role: 'pasteAndMatchStyle'
 			}, {
 				type: 'separator'
 			}, {
 				label: t.__('Select All'),
-				role: 'selectall'
+				role: 'selectAll'
 			}]
 		}, {
 			label: t.__('View'),
@@ -572,7 +572,8 @@ class AppMenu {
 			defaultId: 0,
 			message: 'Are you sure?',
 			detail: resetAppSettingsMessage
-		}, response => {
+		}).then(res => {
+			const { response } = res;
 			if (response === 0) {
 				settingFiles.forEach(settingFileName => {
 					const getSettingFilesPath = path.join(app.getPath('appData'), appName, settingFileName);

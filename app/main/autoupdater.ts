@@ -71,7 +71,8 @@ export function appUpdater(updateFromMenu = false): void {
 				message: messageText,
 				detail: (error).toString() + `\n\nThe latest version of Zulip Desktop is available at -\nhttps://zulipchat.com/apps/.\n
 Current Version: ${app.getVersion()}`
-			}, response => {
+			}).then(res => {
+				const { response } = res;
 				if (response === 0) {
 					shell.openExternal('https://zulipchat.com/apps/');
 				}
@@ -91,7 +92,9 @@ Current Version: ${app.getVersion()}`
 			defaultId: 0,
 			message: `A new update ${event.version} has been downloaded`,
 			detail: 'It will be installed the next time you restart the application'
-		}, response => {
+		}).then(res => {
+			// response actually contains index of clicked button
+			const { response } = res;
 			if (response === 0) {
 				setTimeout(() => {
 					autoUpdater.quitAndInstall();
