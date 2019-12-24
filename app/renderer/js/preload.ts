@@ -11,6 +11,8 @@ import SetupSpellChecker from './spellchecker';
 import isDev = require('electron-is-dev');
 import LinkUtil = require('./utils/link-util');
 import params = require('./utils/params-util');
+import AuthUtil = require('./utils/auth-util');
+import ConfigUtil = require('./utils/config-util');
 
 import NetworkError = require('./pages/network');
 
@@ -79,7 +81,24 @@ process.once('loaded', (): void => {
 // To prevent failing this script on linux we need to load it after the document loaded
 document.addEventListener('DOMContentLoaded', (): void => {
 	if (params.isPageParams()) {
-	// Get the default language of the server
+		const authMethods = page_params.external_authentication_methods; // eslint-disable-line no-undef
+		const loginInApp = ConfigUtil.getConfigItem('loginInApp');
+		console.log(loginInApp);
+		if (authMethods && !loginInApp) {
+			for (const authMethod of authMethods) {
+				const { button_id_suffix } = authMethod;
+				const $socialButton = document.querySelector(`button[id$="${button_id_suffix}"]`);
+				if ($socialButton) {
+					$socialButton.addEventListener('click', event => {
+						event.preventDefault();
+						const socialLink = $socialButton.closest('form').action;
+						AuthUtil.openInBrowser(socialLink);
+					});
+				}
+			}
+		}
+
+		// Get the default language of the server
 		const serverLanguage = page_params.default_language; // eslint-disable-line no-undef
 		if (serverLanguage) {
 			// Init spellchecker
