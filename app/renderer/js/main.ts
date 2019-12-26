@@ -21,6 +21,7 @@ import ReconnectUtil = require('./utils/reconnect-util');
 import Logger = require('./utils/logger-util');
 import CommonUtil = require('./utils/common-util');
 import EnterpriseUtil = require('./utils/enterprise-util');
+import AuthUtil = require('./utils/auth-util');
 import Messages = require('./../../resources/messages');
 
 interface FunctionalTabProps {
@@ -805,6 +806,15 @@ class ServerManagerView {
 				}
 			});
 		}
+
+		ipcRenderer.on('deep-linking-url', (event: Event, url: string) => {
+			if (!ConfigUtil.getConfigItem('desktopOtp')) {
+				return;
+			}
+			let apiKey = url.substring(url.indexOf('otp_encrypted_api_key') + 22, url.indexOf('&email='));
+			apiKey = AuthUtil.xorStrings(apiKey, ConfigUtil.getConfigItem('desktopOtp'));
+			ConfigUtil.setConfigItem('desktopOtp', null);
+		});
 
 		ipcRenderer.on('show-network-error', (event: Event, index: number) => {
 			this.openNetworkTroubleshooting(index);
