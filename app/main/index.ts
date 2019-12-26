@@ -38,13 +38,17 @@ const mainURL = 'file://' + path.join(__dirname, '../renderer', 'main.html');
 
 const singleInstanceLock = app.requestSingleInstanceLock();
 if (singleInstanceLock) {
-	app.on('second-instance', () => {
+	app.on('second-instance', (event, argv) => {
 		if (mainWindow) {
 			if (mainWindow.isMinimized()) {
 				mainWindow.restore();
 			}
 
 			mainWindow.show();
+			if (process.platform !== 'darwin') {
+				const deepLinkingUrl = argv.slice(1);
+				handleDeepLink(deepLinkingUrl[(isDev && process.platform === 'win32') ? 1 : 0]);
+			}
 		}
 	});
 } else {
@@ -65,6 +69,10 @@ const toggleApp = (): any => {
 		mainWindow.hide();
 	}
 };
+function handleDeepLink(url: string): void {
+	mainWindow.webContents.focus();
+	mainWindow.webContents.send('deep-linking-url', url);
+}
 
 function createMainWindow(): Electron.BrowserWindow {
 	// Load the previous state with fallback to defaults
@@ -144,6 +152,20 @@ function createMainWindow(): Electron.BrowserWindow {
 
 // Decrease load on GPU (experimental)
 app.disableHardwareAcceleration();
+
+if (process.platform === 'win32' && isDev) {
+	app.setAsDefaultProtocolClient('zulip', process.execPath, [path.resolve(process.argv[1])]);
+} else {
+	app.setAsDefaultProtocolClient('zulip');
+}
+
+// uri scheme handler for macOS
+app.on('open-url', (event, url) => {
+	event.preventDefault();
+	if (mainWindow) {
+		mainWindow.webContents.send('deep-linking-url', url);
+	}
+});
 
 // Temporary fix for Electron render colors differently
 // More info here - https://github.com/electron/electron/issues/10732
