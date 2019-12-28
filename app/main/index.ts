@@ -57,6 +57,15 @@ const iconPath = (): string => {
 	return APP_ICON + (process.platform === 'win32' ? '.ico' : '.png');
 };
 
+// toggle the app window
+const toggleApp = (): any => {
+	if (!mainWindow.isVisible() || mainWindow.isMinimized()) {
+		mainWindow.show();
+	} else {
+		mainWindow.hide();
+	}
+};
+
 function createMainWindow(): Electron.BrowserWindow {
 	// Load the previous state with fallback to defaults
 	const mainWindowState: windowStateKeeper.State = windowStateKeeper({
@@ -147,7 +156,10 @@ app.on('certificate-error', (event: Event, _webContents: Electron.WebContents, _
 });
 
 app.on('activate', () => {
-	if (!mainWindow) {
+	if (mainWindow) {
+		// if there is already a window toggle the app
+		toggleApp();
+	} else {
 		mainWindow = createMainWindow();
 	}
 });
@@ -251,11 +263,7 @@ app.on('ready', () => {
 	});
 
 	ipcMain.on('toggle-app', () => {
-		if (!mainWindow.isVisible() || mainWindow.isMinimized()) {
-			mainWindow.show();
-		} else {
-			mainWindow.hide();
-		}
+		toggleApp();
 	});
 
 	ipcMain.on('toggle-badge-option', () => {
