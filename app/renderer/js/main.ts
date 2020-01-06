@@ -764,6 +764,14 @@ class ServerManagerView {
 					}
 				},
 				{
+					label: 'Login with OAuth',
+					enabled: !this.isLoggedIn(index),
+					click: () => {
+						this.activateTab(index);
+						AuthUtil.startAuth(DomainUtil.getDomain(index).url);
+					}
+				},
+				{
 					label: 'Notification settings',
 					enabled: this.isLoggedIn(index),
 					click: () => {
