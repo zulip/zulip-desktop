@@ -169,7 +169,8 @@ class DomainUtil {
 			icon: defaultIconUrl,
 			url: domain,
 			alias: domain,
-			ignoreCerts
+			ignoreCerts,
+			loggedIn: false
 		};
 
 		try {
