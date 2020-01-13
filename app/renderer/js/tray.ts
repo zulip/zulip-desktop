@@ -5,7 +5,11 @@ import path = require('path');
 import ConfigUtil = require('./utils/config-util.js');
 const { Tray, Menu, nativeImage, BrowserWindow } = remote;
 
-const APP_ICON = path.join(__dirname, '../../resources/tray', 'tray');
+const ICON_DIR = process.platform === 'darwin' ? '../../resources/tray/light' : '../../resources/tray';
+
+const TRAY_SUFFIX = 'tray';
+
+const APP_ICON = path.join(__dirname, ICON_DIR, TRAY_SUFFIX);
 
 declare let window: ZulipWebWindow;
 
