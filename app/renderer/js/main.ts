@@ -59,6 +59,7 @@ interface SettingsOptions {
 	downloadsPath: string;
 	showDownloadFolder: boolean;
 	quitOnClose: boolean;
+	promptDownload: boolean;
 	flashTaskbarOnMessage?: boolean;
 	dockBouncing?: boolean;
 	loading?: AnyObject;
@@ -208,7 +209,8 @@ class ServerManagerView {
 			},
 			downloadsPath: `${app.getPath('downloads')}`,
 			showDownloadFolder: false,
-			quitOnClose: false
+			quitOnClose: false,
+			promptDownload: false
 		};
 
 		// Platform specific settings

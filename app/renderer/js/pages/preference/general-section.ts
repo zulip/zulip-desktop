@@ -127,6 +127,10 @@ class GeneralSection extends BaseSection {
 							<div class="download-folder-path">${ConfigUtil.getConfigItem('downloadsPath', `${app.getPath('downloads')}`)}</div>
 						</div>
 					</div>
+					<div class="setting-row" id="prompt-download">
+						<div class="setting-description">${t.__('Ask where to save files before downloading')}</div>
+						<div class="setting-control"></div>
+					</div>
 
 				</div>
 				<div class="title">${t.__('Reset Application Data')}</div>
@@ -160,6 +164,7 @@ class GeneralSection extends BaseSection {
 		this.downloadFolder();
 		this.showDownloadFolder();
 		this.updateQuitOnCloseOption();
+		this.updatePromptDownloadOption();
 		this.enableErrorReporting();
 
 		// Platform specific settings
@@ -465,6 +470,18 @@ class GeneralSection extends BaseSection {
 				const newValue = !ConfigUtil.getConfigItem('showDownloadFolder');
 				ConfigUtil.setConfigItem('showDownloadFolder', newValue);
 				this.showDownloadFolder();
+			}
+		});
+	}
+
+	updatePromptDownloadOption(): void {
+		this.generateSettingOption({
+			$element: document.querySelector('#prompt-download .setting-control'),
+			value: ConfigUtil.getConfigItem('promptDownload', false),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('promptDownload');
+				ConfigUtil.setConfigItem('promptDownload', newValue);
+				this.updatePromptDownloadOption();
 			}
 		});
 	}

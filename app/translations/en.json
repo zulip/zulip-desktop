@@ -114,5 +114,6 @@
 	"Zulip Help": "Zulip Help",
 	"keyboard shortcuts": "keyboard shortcuts",
 	"script": "script",
-	"Quit when the window is closed": "Quit when the window is closed"
+	"Quit when the window is closed": "Quit when the window is closed",
+	"Ask where to save files before downloading": "Ask where to save files before downloading"
 }
