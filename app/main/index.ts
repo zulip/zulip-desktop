@@ -90,7 +90,8 @@ function createMainWindow(): Electron.BrowserWindow {
 		webPreferences: {
 			plugins: true,
 			nodeIntegration: true,
-			partition: 'persist:webviewsession'
+			partition: 'persist:webviewsession',
+			webviewTag: true
 		},
 		show: false
 	});
@@ -270,27 +271,27 @@ app.on('ready', () => {
 		BadgeSettings.updateBadge(badgeCount, mainWindow);
 	});
 
-	ipcMain.on('toggle-menubar', (_event: Electron.IpcMessageEvent, showMenubar: boolean) => {
+	ipcMain.on('toggle-menubar', (_event: Electron.IpcMainEvent, showMenubar: boolean) => {
 		mainWindow.setAutoHideMenuBar(showMenubar);
 		mainWindow.setMenuBarVisibility(!showMenubar);
 		page.send('toggle-autohide-menubar', showMenubar, true);
 	});
 
-	ipcMain.on('update-badge', (_event: Electron.IpcMessageEvent, messageCount: number) => {
+	ipcMain.on('update-badge', (_event: Electron.IpcMainEvent, messageCount: number) => {
 		badgeCount = messageCount;
 		BadgeSettings.updateBadge(badgeCount, mainWindow);
 		page.send('tray', messageCount);
 	});
 
-	ipcMain.on('update-taskbar-icon', (_event: Electron.IpcMessageEvent, data: any, text: string) => {
+	ipcMain.on('update-taskbar-icon', (_event: Electron.IpcMainEvent, data: any, text: string) => {
 		BadgeSettings.updateTaskbarIcon(data, text, mainWindow);
 	});
 
-	ipcMain.on('forward-message', (_event: Electron.IpcMessageEvent, listener: any, ...params: any[]) => {
+	ipcMain.on('forward-message', (_event: Electron.IpcMainEvent, listener: any, ...params: any[]) => {
 		page.send(listener, ...params);
 	});
 
-	ipcMain.on('update-menu', (_event: Electron.IpcMessageEvent, props: any) => {
+	ipcMain.on('update-menu', (_event: Electron.IpcMainEvent, props: any) => {
 		AppMenu.setMenu(props);
 		const activeTab = props.tabs[props.activeTabIndex];
 		if (activeTab) {
@@ -298,11 +299,11 @@ app.on('ready', () => {
 		}
 	});
 
-	ipcMain.on('toggleAutoLauncher', (_event: Electron.IpcMessageEvent, AutoLaunchValue: boolean) => {
+	ipcMain.on('toggleAutoLauncher', (_event: Electron.IpcMainEvent, AutoLaunchValue: boolean) => {
 		setAutoLaunch(AutoLaunchValue);
 	});
 
-	ipcMain.on('downloadFile', (_event: Electron.IpcMessageEvent, url: string, downloadPath: string) => {
+	ipcMain.on('downloadFile', (_event: Electron.IpcMainEvent, url: string, downloadPath: string) => {
 		page.downloadURL(url);
 		page.session.once('will-download', (_event: Event, item) => {
 			let setFilePath: string;
@@ -312,7 +313,7 @@ app.on('ready', () => {
 					defaultPath: path.join(downloadPath, item.getFilename())
 				};
 
-				setFilePath = dialog.showSaveDialog(mainWindow, showDialogOptions);
+				setFilePath = dialog.showSaveDialogSync(mainWindow, showDialogOptions);
 				if (setFilePath === undefined) {
 					// User hit "cancel"
 					item.cancel();
@@ -374,21 +375,21 @@ app.on('ready', () => {
 		});
 	});
 
-	ipcMain.on('realm-name-changed', (_event: Electron.IpcMessageEvent, serverURL: string, realmName: string) => {
+	ipcMain.on('realm-name-changed', (_event: Electron.IpcMainEvent, serverURL: string, realmName: string) => {
 		page.send('update-realm-name', serverURL, realmName);
 	});
 
-	ipcMain.on('realm-icon-changed', (_event: Electron.IpcMessageEvent, serverURL: string, iconURL: string) => {
+	ipcMain.on('realm-icon-changed', (_event: Electron.IpcMainEvent, serverURL: string, iconURL: string) => {
 		page.send('update-realm-icon', serverURL, iconURL);
 	});
 
 	// Using event.sender.send instead of page.send here to
 	// make sure the value of errorReporting is sent only once on load.
-	ipcMain.on('error-reporting', (event: Electron.IpcMessageEvent) => {
+	ipcMain.on('error-reporting', (event: Electron.IpcMainEvent) => {
 		event.sender.send('error-reporting-val', errorReporting);
 	});
 
-	ipcMain.on('save-last-tab', (_event: Electron.IpcMessageEvent, index: number) => {
+	ipcMain.on('save-last-tab', (_event: Electron.IpcMainEvent, index: number) => {
 		ConfigUtil.setConfigItem('lastActiveTab', index);
 	});
 
@@ -397,19 +398,12 @@ app.on('ready', () => {
 	setInterval(() => {
 		// Set user idle if no activity in 1 second (idleThresholdSeconds)
 		const idleThresholdSeconds = 1; // 1 second
-
-		// TODO: Remove typecast to any when types get added
-		// TODO: use powerMonitor.getSystemIdleState when upgrading electron
-		// powerMonitor.querySystemIdleState is deprecated in current electron
-		// version at the time of writing.
-		const powerMonitor = electron.powerMonitor as any;
-		powerMonitor.querySystemIdleState(idleThresholdSeconds, (idleState: string) => {
-			if (idleState === 'active') {
-				page.send('set-active');
-			} else {
-				page.send('set-idle');
-			}
-		});
+		const idleState = electron.powerMonitor.getSystemIdleState(idleThresholdSeconds);
+		if (idleState === 'active') {
+			page.send('set-active');
+		} else {
+			page.send('set-idle');
+		}
 	}, idleCheckInterval);
 });
 

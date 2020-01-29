@@ -74,12 +74,11 @@ class AddCertificate extends BaseComponent {
 			properties: ['openFile'],
 			filters: [{ name: 'crt, pem', extensions: ['crt', 'pem'] }]
 		};
-		dialog.showOpenDialog(showDialogOptions, selectedFile => {
-			if (selectedFile) {
-				this._certFile = selectedFile[0] || '';
-				this.validateAndAdd();
-			}
-		});
+		const selectedFile = dialog.showOpenDialogSync(showDialogOptions);
+		if (selectedFile) {
+			this._certFile = selectedFile[0] || '';
+			this.validateAndAdd();
+		}
 	}
 
 	initListeners(): void {

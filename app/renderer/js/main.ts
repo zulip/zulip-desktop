@@ -280,16 +280,15 @@ class ServerManagerView {
 			if (preAddedDomains.length > 0) {
 				// user already has servers added
 				// ask them before reloading the app
-				dialog.showMessageBox({
+				const response = dialog.showMessageBoxSync({
 					type: 'question',
 					buttons: ['Yes', 'Later'],
 					defaultId: 0,
 					message: 'New server' + (domainsAdded.length > 1 ? 's' : '') + ' added. Reload app now?'
-				}, response => {
-					if (response === 0) {
-						ipcRenderer.send('reload-full-app');
-					}
 				});
+				if (response === 0) {
+					ipcRenderer.send('reload-full-app');
+				}
 			} else {
 				ipcRenderer.send('reload-full-app');
 			}
@@ -336,6 +335,15 @@ class ServerManagerView {
 			}
 			// Remove focus from the settings icon at sidebar bottom
 			this.$settingsButton.classList.remove('active');
+
+			// This is required to attach webview to DOM so that
+			// dom-ready event is emitted before any setting method is called.
+			this.initSetting({
+				name: 'Settings',
+				materialIcon: 'settings',
+				url: `file://${rendererDirectory}/preference.html`
+			});
+			this.tabs[this.functionalTabs['Settings']].webview.load();
 		} else if (this.presetOrgs.length === 0) {
 			// not attempting to add organisations in the background
 			this.openSettings('AddServer');
@@ -381,6 +389,49 @@ class ServerManagerView {
 			})
 		}));
 		this.loading[server.url] = true;
+	}
+
+	initSetting(tabProps: FunctionalTabProps): void {
+		this.functionalTabs[tabProps.name] = this.tabs.length;
+
+		const tabIndex = this.getTabIndex();
+		this.tabs.push(new FunctionalTab({
+			role: 'function',
+			materialIcon: tabProps.materialIcon,
+			name: tabProps.name,
+			$root: this.$tabsContainer,
+			index: this.functionalTabs[tabProps.name],
+			tabIndex,
+			onClick: this.activateTab.bind(this, this.functionalTabs[tabProps.name]),
+			onDestroy: this.destroyTab.bind(this, tabProps.name, this.functionalTabs[tabProps.name]),
+			webview: new WebView({
+				$root: this.$webviewsContainer,
+				index: this.functionalTabs[tabProps.name],
+				tabIndex,
+				url: tabProps.url,
+				role: 'function',
+				name: tabProps.name,
+				isActive: () => {
+					return this.functionalTabs[tabProps.name] === this.activeTabIndex;
+				},
+				switchLoading: (loading: AnyObject, url: string) => {
+					if (!loading && this.loading[url]) {
+						this.loading[url] = false;
+					} else if (loading && !this.loading[url]) {
+						this.loading[url] = true;
+					}
+					this.showLoading(this.loading[this.tabs[this.activeTabIndex].webview.props.url]);
+				},
+				onNetworkError: (index: number) => this.openNetworkTroubleshooting(index),
+				onTitleChange: this.updateBadge.bind(this),
+				nodeIntegration: true,
+				preload: false
+			})
+		}));
+
+		// To show loading indicator the first time a functional tab is opened, indicator is
+		// closed when the functional tab DOM is ready, handled in webview.js
+		this.$webviewsContainer.classList.remove('loaded');
 	}
 
 	initActions(): void {
@@ -509,48 +560,7 @@ class ServerManagerView {
 			return;
 		}
 
-		this.functionalTabs[tabProps.name] = this.tabs.length;
-
-		const tabIndex = this.getTabIndex();
-
-		this.tabs.push(new FunctionalTab({
-			role: 'function',
-			materialIcon: tabProps.materialIcon,
-			name: tabProps.name,
-			$root: this.$tabsContainer,
-			index: this.functionalTabs[tabProps.name],
-			tabIndex,
-			onClick: this.activateTab.bind(this, this.functionalTabs[tabProps.name]),
-			onDestroy: this.destroyTab.bind(this, tabProps.name, this.functionalTabs[tabProps.name]),
-			webview: new WebView({
-				$root: this.$webviewsContainer,
-				index: this.functionalTabs[tabProps.name],
-				tabIndex,
-				url: tabProps.url,
-				role: 'function',
-				name: tabProps.name,
-				isActive: () => {
-					return this.functionalTabs[tabProps.name] === this.activeTabIndex;
-				},
-				switchLoading: (loading: AnyObject, url: string) => {
-					if (!loading && this.loading[url]) {
-						this.loading[url] = false;
-					} else if (loading && !this.loading[url]) {
-						this.loading[url] = true;
-					}
-					this.showLoading(this.loading[this.tabs[this.activeTabIndex].webview.props.url]);
-				},
-				onNetworkError: (index: number) => this.openNetworkTroubleshooting(index),
-				onTitleChange: this.updateBadge.bind(this),
-				nodeIntegration: true,
-				preload: false
-			})
-		}));
-
-		// To show loading indicator the first time a functional tab is opened, indicator is
-		// closed when the functional tab DOM is ready, handled in webview.js
-		this.$webviewsContainer.classList.remove('loaded');
-
+		this.initSetting(tabProps);
 		this.activateTab(this.functionalTabs[tabProps.name]);
 	}
 
@@ -747,21 +757,20 @@ class ServerManagerView {
 				{
 					label: 'Disconnect organization',
 					click: () => {
-						dialog.showMessageBox({
+						const response = dialog.showMessageBoxSync({
 							type: 'warning',
 							buttons: ['YES', 'NO'],
 							defaultId: 0,
 							message: 'Are you sure you want to disconnect this organization?'
-						}, response => {
-							if (response === 0) {
-								if (DomainUtil.removeDomain(index)) {
-									ipcRenderer.send('reload-full-app');
-								} else {
-									const { title, content } = Messages.orgRemovalError(DomainUtil.getDomain(index).url);
-									dialog.showErrorBox(title, content);
-								}
-							}
 						});
+						if (response === 0) {
+							if (DomainUtil.removeDomain(index)) {
+								ipcRenderer.send('reload-full-app');
+							} else {
+								const { title, content } = Messages.orgRemovalError(DomainUtil.getDomain(index).url);
+								dialog.showErrorBox(title, content);
+							}
+						}
 					}
 				},
 				{
