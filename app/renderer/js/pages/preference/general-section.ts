@@ -383,37 +383,35 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	clearAppDataDialog(): void {
+	async clearAppDataDialog(): Promise<void> {
 		const clearAppDataMessage = 'By clicking proceed you will be removing all added accounts and preferences from Zulip. When the application restarts, it will be as if you are starting Zulip for the first time.';
 		const getAppPath = path.join(app.getPath('appData'), app.getName());
 
-		dialog.showMessageBox({
+		const { response } = await dialog.showMessageBox({
 			type: 'warning',
 			buttons: ['YES', 'NO'],
 			defaultId: 0,
 			message: 'Are you sure',
 			detail: clearAppDataMessage
-		}, response => {
-			if (response === 0) {
-				fs.remove(getAppPath);
-				setTimeout(() => ipcRenderer.send('forward-message', 'hard-reload'), 1000);
-			}
 		});
+		if (response === 0) {
+			fs.remove(getAppPath);
+			setTimeout(() => ipcRenderer.send('forward-message', 'hard-reload'), 1000);
+		}
 	}
 
-	customCssDialog(): void {
+	async customCssDialog(): Promise<void> {
 		const showDialogOptions: OpenDialogOptions = {
 			title: 'Select file',
 			properties: ['openFile'],
 			filters: [{ name: 'CSS file', extensions: ['css'] }]
 		};
 
-		dialog.showOpenDialog(showDialogOptions, selectedFile => {
-			if (selectedFile) {
-				ConfigUtil.setConfigItem('customCSS', selectedFile[0]);
-				ipcRenderer.send('forward-message', 'hard-reload');
-			}
-		});
+		const { filePaths, canceled } = await dialog.showOpenDialog(showDialogOptions);
+		if (!canceled) {
+			ConfigUtil.setConfigItem('customCSS', filePaths[0]);
+			ipcRenderer.send('forward-message', 'hard-reload');
+		}
 	}
 
 	updateResetDataOption(): void {
@@ -457,20 +455,20 @@ class GeneralSection extends BaseSection {
 		});
 	}
 
-	downloadFolderDialog(): void {
+	async downloadFolderDialog(): Promise<void> {
 		const showDialogOptions: OpenDialogOptions = {
 			title: 'Select Download Location',
 			properties: ['openDirectory']
 		};
 
-		dialog.showOpenDialog(showDialogOptions, selectedFolder => {
-			if (selectedFolder) {
-				ConfigUtil.setConfigItem('downloadsPath', selectedFolder[0]);
-				const downloadFolderPath: HTMLElement = document.querySelector('.download-folder-path');
-				downloadFolderPath.innerText = selectedFolder[0];
-			}
-		});
+		const { filePaths: selectedFolder } = await dialog.showOpenDialog(showDialogOptions);
+		if (selectedFolder) {
+			ConfigUtil.setConfigItem('downloadsPath', selectedFolder[0]);
+			const downloadFolderPath: HTMLElement = document.querySelector('.download-folder-path');
+			downloadFolderPath.innerText = selectedFolder[0];
+		}
 	}
+
 	downloadFolder(): void {
 		const downloadFolder = document.querySelector('#download-folder .download-folder-button');
 		downloadFolder.addEventListener('click', () => {

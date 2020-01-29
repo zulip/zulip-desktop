@@ -283,16 +283,15 @@ class ServerManagerView {
 			if (preAddedDomains.length > 0) {
 				// user already has servers added
 				// ask them before reloading the app
-				dialog.showMessageBox({
+				const { response } = await dialog.showMessageBox({
 					type: 'question',
 					buttons: ['Yes', 'Later'],
 					defaultId: 0,
 					message: 'New server' + (domainsAdded.length > 1 ? 's' : '') + ' added. Reload app now?'
-				}, response => {
-					if (response === 0) {
-						ipcRenderer.send('reload-full-app');
-					}
 				});
+				if (response === 0) {
+					ipcRenderer.send('reload-full-app');
+				}
 			} else {
 				ipcRenderer.send('reload-full-app');
 			}
@@ -749,22 +748,21 @@ class ServerManagerView {
 			const template = [
 				{
 					label: 'Disconnect organization',
-					click: () => {
-						dialog.showMessageBox({
+					click: async () => {
+						const { response } = await dialog.showMessageBox({
 							type: 'warning',
 							buttons: ['YES', 'NO'],
 							defaultId: 0,
 							message: 'Are you sure you want to disconnect this organization?'
-						}, response => {
-							if (response === 0) {
-								if (DomainUtil.removeDomain(index)) {
-									ipcRenderer.send('reload-full-app');
-								} else {
-									const { title, content } = Messages.orgRemovalError(DomainUtil.getDomain(index).url);
-									dialog.showErrorBox(title, content);
-								}
-							}
 						});
+						if (response === 0) {
+							if (DomainUtil.removeDomain(index)) {
+								ipcRenderer.send('reload-full-app');
+							} else {
+								const { title, content } = Messages.orgRemovalError(DomainUtil.getDomain(index).url);
+								dialog.showErrorBox(title, content);
+							}
+						}
 					}
 				},
 				{

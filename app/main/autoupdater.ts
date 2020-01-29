@@ -62,20 +62,19 @@ export function appUpdater(updateFromMenu = false): void {
 		}
 	});
 
-	autoUpdater.on('error', error => {
+	autoUpdater.on('error', async error => {
 		if (updateFromMenu) {
 			const messageText = (updateAvailable) ? ('Unable to download the updates') : ('Unable to check for updates');
-			dialog.showMessageBox({
+			const { response } = await dialog.showMessageBox({
 				type: 'error',
 				buttons: ['Manual Download', 'Cancel'],
 				message: messageText,
 				detail: (error).toString() + `\n\nThe latest version of Zulip Desktop is available at -\nhttps://zulipchat.com/apps/.\n
-Current Version: ${app.getVersion()}`
-			}, response => {
-				if (response === 0) {
-					shell.openExternal('https://zulipchat.com/apps/');
-				}
+				Current Version: ${app.getVersion()}`
 			});
+			if (response === 0) {
+				shell.openExternal('https://zulipchat.com/apps/');
+			}
 			// Remove all autoUpdator listeners so that next time autoUpdator is manually called these
 			// listeners don't trigger multiple times.
 			autoUpdater.removeAllListeners();
@@ -83,23 +82,22 @@ Current Version: ${app.getVersion()}`
 	});
 
 	// Ask the user if update is available
-	autoUpdater.on('update-downloaded', event => {
+	autoUpdater.on('update-downloaded', async event => {
 		// Ask user to update the app
-		dialog.showMessageBox({
+		const { response } = await dialog.showMessageBox({
 			type: 'question',
 			buttons: ['Install and Relaunch', 'Install Later'],
 			defaultId: 0,
 			message: `A new update ${event.version} has been downloaded`,
 			detail: 'It will be installed the next time you restart the application'
-		}, response => {
-			if (response === 0) {
-				setTimeout(() => {
-					autoUpdater.quitAndInstall();
-					// force app to quit. This is just a workaround, ideally autoUpdater.quitAndInstall() should relaunch the app.
-					app.quit();
-				}, 1000);
-			}
 		});
+		if (response === 0) {
+			setTimeout(() => {
+				autoUpdater.quitAndInstall();
+				// force app to quit. This is just a workaround, ideally autoUpdater.quitAndInstall() should relaunch the app.
+				app.quit();
+			}, 1000);
+		}
 	});
 	// Init for updates
 	autoUpdater.checkForUpdates();

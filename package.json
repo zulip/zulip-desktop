@@ -161,8 +161,8 @@
     "assert": "1.4.1",
     "cp-file": "5.0.0",
     "devtron": "1.4.0",
-    "electron": "3.1.10",
-    "electron-builder": "20.43.0",
+    "electron": "^6.1.9",
+    "electron-builder": "^22.3.2",
     "electron-connect": "0.6.2",
     "electron-debug": "1.4.0",
     "electron-notarize": "0.2.0",
@@ -175,7 +175,7 @@
     "is-ci": "1.0.10",
     "nodemon": "1.14.11",
     "pre-commit": "1.2.2",
-    "spectron": "5.0.0",
+    "spectron": "^8.0.0",
     "stylelint": "9.10.1",
     "tap-colorize": "1.2.0",
     "tape": "4.8.0",
@@ -203,11 +203,12 @@
           "max-lines": [
             "warn",
             {
-              "max": 800,
+              "max": 900,
               "skipBlankLines": true,
               "skipComments": true
             }
           ],
+          "dot-notation": 0,
           "no-warning-comments": 0,
           "object-curly-spacing": 0,
           "capitalized-comments": 0,

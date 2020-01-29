@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
 
-import events = require('events');
+import { EventEmitter } from 'events';
 
 type ListenerType = ((...args: any[]) => void);
 
@@ -8,7 +8,7 @@ type ListenerType = ((...args: any[]) => void);
 // while working with zulip so just turning the rule off
 // for the whole file.
 /* eslint-disable @typescript-eslint/camelcase */
-class ElectronBridge extends events {
+class ElectronBridge extends EventEmitter {
 	send_notification_reply_message_supported: boolean;
 	idle_on_system: boolean;
 	last_active_on_system: number;
