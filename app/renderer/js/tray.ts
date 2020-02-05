@@ -3,9 +3,17 @@ import { ipcRenderer, remote, WebviewTag, NativeImage } from 'electron';
 
 import path = require('path');
 import ConfigUtil = require('./utils/config-util.js');
-const { Tray, Menu, nativeImage, BrowserWindow } = remote;
 
-const APP_ICON = path.join(__dirname, '../../resources/tray', 'tray');
+const { Tray, Menu, nativeImage, BrowserWindow, systemPreferences } = remote;
+
+// get the theme on macOS
+const theme = systemPreferences.isDarkMode() ? 'dark' : 'light';
+
+const ICON_DIR = process.platform === 'darwin' ? `../../resources/tray/${theme}` : '../../resources/tray';
+
+const TRAY_SUFFIX = 'tray';
+
+const APP_ICON = path.join(__dirname, ICON_DIR, TRAY_SUFFIX);
 
 declare let window: ZulipWebWindow;
 
