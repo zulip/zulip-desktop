@@ -5,6 +5,10 @@ import { ipcRenderer } from 'electron';
 import Tab = require('./tab');
 import SystemUtil = require('../utils/system-util');
 
+interface TabProps {
+	[key: string]: any;
+}
+
 class ServerTab extends Tab {
 	$badge: Element;
 
@@ -19,8 +23,7 @@ class ServerTab extends Tab {
 				</div>`;
 	}
 
-	// TODO: Typescript - This type for props should be TabProps
-	constructor(props: any) {
+	constructor(props: TabProps) {
 		super(props);
 		this.init();
 	}
