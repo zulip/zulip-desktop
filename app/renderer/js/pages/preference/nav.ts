@@ -3,9 +3,12 @@
 import BaseComponent = require('../../components/base');
 import t = require('../../utils/translation-util');
 
+interface NavProps {
+	[key: string]: any;
+}
+
 class PreferenceNav extends BaseComponent {
-	// TODO: TypeScript - Here props should be object type
-	props: any;
+	props: NavProps;
 	navItems: string[];
 	$el: Element;
 	constructor(props: any) {
