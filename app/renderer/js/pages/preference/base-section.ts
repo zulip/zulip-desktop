@@ -4,9 +4,12 @@ import { ipcRenderer } from 'electron';
 
 import BaseComponent = require('../../components/base');
 
+interface BaseProps {
+	[key: string]: any;
+}
+
 class BaseSection extends BaseComponent {
-	// TODO: TypeScript - Here props should be object type
-	generateSettingOption(props: any): void {
+	generateSettingOption(props: BaseProps): void {
 		const {$element, disabled, value, clickHandler} = props;
 
 		$element.innerHTML = '';

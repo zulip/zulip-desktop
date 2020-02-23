@@ -4,9 +4,12 @@ import BaseSection = require('./base-section');
 import NewServerForm = require('./new-server-form');
 import t = require('../../utils/translation-util');
 
+interface ServerProps {
+	[key: string]: any;
+}
+
 class ServersSection extends BaseSection {
-	// TODO: TypeScript - Here props should be object type
-	props: any;
+	props: ServerProps;
 	$newServerContainer: Element;
 	constructor(props: any) {
 		super();
