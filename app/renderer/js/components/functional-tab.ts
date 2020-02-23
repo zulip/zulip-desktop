@@ -2,6 +2,10 @@
 
 import Tab = require('./tab');
 
+interface TabProps {
+	[key: string]: any;
+}
+
 class FunctionalTab extends Tab {
 	$closeButton: Element;
 	template(): string {
@@ -15,8 +19,7 @@ class FunctionalTab extends Tab {
 				</div>`;
 	}
 
-	// TODO: Typescript - This type for props should be TabProps
-	constructor(props: any) {
+	constructor(props: TabProps) {
 		super(props);
 		this.init();
 	}
