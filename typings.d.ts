@@ -13,10 +13,12 @@ declare module 'fs-extra';
 declare module 'wurl';
 declare module 'i18n';
 declare module 'backoff';
+declare module 'crypto-random-string';
 
 interface PageParamsObject {
-    realm_uri: string;
-    default_language: string;
+  realm_uri: string;
+  default_language: string;
+  external_authentication_methods: any;
 }
 declare var page_params: PageParamsObject;
 

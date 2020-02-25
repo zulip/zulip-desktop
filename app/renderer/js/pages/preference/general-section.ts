@@ -93,29 +93,33 @@ class GeneralSection extends BaseSection {
 				</div>
 				<div class="title">${t.__('Advanced')}</div>
 				<div class="settings-card">
-				<div class="setting-row" id="enable-error-reporting">
-					<div class="setting-description">${t.__('Enable error reporting (requires restart)')}</div>
-					<div class="setting-control"></div>
-				</div>
-				<div class="setting-row" id="show-download-folder">
-					<div class="setting-description">${t.__('Show downloaded files in file manager')}</div>
-					<div class="setting-control"></div>
-				</div>
-				<div class="setting-row" id="add-custom-css">
-				<div class="setting-description">
-					${t.__('Add custom CSS')}
-				</div>
-				<button class="custom-css-button green">${t.__('Upload')}</button>
-			</div>
-			<div class="setting-row" id="remove-custom-css">
-				<div class="setting-description">
-					<div class="selected-css-path" id="custom-css-path">${ConfigUtil.getConfigItem('customCSS')}</div>
-				</div>
-				<div class="action red" id="css-delete-action">
-					<i class="material-icons">indeterminate_check_box</i>
-					<span>${t.__('Delete')}</span>
-				</div>
-			</div>
+					<div class="setting-row" id="enable-error-reporting">
+						<div class="setting-description">${t.__('Enable error reporting (requires restart)')}</div>
+						<div class="setting-control"></div>
+					</div>
+					<div class="setting-row" id="force-login-app">
+						<div class="setting-description">${t.__('Force social login in app instead of browser')}</div>
+						<div class="setting-control"></div>
+					</div>
+					<div class="setting-row" id="show-download-folder">
+						<div class="setting-description">${t.__('Show downloaded files in file manager')}</div>
+						<div class="setting-control"></div>
+					</div>
+					<div class="setting-row" id="add-custom-css">
+						<div class="setting-description">
+							${t.__('Add custom CSS')}
+						</div>
+						<button class="custom-css-button green">${t.__('Upload')}</button>
+					</div>
+					<div class="setting-row" id="remove-custom-css">
+						<div class="setting-description">
+							<div class="selected-css-path" id="custom-css-path">${ConfigUtil.getConfigItem('customCSS')}</div>
+						</div>
+						<div class="action red" id="css-delete-action">
+							<i class="material-icons">indeterminate_check_box</i>
+							<span>${t.__('Delete')}</span>
+						</div>
+					</div>
 					<div class="setting-row" id="download-folder">
 						<div class="setting-description">
 							${t.__('Default download location')}
@@ -131,7 +135,6 @@ class GeneralSection extends BaseSection {
 						<div class="setting-description">${t.__('Ask where to save files before downloading')}</div>
 						<div class="setting-control"></div>
 					</div>
-
 				</div>
 				<div class="title">${t.__('Reset Application Data')}</div>
                 <div class="settings-card">
@@ -166,6 +169,7 @@ class GeneralSection extends BaseSection {
 		this.updateQuitOnCloseOption();
 		this.updatePromptDownloadOption();
 		this.enableErrorReporting();
+		this.enableLoginInApp();
 
 		// Platform specific settings
 
@@ -363,6 +367,18 @@ class GeneralSection extends BaseSection {
 				const newValue = !ConfigUtil.getConfigItem('errorReporting');
 				ConfigUtil.setConfigItem('errorReporting', newValue);
 				this.enableErrorReporting();
+			}
+		});
+	}
+
+	enableLoginInApp(): void {
+		this.generateSettingOption({
+			$element: document.querySelector('#force-login-app .setting-control'),
+			value: ConfigUtil.getConfigItem('loginInApp', true),
+			clickHandler: () => {
+				const newValue = !ConfigUtil.getConfigItem('loginInApp');
+				ConfigUtil.setConfigItem('loginInApp', newValue);
+				this.enableLoginInApp();
 			}
 		});
 	}

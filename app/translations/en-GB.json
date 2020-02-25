@@ -115,5 +115,9 @@
 	"View Shortcuts": "View Shortcuts",
 	"Enter Full Screen": "Enter Full Screen",
 	"History Shortcuts": "History Shortcuts",
-	"Quit when the window is closed": "Quit when the window is closed"
+	"Quit when the window is closed": "Quit when the window is closed",
+	"File": "File",
+	"Network and Proxy Settings": "Network and Proxy Settings",
+	"Ask where to save files before downloading": "Ask where to save files before downloading",
+	"Force social login in app instead of browser (not recommended)": "Force social login in app instead of browser (not recommended)"
 }

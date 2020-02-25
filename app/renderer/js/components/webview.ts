@@ -254,6 +254,10 @@ class WebView extends BaseComponent {
 		this.$el.openDevTools();
 	}
 
+	loadURL(url: string): void {
+		this.$el.loadURL(url);
+	}
+
 	back(): void {
 		if (this.$el.canGoBack()) {
 			this.$el.goBack();

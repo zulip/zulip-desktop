@@ -64,6 +64,15 @@
       "entitlementsInherit": "build/entitlements.mac.plist",
       "gatekeeperAssess": false
     },
+    "protocols": [
+      {
+        "name": "zulip",
+        "role": "Viewer",
+        "schemes": [
+          "zulip"
+        ]
+      }
+    ],
     "linux": {
       "category": "Chat;GNOME;GTK;Network;InstantMessaging",
       "icon": "build/icon.icns",
