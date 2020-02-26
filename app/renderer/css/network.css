@@ -8,13 +8,12 @@ body {
     font-size: 14px;
     user-select: none;
     position: relative;
-    background: #D4DFE6;
+    background: rgb(212, 223, 230);
     min-height: 100%;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #274c5e;
 }
 
 #content {
@@ -96,9 +95,9 @@ body {
 
 @keyframes coganimation {
     0% {
-     transform: rotate(0deg);
+        transform: rotate(0deg);
     }
     100% {
-     transform: rotate(360deg);
+        transform: rotate(360deg);
     }
 }
