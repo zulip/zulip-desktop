@@ -1,6 +1,7 @@
 body {
     overflow: hidden;
 }
+
 html,
 body {
     margin: 0;
@@ -8,12 +9,41 @@ body {
     font-size: 14px;
     user-select: none;
     position: relative;
-    background: rgb(212, 223, 230);
     min-height: 100%;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+ul {
+    text-align: center;
+    list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+li {
+    list-style-type: none;
+    text-align: center;
+    background: #fff;
+	height: 40px;
+	line-height: 40px;
+	color: #666;
+}
+
+li:nth-child(2n){
+	background: #f7f7f7;
+}
+
+li:hover span {
+	width: 40px;
+	opacity: 1.0;
+}
+
+#buttons {
+    margin: auto;
+    margin-top: 20px;;
 }
 
 #content {
@@ -25,7 +55,7 @@ body {
 }
 
 #title {
-    text-align: left;
+    text-align: center;
     font-size: 24px;
     font-weight: bold;
     margin: 20px 0;
@@ -33,14 +63,17 @@ body {
 
 #subtitle {
     font-size: 20px;
-    text-align: left;
+    text-align: center;
     margin: 12px 0;
+    font-weight: bold;
+    color: #666;
 }
 
 #description {
     text-align: left;
     font-size: 16px;
     list-style-position: inside;
+    /* text-align: justify; */
 }
 
 #reconnect {
@@ -58,8 +91,8 @@ body {
     color: rgba(255, 255, 255, 1.000);
     width: 96px;
     height: 32px;
-    border-radius: 5px;
-    line-height: 32px;
+    border-radius: 7px;
+    line-height: 35px;
     cursor: pointer;
 }
 
@@ -79,14 +112,16 @@ body {
 .cog {
     width: 10rem;
     height: 10rem;
-    animation: coganimation 5s infinite;
+    animation: coganimation 10s infinite;
     fill: rgba(0, 150, 136, 1.000);
+    margin-left: 60px;;
 }
 
 .spanner {
     position: absolute;
     transform: rotate(20deg);
     top: 10%;
+    margin-left: 30px;;
     left: 25%;
     width: 10rem;
     height: 10rem;
@@ -101,3 +136,4 @@ body {
         transform: rotate(360deg);
     }
 }
+
