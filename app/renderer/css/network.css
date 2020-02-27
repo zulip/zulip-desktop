@@ -58,7 +58,6 @@ li:hover span {
     text-align: center;
     font-size: 24px;
     font-weight: bold;
-    margin: 20px 0;
 }
 
 #subtitle {
@@ -110,6 +109,7 @@ li:hover span {
 }
 
 .cog {
+    margin-top: 50px;
     width: 10rem;
     height: 10rem;
     animation: coganimation 10s infinite;
@@ -118,6 +118,7 @@ li:hover span {
 }
 
 .spanner {
+    margin-top: 60px;
     position: absolute;
     transform: rotate(20deg);
     top: 10%;
