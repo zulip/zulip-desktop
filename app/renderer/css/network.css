@@ -19,31 +19,31 @@ body {
 ul {
     text-align: center;
     list-style: none;
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 li {
     list-style-type: none;
     text-align: center;
-    background: #fff;
-	height: 40px;
-	line-height: 40px;
-	color: #666;
+    background: rgb(255, 255, 255);
+    height: 40px;
+    line-height: 40px;
+    color: rgb(102, 102, 102);
 }
 
-li:nth-child(2n){
-	background: #f7f7f7;
+li:nth-child(2n) {
+    background: rgb(247, 247, 247);
 }
 
 li:hover span {
-	width: 40px;
-	opacity: 1.0;
+    width: 40px;
+    opacity: 1.0;
 }
 
 #buttons {
     margin: auto;
-    margin-top: 20px;;
+    margin-top: 20px;
 }
 
 #content {
@@ -66,7 +66,7 @@ li:hover span {
     text-align: center;
     margin: 12px 0;
     font-weight: bold;
-    color: #666;
+    color: rgb(102, 102, 102);
 }
 
 #description {
@@ -121,7 +121,7 @@ li:hover span {
     position: absolute;
     transform: rotate(20deg);
     top: 10%;
-    margin-left: 30px;;
+    margin-left: 30px;
     left: 25%;
     width: 10rem;
     height: 10rem;
