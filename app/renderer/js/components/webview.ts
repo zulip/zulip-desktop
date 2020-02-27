@@ -47,7 +47,6 @@ class WebView extends BaseComponent {
 					data-tab-id="${this.props.tabIndex}"
 					src="${this.props.url}"
 					${this.props.nodeIntegration ? 'nodeIntegration' : ''}
-					disablewebsecurity
 					${this.props.preload ? 'preload="js/preload.js"' : ''}
 					partition="persist:webviewsession"
 					name="${this.props.name}"
