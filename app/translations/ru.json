@@ -113,5 +113,6 @@
 	"Zoom Out": "Уменьшить",
 	"Zulip Help": "Zulip Помощь",
 	"keyboard shortcuts": "горячие клавиши",
-	"script": "скрипт"
+	"script": "скрипт",
+	"Quit when the window is closed": "Выйти, когда окно будет закрыто"
 }
