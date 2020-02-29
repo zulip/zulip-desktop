@@ -4,7 +4,7 @@ import url = require('url');
 
 import ConfigUtil = require('./config-util');
 
-interface ProxyRule {
+export interface ProxyRule {
 	hostname?: string;
 	port?: number;
 }

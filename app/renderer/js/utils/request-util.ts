@@ -15,11 +15,9 @@ const logger = new Logger({
 	timestamp: true
 });
 
-// TODO: TypeScript - Use ProxyRule for the proxy property
-// we can do this now since we use export = ProxyUtil syntax
 interface RequestUtilResponse {
 	ca: string;
-	proxy: string | void | object;
+	proxy: string | void | ProxyUtil.ProxyRule;
 	ecdhCurve: 'auto';
 	headers: { 'User-Agent': string };
 	rejectUnauthorized: boolean;

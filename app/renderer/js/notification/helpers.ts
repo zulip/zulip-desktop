@@ -80,9 +80,7 @@ const webContentsId = webContents.id;
 // this function will focus the server that sent
 // the notification. Main function implemented in main.js
 export function focusCurrentServer(): void {
-	// TODO: TypeScript: currentWindow of type BrowserWindow doesn't
-	// have a .send() property per typescript.
-	(currentWindow as any).send('focus-webview-with-id', webContentsId);
+	currentWindow.webContents.send('focus-webview-with-id', webContentsId);
 }
 // this function parses the reply from to notification
 // making it easier to reply from notification eg

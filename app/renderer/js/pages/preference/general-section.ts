@@ -290,9 +290,7 @@ class GeneralSection extends BaseSection {
 				const newValue = !ConfigUtil.getConfigItem('silent', true);
 				ConfigUtil.setConfigItem('silent', newValue);
 				this.updateSilentOption();
-				// TODO: TypeScript: currentWindow of type BrowserWindow doesn't
-				// have a .send() property per typescript.
-				(currentBrowserWindow as any).send('toggle-silent', newValue);
+				currentBrowserWindow.webContents.send('toggle-silent', newValue);
 			}
 		});
 	}
