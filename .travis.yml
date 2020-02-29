@@ -20,7 +20,8 @@ node_js:
 before_install:
   - ./scripts/travis-xvfb.sh
   - npm install -g gulp
-  - npm install
+  - npm ci
+  - (cd app && npm ci)
 
 cache:
   directories:
