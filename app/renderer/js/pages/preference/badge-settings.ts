@@ -21,17 +21,15 @@ class BadgeSettings {
 		if (process.platform === 'win32') {
 			this.updateOverlayIcon(messageCount, mainWindow);
 		} else {
-			// This should work on both macOS and Linux
 			app.badgeCount = messageCount;
 		}
 	}
 
 	hideBadgeCount(mainWindow: electron.BrowserWindow): void {
-		if (process.platform === 'darwin') {
-			app.badgeCount = 0;
-		}
 		if (process.platform === 'win32') {
 			mainWindow.setOverlayIcon(null, '');
+		} else {
+			app.badgeCount = 0;
 		}
 	}
 
