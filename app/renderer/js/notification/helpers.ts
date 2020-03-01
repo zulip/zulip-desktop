@@ -129,7 +129,7 @@ export function parseReply(reply: string): string {
 	});
 
 	// If botsList isn't completely loaded yet, make a synchronous getJSON request for list
-	if (botsListLoaded === false) {
+	if (!botsListLoaded) {
 		loadBots(true);
 	}
 

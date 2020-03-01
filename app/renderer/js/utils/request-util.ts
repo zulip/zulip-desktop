@@ -11,7 +11,7 @@ import SystemUtil = require('./system-util');
 const { app } = remote;
 
 const logger = new Logger({
-	file: `request-util.log`,
+	file: 'request-util.log',
 	timestamp: true
 });
 
@@ -45,7 +45,7 @@ class RequestUtil {
 		);
 
 		let certificateFile = null;
-		if (certificate && certificate.includes('/')) {
+		if (certificate?.includes('/')) {
 			// certificate saved using old app version
 			certificateFile = certificate;
 		} else if (certificate) {

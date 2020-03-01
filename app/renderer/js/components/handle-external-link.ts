@@ -68,7 +68,7 @@ function handleExternalLink(this: any, event: any): void {
 				// through webview
 				// Only do this if it is the automatic download, otherwise show an error (so we aren't showing two save
 				// prompts right after each other)
-				if (ConfigUtil.getConfigItem("promptDownload", false)) {
+				if (ConfigUtil.getConfigItem('promptDownload', false)) {
 					// We need to create a "new Notification" to display it, but just `Notification(...)` on its own
 					// doesn't work
 					new Notification('Download Complete', { // eslint-disable-line no-new

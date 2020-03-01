@@ -92,7 +92,7 @@ class Logger {
 			case typeof timestamp === 'function':
 				args.unshift(timestamp() + ' |\t');
 
-			case (level !== false):
+			case (level):
 				args.unshift(type.toUpperCase() + ' |');
 
 			case isDev || logInDevMode:

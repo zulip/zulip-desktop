@@ -19,8 +19,8 @@ class BaseNotification extends NativeNotification {
 		});
 	}
 
-	static requestPermission(): void {
-		return; // eslint-disable-line no-useless-return
+	static async requestPermission(): Promise<NotificationPermission> {
+		return this.permission;
 	}
 
 	// Override default Notification permission

@@ -922,7 +922,7 @@ class ServerManagerView {
 			// TODO: TypeScript - Type annotate getDomains() or this domain paramter.
 			DomainUtil.getDomains().forEach((domain: any, index: number) => {
 				if (domain.url.includes(serverURL)) {
-					const serverTooltipSelector = `.tab .server-tooltip`;
+					const serverTooltipSelector = '.tab .server-tooltip';
 					const serverTooltips = document.querySelectorAll(serverTooltipSelector);
 					serverTooltips[index].innerHTML = escape(realmName);
 					this.tabs[index].props.name = escape(realmName);
@@ -945,7 +945,7 @@ class ServerManagerView {
 			DomainUtil.getDomains().forEach((domain: any, index: number) => {
 				if (domain.url.includes(serverURL)) {
 					DomainUtil.saveServerIcon(iconURL).then((localIconUrl: string) => {
-						const serverImgsSelector = `.tab .server-icons`;
+						const serverImgsSelector = '.tab .server-icons';
 						const serverImgs: NodeListOf<HTMLImageElement> = document.querySelectorAll(serverImgsSelector);
 						serverImgs[index].src = localIconUrl;
 

@@ -42,13 +42,13 @@ class AppMenu {
 
 	getToolsSubmenu(): Electron.MenuItemConstructorOptions[] {
 		return [{
-			label: t.__(`Check for Updates`),
+			label: t.__('Check for Updates'),
 			click() {
 				AppMenu.checkForUpdate();
 			}
 		},
 		{
-			label: t.__(`Release Notes`),
+			label: t.__('Release Notes'),
 			click() {
 				shell.openExternal(`https://github.com/zulip/zulip-desktop/releases/tag/v${app.getVersion()}`);
 			}
@@ -204,7 +204,7 @@ class AppMenu {
 				}
 			},
 			{
-				label: t.__(`Help Center`),
+				label: t.__('Help Center'),
 				click(focusedWindow) {
 					if (focusedWindow) {
 						AppMenu.sendAction('open-help');
@@ -261,7 +261,7 @@ class AppMenu {
 			});
 			initialSubmenu.push({
 				label: t.__('Switch to Next Organization'),
-				accelerator: `Ctrl+Tab`,
+				accelerator: 'Ctrl+Tab',
 				enabled: tabs.length > 1,
 				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {
@@ -270,7 +270,7 @@ class AppMenu {
 				}
 			}, {
 				label: t.__('Switch to Previous Organization'),
-				accelerator: `Ctrl+Shift+Tab`,
+				accelerator: 'Ctrl+Shift+Tab',
 				enabled: tabs.length > 1,
 				click(_item: any, focusedWindow: any) {
 					if (focusedWindow) {

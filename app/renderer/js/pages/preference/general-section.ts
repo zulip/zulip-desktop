@@ -450,7 +450,7 @@ class GeneralSection extends BaseSection {
 	removeCustomCSS(): void {
 		const removeCSSButton = document.querySelector('#css-delete-action');
 		removeCSSButton.addEventListener('click', () => {
-			ConfigUtil.setConfigItem('customCSS', "");
+			ConfigUtil.setConfigItem('customCSS', '');
 			ipcRenderer.send('forward-message', 'hard-reload');
 		});
 	}

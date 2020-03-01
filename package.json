@@ -154,9 +154,9 @@
   ],
   "devDependencies": {
     "@types/adm-zip": "^0.4.32",
-    "@types/dotenv": "6.1.1",
-    "@typescript-eslint/eslint-plugin": "1.10.2",
-    "@typescript-eslint/parser": "1.10.2",
+    "@types/dotenv": "^8.2.0",
+    "@typescript-eslint/eslint-plugin": "^2.21.0",
+    "@typescript-eslint/parser": "^2.21.0",
     "@vitalets/google-translate-api": "2.8.0",
     "assert": "1.4.1",
     "cp-file": "5.0.0",
@@ -166,11 +166,11 @@
     "electron-connect": "0.6.2",
     "electron-debug": "1.4.0",
     "electron-notarize": "0.2.0",
-    "eslint-config-xo-typescript": "0.14.0",
+    "eslint-config-xo-typescript": "^0.26.0",
     "fs-extra": "8.1.0",
     "gulp": "^4.0.2",
     "gulp-tape": "^1.0.0",
-    "gulp-typescript": "5.0.1",
+    "gulp-typescript": "^6.0.0-alpha.1",
     "htmlhint": "0.11.0",
     "is-ci": "1.0.10",
     "nodemon": "1.14.11",
@@ -179,7 +179,7 @@
     "stylelint": "^13.2.0",
     "tap-colorize": "1.2.0",
     "tape": "^4.13.0",
-    "typescript": "3.5.2",
+    "typescript": "^3.8.3",
     "xo": "^0.27.2"
   },
   "xo": {
@@ -229,7 +229,10 @@
           "promise/prefer-await-to-then": "off",
           "node/no-deprecated-api": 0,
           "@typescript-eslint/member-ordering": "off",
+          "@typescript-eslint/no-dynamic-delete": "off",
+          "@typescript-eslint/promise-function-async": "off",
           "@typescript-eslint/restrict-plus-operands": "off",
+          "@typescript-eslint/restrict-template-expressions": "off",
           "import/default": 0,
           "@typescript-eslint/no-unused-vars": 0
         }

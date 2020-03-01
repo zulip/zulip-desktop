@@ -4,10 +4,6 @@ import { EventEmitter } from 'events';
 
 type ListenerType = ((...args: any[]) => void);
 
-// we have and will have some non camelcase stuff
-// while working with zulip so just turning the rule off
-// for the whole file.
-/* eslint-disable @typescript-eslint/camelcase */
 class ElectronBridge extends EventEmitter {
 	send_notification_reply_message_supported: boolean;
 	idle_on_system: boolean;
@@ -55,5 +51,3 @@ electron_bridge.on('realm_icon_url', iconURL => {
 // which is alias of .emit and on this side we can handle the data by adding
 // a listener for the event.
 export = electron_bridge;
-
-/* eslint-enable @typescript-eslint/camelcase */

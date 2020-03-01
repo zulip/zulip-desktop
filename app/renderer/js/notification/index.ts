@@ -18,7 +18,7 @@ if (process.platform === 'darwin') {
 }
 
 window.addEventListener('load', () => {
-	// eslint-disable-next-line no-undef, @typescript-eslint/camelcase
+	// eslint-disable-next-line no-undef
 	if (params.isPageParams() && page_params.realm_uri) {
 		loadBots();
 	}

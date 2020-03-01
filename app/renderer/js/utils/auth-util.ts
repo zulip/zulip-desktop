@@ -6,7 +6,7 @@ import ConfigUtil = require('./config-util');
 const { shell } = remote;
 
 class AuthUtil {
-	openInBrowser = (link: string) => {
+	openInBrowser = (link: string): void => {
 		const otp = cryptoRandomString({length: 64});
 		ConfigUtil.setConfigItem('desktopOtp', otp);
 		shell.openExternal(`${link}?desktop_flow_otp=${otp}`);
@@ -24,7 +24,7 @@ class AuthUtil {
 		}
 	};
 
-	hexToAscii = (hex: string) => {
+	hexToAscii = (hex: string): string => {
 		let ascii = '';
 		for (let i = 0; i < hex.length; i += 2) {
 			ascii += String.fromCharCode(parseInt(hex.slice(i, i + 2), 16));

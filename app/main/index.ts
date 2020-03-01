@@ -24,6 +24,7 @@ const globalPatched = global as PatchedGlobal;
 // Adds debug features like hotkeys for triggering dev tools and reload
 // in development mode
 if (isDev) {
+	/* eslint-disable-next-line @typescript-eslint/no-var-requires */
 	require('electron-debug')();
 }
 
@@ -116,7 +117,7 @@ function createMainWindow(): Electron.BrowserWindow {
 
 	// Keep the app running in background on close event
 	win.on('close', e => {
-		if (ConfigUtil.getConfigItem("quitOnClose")) {
+		if (ConfigUtil.getConfigItem('quitOnClose')) {
 			app.quit();
 		}
 		if (!isQuitting) {

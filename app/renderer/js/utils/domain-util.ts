@@ -16,7 +16,7 @@ const { ipcRenderer } = electron;
 const { app, dialog } = electron.remote;
 
 const logger = new Logger({
-	file: `domain-util.log`,
+	file: 'domain-util.log',
 	timestamp: true
 });
 
@@ -181,9 +181,10 @@ class DomainUtil {
 
 			const certsError = error.toString().includes('certificate');
 			if (certsError) {
-				return this.checkCertError(domain, serverConf, error, silent);
+				const result = await this.checkCertError(domain, serverConf, error, silent);
+				return result;
 			} else {
-				throw Messages.invalidZulipServerError(domain);
+				throw new Error(Messages.invalidZulipServerError(domain));
 			}
 		}
 	}

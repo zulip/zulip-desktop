@@ -104,7 +104,7 @@ class NetworkSection extends BaseSection {
 					ConfigUtil.setConfigItem('useManualProxy', !manualProxyValue);
 					this.toggleManualProxySettings(!manualProxyValue);
 				}
-				if (newValue === false) {
+				if (!newValue) {
 					// Remove proxy system proxy settings
 					ConfigUtil.setConfigItem('proxyRules', '');
 					ipcRenderer.send('forward-message', 'reload-proxy', false);

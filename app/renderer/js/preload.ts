@@ -1,8 +1,3 @@
-// we have and will have some non camelcase stuff
-// while working with zulip and electron bridge
-// so turning the rule off for the whole file.
-/* eslint-disable @typescript-eslint/camelcase */
-
 'use strict';
 
 import { ipcRenderer, shell } from 'electron';
