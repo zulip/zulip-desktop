@@ -1,11 +1,49 @@
+body {
+    overflow: hidden;
+}
+
 html,
 body {
     margin: 0;
     cursor: default;
     font-size: 14px;
-    color: rgba(51, 51, 51, 1.000);
-    background: rgba(255, 255, 255, 1.000);
     user-select: none;
+    position: relative;
+    min-height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+ul {
+    text-align: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    list-style-type: none;
+    text-align: center;
+    background: rgb(255, 255, 255);
+    height: 40px;
+    line-height: 40px;
+    color: rgb(102, 102, 102);
+}
+
+li:nth-child(2n) {
+    background: rgb(247, 247, 247);
+}
+
+li:hover span {
+    width: 40px;
+    opacity: 1.0;
+}
+
+#buttons {
+    margin: auto;
+    margin-top: 20px;
 }
 
 #content {
@@ -17,22 +55,24 @@ body {
 }
 
 #title {
-    text-align: left;
+    text-align: center;
     font-size: 24px;
     font-weight: bold;
-    margin: 20px 0;
 }
 
 #subtitle {
     font-size: 20px;
-    text-align: left;
+    text-align: center;
     margin: 12px 0;
+    font-weight: bold;
+    color: rgb(102, 102, 102);
 }
 
 #description {
     text-align: left;
     font-size: 16px;
     list-style-position: inside;
+    /* text-align: justify; */
 }
 
 #reconnect {
@@ -44,16 +84,56 @@ body {
 }
 
 .button {
+    margin-top: 20px;
     font-size: 16px;
     background: rgba(0, 150, 136, 1.000);
     color: rgba(255, 255, 255, 1.000);
     width: 96px;
     height: 32px;
-    border-radius: 5px;
-    line-height: 32px;
+    border-radius: 7px;
+    line-height: 35px;
     cursor: pointer;
 }
 
 .button:hover {
     opacity: 0.8;
+}
+
+.container {
+    text-align: center;
+    position: relative;
+}
+
+.maingraphic {
+    position: relative;
+}
+
+.cog {
+    margin-top: 50px;
+    width: 10rem;
+    height: 10rem;
+    animation: coganimation 10s infinite;
+    fill: rgba(0, 150, 136, 1.000);
+    margin-left: 60px;;
+}
+
+.spanner {
+    margin-top: 60px;
+    position: absolute;
+    transform: rotate(20deg);
+    top: 10%;
+    margin-left: 30px;
+    left: 25%;
+    width: 10rem;
+    height: 10rem;
+    fill: rgba(0, 150, 136, 1.000);
+}
+
+@keyframes coganimation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
