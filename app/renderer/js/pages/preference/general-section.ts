@@ -461,11 +461,11 @@ class GeneralSection extends BaseSection {
 			properties: ['openDirectory']
 		};
 
-		const { filePaths: selectedFolder } = await dialog.showOpenDialog(showDialogOptions);
-		if (selectedFolder) {
-			ConfigUtil.setConfigItem('downloadsPath', selectedFolder[0]);
+		const { filePaths, canceled } = await dialog.showOpenDialog(showDialogOptions);
+		if (!canceled) {
+			ConfigUtil.setConfigItem('downloadsPath', filePaths[0]);
 			const downloadFolderPath: HTMLElement = document.querySelector('.download-folder-path');
-			downloadFolderPath.innerText = selectedFolder[0];
+			downloadFolderPath.innerText = filePaths[0];
 		}
 	}
 
