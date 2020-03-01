@@ -153,33 +153,31 @@ class ServerManagerView {
 		});
 	}
 
-	loadProxy(): Promise<boolean> {
-		return new Promise(resolve => {
-			// To change proxyEnable to useManualProxy in older versions
-			const proxyEnabledOld = ConfigUtil.isConfigItemExists('useProxy');
-			if (proxyEnabledOld) {
-				const proxyEnableOldState = ConfigUtil.getConfigItem('useProxy');
-				if (proxyEnableOldState) {
-					ConfigUtil.setConfigItem('useManualProxy', true);
-				}
-				ConfigUtil.removeConfigItem('useProxy');
+	async loadProxy(): Promise<void> {
+		// To change proxyEnable to useManualProxy in older versions
+		const proxyEnabledOld = ConfigUtil.isConfigItemExists('useProxy');
+		if (proxyEnabledOld) {
+			const proxyEnableOldState = ConfigUtil.getConfigItem('useProxy');
+			if (proxyEnableOldState) {
+				ConfigUtil.setConfigItem('useManualProxy', true);
 			}
+			ConfigUtil.removeConfigItem('useProxy');
+		}
 
-			const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
-			if (proxyEnabled) {
-				session.fromPartition('persist:webviewsession').setProxy({
-					pacScript: ConfigUtil.getConfigItem('proxyPAC', ''),
-					proxyRules: ConfigUtil.getConfigItem('proxyRules', ''),
-					proxyBypassRules: ConfigUtil.getConfigItem('proxyBypass', '')
-				}, resolve);
-			} else {
-				session.fromPartition('persist:webviewsession').setProxy({
-					pacScript: '',
-					proxyRules: '',
-					proxyBypassRules: ''
-				}, resolve);
-			}
-		});
+		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
+		if (proxyEnabled) {
+			await session.fromPartition('persist:webviewsession').setProxy({
+				pacScript: ConfigUtil.getConfigItem('proxyPAC', ''),
+				proxyRules: ConfigUtil.getConfigItem('proxyRules', ''),
+				proxyBypassRules: ConfigUtil.getConfigItem('proxyBypass', '')
+			});
+		} else {
+			await session.fromPartition('persist:webviewsession').setProxy({
+				pacScript: '',
+				proxyRules: '',
+				proxyBypassRules: ''
+			});
+		}
 	}
 
 	// Settings are initialized only when user clicks on General/Server/Network section settings

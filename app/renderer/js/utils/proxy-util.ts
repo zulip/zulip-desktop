@@ -67,63 +67,59 @@ class ProxyUtil {
 		const resolveProxyUrl = 'www.example.com';
 
 		// Check HTTP Proxy
-		const httpProxy = new Promise(resolve => {
-			ses.resolveProxy('http://' + resolveProxyUrl, (proxy: string) => {
-				let httpString = '';
-				if (proxy !== 'DIRECT') {
-					// in case of proxy HTTPS url:port, windows gives first word as HTTPS while linux gives PROXY
-					// for all other HTTP or direct url:port both uses PROXY
-					if (proxy.includes('PROXY') || proxy.includes('HTTPS')) {
-						httpString = 'http=' + proxy.split('PROXY')[1] + ';';
-					}
+		const httpProxy = (async () => {
+			const proxy = await ses.resolveProxy('http://' + resolveProxyUrl);
+			let httpString = '';
+			if (proxy !== 'DIRECT') {
+				// in case of proxy HTTPS url:port, windows gives first word as HTTPS while linux gives PROXY
+				// for all other HTTP or direct url:port both uses PROXY
+				if (proxy.includes('PROXY') || proxy.includes('HTTPS')) {
+					httpString = 'http=' + proxy.split('PROXY')[1] + ';';
 				}
-				resolve(httpString);
-			});
-		});
+			}
+			return httpString;
+		})();
 		// Check HTTPS Proxy
-		const httpsProxy = new Promise(resolve => {
-			ses.resolveProxy('https://' + resolveProxyUrl, (proxy: string) => {
-				let httpsString = '';
-				if (proxy !== 'DIRECT' || proxy.includes('HTTPS')) {
-					// in case of proxy HTTPS url:port, windows gives first word as HTTPS while linux gives PROXY
-					// for all other HTTP or direct url:port both uses PROXY
-					if (proxy.includes('PROXY') || proxy.includes('HTTPS')) {
-						httpsString += 'https=' + proxy.split('PROXY')[1] + ';';
-					}
+		const httpsProxy = (async () => {
+			const proxy = await ses.resolveProxy('https://' + resolveProxyUrl);
+			let httpsString = '';
+			if (proxy !== 'DIRECT' || proxy.includes('HTTPS')) {
+				// in case of proxy HTTPS url:port, windows gives first word as HTTPS while linux gives PROXY
+				// for all other HTTP or direct url:port both uses PROXY
+				if (proxy.includes('PROXY') || proxy.includes('HTTPS')) {
+					httpsString += 'https=' + proxy.split('PROXY')[1] + ';';
 				}
-				resolve(httpsString);
-			});
-		});
+			}
+			return httpsString;
+		})();
 
 		// Check FTP Proxy
-		const ftpProxy = new Promise(resolve => {
-			ses.resolveProxy('ftp://' + resolveProxyUrl, (proxy: string) => {
-				let ftpString = '';
-				if (proxy !== 'DIRECT') {
-					if (proxy.includes('PROXY')) {
-						ftpString += 'ftp=' + proxy.split('PROXY')[1] + ';';
-					}
+		const ftpProxy = (async () => {
+			const proxy = await ses.resolveProxy('ftp://' + resolveProxyUrl);
+			let ftpString = '';
+			if (proxy !== 'DIRECT') {
+				if (proxy.includes('PROXY')) {
+					ftpString += 'ftp=' + proxy.split('PROXY')[1] + ';';
 				}
-				resolve(ftpString);
-			});
-		});
+			}
+			return ftpString;
+		})();
 
 		// Check SOCKS Proxy
-		const socksProxy = new Promise(resolve => {
-			ses.resolveProxy('socks4://' + resolveProxyUrl, (proxy: string) => {
-				let socksString = '';
-				if (proxy !== 'DIRECT') {
-					if (proxy.includes('SOCKS5')) {
-						socksString += 'socks=' + proxy.split('SOCKS5')[1] + ';';
-					} else if (proxy.includes('SOCKS4')) {
-						socksString += 'socks=' + proxy.split('SOCKS4')[1] + ';';
-					} else if (proxy.includes('PROXY')) {
-						socksString += 'socks=' + proxy.split('PROXY')[1] + ';';
-					}
+		const socksProxy = (async () => {
+			const proxy = await ses.resolveProxy('socks4://' + resolveProxyUrl);
+			let socksString = '';
+			if (proxy !== 'DIRECT') {
+				if (proxy.includes('SOCKS5')) {
+					socksString += 'socks=' + proxy.split('SOCKS5')[1] + ';';
+				} else if (proxy.includes('SOCKS4')) {
+					socksString += 'socks=' + proxy.split('SOCKS4')[1] + ';';
+				} else if (proxy.includes('PROXY')) {
+					socksString += 'socks=' + proxy.split('PROXY')[1] + ';';
 				}
-				resolve(socksString);
-			});
-		});
+			}
+			return socksString;
+		})();
 
 		Promise.all([httpProxy, httpsProxy, ftpProxy, socksProxy]).then(values => {
 			let proxyString = '';
