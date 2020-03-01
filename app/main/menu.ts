@@ -10,7 +10,7 @@ import Logger = require('../renderer/js/utils/logger-util');
 import ConfigUtil = require('../renderer/js/utils/config-util');
 import t = require('../renderer/js/utils/translation-util');
 
-const appName = app.getName();
+const appName = app.name;
 
 const logger = new Logger({
 	file: 'errors.log',
@@ -179,7 +179,7 @@ class AppMenu {
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					const newValue = !ConfigUtil.getConfigItem('autoHideMenubar');
-					focusedWindow.setAutoHideMenuBar(newValue);
+					focusedWindow.autoHideMenuBar = newValue;
 					focusedWindow.setMenuBarVisibility(!newValue);
 					focusedWindow.webContents.send('toggle-autohide-menubar', newValue);
 					ConfigUtil.setConfigItem('autoHideMenubar', newValue);
@@ -287,7 +287,7 @@ class AppMenu {
 		const { tabs, activeTabIndex, enableMenu } = props;
 
 		return [{
-			label: `${app.getName()}`,
+			label: app.name,
 			submenu: [{
 				label: t.__('Add Organization'),
 				accelerator: 'Cmd+Shift+N',

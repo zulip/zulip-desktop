@@ -200,7 +200,7 @@ app.on('ready', () => {
 	// Auto-hide menu bar on Windows + Linux
 	if (process.platform !== 'darwin') {
 		const shouldHideMenu = ConfigUtil.getConfigItem('autoHideMenubar') || false;
-		mainWindow.setAutoHideMenuBar(shouldHideMenu);
+		mainWindow.autoHideMenuBar = shouldHideMenu;
 		mainWindow.setMenuBarVisibility(!shouldHideMenu);
 	}
 
@@ -298,7 +298,7 @@ app.on('ready', () => {
 	});
 
 	ipcMain.on('toggle-menubar', (_event: Electron.IpcMainEvent, showMenubar: boolean) => {
-		mainWindow.setAutoHideMenuBar(showMenubar);
+		mainWindow.autoHideMenuBar = showMenubar;
 		mainWindow.setMenuBarVisibility(!showMenubar);
 		page.send('toggle-autohide-menubar', showMenubar, true);
 	});

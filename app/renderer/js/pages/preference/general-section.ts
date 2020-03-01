@@ -385,7 +385,7 @@ class GeneralSection extends BaseSection {
 
 	async clearAppDataDialog(): Promise<void> {
 		const clearAppDataMessage = 'By clicking proceed you will be removing all added accounts and preferences from Zulip. When the application restarts, it will be as if you are starting Zulip for the first time.';
-		const getAppPath = path.join(app.getPath('appData'), app.getName());
+		const getAppPath = path.join(app.getPath('appData'), app.name);
 
 		const { response } = await dialog.showMessageBox({
 			type: 'warning',
