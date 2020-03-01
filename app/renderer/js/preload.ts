@@ -1,9 +1,8 @@
-import { ipcRenderer, shell } from 'electron';
+import { contextBridge, ipcRenderer, webFrame } from 'electron';
+import fs from 'fs';
 import * as SetupSpellChecker from './spellchecker';
 
 import isDev from 'electron-is-dev';
-import * as LinkUtil from './utils/link-util';
-import * as params from './utils/params-util';
 import * as AuthUtil from './utils/auth-util';
 import * as ConfigUtil from './utils/config-util';
 
@@ -16,10 +15,8 @@ import './notification';
 // eslint-disable-next-line import/no-unassigned-import
 import './shared/preventdrag';
 
-declare let window: ZulipWebWindow;
-
 import electron_bridge from './electron-bridge';
-window.electron_bridge = electron_bridge;
+contextBridge.exposeInMainWorld('raw_electron_bridge', electron_bridge);
 
 ipcRenderer.on('logout', () => {
 	// Create the menu for the below
@@ -59,59 +56,33 @@ ipcRenderer.on('show-notification-settings', () => {
 	}, 100);
 });
 
-// To prevent failing this script on linux we need to load it after the document loaded
-document.addEventListener('DOMContentLoaded', (): void => {
-	if (params.isPageParams()) {
-		const authMethods = page_params.external_authentication_methods; // eslint-disable-line no-undef
-		const loginInApp = ConfigUtil.getConfigItem('loginInApp');
-		console.log(loginInApp);
-		if (authMethods && !loginInApp) {
-			for (const authMethod of authMethods) {
-				const { button_id_suffix } = authMethod;
-				const $socialButton = document.querySelector(`button[id$="${button_id_suffix}"]`);
-				if ($socialButton) {
-					$socialButton.addEventListener('click', event => {
-						event.preventDefault();
-						const socialLink = $socialButton.closest('form').action;
-						AuthUtil.openInBrowser(socialLink);
-					});
-				}
+electron_bridge.once('zulip-loaded', ({ authMethods, serverLanguage }) => {
+	const loginInApp = ConfigUtil.getConfigItem('loginInApp');
+	console.log(loginInApp);
+	if (authMethods && !loginInApp) {
+		for (const authMethod of authMethods) {
+			const { button_id_suffix } = authMethod;
+			const $socialButton = document.querySelector(`button[id$="${button_id_suffix}"]`);
+			if ($socialButton) {
+				$socialButton.addEventListener('click', event => {
+					event.preventDefault();
+					const socialLink = $socialButton.closest('form').action;
+					AuthUtil.openInBrowser(socialLink);
+				});
 			}
 		}
+	}
 
-		// Get the default language of the server
-		const serverLanguage = page_params.default_language; // eslint-disable-line no-undef
-		if (serverLanguage) {
-			// Init spellchecker
-			SetupSpellChecker.init(serverLanguage);
-		}
-		// redirect users to network troubleshooting page
-		const getRestartButton = document.querySelector('.restart_get_events_button');
-		if (getRestartButton) {
-			getRestartButton.addEventListener('click', () => {
-				ipcRenderer.send('forward-message', 'reload-viewer');
-			});
-		}
-		// Open image attachment link in the lightbox instead of opening in the default browser
-		const { $, lightbox } = window;
-		$('#main_div').on('click', '.message_content p a', function (this: HTMLElement, event: Event) {
-			const url = $(this).attr('href');
-
-			if (LinkUtil.isImage(url)) {
-				const $img = $(this).parent().siblings('.message_inline_image').find('img');
-
-				// prevent the image link from opening in a new page.
-				event.preventDefault();
-				// prevent the message compose dialog from happening.
-				event.stopPropagation();
-
-				// Open image in the default browser if image preview is unavailable
-				if (!$img[0]) {
-					shell.openExternal(window.location.origin + url);
-				}
-				// Open image in lightbox
-				lightbox.open($img);
-			}
+	// Get the default language of the server
+	if (serverLanguage) {
+		// Init spellchecker
+		SetupSpellChecker.init(serverLanguage);
+	}
+	// redirect users to network troubleshooting page
+	const getRestartButton = document.querySelector('.restart_get_events_button');
+	if (getRestartButton) {
+		getRestartButton.addEventListener('click', () => {
+			ipcRenderer.send('forward-message', 'reload-viewer');
 		});
 	}
 });
@@ -152,8 +123,8 @@ ipcRenderer.on('set-active', () => {
 	if (isDev) {
 		console.log('active');
 	}
-	window.electron_bridge.idle_on_system = false;
-	window.electron_bridge.last_active_on_system = Date.now();
+	electron_bridge.idle_on_system = false;
+	electron_bridge.last_active_on_system = Date.now();
 });
 
 // Set user as idle and time of last activity is left unchanged
@@ -161,5 +132,9 @@ ipcRenderer.on('set-idle', () => {
 	if (isDev) {
 		console.log('idle');
 	}
-	window.electron_bridge.idle_on_system = true;
+	electron_bridge.idle_on_system = true;
 });
+
+webFrame.executeJavaScript(
+	fs.readFileSync(require.resolve('./injected'), 'utf8')
+);

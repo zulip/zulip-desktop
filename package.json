@@ -245,6 +245,7 @@
     "overrides": [
       {
         "files": [
+          "app/renderer/js/injected.ts",
           "gulpfile.js",
           "scripts/notarize.js",
           "tests/**/*.js",

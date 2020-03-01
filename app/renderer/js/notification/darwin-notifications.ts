@@ -1,17 +1,17 @@
 import { ipcRenderer } from 'electron';
 import {
-	appId, customReply, focusCurrentServer, parseReply, setupReply
+	appId, customReply, focusCurrentServer, parseReply
 } from './helpers';
 
 import MacNotifier from 'node-mac-notifier';
 import * as ConfigUtil from '../utils/config-util';
+import electron_bridge from '../electron-bridge';
 
 type ReplyHandler = (response: string) => void;
 type ClickHandler = () => void;
 let replyHandler: ReplyHandler;
 let clickHandler: ClickHandler;
 
-declare const window: ZulipWebWindow;
 interface NotificationHandlerArgs {
 	response: string;
 }
@@ -87,12 +87,12 @@ class DarwinNotification {
 	async notificationHandler({ response }: NotificationHandlerArgs): Promise<void> {
 		response = await parseReply(response);
 		focusCurrentServer();
-		if (window.electron_bridge.send_notification_reply_message_supported) {
-			window.electron_bridge.send_event('send_notification_reply_message', this.tag, response);
+		if (electron_bridge.send_notification_reply_message_supported) {
+			electron_bridge.send_event('send_notification_reply_message', this.tag, response);
 			return;
 		}
 
-		setupReply(this.tag);
+		electron_bridge.emit('narrow-by-topic', this.tag);
 		if (replyHandler) {
 			replyHandler(response);
 			return;

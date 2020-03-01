@@ -2,6 +2,8 @@ import { ipcRenderer } from 'electron';
 
 import { EventEmitter } from 'events';
 
+import { NotificationData, newNotification } from './notification';
+
 type ListenerType = ((...args: any[]) => void);
 
 class ElectronBridge extends EventEmitter {
@@ -19,13 +21,31 @@ class ElectronBridge extends EventEmitter {
 		this.last_active_on_system = Date.now();
 	}
 
-	send_event(eventName: string | symbol, ...args: any[]): void {
+	send_event = (eventName: string | symbol, ...args: any[]): void => {
 		this.emit(eventName, ...args);
-	}
+	};
 
-	on_event(eventName: string, listener: ListenerType): void {
+	on_event = (eventName: string, listener: ListenerType): void => {
 		this.on(eventName, listener);
-	}
+	};
+
+	new_notification = (
+		title: string,
+		options: NotificationOptions | undefined,
+		dispatch: (type: string, eventInit: EventInit) => boolean
+	): NotificationData =>
+		newNotification(title, options, dispatch);
+
+	get_idle_on_system = (): boolean => this.idle_on_system;
+
+	get_last_active_on_system = (): number => this.last_active_on_system;
+
+	get_send_notification_reply_message_supported = (): boolean =>
+		this.send_notification_reply_message_supported;
+
+	set_send_notification_reply_message_supported = (value: boolean): void => {
+		this.send_notification_reply_message_supported = value;
+	};
 }
 
 const electron_bridge = new ElectronBridge();

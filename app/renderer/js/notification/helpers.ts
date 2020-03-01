@@ -134,9 +134,3 @@ export async function parseReply(reply: string): Promise<string> {
 	reply = reply.replace(/\\n/, '\n');
 	return reply;
 }
-
-export function setupReply(id: string): void {
-	const { narrow } = window;
-	const narrowByTopic = narrow.by_topic || narrow.by_subject;
-	narrowByTopic(id, { trigger: 'notification' });
-}

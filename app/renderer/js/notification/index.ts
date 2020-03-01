@@ -1,5 +1,5 @@
 import { remote } from 'electron';
-import * as params from '../utils/params-util';
+import electron_bridge from '../electron-bridge';
 import { appId, loadBots } from './helpers';
 
 import DefaultNotification from './default-notification';
@@ -9,15 +9,64 @@ const { app } = remote;
 // On windows 8 we have to explicitly set the appUserModelId otherwise notification won't work.
 app.setAppUserModelId(appId);
 
-window.Notification = DefaultNotification;
+let Notification = DefaultNotification;
 
 if (process.platform === 'darwin') {
-	window.Notification = require('./darwin-notifications');
+	Notification = require('./darwin-notifications');
 }
 
-window.addEventListener('load', () => {
-	// eslint-disable-next-line no-undef
-	if (params.isPageParams() && page_params.realm_uri) {
-		loadBots();
+export interface NotificationData {
+	close(): void;
+	title: string;
+	dir: NotificationDirection;
+	lang: string;
+	body: string;
+	tag: string;
+	image: string;
+	icon: string;
+	badge: string;
+	vibrate: readonly number[];
+	timestamp: number;
+	renotify: boolean;
+	silent: boolean;
+	requireInteraction: boolean;
+	data: unknown;
+	actions: readonly NotificationAction[];
+}
+
+export function newNotification(
+	title: string,
+	options: NotificationOptions | undefined,
+	dispatch: (type: string, eventInit: EventInit) => boolean
+): NotificationData {
+	const notification = new Notification(title, options);
+	for (const type of ['click', 'close', 'error', 'show']) {
+		notification.addEventListener(type, (ev: Event) => {
+			if (!dispatch(type, ev)) {
+				ev.preventDefault();
+			}
+		});
 	}
+	return {
+		close: () => notification.close(),
+		title: notification.title,
+		dir: notification.dir,
+		lang: notification.lang,
+		body: notification.body,
+		tag: notification.tag,
+		image: notification.image,
+		icon: notification.icon,
+		badge: notification.badge,
+		vibrate: notification.vibrate,
+		timestamp: notification.timestamp,
+		renotify: notification.renotify,
+		silent: notification.silent,
+		requireInteraction: notification.requireInteraction,
+		data: notification.data,
+		actions: notification.actions
+	};
+}
+
+electron_bridge.once('zulip-loaded', () => {
+	loadBots();
 });
