@@ -107,5 +107,10 @@
 	"Window Shortcuts": "Window Shortcuts",
 	"Quit when the window is closed": "Quit when the window is closed",
 	"Force social login in app instead of browser": "Force social login in app instead of browser",
-	"Ask where to save files before downloading": "Ask where to save files before downloading"
+	"Ask where to save files before downloading": "Ask where to save files before downloading",
+	"Add a Zulip organization": "Add a Zulip organization",
+	"Connect": "Connect",
+	"OR": "OR",
+	"Create a new organization": "Create a new organization",
+	"Network and Proxy Settings": "Network and Proxy Settings"
 }
