@@ -104,5 +104,8 @@
 	"Edit Shortcuts": "Edit Shortcuts",
 	"View Shortcuts": "View Shortcuts",
 	"History Shortcuts": "History Shortcuts",
-	"Window Shortcuts": "Window Shortcuts"
+	"Window Shortcuts": "Window Shortcuts",
+	"Quit when the window is closed": "Quit when the window is closed",
+	"Force social login in app instead of browser": "Force social login in app instead of browser",
+	"Ask where to save files before downloading": "Ask where to save files before downloading"
 }
