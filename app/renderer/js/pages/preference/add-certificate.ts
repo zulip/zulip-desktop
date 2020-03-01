@@ -68,18 +68,17 @@ class AddCertificate extends BaseComponent {
 		}
 	}
 
-	addHandler(): void {
+	async addHandler(): Promise<void> {
 		const showDialogOptions: OpenDialogOptions = {
 			title: 'Select file',
 			properties: ['openFile'],
 			filters: [{ name: 'crt, pem', extensions: ['crt', 'pem'] }]
 		};
-		dialog.showOpenDialog(showDialogOptions, selectedFile => {
-			if (selectedFile) {
-				this._certFile = selectedFile[0] || '';
-				this.validateAndAdd();
-			}
-		});
+		const { filePaths, canceled } = await dialog.showOpenDialog(showDialogOptions);
+		if (!canceled) {
+			this._certFile = filePaths[0] || '';
+			this.validateAndAdd();
+		}
 	}
 
 	initListeners(): void {
@@ -88,9 +87,7 @@ class AddCertificate extends BaseComponent {
 		});
 
 		this.serverUrl.addEventListener('keypress', event => {
-			const EnterkeyCode = event.keyCode;
-
-			if (EnterkeyCode === 13) {
+			if (event.key === 'Enter') {
 				this.addHandler();
 			}
 		});

@@ -1,7 +1,7 @@
 {
   "name": "zulip",
   "productName": "Zulip",
-  "version": "4.0.3",
+  "version": "4.1.0-beta",
   "main": "./app/main",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
@@ -18,11 +18,11 @@
     "url": "https://github.com/zulip/zulip-desktop/issues"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=10.0.0"
   },
   "scripts": {
     "start": "node tools/run-dev",
-    "clean-ts-files": "git clean app/*.js -xf",
+    "clean-ts-files": "git clean app/*.js -e node_modules -xf",
     "watch-ts": "tsc -w",
     "reinstall": "node ./tools/reinstall-node-modules.js",
     "postinstall": "electron-builder install-app-deps",
@@ -161,26 +161,26 @@
     "assert": "1.4.1",
     "cp-file": "5.0.0",
     "devtron": "1.4.0",
-    "electron": "3.1.10",
-    "electron-builder": "20.43.0",
+    "electron": "^8.0.2",
+    "electron-builder": "^22.3.2",
     "electron-connect": "0.6.2",
     "electron-debug": "1.4.0",
     "electron-notarize": "0.2.0",
     "eslint-config-xo-typescript": "0.14.0",
     "fs-extra": "8.1.0",
-    "gulp": "4.0.0",
-    "gulp-tape": "0.0.9",
+    "gulp": "^4.0.2",
+    "gulp-tape": "^1.0.0",
     "gulp-typescript": "5.0.1",
     "htmlhint": "0.11.0",
     "is-ci": "1.0.10",
     "nodemon": "1.14.11",
     "pre-commit": "1.2.2",
-    "spectron": "5.0.0",
-    "stylelint": "9.10.1",
+    "spectron": "^10.0.1",
+    "stylelint": "^13.2.0",
     "tap-colorize": "1.2.0",
-    "tape": "4.8.0",
+    "tape": "^4.13.0",
     "typescript": "3.5.2",
-    "xo": "0.24.0"
+    "xo": "^0.27.2"
   },
   "xo": {
     "extends": "xo-typescript",
@@ -203,14 +203,16 @@
           "max-lines": [
             "warn",
             {
-              "max": 800,
+              "max": 900,
               "skipBlankLines": true,
               "skipComments": true
             }
           ],
+          "dot-notation": 0,
           "no-warning-comments": 0,
           "object-curly-spacing": 0,
           "capitalized-comments": 0,
+          "no-constructor-return": "off",
           "no-else-return": 0,
           "no-path-concat": 0,
           "no-alert": 0,
@@ -224,9 +226,10 @@
           "quotes": 0,
           "unicorn/catch-error-name": 0,
           "unicorn/no-console-spaces": 0,
+          "promise/prefer-await-to-then": "off",
           "node/no-deprecated-api": 0,
-          "@typescript-eslint/member-ordering": "never",
-          "@typescript-eslint/restrict-plus-operands": "never",
+          "@typescript-eslint/member-ordering": "off",
+          "@typescript-eslint/restrict-plus-operands": "off",
           "import/default": 0,
           "@typescript-eslint/no-unused-vars": 0
         }

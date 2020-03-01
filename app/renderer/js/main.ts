@@ -153,33 +153,31 @@ class ServerManagerView {
 		});
 	}
 
-	loadProxy(): Promise<boolean> {
-		return new Promise(resolve => {
-			// To change proxyEnable to useManualProxy in older versions
-			const proxyEnabledOld = ConfigUtil.isConfigItemExists('useProxy');
-			if (proxyEnabledOld) {
-				const proxyEnableOldState = ConfigUtil.getConfigItem('useProxy');
-				if (proxyEnableOldState) {
-					ConfigUtil.setConfigItem('useManualProxy', true);
-				}
-				ConfigUtil.removeConfigItem('useProxy');
+	async loadProxy(): Promise<void> {
+		// To change proxyEnable to useManualProxy in older versions
+		const proxyEnabledOld = ConfigUtil.isConfigItemExists('useProxy');
+		if (proxyEnabledOld) {
+			const proxyEnableOldState = ConfigUtil.getConfigItem('useProxy');
+			if (proxyEnableOldState) {
+				ConfigUtil.setConfigItem('useManualProxy', true);
 			}
+			ConfigUtil.removeConfigItem('useProxy');
+		}
 
-			const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
-			if (proxyEnabled) {
-				session.fromPartition('persist:webviewsession').setProxy({
-					pacScript: ConfigUtil.getConfigItem('proxyPAC', ''),
-					proxyRules: ConfigUtil.getConfigItem('proxyRules', ''),
-					proxyBypassRules: ConfigUtil.getConfigItem('proxyBypass', '')
-				}, resolve);
-			} else {
-				session.fromPartition('persist:webviewsession').setProxy({
-					pacScript: '',
-					proxyRules: '',
-					proxyBypassRules: ''
-				}, resolve);
-			}
-		});
+		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
+		if (proxyEnabled) {
+			await session.fromPartition('persist:webviewsession').setProxy({
+				pacScript: ConfigUtil.getConfigItem('proxyPAC', ''),
+				proxyRules: ConfigUtil.getConfigItem('proxyRules', ''),
+				proxyBypassRules: ConfigUtil.getConfigItem('proxyBypass', '')
+			});
+		} else {
+			await session.fromPartition('persist:webviewsession').setProxy({
+				pacScript: '',
+				proxyRules: '',
+				proxyBypassRules: ''
+			});
+		}
 	}
 
 	// Settings are initialized only when user clicks on General/Server/Network section settings
@@ -283,16 +281,15 @@ class ServerManagerView {
 			if (preAddedDomains.length > 0) {
 				// user already has servers added
 				// ask them before reloading the app
-				dialog.showMessageBox({
+				const { response } = await dialog.showMessageBox({
 					type: 'question',
 					buttons: ['Yes', 'Later'],
 					defaultId: 0,
 					message: 'New server' + (domainsAdded.length > 1 ? 's' : '') + ' added. Reload app now?'
-				}, response => {
-					if (response === 0) {
-						ipcRenderer.send('reload-full-app');
-					}
 				});
+				if (response === 0) {
+					ipcRenderer.send('reload-full-app');
+				}
 			} else {
 				ipcRenderer.send('reload-full-app');
 			}
@@ -317,8 +314,8 @@ class ServerManagerView {
 	initTabs(): void {
 		const servers = DomainUtil.getDomains();
 		if (servers.length > 0) {
-			for (let i = 0; i < servers.length; i++) {
-				this.initServer(servers[i], i);
+			for (const [i, server] of servers.entries()) {
+				this.initServer(server, i);
 			}
 			// Open last active tab
 			let lastActiveTab = ConfigUtil.getConfigItem('lastActiveTab');
@@ -328,13 +325,13 @@ class ServerManagerView {
 			// checkDomain() and webview.load() for lastActiveTab before the others
 			DomainUtil.updateSavedServer(servers[lastActiveTab].url, lastActiveTab);
 			this.activateTab(lastActiveTab);
-			for (let i = 0; i < servers.length; i++) {
+			for (const [i, server] of servers.entries()) {
 				// after the lastActiveTab is activated, we load the others in the background
 				// without activating them, to prevent flashing of server icons
 				if (i === lastActiveTab) {
 					continue;
 				}
-				DomainUtil.updateSavedServer(servers[i].url, i);
+				DomainUtil.updateSavedServer(server.url, i);
 				this.tabs[i].webview.load();
 			}
 			// Remove focus from the settings icon at sidebar bottom
@@ -749,22 +746,21 @@ class ServerManagerView {
 			const template = [
 				{
 					label: 'Disconnect organization',
-					click: () => {
-						dialog.showMessageBox({
+					click: async () => {
+						const { response } = await dialog.showMessageBox({
 							type: 'warning',
 							buttons: ['YES', 'NO'],
 							defaultId: 0,
 							message: 'Are you sure you want to disconnect this organization?'
-						}, response => {
-							if (response === 0) {
-								if (DomainUtil.removeDomain(index)) {
-									ipcRenderer.send('reload-full-app');
-								} else {
-									const { title, content } = Messages.orgRemovalError(DomainUtil.getDomain(index).url);
-									dialog.showErrorBox(title, content);
-								}
-							}
 						});
+						if (response === 0) {
+							if (DomainUtil.removeDomain(index)) {
+								ipcRenderer.send('reload-full-app');
+							} else {
+								const { title, content } = Messages.orgRemovalError(DomainUtil.getDomain(index).url);
+								dialog.showErrorBox(title, content);
+							}
+						}
 					}
 				},
 				{

@@ -57,10 +57,10 @@ class ConnectedOrgSection extends BaseSection {
 		// Show noServerText if no servers are there otherwise hide it
 		this.$existingServers.innerHTML = servers.length === 0 ? noServerText : '';
 
-		for (let i = 0; i < servers.length; i++) {
+		for (const [i, server] of servers.entries()) {
 			new ServerInfoForm({
 				$root: this.$serverInfoContainer,
-				server: servers[i],
+				server,
 				index: i,
 				onChange: this.reloadApp
 			}).init();

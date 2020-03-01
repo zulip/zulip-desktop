@@ -58,20 +58,20 @@ class DarwinNotification {
 		return ConfigUtil.getConfigItem('showNotification') ? 'granted' : 'denied';
 	}
 
-	set onreply(handler: ReplyHandler) {
-		replyHandler = handler;
-	}
-
 	get onreply(): ReplyHandler {
 		return replyHandler;
 	}
 
-	set onclick(handler: ClickHandler) {
-		clickHandler = handler;
+	set onreply(handler: ReplyHandler) {
+		replyHandler = handler;
 	}
 
 	get onclick(): ClickHandler {
 		return clickHandler;
+	}
+
+	set onclick(handler: ClickHandler) {
+		clickHandler = handler;
 	}
 
 	// not something that is common or

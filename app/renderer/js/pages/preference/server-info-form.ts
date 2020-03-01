@@ -61,22 +61,21 @@ class ServerInfoForm extends BaseComponent {
 	}
 
 	initActions(): void {
-		this.$deleteServerButton.addEventListener('click', () => {
-			dialog.showMessageBox({
+		this.$deleteServerButton.addEventListener('click', async () => {
+			const { response } = await dialog.showMessageBox({
 				type: 'warning',
 				buttons: [t.__('YES'), t.__('NO')],
 				defaultId: 0,
 				message: t.__('Are you sure you want to disconnect this organization?')
-			}, response => {
-				if (response === 0) {
-					if (DomainUtil.removeDomain(this.props.index)) {
-						ipcRenderer.send('reload-full-app');
-					} else {
-						const { title, content } = Messages.orgRemovalError(DomainUtil.getDomain(this.props.index).url);
-						dialog.showErrorBox(title, content);
-					}
-				}
 			});
+			if (response === 0) {
+				if (DomainUtil.removeDomain(this.props.index)) {
+					ipcRenderer.send('reload-full-app');
+				} else {
+					const { title, content } = Messages.orgRemovalError(DomainUtil.getDomain(this.props.index).url);
+					dialog.showErrorBox(title, content);
+				}
+			}
 		});
 
 		this.$openServerButton.addEventListener('click', () => {

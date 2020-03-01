@@ -85,7 +85,7 @@ const renderCanvas = function (arg: number): Promise<HTMLCanvasElement> {
 				ctx.fillText('99+', CENTER, CENTER + (SIZE * 0.15));
 			} else if (config.unreadCount < 10) {
 				ctx.font = `${config.thick ? 'bold ' : ''}${SIZE * 0.5}px Helvetica`;
-				ctx.fillText(String(config.unreadCount), CENTER, CENTER + (SIZE * 0.20));
+				ctx.fillText(String(config.unreadCount), CENTER, CENTER + (SIZE * 0.2));
 			} else {
 				ctx.font = `${config.thick ? 'bold ' : ''}${SIZE * 0.5}px Helvetica`;
 				ctx.fillText(String(config.unreadCount), CENTER, CENTER + (SIZE * 0.15));

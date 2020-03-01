@@ -1,7 +1,7 @@
 {
   "name": "zulip",
   "productName": "Zulip",
-  "version": "4.0.3",
+  "version": "4.1.0-beta",
   "desktopName": "zulip.desktop",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
@@ -28,23 +28,23 @@
   ],
   "dependencies": {
     "@electron-elements/send-feedback": "1.0.8",
-    "@sentry/electron": "0.14.0",
+    "@sentry/electron": "^1.2.1",
     "adm-zip": "0.4.11",
     "auto-launch": "5.0.5",
     "backoff": "2.5.0",
-    "dotenv": "8.0.0",
-    "electron-is-dev": "0.3.0",
-    "electron-log": "2.2.14",
-    "electron-spellchecker": "1.1.2",
-    "electron-updater": "4.0.6",
+    "crypto-random-string": "3.1.0",
+    "dotenv": "^8.2.0",
+    "electron-is-dev": "^1.1.0",
+    "electron-log": "^4.0.7",
+    "electron-spellchecker": "2.2.1",
+    "electron-updater": "4.2.0",
     "electron-window-state": "5.0.3",
     "escape-html": "1.0.3",
     "i18n": "0.8.3",
     "node-json-db": "0.9.2",
     "request": "2.85.0",
     "semver": "5.4.1",
-    "wurl": "2.5.0",
-    "crypto-random-string": "3.1.0"
+    "wurl": "2.5.0"
   },
   "optionalDependencies": {
     "node-mac-notifier": "1.1.0"

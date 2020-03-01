@@ -10,7 +10,7 @@ import Logger = require('../renderer/js/utils/logger-util');
 import ConfigUtil = require('../renderer/js/utils/config-util');
 import t = require('../renderer/js/utils/translation-util');
 
-const appName = app.getName();
+const appName = app.name;
 
 const logger = new Logger({
 	file: 'errors.log',
@@ -129,7 +129,7 @@ class AppMenu {
 			role: 'togglefullscreen'
 		}, {
 			label: t.__('Zoom In'),
-			role: 'zoomin',
+			role: 'zoomIn',
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					AppMenu.sendAction('zoomIn');
@@ -137,6 +137,7 @@ class AppMenu {
 			}
 		}, {
 			label: t.__('Zoom Out'),
+			role: 'zoomOut',
 			accelerator: 'CommandOrControl+-',
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
@@ -145,6 +146,7 @@ class AppMenu {
 			}
 		}, {
 			label: t.__('Actual Size'),
+			role: 'resetZoom',
 			accelerator: 'CommandOrControl+0',
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
@@ -177,7 +179,7 @@ class AppMenu {
 			click(_item: any, focusedWindow: any) {
 				if (focusedWindow) {
 					const newValue = !ConfigUtil.getConfigItem('autoHideMenubar');
-					focusedWindow.setAutoHideMenuBar(newValue);
+					focusedWindow.autoHideMenuBar = newValue;
 					focusedWindow.setMenuBarVisibility(!newValue);
 					focusedWindow.webContents.send('toggle-autohide-menubar', newValue);
 					ConfigUtil.setConfigItem('autoHideMenubar', newValue);
@@ -285,7 +287,7 @@ class AppMenu {
 		const { tabs, activeTabIndex, enableMenu } = props;
 
 		return [{
-			label: `${app.getName()}`,
+			label: app.name,
 			submenu: [{
 				label: t.__('Add Organization'),
 				accelerator: 'Cmd+Shift+N',
@@ -351,7 +353,7 @@ class AppMenu {
 				role: 'hide'
 			}, {
 				label: t.__('Hide Others'),
-				role: 'hideothers'
+				role: 'hideOthers'
 			}, {
 				label: t.__('Unhide'),
 				role: 'unhide'
@@ -388,10 +390,10 @@ class AppMenu {
 				role: 'paste'
 			}, {
 				label: t.__('Paste and Match Style'),
-				role: 'pasteandmatchstyle'
+				role: 'pasteAndMatchStyle'
 			}, {
 				label: t.__('Select All'),
-				role: 'selectall'
+				role: 'selectAll'
 			}]
 		}, {
 			label: t.__('View'),
@@ -504,12 +506,12 @@ class AppMenu {
 				role: 'paste'
 			}, {
 				label: t.__('Paste and Match Style'),
-				role: 'pasteandmatchstyle'
+				role: 'pasteAndMatchStyle'
 			}, {
 				type: 'separator'
 			}, {
 				label: t.__('Select All'),
-				role: 'selectall'
+				role: 'selectAll'
 			}]
 		}, {
 			label: t.__('View'),
@@ -560,35 +562,34 @@ class AppMenu {
 		return activeTabIndex;
 	}
 
-	static resetAppSettings(): void {
+	static async resetAppSettings(): Promise<void> {
 		const resetAppSettingsMessage = 'By proceeding you will be removing all connected organizations and preferences from Zulip.';
 
 		// We save App's settings/configurations in following files
 		const settingFiles = ['config/window-state.json', 'config/domain.json', 'config/settings.json', 'config/certificates.json'];
 
-		dialog.showMessageBox({
+		const { response } = await dialog.showMessageBox({
 			type: 'warning',
 			buttons: ['YES', 'NO'],
 			defaultId: 0,
 			message: 'Are you sure?',
 			detail: resetAppSettingsMessage
-		}, response => {
-			if (response === 0) {
-				settingFiles.forEach(settingFileName => {
-					const getSettingFilesPath = path.join(app.getPath('appData'), appName, settingFileName);
-					fs.access(getSettingFilesPath, (error: any) => {
-						if (error) {
-							logger.error('Error while resetting app settings.');
-							logger.error(error);
-						} else {
-							fs.unlink(getSettingFilesPath, () => {
-								AppMenu.sendAction('clear-app-data');
-							});
-						}
-					});
-				});
-			}
 		});
+		if (response === 0) {
+			settingFiles.forEach(settingFileName => {
+				const getSettingFilesPath = path.join(app.getPath('appData'), appName, settingFileName);
+				fs.access(getSettingFilesPath, (error: any) => {
+					if (error) {
+						logger.error('Error while resetting app settings.');
+						logger.error(error);
+					} else {
+						fs.unlink(getSettingFilesPath, () => {
+							AppMenu.sendAction('clear-app-data');
+						});
+					}
+				});
+			});
+		}
 	}
 
 	setMenu(props: any): void {
