@@ -175,17 +175,12 @@ class DomainUtil {
 		try {
 			return await this.getServerSettings(domain, serverConf.ignoreCerts);
 		} catch (err) {
-			// If the domain contains following strings we just bypass the server
-			const whitelistDomains = [
-				'zulipdev.org'
-			];
-
-			// make sure that error is an error or string not undefined
+			// Make sure that error is an error or string not undefined
 			// so validation does not throw error.
 			const error = err || '';
 
 			const certsError = error.toString().includes('certificate');
-			if (domain.indexOf(whitelistDomains) >= 0 || certsError) {
+			if (certsError) {
 				return this.checkCertError(domain, serverConf, error, silent);
 			} else {
 				throw Messages.invalidZulipServerError(domain);
@@ -319,12 +314,13 @@ class DomainUtil {
 	}
 
 	formatUrl(domain: any): string {
-		const hasPrefix = (domain.indexOf('http') === 0);
-		if (hasPrefix) {
+		if (domain.startsWith('http://') || domain.startsWith('https://')) {
 			return domain;
-		} else {
-			return (domain.indexOf('localhost:') >= 0) ? `http://${domain}` : `https://${domain}`;
 		}
+		if (domain.startsWith('localhost:')) {
+			return `http://${domain}`;
+		}
+		return `https://${domain}`;
 	}
 }
 

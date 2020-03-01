@@ -18,7 +18,7 @@
     "url": "https://github.com/zulip/zulip-desktop/issues"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=10.0.0"
   },
   "scripts": {
     "start": "node tools/run-dev",
@@ -176,11 +176,11 @@
     "nodemon": "1.14.11",
     "pre-commit": "1.2.2",
     "spectron": "^10.0.1",
-    "stylelint": "9.10.1",
+    "stylelint": "^13.2.0",
     "tap-colorize": "1.2.0",
     "tape": "4.8.0",
     "typescript": "3.5.2",
-    "xo": "0.24.0"
+    "xo": "^0.27.2"
   },
   "xo": {
     "extends": "xo-typescript",
@@ -212,6 +212,7 @@
           "no-warning-comments": 0,
           "object-curly-spacing": 0,
           "capitalized-comments": 0,
+          "no-constructor-return": "off",
           "no-else-return": 0,
           "no-path-concat": 0,
           "no-alert": 0,
@@ -225,9 +226,10 @@
           "quotes": 0,
           "unicorn/catch-error-name": 0,
           "unicorn/no-console-spaces": 0,
+          "promise/prefer-await-to-then": "off",
           "node/no-deprecated-api": 0,
-          "@typescript-eslint/member-ordering": "never",
-          "@typescript-eslint/restrict-plus-operands": "never",
+          "@typescript-eslint/member-ordering": "off",
+          "@typescript-eslint/restrict-plus-operands": "off",
           "import/default": 0,
           "@typescript-eslint/no-unused-vars": 0
         }

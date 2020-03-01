@@ -314,8 +314,8 @@ class ServerManagerView {
 	initTabs(): void {
 		const servers = DomainUtil.getDomains();
 		if (servers.length > 0) {
-			for (let i = 0; i < servers.length; i++) {
-				this.initServer(servers[i], i);
+			for (const [i, server] of servers.entries()) {
+				this.initServer(server, i);
 			}
 			// Open last active tab
 			let lastActiveTab = ConfigUtil.getConfigItem('lastActiveTab');
@@ -325,13 +325,13 @@ class ServerManagerView {
 			// checkDomain() and webview.load() for lastActiveTab before the others
 			DomainUtil.updateSavedServer(servers[lastActiveTab].url, lastActiveTab);
 			this.activateTab(lastActiveTab);
-			for (let i = 0; i < servers.length; i++) {
+			for (const [i, server] of servers.entries()) {
 				// after the lastActiveTab is activated, we load the others in the background
 				// without activating them, to prevent flashing of server icons
 				if (i === lastActiveTab) {
 					continue;
 				}
-				DomainUtil.updateSavedServer(servers[i].url, i);
+				DomainUtil.updateSavedServer(server.url, i);
 				this.tabs[i].webview.load();
 			}
 			// Remove focus from the settings icon at sidebar bottom

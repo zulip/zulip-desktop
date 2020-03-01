@@ -27,7 +27,7 @@ class AuthUtil {
 	hexToAscii = (hex: string) => {
 		let ascii = '';
 		for (let i = 0; i < hex.length; i += 2) {
-			ascii += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+			ascii += String.fromCharCode(parseInt(hex.slice(i, i + 2), 16));
 		}
 		return ascii;
 	};

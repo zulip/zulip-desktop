@@ -465,7 +465,7 @@ class GeneralSection extends BaseSection {
 		if (!canceled) {
 			ConfigUtil.setConfigItem('downloadsPath', filePaths[0]);
 			const downloadFolderPath: HTMLElement = document.querySelector('.download-folder-path');
-			downloadFolderPath.innerText = filePaths[0];
+			downloadFolderPath.textContent = filePaths[0];
 		}
 	}
 

@@ -34,7 +34,7 @@ class WebView extends BaseComponent {
 		super();
 
 		this.props = props;
-		this.zoomFactor = 1.0;
+		this.zoomFactor = 1;
 		this.loading = true;
 		this.badgeCount = 0;
 		this.customCSS = ConfigUtil.getConfigItem('customCSS');
@@ -237,7 +237,7 @@ class WebView extends BaseComponent {
 	}
 
 	zoomActualSize(): void {
-		this.zoomFactor = 1.0;
+		this.zoomFactor = 1;
 		this.$el.setZoomFactor(this.zoomFactor);
 	}
 

@@ -87,9 +87,7 @@ class AddCertificate extends BaseComponent {
 		});
 
 		this.serverUrl.addEventListener('keypress', event => {
-			const EnterkeyCode = event.keyCode;
-
-			if (EnterkeyCode === 13) {
+			if (event.key === 'Enter') {
 				this.addHandler();
 			}
 		});
