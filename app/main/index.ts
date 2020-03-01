@@ -368,7 +368,7 @@ app.on('ready', () => {
 
 			item.setSavePath(setFilePath);
 
-			item.on('updated', (_event: Event, state) => {
+			const updatedListener = (_event: Event, state: string): void => {
 				switch (state) {
 					case 'interrupted': {
 						// Can interrupted to due to network error, cancel download then
@@ -387,7 +387,8 @@ app.on('ready', () => {
 						console.info('Unknown updated state of download item');
 					}
 				}
-			});
+			};
+			item.on('updated', updatedListener);
 			item.once('done', (_event: Event, state) => {
 				if (state === 'completed') {
 					page.send('downloadFileCompleted', item.getSavePath(), shortFileName);
@@ -396,7 +397,7 @@ app.on('ready', () => {
 					page.send('downloadFileFailed');
 				}
 				// To stop item for listening to updated events of this file
-				item.removeAllListeners('updated');
+				item.removeListener('updated', updatedListener);
 			});
 		});
 	});
