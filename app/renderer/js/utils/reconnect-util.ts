@@ -34,7 +34,7 @@ class ReconnectUtil {
 		});
 	}
 
-	isOnline(): Promise<boolean> {
+	async isOnline(): Promise<boolean> {
 		return new Promise(resolve => {
 			try {
 				const ignoreCerts = DomainUtil.shouldIgnoreCerts(this.url);
@@ -60,42 +60,32 @@ class ReconnectUtil {
 
 	pollInternetAndReload(): void {
 		this.fibonacciBackoff.backoff();
-		this.fibonacciBackoff.on('ready', () => {
-			this._checkAndReload().then(status => {
-				if (status) {
-					this.fibonacciBackoff.reset();
-				} else {
-					this.fibonacciBackoff.backoff();
-				}
-			});
+		this.fibonacciBackoff.on('ready', async () => {
+			if (await this._checkAndReload()) {
+				this.fibonacciBackoff.reset();
+			} else {
+				this.fibonacciBackoff.backoff();
+			}
 		});
 	}
 
-	// TODO: Make this a async function
-	_checkAndReload(): Promise<boolean> {
-		return new Promise(resolve => {
-			if (!this.alreadyReloaded) { // eslint-disable-line no-negated-condition
-				this.isOnline()
-					.then((online: boolean) => {
-						if (online) {
-							ipcRenderer.send('forward-message', 'reload-viewer');
-							logger.log('You\'re back online.');
-							return resolve(true);
-						}
-
-						logger.log('There is no internet connection, try checking network cables, modem and router.');
-						const errMsgHolder = document.querySelector('#description');
-						if (errMsgHolder) {
-							errMsgHolder.innerHTML = `
-										<div>Your internet connection doesn't seem to work properly!</div>
-										<div>Verify that it works and then click try again.</div>`;
-						}
-						return resolve(false);
-					});
-			} else {
-				return resolve(true);
-			}
-		});
+	async _checkAndReload(): Promise<boolean> {
+		if (this.alreadyReloaded) {
+			return true;
+		}
+		if (await this.isOnline()) {
+			ipcRenderer.send('forward-message', 'reload-viewer');
+			logger.log('You\'re back online.');
+			return true;
+		}
+		logger.log('There is no internet connection, try checking network cables, modem and router.');
+		const errMsgHolder = document.querySelector('#description');
+		if (errMsgHolder) {
+			errMsgHolder.innerHTML = `
+						<div>Your internet connection doesn't seem to work properly!</div>
+						<div>Verify that it works and then click try again.</div>`;
+		}
+		return false;
 	}
 }
 
