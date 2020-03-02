@@ -75,23 +75,18 @@ class DomainUtil {
 		this.db.push(`/domains[${index}]`, server, true);
 	}
 
-	addDomain(server: any): Promise<void> {
+	async addDomain(server: any): Promise<void> {
 		const { ignoreCerts } = server;
-		return new Promise(resolve => {
-			if (server.icon) {
-				this.saveServerIcon(server, ignoreCerts).then(localIconUrl => {
-					server.icon = localIconUrl;
-					this.db.push('/domains[]', server, true);
-					this.reloadDB();
-					resolve();
-				});
-			} else {
-				server.icon = defaultIconUrl;
-				this.db.push('/domains[]', server, true);
-				this.reloadDB();
-				resolve();
-			}
-		});
+		if (server.icon) {
+			const localIconUrl = await this.saveServerIcon(server, ignoreCerts);
+			server.icon = localIconUrl;
+			this.db.push('/domains[]', server, true);
+			this.reloadDB();
+		} else {
+			server.icon = defaultIconUrl;
+			this.db.push('/domains[]', server, true);
+			this.reloadDB();
+		}
 	}
 
 	removeDomains(): void {
@@ -189,7 +184,7 @@ class DomainUtil {
 		}
 	}
 
-	getServerSettings(domain: any, ignoreCerts = false): Promise<object | string> {
+	async getServerSettings(domain: any, ignoreCerts = false): Promise<object | string> {
 		const serverSettingsOptions = {
 			url: domain + '/api/v1/server_settings',
 			...RequestUtil.requestOptions(domain, ignoreCerts)
@@ -218,7 +213,7 @@ class DomainUtil {
 		});
 	}
 
-	saveServerIcon(server: any, ignoreCerts = false): Promise<string> {
+	async saveServerIcon(server: any, ignoreCerts = false): Promise<string> {
 		const url = server.icon;
 		const domain = server.url;
 

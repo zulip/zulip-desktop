@@ -140,17 +140,16 @@ class ServerManagerView {
 		this.tabIndex = 0;
 	}
 
-	init(): void {
-		this.loadProxy().then(() => {
-			this.initDefaultSettings();
-			this.initSidebar();
-			if (EnterpriseUtil.configFile) {
-				this.initPresetOrgs();
-			}
-			this.initTabs();
-			this.initActions();
-			this.registerIpcs();
-		});
+	async init(): Promise<void> {
+		await this.loadProxy();
+		this.initDefaultSettings();
+		this.initSidebar();
+		if (EnterpriseUtil.configFile) {
+			this.initPresetOrgs();
+		}
+		this.initTabs();
+		this.initActions();
+		this.registerIpcs();
 	}
 
 	async loadProxy(): Promise<void> {
@@ -867,13 +866,12 @@ class ServerManagerView {
 			this.openSettings('AddServer');
 		});
 
-		ipcRenderer.on('reload-proxy', (event: Event, showAlert: boolean) => {
-			this.loadProxy().then(() => {
-				if (showAlert) {
-					alert('Proxy settings saved!');
-					ipcRenderer.send('reload-full-app');
-				}
-			});
+		ipcRenderer.on('reload-proxy', async (event: Event, showAlert: boolean) => {
+			await this.loadProxy();
+			if (showAlert) {
+				alert('Proxy settings saved!');
+				ipcRenderer.send('reload-full-app');
+			}
 		});
 
 		ipcRenderer.on('toggle-sidebar', (event: Event, show: boolean) => {
@@ -942,17 +940,15 @@ class ServerManagerView {
 
 		ipcRenderer.on('update-realm-icon', (event: Event, serverURL: string, iconURL: string) => {
 			// TODO: TypeScript - Type annotate getDomains() or this domain paramter.
-			DomainUtil.getDomains().forEach((domain: any, index: number) => {
+			DomainUtil.getDomains().forEach(async (domain: any, index: number) => {
 				if (domain.url.includes(serverURL)) {
-					DomainUtil.saveServerIcon(iconURL).then((localIconUrl: string) => {
-						const serverImgsSelector = '.tab .server-icons';
-						const serverImgs: NodeListOf<HTMLImageElement> = document.querySelectorAll(serverImgsSelector);
-						serverImgs[index].src = localIconUrl;
-
-						domain.icon = localIconUrl;
-						DomainUtil.db.push(`/domains[${index}]`, domain, true);
-						DomainUtil.reloadDB();
-					});
+					const localIconUrl: string = await DomainUtil.saveServerIcon(iconURL);
+					const serverImgsSelector = '.tab .server-icons';
+					const serverImgs: NodeListOf<HTMLImageElement> = document.querySelectorAll(serverImgsSelector);
+					serverImgs[index].src = localIconUrl;
+					domain.icon = localIconUrl;
+					DomainUtil.db.push(`/domains[${index}]`, domain, true);
+					DomainUtil.reloadDB();
 				}
 			});
 		});

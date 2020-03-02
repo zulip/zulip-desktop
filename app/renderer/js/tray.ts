@@ -51,69 +51,59 @@ const config = {
 	thick: process.platform === 'win32'
 };
 
-const renderCanvas = function (arg: number): Promise<HTMLCanvasElement> {
+const renderCanvas = function (arg: number): HTMLCanvasElement {
 	config.unreadCount = arg;
 
-	return new Promise(resolve => {
-		const SIZE = config.size * config.pixelRatio;
-		const PADDING = SIZE * 0.05;
-		const CENTER = SIZE / 2;
-		const HAS_COUNT = config.showUnreadCount && config.unreadCount;
-		const color = config.unreadCount ? config.unreadColor : config.readColor;
-		const backgroundColor = config.unreadCount ? config.unreadBackgroundColor : config.readBackgroundColor;
+	const SIZE = config.size * config.pixelRatio;
+	const PADDING = SIZE * 0.05;
+	const CENTER = SIZE / 2;
+	const HAS_COUNT = config.showUnreadCount && config.unreadCount;
+	const color = config.unreadCount ? config.unreadColor : config.readColor;
+	const backgroundColor = config.unreadCount ? config.unreadBackgroundColor : config.readBackgroundColor;
 
-		const canvas = document.createElement('canvas');
-		canvas.width = SIZE;
-		canvas.height = SIZE;
-		const ctx = canvas.getContext('2d');
+	const canvas = document.createElement('canvas');
+	canvas.width = SIZE;
+	canvas.height = SIZE;
+	const ctx = canvas.getContext('2d');
 
-		// Circle
-		// If (!config.thick || config.thick && HAS_COUNT) {
-		ctx.beginPath();
-		ctx.arc(CENTER, CENTER, (SIZE / 2) - PADDING, 0, 2 * Math.PI, false);
-		ctx.fillStyle = backgroundColor;
-		ctx.fill();
-		ctx.lineWidth = SIZE / (config.thick ? 10 : 20);
-		ctx.strokeStyle = backgroundColor;
-		ctx.stroke();
-		// Count or Icon
-		if (HAS_COUNT) {
-			ctx.fillStyle = color;
-			ctx.textAlign = 'center';
-			if (config.unreadCount > 99) {
-				ctx.font = `${config.thick ? 'bold ' : ''}${SIZE * 0.4}px Helvetica`;
-				ctx.fillText('99+', CENTER, CENTER + (SIZE * 0.15));
-			} else if (config.unreadCount < 10) {
-				ctx.font = `${config.thick ? 'bold ' : ''}${SIZE * 0.5}px Helvetica`;
-				ctx.fillText(String(config.unreadCount), CENTER, CENTER + (SIZE * 0.2));
-			} else {
-				ctx.font = `${config.thick ? 'bold ' : ''}${SIZE * 0.5}px Helvetica`;
-				ctx.fillText(String(config.unreadCount), CENTER, CENTER + (SIZE * 0.15));
-			}
-
-			resolve(canvas);
+	// Circle
+	// If (!config.thick || config.thick && HAS_COUNT) {
+	ctx.beginPath();
+	ctx.arc(CENTER, CENTER, (SIZE / 2) - PADDING, 0, 2 * Math.PI, false);
+	ctx.fillStyle = backgroundColor;
+	ctx.fill();
+	ctx.lineWidth = SIZE / (config.thick ? 10 : 20);
+	ctx.strokeStyle = backgroundColor;
+	ctx.stroke();
+	// Count or Icon
+	if (HAS_COUNT) {
+		ctx.fillStyle = color;
+		ctx.textAlign = 'center';
+		if (config.unreadCount > 99) {
+			ctx.font = `${config.thick ? 'bold ' : ''}${SIZE * 0.4}px Helvetica`;
+			ctx.fillText('99+', CENTER, CENTER + (SIZE * 0.15));
+		} else if (config.unreadCount < 10) {
+			ctx.font = `${config.thick ? 'bold ' : ''}${SIZE * 0.5}px Helvetica`;
+			ctx.fillText(String(config.unreadCount), CENTER, CENTER + (SIZE * 0.2));
+		} else {
+			ctx.font = `${config.thick ? 'bold ' : ''}${SIZE * 0.5}px Helvetica`;
+			ctx.fillText(String(config.unreadCount), CENTER, CENTER + (SIZE * 0.15));
 		}
-	});
+	}
+
+	return canvas;
 };
 /**
  * Renders the tray icon as a native image
  * @param arg: Unread count
  * @return the native image
  */
-const renderNativeImage = function (arg: number): Promise<NativeImage> {
-	return Promise.resolve()
-		.then(() => renderCanvas(arg))
-		.then(canvas => {
-			const pngData = nativeImage.createFromDataURL(canvas.toDataURL('image/png')).toPNG();
-
-			// TODO: Fix the function to correctly use Promise correctly.
-			// the Promise.resolve().then(...) above is useless we should
-			// start with renderCanvas(arg).then
-			// eslint-disable-next-line promise/no-return-wrap
-			return Promise.resolve(nativeImage.createFromBuffer(pngData, {
-				scaleFactor: config.pixelRatio
-			}));
-		});
+const renderNativeImage = function (arg: number): NativeImage {
+	const canvas = renderCanvas(arg);
+	const pngData = nativeImage.createFromDataURL(canvas.toDataURL('image/png')).toPNG();
+	return nativeImage.createFromBuffer(pngData, {
+		scaleFactor: config.pixelRatio
+	});
 };
 
 function sendAction(action: string): void {
@@ -187,10 +177,9 @@ ipcRenderer.on('tray', (_event: Event, arg: number): void => {
 			window.tray.setToolTip('No unread messages');
 		} else {
 			unread = arg;
-			renderNativeImage(arg).then(image => {
-				window.tray.setImage(image);
-				window.tray.setToolTip(arg + ' unread messages');
-			});
+			const image = renderNativeImage(arg);
+			window.tray.setImage(image);
+			window.tray.setToolTip(arg + ' unread messages');
 		}
 	}
 });
@@ -208,10 +197,9 @@ function toggleTray(): void {
 		state = true;
 		createTray();
 		if (process.platform === 'linux' || process.platform === 'win32') {
-			renderNativeImage(unread).then(image => {
-				window.tray.setImage(image);
-				window.tray.setToolTip(unread + ' unread messages');
-			});
+			const image = renderNativeImage(unread);
+			window.tray.setImage(image);
+			window.tray.setToolTip(unread + ' unread messages');
 		}
 		ConfigUtil.setConfigItem('trayIcon', true);
 	}

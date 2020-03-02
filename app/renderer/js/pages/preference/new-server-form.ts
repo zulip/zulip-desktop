@@ -58,16 +58,18 @@ class NewServerForm extends BaseComponent {
 		this.$newServerUrl = this.$newServerForm.querySelectorAll('input.setting-input-value')[0] as HTMLInputElement;
 	}
 
-	submitFormHandler(): void {
+	async submitFormHandler(): Promise<void> {
 		this.$saveServerButton.innerHTML = 'Connecting...';
-		DomainUtil.checkDomain(this.$newServerUrl.value).then(serverConf => {
-			DomainUtil.addDomain(serverConf).then(() => {
-				this.props.onChange(this.props.index);
-			});
-		}, errorMessage => {
+		let serverConf;
+		try {
+			serverConf = await DomainUtil.checkDomain(this.$newServerUrl.value);
+		} catch (errorMessage) {
 			this.$saveServerButton.innerHTML = 'Connect';
 			alert(errorMessage);
-		});
+			return;
+		}
+		await DomainUtil.addDomain(serverConf);
+		this.props.onChange(this.props.index);
 	}
 
 	openCreateNewOrgExternalLink(): void {

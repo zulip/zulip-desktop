@@ -255,7 +255,6 @@
           "node/no-deprecated-api": 0,
           "@typescript-eslint/member-ordering": "off",
           "@typescript-eslint/no-dynamic-delete": "off",
-          "@typescript-eslint/promise-function-async": "off",
           "@typescript-eslint/restrict-plus-operands": "off",
           "@typescript-eslint/restrict-template-expressions": "off",
           "import/default": 0,

@@ -61,7 +61,7 @@ class ProxyUtil {
 	}
 
 	// TODO: Refactor to async function
-	resolveSystemProxy(mainWindow: Electron.BrowserWindow): void {
+	async resolveSystemProxy(mainWindow: Electron.BrowserWindow): Promise<void> {
 		const page = mainWindow.webContents;
 		const ses = page.session;
 		const resolveProxyUrl = 'www.example.com';
@@ -121,17 +121,16 @@ class ProxyUtil {
 			return socksString;
 		})();
 
-		Promise.all([httpProxy, httpsProxy, ftpProxy, socksProxy]).then(values => {
-			let proxyString = '';
-			values.forEach(proxy => {
-				proxyString += proxy;
-			});
-			ConfigUtil.setConfigItem('systemProxyRules', proxyString);
-			const useSystemProxy = ConfigUtil.getConfigItem('useSystemProxy');
-			if (useSystemProxy) {
-				ConfigUtil.setConfigItem('proxyRules', proxyString);
-			}
+		const values = await Promise.all([httpProxy, httpsProxy, ftpProxy, socksProxy]);
+		let proxyString = '';
+		values.forEach(proxy => {
+			proxyString += proxy;
 		});
+		ConfigUtil.setConfigItem('systemProxyRules', proxyString);
+		const useSystemProxy = ConfigUtil.getConfigItem('useSystemProxy');
+		if (useSystemProxy) {
+			ConfigUtil.setConfigItem('proxyRules', proxyString);
+		}
 	}
 }
 
