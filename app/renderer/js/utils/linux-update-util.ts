@@ -1,5 +1,5 @@
 'use strict';
-import JsonDB from 'node-json-db';
+import { JsonDB } from 'node-json-db';
 
 import fs = require('fs');
 import path = require('path');

@@ -1,5 +1,5 @@
 'use strict';
-import JsonDB from 'node-json-db';
+import { JsonDB } from 'node-json-db';
 
 import escape = require('escape-html');
 import request = require('request');
