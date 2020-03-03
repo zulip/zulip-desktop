@@ -21,13 +21,6 @@ interface PatchedGlobal extends NodeJS.Global {
 
 const globalPatched = global as PatchedGlobal;
 
-// Adds debug features like hotkeys for triggering dev tools and reload
-// in development mode
-if (isDev) {
-	/* eslint-disable-next-line @typescript-eslint/no-var-requires */
-	require('electron-debug')();
-}
-
 // Prevent window being garbage collected
 let mainWindow: Electron.BrowserWindow;
 let badgeCount: number;
