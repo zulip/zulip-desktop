@@ -27,26 +27,26 @@
     "InstantMessaging"
   ],
   "dependencies": {
-    "@electron-elements/send-feedback": "1.0.8",
+    "@electron-elements/send-feedback": "^1.0.8",
     "@sentry/electron": "^1.2.1",
-    "adm-zip": "0.4.11",
-    "auto-launch": "5.0.5",
-    "backoff": "2.5.0",
-    "crypto-random-string": "3.1.0",
+    "adm-zip": "^0.4.14",
+    "auto-launch": "^5.0.5",
+    "backoff": "^2.5.0",
+    "crypto-random-string": "^3.1.0",
     "dotenv": "^8.2.0",
     "electron-is-dev": "^1.1.0",
     "electron-log": "^4.0.7",
-    "electron-spellchecker": "2.2.1",
-    "electron-updater": "4.2.0",
-    "electron-window-state": "5.0.3",
-    "escape-html": "1.0.3",
-    "i18n": "0.8.3",
+    "electron-spellchecker": "^2.2.1",
+    "electron-updater": "^4.2.2",
+    "electron-window-state": "^5.0.3",
+    "escape-html": "^1.0.3",
+    "i18n": "^0.8.5",
     "node-json-db": "^1.0.3",
-    "request": "2.85.0",
-    "semver": "5.4.1",
-    "wurl": "2.5.0"
+    "request": "^2.88.2",
+    "semver": "^7.1.3",
+    "wurl": "^2.5.4"
   },
   "optionalDependencies": {
-    "node-mac-notifier": "1.1.0"
+    "node-mac-notifier": "^1.1.0"
   }
 }
