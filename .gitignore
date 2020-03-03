@@ -1,5 +1,5 @@
-# Dependency directories
-node_modules/
+# Dependency directory
+/node_modules/
 
 # npm cache directory
 .npm

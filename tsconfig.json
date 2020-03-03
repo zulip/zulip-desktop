@@ -17,13 +17,5 @@
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "noImplicitReturns": true
-  },
-  "include":[
-    "app/**/*",
-    "typings.d.ts"
-  ],
-  "exclude":[
-    "node_modules",
-    "app/node_modules"
-  ]
+  }
 }
