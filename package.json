@@ -51,8 +51,7 @@
     ],
     "files": [
       "**/*",
-      "!docs${/*}",
-      "!node_modules/@paulcbetts/cld/deps/cld${/*}"
+      "!**/node_modules/cld/deps/cld"
     ],
     "copyright": "©2019 Kandra Labs, Inc.",
     "mac": {
