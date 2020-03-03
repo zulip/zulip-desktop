@@ -154,7 +154,6 @@
   ],
   "devDependencies": {
     "@types/adm-zip": "^0.4.32",
-    "@types/dotenv": "^8.2.0",
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
     "@vitalets/google-translate-api": "^3.0.0",
