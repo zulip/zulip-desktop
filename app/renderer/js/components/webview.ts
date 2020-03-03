@@ -25,6 +25,7 @@ class WebView extends BaseComponent {
 	customCSS: string;
 	$webviewsContainer: DOMTokenList;
 	$el: Electron.WebviewTag;
+	domReady?: Promise<void>;
 
 	// This is required because in main.js we access WebView.method as
 	// webview[method].
@@ -56,6 +57,9 @@ class WebView extends BaseComponent {
 
 	init(): void {
 		this.$el = this.generateNodeFromTemplate(this.template()) as Electron.WebviewTag;
+		this.domReady = new Promise(resolve => {
+			this.$el.addEventListener('dom-ready', () => resolve(), true);
+		});
 		this.props.$root.append(this.$el);
 
 		this.registerListeners();
@@ -292,7 +296,8 @@ class WebView extends BaseComponent {
 		this.init();
 	}
 
-	send(channel: string, ...param: any[]): void {
+	async send(channel: string, ...param: any[]): Promise<void> {
+		await this.domReady;
 		this.$el.send(channel, ...param);
 	}
 }

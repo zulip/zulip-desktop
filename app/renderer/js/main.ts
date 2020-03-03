@@ -306,7 +306,7 @@ class ServerManagerView {
 			dialog.showErrorBox(title, content);
 			if (DomainUtil.getDomains().length === 0) {
 				// no orgs present, stop showing loading gif
-				this.openSettings('AddServer');
+				await this.openSettings('AddServer');
 			}
 		}
 	}
@@ -554,14 +554,14 @@ class ServerManagerView {
 		this.activateTab(this.functionalTabs[tabProps.name]);
 	}
 
-	openSettings(nav = 'General'): void {
+	async openSettings(nav = 'General'): Promise<void> {
 		this.openFunctionalTab({
 			name: 'Settings',
 			materialIcon: 'settings',
 			url: `file://${rendererDirectory}/preference.html#${nav}`
 		});
 		this.$settingsButton.classList.add('active');
-		this.tabs[this.functionalTabs.Settings].webview.send('switch-settings-nav', nav);
+		await this.tabs[this.functionalTabs.Settings].webview.send('switch-settings-nav', nav);
 	}
 
 	openAbout(): void {
