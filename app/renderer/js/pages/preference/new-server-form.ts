@@ -25,9 +25,7 @@ class NewServerForm extends BaseComponent {
 					<input class="setting-input-value" autofocus placeholder="your-organization.zulipchat.com or zulip.your-organization.com"/>
 				</div>
 				<div class="server-center">
-					<div class="server-save-action">
-						<button id="connect">${t.__('Connect')}</button>
-					</div>
+					<button id="connect">${t.__('Connect')}</button>
 				</div>
 				<div class="server-center">
 					<div class="divider">
@@ -35,9 +33,7 @@ class NewServerForm extends BaseComponent {
 					</div>
 				</div>
 				<div class="server-center">
-					<div class="server-save-action">
-						<button id="open-create-org-link">${t.__('Create a new organization')}</button>
-					</div>
+					<button id="open-create-org-link">${t.__('Create a new organization')}</button>
 				</div>
 				<div class="server-center">
 					<div class="server-network-option">
@@ -56,20 +52,20 @@ class NewServerForm extends BaseComponent {
 
 	initForm(): void {
 		this.$newServerForm = this.generateNodeFromTemplate(this.template());
-		this.$saveServerButton = this.$newServerForm.querySelectorAll('.server-save-action')[0] as HTMLButtonElement;
+		this.$saveServerButton = this.$newServerForm.querySelector('#connect');
 		this.props.$root.innerHTML = '';
 		this.props.$root.append(this.$newServerForm);
 		this.$newServerUrl = this.$newServerForm.querySelectorAll('input.setting-input-value')[0] as HTMLInputElement;
 	}
 
 	submitFormHandler(): void {
-		this.$saveServerButton.children[0].innerHTML = 'Connecting...';
+		this.$saveServerButton.innerHTML = 'Connecting...';
 		DomainUtil.checkDomain(this.$newServerUrl.value).then(serverConf => {
 			DomainUtil.addDomain(serverConf).then(() => {
 				this.props.onChange(this.props.index);
 			});
 		}, errorMessage => {
-			this.$saveServerButton.children[0].innerHTML = 'Connect';
+			this.$saveServerButton.innerHTML = 'Connect';
 			alert(errorMessage);
 		});
 	}
