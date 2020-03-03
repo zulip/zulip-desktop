@@ -1,7 +1,5 @@
 const Application = require('spectron').Application
-const cpFile = require('cp-file')
 const fs = require('fs')
-const isCI = require('is-ci')
 const mkdirp = require('mkdirp')
 const path = require('path')
 const rimraf = require('rimraf')
