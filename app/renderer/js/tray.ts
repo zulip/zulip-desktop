@@ -5,6 +5,8 @@ import * as ConfigUtil from './utils/config-util';
 
 const { Tray, Menu, nativeImage, BrowserWindow, nativeTheme } = remote;
 
+let tray: Electron.Tray;
+
 // get the theme on macOS
 const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
 
@@ -13,8 +15,6 @@ const ICON_DIR = process.platform === 'darwin' ? `../../resources/tray/${theme}`
 const TRAY_SUFFIX = 'tray';
 
 const APP_ICON = path.join(__dirname, ICON_DIR, TRAY_SUFFIX);
-
-declare let window: ZulipWebWindow;
 
 const iconPath = (): string => {
 	if (process.platform === 'linux') {
@@ -140,23 +140,23 @@ const createTray = function (): void {
 			}
 		}
 	]);
-	window.tray = new Tray(iconPath());
-	window.tray.setContextMenu(contextMenu);
+	tray = new Tray(iconPath());
+	tray.setContextMenu(contextMenu);
 	if (process.platform === 'linux' || process.platform === 'win32') {
-		window.tray.on('click', () => {
+		tray.on('click', () => {
 			ipcRenderer.send('toggle-app');
 		});
 	}
 };
 
 ipcRenderer.on('destroytray', (event: Event): Event => {
-	if (!window.tray) {
+	if (!tray) {
 		return undefined;
 	}
 
-	window.tray.destroy();
-	if (window.tray.isDestroyed()) {
-		window.tray = null;
+	tray.destroy();
+	if (tray.isDestroyed()) {
+		tray = null;
 	} else {
 		throw new Error('Tray icon not properly destroyed.');
 	}
@@ -165,31 +165,31 @@ ipcRenderer.on('destroytray', (event: Event): Event => {
 });
 
 ipcRenderer.on('tray', (_event: Event, arg: number): void => {
-	if (!window.tray) {
+	if (!tray) {
 		return;
 	}
 	// We don't want to create tray from unread messages on macOS since it already has dock badges.
 	if (process.platform === 'linux' || process.platform === 'win32') {
 		if (arg === 0) {
 			unread = arg;
-			window.tray.setImage(iconPath());
-			window.tray.setToolTip('No unread messages');
+			tray.setImage(iconPath());
+			tray.setToolTip('No unread messages');
 		} else {
 			unread = arg;
 			const image = renderNativeImage(arg);
-			window.tray.setImage(image);
-			window.tray.setToolTip(arg + ' unread messages');
+			tray.setImage(image);
+			tray.setToolTip(arg + ' unread messages');
 		}
 	}
 });
 
 function toggleTray(): void {
 	let state;
-	if (window.tray) {
+	if (tray) {
 		state = false;
-		window.tray.destroy();
-		if (window.tray.isDestroyed()) {
-			window.tray = null;
+		tray.destroy();
+		if (tray.isDestroyed()) {
+			tray = null;
 		}
 		ConfigUtil.setConfigItem('trayIcon', false);
 	} else {
@@ -197,8 +197,8 @@ function toggleTray(): void {
 		createTray();
 		if (process.platform === 'linux' || process.platform === 'win32') {
 			const image = renderNativeImage(unread);
-			window.tray.setImage(image);
-			window.tray.setToolTip(unread + ' unread messages');
+			tray.setImage(image);
+			tray.setToolTip(unread + ' unread messages');
 		}
 		ConfigUtil.setConfigItem('trayIcon', true);
 	}

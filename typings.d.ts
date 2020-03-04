@@ -18,6 +18,5 @@ interface Window {
 
 interface ZulipWebWindow extends Window {
 	electron_bridge: any;
-	tray: any;
 	lightbox: any;
 }
