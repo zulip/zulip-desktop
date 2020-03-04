@@ -15,32 +15,23 @@ const botsList: BotListItem[] = [];
 let botsListLoaded = false;
 
 // this function load list of bots from the server
-// sync=True for a synchronous getJSON request
 // in case botsList isn't already completely loaded when required in parseRely
-export function loadBots(sync = false): void {
-	const { $ } = window;
+export async function loadBots(): Promise<void> {
 	botsList.length = 0;
-	if (sync) {
-		$.ajaxSetup({async: false});
-	}
-	$.getJSON('/json/users')
-		.done((data: any) => {
-			const { members } = data;
-			members.forEach((membersRow: any) => {
-				if (membersRow.is_bot) {
-					const bot = `@${membersRow.full_name}`;
-					const mention = `@**${bot.replace(/^@/, '')}**`;
-					botsList.push([bot, mention]);
-				}
-			});
-			botsListLoaded = true;
-		})
-		.fail((error: any) => {
-			logger.log('Load bots request failed: ', error.responseText);
-			logger.log('Load bots request status: ', error.statusText);
+	const response = await fetch('/json/users');
+	if (response.ok) {
+		const { members } = await response.json();
+		members.forEach((membersRow: any) => {
+			if (membersRow.is_bot) {
+				const bot = `@${membersRow.full_name}`;
+				const mention = `@**${bot.replace(/^@/, '')}**`;
+				botsList.push([bot, mention]);
+			}
 		});
-	if (sync) {
-		$.ajaxSetup({async: true});
+		botsListLoaded = true;
+	} else {
+		logger.log('Load bots request failed: ', await response.text());
+		logger.log('Load bots request status: ', response.status);
 	}
 }
 
@@ -87,7 +78,7 @@ export function focusCurrentServer(): void {
 // @username in reply will be converted to @**username**
 // #stream in reply will be converted to #**stream**
 // bot mentions are not yet supported
-export function parseReply(reply: string): string {
+export async function parseReply(reply: string): Promise<string> {
 	const usersDiv = document.querySelectorAll('#user_presences li');
 	const streamHolder = document.querySelectorAll('#stream_filters li');
 
@@ -126,9 +117,9 @@ export function parseReply(reply: string): string {
 		reply = reply.replace(regex, streamMention);
 	});
 
-	// If botsList isn't completely loaded yet, make a synchronous getJSON request for list
+	// If botsList isn't completely loaded yet, make a request for list
 	if (!botsListLoaded) {
-		loadBots(true);
+		await loadBots();
 	}
 
 	// Iterate for every bot name and replace in reply

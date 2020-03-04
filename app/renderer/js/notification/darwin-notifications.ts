@@ -84,8 +84,8 @@ class DarwinNotification {
 		}
 	}
 
-	notificationHandler({ response }: NotificationHandlerArgs): void {
-		response = parseReply(response);
+	async notificationHandler({ response }: NotificationHandlerArgs): Promise<void> {
+		response = await parseReply(response);
 		focusCurrentServer();
 		if (window.electron_bridge.send_notification_reply_message_supported) {
 			window.electron_bridge.send_event('send_notification_reply_message', this.tag, response);
