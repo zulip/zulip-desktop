@@ -80,7 +80,7 @@ async function main() {
   }
 
   await Promise.all([
-    run('Electron app', 'npx electron app --disable-http-cache --no-electron-connect'),
+    run('Electron app', 'npx electron . --disable-http-cache --no-electron-connect'),
     run('TypeScript watch mode', 'npx tsc --watch --pretty')
   ]);
 }
