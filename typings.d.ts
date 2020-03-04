@@ -29,11 +29,6 @@ interface Window {
   Notification: typeof PatchedNotification;
 }
 
-// typescript doesn't have up to date NotificationOptions yet
-interface NotificationOptions {
-  silent?: boolean;
-}
-
 interface ZulipWebWindow extends Window {
     electron_bridge: any;
     tray: any;
