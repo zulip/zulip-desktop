@@ -126,13 +126,13 @@ class DomainUtil {
 			const certErrorMessage = Messages.certErrorMessage(domain, error);
 			const certErrorDetail = Messages.certErrorDetail();
 
-			const response = await (dialog.showMessageBox({
+			const { response } = await dialog.showMessageBox({
 				type: 'warning',
 				buttons: ['Yes', 'No'],
 				defaultId: 1,
 				message: certErrorMessage,
 				detail: certErrorDetail
-			}) as any); // TODO: TypeScript - Figure this out
+			});
 			if (response === 0) {
 				// set ignoreCerts parameter to true in case user responds with yes
 				serverConf.ignoreCerts = true;
