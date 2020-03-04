@@ -942,7 +942,10 @@ class ServerManagerView {
 			// TODO: TypeScript - Type annotate getDomains() or this domain paramter.
 			DomainUtil.getDomains().forEach(async (domain: any, index: number) => {
 				if (domain.url.includes(serverURL)) {
-					const localIconUrl: string = await DomainUtil.saveServerIcon(iconURL);
+					const localIconUrl: string = await DomainUtil.saveServerIcon({
+						url: serverURL,
+						icon: iconURL
+					});
 					const serverImgsSelector = '.tab .server-icons';
 					const serverImgs: NodeListOf<HTMLImageElement> = document.querySelectorAll(serverImgsSelector);
 					serverImgs[index].src = localIconUrl;
