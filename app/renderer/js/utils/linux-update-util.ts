@@ -16,61 +16,47 @@ const logger = new Logger({
 
 /* To make the util runnable in both main and renderer process */
 const { dialog, app } = remote;
-let instance: null | LinuxUpdateUtil = null;
 
-class LinuxUpdateUtil {
-	db: JsonDB;
+let db: JsonDB;
 
-	constructor() {
-		if (instance) {
-			return instance;
-		} else {
-			instance = this;
-		}
+reloadDB();
 
-		this.reloadDB();
-		return instance;
-	}
-
-	getUpdateItem(key: string, defaultValue: any = null): any {
-		this.reloadDB();
-		const value = this.db.getData('/')[key];
-		if (value === undefined) {
-			this.setUpdateItem(key, defaultValue);
-			return defaultValue;
-		} else {
-			return value;
-		}
-	}
-
-	setUpdateItem(key: string, value: any): void {
-		this.db.push(`/${key}`, value, true);
-		this.reloadDB();
-	}
-
-	removeUpdateItem(key: string): void {
-		this.db.delete(`/${key}`);
-		this.reloadDB();
-	}
-
-	reloadDB(): void {
-		const linuxUpdateJsonPath = path.join(app.getPath('userData'), '/config/updates.json');
-		try {
-			const file = fs.readFileSync(linuxUpdateJsonPath, 'utf8');
-			JSON.parse(file);
-		} catch (err) {
-			if (fs.existsSync(linuxUpdateJsonPath)) {
-				fs.unlinkSync(linuxUpdateJsonPath);
-				dialog.showErrorBox(
-					'Error saving update notifications.',
-					'We encountered an error while saving the update notifications.'
-				);
-				logger.error('Error while JSON parsing updates.json: ');
-				logger.error(err);
-			}
-		}
-		this.db = new JsonDB(linuxUpdateJsonPath, true, true);
+export function getUpdateItem(key: string, defaultValue: any = null): any {
+	reloadDB();
+	const value = db.getData('/')[key];
+	if (value === undefined) {
+		setUpdateItem(key, defaultValue);
+		return defaultValue;
+	} else {
+		return value;
 	}
 }
 
-export = new LinuxUpdateUtil();
+export function setUpdateItem(key: string, value: any): void {
+	db.push(`/${key}`, value, true);
+	reloadDB();
+}
+
+export function removeUpdateItem(key: string): void {
+	db.delete(`/${key}`);
+	reloadDB();
+}
+
+function reloadDB(): void {
+	const linuxUpdateJsonPath = path.join(app.getPath('userData'), '/config/updates.json');
+	try {
+		const file = fs.readFileSync(linuxUpdateJsonPath, 'utf8');
+		JSON.parse(file);
+	} catch (err) {
+		if (fs.existsSync(linuxUpdateJsonPath)) {
+			fs.unlinkSync(linuxUpdateJsonPath);
+			dialog.showErrorBox(
+				'Error saving update notifications.',
+				'We encountered an error while saving the update notifications.'
+			);
+			logger.error('Error while JSON parsing updates.json: ');
+			logger.error(err);
+		}
+	}
+	db = new JsonDB(linuxUpdateJsonPath, true, true);
+}
