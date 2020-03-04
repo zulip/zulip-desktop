@@ -9,9 +9,6 @@ interface PageParamsObject {
 }
 declare var page_params: PageParamsObject;
 
-// since requestIdleCallback didn't make it into lib.dom.d.ts yet
-declare function requestIdleCallback(callback: Function, options?: object): void;
-
 // Patch Notification object so we can implement our side
 // of Notification classes which we export into zulip side through
 // preload.js; if we don't do his extending Notification will throw error.

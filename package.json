@@ -183,6 +183,7 @@
     "@types/fs-extra": "^8.1.0",
     "@types/i18n": "^0.8.6",
     "@types/request": "^2.48.4",
+    "@types/requestidlecallback": "^0.3.1",
     "@typescript-eslint/eslint-plugin": "^2.22.0",
     "@typescript-eslint/parser": "^2.22.0",
     "@vitalets/google-translate-api": "^3.0.0",
