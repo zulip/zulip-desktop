@@ -739,6 +739,14 @@ class ServerManagerView {
 		return !(url.endsWith('/login/') || this.tabs[tabIndex].webview.loading);
 	}
 
+	getActiveWebview(): any {
+		const selector = 'webview:not([class*=disabled])';
+		const webview = document.querySelector(selector);
+		if (webview) {
+			return webview;
+		}
+	}
+
 	addContextMenu($serverImg: HTMLImageElement, index: number): void {
 		$serverImg.addEventListener('contextmenu', e => {
 			e.preventDefault();
@@ -1015,6 +1023,15 @@ class ServerManagerView {
 
 		ipcRenderer.on('new-server', () => {
 			this.openSettings('AddServer');
+		});
+
+		// Redo and undo functionality since the default API doesn't work on macOS
+		ipcRenderer.on('undo', () => {
+			return this.getActiveWebview().undo();
+		});
+
+		ipcRenderer.on('redo', () => {
+			return this.getActiveWebview().redo();
 		});
 
 		ipcRenderer.on('set-active', () => {
