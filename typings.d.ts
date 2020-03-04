@@ -1,19 +1,6 @@
-declare module 'adm-zip';
-declare module 'auto-launch';
-declare module 'is-online';
-declare module 'request';
-declare module 'semver';
 declare module '@electron-elements/send-feedback';
 declare module 'node-mac-notifier';
-declare module 'electron-connect';
-declare module 'electron-is-dev';
-declare module 'electron-spellchecker';
-declare module 'escape-html';
-declare module 'fs-extra';
 declare module 'wurl';
-declare module 'i18n';
-declare module 'backoff';
-declare module 'crypto-random-string';
 
 interface PageParamsObject {
   realm_uri: string;
