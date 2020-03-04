@@ -8,73 +8,61 @@ const logger = new Logger({
 	timestamp: true
 });
 
-let instance: null | EnterpriseUtil = null;
+// todo: replace enterpriseSettings type with an interface once settings are final
+export let enterpriseSettings: any;
+export let configFile: boolean;
 
-class EnterpriseUtil {
-	// todo: replace enterpriseSettings type with an interface once settings are final
-	enterpriseSettings: any;
-	configFile: boolean;
-	constructor() {
-		if (instance) {
-			return instance;
-		}
-		instance = this;
+reloadDB();
 
-		this.reloadDB();
+function reloadDB(): void {
+	let enterpriseFile = '/etc/zulip-desktop-config/global_config.json';
+	if (process.platform === 'win32') {
+		enterpriseFile = 'C:\\Program Files\\Zulip-Desktop-Config\\global_config.json';
 	}
 
-	reloadDB(): void {
-		let enterpriseFile = '/etc/zulip-desktop-config/global_config.json';
-		if (process.platform === 'win32') {
-			enterpriseFile = 'C:\\Program Files\\Zulip-Desktop-Config\\global_config.json';
+	enterpriseFile = path.resolve(enterpriseFile);
+	if (fs.existsSync(enterpriseFile)) {
+		configFile = true;
+		try {
+			const file = fs.readFileSync(enterpriseFile, 'utf8');
+			enterpriseSettings = JSON.parse(file);
+		} catch (err) {
+			logger.log('Error while JSON parsing global_config.json: ');
+			logger.log(err);
 		}
-
-		enterpriseFile = path.resolve(enterpriseFile);
-		if (fs.existsSync(enterpriseFile)) {
-			this.configFile = true;
-			try {
-				const file = fs.readFileSync(enterpriseFile, 'utf8');
-				this.enterpriseSettings = JSON.parse(file);
-			} catch (err) {
-				logger.log('Error while JSON parsing global_config.json: ');
-				logger.log(err);
-			}
-		} else {
-			this.configFile = false;
-		}
-	}
-
-	getConfigItem(key: string, defaultValue?: any): any {
-		this.reloadDB();
-		if (!this.configFile) {
-			return defaultValue;
-		}
-		if (defaultValue === undefined) {
-			defaultValue = null;
-		}
-		return this.configItemExists(key) ? this.enterpriseSettings[key] : defaultValue;
-	}
-
-	configItemExists(key: string): boolean {
-		this.reloadDB();
-		if (!this.configFile) {
-			return false;
-		}
-		return (this.enterpriseSettings[key] !== undefined);
-	}
-
-	isPresetOrg(url: string): boolean {
-		if (!this.configFile || !this.configItemExists('presetOrganizations')) {
-			return false;
-		}
-		const presetOrgs = this.enterpriseSettings.presetOrganizations;
-		for (const org of presetOrgs) {
-			if (url.includes(org)) {
-				return true;
-			}
-		}
-		return false;
+	} else {
+		configFile = false;
 	}
 }
 
-export = new EnterpriseUtil();
+export function getConfigItem(key: string, defaultValue?: any): any {
+	reloadDB();
+	if (!configFile) {
+		return defaultValue;
+	}
+	if (defaultValue === undefined) {
+		defaultValue = null;
+	}
+	return configItemExists(key) ? enterpriseSettings[key] : defaultValue;
+}
+
+export function configItemExists(key: string): boolean {
+	reloadDB();
+	if (!configFile) {
+		return false;
+	}
+	return (enterpriseSettings[key] !== undefined);
+}
+
+export function isPresetOrg(url: string): boolean {
+	if (!configFile || !configItemExists('presetOrganizations')) {
+		return false;
+	}
+	const presetOrgs = enterpriseSettings.presetOrganizations;
+	for (const org of presetOrgs) {
+		if (url.includes(org)) {
+			return true;
+		}
+	}
+	return false;
+}

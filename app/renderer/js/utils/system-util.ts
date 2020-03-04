@@ -5,60 +5,42 @@ import os = require('os');
 import ConfigUtil = require('./config-util');
 
 const { app } = remote;
-let instance: null | SystemUtil = null;
 
-class SystemUtil {
-	connectivityERR: string[];
+export const connectivityERR: string[] = [
+	'ERR_INTERNET_DISCONNECTED',
+	'ERR_PROXY_CONNECTION_FAILED',
+	'ERR_CONNECTION_RESET',
+	'ERR_NOT_CONNECTED',
+	'ERR_NAME_NOT_RESOLVED',
+	'ERR_NETWORK_CHANGED'
+];
 
-	userAgent: string | null;
+let userAgent: string | null = null;
 
-	constructor() {
-		if (instance) {
-			return instance;
+export function getOS(): string {
+	const platform = os.platform();
+	if (platform === 'darwin') {
+		return 'Mac';
+	} else if (platform === 'linux') {
+		return 'Linux';
+	} else if (platform === 'win32') {
+		if (parseFloat(os.release()) < 6.2) {
+			return 'Windows 7';
 		} else {
-			instance = this;
+			return 'Windows 10';
 		}
-
-		this.connectivityERR = [
-			'ERR_INTERNET_DISCONNECTED',
-			'ERR_PROXY_CONNECTION_FAILED',
-			'ERR_CONNECTION_RESET',
-			'ERR_NOT_CONNECTED',
-			'ERR_NAME_NOT_RESOLVED',
-			'ERR_NETWORK_CHANGED'
-		];
-		this.userAgent = null;
-
-		return instance;
-	}
-
-	getOS(): string {
-		const platform = os.platform();
-		if (platform === 'darwin') {
-			return 'Mac';
-		} else if (platform === 'linux') {
-			return 'Linux';
-		} else if (platform === 'win32') {
-			if (parseFloat(os.release()) < 6.2) {
-				return 'Windows 7';
-			} else {
-				return 'Windows 10';
-			}
-		} else {
-			return '';
-		}
-	}
-
-	setUserAgent(webViewUserAgent: string): void {
-		this.userAgent = `ZulipElectron/${app.getVersion()} ${webViewUserAgent}`;
-	}
-
-	getUserAgent(): string | null {
-		if (!this.userAgent) {
-			this.setUserAgent(ConfigUtil.getConfigItem('userAgent', null));
-		}
-		return this.userAgent;
+	} else {
+		return '';
 	}
 }
 
-export = new SystemUtil();
+export function setUserAgent(webViewUserAgent: string): void {
+	userAgent = `ZulipElectron/${app.getVersion()} ${webViewUserAgent}`;
+}
+
+export function getUserAgent(): string | null {
+	if (!userAgent) {
+		setUserAgent(ConfigUtil.getConfigItem('userAgent', null));
+	}
+	return userAgent;
+}
