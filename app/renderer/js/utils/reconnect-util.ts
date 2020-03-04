@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron';
 
+import type WebView from '../components/webview';
 import backoff = require('backoff');
 import request = require('request');
 import Logger = require('./logger-util');
@@ -12,15 +13,12 @@ const logger = new Logger({
 });
 
 class ReconnectUtil {
-	// TODO: TypeScript - Figure out how to annotate webview
-	// it should be WebView; maybe make it a generic so we can
-	// pass the class from main.ts
-	webview: any;
+	webview: WebView;
 	url: string;
 	alreadyReloaded: boolean;
-	fibonacciBackoff: any;
+	fibonacciBackoff: backoff.Backoff;
 
-	constructor(webview: any) {
+	constructor(webview: WebView) {
 		this.webview = webview;
 		this.url = webview.props.url;
 		this.alreadyReloaded = false;

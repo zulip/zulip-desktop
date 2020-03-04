@@ -225,7 +225,7 @@ class AppMenu {
 	}
 
 	getWindowSubmenu(tabs: any[], activeTabIndex: number, enableMenu: boolean): Electron.MenuItemConstructorOptions[] {
-		const initialSubmenu: any[] = [{
+		const initialSubmenu: Electron.MenuItemConstructorOptions[] = [{
 			label: t.__('Minimize'),
 			role: 'minimize'
 		}, {
@@ -532,7 +532,7 @@ class AppMenu {
 		}];
 	}
 
-	static sendAction(action: any, ...params: any[]): void {
+	static sendAction(action: string, ...params: any[]): void {
 		const win = BrowserWindow.getAllWindows()[0];
 
 		if (process.platform === 'darwin') {

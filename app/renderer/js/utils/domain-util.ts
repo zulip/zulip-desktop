@@ -15,6 +15,13 @@ import Messages = require('../../../resources/messages');
 const { ipcRenderer } = electron;
 const { app, dialog } = electron.remote;
 
+interface ServerConf {
+	url: string;
+	alias?: string;
+	icon?: string;
+	ignoreCerts?: boolean;
+}
+
 const logger = new Logger({
 	file: 'domain-util.log',
 	timestamp: true
@@ -34,7 +41,7 @@ if (db.getData('/').domain) {
 	db.delete('/domain');
 }
 
-export function getDomains(): any {
+export function getDomains(): ServerConf[] {
 	reloadDB();
 	if (db.getData('/').domains === undefined) {
 		return [];
@@ -43,7 +50,7 @@ export function getDomains(): any {
 	}
 }
 
-export function getDomain(index: number): any {
+export function getDomain(index: number): ServerConf {
 	reloadDB();
 	return db.getData(`/domains[${index}]`);
 }
@@ -58,12 +65,12 @@ export function shouldIgnoreCerts(url: string): boolean {
 	return null;
 }
 
-function updateDomain(index: number, server: object): void {
+function updateDomain(index: number, server: ServerConf): void {
 	reloadDB();
 	db.push(`/domains[${index}]`, server, true);
 }
 
-export async function addDomain(server: any): Promise<void> {
+export async function addDomain(server: ServerConf): Promise<void> {
 	const { ignoreCerts } = server;
 	if (server.icon) {
 		const localIconUrl = await saveServerIcon(server, ignoreCerts);
@@ -92,18 +99,12 @@ export function removeDomain(index: number): boolean {
 }
 
 // Check if domain is already added
-export function duplicateDomain(domain: any): boolean {
+export function duplicateDomain(domain: string): boolean {
 	domain = formatUrl(domain);
-	const servers = getDomains();
-	for (const i in servers) {
-		if (servers[i].url === domain) {
-			return true;
-		}
-	}
-	return false;
+	return getDomains().some(server => server.url === domain);
 }
 
-async function checkCertError(domain: any, serverConf: any, error: string, silent: boolean): Promise<string | object> {
+async function checkCertError(domain: string, serverConf: ServerConf, error: string, silent: boolean): Promise<ServerConf> {
 	if (silent) {
 		// since getting server settings has already failed
 		return serverConf;
@@ -140,7 +141,7 @@ async function checkCertError(domain: any, serverConf: any, error: string, silen
 
 // ignoreCerts parameter helps in fetching server icon and
 // other server details when user chooses to ignore certificate warnings
-export async function checkDomain(domain: any, ignoreCerts = false, silent = false): Promise<any> {
+export async function checkDomain(domain: string, ignoreCerts = false, silent = false): Promise<ServerConf> {
 	if (!silent && duplicateDomain(domain)) {
 		// Do not check duplicate in silent mode
 		throw new Error('This server has been added.');
@@ -172,7 +173,7 @@ export async function checkDomain(domain: any, ignoreCerts = false, silent = fal
 	}
 }
 
-async function getServerSettings(domain: any, ignoreCerts = false): Promise<object | string> {
+async function getServerSettings(domain: string, ignoreCerts = false): Promise<ServerConf> {
 	const serverSettingsOptions = {
 		url: domain + '/api/v1/server_settings',
 		...RequestUtil.requestOptions(domain, ignoreCerts)
@@ -201,7 +202,7 @@ async function getServerSettings(domain: any, ignoreCerts = false): Promise<obje
 	});
 }
 
-export async function saveServerIcon(server: any, ignoreCerts = false): Promise<string> {
+export async function saveServerIcon(server: ServerConf, ignoreCerts = false): Promise<string> {
 	const url = server.icon;
 	const domain = server.url;
 
@@ -297,7 +298,7 @@ function generateFilePath(url: string): string {
 	return `${dir}/${hash >>> 0}${extension}`;
 }
 
-export function formatUrl(domain: any): string {
+export function formatUrl(domain: string): string {
 	if (domain.startsWith('http://') || domain.startsWith('https://')) {
 		return domain;
 	}

@@ -13,7 +13,7 @@ interface PatchedConsole extends Console {
 }
 
 interface LoggerOptions {
-	timestamp?: any;
+	timestamp?: true | (() => string);
 	file?: string;
 	level?: boolean;
 	logInDevMode?: boolean;
@@ -46,7 +46,7 @@ const logDir = `${app.getPath('userData')}/Logs`;
 
 class Logger {
 	nodeConsole: PatchedConsole;
-	timestamp: any; // TODO: TypeScript - Figure out how to make this work with string | Function.
+	timestamp?: () => string;
 	level: boolean;
 	logInDevMode: boolean;
 	[key: string]: any;

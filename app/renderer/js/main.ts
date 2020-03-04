@@ -939,8 +939,7 @@ class ServerManagerView {
 		});
 
 		ipcRenderer.on('update-realm-icon', (event: Event, serverURL: string, iconURL: string) => {
-			// TODO: TypeScript - Type annotate getDomains() or this domain paramter.
-			DomainUtil.getDomains().forEach(async (domain: any, index: number) => {
+			DomainUtil.getDomains().forEach(async (domain, index) => {
 				if (domain.url.includes(serverURL)) {
 					const localIconUrl: string = await DomainUtil.saveServerIcon({
 						url: serverURL,

@@ -59,7 +59,7 @@ const iconPath = (): string => {
 };
 
 // toggle the app window
-const toggleApp = (): any => {
+const toggleApp = (): void => {
 	if (!mainWindow.isVisible() || mainWindow.isMinimized()) {
 		mainWindow.show();
 	} else {
@@ -303,11 +303,11 @@ app.on('ready', () => {
 		page.send('tray', messageCount);
 	});
 
-	ipcMain.on('update-taskbar-icon', (_event: Electron.IpcMainEvent, data: any, text: string) => {
+	ipcMain.on('update-taskbar-icon', (_event: Electron.IpcMainEvent, data: string, text: string) => {
 		BadgeSettings.updateTaskbarIcon(data, text, mainWindow);
 	});
 
-	ipcMain.on('forward-message', (_event: Electron.IpcMainEvent, listener: any, ...params: any[]) => {
+	ipcMain.on('forward-message', (_event: Electron.IpcMainEvent, listener: string, ...params: any[]) => {
 		page.send(listener, ...params);
 	});
 
@@ -341,7 +341,7 @@ app.on('ready', () => {
 				setFilePath = result.filePath;
 				shortFileName = path.basename(setFilePath);
 			} else {
-				const getTimeStamp = (): any => {
+				const getTimeStamp = (): number => {
 					const date = new Date();
 					return date.getTime();
 				};
