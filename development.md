@@ -9,7 +9,7 @@ To build and run the app from source, you'll need the following:
 
 * [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
   * Use our [Git Guide](https://zulip.readthedocs.io/en/latest/git/setup.html) to get started with Git and GitHub.
-* [Node.js](https://nodejs.org) >= v6.9.0
+* [Node.js](https://nodejs.org) >= v10.16.3
   * [NPM](https://www.npmjs.com/get-npm) and
     [node-gyp](https://github.com/nodejs/node-gyp#installation),
     if they don't come bundled with your Node.js installation
