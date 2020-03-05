@@ -50,4 +50,4 @@ electron_bridge.on('realm_icon_url', iconURL => {
 // functions zulip side will emit event using ElectronBrigde.send_event
 // which is alias of .emit and on this side we can handle the data by adding
 // a listener for the event.
-export = electron_bridge;
+export default electron_bridge;
