@@ -195,12 +195,14 @@
     "electron-notarize": "^0.2.1",
     "eslint-config-xo-typescript": "^0.26.0",
     "fs-extra": "^8.1.0",
+    "glob": "^5.0.15",
     "gulp": "^4.0.2",
     "gulp-tape": "^1.0.0",
     "gulp-typescript": "^6.0.0-alpha.1",
     "htmlhint": "^0.11.0",
     "nodemon": "^2.0.2",
     "pre-commit": "^1.2.2",
+    "rimraf": "^2.7.1",
     "spectron": "^10.0.1",
     "stylelint": "^13.2.0",
     "tap-colorize": "^1.2.0",
@@ -209,22 +211,16 @@
     "xo": "^0.27.2"
   },
   "xo": {
-    "extends": "xo-typescript",
     "extensions": [
       "ts"
     ],
     "parserOptions": {
-      "ecmaVersion": 6,
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "globalReturn": true,
-        "modules": true
-      }
+      "ecmaVersion": 2019
     },
-    "esnext": true,
     "overrides": [
       {
-        "files": "app/**/*.ts",
+        "files": "**/*.ts",
+        "extends": "xo-typescript",
         "rules": {
           "@typescript-eslint/member-ordering": "off",
           "@typescript-eslint/no-dynamic-delete": "off",
@@ -250,17 +246,9 @@
         }
       }
     ],
-    "ignore": [
-      "tests/*.js",
-      "tools/locale-helper/*.js",
-      "*/**/*.js",
-      "*.js",
-      "typings.d.ts"
-    ],
     "envs": [
       "node",
-      "browser",
-      "mocha"
+      "browser"
     ]
   }
 }
