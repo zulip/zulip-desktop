@@ -211,41 +211,29 @@
     "xo": "^0.27.2"
   },
   "xo": {
-    "extensions": [
-      "ts"
-    ],
-    "parserOptions": {
-      "ecmaVersion": 2019
-    },
-    "overrides": [
-      {
-        "files": "**/*.ts",
-        "extends": "xo-typescript",
-        "rules": {
-          "@typescript-eslint/member-ordering": "off",
-          "@typescript-eslint/no-dynamic-delete": "off",
-          "@typescript-eslint/no-unused-vars": "off",
-          "@typescript-eslint/restrict-plus-operands": "off",
-          "@typescript-eslint/restrict-template-expressions": "off",
-          "capitalized-comments": "off",
-          "import/no-mutable-exports": "off",
-          "max-lines": [
-            "warn",
-            {
-              "max": 900,
-              "skipBlankLines": true,
-              "skipComments": true
-            }
-          ],
-          "no-alert": "off",
-          "no-else-return": "off",
-          "no-warning-comments": "off",
-          "object-curly-spacing": "off",
-          "padding-line-between-statements": "off",
-          "unicorn/catch-error-name": "off"
+    "rules": {
+      "@typescript-eslint/member-ordering": "off",
+      "@typescript-eslint/no-dynamic-delete": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/restrict-plus-operands": "off",
+      "@typescript-eslint/restrict-template-expressions": "off",
+      "capitalized-comments": "off",
+      "import/no-mutable-exports": "off",
+      "max-lines": [
+        "warn",
+        {
+          "max": 900,
+          "skipBlankLines": true,
+          "skipComments": true
         }
-      }
-    ],
+      ],
+      "no-alert": "off",
+      "no-else-return": "off",
+      "no-warning-comments": "off",
+      "object-curly-spacing": "off",
+      "padding-line-between-statements": "off",
+      "unicorn/catch-error-name": "off"
+    },
     "envs": [
       "node",
       "browser"
