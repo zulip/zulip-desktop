@@ -10,7 +10,7 @@ function writeJSON(file, data) {
 }
 
 const { phrases } = require('./locale-template');
-const supportedLocales = require('./supported-locales');
+const supportedLocales = require('./supported-locales.json');
 
 phrases.sort();
 for (let locale in supportedLocales) {
