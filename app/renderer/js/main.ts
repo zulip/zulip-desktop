@@ -712,10 +712,8 @@ class ServerManagerView {
 	}
 
 	updateGeneralSettings(setting: string, value: any): void {
-		const selector = 'webview:not([class*=disabled])';
-		const webview: Electron.WebviewTag = document.querySelector(selector);
-		if (webview) {
-			const webContents = webview.getWebContents();
+		if (this.getActiveWebview()) {
+			const webContents = this.getActiveWebview().getWebContents();
 			webContents.send(setting, value);
 		}
 	}
@@ -740,11 +738,9 @@ class ServerManagerView {
 	}
 
 	getActiveWebview(): any {
-		const selector = 'webview:not([class*=disabled])';
-		const webview = document.querySelector(selector);
-		if (webview) {
-			return webview;
-		}
+		const selector = 'webview:not(.disabled)';
+		const webview: Electron.WebviewTag = document.querySelector(selector);
+		return webview;
 	}
 
 	addContextMenu($serverImg: HTMLImageElement, index: number): void {
@@ -918,9 +914,7 @@ class ServerManagerView {
 		ipcRenderer.on('toggle-dnd', (event: Event, state: boolean, newSettings: SettingsOptions) => {
 			this.toggleDNDButton(state);
 			ipcRenderer.send('forward-message', 'toggle-silent', newSettings.silent);
-			const selector = 'webview:not([class*=disabled])';
-			const webview: Electron.WebviewTag = document.querySelector(selector);
-			const webContents = webview.getWebContents();
+			const webContents = this.getActiveWebview().getWebContents();
 			webContents.send('toggle-dnd', state, newSettings);
 		});
 
