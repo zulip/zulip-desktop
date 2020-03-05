@@ -1,7 +1,7 @@
 'use strict';
 
 import { ipcRenderer, shell } from 'electron';
-import SetupSpellChecker from './spellchecker';
+import * as SetupSpellChecker from './spellchecker';
 
 import isDev = require('electron-is-dev');
 import LinkUtil = require('./utils/link-util');

@@ -1050,4 +1050,4 @@ window.addEventListener('load', () => {
 	}
 });
 
-export = new ServerManagerView();
+export {};

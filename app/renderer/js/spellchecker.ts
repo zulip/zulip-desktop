@@ -18,47 +18,44 @@ const logger = new Logger({
 	timestamp: true
 });
 
-class SetupSpellChecker {
-	SpellCheckHandler: SpellCheckHandler;
-	contextMenuListener: ContextMenuListener;
-	init(serverLanguage: string): void {
-		if (ConfigUtil.getConfigItem('enableSpellchecker')) {
-			this.enableSpellChecker();
-		}
-		this.enableContextMenu(serverLanguage);
+let spellCheckHandler: SpellCheckHandler;
+let contextMenuListener: ContextMenuListener;
+
+export function init(serverLanguage: string): void {
+	if (ConfigUtil.getConfigItem('enableSpellchecker')) {
+		enableSpellChecker();
 	}
+	enableContextMenu(serverLanguage);
+}
 
-	enableSpellChecker(): void {
-		try {
-			this.SpellCheckHandler = new SpellCheckHandler();
-		} catch (err) {
-			logger.error(err);
-		}
-	}
-
-	enableContextMenu(serverLanguage: string): void {
-		if (this.SpellCheckHandler) {
-			this.SpellCheckHandler.attachToInput();
-			this.SpellCheckHandler.switchLanguage(serverLanguage);
-			this.SpellCheckHandler.currentSpellcheckerChanged.subscribe(() => {
-				this.SpellCheckHandler.switchLanguage(this.SpellCheckHandler.currentSpellcheckerLanguage);
-			});
-		}
-
-		const contextMenuBuilder = new ContextMenuBuilder(this.SpellCheckHandler);
-		this.contextMenuListener = new ContextMenuListener(info => {
-			contextMenuBuilder.showPopupMenu(info);
-		});
-	}
-
-	unsubscribeSpellChecker(): void {
-		if (this.SpellCheckHandler) {
-			this.SpellCheckHandler.unsubscribe();
-		}
-		if (this.contextMenuListener) {
-			this.contextMenuListener.unsubscribe();
-		}
+function enableSpellChecker(): void {
+	try {
+		spellCheckHandler = new SpellCheckHandler();
+	} catch (err) {
+		logger.error(err);
 	}
 }
 
-export = new SetupSpellChecker();
+function enableContextMenu(serverLanguage: string): void {
+	if (spellCheckHandler) {
+		spellCheckHandler.attachToInput();
+		spellCheckHandler.switchLanguage(serverLanguage);
+		spellCheckHandler.currentSpellcheckerChanged.subscribe(() => {
+			spellCheckHandler.switchLanguage(spellCheckHandler.currentSpellcheckerLanguage);
+		});
+	}
+
+	const contextMenuBuilder = new ContextMenuBuilder(spellCheckHandler);
+	contextMenuListener = new ContextMenuListener(info => {
+		contextMenuBuilder.showPopupMenu(info);
+	});
+}
+
+export function unsubscribeSpellChecker(): void {
+	if (spellCheckHandler) {
+		spellCheckHandler.unsubscribe();
+	}
+	if (contextMenuListener) {
+		contextMenuListener.unsubscribe();
+	}
+}
