@@ -1,8 +1,8 @@
 'use strict';
 
-import path = require('path');
-import electron = require('electron');
-import i18n = require('i18n');
+import path from 'path';
+import electron from 'electron';
+import i18n from 'i18n';
 
 let app: Electron.App = null;
 

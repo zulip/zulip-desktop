@@ -1,9 +1,9 @@
 'use strict';
 import { app } from 'electron';
 
-import AutoLaunch = require('auto-launch');
-import isDev = require('electron-is-dev');
-import ConfigUtil = require('../renderer/js/utils/config-util');
+import AutoLaunch from 'auto-launch';
+import isDev from 'electron-is-dev';
+import * as ConfigUtil from '../renderer/js/utils/config-util';
 
 export const setAutoLaunch = (AutoLaunchValue: boolean): void => {
 	// Don't run this in development

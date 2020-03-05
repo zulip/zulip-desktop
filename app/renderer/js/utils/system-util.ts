@@ -1,8 +1,8 @@
 'use strict';
 import { remote } from 'electron';
 
-import os = require('os');
-import ConfigUtil = require('./config-util');
+import os from 'os';
+import * as ConfigUtil from './config-util';
 
 const { app } = remote;
 

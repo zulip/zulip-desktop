@@ -2,13 +2,13 @@
 import { app, shell, BrowserWindow, Menu, dialog } from 'electron';
 import { appUpdater } from './autoupdater';
 
-import AdmZip = require('adm-zip');
-import fs = require('fs-extra');
-import path = require('path');
-import DNDUtil = require('../renderer/js/utils/dnd-util');
-import Logger = require('../renderer/js/utils/logger-util');
-import ConfigUtil = require('../renderer/js/utils/config-util');
-import t = require('../renderer/js/utils/translation-util');
+import AdmZip from 'adm-zip';
+import fs from 'fs-extra';
+import path from 'path';
+import * as DNDUtil from '../renderer/js/utils/dnd-util';
+import Logger from '../renderer/js/utils/logger-util';
+import * as ConfigUtil from '../renderer/js/utils/config-util';
+import * as t from '../renderer/js/utils/translation-util';
 
 const appName = app.name;
 

@@ -2,10 +2,10 @@ import { Console as NodeConsole } from 'console'; // eslint-disable-line node/pr
 import { initSetUp } from './default-util';
 import { sentryInit, captureException } from './sentry-util';
 
-import fs = require('fs');
-import os = require('os');
-import isDev = require('electron-is-dev');
-import electron = require('electron');
+import fs from 'fs';
+import os from 'os';
+import isDev from 'electron-is-dev';
+import electron from 'electron';
 // this interface adds [key: string]: any so
 // we can do console[type] later on in the code
 interface PatchedConsole extends Console {
@@ -44,7 +44,7 @@ if (process.type === 'renderer') {
 const browserConsole: PatchedConsole = console;
 const logDir = `${app.getPath('userData')}/Logs`;
 
-class Logger {
+export default class Logger {
 	nodeConsole: PatchedConsole;
 	timestamp?: () => string;
 	level: boolean;
@@ -151,5 +151,3 @@ class Logger {
 		});
 	}
 }
-
-export = Logger;

@@ -1,10 +1,10 @@
 'use strict';
 import { JsonDB } from 'node-json-db';
 
-import fs = require('fs');
-import path = require('path');
-import electron = require('electron');
-import Logger = require('./logger-util');
+import fs from 'fs';
+import path from 'path';
+import electron from 'electron';
+import Logger from './logger-util';
 
 const remote =
 	process.type === 'renderer' ? electron.remote : electron;

@@ -2,10 +2,10 @@
 
 import { shell } from 'electron';
 
-import BaseComponent = require('../../components/base');
-import t = require('../../utils/translation-util');
+import BaseComponent from '../../components/base';
+import * as t from '../../utils/translation-util';
 
-class FindAccounts extends BaseComponent {
+export default class FindAccounts extends BaseComponent {
 	// TODO: TypeScript - Here props should be object type
 	props: any;
 	$findAccounts: Element | null;
@@ -74,5 +74,3 @@ class FindAccounts extends BaseComponent {
 		});
 	}
 }
-
-export = FindAccounts;

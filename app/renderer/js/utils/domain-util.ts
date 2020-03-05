@@ -1,19 +1,18 @@
 'use strict';
 import { JsonDB } from 'node-json-db';
 
-import escape = require('escape-html');
-import request = require('request');
-import fs = require('fs');
-import path = require('path');
-import Logger = require('./logger-util');
-import electron = require('electron');
+import escape from 'escape-html';
+import request from 'request';
+import fs from 'fs';
+import path from 'path';
+import Logger from './logger-util';
+import { ipcRenderer, remote } from 'electron';
 
-import RequestUtil = require('./request-util');
-import EnterpriseUtil = require('./enterprise-util');
-import Messages = require('../../../resources/messages');
+import * as RequestUtil from './request-util';
+import * as EnterpriseUtil from './enterprise-util';
+import * as Messages from '../../../resources/messages';
 
-const { ipcRenderer } = electron;
-const { app, dialog } = electron.remote;
+const { app, dialog } = remote;
 
 interface ServerConf {
 	url: string;

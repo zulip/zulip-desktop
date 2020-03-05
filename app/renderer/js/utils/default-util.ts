@@ -1,11 +1,12 @@
-import fs = require('fs');
+import electron from 'electron';
+import fs from 'fs';
 
 let app: Electron.App = null;
 let setupCompleted = false;
 if (process.type === 'renderer') {
-	app = require('electron').remote.app;
+	app = electron.remote.app;
 } else {
-	app = require('electron').app;
+	app = electron.app;
 }
 
 const zulipDir = app.getPath('userData');

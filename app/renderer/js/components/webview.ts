@@ -1,12 +1,12 @@
 'use strict';
 import { remote } from 'electron';
 
-import path = require('path');
-import fs = require('fs');
-import ConfigUtil = require('../utils/config-util');
-import SystemUtil = require('../utils/system-util');
-import BaseComponent = require('../components/base');
-import handleExternalLink = require('../components/handle-external-link');
+import path from 'path';
+import fs from 'fs';
+import * as ConfigUtil from '../utils/config-util';
+import * as SystemUtil from '../utils/system-util';
+import BaseComponent from './base';
+import handleExternalLink from './handle-external-link';
 
 const { app, dialog } = remote;
 
@@ -17,7 +17,7 @@ interface WebViewProps {
 	[key: string]: any;
 }
 
-class WebView extends BaseComponent {
+export default class WebView extends BaseComponent {
 	props: any;
 	zoomFactor: number;
 	badgeCount: number;
@@ -301,5 +301,3 @@ class WebView extends BaseComponent {
 		this.$el.send(channel, ...param);
 	}
 }
-
-export = WebView;

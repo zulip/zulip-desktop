@@ -3,17 +3,16 @@ import { sentryInit } from '../renderer/js/utils/sentry-util';
 import { appUpdater } from './autoupdater';
 import { setAutoLaunch } from './startup';
 
-import windowStateKeeper = require('electron-window-state');
-import path = require('path');
-import fs = require('fs');
-import isDev = require('electron-is-dev');
-import electron = require('electron');
-const { app, ipcMain, session, dialog } = electron;
+import windowStateKeeper from 'electron-window-state';
+import path from 'path';
+import fs from 'fs';
+import isDev from 'electron-is-dev';
+import electron, { app, ipcMain, session, dialog } from 'electron';
 
-import AppMenu = require('./menu');
-import BadgeSettings = require('../renderer/js/pages/preference/badge-settings');
-import ConfigUtil = require('../renderer/js/utils/config-util');
-import ProxyUtil = require('../renderer/js/utils/proxy-util');
+import * as AppMenu from './menu';
+import * as BadgeSettings from '../renderer/js/pages/preference/badge-settings';
+import * as ConfigUtil from '../renderer/js/utils/config-util';
+import * as ProxyUtil from '../renderer/js/utils/proxy-util';
 
 interface PatchedGlobal extends NodeJS.Global {
 	mainWindowState: windowStateKeeper.State;

@@ -1,14 +1,14 @@
 'use strict';
 
-import WebView = require('./webview');
-import BaseComponent = require('./base');
+import WebView from './webview';
+import BaseComponent from './base';
 
 // TODO: TypeScript - Type annotate props
 interface TabProps {
 	[key: string]: any;
 }
 
-class Tab extends BaseComponent {
+export default class Tab extends BaseComponent {
 	props: TabProps;
 	webview: WebView;
 	$el: Element;
@@ -44,5 +44,3 @@ class Tab extends BaseComponent {
 		this.webview.$el.parentNode.removeChild(this.webview.$el);
 	}
 }
-
-export = Tab;

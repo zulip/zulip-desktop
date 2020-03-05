@@ -2,10 +2,10 @@
 
 import { shell } from 'electron';
 
-import BaseSection = require('./base-section');
-import t = require('../../utils/translation-util');
+import BaseSection from './base-section';
+import * as t from '../../utils/translation-util';
 
-class ShortcutsSection extends BaseSection {
+export default class ShortcutsSection extends BaseSection {
 	// TODO: TypeScript - Here props should be object type
 	props: any;
 	constructor(props: any) {
@@ -341,5 +341,3 @@ class ShortcutsSection extends BaseSection {
 		this.openHotkeysExternalLink();
 	}
 }
-
-export = ShortcutsSection;

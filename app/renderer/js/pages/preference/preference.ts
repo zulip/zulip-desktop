@@ -2,17 +2,17 @@
 
 import { ipcRenderer } from 'electron';
 
-import BaseComponent = require('../../components/base');
-import Nav = require('./nav');
-import ServersSection = require('./servers-section');
-import GeneralSection = require('./general-section');
-import NetworkSection = require('./network-section');
-import ConnectedOrgSection = require('./connected-org-section');
-import ShortcutsSection = require('./shortcuts-section');
+import BaseComponent from '../../components/base';
+import Nav from './nav';
+import ServersSection from './servers-section';
+import GeneralSection from './general-section';
+import NetworkSection from './network-section';
+import ConnectedOrgSection from './connected-org-section';
+import ShortcutsSection from './shortcuts-section';
 
 type Section = ServersSection | GeneralSection | NetworkSection | ConnectedOrgSection | ShortcutsSection;
 
-class PreferenceView extends BaseComponent {
+export default class PreferenceView extends BaseComponent {
 	$sidebarContainer: Element;
 	$settingsContainer: Element;
 	nav: Nav;
@@ -122,5 +122,3 @@ window.addEventListener('load', () => {
 	const preferenceView = new PreferenceView();
 	preferenceView.init();
 });
-
-export = PreferenceView;

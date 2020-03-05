@@ -1,6 +1,6 @@
 'use strict';
 
-import ConfigUtil = require('./config-util');
+import * as ConfigUtil from './config-util';
 
 // TODO: TypeScript - add to Setting interface
 // the list of settings since we have fixed amount of them

@@ -2,9 +2,9 @@
 
 import { ipcRenderer } from 'electron';
 
-import BaseComponent = require('../../components/base');
+import BaseComponent from '../../components/base';
 
-class BaseSection extends BaseComponent {
+export default class BaseSection extends BaseComponent {
 	// TODO: TypeScript - Here props should be object type
 	generateSettingOption(props: any): void {
 		const {$element, disabled, value, clickHandler} = props;
@@ -46,5 +46,3 @@ class BaseSection extends BaseComponent {
 		ipcRenderer.send('forward-message', 'reload-viewer');
 	}
 }
-
-export = BaseSection;

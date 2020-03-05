@@ -1,15 +1,15 @@
 import { ipcRenderer, remote } from 'electron';
 
-import LinkUtil = require('../utils/link-util');
-import DomainUtil = require('../utils/domain-util');
-import ConfigUtil = require('../utils/config-util');
+import * as LinkUtil from '../utils/link-util';
+import * as DomainUtil from '../utils/domain-util';
+import * as ConfigUtil from '../utils/config-util';
 import type WebView from './webview';
 
 const { shell, app } = remote;
 
 const dingSound = new Audio('../resources/sounds/ding.ogg');
 
-function handleExternalLink(this: WebView, event: Electron.NewWindowEvent): void {
+export default function handleExternalLink(this: WebView, event: Electron.NewWindowEvent): void {
 	const { url } = event;
 	const domainPrefix = DomainUtil.getDomain(this.props.index).url;
 	const downloadPath = ConfigUtil.getConfigItem('downloadsPath', `${app.getPath('downloads')}`);
@@ -89,5 +89,3 @@ function handleExternalLink(this: WebView, event: Electron.NewWindowEvent): void
 		shell.openExternal(url);
 	}
 }
-
-export = handleExternalLink;

@@ -2,10 +2,10 @@
 
 import { ipcRenderer } from 'electron';
 
-import Tab = require('./tab');
-import SystemUtil = require('../utils/system-util');
+import Tab from './tab';
+import * as SystemUtil from '../utils/system-util';
 
-class ServerTab extends Tab {
+export default class ServerTab extends Tab {
 	$badge: Element;
 
 	template(): string {
@@ -64,5 +64,3 @@ class ServerTab extends Tab {
 		return shortcutText;
 	}
 }
-
-export = ServerTab;

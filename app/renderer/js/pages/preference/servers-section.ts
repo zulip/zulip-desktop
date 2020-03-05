@@ -1,10 +1,10 @@
 'use strict';
 
-import BaseSection = require('./base-section');
-import NewServerForm = require('./new-server-form');
-import t = require('../../utils/translation-util');
+import BaseSection from './base-section';
+import NewServerForm from './new-server-form';
+import * as t from '../../utils/translation-util';
 
-class ServersSection extends BaseSection {
+export default class ServersSection extends BaseSection {
 	// TODO: TypeScript - Here props should be object type
 	props: any;
 	$newServerContainer: Element;
@@ -46,5 +46,3 @@ class ServersSection extends BaseSection {
 		}).init();
 	}
 }
-
-export = ServersSection;

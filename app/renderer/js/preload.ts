@@ -3,13 +3,13 @@
 import { ipcRenderer, shell } from 'electron';
 import * as SetupSpellChecker from './spellchecker';
 
-import isDev = require('electron-is-dev');
-import LinkUtil = require('./utils/link-util');
-import params = require('./utils/params-util');
-import AuthUtil = require('./utils/auth-util');
-import ConfigUtil = require('./utils/config-util');
+import isDev from 'electron-is-dev';
+import * as LinkUtil from './utils/link-util';
+import * as params from './utils/params-util';
+import * as AuthUtil from './utils/auth-util';
+import * as ConfigUtil from './utils/config-util';
 
-import NetworkError = require('./pages/network');
+import * as NetworkError from './pages/network';
 
 interface PatchedGlobal extends NodeJS.Global {
 	logout: () => void;
@@ -20,14 +20,16 @@ interface PatchedGlobal extends NodeJS.Global {
 const globalPatched = global as PatchedGlobal;
 
 // eslint-disable-next-line import/no-unassigned-import
-require('./notification');
+import './notification';
 
 // Prevent drag and drop event in main process which prevents remote code executaion
-require(__dirname + '/shared/preventdrag.js');
+// eslint-disable-next-line import/no-unassigned-import
+import './shared/preventdrag';
 
 declare let window: ZulipWebWindow;
 
-window.electron_bridge = require('./electron-bridge');
+import electron_bridge from './electron-bridge';
+window.electron_bridge = electron_bridge;
 
 const logout = (): void => {
 	// Create the menu for the below

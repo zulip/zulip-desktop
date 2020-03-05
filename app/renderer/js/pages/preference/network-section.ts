@@ -2,11 +2,11 @@
 
 import { ipcRenderer } from 'electron';
 
-import BaseSection = require('./base-section');
-import ConfigUtil = require('../../utils/config-util');
-import t = require('../../utils/translation-util');
+import BaseSection from './base-section';
+import * as ConfigUtil from '../../utils/config-util';
+import * as t from '../../utils/translation-util';
 
-class NetworkSection extends BaseSection {
+export default class NetworkSection extends BaseSection {
 	// TODO: TypeScript - Here props should be object type
 	props: any;
 	$proxyPAC: HTMLInputElement;
@@ -132,5 +132,3 @@ class NetworkSection extends BaseSection {
 		});
 	}
 }
-
-export = NetworkSection;

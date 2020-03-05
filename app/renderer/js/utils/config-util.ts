@@ -1,11 +1,11 @@
 'use strict';
 import { JsonDB } from 'node-json-db';
 
-import fs = require('fs');
-import path = require('path');
-import electron = require('electron');
-import Logger = require('./logger-util');
-import EnterpriseUtil = require('./enterprise-util');
+import fs from 'fs';
+import path from 'path';
+import electron from 'electron';
+import Logger from './logger-util';
+import * as EnterpriseUtil from './enterprise-util';
 
 const logger = new Logger({
 	file: 'config-util.log',

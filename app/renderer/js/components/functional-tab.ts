@@ -1,8 +1,8 @@
 'use strict';
 
-import Tab = require('./tab');
+import Tab from './tab';
 
-class FunctionalTab extends Tab {
+export default class FunctionalTab extends Tab {
 	$closeButton: Element;
 	template(): string {
 		return `<div class="tab functional-tab" data-tab-id="${this.props.tabIndex}">
@@ -47,5 +47,3 @@ class FunctionalTab extends Tab {
 		});
 	}
 }
-
-export = FunctionalTab;

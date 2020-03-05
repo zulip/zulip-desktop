@@ -1,7 +1,7 @@
 import { remote } from 'electron';
 
-import cryptoRandomString = require('crypto-random-string');
-import ConfigUtil = require('./config-util');
+import cryptoRandomString from 'crypto-random-string';
+import * as ConfigUtil from './config-util';
 
 const { shell } = remote;
 

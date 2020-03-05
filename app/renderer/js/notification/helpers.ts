@@ -1,6 +1,6 @@
 import { remote } from 'electron';
 
-import Logger = require('../utils/logger-util');
+import Logger from '../utils/logger-util';
 
 const logger = new Logger({
 	file: 'errors.log',

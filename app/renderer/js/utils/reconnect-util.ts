@@ -1,18 +1,18 @@
 import { ipcRenderer } from 'electron';
 
 import type WebView from '../components/webview';
-import backoff = require('backoff');
-import request = require('request');
-import Logger = require('./logger-util');
-import RequestUtil = require('./request-util');
-import DomainUtil = require('./domain-util');
+import backoff from 'backoff';
+import request from 'request';
+import Logger from './logger-util';
+import * as RequestUtil from './request-util';
+import * as DomainUtil from './domain-util';
 
 const logger = new Logger({
 	file: 'domain-util.log',
 	timestamp: true
 });
 
-class ReconnectUtil {
+export default class ReconnectUtil {
 	webview: WebView;
 	url: string;
 	alreadyReloaded: boolean;
@@ -86,5 +86,3 @@ class ReconnectUtil {
 		return false;
 	}
 }
-
-export = ReconnectUtil;

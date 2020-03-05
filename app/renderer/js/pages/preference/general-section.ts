@@ -1,18 +1,18 @@
 'use strict';
 import { ipcRenderer, remote, OpenDialogOptions } from 'electron';
 
-import path = require('path');
-import fs = require('fs-extra');
+import path from 'path';
+import fs from 'fs-extra';
 
 const { app, dialog } = remote;
 const currentBrowserWindow = remote.getCurrentWindow();
 
-import BaseSection = require('./base-section');
-import ConfigUtil = require('../../utils/config-util');
-import EnterpriseUtil = require('./../../utils/enterprise-util');
-import t = require('../../utils/translation-util');
+import BaseSection from './base-section';
+import * as ConfigUtil from '../../utils/config-util';
+import * as EnterpriseUtil from '../../utils/enterprise-util';
+import * as t from '../../utils/translation-util';
 
-class GeneralSection extends BaseSection {
+export default class GeneralSection extends BaseSection {
 	// TODO: TypeScript - Here props should be object type
 	props: any;
 	constructor(props: any) {
@@ -498,5 +498,3 @@ class GeneralSection extends BaseSection {
 		});
 	}
 }
-
-export = GeneralSection;

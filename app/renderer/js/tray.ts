@@ -1,8 +1,8 @@
 'use strict';
 import { ipcRenderer, remote, WebviewTag, NativeImage } from 'electron';
 
-import path = require('path');
-import ConfigUtil = require('./utils/config-util.js');
+import path from 'path';
+import * as ConfigUtil from './utils/config-util';
 
 const { Tray, Menu, nativeImage, BrowserWindow, systemPreferences } = remote;
 
@@ -214,3 +214,5 @@ ipcRenderer.on('toggletray', toggleTray);
 if (ConfigUtil.getConfigItem('trayIcon', true)) {
 	createTray();
 }
+
+export {};

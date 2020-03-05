@@ -3,26 +3,26 @@
 import { ipcRenderer, remote, clipboard, shell } from 'electron';
 import { feedbackHolder } from './feedback';
 
-import path = require('path');
-import escape = require('escape-html');
-import isDev = require('electron-is-dev');
+import path from 'path';
+import escape from 'escape-html';
+import isDev from 'electron-is-dev';
 const { session, app, Menu, dialog } = remote;
 
 // eslint-disable-next-line import/no-unassigned-import
-require('./tray');
+import './tray';
 
-import DomainUtil = require('./utils/domain-util');
-import WebView = require('./components/webview');
-import ServerTab = require('./components/server-tab');
-import FunctionalTab = require('./components/functional-tab');
-import ConfigUtil = require('./utils/config-util');
-import DNDUtil = require('./utils/dnd-util');
-import ReconnectUtil = require('./utils/reconnect-util');
-import Logger = require('./utils/logger-util');
-import CommonUtil = require('./utils/common-util');
-import EnterpriseUtil = require('./utils/enterprise-util');
-import AuthUtil = require('./utils/auth-util');
-import Messages = require('./../../resources/messages');
+import * as DomainUtil from './utils/domain-util';
+import WebView from './components/webview';
+import ServerTab from './components/server-tab';
+import FunctionalTab from './components/functional-tab';
+import * as ConfigUtil from './utils/config-util';
+import * as DNDUtil from './utils/dnd-util';
+import ReconnectUtil from './utils/reconnect-util';
+import Logger from './utils/logger-util';
+import * as CommonUtil from './utils/common-util';
+import * as EnterpriseUtil from './utils/enterprise-util';
+import * as AuthUtil from './utils/auth-util';
+import * as Messages from '../../resources/messages';
 
 interface FunctionalTabProps {
 	name: string;

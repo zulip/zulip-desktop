@@ -3,10 +3,10 @@
 import { ipcRenderer } from 'electron';
 import { focusCurrentServer } from './helpers';
 
-import ConfigUtil = require('../utils/config-util');
+import * as ConfigUtil from '../utils/config-util';
 
 const NativeNotification = window.Notification;
-class BaseNotification extends NativeNotification {
+export default class BaseNotification extends NativeNotification {
 	constructor(title: string, opts: NotificationOptions) {
 		opts.silent = true;
 		super(title, opts);
@@ -28,5 +28,3 @@ class BaseNotification extends NativeNotification {
 		return ConfigUtil.getConfigItem('showNotification') ? 'granted' : 'denied';
 	}
 }
-
-export = BaseNotification;

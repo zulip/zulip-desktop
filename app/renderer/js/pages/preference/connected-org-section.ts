@@ -2,14 +2,14 @@
 
 import { ipcRenderer } from 'electron';
 
-import BaseSection = require('./base-section');
-import DomainUtil = require('../../utils/domain-util');
-import ServerInfoForm = require('./server-info-form');
-import AddCertificate = require('./add-certificate');
-import FindAccounts = require('./find-accounts');
-import t = require('../../utils/translation-util');
+import BaseSection from './base-section';
+import * as DomainUtil from '../../utils/domain-util';
+import ServerInfoForm from './server-info-form';
+import AddCertificate from './add-certificate';
+import FindAccounts from './find-accounts';
+import * as t from '../../utils/translation-util';
 
-class ConnectedOrgSection extends BaseSection {
+export default class ConnectedOrgSection extends BaseSection {
 	// TODO: TypeScript - Here props should be object type
 	props: any;
 	$serverInfoContainer: Element | null;
@@ -86,5 +86,3 @@ class ConnectedOrgSection extends BaseSection {
 		}).init();
 	}
 }
-
-export = ConnectedOrgSection;

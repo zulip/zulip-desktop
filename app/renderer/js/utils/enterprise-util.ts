@@ -1,7 +1,7 @@
-import fs = require('fs');
-import path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-import Logger = require('./logger-util');
+import Logger from './logger-util';
 
 const logger = new Logger({
 	file: 'enterprise-util.log',

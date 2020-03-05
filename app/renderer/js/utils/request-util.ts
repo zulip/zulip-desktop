@@ -1,12 +1,12 @@
 import { remote } from 'electron';
 
-import fs = require('fs');
-import path = require('path');
-import ConfigUtil = require('./config-util');
-import Logger = require('./logger-util');
-import ProxyUtil = require('./proxy-util');
-import CertificateUtil = require('./certificate-util');
-import SystemUtil = require('./system-util');
+import fs from 'fs';
+import path from 'path';
+import * as ConfigUtil from './config-util';
+import Logger from './logger-util';
+import * as ProxyUtil from './proxy-util';
+import * as CertificateUtil from './certificate-util';
+import * as SystemUtil from './system-util';
 
 const { app } = remote;
 

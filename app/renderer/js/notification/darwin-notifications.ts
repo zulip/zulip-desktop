@@ -4,9 +4,9 @@ import {
 	appId, customReply, focusCurrentServer, parseReply, setupReply
 } from './helpers';
 
-import url = require('url');
-import MacNotifier = require('node-mac-notifier');
-import ConfigUtil = require('../utils/config-util');
+import url from 'url';
+import MacNotifier from 'node-mac-notifier';
+import * as ConfigUtil from '../utils/config-util';
 
 type ReplyHandler = (response: string) => void;
 type ClickHandler = () => void;

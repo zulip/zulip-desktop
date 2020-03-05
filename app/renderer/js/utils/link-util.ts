@@ -1,7 +1,7 @@
 'use strict';
 
 // TODO: TypeScript - Add @types/
-import wurl = require('wurl');
+import wurl from 'wurl';
 
 interface IsInternalResponse {
 	isInternalUrl: boolean;

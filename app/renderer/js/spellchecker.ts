@@ -3,8 +3,8 @@
 import type { Subject } from 'rxjs';
 import { SpellCheckHandler, ContextMenuListener, ContextMenuBuilder } from 'electron-spellchecker';
 
-import ConfigUtil = require('./utils/config-util');
-import Logger = require('./utils/logger-util');
+import * as ConfigUtil from './utils/config-util';
+import Logger from './utils/logger-util';
 
 declare module 'electron-spellchecker' {
 	interface SpellCheckHandler {

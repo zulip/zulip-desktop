@@ -3,9 +3,9 @@ import { app, dialog, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import { linuxUpdateNotification } from './linuxupdater';	// Required only in case of linux
 
-import log = require('electron-log');
-import isDev = require('electron-is-dev');
-import ConfigUtil = require('../renderer/js/utils/config-util');
+import log from 'electron-log';
+import isDev from 'electron-is-dev';
+import * as ConfigUtil from '../renderer/js/utils/config-util';
 
 export function appUpdater(updateFromMenu = false): void {
 	// Don't initiate auto-updates in development

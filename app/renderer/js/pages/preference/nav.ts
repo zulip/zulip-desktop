@@ -1,9 +1,9 @@
 'use strict';
 
-import BaseComponent = require('../../components/base');
-import t = require('../../utils/translation-util');
+import BaseComponent from '../../components/base';
+import * as t from '../../utils/translation-util';
 
-class PreferenceNav extends BaseComponent {
+export default class PreferenceNav extends BaseComponent {
 	// TODO: TypeScript - Here props should be object type
 	props: any;
 	navItems: string[];
@@ -64,5 +64,3 @@ class PreferenceNav extends BaseComponent {
 		$item.classList.remove('active');
 	}
 }
-
-export = PreferenceNav;

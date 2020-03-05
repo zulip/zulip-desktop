@@ -1,6 +1,6 @@
 import { init } from '@sentry/electron';
 
-import isDev = require('electron-is-dev');
+import isDev from 'electron-is-dev';
 
 export const sentryInit = (): void => {
 	if (!isDev) {

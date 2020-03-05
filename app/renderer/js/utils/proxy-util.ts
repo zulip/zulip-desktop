@@ -1,8 +1,8 @@
 'use strict';
 
-import url = require('url');
+import url from 'url';
 
-import ConfigUtil = require('./config-util');
+import * as ConfigUtil from './config-util';
 
 export interface ProxyRule {
 	hostname?: string;

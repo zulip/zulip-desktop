@@ -2,11 +2,11 @@
 
 import { shell, ipcRenderer } from 'electron';
 
-import BaseComponent = require('../../components/base');
-import DomainUtil = require('../../utils/domain-util');
-import t = require('../../utils/translation-util');
+import BaseComponent from '../../components/base';
+import * as DomainUtil from '../../utils/domain-util';
+import * as t from '../../utils/translation-util';
 
-class NewServerForm extends BaseComponent {
+export default class NewServerForm extends BaseComponent {
 	// TODO: TypeScript - Here props should be object type
 	props: any;
 	$newServerForm: Element;
@@ -99,5 +99,3 @@ class NewServerForm extends BaseComponent {
 		this.networkSettingsLink();
 	}
 }
-
-export = NewServerForm;
