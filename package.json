@@ -238,7 +238,14 @@
           "import/no-mutable-exports": "off",
           "import/no-unresolved": "off",
           "lines-between-class-members": "off",
-          "max-lines": ["warn", { "max": 900, "skipBlankLines": true, "skipComments": true }],
+          "max-lines": [
+            "warn",
+            {
+              "max": 900,
+              "skipBlankLines": true,
+              "skipComments": true
+            }
+          ],
           "no-alert": "off",
           "no-else-return": "off",
           "no-path-concat": "off",
