@@ -386,7 +386,7 @@ app.on('ready', () => {
 				if (state === 'completed') {
 					page.send('downloadFileCompleted', item.getSavePath(), shortFileName);
 				} else {
-					console.log('Download failed state: ', state);
+					console.log('Download failed state:', state);
 					page.send('downloadFileFailed');
 				}
 				// To stop item for listening to updated events of this file

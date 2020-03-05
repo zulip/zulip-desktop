@@ -182,7 +182,7 @@ async function getServerSettings(domain: string, ignoreCerts = false): Promise<S
 		request(serverSettingsOptions, (error: string, response: any) => {
 			if (!error && response.statusCode === 200) {
 				const data = JSON.parse(response.body);
-				if (data.hasOwnProperty('realm_icon') && data.realm_icon) {
+				if (Object.prototype.hasOwnProperty.call(data, 'realm_icon') && data.realm_icon) {
 					resolve({
 						// Some Zulip Servers use absolute URL for server icon whereas others use relative URL
 						// Following check handles both the cases

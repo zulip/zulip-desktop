@@ -107,7 +107,7 @@ export default class Logger {
 	}
 
 	setUpConsole(): void {
-		for (const type in browserConsole) {
+		for (const type of Object.keys(browserConsole)) {
 			this.setupConsoleMethod(type);
 		}
 	}

@@ -4,7 +4,6 @@ import {
 	appId, customReply, focusCurrentServer, parseReply, setupReply
 } from './helpers';
 
-import url from 'url';
 import MacNotifier from 'node-mac-notifier';
 import * as ConfigUtil from '../utils/config-util';
 
@@ -23,9 +22,8 @@ class DarwinNotification {
 
 	constructor(title: string, opts: NotificationOptions) {
 		const silent: boolean = ConfigUtil.getConfigItem('silent') || false;
-		const { host, protocol } = location;
 		const { icon } = opts;
-		const profilePic = url.resolve(`${protocol}//${host}`, icon);
+		const profilePic = new URL(icon, location.href).href;
 
 		this.tag = opts.tag;
 		const notification = new MacNotifier(title, Object.assign(opts, {

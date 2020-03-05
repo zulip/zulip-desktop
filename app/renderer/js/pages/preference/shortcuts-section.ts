@@ -12,6 +12,7 @@ export default class ShortcutsSection extends BaseSection {
 		super();
 		this.props = props;
 	}
+
 	// TODO - Deduplicate templateMac and templateWinLin functions. In theory
 	// they both should be the same the only thing different should be the userOSKey
 	// variable but there seems to be inconsistences between both function, one has more
@@ -335,6 +336,7 @@ export default class ShortcutsSection extends BaseSection {
 			shell.openExternal(link);
 		});
 	}
+
 	init(): void {
 		this.props.$root.innerHTML = (process.platform === 'darwin') ?
 			this.templateMac() : this.templateWinLin();

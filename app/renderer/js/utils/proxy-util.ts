@@ -1,7 +1,5 @@
 'use strict';
 
-import url from 'url';
-
 import * as ConfigUtil from './config-util';
 
 export interface ProxyRule {
@@ -11,12 +9,13 @@ export interface ProxyRule {
 
 // Return proxy to be used for a particular uri, to be used for request
 export function getProxy(_uri: string): ProxyRule | void {
-	const parsedUri = url.parse(_uri);
-	if (parsedUri === null) {
+	let uri;
+	try {
+		uri = new URL(_uri);
+	} catch (err) {
 		return;
 	}
 
-	const uri = parsedUri;
 	const proxyRules = ConfigUtil.getConfigItem('proxyRules', '').split(';');
 	// If SPS is on and system uses no proxy then request should not try to use proxy from
 	// environment. NO_PROXY = '*' makes request ignore all environment proxy variables.

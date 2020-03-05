@@ -230,13 +230,12 @@ class ServerManagerView {
 			settingOptions.autoHideMenubar = false;
 		}
 
-		for (const i in settingOptions) {
-			const setting = i as keyof SettingsOptions;
+		for (const [setting, value] of Object.entries(settingOptions)) {
 			// give preference to defaults defined in global_config.json
 			if (EnterpriseUtil.configItemExists(setting)) {
 				ConfigUtil.setConfigItem(setting, EnterpriseUtil.getConfigItem(setting), true);
 			} else if (ConfigUtil.getConfigItem(setting) === null) {
-				ConfigUtil.setConfigItem(setting, settingOptions[setting]);
+				ConfigUtil.setConfigItem(setting, value);
 			}
 		}
 	}
@@ -797,11 +796,11 @@ class ServerManagerView {
 			'tab-devtools': 'openDevTools'
 		};
 
-		for (const key in webviewListeners) {
+		for (const [key, method] of Object.entries(webviewListeners)) {
 			ipcRenderer.on(key, () => {
 				const activeWebview = this.tabs[this.activeTabIndex].webview;
 				if (activeWebview) {
-					activeWebview[webviewListeners[key] as string]();
+					activeWebview[method]();
 				}
 			});
 		}
