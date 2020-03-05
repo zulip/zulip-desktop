@@ -737,7 +737,7 @@ class ServerManagerView {
 		return !(url.endsWith('/login/') || this.tabs[tabIndex].webview.loading);
 	}
 
-	getActiveWebview(): any {
+	getActiveWebview(): Electron.WebviewTag {
 		const selector = 'webview:not(.disabled)';
 		const webview: Electron.WebviewTag = document.querySelector(selector);
 		return webview;
