@@ -29,7 +29,7 @@
     "lint-css": "stylelint app/renderer/css/*.css",
     "lint-html": "./node_modules/.bin/htmlhint \"app/renderer/*.html\" ",
     "lint-js": "xo",
-    "test": "npm run lint-html && npm run lint-css && npm run lint-js",
+    "test": "tsc --noEmit && npm run lint-html && npm run lint-css && npm run lint-js",
     "test-e2e": "gulp test-e2e",
     "compile": "gulp compile",
     "dev": "gulp dev && npm test",
