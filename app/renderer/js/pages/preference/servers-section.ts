@@ -2,11 +2,14 @@ import BaseSection from './base-section';
 import NewServerForm from './new-server-form';
 import * as t from '../../utils/translation-util';
 
+interface ServersSectionProps {
+	$root: Element;
+}
+
 export default class ServersSection extends BaseSection {
-	// TODO: TypeScript - Here props should be object type
-	props: any;
+	props: ServersSectionProps;
 	$newServerContainer: Element;
-	constructor(props: any) {
+	constructor(props: ServersSectionProps) {
 		super();
 		this.props = props;
 	}

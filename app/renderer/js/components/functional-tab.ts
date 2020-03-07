@@ -1,4 +1,4 @@
-import Tab from './tab';
+import Tab, { TabProps } from './tab';
 
 export default class FunctionalTab extends Tab {
 	$closeButton: Element;
@@ -13,8 +13,7 @@ export default class FunctionalTab extends Tab {
 				</div>`;
 	}
 
-	// TODO: Typescript - This type for props should be TabProps
-	constructor(props: any) {
+	constructor(props: TabProps) {
 		super(props);
 		this.init();
 	}

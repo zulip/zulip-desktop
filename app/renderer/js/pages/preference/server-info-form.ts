@@ -7,15 +7,21 @@ import * as t from '../../utils/translation-util';
 
 const { dialog } = remote;
 
+interface ServerInfoFormProps {
+	$root: Element;
+	server: DomainUtil.ServerConf;
+	index: number;
+	onChange: () => void;
+}
+
 export default class ServerInfoForm extends BaseComponent {
-	// TODO: TypeScript - Here props should be object type
-	props: any;
+	props: ServerInfoFormProps;
 	$serverInfoForm: Element;
 	$serverInfoAlias: Element;
 	$serverIcon: Element;
 	$deleteServerButton: Element;
 	$openServerButton: Element;
-	constructor(props: any) {
+	constructor(props: ServerInfoFormProps) {
 		super();
 		this.props = props;
 	}

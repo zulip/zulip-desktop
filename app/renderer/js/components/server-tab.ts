@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
 
-import Tab from './tab';
+import Tab, { TabProps } from './tab';
 import * as SystemUtil from '../utils/system-util';
 
 export default class ServerTab extends Tab {
@@ -17,8 +17,7 @@ export default class ServerTab extends Tab {
 				</div>`;
 	}
 
-	// TODO: Typescript - This type for props should be TabProps
-	constructor(props: any) {
+	constructor(props: TabProps) {
 		super(props);
 		this.init();
 	}

@@ -11,13 +11,24 @@ const { app, dialog } = remote;
 
 const shouldSilentWebview = ConfigUtil.getConfigItem('silent');
 
-// TODO: TypeScript - Type annotate WebViewProps.
 interface WebViewProps {
-	[key: string]: any;
+	$root: Element;
+	index: number;
+	tabIndex: number;
+	url: any;
+	role: string;
+	name: string;
+	isActive: () => boolean;
+	switchLoading: (loading: any, url: string) => void;
+	onNetworkError: (index: number) => void;
+	nodeIntegration: boolean;
+	preload: boolean;
+	onTitleChange: any;
+	hasPermission?: (origin: string, permission: string) => boolean;
 }
 
 export default class WebView extends BaseComponent {
-	props: any;
+	props: WebViewProps;
 	zoomFactor: number;
 	badgeCount: number;
 	loading: boolean;

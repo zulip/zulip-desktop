@@ -912,8 +912,7 @@ class ServerManagerView {
 		});
 
 		ipcRenderer.on('update-realm-name', (event: Event, serverURL: string, realmName: string) => {
-			// TODO: TypeScript - Type annotate getDomains() or this domain paramter.
-			DomainUtil.getDomains().forEach((domain: any, index: number) => {
+			DomainUtil.getDomains().forEach((domain: DomainUtil.ServerConf, index: number) => {
 				if (domain.url.includes(serverURL)) {
 					const serverTooltipSelector = '.tab .server-tooltip';
 					const serverTooltips = document.querySelectorAll(serverTooltipSelector);

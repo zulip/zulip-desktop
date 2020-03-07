@@ -2,10 +2,13 @@ import BaseSection from './base-section';
 import * as LinkUtil from '../../utils/link-util';
 import * as t from '../../utils/translation-util';
 
+interface ShortcutsSectionProps {
+	$root: Element;
+}
+
 export default class ShortcutsSection extends BaseSection {
-	// TODO: TypeScript - Here props should be object type
-	props: any;
-	constructor(props: any) {
+	props: ShortcutsSectionProps;
+	constructor(props: ShortcutsSectionProps) {
 		super();
 		this.props = props;
 	}

@@ -12,10 +12,13 @@ import * as EnterpriseUtil from '../../utils/enterprise-util';
 import * as t from '../../utils/translation-util';
 import supportedLocales from '../../../../translations/supported-locales.json';
 
+interface GeneralSectionProps {
+	$root: Element;
+}
+
 export default class GeneralSection extends BaseSection {
-	// TODO: TypeScript - Here props should be object type
-	props: any;
-	constructor(props: any) {
+	props: GeneralSectionProps;
+	constructor(props: GeneralSectionProps) {
 		super();
 		this.props = props;
 	}

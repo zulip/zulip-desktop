@@ -3,9 +3,15 @@ import escape from 'escape-html';
 
 import BaseComponent from '../../components/base';
 
+interface BaseSectionProps {
+	$element: HTMLElement;
+	disabled?: boolean;
+	value: boolean;
+	clickHandler: () => void;
+}
+
 export default class BaseSection extends BaseComponent {
-	// TODO: TypeScript - Here props should be object type
-	generateSettingOption(props: any): void {
+	generateSettingOption(props: BaseSectionProps): void {
 		const {$element, disabled, value, clickHandler} = props;
 
 		$element.innerHTML = '';
@@ -18,7 +24,7 @@ export default class BaseSection extends BaseComponent {
 		}
 	}
 
-	generateOptionTemplate(settingOption: boolean, disabled: boolean): string {
+	generateOptionTemplate(settingOption: boolean, disabled?: boolean): string {
 		const label = disabled ? '<label class="disallowed" title="Setting locked by system administrator."/>' : '<label/>';
 		if (settingOption) {
 			return `

@@ -8,16 +8,19 @@ import * as CertificateUtil from '../../utils/certificate-util';
 import * as DomainUtil from '../../utils/domain-util';
 import * as t from '../../utils/translation-util';
 
+interface AddCertificateProps {
+	$root: Element;
+}
+
 const { dialog } = remote;
 
 export default class AddCertificate extends BaseComponent {
-	// TODO: TypeScript - Here props should be object type
-	props: any;
+	props: AddCertificateProps;
 	_certFile: string;
 	$addCertificate: Element | null;
 	addCertificateButton: Element | null;
 	serverUrl: HTMLInputElement | null;
-	constructor(props: any) {
+	constructor(props: AddCertificateProps) {
 		super();
 		this.props = props;
 		this._certFile = '';

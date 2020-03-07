@@ -5,13 +5,17 @@ import * as DomainUtil from '../../utils/domain-util';
 import * as LinkUtil from '../../utils/link-util';
 import * as t from '../../utils/translation-util';
 
+interface NewServerFormProps {
+	$root: Element;
+	onChange: () => void;
+}
+
 export default class NewServerForm extends BaseComponent {
-	// TODO: TypeScript - Here props should be object type
-	props: any;
+	props: NewServerFormProps;
 	$newServerForm: Element;
 	$saveServerButton: HTMLButtonElement;
 	$newServerUrl: HTMLInputElement;
-	constructor(props: any) {
+	constructor(props: NewServerFormProps) {
 		super();
 		this.props = props;
 	}
@@ -68,7 +72,7 @@ export default class NewServerForm extends BaseComponent {
 			return;
 		}
 		await DomainUtil.addDomain(serverConf);
-		this.props.onChange(this.props.index);
+		this.props.onChange();
 	}
 
 	openCreateNewOrgExternalLink(): void {

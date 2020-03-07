@@ -5,7 +5,7 @@ import * as ConfigUtil from './config-util';
 // We want to do this by creating a new module that exports
 // this interface
 interface Setting {
-	[key: string]: any;
+	[key: string]: boolean;
 }
 
 interface Toggle {

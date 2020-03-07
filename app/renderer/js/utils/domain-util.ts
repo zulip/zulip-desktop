@@ -13,7 +13,7 @@ import * as Messages from '../../../resources/messages';
 
 const { app, dialog } = remote;
 
-interface ServerConf {
+export interface ServerConf {
 	url: string;
 	alias?: string;
 	icon?: string;

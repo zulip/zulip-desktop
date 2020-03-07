@@ -4,15 +4,18 @@ import BaseSection from './base-section';
 import * as ConfigUtil from '../../utils/config-util';
 import * as t from '../../utils/translation-util';
 
+interface NetworkSectionProps {
+	$root: Element;
+}
+
 export default class NetworkSection extends BaseSection {
-	// TODO: TypeScript - Here props should be object type
-	props: any;
+	props: NetworkSectionProps;
 	$proxyPAC: HTMLInputElement;
 	$proxyRules: HTMLInputElement;
 	$proxyBypass: HTMLInputElement;
 	$proxySaveAction: Element;
 	$manualProxyBlock: Element;
-	constructor(props: any) {
+	constructor(props: NetworkSectionProps) {
 		super();
 		this.props = props;
 	}

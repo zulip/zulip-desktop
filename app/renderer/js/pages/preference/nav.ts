@@ -1,12 +1,16 @@
 import BaseComponent from '../../components/base';
 import * as t from '../../utils/translation-util';
 
+interface PreferenceNavProps {
+	$root: Element;
+	onItemSelected: (navItem: string) => void;
+}
+
 export default class PreferenceNav extends BaseComponent {
-	// TODO: TypeScript - Here props should be object type
-	props: any;
+	props: PreferenceNavProps;
 	navItems: string[];
 	$el: Element;
-	constructor(props: any) {
+	constructor(props: PreferenceNavProps) {
 		super();
 		this.props = props;
 		this.navItems = ['General', 'Network', 'AddServer', 'Organizations', 'Shortcuts'];

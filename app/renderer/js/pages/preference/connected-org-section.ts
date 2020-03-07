@@ -7,15 +7,18 @@ import AddCertificate from './add-certificate';
 import FindAccounts from './find-accounts';
 import * as t from '../../utils/translation-util';
 
+interface ConnectedOrgSectionProps {
+	$root: Element;
+}
+
 export default class ConnectedOrgSection extends BaseSection {
-	// TODO: TypeScript - Here props should be object type
-	props: any;
+	props: ConnectedOrgSectionProps;
 	$serverInfoContainer: Element | null;
 	$existingServers: Element | null;
 	$newOrgButton: HTMLButtonElement | null;
 	$addCertificateContainer: Element | null;
 	$findAccountsContainer: Element | null;
-	constructor(props: any) {
+	constructor(props: ConnectedOrgSectionProps) {
 		super();
 		this.props = props;
 	}

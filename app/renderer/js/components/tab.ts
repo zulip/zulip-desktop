@@ -1,9 +1,19 @@
 import WebView from './webview';
 import BaseComponent from './base';
 
-// TODO: TypeScript - Type annotate props
-interface TabProps {
-	[key: string]: any;
+export interface TabProps {
+	role: string;
+	icon?: string;
+	name: string;
+	$root: Element;
+	onClick: () => void;
+	index: number;
+	tabIndex: number;
+	onHover?: () => void;
+	onHoverOut?: () => void;
+	webview: WebView;
+	materialIcon?: string;
+	onDestroy?: () => void;
 }
 
 export default class Tab extends BaseComponent {

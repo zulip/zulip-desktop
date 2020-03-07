@@ -4,13 +4,16 @@ import BaseComponent from '../../components/base';
 import * as LinkUtil from '../../utils/link-util';
 import * as t from '../../utils/translation-util';
 
+interface FindAccountsProps {
+	$root: Element;
+}
+
 export default class FindAccounts extends BaseComponent {
-	// TODO: TypeScript - Here props should be object type
-	props: any;
+	props: FindAccountsProps;
 	$findAccounts: Element | null;
 	$findAccountsButton: Element | null;
 	$serverUrlField: HTMLInputElement | null;
-	constructor(props: any) {
+	constructor(props: FindAccountsProps) {
 		super();
 		this.props = props;
 	}
