@@ -4,10 +4,10 @@ import { ipcRenderer, remote, WebviewTag, NativeImage } from 'electron';
 import path from 'path';
 import * as ConfigUtil from './utils/config-util';
 
-const { Tray, Menu, nativeImage, BrowserWindow, systemPreferences } = remote;
+const { Tray, Menu, nativeImage, BrowserWindow, nativeTheme } = remote;
 
 // get the theme on macOS
-const theme = systemPreferences.isDarkMode() ? 'dark' : 'light';
+const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
 
 const ICON_DIR = process.platform === 'darwin' ? `../../resources/tray/${theme}` : '../../resources/tray';
 
