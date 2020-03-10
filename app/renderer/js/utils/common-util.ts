@@ -1,5 +1,3 @@
-'use strict';
-
 // unescape already encoded/escaped strings
 export function decodeString(stringInput: string): string {
 	const parser = new DOMParser();

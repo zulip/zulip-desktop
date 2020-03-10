@@ -1,5 +1,3 @@
-'use strict';
-
 import path from 'path';
 import electron from 'electron';
 import i18n from 'i18n';

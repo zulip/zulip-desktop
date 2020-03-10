@@ -1,5 +1,3 @@
-'use strict';
-
 import { ipcRenderer, shell } from 'electron';
 import * as SetupSpellChecker from './spellchecker';
 

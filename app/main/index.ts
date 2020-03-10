@@ -1,4 +1,3 @@
-'use strict';
 import { sentryInit } from '../renderer/js/utils/sentry-util';
 import { appUpdater } from './autoupdater';
 import { setAutoLaunch } from './startup';

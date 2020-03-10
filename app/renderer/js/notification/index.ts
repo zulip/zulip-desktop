@@ -1,5 +1,3 @@
-'use strict';
-
 import { remote } from 'electron';
 import * as params from '../utils/params-util';
 import { appId, loadBots } from './helpers';

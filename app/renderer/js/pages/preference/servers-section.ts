@@ -1,5 +1,3 @@
-'use strict';
-
 import BaseSection from './base-section';
 import NewServerForm from './new-server-form';
 import * as t from '../../utils/translation-util';

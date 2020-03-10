@@ -1,5 +1,3 @@
-'use strict';
-
 import { remote, ipcRenderer } from 'electron';
 
 import BaseComponent from '../../components/base';

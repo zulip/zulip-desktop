@@ -1,4 +1,3 @@
-'use strict';
 import electron, { app } from 'electron';
 
 import * as ConfigUtil from '../../utils/config-util';

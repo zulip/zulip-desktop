@@ -1,4 +1,3 @@
-'use strict';
 import { JsonDB } from 'node-json-db';
 
 import escape from 'escape-html';

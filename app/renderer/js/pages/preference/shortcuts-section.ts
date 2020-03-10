@@ -1,5 +1,3 @@
-'use strict';
-
 import { shell } from 'electron';
 
 import BaseSection from './base-section';

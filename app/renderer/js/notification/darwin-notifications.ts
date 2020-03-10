@@ -1,4 +1,3 @@
-'use strict';
 import { ipcRenderer } from 'electron';
 import {
 	appId, customReply, focusCurrentServer, parseReply, setupReply

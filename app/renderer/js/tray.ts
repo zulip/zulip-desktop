@@ -1,4 +1,3 @@
-'use strict';
 import { ipcRenderer, remote, WebviewTag, NativeImage } from 'electron';
 
 import path from 'path';

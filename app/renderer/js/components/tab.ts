@@ -1,5 +1,3 @@
-'use strict';
-
 import WebView from './webview';
 import BaseComponent from './base';
 

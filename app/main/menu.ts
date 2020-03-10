@@ -1,4 +1,3 @@
-'use strict';
 import { app, shell, BrowserWindow, Menu, dialog } from 'electron';
 import { appUpdater } from './autoupdater';
 

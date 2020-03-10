@@ -1,5 +1,3 @@
-'use strict';
-
 import * as ConfigUtil from './config-util';
 
 // TODO: TypeScript - add to Setting interface

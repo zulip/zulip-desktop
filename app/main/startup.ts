@@ -1,4 +1,3 @@
-'use strict';
 import { app } from 'electron';
 
 import AutoLaunch from 'auto-launch';

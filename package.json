@@ -219,6 +219,7 @@
       "@typescript-eslint/restrict-template-expressions": "off",
       "capitalized-comments": "off",
       "import/no-mutable-exports": "off",
+      "import/unambiguous": "error",
       "max-lines": [
         "warn",
         {
@@ -232,11 +233,26 @@
       "no-warning-comments": "off",
       "object-curly-spacing": "off",
       "padding-line-between-statements": "off",
+      "strict": "error",
       "unicorn/catch-error-name": "off"
     },
     "envs": [
       "node",
       "browser"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "gulpfile.js",
+          "scripts/notarize.js",
+          "tools/locale-helper/index.js",
+          "tools/reinstall-node-modules.js",
+          "typings.d.ts"
+        ],
+        "parserOptions": {
+          "sourceType": "script"
+        }
+      }
     ]
   }
 }

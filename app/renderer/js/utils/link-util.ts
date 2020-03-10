@@ -1,5 +1,3 @@
-'use strict';
-
 // TODO: TypeScript - Add @types/
 import wurl from 'wurl';
 

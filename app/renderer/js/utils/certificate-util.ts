@@ -1,5 +1,3 @@
-'use strict';
-
 import { remote } from 'electron';
 import { JsonDB } from 'node-json-db';
 import { initSetUp } from './default-util';

@@ -1,5 +1,3 @@
-'use strict';
-
 import { ipcRenderer, remote, clipboard, shell } from 'electron';
 import { feedbackHolder } from './feedback';
 

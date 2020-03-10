@@ -1,5 +1,3 @@
-'use strict';
-
 import type { Subject } from 'rxjs';
 import { SpellCheckHandler, ContextMenuListener, ContextMenuBuilder } from 'electron-spellchecker';
 

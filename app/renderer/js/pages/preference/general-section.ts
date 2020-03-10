@@ -1,4 +1,3 @@
-'use strict';
 import { ipcRenderer, remote, OpenDialogOptions } from 'electron';
 
 import path from 'path';

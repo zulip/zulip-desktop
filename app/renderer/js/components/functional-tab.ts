@@ -1,5 +1,3 @@
-'use strict';
-
 import Tab from './tab';
 
 export default class FunctionalTab extends Tab {

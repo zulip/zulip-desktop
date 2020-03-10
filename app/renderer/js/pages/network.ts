@@ -1,5 +1,3 @@
-'use strict';
-
 import { ipcRenderer } from 'electron';
 
 export function init($reconnectButton: Element, $settingsButton: Element): void {

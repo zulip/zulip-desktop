@@ -1,5 +1,3 @@
-'use strict';
-
 import { ipcRenderer } from 'electron';
 
 import BaseSection from './base-section';

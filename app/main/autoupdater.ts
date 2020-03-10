@@ -1,4 +1,3 @@
-'use strict';
 import { app, dialog, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import { linuxUpdateNotification } from './linuxupdater';	// Required only in case of linux
