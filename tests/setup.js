@@ -1,3 +1,4 @@
+'use strict';
 const {Application} = require('spectron');
 const fs = require('fs');
 const path = require('path');

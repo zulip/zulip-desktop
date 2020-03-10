@@ -245,6 +245,7 @@
         "files": [
           "gulpfile.js",
           "scripts/notarize.js",
+          "tests/**/*.js",
           "tools/locale-helper/index.js",
           "tools/reinstall-node-modules.js",
           "typings.d.ts"
