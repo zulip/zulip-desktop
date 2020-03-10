@@ -1,4 +1,4 @@
-import { remote } from 'electron';
+import { ipcRenderer, remote } from 'electron';
 
 import path from 'path';
 import fs from 'fs';
@@ -157,7 +157,7 @@ export default class WebView extends BaseComponent {
 	}
 
 	showNotificationSettings(): void {
-		this.$el.executeJavaScript('showNotificationSettings()');
+		ipcRenderer.sendTo(this.$el.getWebContentsId(), 'show-notification-settings');
 	}
 
 	show(): void {
@@ -245,11 +245,11 @@ export default class WebView extends BaseComponent {
 	}
 
 	logOut(): void {
-		this.$el.executeJavaScript('logout()');
+		ipcRenderer.sendTo(this.$el.getWebContentsId(), 'logout');
 	}
 
 	showShortcut(): void {
-		this.$el.executeJavaScript('shortcut()');
+		ipcRenderer.sendTo(this.$el.getWebContentsId(), 'shortcut');
 	}
 
 	openDevTools(): void {

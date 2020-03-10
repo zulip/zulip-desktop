@@ -9,14 +9,6 @@ import * as ConfigUtil from './utils/config-util';
 
 import * as NetworkError from './pages/network';
 
-interface PatchedGlobal extends NodeJS.Global {
-	logout: () => void;
-	shortcut: () => void;
-	showNotificationSettings: () => void;
-}
-
-const globalPatched = global as PatchedGlobal;
-
 // eslint-disable-next-line import/no-unassigned-import
 import './notification';
 
@@ -29,16 +21,16 @@ declare let window: ZulipWebWindow;
 import electron_bridge from './electron-bridge';
 window.electron_bridge = electron_bridge;
 
-const logout = (): void => {
+ipcRenderer.on('logout', () => {
 	// Create the menu for the below
 	const dropdown: HTMLElement = document.querySelector('.dropdown-toggle');
 	dropdown.click();
 
 	const nodes: NodeListOf<HTMLElement> = document.querySelectorAll('.dropdown-menu li:last-child a');
 	nodes[nodes.length - 1].click();
-};
+});
 
-const shortcut = (): void => {
+ipcRenderer.on('shortcut', () => {
 	// Create the menu for the below
 	const node: HTMLElement = document.querySelector('a[data-overlay-trigger=keyboard-shortcuts]');
 	// Additional check
@@ -49,9 +41,9 @@ const shortcut = (): void => {
 		const dropdown: HTMLElement = document.querySelector('.dropdown-toggle');
 		dropdown.click();
 	}
-};
+});
 
-const showNotificationSettings = (): void => {
+ipcRenderer.on('show-notification-settings', () => {
 	// Create the menu for the below
 	const dropdown: HTMLElement = document.querySelector('.dropdown-toggle');
 	dropdown.click();
@@ -65,12 +57,6 @@ const showNotificationSettings = (): void => {
 	setTimeout(() => {
 		notificationItem[2].click();
 	}, 100);
-};
-
-process.once('loaded', (): void => {
-	globalPatched.logout = logout;
-	globalPatched.shortcut = shortcut;
-	globalPatched.showNotificationSettings = showNotificationSettings;
 });
 
 // To prevent failing this script on linux we need to load it after the document loaded
