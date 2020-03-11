@@ -320,7 +320,7 @@ class ServerManagerView {
 			}
 			// checkDomain() and webview.load() for lastActiveTab before the others
 			DomainUtil.updateSavedServer(servers[lastActiveTab].url, lastActiveTab);
-			this.activateTab(lastActiveTab);
+			this.activateTab(lastActiveTab, true);
 			for (const [i, server] of servers.entries()) {
 				// after the lastActiveTab is activated, we load the others in the background
 				// without activating them, to prevent flashing of server icons
@@ -413,7 +413,21 @@ class ServerManagerView {
 			this.openSettings('General');
 		});
 		this.$backButton.addEventListener('click', () => {
-			this.tabs[this.activeTabIndex].webview.back();
+			if (this.tabs.length === 1 && this.tabs[this.activeTabIndex].props.name === 'Settings') {
+				return;
+			}
+			const canMoveBack = this.tabs[this.activeTabIndex].webview.back();
+			if (canMoveBack && this.tabs[this.activeTabIndex].props.name === 'Settings') {
+				setTimeout(async _ => {
+					const nav = this.currentSettingWindowName();
+					await this.tabs[this.functionalTabs.Settings].webview.send('switch-settings-nav', nav);
+				}, 50);
+			}
+			if (!canMoveBack && this.tabs[this.activeTabIndex].webview.prevTabIndex >= 0) {
+				const newTab = this.tabs[this.activeTabIndex].webview.prevTabIndex;
+				this.tabs[this.activeTabIndex].webview.prevTabIndex = -1;
+				this.activateTab(newTab, true, true);
+			}
 		});
 
 		this.sidebarHoverEvent(this.$addServerButton, this.$addServerTooltip, true);
@@ -501,7 +515,7 @@ class ServerManagerView {
 
 	openFunctionalTab(tabProps: FunctionalTabProps): void {
 		if (this.functionalTabs[tabProps.name] !== undefined) {
-			this.activateTab(this.functionalTabs[tabProps.name]);
+			this.activateTab(this.functionalTabs[tabProps.name], true);
 			return;
 		}
 
@@ -516,7 +530,7 @@ class ServerManagerView {
 			$root: this.$tabsContainer,
 			index: this.functionalTabs[tabProps.name],
 			tabIndex,
-			onClick: this.activateTab.bind(this, this.functionalTabs[tabProps.name]),
+			onClick: this.activateTab.bind(this, this.functionalTabs[tabProps.name], true),
 			onDestroy: this.destroyTab.bind(this, tabProps.name, this.functionalTabs[tabProps.name]),
 			webview: new WebView({
 				$root: this.$webviewsContainer,
@@ -547,7 +561,7 @@ class ServerManagerView {
 		// closed when the functional tab DOM is ready, handled in webview.js
 		this.$webviewsContainer.classList.remove('loaded');
 
-		this.activateTab(this.functionalTabs[tabProps.name]);
+		this.activateTab(this.functionalTabs[tabProps.name], true);
 	}
 
 	async openSettings(nav = 'General'): Promise<void> {
@@ -577,7 +591,7 @@ class ServerManagerView {
 
 	activateLastTab(index: number): void {
 		// Open all the tabs in background, also activate the tab based on the index
-		this.activateTab(index);
+		this.activateTab(index, true);
 		// Save last active tab via main process to avoid JSON DB errors
 		ipcRenderer.send('save-last-tab', index);
 	}
@@ -601,7 +615,7 @@ class ServerManagerView {
 		return tabs;
 	}
 
-	activateTab(index: number, hideOldTab = true): void {
+	activateTab(index: number, hideOldTab = true, fromBackButton = false): void {
 		if (!this.tabs[index]) {
 			return;
 		}
@@ -619,6 +633,9 @@ class ServerManagerView {
 		}
 
 		try {
+			if (!fromBackButton) {
+				this.tabs[index].webview.prevTabIndex = this.activeTabIndex;
+			}
 			this.tabs[index].webview.canGoBackButton();
 		} catch (err) {
 		}
@@ -740,6 +757,12 @@ class ServerManagerView {
 		return webview;
 	}
 
+	currentSettingWindowName(): string {
+		const selector = 'webview.active';
+		const webview: Electron.WebviewTag = document.querySelector(selector);
+		return webview.getAttribute('src').split('#')[1];
+	}
+
 	addContextMenu($serverImg: HTMLImageElement, index: number): void {
 		$serverImg.addEventListener('contextmenu', e => {
 			e.preventDefault();
@@ -768,7 +791,7 @@ class ServerManagerView {
 					enabled: this.isLoggedIn(index),
 					click: () => {
 						// switch to tab whose icon was right-clicked
-						this.activateTab(index);
+						this.activateTab(index, true);
 						this.tabs[index].webview.showNotificationSettings();
 					}
 				},
@@ -823,7 +846,7 @@ class ServerManagerView {
 			} else {
 				DomainUtil.getDomains().forEach((domain: any, index: number) => {
 					if (domain.url.includes(serverURL)) {
-						this.activateTab(index);
+						this.activateTab(index, true);
 						this.tabs[index].webview.loadURL(`${serverURL}/accounts/login/subdomain/${apiKey}`);
 					}
 				});

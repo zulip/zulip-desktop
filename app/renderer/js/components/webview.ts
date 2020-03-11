@@ -25,6 +25,7 @@ export default class WebView extends BaseComponent {
 	$webviewsContainer: DOMTokenList;
 	$el: Electron.WebviewTag;
 	domReady?: Promise<void>;
+	prevTabIndex: number;
 
 	// This is required because in main.js we access WebView.method as
 	// webview[method].
@@ -260,16 +261,18 @@ export default class WebView extends BaseComponent {
 		this.$el.loadURL(url);
 	}
 
-	back(): void {
+	back(): boolean {
 		if (this.$el.canGoBack()) {
 			this.$el.goBack();
 			this.focus();
+			return true;
 		}
+		return false;
 	}
 
 	canGoBackButton(): void {
 		const $backButton = document.querySelector('#actions-container #back-action');
-		if (this.$el.canGoBack()) {
+		if (this.$el.canGoBack() || this.prevTabIndex >= 0) {
 			$backButton.classList.remove('disable');
 		} else {
 			$backButton.classList.add('disable');
