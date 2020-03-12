@@ -229,6 +229,27 @@ app.on('ready', () => {
 		}
 	});
 
+	const permissionCallbacks = new Map();
+	let nextPermissionId = 0;
+
+	page.session.setPermissionRequestHandler((webContents, permission, callback, details) => {
+		const {origin} = new URL(details.requestingUrl);
+		permissionCallbacks.set(nextPermissionId, callback);
+		page.send('permission-request', nextPermissionId, {
+			webContentsId: webContents.id === mainWindow.webContents.id ?
+				null :
+				webContents.id,
+			origin,
+			permission
+		});
+		nextPermissionId++;
+	});
+
+	ipcMain.on('permission-response', (event: Event, permissionId: number, grant: boolean) => {
+		permissionCallbacks.get(permissionId)(grant);
+		permissionCallbacks.delete(permissionId);
+	});
+
 	// Temporarily remove this event
 	// electron.powerMonitor.on('resume', () => {
 	// 	mainWindow.reload();

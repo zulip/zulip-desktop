@@ -359,6 +359,8 @@ class ServerManagerView {
 				url: server.url,
 				role: 'server',
 				name: CommonUtil.decodeString(server.alias),
+				hasPermission: (origin: string, permission: string) =>
+					origin === server.url && permission === 'notifications',
 				isActive: () => {
 					return index === this.activeTabIndex;
 				},
@@ -806,6 +808,29 @@ class ServerManagerView {
 				}
 			});
 		}
+
+		ipcRenderer.on('permission-request', (
+			event: Event,
+			permissionId: number,
+			{webContentsId, origin, permission}: {
+				webContentsId: number | null;
+				origin: string;
+				permission: string;
+			}
+		) => {
+			const grant = webContentsId === null ?
+				origin === 'null' && permission === 'notifications' :
+				this.tabs.some(
+					({webview}) =>
+						webview.$el.getWebContentsId() === webContentsId &&
+					webview.props.hasPermission?.(origin, permission)
+				);
+			console.log(
+				grant ? 'Granted' : 'Denied', 'permissions request for',
+				permission, 'from', origin
+			);
+			ipcRenderer.send('permission-response', permissionId, grant);
+		});
 
 		ipcRenderer.on('deep-linking-url', (event: Event, url: string) => {
 			if (!ConfigUtil.getConfigItem('desktopOtp')) {
