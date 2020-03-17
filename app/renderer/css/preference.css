@@ -724,3 +724,13 @@ i.open-network-button {
         margin-top: 10px;
     }
 }
+
+.lang-menu {
+    font-size: 13px;
+    font-weight: bold;
+    background: rgba(78, 191, 172, 1.000);
+    width: 100px;
+    height: 38px;
+    color: rgba(255, 255, 255, 1.000);
+    border-color: rgba(0, 0, 0, 0);
+}

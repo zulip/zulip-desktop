@@ -1,20 +1,15 @@
 import path from 'path';
-import electron from 'electron';
 import i18n from 'i18n';
-
-let app: Electron.App = null;
-
-/* To make the util runnable in both main and renderer process */
-if (process.type === 'renderer') {
-	app = electron.remote.app;
-} else {
-	app = electron.app;
-}
+import * as ConfigUtil from './config-util';
 
 i18n.configure({
 	directory: path.join(__dirname, '../../../translations/')
 });
 
+/* fetches the current appLocale from settings.json */
+const appLocale = ConfigUtil.getConfigItem('appLanguage');
+
+/* if no locale present in the json, en is set default */
 export function __(phrase: string): string {
-	return i18n.__({ phrase, locale: app.getLocale() ? app.getLocale() : 'en' });
+	return i18n.__({ phrase, locale: appLocale ? appLocale : 'en' });
 }
