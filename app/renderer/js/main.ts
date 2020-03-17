@@ -403,8 +403,15 @@ class ServerManagerView {
 
 	initLeftSidebarEvents(): void {
 		this.$dndButton.addEventListener('click', () => {
-			const dndUtil = DNDUtil.toggle();
-			ipcRenderer.send('forward-message', 'toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
+			const dnd = ConfigUtil.getConfigItem('dnd', false);
+			if (dnd) {
+				const dndUtil = DNDUtil.toggle();
+				ipcRenderer.send('forward-message', 'toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
+			} else if (document.querySelector('.dnd-menu') === null) {
+				DNDUtil.makeMenu();
+			} else {
+				document.querySelector('.dnd-menu').remove();
+			}
 		});
 		this.$reloadButton.addEventListener('click', () => {
 			this.tabs[this.activeTabIndex].webview.reload();
@@ -428,6 +435,7 @@ class ServerManagerView {
 	}
 
 	initDNDButton(): void {
+		DNDUtil.setDNDTimer();
 		const dnd = ConfigUtil.getConfigItem('dnd', false);
 		this.toggleDNDButton(dnd);
 	}
