@@ -37,7 +37,8 @@
     "dist": "tsc && electron-builder",
     "mas": "tsc && electron-builder --mac mas",
     "travis": "cd ./scripts && ./travis-build-test.sh",
-    "build-locales": "node tools/locale-helper"
+    "build-locales": "node tools/locale-helper",
+    "build": "tsc --publish never"
   },
   "pre-commit": [
     "test"

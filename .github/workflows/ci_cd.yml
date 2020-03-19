@@ -1,0 +1,58 @@
+name: Zulip Desktop CI
+
+on: [push]
+
+jobs:
+  test:
+    name: Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: 
+        - ubuntu-latest
+        - windows-latest
+#         - macOS-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setting up Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+    - name: Setup npm cache
+      id: npm-cache
+      run: |
+         echo "::set-output name=dir::$(npm config get cache)"
+         
+    - uses: actions/cache@v1
+      with:
+        path: ${{ steps.npm-cache.outputs.dir }}
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+          
+    - name: Installing npm modules
+      run: npm install
+
+    - name: Running Tests
+      run: |
+        npm run test
+        npm run build
+
+    - name: Building app installers
+      uses: samuelmeuli/action-electron-builder@v1.3.0
+      with:
+        github_token: ${{ secrets.github_token }}
+        mac_certs: ${{ secrets.mac_certs }}
+        mac_certs_password: ${{ secrets.mac_certs_password }}
+
+    - name: Listing content in ./dist
+      run: ls ./dist
+
+    - name: Uploading artifacts
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: ${{matrix.os}}
+        path: ./dist
