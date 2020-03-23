@@ -2,6 +2,11 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v4.0.3 --2020-02-29
+
+**Security fixes**:
+* CVE-2020-9443: Do not disable web security in the Electron webview. (Reported by Matt Austin.)
+
 ### v4.0.2-beta --2019-11-13
 
 **New features**:
