@@ -41,9 +41,9 @@ function generateTestAppPackageJson() {
 }
 
 // Starts the app, waits for it to load, returns a promise
-async function waitForLoad(app, t, opts) {
-	if (!opts) {
-		opts = {};
+async function waitForLoad(app, t, options) {
+	if (!options) {
+		options = {};
 	}
 
 	await app.start();

@@ -741,8 +741,8 @@ class ServerManagerView {
 	}
 
 	addContextMenu($serverImg: HTMLImageElement, index: number): void {
-		$serverImg.addEventListener('contextmenu', e => {
-			e.preventDefault();
+		$serverImg.addEventListener('contextmenu', event => {
+			event.preventDefault();
 			const template = [
 				{
 					label: 'Disconnect organization',

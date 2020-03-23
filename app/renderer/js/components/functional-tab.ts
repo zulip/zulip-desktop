@@ -39,9 +39,9 @@ export default class FunctionalTab extends Tab {
 			this.$closeButton.classList.remove('active');
 		});
 
-		this.$closeButton.addEventListener('click', (e: Event) => {
+		this.$closeButton.addEventListener('click', (event: Event) => {
 			this.props.onDestroy();
-			e.stopPropagation();
+			event.stopPropagation();
 		});
 	}
 }

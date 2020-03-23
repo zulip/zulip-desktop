@@ -51,13 +51,13 @@ export default class Logger {
 	logInDevMode: boolean;
 	[key: string]: any;
 
-	constructor(opts: LoggerOptions = {}) {
+	constructor(options: LoggerOptions = {}) {
 		let {
 			timestamp = true,
 			file = 'console.log',
 			level = true,
 			logInDevMode = false
-		} = opts;
+		} = options;
 
 		file = `${logDir}/${file}`;
 		if (timestamp === true) {

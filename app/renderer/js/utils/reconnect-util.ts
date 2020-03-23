@@ -77,9 +77,9 @@ export default class ReconnectUtil {
 			return true;
 		}
 		logger.log('There is no internet connection, try checking network cables, modem and router.');
-		const errMsgHolder = document.querySelector('#description');
-		if (errMsgHolder) {
-			errMsgHolder.innerHTML = `
+		const errorMessageHolder = document.querySelector('#description');
+		if (errorMessageHolder) {
+			errorMessageHolder.innerHTML = `
 						<div>Your internet connection doesn't seem to work properly!</div>
 						<div>Verify that it works and then click try again.</div>`;
 		}

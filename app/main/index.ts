@@ -107,12 +107,12 @@ function createMainWindow(): Electron.BrowserWindow {
 	win.loadURL(mainURL);
 
 	// Keep the app running in background on close event
-	win.on('close', e => {
+	win.on('close', event => {
 		if (ConfigUtil.getConfigItem('quitOnClose')) {
 			app.quit();
 		}
 		if (!isQuitting) {
-			e.preventDefault();
+			event.preventDefault();
 
 			if (process.platform === 'darwin') {
 				app.hide();
@@ -133,8 +133,8 @@ function createMainWindow(): Electron.BrowserWindow {
 	});
 
 	//  To destroy tray icon when navigate to a new URL
-	win.webContents.on('will-navigate', e => {
-		if (e) {
+	win.webContents.on('will-navigate', event => {
+		if (event) {
 			win.webContents.send('destroytray');
 		}
 	});
@@ -305,8 +305,8 @@ app.on('ready', () => {
 		BadgeSettings.updateTaskbarIcon(data, text, mainWindow);
 	});
 
-	ipcMain.on('forward-message', (_event: Electron.IpcMainEvent, listener: string, ...params: any[]) => {
-		page.send(listener, ...params);
+	ipcMain.on('forward-message', (_event: Electron.IpcMainEvent, listener: string, ...parameters: any[]) => {
+		page.send(listener, ...parameters);
 	});
 
 	ipcMain.on('update-menu', (_event: Electron.IpcMainEvent, props: any) => {

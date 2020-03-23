@@ -61,10 +61,10 @@ sendFeedback.useReporter('emailReporter', {
 	email: 'akash@zulipchat.com'
 });
 
-feedbackHolder.addEventListener('click', (e: Event) => {
+feedbackHolder.addEventListener('click', (event: Event) => {
 	// only remove the class if the grey out faded
 	// part is clicked and not the feedback element itself
-	if (e.target === e.currentTarget) {
+	if (event.target === event.currentTarget) {
 		feedbackHolder.classList.remove('show');
 	}
 });

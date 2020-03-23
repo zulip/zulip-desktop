@@ -18,9 +18,9 @@ for (const [locale, name] of Object.entries(supportedLocales)) {
 	console.log(`fetching translation for: ${name} - ${locale}..`);
 	(async () => {
 		try {
-			const res = await translate(phrases.join('\n'), {to: locale});
+			const result = await translate(phrases.join('\n'), {to: locale});
 			const localeFile = `${locale}.json`;
-			const translatedText = res.text.split('\n');
+			const translatedText = result.text.split('\n');
 			const translationJSON = {};
 			phrases.forEach((phrase, index) => {
 				translationJSON[phrase] = translatedText[index];

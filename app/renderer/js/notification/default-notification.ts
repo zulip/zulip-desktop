@@ -5,9 +5,9 @@ import * as ConfigUtil from '../utils/config-util';
 
 const NativeNotification = window.Notification;
 export default class BaseNotification extends NativeNotification {
-	constructor(title: string, opts: NotificationOptions) {
-		opts.silent = true;
-		super(title, opts);
+	constructor(title: string, options: NotificationOptions) {
+		options.silent = true;
+		super(title, options);
 
 		this.addEventListener('click', () => {
 			// focus to the server who sent the

@@ -19,13 +19,13 @@ interface NotificationHandlerArgs {
 class DarwinNotification {
 	tag: string;
 
-	constructor(title: string, opts: NotificationOptions) {
+	constructor(title: string, options: NotificationOptions) {
 		const silent: boolean = ConfigUtil.getConfigItem('silent') || false;
-		const { icon } = opts;
+		const { icon } = options;
 		const profilePic = new URL(icon, location.href).href;
 
-		this.tag = opts.tag;
-		const notification = new MacNotifier(title, Object.assign(opts, {
+		this.tag = options.tag;
+		const notification = new MacNotifier(title, Object.assign(options, {
 			bundleId: appId,
 			canReply: true,
 			silent,

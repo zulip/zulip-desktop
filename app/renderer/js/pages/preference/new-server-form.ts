@@ -72,8 +72,8 @@ export default class NewServerForm extends BaseComponent {
 
 	openCreateNewOrgExternalLink(): void {
 		const link = 'https://zulipchat.com/new/';
-		const externalCreateNewOrgEl = document.querySelector('#open-create-org-link');
-		externalCreateNewOrgEl.addEventListener('click', () => {
+		const externalCreateNewOrgElement = document.querySelector('#open-create-org-link');
+		externalCreateNewOrgElement.addEventListener('click', () => {
 			shell.openExternal(link);
 		});
 	}

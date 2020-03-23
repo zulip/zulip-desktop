@@ -108,16 +108,16 @@ document.addEventListener('DOMContentLoaded', (): void => {
 		}
 		// Open image attachment link in the lightbox instead of opening in the default browser
 		const { $, lightbox } = window;
-		$('#main_div').on('click', '.message_content p a', function (this: HTMLElement, e: Event) {
+		$('#main_div').on('click', '.message_content p a', function (this: HTMLElement, event: Event) {
 			const url = $(this).attr('href');
 
 			if (LinkUtil.isImage(url)) {
 				const $img = $(this).parent().siblings('.message_inline_image').find('img');
 
 				// prevent the image link from opening in a new page.
-				e.preventDefault();
+				event.preventDefault();
 				// prevent the message compose dialog from happening.
-				e.stopPropagation();
+				event.stopPropagation();
 
 				// Open image in the default browser if image preview is unavailable
 				if (!$img[0]) {

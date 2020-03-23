@@ -192,8 +192,8 @@ export default class WebView extends BaseComponent {
 				this.customCSS = null;
 				ConfigUtil.setConfigItem('customCSS', null);
 
-				const errMsg = 'The custom css previously set is deleted!';
-				dialog.showErrorBox('custom css file deleted!', errMsg);
+				const errorMessage = 'The custom css previously set is deleted!';
+				dialog.showErrorBox('custom css file deleted!', errorMessage);
 				return;
 			}
 
@@ -295,8 +295,8 @@ export default class WebView extends BaseComponent {
 		this.init();
 	}
 
-	async send(channel: string, ...param: any[]): Promise<void> {
+	async send(channel: string, ...parameters: any[]): Promise<void> {
 		await this.domReady;
-		this.$el.send(channel, ...param);
+		this.$el.send(channel, ...parameters);
 	}
 }

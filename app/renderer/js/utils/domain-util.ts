@@ -282,10 +282,10 @@ function generateFilePath(url: string): string {
 	const extension = path.extname(url).split('?')[0];
 
 	let hash = 5381;
-	let len = url.length;
+	let { length } = url;
 
-	while (len) {
-		hash = (hash * 33) ^ url.charCodeAt(--len);
+	while (length) {
+		hash = (hash * 33) ^ url.charCodeAt(--length);
 	}
 
 	// Create 'server-icons' directory if not existed

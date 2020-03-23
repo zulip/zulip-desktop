@@ -540,14 +540,14 @@ function getOtherTpl(props: any): Electron.MenuItemConstructorOptions[] {
 	}];
 }
 
-function sendAction(action: string, ...params: any[]): void {
+function sendAction(action: string, ...parameters: any[]): void {
 	const win = BrowserWindow.getAllWindows()[0];
 
 	if (process.platform === 'darwin') {
 		win.restore();
 	}
 
-	win.webContents.send(action, ...params);
+	win.webContents.send(action, ...parameters);
 }
 
 function checkForUpdate(): void {
