@@ -57,7 +57,6 @@ interface SettingsOptions {
 		flashTaskbarOnMessage?: boolean;
 	};
 	downloadsPath: string;
-	showDownloadFolder: boolean;
 	quitOnClose: boolean;
 	promptDownload: boolean;
 	flashTaskbarOnMessage?: boolean;
@@ -206,7 +205,6 @@ class ServerManagerView {
 				silent: false
 			},
 			downloadsPath: `${app.getPath('downloads')}`,
-			showDownloadFolder: false,
 			quitOnClose: false,
 			promptDownload: false
 		};

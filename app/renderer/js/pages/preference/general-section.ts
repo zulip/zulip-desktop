@@ -100,10 +100,6 @@ export default class GeneralSection extends BaseSection {
 						<div class="setting-description">${t.__('Force social login in app instead of browser')}</div>
 						<div class="setting-control"></div>
 					</div>
-					<div class="setting-row" id="show-download-folder">
-						<div class="setting-description">${t.__('Show downloaded files in file manager')}</div>
-						<div class="setting-control"></div>
-					</div>
 					<div class="setting-row" id="add-custom-css">
 						<div class="setting-description">
 							${t.__('Add custom CSS')}
@@ -164,7 +160,6 @@ export default class GeneralSection extends BaseSection {
 		this.showCustomCSSPath();
 		this.removeCustomCSS();
 		this.downloadFolder();
-		this.showDownloadFolder();
 		this.updateQuitOnCloseOption();
 		this.updatePromptDownloadOption();
 		this.enableErrorReporting();
@@ -470,18 +465,6 @@ export default class GeneralSection extends BaseSection {
 		const downloadFolder = document.querySelector('#download-folder .download-folder-button');
 		downloadFolder.addEventListener('click', () => {
 			this.downloadFolderDialog();
-		});
-	}
-
-	showDownloadFolder(): void {
-		this.generateSettingOption({
-			$element: document.querySelector('#show-download-folder .setting-control'),
-			value: ConfigUtil.getConfigItem('showDownloadFolder', false),
-			clickHandler: () => {
-				const newValue = !ConfigUtil.getConfigItem('showDownloadFolder');
-				ConfigUtil.setConfigItem('showDownloadFolder', newValue);
-				this.showDownloadFolder();
-			}
 		});
 	}
 

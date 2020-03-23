@@ -13,7 +13,6 @@ export default function handleExternalLink(this: WebView, event: Electron.NewWin
 	const { url } = event;
 	const domainPrefix = DomainUtil.getDomain(this.props.index).url;
 	const downloadPath = ConfigUtil.getConfigItem('downloadsPath', `${app.getPath('downloads')}`);
-	const shouldShowInFolder = ConfigUtil.getConfigItem('showDownloadFolder', false);
 
 	// Whitelist URLs which are allowed to be opened in the app
 	const {
@@ -42,7 +41,7 @@ export default function handleExternalLink(this: WebView, event: Electron.NewWin
 			ipcRenderer.send('downloadFile', url, downloadPath);
 			ipcRenderer.once('downloadFileCompleted', (_event: Event, filePath: string, fileName: string) => {
 				const downloadNotification = new Notification('Download Complete', {
-					body: shouldShowInFolder ? `Click to show ${fileName} in folder` : `Click to open ${fileName}`,
+					body: `Click to show ${fileName} in folder`,
 					silent: true // We'll play our own sound - ding.ogg
 				});
 
@@ -52,13 +51,8 @@ export default function handleExternalLink(this: WebView, event: Electron.NewWin
 				}
 
 				downloadNotification.addEventListener('click', () => {
-					if (shouldShowInFolder) {
-						// Reveal file in download folder
-						shell.showItemInFolder(filePath);
-					} else {
-						// Open file in the default native app
-						shell.openItem(filePath);
-					}
+					// Reveal file in download folder
+					shell.showItemInFolder(filePath);
 				});
 				ipcRenderer.removeAllListeners('downloadFileFailed');
 			});
