@@ -208,7 +208,7 @@
     "tap-colorize": "^1.2.0",
     "tape": "^5.0.0-next.5",
     "typescript": "^3.8.3",
-    "xo": "^0.27.2"
+    "xo": "^0.28.0"
   },
   "xo": {
     "rules": {
@@ -234,7 +234,8 @@
       "object-curly-spacing": "off",
       "padding-line-between-statements": "off",
       "strict": "error",
-      "unicorn/catch-error-name": "off"
+      "unicorn/catch-error-name": "off",
+      "unicorn/string-content": "off"
     },
     "envs": [
       "node",

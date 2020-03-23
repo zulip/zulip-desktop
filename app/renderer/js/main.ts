@@ -461,7 +461,7 @@ class ServerManagerView {
 		$altIcon.classList.add('server-icon');
 		$altIcon.classList.add('alt-icon');
 
-		$parent.removeChild($img);
+		$img.remove();
 		$parent.append($altIcon);
 
 		this.addContextMenu($altIcon as HTMLImageElement, index);

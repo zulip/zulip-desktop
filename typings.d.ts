@@ -8,6 +8,7 @@ interface PageParamsObject {
 	default_language: string;
 	external_authentication_methods: any;
 }
+// eslint-disable-next-line unicorn/prevent-abbreviations
 declare let page_params: PageParamsObject;
 
 // This is mostly zulip side of code we access from window
