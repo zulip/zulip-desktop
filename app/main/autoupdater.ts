@@ -1,10 +1,11 @@
-import { app, dialog, shell } from 'electron';
+import { app, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import { linuxUpdateNotification } from './linuxupdater';	// Required only in case of linux
 
 import log from 'electron-log';
 import isDev from 'electron-is-dev';
 import * as ConfigUtil from '../renderer/js/utils/config-util';
+import * as LinkUtil from '../renderer/js/utils/link-util';
 
 export function appUpdater(updateFromMenu = false): void {
 	// Don't initiate auto-updates in development
@@ -72,7 +73,7 @@ export function appUpdater(updateFromMenu = false): void {
 				Current Version: ${app.getVersion()}`
 			});
 			if (response === 0) {
-				shell.openExternal('https://zulipchat.com/apps/');
+				LinkUtil.openBrowser(new URL('https://zulipchat.com/apps/'));
 			}
 			// Remove all autoUpdator listeners so that next time autoUpdator is manually called these
 			// listeners don't trigger multiple times.

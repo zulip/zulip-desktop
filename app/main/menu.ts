@@ -7,6 +7,7 @@ import path from 'path';
 import * as DNDUtil from '../renderer/js/utils/dnd-util';
 import Logger from '../renderer/js/utils/logger-util';
 import * as ConfigUtil from '../renderer/js/utils/config-util';
+import * as LinkUtil from '../renderer/js/utils/link-util';
 import * as t from '../renderer/js/utils/translation-util';
 
 const appName = app.name;
@@ -48,7 +49,7 @@ function getToolsSubmenu(): Electron.MenuItemConstructorOptions[] {
 	{
 		label: t.__('Release Notes'),
 		click() {
-			shell.openExternal(`https://github.com/zulip/zulip-desktop/releases/tag/v${app.getVersion()}`);
+			LinkUtil.openBrowser(new URL(`https://github.com/zulip/zulip-desktop/releases/tag/v${app.getVersion()}`));
 		}
 	},
 	{

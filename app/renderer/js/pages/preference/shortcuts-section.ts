@@ -1,6 +1,5 @@
-import { shell } from 'electron';
-
 import BaseSection from './base-section';
+import * as LinkUtil from '../../utils/link-util';
 import * as t from '../../utils/translation-util';
 
 export default class ShortcutsSection extends BaseSection {
@@ -331,7 +330,7 @@ export default class ShortcutsSection extends BaseSection {
 		const link = 'https://zulipchat.com/help/keyboard-shortcuts';
 		const externalCreateNewOrgElement = document.querySelector('#open-hotkeys-link');
 		externalCreateNewOrgElement.addEventListener('click', () => {
-			shell.openExternal(link);
+			LinkUtil.openBrowser(new URL(link));
 		});
 	}
 

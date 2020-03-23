@@ -1,7 +1,8 @@
-import { shell, ipcRenderer } from 'electron';
+import { ipcRenderer } from 'electron';
 
 import BaseComponent from '../../components/base';
 import * as DomainUtil from '../../utils/domain-util';
+import * as LinkUtil from '../../utils/link-util';
 import * as t from '../../utils/translation-util';
 
 export default class NewServerForm extends BaseComponent {
@@ -74,7 +75,7 @@ export default class NewServerForm extends BaseComponent {
 		const link = 'https://zulipchat.com/new/';
 		const externalCreateNewOrgElement = document.querySelector('#open-create-org-link');
 		externalCreateNewOrgElement.addEventListener('click', () => {
-			shell.openExternal(link);
+			LinkUtil.openBrowser(new URL(link));
 		});
 	}
 

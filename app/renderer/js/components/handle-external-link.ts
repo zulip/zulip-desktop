@@ -51,6 +51,6 @@ export default function handleExternalLink(this: WebView, event: Electron.NewWin
 			ipcRenderer.removeAllListeners('downloadFileCompleted');
 		});
 	} else {
-		shell.openExternal(url.href);
+		LinkUtil.openBrowser(url);
 	}
 }

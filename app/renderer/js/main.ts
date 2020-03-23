@@ -1,4 +1,4 @@
-import { ipcRenderer, remote, clipboard, shell } from 'electron';
+import { ipcRenderer, remote, clipboard } from 'electron';
 import { feedbackHolder } from './feedback';
 
 import path from 'path';
@@ -20,6 +20,7 @@ import Logger from './utils/logger-util';
 import * as CommonUtil from './utils/common-util';
 import * as EnterpriseUtil from './utils/enterprise-util';
 import * as AuthUtil from './utils/auth-util';
+import * as LinkUtil from './utils/link-util';
 import * as Messages from '../../resources/messages';
 
 interface FunctionalTabProps {
@@ -866,8 +867,7 @@ class ServerManagerView {
 
 		ipcRenderer.on('open-help', () => {
 			// Open help page of current active server
-			const helpPage = this.getCurrentActiveServer() + '/help';
-			shell.openExternal(helpPage);
+			LinkUtil.openBrowser(new URL('/help', this.getCurrentActiveServer()));
 		});
 
 		ipcRenderer.on('reload-viewer', this.reloadView.bind(this, this.tabs[this.activeTabIndex].props.index));

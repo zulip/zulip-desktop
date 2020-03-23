@@ -1,8 +1,7 @@
 'use-strict';
 
-import { shell } from 'electron';
-
 import BaseComponent from '../../components/base';
+import * as LinkUtil from '../../utils/link-util';
 import * as t from '../../utils/translation-util';
 
 export default class FindAccounts extends BaseComponent {
@@ -45,7 +44,7 @@ export default class FindAccounts extends BaseComponent {
 		if (!url.startsWith('http')) {
 			url = 'https://' + url;
 		}
-		shell.openExternal(url + '/accounts/find');
+		LinkUtil.openBrowser(new URL('/accounts/find', url));
 	}
 
 	initListeners(): void {

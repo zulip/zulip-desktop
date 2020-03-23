@@ -1,14 +1,11 @@
-import { remote } from 'electron';
-
 import cryptoRandomString from 'crypto-random-string';
 import * as ConfigUtil from './config-util';
-
-const { shell } = remote;
+import * as LinkUtil from './link-util';
 
 export const openInBrowser = (link: string): void => {
 	const otp = cryptoRandomString({length: 64});
 	ConfigUtil.setConfigItem('desktopOtp', otp);
-	shell.openExternal(`${link}?desktop_flow_otp=${otp}`);
+	LinkUtil.openBrowser(new URL(`?desktop_flow_otp=${encodeURIComponent(otp)}`, link));
 };
 
 export const xorStrings = (a: string, b: string): string => {
