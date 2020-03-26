@@ -3,8 +3,6 @@ import fs from 'fs';
 import * as SetupSpellChecker from './spellchecker';
 
 import isDev from 'electron-is-dev';
-import * as AuthUtil from './utils/auth-util';
-import * as ConfigUtil from './utils/config-util';
 
 import * as NetworkError from './pages/network';
 
@@ -56,23 +54,7 @@ ipcRenderer.on('show-notification-settings', () => {
 	}, 100);
 });
 
-electron_bridge.once('zulip-loaded', ({ authMethods, serverLanguage }) => {
-	const loginInApp = ConfigUtil.getConfigItem('loginInApp');
-	console.log(loginInApp);
-	if (authMethods && !loginInApp) {
-		for (const authMethod of authMethods) {
-			const { button_id_suffix } = authMethod;
-			const $socialButton = document.querySelector(`button[id$="${button_id_suffix}"]`);
-			if ($socialButton) {
-				$socialButton.addEventListener('click', event => {
-					event.preventDefault();
-					const socialLink = $socialButton.closest('form').action;
-					AuthUtil.openInBrowser(socialLink);
-				});
-			}
-		}
-	}
-
+electron_bridge.once('zulip-loaded', ({ serverLanguage }) => {
 	// Get the default language of the server
 	if (serverLanguage) {
 		// Init spellchecker

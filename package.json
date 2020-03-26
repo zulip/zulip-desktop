@@ -63,15 +63,6 @@
       "entitlementsInherit": "build/entitlements.mac.plist",
       "gatekeeperAssess": false
     },
-    "protocols": [
-      {
-        "name": "zulip",
-        "role": "Viewer",
-        "schemes": [
-          "zulip"
-        ]
-      }
-    ],
     "linux": {
       "category": "Chat;GNOME;GTK;Network;InstantMessaging",
       "icon": "build/icon.icns",
@@ -157,7 +148,6 @@
     "adm-zip": "^0.4.14",
     "auto-launch": "^5.0.5",
     "backoff": "^2.5.0",
-    "crypto-random-string": "^3.2.0",
     "electron-is-dev": "^1.1.0",
     "electron-log": "^4.1.0",
     "electron-spellchecker": "^2.2.1",

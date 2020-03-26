@@ -42,7 +42,6 @@
 		const { page_params } = zulipWindow;
 		if (page_params) {
 			electron_bridge.send_event('zulip-loaded', {
-				authMethods: page_params.external_authentication_methods,
 				serverLanguage: page_params.default_language
 			});
 		}

@@ -19,7 +19,6 @@ import ReconnectUtil from './utils/reconnect-util';
 import Logger from './utils/logger-util';
 import * as CommonUtil from './utils/common-util';
 import * as EnterpriseUtil from './utils/enterprise-util';
-import * as AuthUtil from './utils/auth-util';
 import * as LinkUtil from './utils/link-util';
 import * as Messages from '../../resources/messages';
 
@@ -47,7 +46,6 @@ interface SettingsOptions {
 	autoUpdate: boolean;
 	betaUpdate: boolean;
 	errorReporting: boolean;
-	loginInApp: boolean;
 	customCSS: boolean;
 	silent: boolean;
 	lastActiveTab: number;
@@ -196,7 +194,6 @@ class ServerManagerView {
 			autoUpdate: true,
 			betaUpdate: false,
 			errorReporting: true,
-			loginInApp: false,
 			customCSS: false,
 			silent: false,
 			lastActiveTab: 0,
@@ -829,30 +826,6 @@ class ServerManagerView {
 				permission, 'from', origin
 			);
 			ipcRenderer.send('permission-response', permissionId, grant);
-		});
-
-		ipcRenderer.on('deep-linking-url', (event: Event, url: string) => {
-			if (!ConfigUtil.getConfigItem('desktopOtp')) {
-				return;
-			}
-			const urlObject = new URL(decodeURIComponent(url));
-			const serverURL = urlObject.searchParams.get('realm');
-			let apiKey = urlObject.searchParams.get('otp_encrypted_login_key');
-			const desktopOtp = ConfigUtil.getConfigItem('desktopOtp');
-			apiKey = AuthUtil.hexToAscii(AuthUtil.xorStrings(apiKey, desktopOtp));
-
-			// Use this apiKey to login the realm if it exists
-			if (apiKey === '') {
-				console.log('Invalid API Key');
-			} else {
-				DomainUtil.getDomains().forEach((domain: any, index: number) => {
-					if (domain.url.includes(serverURL)) {
-						this.activateTab(index);
-						this.tabs[index].webview.loadURL(`${serverURL}/accounts/login/subdomain/${apiKey}`);
-					}
-				});
-				ConfigUtil.setConfigItem('desktopOtp', null);
-			}
 		});
 
 		ipcRenderer.on('show-network-error', (event: Event, index: number) => {

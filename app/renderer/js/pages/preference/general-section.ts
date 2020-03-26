@@ -96,10 +96,6 @@ export default class GeneralSection extends BaseSection {
 						<div class="setting-description">${t.__('Enable error reporting (requires restart)')}</div>
 						<div class="setting-control"></div>
 					</div>
-					<div class="setting-row" id="force-login-app">
-						<div class="setting-description">${t.__('Force social login in app instead of browser')}</div>
-						<div class="setting-control"></div>
-					</div>
 					<div class="setting-row" id="add-custom-css">
 						<div class="setting-description">
 							${t.__('Add custom CSS')}
@@ -163,7 +159,6 @@ export default class GeneralSection extends BaseSection {
 		this.updateQuitOnCloseOption();
 		this.updatePromptDownloadOption();
 		this.enableErrorReporting();
-		this.enableLoginInApp();
 
 		// Platform specific settings
 
@@ -359,18 +354,6 @@ export default class GeneralSection extends BaseSection {
 				const newValue = !ConfigUtil.getConfigItem('errorReporting');
 				ConfigUtil.setConfigItem('errorReporting', newValue);
 				this.enableErrorReporting();
-			}
-		});
-	}
-
-	enableLoginInApp(): void {
-		this.generateSettingOption({
-			$element: document.querySelector('#force-login-app .setting-control'),
-			value: ConfigUtil.getConfigItem('loginInApp', true),
-			clickHandler: () => {
-				const newValue = !ConfigUtil.getConfigItem('loginInApp');
-				ConfigUtil.setConfigItem('loginInApp', newValue);
-				this.enableLoginInApp();
 			}
 		});
 	}
