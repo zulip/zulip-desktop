@@ -183,6 +183,7 @@
     "@types/escape-html": "0.0.20",
     "@types/fs-extra": "^8.1.0",
     "@types/i18n": "^0.8.6",
+    "@types/node": "^12.12.31",
     "@types/request": "^2.48.4",
     "@types/requestidlecallback": "^0.3.1",
     "@typescript-eslint/eslint-plugin": "^2.25.0",
@@ -248,11 +249,18 @@
           "scripts/notarize.js",
           "tests/**/*.js",
           "tools/locale-helper/index.js",
-          "tools/reinstall-node-modules.js",
-          "typings.d.ts"
+          "tools/reinstall-node-modules.js"
         ],
         "parserOptions": {
           "sourceType": "script"
+        }
+      },
+      {
+        "files": [
+          "**/*.d.ts"
+        ],
+        "rules": {
+          "import/unambiguous": "off"
         }
       }
     ]
