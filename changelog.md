@@ -2,6 +2,28 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.0.0 --2020-03-30
+
+**Security fixes**:
+* CVE-2020-10856: Enable Electron context isolation. (Reported by Matt Austin.)
+* CVE-2020-10857: Fix unsafe use of `shell.openExternal`/`shell.openItem`. (Reported by Matt Austin.)
+  * Downloaded files will no longer be opened directly; the previous option to show downloaded files in the file manager is now always on.
+* CVE-2020-10858: Add permission request handler to guard against audio/video recording by a malicious server. (Reported by Matt Austin.)
+
+**New features**:
+* Add an option to prompt for the location to save each downloaded file.
+
+**Fixes**:
+* Fix automatic launching at startup.
+* Fix Undo and Redo functionality on macOS.
+
+**Dependencies**:
+* Upgrade all dependencies, including Electron 8.0.3.
+* Remove `assert`, `cp-file`, `dotenv`, `electron-debug`, and `wurl`.
+
+**Deprecations**:
+* Since Electron upstream has discontinued support for 32-bit Linux, we will only provide 32-bit Linux builds on a best effort basis, and they will likely be removed in a future release.
+
 ### v4.0.3 --2020-02-29
 
 **Security fixes**:
