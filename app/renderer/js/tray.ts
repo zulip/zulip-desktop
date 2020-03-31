@@ -116,7 +116,6 @@ function sendAction(action: string): void {
 }
 
 const createTray = function (): void {
-	window.tray = new Tray(iconPath());
 	const contextMenu = Menu.buildFromTemplate([
 		{
 			label: 'Zulip',
@@ -141,6 +140,7 @@ const createTray = function (): void {
 			}
 		}
 	]);
+	window.tray = new Tray(iconPath());
 	window.tray.setContextMenu(contextMenu);
 	if (process.platform === 'linux' || process.platform === 'win32') {
 		window.tray.on('click', () => {
