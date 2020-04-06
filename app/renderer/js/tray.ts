@@ -2,6 +2,8 @@ import { ipcRenderer, remote, WebviewTag, NativeImage } from 'electron';
 
 import path from 'path';
 import * as ConfigUtil from './utils/config-util';
+//	eslint-disable-next-line @typescript-eslint/no-var-requires
+const { exec } = require('child_process');
 
 const { Tray, Menu, nativeImage, BrowserWindow, nativeTheme } = remote;
 
@@ -183,6 +185,34 @@ ipcRenderer.on('tray', (_event: Event, arg: number): void => {
 	}
 });
 
+const monitorTray = (): void => {
+	if (process.platform !== 'linux') {
+		return;
+	}
+
+	/* Here we check if the screen has been locked and unlocked.
+		If the monitor returns SCREEN_UNLOCKED, then that has to be our case
+		And we destroy and recreate the tray
+	*/
+	const monitor = exec(`
+	  dbus-monitor --session "type='signal',interface='org.gnome.ScreenSaver'" |
+	  while read x; do
+		case "$x" in 
+		  *"boolean true"*) echo SCREEN_LOCKED;;
+		  *"boolean false"*) echo SCREEN_UNLOCKED;;  
+		esac
+	  done
+	`);
+
+	monitor.stdout.on('data', (data: any) => {
+		const out = data.toString().trim();
+		if (out === 'SCREEN_UNLOCKED') {
+			tray.destroy();
+			createTray();
+		}
+	});
+};
+
 function toggleTray(): void {
 	let state;
 	if (tray) {
@@ -213,5 +243,7 @@ ipcRenderer.on('toggletray', toggleTray);
 if (ConfigUtil.getConfigItem('trayIcon', true)) {
 	createTray();
 }
+
+monitorTray();
 
 export {};
