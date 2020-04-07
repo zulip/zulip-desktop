@@ -147,10 +147,11 @@ app.on('certificate-error', (event: Event, _webContents: Electron.WebContents, _
 	callback(true);
 });
 
+// this event is only available on macOS. Triggers when you click on the dock icon.
 app.on('activate', () => {
 	if (mainWindow) {
-		// if there is already a window toggle the app
-		toggleApp();
+		// if there is already a window show it
+		mainWindow.show();
 	} else {
 		mainWindow = createMainWindow();
 	}
