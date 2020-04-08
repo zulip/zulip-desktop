@@ -31,5 +31,4 @@ if [ -d $appDirectory ]; then
 fi
 
 # Delete the link to the binary
-echo 'Removing binary link'
-sudo rm -f '/usr/local/bin/${executable}';
+rm -f '/usr/bin/${executable}'
