@@ -52,9 +52,7 @@ interface CompatElectronBridge extends ElectronBridge {
 
 		const {page_params} = zulipWindow;
 		if (page_params) {
-			electron_bridge.send_event('zulip-loaded', {
-				serverLanguage: page_params.default_language
-			});
+			electron_bridge.send_event('zulip-loaded');
 		}
 	})();
 

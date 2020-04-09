@@ -57,7 +57,11 @@ export default class WebView extends BaseComponent {
 					${this.props.preload ? 'preload="js/preload.js"' : ''}
 					partition="persist:webviewsession"
 					name="${this.props.name}"
-					webpreferences="${this.props.nodeIntegration ? '' : 'contextIsolation, '}javascript=yes">
+					webpreferences="
+						${this.props.nodeIntegration ? '' : 'contextIsolation,'}
+						${ConfigUtil.getConfigItem('enableSpellchecker') ? 'spellcheck,' : ''}
+						javascript
+					">
 				</webview>`;
 	}
 

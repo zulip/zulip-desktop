@@ -1,6 +1,5 @@
 import {contextBridge, ipcRenderer, webFrame} from 'electron';
 import fs from 'fs';
-import * as SetupSpellChecker from './spellchecker';
 
 import isDev from 'electron-is-dev';
 
@@ -54,13 +53,7 @@ ipcRenderer.on('show-notification-settings', () => {
 	}, 100);
 });
 
-electron_bridge.once('zulip-loaded', ({serverLanguage}) => {
-	// Get the default language of the server
-	if (serverLanguage) {
-		// Init spellchecker
-		SetupSpellChecker.init(serverLanguage);
-	}
-
+electron_bridge.once('zulip-loaded', () => {
 	// Redirect users to network troubleshooting page
 	const getRestartButton = document.querySelector('.restart_get_events_button');
 	if (getRestartButton) {
@@ -68,12 +61,6 @@ electron_bridge.once('zulip-loaded', ({serverLanguage}) => {
 			ipcRenderer.send('forward-message', 'reload-viewer');
 		});
 	}
-});
-
-// Clean up spellchecker events after you navigate away from this page;
-// otherwise, you may experience errors
-window.addEventListener('beforeunload', (): void => {
-	SetupSpellChecker.unsubscribeSpellChecker();
 });
 
 window.addEventListener('load', (event: any): void => {
