@@ -1,9 +1,6 @@
-import { remote } from 'electron';
+import { ipcRenderer } from 'electron';
 
 import os from 'os';
-import * as ConfigUtil from './config-util';
-
-const { app } = remote;
 
 export const connectivityERR: string[] = [
 	'ERR_INTERNET_DISCONNECTED',
@@ -14,7 +11,7 @@ export const connectivityERR: string[] = [
 	'ERR_NETWORK_CHANGED'
 ];
 
-let userAgent: string | null = null;
+const userAgent = ipcRenderer.sendSync('fetch-user-agent');
 
 export function getOS(): string {
 	const platform = os.platform();
@@ -32,14 +29,6 @@ export function getOS(): string {
 		return '';
 	}
 }
-
-export function setUserAgent(webViewUserAgent: string): void {
-	userAgent = `ZulipElectron/${app.getVersion()} ${webViewUserAgent}`;
-}
-
-export function getUserAgent(): string | null {
-	if (!userAgent) {
-		setUserAgent(ConfigUtil.getConfigItem('userAgent', null));
-	}
+export function getUserAgent(): string {
 	return userAgent;
 }

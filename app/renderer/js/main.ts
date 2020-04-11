@@ -140,6 +140,7 @@ class ServerManagerView {
 		await this.loadProxy();
 		this.initDefaultSettings();
 		this.initSidebar();
+		this.removeUAfromDisk();
 		if (EnterpriseUtil.configFile) {
 			this.initPresetOrgs();
 		}
@@ -237,6 +238,12 @@ class ServerManagerView {
 	initSidebar(): void {
 		const showSidebar = ConfigUtil.getConfigItem('showSidebar', true);
 		this.toggleSidebar(showSidebar);
+	}
+
+	// Remove the stale UA string from the disk if the app is not freshly
+	// installed.  This should be removed in a further release.
+	removeUAfromDisk(): void {
+		ConfigUtil.removeConfigItem('userAgent');
 	}
 
 	async queueDomain(domain: any): Promise<boolean> {

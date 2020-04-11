@@ -158,6 +158,9 @@ app.on('activate', () => {
 });
 
 app.on('ready', () => {
+	const ses = session.fromPartition('persist:webviewsession');
+	ses.setUserAgent(`ZulipElectron/${app.getVersion()} ${ses.getUserAgent()}`);
+
 	AppMenu.setMenu({
 		tabs: []
 	});
@@ -190,10 +193,10 @@ app.on('ready', () => {
 		} else {
 			mainWindow.show();
 		}
-		if (!ConfigUtil.isConfigItemExists('userAgent')) {
-			const userAgent = session.fromPartition('webview:persistsession').getUserAgent();
-			ConfigUtil.setConfigItem('userAgent', userAgent);
-		}
+	});
+
+	ipcMain.on('fetch-user-agent', event => {
+		event.returnValue = session.fromPartition('persist:webviewsession').getUserAgent();
 	});
 
 	page.once('did-frame-finish-load', () => {

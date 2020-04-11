@@ -149,12 +149,6 @@ export default class WebView extends BaseComponent {
 			if (!isSettingPage) {
 				this.props.switchLoading(true, this.props.url);
 			}
-			let userAgent = SystemUtil.getUserAgent();
-			if (!userAgent) {
-				SystemUtil.setUserAgent(this.$el.getUserAgent());
-				userAgent = SystemUtil.getUserAgent();
-			}
-			this.$el.setUserAgent(userAgent);
 		});
 
 		this.$el.addEventListener('did-stop-loading', () => {
