@@ -92,10 +92,17 @@ export default class GeneralSection extends BaseSection {
 				</div>
 				<div class="title">${t.__('Advanced')}</div>
 				<div class="settings-card">
+
 					<div class="setting-row" id="enable-error-reporting">
 						<div class="setting-description">${t.__('Enable error reporting (requires restart)')}</div>
 						<div class="setting-control"></div>
 					</div>
+					
+					<div class="setting-row" id="app-language">
+						<div class="setting-description">${t.__('App language (requires restart)')}</div>
+						<div  id="lang-div" class="lang-div"></div>
+					</div>
+
 					<div class="setting-row" id="add-custom-css">
 						<div class="setting-description">
 							${t.__('Add custom CSS')}
@@ -135,7 +142,7 @@ export default class GeneralSection extends BaseSection {
 						<button class="reset-data-button red w-150">${t.__('Reset App Data')}</button>
 					</div>
 				</div>
-            </div>
+			</div>
 		`;
 	}
 
@@ -159,6 +166,7 @@ export default class GeneralSection extends BaseSection {
 		this.updateQuitOnCloseOption();
 		this.updatePromptDownloadOption();
 		this.enableErrorReporting();
+		this.setLocale();
 
 		// Platform specific settings
 
@@ -393,6 +401,29 @@ export default class GeneralSection extends BaseSection {
 		const resetDataButton = document.querySelector('#resetdata-option .reset-data-button');
 		resetDataButton.addEventListener('click', () => {
 			this.clearAppDataDialog();
+		});
+	}
+
+	setLocale(): void {
+		const langDiv: HTMLSelectElement = document.querySelector('.lang-div');
+		// This path is for the JSON file that stores key: value pairs for supported locales
+		const path = __dirname.replace('renderer/js/pages/preference', 'translations/supported-locales.json');
+		const data = fs.readFileSync(path, {encoding: 'utf8'});
+		const langs = JSON.parse(data);
+		const langList = this.generateSelectTemplate(langs, 'lang-menu');
+		langDiv.innerHTML += langList;
+		// langMenu is the select-option dropdown menu formed after executing the previous command
+		const langMenu: HTMLSelectElement = document.querySelector('.lang-menu');
+
+		// The next three lines set the selected language visible on the dropdown button
+		let langIndex = ConfigUtil.getConfigItem('languageIndex');
+		langIndex = (langIndex === null) ? 4 : langIndex;
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+		(langMenu.options[langIndex] as HTMLOptionElement).setAttribute('selected', '');
+
+		langMenu.addEventListener('change', (event: Event) => {
+			ConfigUtil.setConfigItem('appLanguage', (event.target as HTMLSelectElement).value);
+			ConfigUtil.setConfigItem('languageIndex', (event.target as HTMLSelectElement).selectedIndex);
 		});
 	}
 
