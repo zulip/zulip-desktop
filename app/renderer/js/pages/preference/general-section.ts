@@ -10,6 +10,7 @@ import BaseSection from './base-section';
 import * as ConfigUtil from '../../utils/config-util';
 import * as EnterpriseUtil from '../../utils/enterprise-util';
 import * as t from '../../utils/translation-util';
+import supportedLocales from '../../../../translations/supported-locales.json';
 
 export default class GeneralSection extends BaseSection {
 	// TODO: TypeScript - Here props should be object type
@@ -407,10 +408,7 @@ export default class GeneralSection extends BaseSection {
 	setLocale(): void {
 		const langDiv: HTMLSelectElement = document.querySelector('.lang-div');
 		// This path is for the JSON file that stores key: value pairs for supported locales
-		const path = __dirname.replace('renderer/js/pages/preference', 'translations/supported-locales.json');
-		const data = fs.readFileSync(path, {encoding: 'utf8'});
-		const langs = JSON.parse(data);
-		const langList = this.generateSelectTemplate(langs, 'lang-menu');
+		const langList = this.generateSelectTemplate(supportedLocales, 'lang-menu');
 		langDiv.innerHTML += langList;
 		// langMenu is the select-option dropdown menu formed after executing the previous command
 		const langMenu: HTMLSelectElement = document.querySelector('.lang-menu');
