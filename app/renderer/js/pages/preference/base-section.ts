@@ -1,4 +1,5 @@
 import { ipcRenderer } from 'electron';
+import escape from 'escape-html';
 
 import BaseComponent from '../../components/base';
 
@@ -44,9 +45,9 @@ export default class BaseSection extends BaseComponent {
 		it needs an object which has ``key: value`` pairs and will return a string that can be appended to HTML
 	*/
 	generateSelectTemplate(options: {[key: string]: string}, className?: string, idName?: string): string {
-		let select = `<select class='${className}' id='${idName}'>\n`;
+		let select = `<select class="${escape(className)}" id="${escape(idName)}">\n`;
 		Object.keys(options).forEach(key => {
-			select += `<option value="${key}">${options[key]}</option>\n`;
+			select += `<option value="${escape(key)}">${escape(options[key])}</option>\n`;
 		});
 		select += '</select>';
 		return select;
