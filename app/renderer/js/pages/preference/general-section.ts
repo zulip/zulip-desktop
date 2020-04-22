@@ -416,14 +416,12 @@ export default class GeneralSection extends BaseSection {
 		const langMenu: HTMLSelectElement = document.querySelector('.lang-menu');
 
 		// The next three lines set the selected language visible on the dropdown button
-		let langIndex = ConfigUtil.getConfigItem('languageIndex');
-		langIndex = (langIndex === null) ? 4 : langIndex;
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-		(langMenu.options[langIndex] as HTMLOptionElement).setAttribute('selected', '');
+		let language = ConfigUtil.getConfigItem('appLanguage');
+		language = language && langMenu.options.namedItem(language) ? language : 'en-US';
+		langMenu.options.namedItem(language).selected = true;
 
 		langMenu.addEventListener('change', (event: Event) => {
 			ConfigUtil.setConfigItem('appLanguage', (event.target as HTMLSelectElement).value);
-			ConfigUtil.setConfigItem('languageIndex', (event.target as HTMLSelectElement).selectedIndex);
 		});
 	}
 

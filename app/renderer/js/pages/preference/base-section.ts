@@ -47,7 +47,7 @@ export default class BaseSection extends BaseComponent {
 	generateSelectTemplate(options: {[key: string]: string}, className?: string, idName?: string): string {
 		let select = `<select class="${escape(className)}" id="${escape(idName)}">\n`;
 		Object.keys(options).forEach(key => {
-			select += `<option value="${escape(key)}">${escape(options[key])}</option>\n`;
+			select += `<option name="${escape(key)}" value="${escape(key)}">${escape(options[key])}</option>\n`;
 		});
 		select += '</select>';
 		return select;
