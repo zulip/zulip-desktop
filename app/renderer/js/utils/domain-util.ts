@@ -5,7 +5,7 @@ import request from 'request';
 import fs from 'fs';
 import path from 'path';
 import Logger from './logger-util';
-import { ipcRenderer, remote } from 'electron';
+import { remote } from 'electron';
 
 import * as RequestUtil from './request-util';
 import * as EnterpriseUtil from './enterprise-util';
@@ -252,7 +252,9 @@ export async function updateSavedServer(url: string, index: number): Promise<voi
 			reloadDB();
 		}
 	} catch (err) {
-		ipcRenderer.send('forward-message', 'show-network-error', index);
+		logger.log('Could not update server icon.');
+		logger.log(err);
+		logger.reportSentry(err);
 	}
 }
 
