@@ -15,7 +15,7 @@ interface WebViewProps {
 	$root: Element;
 	index: number;
 	tabIndex: number;
-	url: any;
+	url: string;
 	role: string;
 	name: string;
 	isActive: () => boolean;
