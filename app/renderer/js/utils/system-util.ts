@@ -20,7 +20,7 @@ export function getOS(): string {
 	} else if (platform === 'linux') {
 		return 'Linux';
 	} else if (platform === 'win32') {
-		if (parseFloat(os.release()) < 6.2) {
+		if (Number.parseFloat(os.release()) < 6.2) {
 			return 'Windows 7';
 		} else {
 			return 'Windows 10';

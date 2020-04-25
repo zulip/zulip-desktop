@@ -74,7 +74,7 @@ export function appUpdater(updateFromMenu = false): void {
 				type: 'error',
 				buttons: ['Manual Download', 'Cancel'],
 				message: messageText,
-				detail: (error).toString() + `\n\nThe latest version of Zulip Desktop is available at -\nhttps://zulipchat.com/apps/.\n
+				detail: `Error: ${error.message}\n\nThe latest version of Zulip Desktop is available at -\nhttps://zulipchat.com/apps/.\n
 				Current Version: ${app.getVersion()}`
 			});
 			if (response === 0) {

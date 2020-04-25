@@ -16,7 +16,7 @@ if (process.platform === 'darwin') {
 }
 
 export interface NotificationData {
-	close(): void;
+	close: () => void;
 	title: string;
 	dir: NotificationDirection;
 	lang: string;

@@ -184,7 +184,7 @@
     "electron-builder": "^22.5.1",
     "electron-connect": "^0.6.3",
     "electron-notarize": "^0.3.0",
-    "eslint-config-xo-typescript": "^0.26.0",
+    "eslint-config-xo-typescript": "^0.28.0",
     "glob": "^7.1.6",
     "gulp": "^4.0.2",
     "gulp-tape": "^1.0.0",
@@ -198,13 +198,14 @@
     "tap-colorize": "^1.2.0",
     "tape": "^5.0.0",
     "typescript": "^3.8.3",
-    "xo": "^0.28.3"
+    "xo": "^0.30.0"
   },
   "xo": {
     "rules": {
       "@typescript-eslint/member-ordering": "off",
       "@typescript-eslint/no-dynamic-delete": "off",
       "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/prefer-readonly-parameter-types": "off",
       "@typescript-eslint/restrict-plus-operands": "off",
       "@typescript-eslint/restrict-template-expressions": "off",
       "capitalized-comments": "off",

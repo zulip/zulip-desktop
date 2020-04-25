@@ -111,7 +111,7 @@ async function checkCertError(domain: string, serverConf: ServerConf, error: str
 	} else {
 		// Report error to sentry to get idea of possible certificate errors
 		// users get when adding the servers
-		logger.reportSentry(new Error(error).toString());
+		logger.reportSentry(`Error: ${error}`);
 		const certErrorMessage = Messages.certErrorMessage(domain, error);
 		const certErrorDetail = Messages.certErrorDetail();
 

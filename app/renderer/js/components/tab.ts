@@ -48,7 +48,7 @@ export default class Tab extends BaseComponent {
 	}
 
 	destroy(): void {
-		this.$el.parentNode.removeChild(this.$el);
-		this.webview.$el.parentNode.removeChild(this.webview.$el);
+		this.$el.remove();
+		this.webview.$el.remove();
 	}
 }
