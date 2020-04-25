@@ -40,9 +40,11 @@ export function getConfigItem(key: string, defaultValue?: any): any {
 	if (!configFile) {
 		return defaultValue;
 	}
+
 	if (defaultValue === undefined) {
 		defaultValue = null;
 	}
+
 	return configItemExists(key) ? enterpriseSettings[key] : defaultValue;
 }
 
@@ -51,6 +53,7 @@ export function configItemExists(key: string): boolean {
 	if (!configFile) {
 		return false;
 	}
+
 	return (enterpriseSettings[key] !== undefined);
 }
 
@@ -58,11 +61,13 @@ export function isPresetOrg(url: string): boolean {
 	if (!configFile || !configItemExists('presetOrganizations')) {
 		return false;
 	}
+
 	const presetOrgs = enterpriseSettings.presetOrganizations;
 	for (const org of presetOrgs) {
 		if (url.includes(org)) {
 			return true;
 		}
 	}
+
 	return false;
 }

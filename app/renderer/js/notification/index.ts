@@ -47,6 +47,7 @@ export function newNotification(
 			}
 		});
 	}
+
 	return {
 		close: () => notification.close(),
 		title: notification.title,

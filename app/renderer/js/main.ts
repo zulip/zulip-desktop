@@ -144,6 +144,7 @@ class ServerManagerView {
 		if (EnterpriseUtil.configFile) {
 			await this.initPresetOrgs();
 		}
+
 		await this.initTabs();
 		this.initActions();
 		this.registerIpcs();
@@ -157,6 +158,7 @@ class ServerManagerView {
 			if (proxyEnableOldState) {
 				ConfigUtil.setConfigItem('useManualProxy', true);
 			}
+
 			ConfigUtil.removeConfigItem('useProxy');
 		}
 
@@ -272,8 +274,10 @@ class ServerManagerView {
 			if (DomainUtil.duplicateDomain(url)) {
 				continue;
 			}
+
 			domainPromises.push(this.queueDomain(url));
 		}
+
 		const domainsAdded = await Promise.all(domainPromises);
 		if (domainsAdded.includes(true)) {
 			// at least one domain was resolved
@@ -299,8 +303,10 @@ class ServerManagerView {
 				if (DomainUtil.duplicateDomain(org)) {
 					continue;
 				}
+
 				failedDomains.push(org);
 			}
+
 			const { title, content } = Messages.enterpriseOrgError(domainsAdded.length, failedDomains);
 			dialog.showErrorBox(title, content);
 			if (DomainUtil.getDomains().length === 0) {
@@ -316,11 +322,13 @@ class ServerManagerView {
 			for (const [i, server] of servers.entries()) {
 				this.initServer(server, i);
 			}
+
 			// Open last active tab
 			let lastActiveTab = ConfigUtil.getConfigItem('lastActiveTab');
 			if (lastActiveTab >= servers.length) {
 				lastActiveTab = 0;
 			}
+
 			// checkDomain() and webview.load() for lastActiveTab before the others
 			await DomainUtil.updateSavedServer(servers[lastActiveTab].url, lastActiveTab);
 			this.activateTab(lastActiveTab);
@@ -330,6 +338,7 @@ class ServerManagerView {
 				if (i === lastActiveTab) {
 					return;
 				}
+
 				await DomainUtil.updateSavedServer(server.url, i);
 				this.tabs[i].webview.load();
 			}));
@@ -373,6 +382,7 @@ class ServerManagerView {
 					} else if (loading && !this.loading[url]) {
 						this.loading[url] = true;
 					}
+
 					this.showLoading(this.loading[this.tabs[this.activeTabIndex].webview.props.url]);
 				},
 				onNetworkError: (index: number) => this.openNetworkTroubleshooting(index),
@@ -397,6 +407,7 @@ class ServerManagerView {
 			if ($serverImg.src.includes('img/icon.png')) {
 				this.displayInitialCharLogo($serverImg, index);
 			}
+
 			$serverImg.addEventListener('error', () => {
 				this.displayInitialCharLogo($serverImg, index);
 			});
@@ -539,6 +550,7 @@ class ServerManagerView {
 					} else if (loading && !this.loading[url]) {
 						this.loading[url] = true;
 					}
+
 					this.showLoading(this.loading[this.tabs[this.activeTabIndex].webview.props.url]);
 				},
 				onNetworkError: (index: number) => this.openNetworkTroubleshooting(index),
@@ -619,6 +631,7 @@ class ServerManagerView {
 				if (this.tabs[this.activeTabIndex].props.role === 'function' && this.tabs[this.activeTabIndex].props.name === 'Settings') {
 					this.$settingsButton.classList.remove('active');
 				}
+
 				this.tabs[this.activeTabIndex].deactivate();
 			}
 		}
@@ -908,6 +921,7 @@ class ServerManagerView {
 				});
 				return;
 			}
+
 			this.updateGeneralSettings('toggle-menubar-setting', autoHideMenubar);
 		});
 
@@ -1001,8 +1015,10 @@ class ServerManagerView {
 					ctx.font = '85px Helvetica';
 					ctx.fillText(String(Math.min(99, messageCount)), 64, 90);
 				}
+
 				return canvas;
 			}
+
 			ipcRenderer.send('update-taskbar-icon', createOverlayIcon(messageCount).toDataURL(), String(messageCount));
 		});
 

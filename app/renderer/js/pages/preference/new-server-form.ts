@@ -71,6 +71,7 @@ export default class NewServerForm extends BaseComponent {
 			alert(error);
 			return;
 		}
+
 		await DomainUtil.addDomain(serverConf);
 		this.props.onChange();
 	}

@@ -105,11 +105,13 @@ export default class NetworkSection extends BaseSection {
 					ConfigUtil.setConfigItem('useManualProxy', !manualProxyValue);
 					this.toggleManualProxySettings(!manualProxyValue);
 				}
+
 				if (!newValue) {
 					// Remove proxy system proxy settings
 					ConfigUtil.setConfigItem('proxyRules', '');
 					ipcRenderer.send('forward-message', 'reload-proxy', false);
 				}
+
 				ConfigUtil.setConfigItem('useSystemProxy', newValue);
 				this.updateProxyOption();
 			}
@@ -124,6 +126,7 @@ export default class NetworkSection extends BaseSection {
 				if (systemProxyValue && newValue) {
 					ConfigUtil.setConfigItem('useSystemProxy', !systemProxyValue);
 				}
+
 				ConfigUtil.setConfigItem('proxyRules', '');
 				ConfigUtil.setConfigItem('useManualProxy', newValue);
 				// Reload app only when turning manual proxy off, hence !newValue

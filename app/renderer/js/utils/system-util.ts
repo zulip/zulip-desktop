@@ -29,6 +29,7 @@ export function getOS(): string {
 		return '';
 	}
 }
+
 export function getUserAgent(): string {
 	return userAgent;
 }

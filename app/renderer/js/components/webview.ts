@@ -97,6 +97,7 @@ export default class WebView extends BaseComponent {
 			if (isSettingPage) {
 				return;
 			}
+
 			this.canGoBackButton();
 		});
 
@@ -123,6 +124,7 @@ export default class WebView extends BaseComponent {
 			if (this.props.role === 'server') {
 				this.$el.classList.add('onload');
 			}
+
 			this.loading = false;
 			this.props.switchLoading(false, this.props.url);
 			this.show();

@@ -44,9 +44,11 @@ export default class FindAccounts extends BaseComponent {
 		if (!url) {
 			return;
 		}
+
 		if (!url.startsWith('http')) {
 			url = 'https://' + url;
 		}
+
 		await LinkUtil.openBrowser(new URL('/accounts/find', url));
 	}
 

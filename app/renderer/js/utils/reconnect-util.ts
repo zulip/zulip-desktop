@@ -39,6 +39,7 @@ export default class ReconnectUtil {
 				if (ignoreCerts === null) {
 					return;
 				}
+
 				request(
 					{
 						url: `${this.url}/static/favicon.ico`,
@@ -71,11 +72,13 @@ export default class ReconnectUtil {
 		if (this.alreadyReloaded) {
 			return true;
 		}
+
 		if (await this.isOnline()) {
 			ipcRenderer.send('forward-message', 'reload-viewer');
 			logger.log('You\'re back online.');
 			return true;
 		}
+
 		logger.log('There is no internet connection, try checking network cables, modem and router.');
 		const errorMessageHolder = document.querySelector('#description');
 		if (errorMessageHolder) {
@@ -83,6 +86,7 @@ export default class ReconnectUtil {
 						<div>Your internet connection doesn't seem to work properly!</div>
 						<div>Verify that it works and then click try again.</div>`;
 		}
+
 		return false;
 	}
 }

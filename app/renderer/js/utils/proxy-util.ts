@@ -61,6 +61,7 @@ export async function resolveSystemProxy(mainWindow: Electron.BrowserWindow): Pr
 				httpString = 'http=' + proxy.split('PROXY')[1] + ';';
 			}
 		}
+
 		return httpString;
 	})();
 	// Check HTTPS Proxy
@@ -74,6 +75,7 @@ export async function resolveSystemProxy(mainWindow: Electron.BrowserWindow): Pr
 				httpsString += 'https=' + proxy.split('PROXY')[1] + ';';
 			}
 		}
+
 		return httpsString;
 	})();
 
@@ -86,6 +88,7 @@ export async function resolveSystemProxy(mainWindow: Electron.BrowserWindow): Pr
 				ftpString += 'ftp=' + proxy.split('PROXY')[1] + ';';
 			}
 		}
+
 		return ftpString;
 	})();
 
@@ -102,6 +105,7 @@ export async function resolveSystemProxy(mainWindow: Electron.BrowserWindow): Pr
 				socksString += 'socks=' + proxy.split('PROXY')[1] + ';';
 			}
 		}
+
 		return socksString;
 	})();
 

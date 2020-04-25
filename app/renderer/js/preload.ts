@@ -60,6 +60,7 @@ electron_bridge.once('zulip-loaded', ({ serverLanguage }) => {
 		// Init spellchecker
 		SetupSpellChecker.init(serverLanguage);
 	}
+
 	// redirect users to network troubleshooting page
 	const getRestartButton = document.querySelector('.restart_get_events_button');
 	if (getRestartButton) {
@@ -79,6 +80,7 @@ window.addEventListener('load', (event: any): void => {
 	if (!event.target.URL.includes('app/renderer/network.html')) {
 		return;
 	}
+
 	const $reconnectButton = document.querySelector('#reconnect');
 	const $settingsButton = document.querySelector('#settings');
 	NetworkError.init($reconnectButton, $settingsButton);
@@ -105,6 +107,7 @@ ipcRenderer.on('set-active', () => {
 	if (isDev) {
 		console.log('active');
 	}
+
 	electron_bridge.idle_on_system = false;
 	electron_bridge.last_active_on_system = Date.now();
 });
@@ -114,6 +117,7 @@ ipcRenderer.on('set-idle', () => {
 	if (isDev) {
 		console.log('idle');
 	}
+
 	electron_bridge.idle_on_system = true;
 });
 

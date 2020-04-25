@@ -30,6 +30,7 @@ function updateOverlayIcon(messageCount: number, mainWindow: electron.BrowserWin
 	if (!mainWindow.isFocused()) {
 		mainWindow.flashFrame(ConfigUtil.getConfigItem('flashTaskbarOnMessage'));
 	}
+
 	if (messageCount === 0) {
 		mainWindow.setOverlayIcon(null, '');
 	} else {

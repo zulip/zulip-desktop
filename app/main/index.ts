@@ -98,6 +98,7 @@ function createMainWindow(): Electron.BrowserWindow {
 		if (ConfigUtil.getConfigItem('quitOnClose')) {
 			app.quit();
 		}
+
 		if (!isQuitting) {
 			event.preventDefault();
 
@@ -334,6 +335,7 @@ app.on('ready', () => {
 					item.cancel();
 					return;
 				}
+
 				setFilePath = result.filePath;
 				shortFileName = path.basename(setFilePath);
 			} else {
@@ -366,18 +368,22 @@ app.on('ready', () => {
 						item.cancel();
 						break;
 					}
+
 					case 'progressing': {
 						if (item.isPaused()) {
 							item.cancel();
 						}
+
 						// This event can also be used to show progress in percentage in future.
 						break;
 					}
+
 					default: {
 						console.info('Unknown updated state of download item');
 					}
 				}
 			};
+
 			item.on('updated', updatedListener);
 			item.once('done', (_event: Event, state) => {
 				if (state === 'completed') {
@@ -386,6 +392,7 @@ app.on('ready', () => {
 					console.log('Download failed state:', state);
 					page.send('downloadFileFailed');
 				}
+
 				// To stop item for listening to updated events of this file
 				item.removeListener('updated', updatedListener);
 			});

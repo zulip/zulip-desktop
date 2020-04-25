@@ -223,7 +223,6 @@
       "no-else-return": "off",
       "no-warning-comments": "off",
       "object-curly-spacing": "off",
-      "padding-line-between-statements": "off",
       "strict": "error",
       "unicorn/string-content": "off"
     },

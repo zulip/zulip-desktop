@@ -567,6 +567,7 @@ function getNextServer(tabs: any[], activeTabIndex: number): number {
 		activeTabIndex = (activeTabIndex + 1) % tabs.length;
 	}
 	while (tabs[activeTabIndex].props.role !== 'server');
+
 	return activeTabIndex;
 }
 
@@ -575,6 +576,7 @@ function getPreviousServer(tabs: any[], activeTabIndex: number): number {
 		activeTabIndex = (activeTabIndex - 1 + tabs.length) % tabs.length;
 	}
 	while (tabs[activeTabIndex].props.role !== 'server');
+
 	return activeTabIndex;
 }
 

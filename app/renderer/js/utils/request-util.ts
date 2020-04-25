@@ -48,6 +48,7 @@ export function requestOptions(domain: string, ignoreCerts: boolean): RequestUti
 			logger.warn(`Error while trying to get certificate: ${error}`);
 		}
 	}
+
 	const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
 	// If certificate for the domain exists add it as a ca key in the request's parameter else consider only domain as the parameter for request
 	// Add proxy as a parameter if it is being used.

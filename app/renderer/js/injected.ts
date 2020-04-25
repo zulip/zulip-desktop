@@ -73,6 +73,7 @@
 					if (!(symbol in this)) {
 						this.addEventListener(type, listener);
 					}
+
 					(this as any)[symbol] = value;
 				} else if (symbol in this) {
 					this.removeEventListener(type, listener);
@@ -107,6 +108,7 @@
 			if (callback) {
 				callback(await Promise.resolve(NativeNotification.permission));
 			}
+
 			return NativeNotification.permission;
 		}
 	}

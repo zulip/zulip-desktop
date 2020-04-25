@@ -62,6 +62,7 @@ export function shouldIgnoreCerts(url: string): boolean {
 			return domain.ignoreCerts;
 		}
 	}
+
 	return null;
 }
 
@@ -93,6 +94,7 @@ export function removeDomain(index: number): boolean {
 	if (EnterpriseUtil.isPresetOrg(getDomain(index).url)) {
 		return false;
 	}
+
 	db.delete(`/domains[${index}]`);
 	reloadDB();
 	return true;
@@ -131,6 +133,7 @@ async function checkCertError(domain: string, serverConf: ServerConf, error: str
 				if (error === Messages.noOrgsError(domain)) {
 					throw new Error(error);
 				}
+
 				return serverConf;
 			}
 		} else {
@@ -278,6 +281,7 @@ export function reloadDB(): void {
 			logger.reportSentry(error);
 		}
 	}
+
 	db = new JsonDB(domainJsonPath, true, true);
 }
 
@@ -304,8 +308,10 @@ export function formatUrl(domain: string): string {
 	if (domain.startsWith('http://') || domain.startsWith('https://')) {
 		return domain;
 	}
+
 	if (domain.startsWith('localhost:')) {
 		return `http://${domain}`;
 	}
+
 	return `https://${domain}`;
 }

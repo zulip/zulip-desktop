@@ -30,6 +30,7 @@ export function linuxUpdateNotification(): void {
 			logger.error(error);
 			return;
 		}
+
 		if (response.statusCode < 400) {
 			const data = JSON.parse(body);
 			const latestVersion = ConfigUtil.getConfigItem('betaUpdate') ? data[0].tag_name : data.tag_name;

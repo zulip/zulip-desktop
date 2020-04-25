@@ -73,6 +73,7 @@ const webContentsId = webContents.id;
 export function focusCurrentServer(): void {
 	currentWindow.webContents.send('focus-webview-with-id', webContentsId);
 }
+
 // this function parses the reply from to notification
 // making it easier to reply from notification eg
 // @username in reply will be converted to @**username**

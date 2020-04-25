@@ -23,6 +23,7 @@ export function init(serverLanguage: string): void {
 	if (ConfigUtil.getConfigItem('enableSpellchecker')) {
 		enableSpellChecker();
 	}
+
 	enableContextMenu(serverLanguage);
 }
 
@@ -53,6 +54,7 @@ export function unsubscribeSpellChecker(): void {
 	if (spellCheckHandler) {
 		spellCheckHandler.unsubscribe();
 	}
+
 	if (contextMenuListener) {
 		contextMenuListener.unsubscribe();
 	}

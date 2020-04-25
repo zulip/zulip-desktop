@@ -138,6 +138,7 @@ export default class Logger {
 			if (err) {
 				throw err;
 			}
+
 			const MAX_LOG_FILE_LINES = 500;
 			const logs = data.split(os.EOL);
 			const logLength = logs.length - 1;

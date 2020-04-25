@@ -34,6 +34,7 @@ export function enterpriseOrgError(length: number, domains: string[]): DialogBox
 	for (const domain of domains) {
 		domainList += `• ${domain}\n`;
 	}
+
 	return {
 		title: `Could not add the following ${length === 1 ? 'organization' : 'organizations'}`,
 		content: `${domainList}\nPlease contact your system administrator.`

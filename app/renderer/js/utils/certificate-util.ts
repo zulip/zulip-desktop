@@ -46,6 +46,7 @@ export function copyCertificate(_server: string, location: string, fileName: str
 		logger.error('Error while copying the certificate to certificates folder.');
 		logger.error(error);
 	}
+
 	return copied;
 }
 
@@ -76,5 +77,6 @@ function reloadDB(): void {
 			logger.error(error);
 		}
 	}
+
 	db = new JsonDB(settingsJsonPath, true, true);
 }

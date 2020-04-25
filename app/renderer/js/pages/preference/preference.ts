@@ -37,6 +37,7 @@ export default class PreferenceView extends BaseComponent {
 		if (hasTag) {
 			nav = hasTag.slice(1);
 		}
+
 		this.handleNavigation(nav);
 	}
 
@@ -49,32 +50,38 @@ export default class PreferenceView extends BaseComponent {
 				});
 				break;
 			}
+
 			case 'General': {
 				this.section = new GeneralSection({
 					$root: this.$settingsContainer
 				});
 				break;
 			}
+
 			case 'Organizations': {
 				this.section = new ConnectedOrgSection({
 					$root: this.$settingsContainer
 				});
 				break;
 			}
+
 			case 'Network': {
 				this.section = new NetworkSection({
 					$root: this.$settingsContainer
 				});
 				break;
 			}
+
 			case 'Shortcuts': {
 				this.section = new ShortcutsSection({
 					$root: this.$settingsContainer
 				});
 				break;
 			}
+
 			default: break;
 		}
+
 		this.section.init();
 		window.location.hash = `#${navItem}`;
 	}

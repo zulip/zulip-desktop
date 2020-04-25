@@ -59,6 +59,7 @@ export default class AddCertificate extends BaseComponent {
 			if (!copy) {
 				return;
 			}
+
 			CertificateUtil.setCertificate(server, fileName);
 			this.serverUrl.value = '';
 			await dialog.showMessageBox({

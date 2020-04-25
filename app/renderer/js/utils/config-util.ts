@@ -35,6 +35,7 @@ export function getConfigItem(key: string, defaultValue: any = null): any {
 		logger.error('Error while reloading settings.json: ');
 		logger.error(error);
 	}
+
 	const value = db.getData('/')[key];
 	if (value === undefined) {
 		setConfigItem(key, defaultValue);
@@ -52,6 +53,7 @@ export function isConfigItemExists(key: string): boolean {
 		logger.error('Error while reloading settings.json: ');
 		logger.error(error);
 	}
+
 	const value = db.getData('/')[key];
 	return (value !== undefined);
 }
@@ -61,6 +63,7 @@ export function setConfigItem(key: string, value: any, override? : boolean): voi
 		// if item is in global config and we're not trying to override
 		return;
 	}
+
 	db.push(`/${key}`, value, true);
 	db.save();
 }
@@ -87,5 +90,6 @@ function reloadDB(): void {
 			logger.reportSentry(error);
 		}
 	}
+
 	db = new JsonDB(settingsJsonPath, true, true);
 }

@@ -48,6 +48,7 @@ export default function handleExternalLink(this: WebView, event: Electron.NewWin
 			} else {
 				this.$el.downloadURL(url.href);
 			}
+
 			ipcRenderer.removeAllListeners('downloadFileCompleted');
 		});
 	} else {

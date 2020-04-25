@@ -20,6 +20,7 @@ const iconPath = (): string => {
 	if (process.platform === 'linux') {
 		return APP_ICON + 'linux.png';
 	}
+
 	return APP_ICON + (process.platform === 'win32' ? 'win.ico' : 'osx.png');
 };
 
@@ -92,6 +93,7 @@ const renderCanvas = function (arg: number): HTMLCanvasElement {
 
 	return canvas;
 };
+
 /**
  * Renders the tray icon as a native image
  * @param arg: Unread count
@@ -168,6 +170,7 @@ ipcRenderer.on('tray', (_event: Event, arg: number): void => {
 	if (!tray) {
 		return;
 	}
+
 	// We don't want to create tray from unread messages on macOS since it already has dock badges.
 	if (process.platform === 'linux' || process.platform === 'win32') {
 		if (arg === 0) {
@@ -191,6 +194,7 @@ function toggleTray(): void {
 		if (tray.isDestroyed()) {
 			tray = null;
 		}
+
 		ConfigUtil.setConfigItem('trayIcon', false);
 	} else {
 		state = true;
@@ -200,8 +204,10 @@ function toggleTray(): void {
 			tray.setImage(image);
 			tray.setToolTip(unread + ' unread messages');
 		}
+
 		ConfigUtil.setConfigItem('trayIcon', true);
 	}
+
 	const selector = 'webview:not([class*=disabled])';
 	const webview: WebviewTag = document.querySelector(selector);
 	const webContents = webview.getWebContents();

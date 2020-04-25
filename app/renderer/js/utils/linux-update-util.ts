@@ -57,5 +57,6 @@ function reloadDB(): void {
 			logger.error(error);
 		}
 	}
+
 	db = new JsonDB(linuxUpdateJsonPath, true, true);
 }

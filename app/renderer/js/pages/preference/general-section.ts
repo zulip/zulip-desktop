@@ -178,6 +178,7 @@ export default class GeneralSection extends BaseSection {
 		if (process.platform === 'win32') {
 			this.updateFlashTaskbar();
 		}
+
 		// Dock bounce on macOS
 		if (process.platform === 'darwin') {
 			this.updateDockBouncing();
@@ -264,6 +265,7 @@ export default class GeneralSection extends BaseSection {
 					ConfigUtil.setConfigItem('betaUpdate', false);
 					this.betaUpdateOption();
 				}
+
 				this.autoUpdateOption();
 			}
 		});
