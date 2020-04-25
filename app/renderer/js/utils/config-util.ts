@@ -31,9 +31,9 @@ reloadDB();
 export function getConfigItem(key: string, defaultValue: any = null): any {
 	try {
 		db.reload();
-	} catch (err) {
+	} catch (error) {
 		logger.error('Error while reloading settings.json: ');
-		logger.error(err);
+		logger.error(error);
 	}
 	const value = db.getData('/')[key];
 	if (value === undefined) {
@@ -48,9 +48,9 @@ export function getConfigItem(key: string, defaultValue: any = null): any {
 export function isConfigItemExists(key: string): boolean {
 	try {
 		db.reload();
-	} catch (err) {
+	} catch (error) {
 		logger.error('Error while reloading settings.json: ');
-		logger.error(err);
+		logger.error(error);
 	}
 	const value = db.getData('/')[key];
 	return (value !== undefined);
@@ -75,7 +75,7 @@ function reloadDB(): void {
 	try {
 		const file = fs.readFileSync(settingsJsonPath, 'utf8');
 		JSON.parse(file);
-	} catch (err) {
+	} catch (error) {
 		if (fs.existsSync(settingsJsonPath)) {
 			fs.unlinkSync(settingsJsonPath);
 			dialog.showErrorBox(
@@ -83,8 +83,8 @@ function reloadDB(): void {
 				'We encountered an error while saving the settings.'
 			);
 			logger.error('Error while JSON parsing settings.json: ');
-			logger.error(err);
-			logger.reportSentry(err);
+			logger.error(error);
+			logger.reportSentry(error);
 		}
 	}
 	db = new JsonDB(settingsJsonPath, true, true);

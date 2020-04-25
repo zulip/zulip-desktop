@@ -26,9 +26,9 @@ function reloadDB(): void {
 		try {
 			const file = fs.readFileSync(enterpriseFile, 'utf8');
 			enterpriseSettings = JSON.parse(file);
-		} catch (err) {
+		} catch (error) {
 			logger.log('Error while JSON parsing global_config.json: ');
-			logger.log(err);
+			logger.log(error);
 		}
 	} else {
 		configFile = false;

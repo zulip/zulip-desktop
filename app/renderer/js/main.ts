@@ -254,8 +254,8 @@ class ServerManagerView {
 			const serverConf = await DomainUtil.checkDomain(domain);
 			await DomainUtil.addDomain(serverConf);
 			return true;
-		} catch (err) {
-			logger.error(err);
+		} catch (error) {
+			logger.error(error);
 			logger.error('Could not add ' + domain + '. Please contact your system administrator.');
 			return false;
 		}
@@ -625,7 +625,7 @@ class ServerManagerView {
 
 		try {
 			this.tabs[index].webview.canGoBackButton();
-		} catch (err) {
+		} catch (error) {
 		}
 
 		this.activeTabIndex = index;
@@ -891,7 +891,7 @@ class ServerManagerView {
 			webviews.forEach(webview => {
 				try {
 					webview.setAudioMuted(state);
-				} catch (err) {
+				} catch (error) {
 					// webview is not ready yet
 					webview.addEventListener('dom-ready', () => {
 						webview.setAudioMuted(state);

@@ -10,7 +10,7 @@ export function getProxy(_uri: string): ProxyRule | void {
 	let uri;
 	try {
 		uri = new URL(_uri);
-	} catch (err) {
+	} catch (error) {
 		return;
 	}
 

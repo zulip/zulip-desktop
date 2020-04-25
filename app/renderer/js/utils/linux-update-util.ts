@@ -46,7 +46,7 @@ function reloadDB(): void {
 	try {
 		const file = fs.readFileSync(linuxUpdateJsonPath, 'utf8');
 		JSON.parse(file);
-	} catch (err) {
+	} catch (error) {
 		if (fs.existsSync(linuxUpdateJsonPath)) {
 			fs.unlinkSync(linuxUpdateJsonPath);
 			dialog.showErrorBox(
@@ -54,7 +54,7 @@ function reloadDB(): void {
 				'We encountered an error while saving the update notifications.'
 			);
 			logger.error('Error while JSON parsing updates.json: ');
-			logger.error(err);
+			logger.error(error);
 		}
 	}
 	db = new JsonDB(linuxUpdateJsonPath, true, true);

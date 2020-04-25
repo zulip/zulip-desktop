@@ -66,9 +66,9 @@ export default class NewServerForm extends BaseComponent {
 		let serverConf;
 		try {
 			serverConf = await DomainUtil.checkDomain(this.$newServerUrl.value);
-		} catch (errorMessage) {
+		} catch (error) {
 			this.$saveServerButton.innerHTML = 'Connect';
-			alert(errorMessage);
+			alert(error);
 			return;
 		}
 		await DomainUtil.addDomain(serverConf);

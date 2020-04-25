@@ -50,8 +50,8 @@ export default class ReconnectUtil {
 						resolve(isValidResponse);
 					}
 				);
-			} catch (err) {
-				logger.log(err);
+			} catch (error) {
+				logger.log(error);
 			}
 		});
 	}

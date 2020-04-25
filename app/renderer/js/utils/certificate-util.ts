@@ -38,13 +38,13 @@ export function copyCertificate(_server: string, location: string, fileName: str
 	try {
 		fs.copyFileSync(location, filePath);
 		copied = true;
-	} catch (err) {
+	} catch (error) {
 		dialog.showErrorBox(
 			'Error saving certificate',
 			'We encountered error while saving the certificate.'
 		);
 		logger.error('Error while copying the certificate to certificates folder.');
-		logger.error(err);
+		logger.error(error);
 	}
 	return copied;
 }
@@ -65,7 +65,7 @@ function reloadDB(): void {
 	try {
 		const file = fs.readFileSync(settingsJsonPath, 'utf8');
 		JSON.parse(file);
-	} catch (err) {
+	} catch (error) {
 		if (fs.existsSync(settingsJsonPath)) {
 			fs.unlinkSync(settingsJsonPath);
 			dialog.showErrorBox(
@@ -73,7 +73,7 @@ function reloadDB(): void {
 				'We encountered error while saving the certificate.'
 			);
 			logger.error('Error while JSON parsing certificates.json: ');
-			logger.error(err);
+			logger.error(error);
 		}
 	}
 	db = new JsonDB(settingsJsonPath, true, true);

@@ -158,10 +158,10 @@ export async function checkDomain(domain: string, ignoreCerts = false, silent = 
 
 	try {
 		return await getServerSettings(domain, serverConf.ignoreCerts);
-	} catch (err) {
+	} catch (error_) {
 		// Make sure that error is an error or string not undefined
 		// so validation does not throw error.
-		const error = err || '';
+		const error = error_ || '';
 
 		const certsError = error.toString().includes('certificate');
 		if (certsError) {
@@ -232,10 +232,10 @@ export async function saveServerIcon(server: ServerConf, ignoreCerts = false): P
 				logger.reportSentry(err);
 				resolve(defaultIconUrl);
 			});
-		} catch (err) {
+		} catch (error) {
 			logger.log('Could not get server icon.');
-			logger.log(err);
-			logger.reportSentry(err);
+			logger.log(error);
+			logger.reportSentry(error);
 			resolve(defaultIconUrl);
 		}
 	});
@@ -253,10 +253,10 @@ export async function updateSavedServer(url: string, index: number): Promise<voi
 			updateDomain(index, newServerConf);
 			reloadDB();
 		}
-	} catch (err) {
+	} catch (error) {
 		logger.log('Could not update server icon.');
-		logger.log(err);
-		logger.reportSentry(err);
+		logger.log(error);
+		logger.reportSentry(error);
 	}
 }
 
@@ -265,7 +265,7 @@ export function reloadDB(): void {
 	try {
 		const file = fs.readFileSync(domainJsonPath, 'utf8');
 		JSON.parse(file);
-	} catch (err) {
+	} catch (error) {
 		if (fs.existsSync(domainJsonPath)) {
 			fs.unlinkSync(domainJsonPath);
 			dialog.showErrorBox(
@@ -274,8 +274,8 @@ export function reloadDB(): void {
 				'you may have to re-add your previous organizations back.'
 			);
 			logger.error('Error while JSON parsing domain.json: ');
-			logger.error(err);
-			logger.reportSentry(err);
+			logger.error(error);
+			logger.reportSentry(error);
 		}
 	}
 	db = new JsonDB(domainJsonPath, true, true);

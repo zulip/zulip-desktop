@@ -225,7 +225,6 @@
       "object-curly-spacing": "off",
       "padding-line-between-statements": "off",
       "strict": "error",
-      "unicorn/catch-error-name": "off",
       "unicorn/string-content": "off"
     },
     "envs": [

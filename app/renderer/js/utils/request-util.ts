@@ -44,8 +44,8 @@ export function requestOptions(domain: string, ignoreCerts: boolean): RequestUti
 		// To handle case where certificate has been moved from the location in certificates.json
 		try {
 			certificateLocation = fs.readFileSync(certificateFile, 'utf8');
-		} catch (err) {
-			logger.warn(`Error while trying to get certificate: ${err}`);
+		} catch (error) {
+			logger.warn(`Error while trying to get certificate: ${error}`);
 		}
 	}
 	const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');

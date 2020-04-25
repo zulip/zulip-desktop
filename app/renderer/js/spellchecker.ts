@@ -29,8 +29,8 @@ export function init(serverLanguage: string): void {
 function enableSpellChecker(): void {
 	try {
 		spellCheckHandler = new SpellCheckHandler();
-	} catch (err) {
-		logger.error(err);
+	} catch (error) {
+		logger.error(error);
 	}
 }
 
