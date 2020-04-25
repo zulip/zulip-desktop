@@ -1,5 +1,5 @@
 import { app, dialog } from 'electron';
-import { autoUpdater } from 'electron-updater';
+import { UpdateDownloadedEvent, UpdateInfo, autoUpdater } from 'electron-updater';
 import { linuxUpdateNotification } from './linuxupdater';	// Required only in case of linux
 
 import log from 'electron-log';
@@ -34,7 +34,7 @@ export function appUpdater(updateFromMenu = false): void {
 	autoUpdater.allowPrerelease = isBetaUpdate || false;
 
 	const eventsListenerRemove = ['update-available', 'update-not-available'];
-	autoUpdater.on('update-available', info => {
+	autoUpdater.on('update-available', (info: UpdateInfo) => {
 		if (updateFromMenu) {
 			dialog.showMessageBox({
 				message: `A new version ${info.version}, of Zulip Desktop is available`,
@@ -62,7 +62,7 @@ export function appUpdater(updateFromMenu = false): void {
 		}
 	});
 
-	autoUpdater.on('error', async error => {
+	autoUpdater.on('error', async (error: Error) => {
 		if (updateFromMenu) {
 			const messageText = (updateAvailable) ? ('Unable to download the updates') : ('Unable to check for updates');
 			const { response } = await dialog.showMessageBox({
@@ -82,7 +82,7 @@ export function appUpdater(updateFromMenu = false): void {
 	});
 
 	// Ask the user if update is available
-	autoUpdater.on('update-downloaded', async event => {
+	autoUpdater.on('update-downloaded', async (event: UpdateDownloadedEvent) => {
 		// Ask user to update the app
 		const { response } = await dialog.showMessageBox({
 			type: 'question',
