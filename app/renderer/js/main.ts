@@ -246,7 +246,7 @@ class ServerManagerView {
 		ConfigUtil.removeConfigItem('userAgent');
 	}
 
-	async queueDomain(domain: any): Promise<boolean> {
+	async queueDomain(domain: string): Promise<boolean> {
 		// allows us to start adding multiple domains to the app simultaneously
 		// promise of addition resolves in both cases, but we consider it rejected
 		// if the resolved value is false
