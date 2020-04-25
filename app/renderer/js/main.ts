@@ -886,7 +886,10 @@ class ServerManagerView {
 		ipcRenderer.on('reload-proxy', async (event: Event, showAlert: boolean) => {
 			await this.loadProxy();
 			if (showAlert) {
-				alert('Proxy settings saved!');
+				await dialog.showMessageBox({
+					message: 'Proxy settings saved!',
+					buttons: ['OK']
+				});
 				ipcRenderer.send('reload-full-app');
 			}
 		});

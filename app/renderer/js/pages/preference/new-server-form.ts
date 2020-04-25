@@ -1,9 +1,11 @@
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, remote } from 'electron';
 
 import BaseComponent from '../../components/base';
 import * as DomainUtil from '../../utils/domain-util';
 import * as LinkUtil from '../../utils/link-util';
 import * as t from '../../utils/translation-util';
+
+const { dialog } = remote;
 
 interface NewServerFormProps {
 	$root: Element;
@@ -68,7 +70,11 @@ export default class NewServerForm extends BaseComponent {
 			serverConf = await DomainUtil.checkDomain(this.$newServerUrl.value);
 		} catch (error) {
 			this.$saveServerButton.innerHTML = 'Connect';
-			alert(error);
+			await dialog.showMessageBox({
+				type: 'error',
+				message: error,
+				buttons: ['OK']
+			});
 			return;
 		}
 

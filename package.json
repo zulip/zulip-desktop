@@ -219,7 +219,6 @@
           "skipComments": true
         }
       ],
-      "no-alert": "off",
       "no-else-return": "off",
       "no-warning-comments": "off",
       "object-curly-spacing": "off",
