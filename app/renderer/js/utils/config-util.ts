@@ -45,6 +45,16 @@ export function getConfigItem(key: string, defaultValue: any = null): any {
 	}
 }
 
+export function getConfigString(key: string, defaultValue: string): string {
+	const value = getConfigItem(key, defaultValue);
+	if (typeof value === 'string') {
+		return value;
+	} else {
+		setConfigItem(key, defaultValue);
+		return defaultValue;
+	}
+}
+
 // This function returns whether a key exists in the configuration file (settings.json)
 export function isConfigItemExists(key: string): boolean {
 	try {

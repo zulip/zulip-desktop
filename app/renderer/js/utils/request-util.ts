@@ -45,7 +45,7 @@ export function requestOptions(domain: string, ignoreCerts: boolean): RequestUti
 		try {
 			certificateLocation = fs.readFileSync(certificateFile, 'utf8');
 		} catch (error) {
-			logger.warn(`Error while trying to get certificate: ${error}`);
+			logger.warn('Error while trying to get certificate:', error);
 		}
 	}
 

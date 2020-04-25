@@ -59,7 +59,11 @@ electron_bridge.on('realm_name', realmName => {
 	ipcRenderer.send('realm-name-changed', serverURL, realmName);
 });
 
-electron_bridge.on('realm_icon_url', iconURL => {
+electron_bridge.on('realm_icon_url', (iconURL: unknown) => {
+	if (typeof iconURL !== 'string') {
+		throw new TypeError('Expected string for iconURL');
+	}
+
 	const serverURL = location.origin;
 	iconURL = iconURL.includes('http') ? iconURL : `${serverURL}${iconURL}`;
 	ipcRenderer.send('realm-icon-changed', serverURL, iconURL);

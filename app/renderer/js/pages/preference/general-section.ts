@@ -101,7 +101,7 @@ export default class GeneralSection extends BaseSection {
 						<div class="setting-description">${t.__('Enable error reporting (requires restart)')}</div>
 						<div class="setting-control"></div>
 					</div>
-					
+
 					<div class="setting-row" id="app-language">
 						<div class="setting-description">${t.__('App language (requires restart)')}</div>
 						<div  id="lang-div" class="lang-div"></div>
@@ -115,7 +115,7 @@ export default class GeneralSection extends BaseSection {
 					</div>
 					<div class="setting-row" id="remove-custom-css">
 						<div class="setting-description">
-							<div class="selected-css-path" id="custom-css-path">${ConfigUtil.getConfigItem('customCSS')}</div>
+							<div class="selected-css-path" id="custom-css-path">${ConfigUtil.getConfigString('customCSS', '')}</div>
 						</div>
 						<div class="action red" id="css-delete-action">
 							<i class="material-icons">indeterminate_check_box</i>
@@ -130,7 +130,7 @@ export default class GeneralSection extends BaseSection {
 					</div>
 					<div class="setting-row">
 						<div class="setting-description">
-							<div class="download-folder-path">${ConfigUtil.getConfigItem('downloadsPath', `${app.getPath('downloads')}`)}</div>
+							<div class="download-folder-path">${ConfigUtil.getConfigString('downloadsPath', app.getPath('downloads'))}</div>
 						</div>
 					</div>
 					<div class="setting-row" id="prompt-download">
