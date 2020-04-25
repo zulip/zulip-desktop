@@ -40,19 +40,19 @@ export default class FindAccounts extends BaseComponent {
 		this.initListeners();
 	}
 
-	findAccounts(url: string): void {
+	async findAccounts(url: string): Promise<void> {
 		if (!url) {
 			return;
 		}
 		if (!url.startsWith('http')) {
 			url = 'https://' + url;
 		}
-		LinkUtil.openBrowser(new URL('/accounts/find', url));
+		await LinkUtil.openBrowser(new URL('/accounts/find', url));
 	}
 
 	initListeners(): void {
-		this.$findAccountsButton.addEventListener('click', () => {
-			this.findAccounts(this.$serverUrlField.value);
+		this.$findAccountsButton.addEventListener('click', async () => {
+			await this.findAccounts(this.$serverUrlField.value);
 		});
 
 		this.$serverUrlField.addEventListener('click', () => {
@@ -61,9 +61,9 @@ export default class FindAccounts extends BaseComponent {
 			}
 		});
 
-		this.$serverUrlField.addEventListener('keypress', event => {
+		this.$serverUrlField.addEventListener('keypress', async event => {
 			if (event.key === 'Enter') {
-				this.findAccounts(this.$serverUrlField.value);
+				await this.findAccounts(this.$serverUrlField.value);
 			}
 		});
 

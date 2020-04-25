@@ -332,8 +332,8 @@ export default class ShortcutsSection extends BaseSection {
 	openHotkeysExternalLink(): void {
 		const link = 'https://zulipchat.com/help/keyboard-shortcuts';
 		const externalCreateNewOrgElement = document.querySelector('#open-hotkeys-link');
-		externalCreateNewOrgElement.addEventListener('click', () => {
-			LinkUtil.openBrowser(new URL(link));
+		externalCreateNewOrgElement.addEventListener('click', async () => {
+			await LinkUtil.openBrowser(new URL(link));
 		});
 	}
 

@@ -382,8 +382,8 @@ export default class GeneralSection extends BaseSection {
 			detail: clearAppDataMessage
 		});
 		if (response === 0) {
-			fs.remove(getAppPath);
-			setTimeout(() => ipcRenderer.send('forward-message', 'hard-reload'), 1000);
+			await fs.remove(getAppPath);
+			ipcRenderer.send('forward-message', 'hard-reload');
 		}
 	}
 
@@ -403,8 +403,8 @@ export default class GeneralSection extends BaseSection {
 
 	updateResetDataOption(): void {
 		const resetDataButton = document.querySelector('#resetdata-option .reset-data-button');
-		resetDataButton.addEventListener('click', () => {
-			this.clearAppDataDialog();
+		resetDataButton.addEventListener('click', async () => {
+			await this.clearAppDataDialog();
 		});
 	}
 
@@ -440,8 +440,8 @@ export default class GeneralSection extends BaseSection {
 
 	addCustomCSS(): void {
 		const customCSSButton = document.querySelector('#add-custom-css .custom-css-button');
-		customCSSButton.addEventListener('click', () => {
-			this.customCssDialog();
+		customCSSButton.addEventListener('click', async () => {
+			await this.customCssDialog();
 		});
 	}
 
@@ -476,8 +476,8 @@ export default class GeneralSection extends BaseSection {
 
 	downloadFolder(): void {
 		const downloadFolder = document.querySelector('#download-folder .download-folder-button');
-		downloadFolder.addEventListener('click', () => {
-			this.downloadFolderDialog();
+		downloadFolder.addEventListener('click', async () => {
+			await this.downloadFolderDialog();
 		});
 	}
 

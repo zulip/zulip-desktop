@@ -4,7 +4,7 @@ import AutoLaunch from 'auto-launch';
 import isDev from 'electron-is-dev';
 import * as ConfigUtil from '../renderer/js/utils/config-util';
 
-export const setAutoLaunch = (AutoLaunchValue: boolean): void => {
+export const setAutoLaunch = async (AutoLaunchValue: boolean): Promise<void> => {
 	// Don't run this in development
 	if (isDev) {
 		return;
@@ -19,9 +19,9 @@ export const setAutoLaunch = (AutoLaunchValue: boolean): void => {
 			isHidden: false
 		});
 		if (autoLaunchOption) {
-			ZulipAutoLauncher.enable();
+			await ZulipAutoLauncher.enable();
 		} else {
-			ZulipAutoLauncher.disable();
+			await ZulipAutoLauncher.disable();
 		}
 	} else {
 		app.setLoginItemSettings({

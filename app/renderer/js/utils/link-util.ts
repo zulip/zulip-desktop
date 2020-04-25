@@ -8,9 +8,9 @@ export function isUploadsUrl(server: string, url: URL): boolean {
 	return url.origin === server && url.pathname.startsWith('/user_uploads/');
 }
 
-export function openBrowser(url: URL): void {
+export async function openBrowser(url: URL): Promise<void> {
 	if (['http:', 'https:', 'mailto:'].includes(url.protocol)) {
-		shell.openExternal(url.href);
+		await shell.openExternal(url.href);
 	} else {
 		// For security, indirect links to non-whitelisted protocols
 		// through a real web browser via a local HTML file.

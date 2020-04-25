@@ -188,7 +188,7 @@ export default class WebView extends BaseComponent {
 		this.focus();
 		this.props.onTitleChange();
 		// Injecting preload css in webview to override some css rules
-		this.$el.insertCSS(fs.readFileSync(path.join(__dirname, '/../../css/preload.css'), 'utf8'));
+		(async () => this.$el.insertCSS(fs.readFileSync(path.join(__dirname, '/../../css/preload.css'), 'utf8')))();
 
 		// get customCSS again from config util to avoid warning user again
 		this.customCSS = ConfigUtil.getConfigItem('customCSS');
@@ -202,7 +202,7 @@ export default class WebView extends BaseComponent {
 				return;
 			}
 
-			this.$el.insertCSS(fs.readFileSync(path.resolve(__dirname, this.customCSS), 'utf8'));
+			(async () => this.$el.insertCSS(fs.readFileSync(path.resolve(__dirname, this.customCSS), 'utf8')))();
 		}
 	}
 
@@ -298,6 +298,6 @@ export default class WebView extends BaseComponent {
 
 	async send(channel: string, ...parameters: any[]): Promise<void> {
 		await this.domReady;
-		this.$el.send(channel, ...parameters);
+		await this.$el.send(channel, ...parameters);
 	}
 }

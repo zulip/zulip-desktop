@@ -117,6 +117,6 @@ ipcRenderer.on('set-idle', () => {
 	electron_bridge.idle_on_system = true;
 });
 
-webFrame.executeJavaScript(
+(async () => webFrame.executeJavaScript(
 	fs.readFileSync(require.resolve('./injected'), 'utf8')
-);
+))();

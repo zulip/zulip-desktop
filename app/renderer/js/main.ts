@@ -142,9 +142,9 @@ class ServerManagerView {
 		this.initSidebar();
 		this.removeUAfromDisk();
 		if (EnterpriseUtil.configFile) {
-			this.initPresetOrgs();
+			await this.initPresetOrgs();
 		}
-		this.initTabs();
+		await this.initTabs();
 		this.initActions();
 		this.registerIpcs();
 	}
@@ -310,7 +310,7 @@ class ServerManagerView {
 		}
 	}
 
-	initTabs(): void {
+	async initTabs(): Promise<void> {
 		const servers = DomainUtil.getDomains();
 		if (servers.length > 0) {
 			for (const [i, server] of servers.entries()) {
@@ -322,22 +322,22 @@ class ServerManagerView {
 				lastActiveTab = 0;
 			}
 			// checkDomain() and webview.load() for lastActiveTab before the others
-			DomainUtil.updateSavedServer(servers[lastActiveTab].url, lastActiveTab);
+			await DomainUtil.updateSavedServer(servers[lastActiveTab].url, lastActiveTab);
 			this.activateTab(lastActiveTab);
-			for (const [i, server] of servers.entries()) {
+			await Promise.all(servers.map(async (server, i) => {
 				// after the lastActiveTab is activated, we load the others in the background
 				// without activating them, to prevent flashing of server icons
 				if (i === lastActiveTab) {
-					continue;
+					return;
 				}
-				DomainUtil.updateSavedServer(server.url, i);
+				await DomainUtil.updateSavedServer(server.url, i);
 				this.tabs[i].webview.load();
-			}
+			}));
 			// Remove focus from the settings icon at sidebar bottom
 			this.$settingsButton.classList.remove('active');
 		} else if (this.presetOrgs.length === 0) {
 			// not attempting to add organisations in the background
-			this.openSettings('AddServer');
+			await this.openSettings('AddServer');
 		} else {
 			this.showLoading(true);
 		}
@@ -411,11 +411,11 @@ class ServerManagerView {
 		this.$reloadButton.addEventListener('click', () => {
 			this.tabs[this.activeTabIndex].webview.reload();
 		});
-		this.$addServerButton.addEventListener('click', () => {
-			this.openSettings('AddServer');
+		this.$addServerButton.addEventListener('click', async () => {
+			await this.openSettings('AddServer');
 		});
-		this.$settingsButton.addEventListener('click', () => {
-			this.openSettings('General');
+		this.$settingsButton.addEventListener('click', async () => {
+			await this.openSettings('General');
 		});
 		this.$backButton.addEventListener('click', () => {
 			this.tabs[this.activeTabIndex].webview.back();
@@ -683,14 +683,14 @@ class ServerManagerView {
 		this.$webviewsContainer.innerHTML = '';
 	}
 
-	reloadView(): void {
+	async reloadView(): Promise<void> {
 		// Save and remember the index of last active tab so that we can use it later
 		const lastActiveTab = this.tabs[this.activeTabIndex].props.index;
 		ConfigUtil.setConfigItem('lastActiveTab', lastActiveTab);
 
 		// Destroy the current view and re-initiate it
 		this.destroyView();
-		this.initTabs();
+		await this.initTabs();
 		this.initServerActions();
 	}
 
@@ -839,15 +839,15 @@ class ServerManagerView {
 			this.openNetworkTroubleshooting(index);
 		});
 
-		ipcRenderer.on('open-settings', (event: Event, settingNav: string) => {
-			this.openSettings(settingNav);
+		ipcRenderer.on('open-settings', async (event: Event, settingNav: string) => {
+			await this.openSettings(settingNav);
 		});
 
 		ipcRenderer.on('open-about', this.openAbout.bind(this));
 
-		ipcRenderer.on('open-help', () => {
+		ipcRenderer.on('open-help', async () => {
 			// Open help page of current active server
-			LinkUtil.openBrowser(new URL('/help', this.getCurrentActiveServer()));
+			await LinkUtil.openBrowser(new URL('/help', this.getCurrentActiveServer()));
 		});
 
 		ipcRenderer.on('reload-viewer', this.reloadView.bind(this, this.tabs[this.activeTabIndex].props.index));
@@ -866,8 +866,8 @@ class ServerManagerView {
 			this.activateLastTab(index);
 		});
 
-		ipcRenderer.on('open-org-tab', () => {
-			this.openSettings('AddServer');
+		ipcRenderer.on('open-org-tab', async () => {
+			await this.openSettings('AddServer');
 		});
 
 		ipcRenderer.on('reload-proxy', async (event: Event, showAlert: boolean) => {
@@ -1014,8 +1014,8 @@ class ServerManagerView {
 			clipboard.writeText(this.getCurrentActiveServer());
 		});
 
-		ipcRenderer.on('new-server', () => {
-			this.openSettings('AddServer');
+		ipcRenderer.on('new-server', async () => {
+			await this.openSettings('AddServer');
 		});
 
 		// Redo and undo functionality since the default API doesn't work on macOS
@@ -1027,37 +1027,33 @@ class ServerManagerView {
 			return this.getActiveWebview().redo();
 		});
 
-		ipcRenderer.on('set-active', () => {
+		ipcRenderer.on('set-active', async () => {
 			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');
-			webviews.forEach(webview => {
-				webview.send('set-active');
-			});
+			await Promise.all([...webviews].map(async webview => webview.send('set-active')));
 		});
 
-		ipcRenderer.on('set-idle', () => {
+		ipcRenderer.on('set-idle', async () => {
 			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');
-			webviews.forEach(webview => {
-				webview.send('set-idle');
-			});
+			await Promise.all([...webviews].map(async webview => webview.send('set-idle')));
 		});
 
-		ipcRenderer.on('open-network-settings', () => {
-			this.openSettings('Network');
+		ipcRenderer.on('open-network-settings', async () => {
+			await this.openSettings('Network');
 		});
 	}
 }
 
-window.addEventListener('load', () => {
-	const serverManagerView = new ServerManagerView();
-	serverManagerView.init();
+window.addEventListener('load', async () => {
 	// only start electron-connect (auto reload on change) when its ran
 	// from `npm run dev` or `gulp dev` and not from `npm start` when
 	// app is started `npm start` main process's proces.argv will have
 	// `--no-electron-connect`
-	const mainProcessArgv = remote.getGlobal('process').argv;
-	if (isDev && !mainProcessArgv.includes('--no-electron-connect')) {
+	if (isDev && !remote.getGlobal('process').argv.includes('--no-electron-connect')) {
 		require('electron-connect').client.create();
 	}
+
+	const serverManagerView = new ServerManagerView();
+	await serverManagerView.init();
 });
 
 export {};

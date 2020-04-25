@@ -67,6 +67,6 @@ export function newNotification(
 	};
 }
 
-electron_bridge.once('zulip-loaded', () => {
-	loadBots();
+electron_bridge.once('zulip-loaded', async () => {
+	await loadBots();
 });

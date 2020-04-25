@@ -55,8 +55,8 @@ function getToolsSubmenu(): Electron.MenuItemConstructorOptions[] {
 	},
 	{
 		label: t.__('Release Notes'),
-		click() {
-			LinkUtil.openBrowser(new URL(`https://github.com/zulip/zulip-desktop/releases/tag/v${app.getVersion()}`));
+		async click() {
+			await LinkUtil.openBrowser(new URL(`https://github.com/zulip/zulip-desktop/releases/tag/v${app.getVersion()}`));
 		}
 	},
 	{
@@ -65,8 +65,8 @@ function getToolsSubmenu(): Electron.MenuItemConstructorOptions[] {
 	{
 		label: t.__('Factory Reset'),
 		accelerator: process.platform === 'darwin' ? 'Command+Shift+D' : 'Ctrl+Shift+D',
-		click() {
-			resetAppSettings();
+		async click() {
+			await resetAppSettings();
 		}
 	},
 	{

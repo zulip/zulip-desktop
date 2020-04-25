@@ -78,8 +78,8 @@ export default class NewServerForm extends BaseComponent {
 	openCreateNewOrgExternalLink(): void {
 		const link = 'https://zulipchat.com/new/';
 		const externalCreateNewOrgElement = document.querySelector('#open-create-org-link');
-		externalCreateNewOrgElement.addEventListener('click', () => {
-			LinkUtil.openBrowser(new URL(link));
+		externalCreateNewOrgElement.addEventListener('click', async () => {
+			await LinkUtil.openBrowser(new URL(link));
 		});
 	}
 
@@ -89,12 +89,12 @@ export default class NewServerForm extends BaseComponent {
 	}
 
 	initActions(): void {
-		this.$saveServerButton.addEventListener('click', () => {
-			this.submitFormHandler();
+		this.$saveServerButton.addEventListener('click', async () => {
+			await this.submitFormHandler();
 		});
-		this.$newServerUrl.addEventListener('keypress', event => {
+		this.$newServerUrl.addEventListener('keypress', async event => {
 			if (event.key === 'Enter') {
-				this.submitFormHandler();
+				await this.submitFormHandler();
 			}
 		});
 		// open create new org link in default browser

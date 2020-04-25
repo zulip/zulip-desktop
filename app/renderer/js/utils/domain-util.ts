@@ -32,11 +32,13 @@ export let db: JsonDB;
 reloadDB();
 // Migrate from old schema
 if (db.getData('/').domain) {
-	addDomain({
-		alias: 'Zulip',
-		url: db.getData('/domain')
-	});
-	db.delete('/domain');
+	(async () => {
+		await addDomain({
+			alias: 'Zulip',
+			url: db.getData('/domain')
+		});
+		db.delete('/domain');
+	})();
 }
 
 export function getDomains(): ServerConf[] {

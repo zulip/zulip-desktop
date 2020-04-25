@@ -16,22 +16,22 @@ export default function handleExternalLink(this: WebView, event: Electron.NewWin
 
 	if (LinkUtil.isUploadsUrl(this.props.url, url)) {
 		ipcRenderer.send('downloadFile', url.href, downloadPath);
-		ipcRenderer.once('downloadFileCompleted', (_event: Event, filePath: string, fileName: string) => {
+		ipcRenderer.once('downloadFileCompleted', async (_event: Event, filePath: string, fileName: string) => {
 			const downloadNotification = new Notification('Download Complete', {
 				body: `Click to show ${fileName} in folder`,
 				silent: true // We'll play our own sound - ding.ogg
 			});
-
-			// Play sound to indicate download complete
-			if (!ConfigUtil.getConfigItem('silent')) {
-				dingSound.play();
-			}
 
 			downloadNotification.addEventListener('click', () => {
 				// Reveal file in download folder
 				shell.showItemInFolder(filePath);
 			});
 			ipcRenderer.removeAllListeners('downloadFileFailed');
+
+			// Play sound to indicate download complete
+			if (!ConfigUtil.getConfigItem('silent')) {
+				await dingSound.play();
+			}
 		});
 
 		ipcRenderer.once('downloadFileFailed', () => {
@@ -51,6 +51,6 @@ export default function handleExternalLink(this: WebView, event: Electron.NewWin
 			ipcRenderer.removeAllListeners('downloadFileCompleted');
 		});
 	} else {
-		LinkUtil.openBrowser(url);
+		(async () => LinkUtil.openBrowser(url))();
 	}
 }

@@ -49,7 +49,7 @@ export default class AddCertificate extends BaseComponent {
 		this.initListeners();
 	}
 
-	validateAndAdd(): void {
+	async validateAndAdd(): Promise<void> {
 		const certificate = this._certFile;
 		const serverUrl = this.serverUrl.value;
 		if (certificate !== '' && serverUrl !== '') {
@@ -60,11 +60,11 @@ export default class AddCertificate extends BaseComponent {
 				return;
 			}
 			CertificateUtil.setCertificate(server, fileName);
-			dialog.showMessageBox({
+			this.serverUrl.value = '';
+			await dialog.showMessageBox({
 				title: 'Success',
 				message: 'Certificate saved!'
 			});
-			this.serverUrl.value = '';
 		} else {
 			dialog.showErrorBox('Error', `Please, ${serverUrl === '' ?
 				'Enter an Organization URL' : 'Choose certificate file'}`);
@@ -80,18 +80,18 @@ export default class AddCertificate extends BaseComponent {
 		const { filePaths, canceled } = await dialog.showOpenDialog(showDialogOptions);
 		if (!canceled) {
 			this._certFile = filePaths[0] || '';
-			this.validateAndAdd();
+			await this.validateAndAdd();
 		}
 	}
 
 	initListeners(): void {
-		this.addCertificateButton.addEventListener('click', () => {
-			this.addHandler();
+		this.addCertificateButton.addEventListener('click', async () => {
+			await this.addHandler();
 		});
 
-		this.serverUrl.addEventListener('keypress', event => {
+		this.serverUrl.addEventListener('keypress', async event => {
 			if (event.key === 'Enter') {
-				this.addHandler();
+				await this.addHandler();
 			}
 		});
 	}

@@ -91,7 +91,7 @@ function createMainWindow(): Electron.BrowserWindow {
 		win.webContents.send('focus');
 	});
 
-	win.loadURL(mainURL);
+	(async () => win.loadURL(mainURL))();
 
 	// Keep the app running in background on close event
 	win.on('close', event => {
@@ -182,7 +182,7 @@ app.on('ready', () => {
 	const isSystemProxy = ConfigUtil.getConfigItem('useSystemProxy');
 
 	if (isSystemProxy) {
-		ProxyUtil.resolveSystemProxy(mainWindow);
+		(async () => ProxyUtil.resolveSystemProxy(mainWindow))();
 	}
 
 	const page = mainWindow.webContents;
@@ -315,8 +315,8 @@ app.on('ready', () => {
 		}
 	});
 
-	ipcMain.on('toggleAutoLauncher', (_event: Electron.IpcMainEvent, AutoLaunchValue: boolean) => {
-		setAutoLaunch(AutoLaunchValue);
+	ipcMain.on('toggleAutoLauncher', async (_event: Electron.IpcMainEvent, AutoLaunchValue: boolean) => {
+		await setAutoLaunch(AutoLaunchValue);
 	});
 
 	ipcMain.on('downloadFile', (_event: Electron.IpcMainEvent, url: string, downloadPath: string) => {

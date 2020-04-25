@@ -34,36 +34,41 @@ export function appUpdater(updateFromMenu = false): void {
 	autoUpdater.allowPrerelease = isBetaUpdate || false;
 
 	const eventsListenerRemove = ['update-available', 'update-not-available'];
-	autoUpdater.on('update-available', (info: UpdateInfo) => {
+	autoUpdater.on('update-available', async (info: UpdateInfo) => {
 		if (updateFromMenu) {
-			dialog.showMessageBox({
-				message: `A new version ${info.version}, of Zulip Desktop is available`,
-				detail: 'The update will be downloaded in the background. You will be notified when it is ready to be installed.'
-			});
-
 			updateAvailable = true;
 
 			// This is to prevent removal of 'update-downloaded' and 'error' event listener.
 			eventsListenerRemove.forEach(event => {
 				autoUpdater.removeAllListeners(event);
 			});
+
+			await dialog.showMessageBox({
+				message: `A new version ${info.version}, of Zulip Desktop is available`,
+				detail: 'The update will be downloaded in the background. You will be notified when it is ready to be installed.'
+			});
 		}
 	});
 
-	autoUpdater.on('update-not-available', () => {
+	autoUpdater.on('update-not-available', async () => {
 		if (updateFromMenu) {
-			dialog.showMessageBox({
-				message: 'No updates available',
-				detail: `You are running the latest version of Zulip Desktop.\nVersion: ${app.getVersion()}`
-			});
 			// Remove all autoUpdator listeners so that next time autoUpdator is manually called these
 			// listeners don't trigger multiple times.
 			autoUpdater.removeAllListeners();
+
+			await dialog.showMessageBox({
+				message: 'No updates available',
+				detail: `You are running the latest version of Zulip Desktop.\nVersion: ${app.getVersion()}`
+			});
 		}
 	});
 
 	autoUpdater.on('error', async (error: Error) => {
 		if (updateFromMenu) {
+			// Remove all autoUpdator listeners so that next time autoUpdator is manually called these
+			// listeners don't trigger multiple times.
+			autoUpdater.removeAllListeners();
+
 			const messageText = (updateAvailable) ? ('Unable to download the updates') : ('Unable to check for updates');
 			const { response } = await dialog.showMessageBox({
 				type: 'error',
@@ -73,11 +78,8 @@ export function appUpdater(updateFromMenu = false): void {
 				Current Version: ${app.getVersion()}`
 			});
 			if (response === 0) {
-				LinkUtil.openBrowser(new URL('https://zulipchat.com/apps/'));
+				await LinkUtil.openBrowser(new URL('https://zulipchat.com/apps/'));
 			}
-			// Remove all autoUpdator listeners so that next time autoUpdator is manually called these
-			// listeners don't trigger multiple times.
-			autoUpdater.removeAllListeners();
 		}
 	});
 
@@ -100,5 +102,5 @@ export function appUpdater(updateFromMenu = false): void {
 		}
 	});
 	// Init for updates
-	autoUpdater.checkForUpdates();
+	(async () => autoUpdater.checkForUpdates())();
 }
