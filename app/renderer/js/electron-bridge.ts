@@ -2,6 +2,7 @@ import {ipcRenderer} from 'electron';
 
 import {EventEmitter} from 'events';
 
+import {ClipboardDecrypter} from './clipboard-decrypter';
 import {NotificationData, newNotification} from './notification';
 
 type ListenerType = ((...args: any[]) => void);
@@ -46,6 +47,9 @@ class ElectronBridge extends EventEmitter {
 	set_send_notification_reply_message_supported = (value: boolean): void => {
 		this.send_notification_reply_message_supported = value;
 	};
+
+	decrypt_clipboard = (version: number): ClipboardDecrypter =>
+		new ClipboardDecrypter(version);
 }
 
 const electron_bridge = new ElectronBridge();
