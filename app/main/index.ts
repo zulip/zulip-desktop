@@ -307,7 +307,7 @@ app.on('ready', () => {
 		page.send(listener, ...parameters);
 	});
 
-	ipcMain.on('update-menu', (_event: Electron.IpcMainEvent, props: any) => {
+	ipcMain.on('update-menu', (_event: Electron.IpcMainEvent, props: AppMenu.MenuProps) => {
 		AppMenu.setMenu(props);
 		const activeTab = props.tabs[props.activeTabIndex];
 		if (activeTab) {

@@ -9,6 +9,13 @@ import Logger from '../renderer/js/utils/logger-util';
 import * as ConfigUtil from '../renderer/js/utils/config-util';
 import * as LinkUtil from '../renderer/js/utils/link-util';
 import * as t from '../renderer/js/utils/translation-util';
+import type { ServerOrFunctionalTab } from '../renderer/js/main';
+
+export interface MenuProps {
+	tabs: ServerOrFunctionalTab[];
+	activeTabIndex?: number;
+	enableMenu?: boolean;
+}
 
 const appName = app.name;
 
@@ -223,7 +230,7 @@ function getHelpSubmenu(): Electron.MenuItemConstructorOptions[] {
 	];
 }
 
-function getWindowSubmenu(tabs: any[], activeTabIndex: number, enableMenu: boolean): Electron.MenuItemConstructorOptions[] {
+function getWindowSubmenu(tabs: ServerOrFunctionalTab[], activeTabIndex: number, enableMenu: boolean): Electron.MenuItemConstructorOptions[] {
 	const initialSubmenu: Electron.MenuItemConstructorOptions[] = [{
 		label: t.__('Minimize'),
 		role: 'minimize'
@@ -282,7 +289,7 @@ function getWindowSubmenu(tabs: any[], activeTabIndex: number, enableMenu: boole
 	return initialSubmenu;
 }
 
-function getDarwinTpl(props: any): Electron.MenuItemConstructorOptions[] {
+function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 	const { tabs, activeTabIndex, enableMenu } = props;
 
 	return [{
@@ -423,7 +430,7 @@ function getDarwinTpl(props: any): Electron.MenuItemConstructorOptions[] {
 	}];
 }
 
-function getOtherTpl(props: any): Electron.MenuItemConstructorOptions[] {
+function getOtherTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 	const { tabs, activeTabIndex, enableMenu } = props;
 	return [{
 		label: t.__('File'),
@@ -601,7 +608,7 @@ async function resetAppSettings(): Promise<void> {
 	}
 }
 
-export function setMenu(props: any): void {
+export function setMenu(props: MenuProps): void {
 	const tpl = process.platform === 'darwin' ? getDarwinTpl(props) : getOtherTpl(props);
 	const menu = Menu.buildFromTemplate(tpl);
 	Menu.setApplicationMenu(menu);

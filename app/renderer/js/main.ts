@@ -69,7 +69,7 @@ const logger = new Logger({
 });
 
 const rendererDirectory = path.resolve(__dirname, '..');
-type ServerOrFunctionalTab = ServerTab | FunctionalTab;
+export type ServerOrFunctionalTab = ServerTab | FunctionalTab;
 
 class ServerManagerView {
 	$addServerButton: HTMLButtonElement;
