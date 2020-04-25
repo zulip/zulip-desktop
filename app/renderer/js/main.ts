@@ -258,7 +258,7 @@ class ServerManagerView {
 			return true;
 		} catch (error) {
 			logger.error(error);
-			logger.error('Could not add ' + domain + '. Please contact your system administrator.');
+			logger.error(`Could not add ${domain}. Please contact your system administrator.`);
 			return false;
 		}
 	}
@@ -492,7 +492,7 @@ class ServerManagerView {
 			// This needs to handled only for the add server tooltip and not others.
 			if (addServer) {
 				const { top } = SidebarButton.getBoundingClientRect();
-				SidebarTooltip.style.top = top + 'px';
+				SidebarTooltip.style.top = `${top}px`;
 			}
 		});
 		SidebarButton.addEventListener('mouseout', () => {
@@ -508,7 +508,7 @@ class ServerManagerView {
 		// This could not be handled using CSS, hence the top of the tooltip is made same
 		// as that of its parent element.
 		const { top } = this.$serverIconTooltip[index].parentElement.getBoundingClientRect();
-		this.$serverIconTooltip[index].style.top = top + 'px';
+		this.$serverIconTooltip[index].style.top = `${top}px`;
 	}
 
 	onHoverOut(index: number): void {

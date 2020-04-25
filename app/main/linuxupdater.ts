@@ -34,11 +34,14 @@ export function linuxUpdateNotification(): void {
 		if (response.statusCode < 400) {
 			const data = JSON.parse(body);
 			const latestVersion = ConfigUtil.getConfigItem('betaUpdate') ? data[0].tag_name : data.tag_name;
+			if (typeof latestVersion !== 'string') {
+				throw new TypeError('Expected string for tag_name');
+			}
 
 			if (semver.gt(latestVersion, app.getVersion())) {
 				const notified = LinuxUpdateUtil.getUpdateItem(latestVersion);
 				if (notified === null) {
-					new Notification({title: 'Zulip Update', body: 'A new version ' + latestVersion + ' is available. Please update using your package manager.'}).show();
+					new Notification({title: 'Zulip Update', body: `A new version ${latestVersion} is available. Please update using your package manager.`}).show();
 					LinuxUpdateUtil.setUpdateItem(latestVersion, true);
 				}
 			}

@@ -181,7 +181,7 @@ ipcRenderer.on('tray', (_event: Event, arg: number): void => {
 			unread = arg;
 			const image = renderNativeImage(arg);
 			tray.setImage(image);
-			tray.setToolTip(arg + ' unread messages');
+			tray.setToolTip(`${arg} unread messages`);
 		}
 	}
 });
@@ -202,7 +202,7 @@ function toggleTray(): void {
 		if (process.platform === 'linux' || process.platform === 'win32') {
 			const image = renderNativeImage(unread);
 			tray.setImage(image);
-			tray.setToolTip(unread + ' unread messages');
+			tray.setToolTip(`${unread} unread messages`);
 		}
 
 		ConfigUtil.setConfigItem('trayIcon', true);
