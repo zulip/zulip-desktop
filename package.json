@@ -215,8 +215,7 @@
         }
       ],
       "no-warning-comments": "off",
-      "strict": "error",
-      "unicorn/string-content": "off"
+      "strict": "error"
     },
     "envs": [
       "node",
