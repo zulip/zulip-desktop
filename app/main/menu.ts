@@ -230,7 +230,7 @@ function getHelpSubmenu(): Electron.MenuItemConstructorOptions[] {
 	];
 }
 
-function getWindowSubmenu(tabs: ServerOrFunctionalTab[], activeTabIndex: number, enableMenu: boolean): Electron.MenuItemConstructorOptions[] {
+function getWindowSubmenu(tabs: ServerOrFunctionalTab[], activeTabIndex: number): Electron.MenuItemConstructorOptions[] {
 	const initialSubmenu: Electron.MenuItemConstructorOptions[] = [{
 		label: t.__('Minimize'),
 		role: 'minimize'
@@ -419,7 +419,7 @@ function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 		submenu: getHistorySubmenu(enableMenu)
 	}, {
 		label: t.__('Window'),
-		submenu: getWindowSubmenu(tabs, activeTabIndex, enableMenu)
+		submenu: getWindowSubmenu(tabs, activeTabIndex)
 	}, {
 		label: t.__('Tools'),
 		submenu: getToolsSubmenu()
@@ -537,7 +537,7 @@ function getOtherTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 		submenu: getHistorySubmenu(enableMenu)
 	}, {
 		label: t.__('Window'),
-		submenu: getWindowSubmenu(tabs, activeTabIndex, enableMenu)
+		submenu: getWindowSubmenu(tabs, activeTabIndex)
 	}, {
 		label: t.__('Tools'),
 		submenu: getToolsSubmenu()
