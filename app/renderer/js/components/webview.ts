@@ -28,6 +28,10 @@ interface WebViewProps {
 }
 
 export default class WebView extends BaseComponent {
+	// This is required because in main.js we access WebView.method as
+	// webview[method].
+	[key: string]: any;
+
 	props: WebViewProps;
 	zoomFactor: number;
 	badgeCount: number;
@@ -36,10 +40,6 @@ export default class WebView extends BaseComponent {
 	$webviewsContainer: DOMTokenList;
 	$el: Electron.WebviewTag;
 	domReady?: Promise<void>;
-
-	// This is required because in main.js we access WebView.method as
-	// webview[method].
-	[key: string]: any;
 
 	constructor(props: WebViewProps) {
 		super();

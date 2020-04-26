@@ -2,6 +2,12 @@ import Tab, { TabProps } from './tab';
 
 export default class FunctionalTab extends Tab {
 	$closeButton: Element;
+
+	constructor(props: TabProps) {
+		super(props);
+		this.init();
+	}
+
 	template(): string {
 		return `<div class="tab functional-tab" data-tab-id="${this.props.tabIndex}">
 					<div class="server-tab-badge close-button">
@@ -11,11 +17,6 @@ export default class FunctionalTab extends Tab {
 						<i class="material-icons">${this.props.materialIcon}</i>
 					</div>
 				</div>`;
-	}
-
-	constructor(props: TabProps) {
-		super(props);
-		this.init();
 	}
 
 	init(): void {

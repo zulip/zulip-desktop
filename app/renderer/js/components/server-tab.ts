@@ -6,6 +6,11 @@ import * as SystemUtil from '../utils/system-util';
 export default class ServerTab extends Tab {
 	$badge: Element;
 
+	constructor(props: TabProps) {
+		super(props);
+		this.init();
+	}
+
 	template(): string {
 		return `<div class="tab" data-tab-id="${this.props.tabIndex}">
 					<div class="server-tooltip" style="display:none">${this.props.name}</div>
@@ -15,11 +20,6 @@ export default class ServerTab extends Tab {
 					</div>
 					<div class="server-tab-shortcut">${this.generateShortcutText()}</div>
 				</div>`;
-	}
-
-	constructor(props: TabProps) {
-		super(props);
-		this.init();
 	}
 
 	init(): void {

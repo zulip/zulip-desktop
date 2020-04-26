@@ -45,11 +45,11 @@ const browserConsole: PatchedConsole = console;
 const logDir = `${app.getPath('userData')}/Logs`;
 
 export default class Logger {
+	[key: string]: any;
 	nodeConsole: PatchedConsole;
 	timestamp?: () => string;
 	level: boolean;
 	logInDevMode: boolean;
-	[key: string]: any;
 
 	constructor(options: LoggerOptions = {}) {
 		let {

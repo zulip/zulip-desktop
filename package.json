@@ -202,7 +202,6 @@
   },
   "xo": {
     "rules": {
-      "@typescript-eslint/member-ordering": "off",
       "@typescript-eslint/no-dynamic-delete": "off",
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/prefer-readonly-parameter-types": "off",
