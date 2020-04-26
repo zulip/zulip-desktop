@@ -27,7 +27,7 @@ const logger = new Logger({
 
 const defaultIconUrl = '../renderer/img/icon.png';
 
-export let db: JsonDB;
+let db: JsonDB;
 
 reloadDB();
 // Migrate from old schema
@@ -66,7 +66,7 @@ export function shouldIgnoreCerts(url: string): boolean {
 	return null;
 }
 
-function updateDomain(index: number, server: ServerConf): void {
+export function updateDomain(index: number, server: ServerConf): void {
 	reloadDB();
 	db.push(`/domains[${index}]`, server, true);
 }
@@ -267,7 +267,7 @@ export async function updateSavedServer(url: string, index: number): Promise<voi
 	}
 }
 
-export function reloadDB(): void {
+function reloadDB(): void {
 	const domainJsonPath = path.join(app.getPath('userData'), 'config/domain.json');
 	try {
 		const file = fs.readFileSync(domainJsonPath, 'utf8');

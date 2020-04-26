@@ -204,7 +204,6 @@
     "rules": {
       "@typescript-eslint/no-dynamic-delete": "off",
       "@typescript-eslint/prefer-readonly-parameter-types": "off",
-      "import/no-mutable-exports": "off",
       "import/unambiguous": "error",
       "max-lines": [
         "warn",

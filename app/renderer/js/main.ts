@@ -141,7 +141,7 @@ class ServerManagerView {
 		this.initDefaultSettings();
 		this.initSidebar();
 		this.removeUAfromDisk();
-		if (EnterpriseUtil.configFile) {
+		if (EnterpriseUtil.hasConfigFile()) {
 			await this.initPresetOrgs();
 		}
 
@@ -946,8 +946,7 @@ class ServerManagerView {
 					this.tabs[index].webview.props.name = realmName;
 
 					domain.alias = escape(realmName);
-					DomainUtil.db.push(`/domains[${index}]`, domain, true);
-					DomainUtil.reloadDB();
+					DomainUtil.updateDomain(index, domain);
 					// Update the realm name also on the Window menu
 					ipcRenderer.send('update-menu', {
 						tabs: this.tabsForIpc,
@@ -968,8 +967,7 @@ class ServerManagerView {
 					const serverImgs: NodeListOf<HTMLImageElement> = document.querySelectorAll(serverImgsSelector);
 					serverImgs[index].src = localIconUrl;
 					domain.icon = localIconUrl;
-					DomainUtil.db.push(`/domains[${index}]`, domain, true);
-					DomainUtil.reloadDB();
+					DomainUtil.updateDomain(index, domain);
 				}
 			});
 		});

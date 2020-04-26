@@ -9,8 +9,8 @@ const logger = new Logger({
 });
 
 // TODO: replace enterpriseSettings type with an interface once settings are final
-export let enterpriseSettings: any;
-export let configFile: boolean;
+let enterpriseSettings: any;
+let configFile: boolean;
 
 reloadDB();
 
@@ -33,6 +33,10 @@ function reloadDB(): void {
 	} else {
 		configFile = false;
 	}
+}
+
+export function hasConfigFile(): boolean {
+	return configFile;
 }
 
 export function getConfigItem(key: string, defaultValue?: any): any {
