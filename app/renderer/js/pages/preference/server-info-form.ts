@@ -1,11 +1,11 @@
-import { remote, ipcRenderer } from 'electron';
+import {remote, ipcRenderer} from 'electron';
 
 import BaseComponent from '../../components/base';
 import * as DomainUtil from '../../utils/domain-util';
 import * as Messages from '../../../../resources/messages';
 import * as t from '../../utils/translation-util';
 
-const { dialog } = remote;
+const {dialog} = remote;
 
 interface ServerInfoFormProps {
 	$root: Element;
@@ -66,7 +66,7 @@ export default class ServerInfoForm extends BaseComponent {
 
 	initActions(): void {
 		this.$deleteServerButton.addEventListener('click', async () => {
-			const { response } = await dialog.showMessageBox({
+			const {response} = await dialog.showMessageBox({
 				type: 'warning',
 				buttons: [t.__('YES'), t.__('NO')],
 				defaultId: 0,
@@ -76,7 +76,7 @@ export default class ServerInfoForm extends BaseComponent {
 				if (DomainUtil.removeDomain(this.props.index)) {
 					ipcRenderer.send('reload-full-app');
 				} else {
-					const { title, content } = Messages.orgRemovalError(DomainUtil.getDomain(this.props.index).url);
+					const {title, content} = Messages.orgRemovalError(DomainUtil.getDomain(this.props.index).url);
 					dialog.showErrorBox(title, content);
 				}
 			}

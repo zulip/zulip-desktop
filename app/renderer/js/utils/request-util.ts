@@ -1,4 +1,4 @@
-import { remote } from 'electron';
+import {remote} from 'electron';
 
 import fs from 'fs';
 import path from 'path';
@@ -8,7 +8,7 @@ import * as ProxyUtil from './proxy-util';
 import * as CertificateUtil from './certificate-util';
 import * as SystemUtil from './system-util';
 
-const { app } = remote;
+const {app} = remote;
 
 const logger = new Logger({
 	file: 'request-util.log',
@@ -56,7 +56,7 @@ export function requestOptions(domain: string, ignoreCerts: boolean): RequestUti
 		ca: certificateLocation ? certificateLocation : '',
 		proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : '',
 		ecdhCurve: 'auto',
-		headers: { 'User-Agent': SystemUtil.getUserAgent() },
+		headers: {'User-Agent': SystemUtil.getUserAgent()},
 		rejectUnauthorized: !ignoreCerts
 	};
 }

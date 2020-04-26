@@ -1,9 +1,9 @@
-import { ipcRenderer, remote, OpenDialogOptions } from 'electron';
+import {ipcRenderer, remote, OpenDialogOptions} from 'electron';
 
 import path from 'path';
 import fs from 'fs-extra';
 
-const { app, dialog } = remote;
+const {app, dialog} = remote;
 const currentBrowserWindow = remote.getCurrentWindow();
 
 import BaseSection from './base-section';
@@ -376,7 +376,7 @@ export default class GeneralSection extends BaseSection {
 		const clearAppDataMessage = 'By clicking proceed you will be removing all added accounts and preferences from Zulip. When the application restarts, it will be as if you are starting Zulip for the first time.';
 		const getAppPath = path.join(app.getPath('appData'), app.name);
 
-		const { response } = await dialog.showMessageBox({
+		const {response} = await dialog.showMessageBox({
 			type: 'warning',
 			buttons: ['YES', 'NO'],
 			defaultId: 0,
@@ -393,10 +393,10 @@ export default class GeneralSection extends BaseSection {
 		const showDialogOptions: OpenDialogOptions = {
 			title: 'Select file',
 			properties: ['openFile'],
-			filters: [{ name: 'CSS file', extensions: ['css'] }]
+			filters: [{name: 'CSS file', extensions: ['css']}]
 		};
 
-		const { filePaths, canceled } = await dialog.showOpenDialog(showDialogOptions);
+		const {filePaths, canceled} = await dialog.showOpenDialog(showDialogOptions);
 		if (!canceled) {
 			ConfigUtil.setConfigItem('customCSS', filePaths[0]);
 			ipcRenderer.send('forward-message', 'hard-reload');
@@ -468,7 +468,7 @@ export default class GeneralSection extends BaseSection {
 			properties: ['openDirectory']
 		};
 
-		const { filePaths, canceled } = await dialog.showOpenDialog(showDialogOptions);
+		const {filePaths, canceled} = await dialog.showOpenDialog(showDialogOptions);
 		if (!canceled) {
 			ConfigUtil.setConfigItem('downloadsPath', filePaths[0]);
 			const downloadFolderPath: HTMLElement = document.querySelector('.download-folder-path');

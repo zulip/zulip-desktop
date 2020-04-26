@@ -1,4 +1,4 @@
-import { JsonDB } from 'node-json-db';
+import {JsonDB} from 'node-json-db';
 
 import fs from 'fs';
 import path from 'path';
@@ -14,7 +14,7 @@ const logger = new Logger({
 });
 
 /* To make the util runnable in both main and renderer process */
-const { dialog, app } = remote;
+const {dialog, app} = remote;
 
 let db: JsonDB;
 

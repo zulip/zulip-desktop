@@ -39,7 +39,7 @@
 			});
 		}
 
-		const { page_params } = zulipWindow;
+		const {page_params} = zulipWindow;
 		if (page_params) {
 			electron_bridge.send_event('zulip-loaded', {
 				serverLanguage: page_params.default_language
@@ -48,9 +48,9 @@
 	})();
 
 	electron_bridge.on_event('narrow-by-topic', (id: string) => {
-		const { narrow } = zulipWindow;
+		const {narrow} = zulipWindow;
 		const narrowByTopic = narrow.by_topic || narrow.by_subject;
-		narrowByTopic(id, { trigger: 'notification' });
+		narrowByTopic(id, {trigger: 'notification'});
 	});
 
 	function attributeListener<T extends EventTarget>(type: string): PropertyDescriptor {

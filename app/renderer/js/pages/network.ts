@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron';
+import {ipcRenderer} from 'electron';
 
 export function init($reconnectButton: Element, $settingsButton: Element): void {
 	$reconnectButton.addEventListener('click', () => {

@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron';
+import {ipcRenderer} from 'electron';
 
 import BaseComponent from '../../components/base';
 import Nav from './nav';

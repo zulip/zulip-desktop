@@ -1,4 +1,4 @@
-import { JsonDB } from 'node-json-db';
+import {JsonDB} from 'node-json-db';
 
 import fs from 'fs';
 import path from 'path';
@@ -16,7 +16,7 @@ let app: Electron.App = null;
 
 /* To make the util runnable in both main and renderer process */
 if (process.type === 'renderer') {
-	const { remote } = electron;
+	const {remote} = electron;
 	dialog = remote.dialog;
 	app = remote.app;
 } else {

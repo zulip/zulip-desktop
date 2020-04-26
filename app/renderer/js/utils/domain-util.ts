@@ -1,17 +1,17 @@
-import { JsonDB } from 'node-json-db';
+import {JsonDB} from 'node-json-db';
 
 import escape from 'escape-html';
 import request from 'request';
 import fs from 'fs';
 import path from 'path';
 import Logger from './logger-util';
-import { remote } from 'electron';
+import {remote} from 'electron';
 
 import * as RequestUtil from './request-util';
 import * as EnterpriseUtil from './enterprise-util';
 import * as Messages from '../../../resources/messages';
 
-const { app, dialog } = remote;
+const {app, dialog} = remote;
 
 export interface ServerConf {
 	url: string;
@@ -72,7 +72,7 @@ function updateDomain(index: number, server: ServerConf): void {
 }
 
 export async function addDomain(server: ServerConf): Promise<void> {
-	const { ignoreCerts } = server;
+	const {ignoreCerts} = server;
 	if (server.icon) {
 		const localIconUrl = await saveServerIcon(server, ignoreCerts);
 		server.icon = localIconUrl;
@@ -118,7 +118,7 @@ async function checkCertError(domain: string, serverConf: ServerConf, error: str
 	const certErrorMessage = Messages.certErrorMessage(domain, error);
 	const certErrorDetail = Messages.certErrorDetail();
 
-	const { response } = await dialog.showMessageBox({
+	const {response} = await dialog.showMessageBox({
 		type: 'warning',
 		buttons: ['Yes', 'No'],
 		defaultId: 1,
@@ -185,7 +185,7 @@ async function getServerSettings(domain: string, ignoreCerts = false): Promise<S
 	return new Promise((resolve, reject) => {
 		request(serverSettingsOptions, (error: string, response: any) => {
 			if (!error && response.statusCode === 200) {
-				const { realm_name, realm_uri, realm_icon } = JSON.parse(response.body);
+				const {realm_name, realm_uri, realm_icon} = JSON.parse(response.body);
 				if (
 					typeof realm_name === 'string' &&
 					typeof realm_uri === 'string' &&
@@ -251,7 +251,7 @@ export async function saveServerIcon(server: ServerConf, ignoreCerts = false): P
 export async function updateSavedServer(url: string, index: number): Promise<void> {
 	// Does not promise successful update
 	const oldIcon = getDomain(index).icon;
-	const { ignoreCerts } = getDomain(index);
+	const {ignoreCerts} = getDomain(index);
 	try {
 		const newServerConf = await checkDomain(url, ignoreCerts, true);
 		const localIconUrl = await saveServerIcon(newServerConf, ignoreCerts);
@@ -294,7 +294,7 @@ function generateFilePath(url: string): string {
 	const extension = path.extname(url).split('?')[0];
 
 	let hash = 5381;
-	let { length } = url;
+	let {length} = url;
 
 	while (length) {
 		hash = (hash * 33) ^ url.charCodeAt(--length);

@@ -1,9 +1,9 @@
-import { remote } from 'electron';
+import {remote} from 'electron';
 import electron_bridge from '../electron-bridge';
-import { appId, loadBots } from './helpers';
+import {appId, loadBots} from './helpers';
 
 import DefaultNotification from './default-notification';
-const { app } = remote;
+const {app} = remote;
 
 // From https://github.com/felixrieseberg/electron-windows-notifications#appusermodelid
 // On windows 8 we have to explicitly set the appUserModelId otherwise notification won't work.

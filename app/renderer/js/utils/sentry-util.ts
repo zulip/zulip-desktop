@@ -1,4 +1,4 @@
-import { init } from '@sentry/electron';
+import {init} from '@sentry/electron';
 
 import isDev from 'electron-is-dev';
 
@@ -15,4 +15,4 @@ export const sentryInit = (): void => {
 	}
 };
 
-export { captureException } from '@sentry/electron';
+export {captureException} from '@sentry/electron';

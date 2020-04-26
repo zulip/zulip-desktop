@@ -216,7 +216,6 @@
         }
       ],
       "no-warning-comments": "off",
-      "object-curly-spacing": "off",
       "strict": "error",
       "unicorn/string-content": "off"
     },

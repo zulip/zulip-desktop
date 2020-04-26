@@ -1,5 +1,5 @@
-import { app, shell, BrowserWindow, Menu, dialog } from 'electron';
-import { appUpdater } from './autoupdater';
+import {app, shell, BrowserWindow, Menu, dialog} from 'electron';
+import {appUpdater} from './autoupdater';
 
 import AdmZip from 'adm-zip';
 import fs from 'fs-extra';
@@ -9,7 +9,7 @@ import Logger from '../renderer/js/utils/logger-util';
 import * as ConfigUtil from '../renderer/js/utils/config-util';
 import * as LinkUtil from '../renderer/js/utils/link-util';
 import * as t from '../renderer/js/utils/translation-util';
-import type { ServerOrFunctionalTab } from '../renderer/js/main';
+import type {ServerOrFunctionalTab} from '../renderer/js/main';
 
 export interface MenuProps {
 	tabs: ServerOrFunctionalTab[];
@@ -290,7 +290,7 @@ function getWindowSubmenu(tabs: ServerOrFunctionalTab[], activeTabIndex: number,
 }
 
 function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
-	const { tabs, activeTabIndex, enableMenu } = props;
+	const {tabs, activeTabIndex, enableMenu} = props;
 
 	return [{
 		label: app.name,
@@ -431,7 +431,7 @@ function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 }
 
 function getOtherTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
-	const { tabs, activeTabIndex, enableMenu } = props;
+	const {tabs, activeTabIndex, enableMenu} = props;
 	return [{
 		label: t.__('File'),
 		submenu: [{
@@ -586,7 +586,7 @@ async function resetAppSettings(): Promise<void> {
 	// We save App's settings/configurations in following files
 	const settingFiles = ['config/window-state.json', 'config/domain.json', 'config/settings.json', 'config/certificates.json'];
 
-	const { response } = await dialog.showMessageBox({
+	const {response} = await dialog.showMessageBox({
 		type: 'warning',
 		buttons: ['YES', 'NO'],
 		defaultId: 0,

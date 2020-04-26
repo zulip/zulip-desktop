@@ -1,4 +1,4 @@
-import { app } from 'electron';
+import {app} from 'electron';
 
 import AutoLaunch from 'auto-launch';
 import isDev from 'electron-is-dev';

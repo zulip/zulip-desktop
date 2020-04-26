@@ -1,4 +1,4 @@
-import { shell } from 'electron';
+import {shell} from 'electron';
 import escape from 'escape-html';
 import fs from 'fs';
 import os from 'os';

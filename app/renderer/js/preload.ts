@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer, webFrame } from 'electron';
+import {contextBridge, ipcRenderer, webFrame} from 'electron';
 import fs from 'fs';
 import * as SetupSpellChecker from './spellchecker';
 
@@ -54,7 +54,7 @@ ipcRenderer.on('show-notification-settings', () => {
 	}, 100);
 });
 
-electron_bridge.once('zulip-loaded', ({ serverLanguage }) => {
+electron_bridge.once('zulip-loaded', ({serverLanguage}) => {
 	// Get the default language of the server
 	if (serverLanguage) {
 		// Init spellchecker

@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron';
+import {ipcRenderer} from 'electron';
 
 import type WebView from '../components/webview';
 import backoff from 'backoff';

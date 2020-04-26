@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron';
+import {ipcRenderer} from 'electron';
 import escape from 'escape-html';
 
 import BaseComponent from '../../components/base';

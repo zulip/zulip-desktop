@@ -1,8 +1,8 @@
-import { ipcRenderer } from 'electron';
+import {ipcRenderer} from 'electron';
 
-import { EventEmitter } from 'events';
+import {EventEmitter} from 'events';
 
-import { NotificationData, newNotification } from './notification';
+import {NotificationData, newNotification} from './notification';
 
 type ListenerType = ((...args: any[]) => void);
 

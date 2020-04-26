@@ -1,6 +1,6 @@
-import { Console as NodeConsole } from 'console'; // eslint-disable-line node/prefer-global/console
-import { initSetUp } from './default-util';
-import { sentryInit, captureException } from './sentry-util';
+import {Console as NodeConsole} from 'console'; // eslint-disable-line node/prefer-global/console
+import {initSetUp} from './default-util';
+import {sentryInit, captureException} from './sentry-util';
 
 import fs from 'fs';
 import os from 'os';
@@ -29,7 +29,7 @@ if (process.type === 'renderer') {
 	// Report Errors to Sentry only if it is enabled in settings
 	// Gets the value of reportErrors from config-util for renderer process
 	// For main process, sentryInit() is handled in index.js
-	const { ipcRenderer } = electron;
+	const {ipcRenderer} = electron;
 	ipcRenderer.send('error-reporting');
 	ipcRenderer.on('error-reporting-val', (_event: any, errorReporting: boolean) => {
 		reportErrors = errorReporting;
@@ -71,7 +71,7 @@ export default class Logger {
 			process.nextTick(() => this.trimLog(file));
 		}
 
-		const fileStream = fs.createWriteStream(file, { flags: 'a' });
+		const fileStream = fs.createWriteStream(file, {flags: 'a'});
 		const nodeConsole = new NodeConsole(fileStream);
 
 		this.nodeConsole = nodeConsole;

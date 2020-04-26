@@ -11,5 +11,5 @@ const appLocale = ConfigUtil.getConfigItem('appLanguage');
 
 /* If no locale present in the json, en is set default */
 export function __(phrase: string): string {
-	return i18n.__({ phrase, locale: appLocale ? appLocale : 'en' });
+	return i18n.__({phrase, locale: appLocale ? appLocale : 'en'});
 }

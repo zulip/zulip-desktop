@@ -1,6 +1,6 @@
-import { ipcRenderer } from 'electron';
+import {ipcRenderer} from 'electron';
 
-import Tab, { TabProps } from './tab';
+import Tab, {TabProps} from './tab';
 import * as SystemUtil from '../utils/system-util';
 
 export default class ServerTab extends Tab {

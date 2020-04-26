@@ -1,4 +1,4 @@
-import { remote } from 'electron';
+import {remote} from 'electron';
 
 import Logger from '../utils/logger-util';
 
@@ -20,8 +20,8 @@ export async function loadBots(): Promise<void> {
 	botsList.length = 0;
 	const response = await fetch('/json/users');
 	if (response.ok) {
-		const { members } = await response.json();
-		members.forEach(({ is_bot, full_name }: any) => {
+		const {members} = await response.json();
+		members.forEach(({is_bot, full_name}: any) => {
 			if (is_bot && typeof full_name === 'string') {
 				const bot = `@${full_name}`;
 				const mention = `@**${bot.replace(/^@/, '')}**`;

@@ -1,5 +1,5 @@
-import { ipcRenderer } from 'electron';
-import { focusCurrentServer } from './helpers';
+import {ipcRenderer} from 'electron';
+import {focusCurrentServer} from './helpers';
 
 import * as ConfigUtil from '../utils/config-util';
 

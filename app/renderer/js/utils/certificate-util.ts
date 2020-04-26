@@ -1,12 +1,12 @@
-import { remote } from 'electron';
-import { JsonDB } from 'node-json-db';
-import { initSetUp } from './default-util';
+import {remote} from 'electron';
+import {JsonDB} from 'node-json-db';
+import {initSetUp} from './default-util';
 
 import fs from 'fs';
 import path from 'path';
 import Logger from './logger-util';
 
-const { app, dialog } = remote;
+const {app, dialog} = remote;
 
 initSetUp();
 

@@ -1,10 +1,10 @@
-import { remote } from 'electron';
+import {remote} from 'electron';
 import SendFeedback from '@electron-elements/send-feedback';
 
 import path from 'path';
 import fs from 'fs';
 
-const { app } = remote;
+const {app} = remote;
 
 interface SendFeedback extends HTMLElement {
 	[key: string]: any;

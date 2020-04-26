@@ -1,4 +1,4 @@
-import { app, Notification } from 'electron';
+import {app, Notification} from 'electron';
 
 import request from 'request';
 import semver from 'semver';

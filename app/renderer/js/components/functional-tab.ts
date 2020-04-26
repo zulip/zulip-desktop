@@ -1,4 +1,4 @@
-import Tab, { TabProps } from './tab';
+import Tab, {TabProps} from './tab';
 
 export default class FunctionalTab extends Tab {
 	$closeButton: Element;

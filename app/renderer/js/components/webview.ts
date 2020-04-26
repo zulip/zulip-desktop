@@ -1,4 +1,4 @@
-import { ipcRenderer, remote } from 'electron';
+import {ipcRenderer, remote} from 'electron';
 
 import path from 'path';
 import fs from 'fs';
@@ -7,7 +7,7 @@ import * as SystemUtil from '../utils/system-util';
 import BaseComponent from './base';
 import handleExternalLink from './handle-external-link';
 
-const { app, dialog } = remote;
+const {app, dialog} = remote;
 
 const shouldSilentWebview = ConfigUtil.getConfigItem('silent');
 
@@ -87,7 +87,7 @@ export default class WebView extends BaseComponent {
 		}
 
 		this.$el.addEventListener('page-title-updated', event => {
-			const { title } = event;
+			const {title} = event;
 			this.badgeCount = this.getBadgeCount(title);
 			this.props.onTitleChange();
 		});
@@ -106,7 +106,7 @@ export default class WebView extends BaseComponent {
 		});
 
 		this.$el.addEventListener('page-favicon-updated', event => {
-			const { favicons } = event;
+			const {favicons} = event;
 
 			// This returns a string of favicons URL. If there is a PM counts in unread messages then the URL would be like
 			// https://chat.zulip.org/static/images/favicon/favicon-pms.png
@@ -136,7 +136,7 @@ export default class WebView extends BaseComponent {
 		});
 
 		this.$el.addEventListener('did-fail-load', event => {
-			const { errorDescription } = event;
+			const {errorDescription} = event;
 			const hasConnectivityErr = SystemUtil.connectivityERR.includes(errorDescription);
 			if (hasConnectivityErr) {
 				console.error('error', errorDescription);

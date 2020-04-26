@@ -1,6 +1,6 @@
 'use-strict';
 
-import { remote, OpenDialogOptions } from 'electron';
+import {remote, OpenDialogOptions} from 'electron';
 
 import path from 'path';
 import BaseComponent from '../../components/base';
@@ -12,7 +12,7 @@ interface AddCertificateProps {
 	$root: Element;
 }
 
-const { dialog } = remote;
+const {dialog} = remote;
 
 export default class AddCertificate extends BaseComponent {
 	props: AddCertificateProps;
@@ -76,9 +76,9 @@ export default class AddCertificate extends BaseComponent {
 		const showDialogOptions: OpenDialogOptions = {
 			title: 'Select file',
 			properties: ['openFile'],
-			filters: [{ name: 'crt, pem', extensions: ['crt', 'pem'] }]
+			filters: [{name: 'crt, pem', extensions: ['crt', 'pem']}]
 		};
-		const { filePaths, canceled } = await dialog.showOpenDialog(showDialogOptions);
+		const {filePaths, canceled} = await dialog.showOpenDialog(showDialogOptions);
 		if (!canceled) {
 			this._certFile = filePaths[0] || '';
 			await this.validateAndAdd();

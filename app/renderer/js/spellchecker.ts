@@ -1,5 +1,5 @@
-import type { Subject } from 'rxjs';
-import { SpellCheckHandler, ContextMenuListener, ContextMenuBuilder } from 'electron-spellchecker';
+import type {Subject} from 'rxjs';
+import {SpellCheckHandler, ContextMenuListener, ContextMenuBuilder} from 'electron-spellchecker';
 
 import * as ConfigUtil from './utils/config-util';
 import Logger from './utils/logger-util';

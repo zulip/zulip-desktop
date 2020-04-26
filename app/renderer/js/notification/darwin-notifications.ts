@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron';
+import {ipcRenderer} from 'electron';
 import {
 	appId, customReply, focusCurrentServer, parseReply
 } from './helpers';
@@ -21,7 +21,7 @@ class DarwinNotification {
 
 	constructor(title: string, options: NotificationOptions) {
 		const silent: boolean = ConfigUtil.getConfigItem('silent') || false;
-		const { icon } = options;
+		const {icon} = options;
 		const profilePic = new URL(icon, location.href).href;
 
 		this.tag = options.tag;
@@ -84,7 +84,7 @@ class DarwinNotification {
 		}
 	}
 
-	async notificationHandler({ response }: NotificationHandlerArgs): Promise<void> {
+	async notificationHandler({response}: NotificationHandlerArgs): Promise<void> {
 		response = await parseReply(response);
 		focusCurrentServer();
 		if (electron_bridge.send_notification_reply_message_supported) {

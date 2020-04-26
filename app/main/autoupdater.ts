@@ -1,6 +1,6 @@
-import { app, dialog } from 'electron';
-import { UpdateDownloadedEvent, UpdateInfo, autoUpdater } from 'electron-updater';
-import { linuxUpdateNotification } from './linuxupdater';	// Required only in case of linux
+import {app, dialog} from 'electron';
+import {UpdateDownloadedEvent, UpdateInfo, autoUpdater} from 'electron-updater';
+import {linuxUpdateNotification} from './linuxupdater';	// Required only in case of linux
 
 import log from 'electron-log';
 import isDev from 'electron-is-dev';
@@ -70,7 +70,7 @@ export function appUpdater(updateFromMenu = false): void {
 			autoUpdater.removeAllListeners();
 
 			const messageText = (updateAvailable) ? ('Unable to download the updates') : ('Unable to check for updates');
-			const { response } = await dialog.showMessageBox({
+			const {response} = await dialog.showMessageBox({
 				type: 'error',
 				buttons: ['Manual Download', 'Cancel'],
 				message: messageText,
@@ -86,7 +86,7 @@ export function appUpdater(updateFromMenu = false): void {
 	// Ask the user if update is available
 	autoUpdater.on('update-downloaded', async (event: UpdateDownloadedEvent) => {
 		// Ask user to update the app
-		const { response } = await dialog.showMessageBox({
+		const {response} = await dialog.showMessageBox({
 			type: 'question',
 			buttons: ['Install and Relaunch', 'Install Later'],
 			defaultId: 0,

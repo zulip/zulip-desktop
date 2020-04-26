@@ -1,10 +1,10 @@
-import { ipcRenderer, remote } from 'electron';
+import {ipcRenderer, remote} from 'electron';
 
 import * as LinkUtil from '../utils/link-util';
 import * as ConfigUtil from '../utils/config-util';
 import type WebView from './webview';
 
-const { shell, app } = remote;
+const {shell, app} = remote;
 
 const dingSound = new Audio('../resources/sounds/ding.ogg');
 

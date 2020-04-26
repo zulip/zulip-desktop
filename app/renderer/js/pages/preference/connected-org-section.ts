@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron';
+import {ipcRenderer} from 'electron';
 
 import BaseSection from './base-section';
 import * as DomainUtil from '../../utils/domain-util';

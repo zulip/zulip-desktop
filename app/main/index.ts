@@ -1,11 +1,11 @@
-import { sentryInit } from '../renderer/js/utils/sentry-util';
-import { appUpdater } from './autoupdater';
-import { setAutoLaunch } from './startup';
+import {sentryInit} from '../renderer/js/utils/sentry-util';
+import {appUpdater} from './autoupdater';
+import {setAutoLaunch} from './startup';
 
 import windowStateKeeper from 'electron-window-state';
 import path from 'path';
 import fs from 'fs';
-import electron, { app, ipcMain, session, dialog } from 'electron';
+import electron, {app, ipcMain, session, dialog} from 'electron';
 
 import * as AppMenu from './menu';
 import * as BadgeSettings from '../renderer/js/pages/preference/badge-settings';

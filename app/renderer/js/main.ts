@@ -1,10 +1,10 @@
-import { ipcRenderer, remote, clipboard } from 'electron';
-import { feedbackHolder } from './feedback';
+import {ipcRenderer, remote, clipboard} from 'electron';
+import {feedbackHolder} from './feedback';
 
 import path from 'path';
 import escape from 'escape-html';
 import isDev from 'electron-is-dev';
-const { session, app, Menu, dialog } = remote;
+const {session, app, Menu, dialog} = remote;
 
 // eslint-disable-next-line import/no-unassigned-import
 import './tray';
@@ -284,7 +284,7 @@ class ServerManagerView {
 			if (preAddedDomains.length > 0) {
 				// User already has servers added
 				// ask them before reloading the app
-				const { response } = await dialog.showMessageBox({
+				const {response} = await dialog.showMessageBox({
 					type: 'question',
 					buttons: ['Yes', 'Later'],
 					defaultId: 0,
@@ -307,7 +307,7 @@ class ServerManagerView {
 				failedDomains.push(org);
 			}
 
-			const { title, content } = Messages.enterpriseOrgError(domainsAdded.length, failedDomains);
+			const {title, content} = Messages.enterpriseOrgError(domainsAdded.length, failedDomains);
 			dialog.showErrorBox(title, content);
 			if (DomainUtil.getDomains().length === 0) {
 				// No orgs present, stop showing loading gif
@@ -490,7 +490,7 @@ class ServerManagerView {
 			// as that of its parent element.
 			// This needs to handled only for the add server tooltip and not others.
 			if (addServer) {
-				const { top } = SidebarButton.getBoundingClientRect();
+				const {top} = SidebarButton.getBoundingClientRect();
 				SidebarTooltip.style.top = `${top}px`;
 			}
 		});
@@ -506,7 +506,7 @@ class ServerManagerView {
 		// To handle position of servers' tooltip due to scrolling of list of organizations
 		// This could not be handled using CSS, hence the top of the tooltip is made same
 		// as that of its parent element.
-		const { top } = this.$serverIconTooltip[index].parentElement.getBoundingClientRect();
+		const {top} = this.$serverIconTooltip[index].parentElement.getBoundingClientRect();
 		this.$serverIconTooltip[index].style.top = `${top}px`;
 	}
 
@@ -608,7 +608,7 @@ class ServerManagerView {
 			const proto = Object.create(Object.getPrototypeOf(tab));
 			const tabClone = Object.assign(proto, tab);
 
-			tabClone.webview = { props: {} };
+			tabClone.webview = {props: {}};
 			tabClone.webview.props.name = tab.webview.props.name;
 			delete tabClone.props.webview;
 			tabs.push(tabClone);
@@ -766,7 +766,7 @@ class ServerManagerView {
 				{
 					label: 'Disconnect organization',
 					click: async () => {
-						const { response } = await dialog.showMessageBox({
+						const {response} = await dialog.showMessageBox({
 							type: 'warning',
 							buttons: ['YES', 'NO'],
 							defaultId: 0,
@@ -776,7 +776,7 @@ class ServerManagerView {
 							if (DomainUtil.removeDomain(index)) {
 								ipcRenderer.send('reload-full-app');
 							} else {
-								const { title, content } = Messages.orgRemovalError(DomainUtil.getDomain(index).url);
+								const {title, content} = Messages.orgRemovalError(DomainUtil.getDomain(index).url);
 								dialog.showErrorBox(title, content);
 							}
 						}
@@ -799,7 +799,7 @@ class ServerManagerView {
 				}
 			];
 			const contextMenu = Menu.buildFromTemplate(template);
-			contextMenu.popup({ window: remote.getCurrentWindow() });
+			contextMenu.popup({window: remote.getCurrentWindow()});
 		});
 	}
 
