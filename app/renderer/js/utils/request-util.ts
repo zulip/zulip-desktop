@@ -33,7 +33,7 @@ export function requestOptions(domain: string, ignoreCerts: boolean): RequestUti
 
 	let certificateFile = null;
 	if (certificate?.includes('/')) {
-		// certificate saved using old app version
+		// Certificate saved using old app version
 		certificateFile = certificate;
 	} else if (certificate) {
 		certificateFile = path.join(`${app.getPath('userData')}/certificates`, certificate);

@@ -12,7 +12,7 @@ interface SendFeedback extends HTMLElement {
 
 type SendFeedbackType = SendFeedback;
 
-// make the button color match zulip app's theme
+// Make the button color match zulip app's theme
 SendFeedback.customStyles = `
 button:hover, button:focus {
   border-color: #4EBFAC;
@@ -62,7 +62,7 @@ sendFeedback.useReporter('emailReporter', {
 });
 
 feedbackHolder.addEventListener('click', (event: Event) => {
-	// only remove the class if the grey out faded
+	// Only remove the class if the grey out faded
 	// part is clicked and not the feedback element itself
 	if (event.target === event.currentTarget) {
 		feedbackHolder.classList.remove('show');

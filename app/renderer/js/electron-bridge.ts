@@ -69,7 +69,7 @@ electron_bridge.on('realm_icon_url', (iconURL: unknown) => {
 	ipcRenderer.send('realm-icon-changed', serverURL, iconURL);
 });
 
-// this follows node's idiomatic implementation of event
+// This follows node's idiomatic implementation of event
 // emitters to make event handling more simpler instead of using
 // functions zulip side will emit event using ElectronBrigde.send_event
 // which is alias of .emit and on this side we can handle the data by adding

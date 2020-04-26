@@ -10,7 +10,7 @@ export default class BaseNotification extends NativeNotification {
 		super(title, options);
 
 		this.addEventListener('click', () => {
-			// focus to the server who sent the
+			// Focus to the server who sent the
 			// notification if not focused already
 			focusCurrentServer();
 			ipcRenderer.send('focus-app');

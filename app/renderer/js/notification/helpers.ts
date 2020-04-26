@@ -14,7 +14,7 @@ export type BotListItem = [string, string];
 const botsList: BotListItem[] = [];
 let botsListLoaded = false;
 
-// this function load list of bots from the server
+// This function load list of bots from the server
 // in case botsList isn't already completely loaded when required in parseRely
 export async function loadBots(): Promise<void> {
 	botsList.length = 0;
@@ -46,14 +46,14 @@ export function checkElements(...elements: any[]): boolean {
 }
 
 export function customReply(reply: string): void {
-	// server does not support notification reply yet.
+	// Server does not support notification reply yet.
 	const buttonSelector = '.messagebox #send_controls button[type=submit]';
 	const messageboxSelector = '.selected_message .messagebox .messagebox-border .messagebox-content';
 	const textarea: HTMLInputElement = document.querySelector('#compose-textarea');
 	const messagebox: HTMLButtonElement = document.querySelector(messageboxSelector);
 	const sendButton: HTMLButtonElement = document.querySelector(buttonSelector);
 
-	// sanity check for old server versions
+	// Sanity check for old server versions
 	const elementsExists = checkElements(textarea, messagebox, sendButton);
 	if (!elementsExists) {
 		return;
@@ -68,13 +68,13 @@ const currentWindow = remote.getCurrentWindow();
 const webContents = remote.getCurrentWebContents();
 const webContentsId = webContents.id;
 
-// this function will focus the server that sent
+// This function will focus the server that sent
 // the notification. Main function implemented in main.js
 export function focusCurrentServer(): void {
 	currentWindow.webContents.send('focus-webview-with-id', webContentsId);
 }
 
-// this function parses the reply from to notification
+// This function parses the reply from to notification
 // making it easier to reply from notification eg
 // @username in reply will be converted to @**username**
 // #stream in reply will be converted to #**stream**

@@ -12,7 +12,7 @@ export const setAutoLaunch = async (AutoLaunchValue: boolean): Promise<void> => 
 
 	const autoLaunchOption = ConfigUtil.getConfigItem('startAtLogin', AutoLaunchValue);
 
-	// setLoginItemSettings doesn't support linux
+	// `setLoginItemSettings` doesn't support linux
 	if (process.platform === 'linux') {
 		const ZulipAutoLauncher = new AutoLaunch({
 			name: 'Zulip',

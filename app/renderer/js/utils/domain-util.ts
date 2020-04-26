@@ -108,7 +108,7 @@ export function duplicateDomain(domain: string): boolean {
 
 async function checkCertError(domain: string, serverConf: ServerConf, error: string, silent: boolean): Promise<ServerConf> {
 	if (silent) {
-		// since getting server settings has already failed
+		// Since getting server settings has already failed
 		return serverConf;
 	}
 
@@ -126,7 +126,7 @@ async function checkCertError(domain: string, serverConf: ServerConf, error: str
 		detail: certErrorDetail
 	});
 	if (response === 0) {
-		// set ignoreCerts parameter to true in case user responds with yes
+		// Set ignoreCerts parameter to true in case user responds with yes
 		serverConf.ignoreCerts = true;
 		try {
 			return await getServerSettings(domain, serverConf.ignoreCerts);

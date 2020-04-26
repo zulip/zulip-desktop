@@ -415,7 +415,7 @@ export default class GeneralSection extends BaseSection {
 		// This path is for the JSON file that stores key: value pairs for supported locales
 		const langList = this.generateSelectTemplate(supportedLocales, 'lang-menu');
 		langDiv.innerHTML += langList;
-		// langMenu is the select-option dropdown menu formed after executing the previous command
+		// `langMenu` is the select-option dropdown menu formed after executing the previous command
 		const langMenu: HTMLSelectElement = document.querySelector('.lang-menu');
 
 		// The next three lines set the selected language visible on the dropdown button

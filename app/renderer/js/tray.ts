@@ -7,7 +7,7 @@ const { Tray, Menu, nativeImage, BrowserWindow, nativeTheme } = remote;
 
 let tray: Electron.Tray;
 
-// get the theme on macOS
+// Get the theme on macOS
 const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
 
 const ICON_DIR = process.platform === 'darwin' ? `../../resources/tray/${theme}` : '../../resources/tray';

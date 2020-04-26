@@ -14,7 +14,7 @@ const logDir = `${zulipDir}/Logs/`;
 const certificatesDir = `${zulipDir}/certificates/`;
 const configDir = `${zulipDir}/config/`;
 export const initSetUp = (): void => {
-	// if it is the first time the app is running
+	// If it is the first time the app is running
 	// create zulip dir in userData folder to
 	// avoid errors
 	if (!setupCompleted) {
@@ -63,7 +63,7 @@ export const initSetUp = (): void => {
 					fs.unlinkSync(data.path);
 				}
 			});
-			// window-state.json is only deleted not moved, as the electron-window-state
+			// `window-state.json` is only deleted not moved, as the electron-window-state
 			// package will recreate the file in the config folder.
 			if (fs.existsSync(windowStateJson)) {
 				fs.unlinkSync(windowStateJson);

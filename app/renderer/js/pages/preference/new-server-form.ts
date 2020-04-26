@@ -104,7 +104,7 @@ export default class NewServerForm extends BaseComponent {
 				await this.submitFormHandler();
 			}
 		});
-		// open create new org link in default browser
+		// Open create new org link in default browser
 		this.openCreateNewOrgExternalLink();
 		this.networkSettingsLink();
 	}

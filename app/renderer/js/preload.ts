@@ -48,7 +48,7 @@ ipcRenderer.on('show-notification-settings', () => {
 
 	const notificationItem: NodeListOf<HTMLElement> = document.querySelectorAll('.normal-settings-list li div');
 
-	// wait until the notification dom element shows up
+	// Wait until the notification dom element shows up
 	setTimeout(() => {
 		notificationItem[2].click();
 	}, 100);
@@ -61,7 +61,7 @@ electron_bridge.once('zulip-loaded', ({ serverLanguage }) => {
 		SetupSpellChecker.init(serverLanguage);
 	}
 
-	// redirect users to network troubleshooting page
+	// Redirect users to network troubleshooting page
 	const getRestartButton = document.querySelector('.restart_get_events_button');
 	if (getRestartButton) {
 		getRestartButton.addEventListener('click', () => {
@@ -86,7 +86,7 @@ window.addEventListener('load', (event: any): void => {
 	NetworkError.init($reconnectButton, $settingsButton);
 });
 
-// electron's globalShortcut can cause unexpected results
+// Electron's globalShortcut can cause unexpected results
 // so adding the reload shortcut in the old-school way
 // Zoom from numpad keys is not supported by electron, so adding it through listeners.
 document.addEventListener('keydown', event => {

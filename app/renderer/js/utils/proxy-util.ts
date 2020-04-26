@@ -55,7 +55,7 @@ export async function resolveSystemProxy(mainWindow: Electron.BrowserWindow): Pr
 		const proxy = await ses.resolveProxy('http://' + resolveProxyUrl);
 		let httpString = '';
 		if (proxy !== 'DIRECT') {
-			// in case of proxy HTTPS url:port, windows gives first word as HTTPS while linux gives PROXY
+			// In case of proxy HTTPS url:port, windows gives first word as HTTPS while linux gives PROXY
 			// for all other HTTP or direct url:port both uses PROXY
 			if (proxy.includes('PROXY') || proxy.includes('HTTPS')) {
 				httpString = 'http=' + proxy.split('PROXY')[1] + ';';
@@ -69,7 +69,7 @@ export async function resolveSystemProxy(mainWindow: Electron.BrowserWindow): Pr
 		const proxy = await ses.resolveProxy('https://' + resolveProxyUrl);
 		let httpsString = '';
 		if (proxy !== 'DIRECT' || proxy.includes('HTTPS')) {
-			// in case of proxy HTTPS url:port, windows gives first word as HTTPS while linux gives PROXY
+			// In case of proxy HTTPS url:port, windows gives first word as HTTPS while linux gives PROXY
 			// for all other HTTP or direct url:port both uses PROXY
 			if (proxy.includes('PROXY') || proxy.includes('HTTPS')) {
 				httpsString += 'https=' + proxy.split('PROXY')[1] + ';';

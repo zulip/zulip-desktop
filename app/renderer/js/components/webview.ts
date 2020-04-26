@@ -113,7 +113,7 @@ export default class WebView extends BaseComponent {
 			if (favicons[0].indexOf('favicon-pms') > 0 && process.platform === 'darwin') {
 				// This api is only supported on macOS
 				app.dock.setBadge('●');
-				// bounce the dock
+				// Bounce the dock
 				if (ConfigUtil.getConfigItem('dockBouncing')) {
 					app.dock.bounce();
 				}
@@ -192,7 +192,7 @@ export default class WebView extends BaseComponent {
 		// Injecting preload css in webview to override some css rules
 		(async () => this.$el.insertCSS(fs.readFileSync(path.join(__dirname, '/../../css/preload.css'), 'utf8')))();
 
-		// get customCSS again from config util to avoid warning user again
+		// Get customCSS again from config util to avoid warning user again
 		this.customCSS = ConfigUtil.getConfigItem('customCSS');
 		if (this.customCSS) {
 			if (!fs.existsSync(this.customCSS)) {
@@ -209,7 +209,7 @@ export default class WebView extends BaseComponent {
 	}
 
 	focus(): void {
-		// focus Webview and it's contents when Window regain focus.
+		// Focus Webview and it's contents when Window regain focus.
 		const webContents = this.$el.getWebContents();
 		// HACK: webContents.isFocused() seems to be true even without the element
 		// being in focus. So, we check against `document.activeElement`.

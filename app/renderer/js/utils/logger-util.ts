@@ -6,7 +6,7 @@ import fs from 'fs';
 import os from 'os';
 import isDev from 'electron-is-dev';
 import electron from 'electron';
-// this interface adds [key: string]: any so
+// This interface adds [key: string]: any so
 // we can do console[type] later on in the code
 interface PatchedConsole extends Console {
 	[key: string]: any;

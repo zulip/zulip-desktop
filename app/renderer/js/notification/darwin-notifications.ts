@@ -33,7 +33,7 @@ class DarwinNotification {
 		}));
 
 		notification.addEventListener('click', () => {
-			// focus to the server who sent the
+			// Focus to the server who sent the
 			// notification if not focused already
 			if (clickHandler) {
 				clickHandler();
@@ -71,7 +71,7 @@ class DarwinNotification {
 		clickHandler = handler;
 	}
 
-	// not something that is common or
+	// Not something that is common or
 	// used by zulip server but added to be
 	// future proff.
 	addEventListener(event: string, handler: ClickHandler | ReplyHandler): void {
@@ -101,7 +101,7 @@ class DarwinNotification {
 		customReply(response);
 	}
 
-	// method specific to notification api
+	// Method specific to notification api
 	// used by zulip
 	close(): void {
 		return; // eslint-disable-line no-useless-return

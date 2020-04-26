@@ -228,7 +228,7 @@ class ServerManagerView {
 		}
 
 		for (const [setting, value] of Object.entries(settingOptions)) {
-			// give preference to defaults defined in global_config.json
+			// Give preference to defaults defined in global_config.json
 			if (EnterpriseUtil.configItemExists(setting)) {
 				ConfigUtil.setConfigItem(setting, EnterpriseUtil.getConfigItem(setting), true);
 			} else if (ConfigUtil.getConfigItem(setting) === null) {
@@ -249,7 +249,7 @@ class ServerManagerView {
 	}
 
 	async queueDomain(domain: string): Promise<boolean> {
-		// allows us to start adding multiple domains to the app simultaneously
+		// Allows us to start adding multiple domains to the app simultaneously
 		// promise of addition resolves in both cases, but we consider it rejected
 		// if the resolved value is false
 		try {
@@ -264,11 +264,11 @@ class ServerManagerView {
 	}
 
 	async initPresetOrgs(): Promise<void> {
-		// read preset organizations from global_config.json and queues them
+		// Read preset organizations from global_config.json and queues them
 		// for addition to the app's domains
 		const preAddedDomains = DomainUtil.getDomains();
 		this.presetOrgs = EnterpriseUtil.getConfigItem('presetOrganizations', []);
-		// set to true if at least one new domain is added
+		// Set to true if at least one new domain is added
 		const domainPromises = [];
 		for (const url of this.presetOrgs) {
 			if (DomainUtil.duplicateDomain(url)) {
@@ -280,9 +280,9 @@ class ServerManagerView {
 
 		const domainsAdded = await Promise.all(domainPromises);
 		if (domainsAdded.includes(true)) {
-			// at least one domain was resolved
+			// At least one domain was resolved
 			if (preAddedDomains.length > 0) {
-				// user already has servers added
+				// User already has servers added
 				// ask them before reloading the app
 				const { response } = await dialog.showMessageBox({
 					type: 'question',
@@ -297,7 +297,7 @@ class ServerManagerView {
 				ipcRenderer.send('reload-full-app');
 			}
 		} else if (domainsAdded.length > 0) {
-			// find all orgs that failed
+			// Find all orgs that failed
 			const failedDomains: string[] = [];
 			for (const org of this.presetOrgs) {
 				if (DomainUtil.duplicateDomain(org)) {
@@ -310,7 +310,7 @@ class ServerManagerView {
 			const { title, content } = Messages.enterpriseOrgError(domainsAdded.length, failedDomains);
 			dialog.showErrorBox(title, content);
 			if (DomainUtil.getDomains().length === 0) {
-				// no orgs present, stop showing loading gif
+				// No orgs present, stop showing loading gif
 				await this.openSettings('AddServer');
 			}
 		}
@@ -329,11 +329,11 @@ class ServerManagerView {
 				lastActiveTab = 0;
 			}
 
-			// checkDomain() and webview.load() for lastActiveTab before the others
+			// `checkDomain()` and `webview.load()` for lastActiveTab before the others
 			await DomainUtil.updateSavedServer(servers[lastActiveTab].url, lastActiveTab);
 			this.activateTab(lastActiveTab);
 			await Promise.all(servers.map(async (server, i) => {
-				// after the lastActiveTab is activated, we load the others in the background
+				// After the lastActiveTab is activated, we load the others in the background
 				// without activating them, to prevent flashing of server icons
 				if (i === lastActiveTab) {
 					return;
@@ -345,7 +345,7 @@ class ServerManagerView {
 			// Remove focus from the settings icon at sidebar bottom
 			this.$settingsButton.classList.remove('active');
 		} else if (this.presetOrgs.length === 0) {
-			// not attempting to add organisations in the background
+			// Not attempting to add organisations in the background
 			await this.openSettings('AddServer');
 		} else {
 			this.showLoading(true);
@@ -456,10 +456,9 @@ class ServerManagerView {
 	}
 
 	displayInitialCharLogo($img: HTMLImageElement, index: number): void {
-		/*
-			index parameter needed because webview[data-tab-id] can increment
-			beyond size of sidebar org array and throw error
-		*/
+		// The index parameter is needed because webview[data-tab-id] can
+		// increment beyond the size of the sidebar org array and throw an
+		// error
 
 		const $altIcon = document.createElement('div');
 		const $parent = $img.parentElement;
@@ -501,7 +500,7 @@ class ServerManagerView {
 	}
 
 	onHover(index: number): void {
-		// this.$serverIconTooltip[index].innerHTML already has realm name, so we are just
+		// `this.$serverIconTooltip[index].innerHTML` already has realm name, so we are just
 		// removing the style.
 		this.$serverIconTooltip[index].removeAttribute('style');
 		// To handle position of servers' tooltip due to scrolling of list of organizations
@@ -599,7 +598,7 @@ class ServerManagerView {
 		ipcRenderer.send('save-last-tab', index);
 	}
 
-	// returns this.tabs in an way that does
+	// Returns this.tabs in an way that does
 	// not crash app when this.tabs is passed into
 	// ipcRenderer. Something about webview, and props.webview
 	// properties in ServerTab causes the app to crash.
@@ -787,7 +786,7 @@ class ServerManagerView {
 					label: 'Notification settings',
 					enabled: this.isLoggedIn(index),
 					click: () => {
-						// switch to tab whose icon was right-clicked
+						// Switch to tab whose icon was right-clicked
 						this.activateTab(index);
 						this.tabs[index].webview.showNotificationSettings();
 					}
@@ -910,7 +909,7 @@ class ServerManagerView {
 				try {
 					webview.setAudioMuted(state);
 				} catch (error) {
-					// webview is not ready yet
+					// Webview is not ready yet
 					webview.addEventListener('dom-ready', () => {
 						webview.setAudioMuted(state);
 					});
@@ -1065,7 +1064,7 @@ class ServerManagerView {
 }
 
 window.addEventListener('load', async () => {
-	// only start electron-connect (auto reload on change) when its ran
+	// Only start electron-connect (auto reload on change) when its ran
 	// from `npm run dev` or `gulp dev` and not from `npm start` when
 	// app is started `npm start` main process's proces.argv will have
 	// `--no-electron-connect`

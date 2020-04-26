@@ -220,7 +220,7 @@ function getHelpSubmenu(): Electron.MenuItemConstructorOptions[] {
 		{
 			label: t.__('Report an Issue'),
 			click() {
-				// the goal is to notify the main.html BrowserWindow
+				// The goal is to notify the main.html BrowserWindow
 				// which may not be the focused window.
 				BrowserWindow.getAllWindows().forEach(window => {
 					window.webContents.send('open-feedback-modal');

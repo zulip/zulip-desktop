@@ -205,7 +205,6 @@
       "@typescript-eslint/no-dynamic-delete": "off",
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/prefer-readonly-parameter-types": "off",
-      "capitalized-comments": "off",
       "import/no-mutable-exports": "off",
       "import/unambiguous": "error",
       "max-lines": [

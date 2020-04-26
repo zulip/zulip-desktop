@@ -96,7 +96,7 @@ export function appUpdater(updateFromMenu = false): void {
 		if (response === 0) {
 			setTimeout(() => {
 				autoUpdater.quitAndInstall();
-				// force app to quit. This is just a workaround, ideally autoUpdater.quitAndInstall() should relaunch the app.
+				// Force app to quit. This is just a workaround, ideally autoUpdater.quitAndInstall() should relaunch the app.
 				app.quit();
 			}, 1000);
 		}

@@ -47,7 +47,7 @@ export default class BaseSection extends BaseComponent {
 			`;
 	}
 
-	/* a method that in future can be used to create dropdown menus using <select> <option> tags.
+	/* A method that in future can be used to create dropdown menus using <select> <option> tags.
 		it needs an object which has ``key: value`` pairs and will return a string that can be appended to HTML
 	*/
 	generateSelectTemplate(options: {[key: string]: string}, className?: string, idName?: string): string {

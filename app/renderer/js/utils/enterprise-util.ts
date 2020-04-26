@@ -8,7 +8,7 @@ const logger = new Logger({
 	timestamp: true
 });
 
-// todo: replace enterpriseSettings type with an interface once settings are final
+// TODO: replace enterpriseSettings type with an interface once settings are final
 export let enterpriseSettings: any;
 export let configFile: boolean;
 

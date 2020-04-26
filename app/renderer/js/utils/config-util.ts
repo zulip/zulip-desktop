@@ -70,7 +70,7 @@ export function isConfigItemExists(key: string): boolean {
 
 export function setConfigItem(key: string, value: any, override? : boolean): void {
 	if (EnterpriseUtil.configItemExists(key) && !override) {
-		// if item is in global config and we're not trying to override
+		// If item is in global config and we're not trying to override
 		return;
 	}
 
