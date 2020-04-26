@@ -93,7 +93,7 @@ class ServerManagerView {
 	loading: AnyObject;
 	activeTabIndex: number;
 	tabs: ServerOrFunctionalTab[];
-	functionalTabs: AnyObject;
+	functionalTabs: Map<string, number>;
 	tabIndex: number;
 	presetOrgs: string[];
 	constructor() {
@@ -132,7 +132,7 @@ class ServerManagerView {
 		this.activeTabIndex = -1;
 		this.tabs = [];
 		this.presetOrgs = [];
-		this.functionalTabs = {};
+		this.functionalTabs = new Map();
 		this.tabIndex = 0;
 	}
 
@@ -515,12 +515,12 @@ class ServerManagerView {
 	}
 
 	openFunctionalTab(tabProps: FunctionalTabProps): void {
-		if (this.functionalTabs[tabProps.name] !== undefined) {
-			this.activateTab(this.functionalTabs[tabProps.name]);
+		if (this.functionalTabs.has(tabProps.name)) {
+			this.activateTab(this.functionalTabs.get(tabProps.name));
 			return;
 		}
 
-		this.functionalTabs[tabProps.name] = this.tabs.length;
+		this.functionalTabs.set(tabProps.name, this.tabs.length);
 
 		const tabIndex = this.getTabIndex();
 
@@ -529,19 +529,19 @@ class ServerManagerView {
 			materialIcon: tabProps.materialIcon,
 			name: tabProps.name,
 			$root: this.$tabsContainer,
-			index: this.functionalTabs[tabProps.name],
+			index: this.functionalTabs.get(tabProps.name),
 			tabIndex,
-			onClick: this.activateTab.bind(this, this.functionalTabs[tabProps.name]),
-			onDestroy: this.destroyTab.bind(this, tabProps.name, this.functionalTabs[tabProps.name]),
+			onClick: this.activateTab.bind(this, this.functionalTabs.get(tabProps.name)),
+			onDestroy: this.destroyTab.bind(this, tabProps.name, this.functionalTabs.get(tabProps.name)),
 			webview: new WebView({
 				$root: this.$webviewsContainer,
-				index: this.functionalTabs[tabProps.name],
+				index: this.functionalTabs.get(tabProps.name),
 				tabIndex,
 				url: tabProps.url,
 				role: 'function',
 				name: tabProps.name,
 				isActive: () => {
-					return this.functionalTabs[tabProps.name] === this.activeTabIndex;
+					return this.functionalTabs.get(tabProps.name) === this.activeTabIndex;
 				},
 				switchLoading: (loading: AnyObject, url: string) => {
 					if (!loading && this.loading[url]) {
@@ -563,7 +563,7 @@ class ServerManagerView {
 		// closed when the functional tab DOM is ready, handled in webview.js
 		this.$webviewsContainer.classList.remove('loaded');
 
-		this.activateTab(this.functionalTabs[tabProps.name]);
+		this.activateTab(this.functionalTabs.get(tabProps.name));
 	}
 
 	async openSettings(nav = 'General'): Promise<void> {
@@ -573,7 +573,7 @@ class ServerManagerView {
 			url: `file://${rendererDirectory}/preference.html#${nav}`
 		});
 		this.$settingsButton.classList.add('active');
-		await this.tabs[this.functionalTabs.Settings].webview.send('switch-settings-nav', nav);
+		await this.tabs[this.functionalTabs.get('Settings')].webview.send('switch-settings-nav', nav);
 	}
 
 	openAbout(): void {
@@ -675,7 +675,7 @@ class ServerManagerView {
 		this.tabs[index].destroy();
 
 		delete this.tabs[index];
-		delete this.functionalTabs[name];
+		this.functionalTabs.delete(name);
 
 		// Issue #188: If the functional tab was not focused, do not activate another tab.
 		if (this.activeTabIndex === index) {
@@ -690,7 +690,7 @@ class ServerManagerView {
 		// Clear global variables
 		this.activeTabIndex = -1;
 		this.tabs = [];
-		this.functionalTabs = {};
+		this.functionalTabs.clear();
 
 		// Clear DOM elements
 		this.$tabsContainer.innerHTML = '';
