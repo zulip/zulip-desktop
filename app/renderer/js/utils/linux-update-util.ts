@@ -26,9 +26,9 @@ export function getUpdateItem(key: string, defaultValue: any = null): any {
 	if (value === undefined) {
 		setUpdateItem(key, defaultValue);
 		return defaultValue;
-	} else {
-		return value;
 	}
+
+	return value;
 }
 
 export function setUpdateItem(key: string, value: any): void {

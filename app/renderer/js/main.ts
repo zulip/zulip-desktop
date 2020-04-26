@@ -626,7 +626,9 @@ class ServerManagerView {
 		if (this.activeTabIndex !== -1) {
 			if (this.activeTabIndex === index) {
 				return;
-			} else if (hideOldTab) {
+			}
+
+			if (hideOldTab) {
 				// If old tab is functional tab Settings, remove focus from the settings icon at sidebar bottom
 				if (this.tabs[this.activeTabIndex].props.role === 'function' && this.tabs[this.activeTabIndex].props.name === 'Settings') {
 					this.$settingsButton.classList.remove('active');

@@ -216,7 +216,6 @@
           "skipComments": true
         }
       ],
-      "no-else-return": "off",
       "no-warning-comments": "off",
       "object-curly-spacing": "off",
       "strict": "error",

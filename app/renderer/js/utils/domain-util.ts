@@ -45,9 +45,9 @@ export function getDomains(): ServerConf[] {
 	reloadDB();
 	if (db.getData('/').domains === undefined) {
 		return [];
-	} else {
-		return db.getData('/domains');
 	}
+
+	return db.getData('/domains');
 }
 
 export function getDomain(index: number): ServerConf {
@@ -110,35 +110,35 @@ async function checkCertError(domain: string, serverConf: ServerConf, error: str
 	if (silent) {
 		// since getting server settings has already failed
 		return serverConf;
-	} else {
-		// Report error to sentry to get idea of possible certificate errors
-		// users get when adding the servers
-		logger.reportSentry(`Error: ${error}`);
-		const certErrorMessage = Messages.certErrorMessage(domain, error);
-		const certErrorDetail = Messages.certErrorDetail();
+	}
 
-		const { response } = await dialog.showMessageBox({
-			type: 'warning',
-			buttons: ['Yes', 'No'],
-			defaultId: 1,
-			message: certErrorMessage,
-			detail: certErrorDetail
-		});
-		if (response === 0) {
-			// set ignoreCerts parameter to true in case user responds with yes
-			serverConf.ignoreCerts = true;
-			try {
-				return await getServerSettings(domain, serverConf.ignoreCerts);
-			} catch (_) {
-				if (error === Messages.noOrgsError(domain)) {
-					throw new Error(error);
-				}
+	// Report error to sentry to get idea of possible certificate errors
+	// users get when adding the servers
+	logger.reportSentry(`Error: ${error}`);
+	const certErrorMessage = Messages.certErrorMessage(domain, error);
+	const certErrorDetail = Messages.certErrorDetail();
 
-				return serverConf;
+	const { response } = await dialog.showMessageBox({
+		type: 'warning',
+		buttons: ['Yes', 'No'],
+		defaultId: 1,
+		message: certErrorMessage,
+		detail: certErrorDetail
+	});
+	if (response === 0) {
+		// set ignoreCerts parameter to true in case user responds with yes
+		serverConf.ignoreCerts = true;
+		try {
+			return await getServerSettings(domain, serverConf.ignoreCerts);
+		} catch (_) {
+			if (error === Messages.noOrgsError(domain)) {
+				throw new Error(error);
 			}
-		} else {
-			throw new Error('Untrusted certificate.');
+
+			return serverConf;
 		}
+	} else {
+		throw new Error('Untrusted certificate.');
 	}
 }
 
@@ -170,9 +170,9 @@ export async function checkDomain(domain: string, ignoreCerts = false, silent = 
 		if (certsError) {
 			const result = await checkCertError(domain, serverConf, error, silent);
 			return result;
-		} else {
-			throw new Error(Messages.invalidZulipServerError(domain));
 		}
+
+		throw new Error(Messages.invalidZulipServerError(domain));
 	}
 }
 

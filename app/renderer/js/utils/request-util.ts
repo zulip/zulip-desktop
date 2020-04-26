@@ -65,7 +65,7 @@ function formatUrl(domain: string): string {
 	const hasPrefix = domain.startsWith('http', 0);
 	if (hasPrefix) {
 		return domain;
-	} else {
-		return domain.includes('localhost:') ? `http://${domain}` : `https://${domain}`;
 	}
+
+	return domain.includes('localhost:') ? `http://${domain}` : `https://${domain}`;
 }

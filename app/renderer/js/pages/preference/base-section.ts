@@ -35,8 +35,9 @@ export default class BaseSection extends BaseComponent {
 					</div>
 				</div>
 			`;
-		} else {
-			return `
+		}
+
+		return `
 				<div class="action">
 					<div class="switch">
 					  <input class="toggle toggle-round" type="checkbox">
@@ -44,7 +45,6 @@ export default class BaseSection extends BaseComponent {
 					</div>
 				</div>
 			`;
-		}
 	}
 
 	/* a method that in future can be used to create dropdown menus using <select> <option> tags.

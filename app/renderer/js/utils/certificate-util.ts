@@ -26,9 +26,9 @@ export function getCertificate(server: string, defaultValue: any = null): any {
 	const value = db.getData('/')[server];
 	if (value === undefined) {
 		return defaultValue;
-	} else {
-		return value;
 	}
+
+	return value;
 }
 
 // Function to copy the certificate to userData folder
