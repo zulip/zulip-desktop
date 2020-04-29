@@ -2,6 +2,20 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.1.0 --2020-04-29
+
+**Fixes**:
+* macOS: If the app is in foreground, the app will no longer hide upon clicking on dock again.
+* Synchronise debian scripts with electron-builder 22.4.1, thus fixing SUID sandbox binary issues.
+* Dock icon on macOS used to be larger than the other applications, which is now updated to the appropriate size.
+* Upon catching error in updating the server icon, the app will log the error and make a sentry report instead of triggering user-facing network error
+
+**New features**:
+* User can now set application language without changing the language on their operating system.
+
+**Dependencies**:
+* Upgrade all dependencies, including Electron 8.2.3.
+
 ### v5.0.0 --2020-03-30
 
 **Security fixes**:
