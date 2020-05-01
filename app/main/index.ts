@@ -5,7 +5,7 @@ import {setAutoLaunch} from './startup';
 import windowStateKeeper from 'electron-window-state';
 import path from 'path';
 import fs from 'fs';
-import electron, {app, ipcMain, session, dialog} from 'electron';
+import electron, {app, ipcMain, session} from 'electron';
 
 import * as AppMenu from './menu';
 import * as BadgeSettings from '../renderer/js/pages/preference/badge-settings';
@@ -323,21 +323,11 @@ app.on('ready', () => {
 	ipcMain.on('downloadFile', (_event: Electron.IpcMainEvent, url: string, downloadPath: string) => {
 		page.downloadURL(url);
 		page.session.once('will-download', async (_event: Event, item) => {
-			let setFilePath: string;
-			let shortFileName: string;
 			if (ConfigUtil.getConfigItem('promptDownload', false)) {
 				const showDialogOptions: object = {
 					defaultPath: path.join(downloadPath, item.getFilename())
 				};
-
-				const result = await dialog.showSaveDialog(mainWindow, showDialogOptions);
-				if (result.canceled) {
-					item.cancel();
-					return;
-				}
-
-				setFilePath = result.filePath;
-				shortFileName = path.basename(setFilePath);
+				item.setSaveDialogOptions(showDialogOptions);
 			} else {
 				const getTimeStamp = (): number => {
 					const date = new Date();
@@ -354,11 +344,9 @@ app.on('ready', () => {
 
 				// Update the name and path of the file if it already exists
 				const updatedFilePath = path.join(downloadPath, formatFile(filePath));
-				setFilePath = fs.existsSync(filePath) ? updatedFilePath : filePath;
-				shortFileName = fs.existsSync(filePath) ? formatFile(filePath) : item.getFilename();
+				const setFilePath: string = fs.existsSync(filePath) ? updatedFilePath : filePath;
+				item.setSavePath(setFilePath);
 			}
-
-			item.setSavePath(setFilePath);
 
 			const updatedListener = (_event: Event, state: string): void => {
 				switch (state) {
@@ -387,10 +375,10 @@ app.on('ready', () => {
 			item.on('updated', updatedListener);
 			item.once('done', (_event: Event, state) => {
 				if (state === 'completed') {
-					page.send('downloadFileCompleted', item.getSavePath(), shortFileName);
+					page.send('downloadFileCompleted', item.getSavePath(), path.basename(item.getSavePath()));
 				} else {
 					console.log('Download failed state:', state);
-					page.send('downloadFileFailed');
+					page.send('downloadFileFailed', state);
 				}
 
 				// To stop item for listening to updated events of this file
