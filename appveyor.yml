@@ -14,8 +14,7 @@ install:
   - node --version
   - npm --version
   - python --version
-  - npm install
-  - npm install -g gulp
+  - npm ci
 
 build: off
 

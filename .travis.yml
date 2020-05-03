@@ -1,6 +1,3 @@
-sudo: required
-dist: trusty
-
 os:
 - osx
 - linux
@@ -18,20 +15,9 @@ node_js:
 - '10'
 - '12'
 
-before_install:
-  - ./scripts/travis-xvfb.sh
-  - npm install -g gulp
-  - npm ci
-
 cache:
   directories:
   - node_modules
 
 script:
-- npm run travis
-notifications:
-  webhooks:
-    urls:
-      - https://zulip.org/zulipbot/travis
-    on_success: always
-    on_failure: always
+- npm run test

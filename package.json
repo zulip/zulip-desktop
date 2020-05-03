@@ -36,7 +36,6 @@
     "pack": "tsc && electron-builder --dir",
     "dist": "tsc && electron-builder",
     "mas": "tsc && electron-builder --mac mas",
-    "travis": "cd ./scripts && ./travis-build-test.sh",
     "build-locales": "node tools/locale-helper"
   },
   "pre-commit": [
