@@ -6,14 +6,12 @@ import fs from 'fs';
 
 const {app} = remote;
 
-interface SendFeedback extends HTMLElement {
-	[key: string]: any;
-}
-
-type SendFeedbackType = SendFeedback;
+customElements.define('send-feedback', SendFeedback);
+export const sendFeedback: SendFeedback = document.querySelector('send-feedback');
+export const feedbackHolder = sendFeedback.parentElement;
 
 // Make the button color match zulip app's theme
-SendFeedback.customStyles = `
+sendFeedback.customStyles = `
 button:hover, button:focus {
   border-color: #4EBFAC;
   color: #4EBFAC;
@@ -29,10 +27,6 @@ button {
   border-color: #4EBFAC;
 }
 `;
-
-customElements.define('send-feedback', SendFeedback);
-export const sendFeedback: SendFeedbackType = document.querySelector('send-feedback');
-export const feedbackHolder = sendFeedback.parentElement;
 
 /* eslint-disable no-multi-str */
 
