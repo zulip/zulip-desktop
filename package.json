@@ -21,7 +21,7 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "start": "node tools/run-dev",
+    "start": "tsc && electron .",
     "clean-ts-files": "git clean app/*.js -e node_modules -xf",
     "watch-ts": "tsc -w",
     "reinstall": "node ./tools/reinstall-node-modules.js",
