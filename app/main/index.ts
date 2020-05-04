@@ -5,10 +5,11 @@ import {setAutoLaunch} from './startup';
 import windowStateKeeper from 'electron-window-state';
 import path from 'path';
 import fs from 'fs';
-import electron, {app, ipcMain, session} from 'electron';
+import electron, {app, dialog, ipcMain, session} from 'electron';
 
 import * as AppMenu from './menu';
 import * as BadgeSettings from '../renderer/js/pages/preference/badge-settings';
+import * as CertificateUtil from '../renderer/js/utils/certificate-util';
 import * as ConfigUtil from '../renderer/js/utils/config-util';
 import * as ProxyUtil from '../renderer/js/utils/proxy-util';
 
@@ -155,12 +156,6 @@ app.disableHardwareAcceleration();
 // More info here - https://github.com/electron/electron/issues/10732
 app.commandLine.appendSwitch('force-color-profile', 'srgb');
 
-// eslint-disable-next-line max-params
-app.on('certificate-error', (event: Event, _webContents: Electron.WebContents, _url: string, _error: string, _certificate: Electron.Certificate, callback) => {
-	event.preventDefault();
-	callback(true);
-});
-
 // This event is only available on macOS. Triggers when you click on the dock icon.
 app.on('activate', () => {
 	if (mainWindow) {
@@ -218,6 +213,53 @@ app.on('ready', () => {
 		if (ConfigUtil.getConfigItem('autoUpdate')) {
 			appUpdater();
 		}
+	});
+
+	app.on('certificate-error', (
+		event: Event,
+		webContents: Electron.WebContents,
+		url: string,
+		error: string,
+		certificate: Electron.Certificate,
+		callback: (isTrusted: boolean) => void
+	) /* eslint-disable-line max-params */ => {
+		// TODO: The entire concept of selectively ignoring certificate errors
+		// is ill-conceived, and this handler needs to be deleted.
+		event.preventDefault();
+
+		const {origin} = new URL(url);
+		const filename = CertificateUtil.getCertificate(encodeURIComponent(origin));
+		if (filename !== undefined) {
+			try {
+				const savedCertificate = fs.readFileSync(
+					path.join(`${app.getPath('userData')}/certificates`, filename),
+					'utf8'
+				);
+				if (certificate.data.replace(/[\r\n]/g, '') ===
+					savedCertificate.replace(/[\r\n]/g, '')) {
+					callback(true);
+					return;
+				}
+			} catch (error) {
+				console.error(`Error reading certificate file ${filename}:`, error);
+			}
+		}
+
+		page.send(
+			'certificate-error',
+			webContents.id === mainWindow.webContents.id ? null : webContents.id,
+			makeRendererCallback(ignore => {
+				callback(ignore);
+				if (!ignore) {
+					dialog.showErrorBox(
+						'Certificate error',
+						`The server presented an invalid certificate for ${origin}:
+
+${error}`
+					);
+				}
+			})
+		);
 	});
 
 	page.session.setPermissionRequestHandler((webContents, permission, callback, details) => {

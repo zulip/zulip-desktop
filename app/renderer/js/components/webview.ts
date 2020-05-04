@@ -24,6 +24,7 @@ interface WebViewProps {
 	nodeIntegration: boolean;
 	preload: boolean;
 	onTitleChange: () => void;
+	ignoreCerts?: boolean;
 	hasPermission?: (origin: string, permission: string) => boolean;
 }
 

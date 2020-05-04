@@ -360,6 +360,7 @@ class ServerManagerView {
 				url: server.url,
 				role: 'server',
 				name: CommonUtil.decodeString(server.alias),
+				ignoreCerts: server.ignoreCerts,
 				hasPermission: (origin: string, permission: string) =>
 					origin === server.url && permission === 'notifications',
 				isActive: () => {
@@ -815,6 +816,21 @@ class ServerManagerView {
 			});
 		}
 
+		ipcRenderer.on('certificate-error', (
+			event: Event,
+			webContentsId: number | null,
+			rendererCallbackId: number
+		) => {
+			const ignore = webContentsId !== null &&
+				this.tabs.some(
+					({webview}) =>
+						!webview.loading &&
+						webview.$el.getWebContentsId() === webContentsId &&
+						webview.props.ignoreCerts
+				);
+			ipcRenderer.send('renderer-callback', rendererCallbackId, ignore);
+		});
+
 		ipcRenderer.on('permission-request', (
 			event: Event,
 			{webContentsId, origin, permission}: {
@@ -828,6 +844,7 @@ class ServerManagerView {
 				origin === 'null' && permission === 'notifications' :
 				this.tabs.some(
 					({webview}) =>
+						!webview.loading &&
 						webview.$el.getWebContentsId() === webContentsId &&
 					webview.props.hasPermission?.(origin, permission)
 				);
