@@ -1,28 +1,28 @@
 import * as ConfigUtil from './config-util';
 
-// TODO: TypeScript - add to Setting interface
-// the list of settings since we have fixed amount of them
-// We want to do this by creating a new module that exports
-// this interface
-interface Setting {
-	[key: string]: boolean;
+type SettingName = 'showNotification' | 'silent' | 'flashTaskbarOnMessage';
+
+interface Settings {
+	showNotification?: boolean;
+	silent?: boolean;
+	flashTaskbarOnMessage?: boolean;
 }
 
 interface Toggle {
 	dnd: boolean;
-	newSettings: Setting;
+	newSettings: Settings;
 }
 
 export function toggle(): Toggle {
 	const dnd = !ConfigUtil.getConfigItem('dnd', false);
-	const dndSettingList = ['showNotification', 'silent'];
+	const dndSettingList: SettingName[] = ['showNotification', 'silent'];
 	if (process.platform === 'win32') {
 		dndSettingList.push('flashTaskbarOnMessage');
 	}
 
-	let newSettings: Setting;
+	let newSettings: Settings;
 	if (dnd) {
-		const oldSettings: Setting = {};
+		const oldSettings: Settings = {};
 		newSettings = {};
 
 		// Iterate through the dndSettingList.
