@@ -2,6 +2,20 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.2.0 --2020-05-04
+
+**Security fixes**:
+* CVE-2020-12637: Do not ignore certificate errors in webviews unless the (unsupported, deprecated) `ignoreCerts` option is enabled.
+
+**Fixes**:
+* Avoid opening the file chooser dialog twice when downloading a file.
+
+**New features**:
+* Provide clipboard decryption helper for use in new social login flow.
+
+**Dependencies**:
+* Upgrade all dependencies, including Electron 8.2.5.
+
 ### v5.1.0 --2020-04-29
 
 **Fixes**:
