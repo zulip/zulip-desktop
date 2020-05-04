@@ -42,6 +42,19 @@ if (singleInstanceLock) {
 	app.quit();
 }
 
+const rendererCallbacks = new Map();
+let nextRendererCallbackId = 0;
+
+ipcMain.on('renderer-callback', (event: Event, rendererCallbackId: number, ...args: any[]) => {
+	rendererCallbacks.get(rendererCallbackId)(...args);
+	rendererCallbacks.delete(rendererCallbackId);
+});
+
+function makeRendererCallback(callback: (...args: any[]) => void): number {
+	rendererCallbacks.set(nextRendererCallbackId, callback);
+	return nextRendererCallbackId++;
+}
+
 const APP_ICON = path.join(__dirname, '../resources', 'Icon');
 
 const iconPath = (): string => {
@@ -207,25 +220,15 @@ app.on('ready', () => {
 		}
 	});
 
-	const permissionCallbacks = new Map();
-	let nextPermissionId = 0;
-
 	page.session.setPermissionRequestHandler((webContents, permission, callback, details) => {
 		const {origin} = new URL(details.requestingUrl);
-		permissionCallbacks.set(nextPermissionId, callback);
-		page.send('permission-request', nextPermissionId, {
+		page.send('permission-request', {
 			webContentsId: webContents.id === mainWindow.webContents.id ?
 				null :
 				webContents.id,
 			origin,
 			permission
-		});
-		nextPermissionId++;
-	});
-
-	ipcMain.on('permission-response', (event: Event, permissionId: number, grant: boolean) => {
-		permissionCallbacks.get(permissionId)(grant);
-		permissionCallbacks.delete(permissionId);
+		}, makeRendererCallback(callback));
 	});
 
 	// Temporarily remove this event

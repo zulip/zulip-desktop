@@ -817,12 +817,12 @@ class ServerManagerView {
 
 		ipcRenderer.on('permission-request', (
 			event: Event,
-			permissionId: number,
 			{webContentsId, origin, permission}: {
 				webContentsId: number | null;
 				origin: string;
 				permission: string;
-			}
+			},
+			rendererCallbackId: number
 		) => {
 			const grant = webContentsId === null ?
 				origin === 'null' && permission === 'notifications' :
@@ -835,7 +835,7 @@ class ServerManagerView {
 				grant ? 'Granted' : 'Denied', 'permissions request for',
 				permission, 'from', origin
 			);
-			ipcRenderer.send('permission-response', permissionId, grant);
+			ipcRenderer.send('renderer-callback', rendererCallbackId, grant);
 		});
 
 		ipcRenderer.on('show-network-error', (event: Event, index: number) => {
