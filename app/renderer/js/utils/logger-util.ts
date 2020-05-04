@@ -1,4 +1,4 @@
-import {Console as NodeConsole} from 'console'; // eslint-disable-line node/prefer-global/console
+import {Console} from 'console'; // eslint-disable-line node/prefer-global/console
 import {initSetUp} from './default-util';
 import {sentryInit, captureException} from './sentry-util';
 
@@ -6,11 +6,6 @@ import fs from 'fs';
 import os from 'os';
 import isDev from 'electron-is-dev';
 import electron from 'electron';
-// This interface adds [key: string]: any so
-// we can do console[type] later on in the code
-interface PatchedConsole extends Console {
-	[key: string]: any;
-}
 
 interface LoggerOptions {
 	timestamp?: true | (() => string);
@@ -41,12 +36,20 @@ if (process.type === 'renderer') {
 	app = electron.app;
 }
 
-const browserConsole: PatchedConsole = console;
 const logDir = `${app.getPath('userData')}/Logs`;
 
+type Level = 'log' | 'debug' | 'info' | 'warn' | 'error';
+const levels: Level[] = ['log', 'debug', 'info', 'warn', 'error'];
+type LogMethod = (...args: unknown[]) => void;
+
 export default class Logger {
-	[key: string]: any;
-	nodeConsole: PatchedConsole;
+	log: LogMethod;
+	debug: LogMethod;
+	info: LogMethod;
+	warn: LogMethod;
+	error: LogMethod;
+
+	nodeConsole: Console;
 	timestamp?: () => string;
 	level: boolean;
 	logInDevMode: boolean;
@@ -72,7 +75,7 @@ export default class Logger {
 		}
 
 		const fileStream = fs.createWriteStream(file, {flags: 'a'});
-		const nodeConsole = new NodeConsole(fileStream);
+		const nodeConsole = new Console(fileStream);
 
 		this.nodeConsole = nodeConsole;
 		this.timestamp = timestamp;
@@ -81,11 +84,10 @@ export default class Logger {
 		this.setUpConsole();
 	}
 
-	_log(type: string, ...args: any[]): void {
+	_log(type: Level, ...args: unknown[]): void {
 		const {
 			nodeConsole, timestamp, level, logInDevMode
 		} = this;
-		let nodeConsoleLog;
 
 		/* eslint-disable no-fallthrough */
 		switch (true) {
@@ -96,27 +98,23 @@ export default class Logger {
 				args.unshift(type.toUpperCase() + ' |');
 
 			case isDev || logInDevMode:
-				nodeConsoleLog = nodeConsole[type] || nodeConsole.log;
-				nodeConsoleLog.apply(null, args); // eslint-disable-line prefer-spread
+				nodeConsole[type](...args);
 
 			default: break;
 		}
 		/* eslint-enable no-fallthrough */
 
-		browserConsole[type].apply(null, args);
+		console[type](...args);
 	}
 
 	setUpConsole(): void {
-		for (const type of Object.keys(browserConsole)) {
+		for (const type of levels) {
 			this.setupConsoleMethod(type);
 		}
 	}
 
-	setupConsoleMethod(type: string): void {
-		this[type] = (...args: any[]) => {
-			const log = this._log.bind(this, type, ...args);
-			log();
-		};
+	setupConsoleMethod(type: Level): void {
+		this[type] = (...args: unknown[]) => this._log(type, ...args);
 	}
 
 	getTimestamp(): string {
