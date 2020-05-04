@@ -28,10 +28,6 @@ interface WebViewProps {
 }
 
 export default class WebView extends BaseComponent {
-	// This is required because in main.js we access WebView.method as
-	// webview[method].
-	[key: string]: any;
-
 	props: WebViewProps;
 	zoomFactor: number;
 	badgeCount: number;

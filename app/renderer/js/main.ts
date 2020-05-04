@@ -804,24 +804,24 @@ class ServerManagerView {
 	}
 
 	registerIpcs(): void {
-		const webviewListeners: AnyObject = {
-			'webview-reload': 'reload',
-			back: 'back',
-			focus: 'focus',
-			forward: 'forward',
-			zoomIn: 'zoomIn',
-			zoomOut: 'zoomOut',
-			zoomActualSize: 'zoomActualSize',
-			'log-out': 'logOut',
-			shortcut: 'showShortcut',
-			'tab-devtools': 'openDevTools'
-		};
+		const webviewListeners: Array<[string, (webview: WebView) => void]> = [
+			['webview-reload', webview => webview.reload()],
+			['back', webview => webview.back()],
+			['focus', webview => webview.focus()],
+			['forward', webview => webview.forward()],
+			['zoomIn', webview => webview.zoomIn()],
+			['zoomOut', webview => webview.zoomOut()],
+			['zoomActualSize', webview => webview.zoomActualSize()],
+			['log-out', webview => webview.logOut()],
+			['shortcut', webview => webview.showShortcut()],
+			['tab-devtools', webview => webview.openDevTools()]
+		];
 
-		for (const [key, method] of Object.entries(webviewListeners)) {
-			ipcRenderer.on(key, () => {
+		for (const [channel, listener] of webviewListeners) {
+			ipcRenderer.on(channel, () => {
 				const activeWebview = this.tabs[this.activeTabIndex].webview;
 				if (activeWebview) {
-					activeWebview[method]();
+					listener(activeWebview);
 				}
 			});
 		}
