@@ -19,7 +19,7 @@ interface WebViewProps {
 	role: string;
 	name: string;
 	isActive: () => boolean;
-	switchLoading: (loading: any, url: string) => void;
+	switchLoading: (loading: boolean, url: string) => void;
 	onNetworkError: (index: number) => void;
 	nodeIntegration: boolean;
 	preload: boolean;

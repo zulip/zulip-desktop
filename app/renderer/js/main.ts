@@ -28,10 +28,6 @@ interface FunctionalTabProps {
 	url: string;
 }
 
-interface AnyObject {
-	[key: string]: any;
-}
-
 interface SettingsOptions {
 	autoHideMenubar: boolean;
 	trayIcon: boolean;
@@ -60,7 +56,6 @@ interface SettingsOptions {
 	promptDownload: boolean;
 	flashTaskbarOnMessage?: boolean;
 	dockBouncing?: boolean;
-	loading?: AnyObject;
 }
 
 const logger = new Logger({
@@ -90,7 +85,7 @@ class ServerManagerView {
 	$sidebar: Element;
 	$fullscreenPopup: Element;
 	$fullscreenEscapeKey: string;
-	loading: AnyObject;
+	loading: Set<string>;
 	activeTabIndex: number;
 	tabs: ServerOrFunctionalTab[];
 	functionalTabs: Map<string, number>;
@@ -128,7 +123,7 @@ class ServerManagerView {
 		this.$fullscreenEscapeKey = process.platform === 'darwin' ? '^⌘F' : 'F11';
 		this.$fullscreenPopup.innerHTML = `Press ${this.$fullscreenEscapeKey} to exit full screen`;
 
-		this.loading = {};
+		this.loading = new Set();
 		this.activeTabIndex = -1;
 		this.tabs = [];
 		this.presetOrgs = [];
@@ -377,13 +372,13 @@ class ServerManagerView {
 					return index === this.activeTabIndex;
 				},
 				switchLoading: (loading: boolean, url: string) => {
-					if (!loading && this.loading[url]) {
-						this.loading[url] = false;
-					} else if (loading && !this.loading[url]) {
-						this.loading[url] = true;
+					if (loading) {
+						this.loading.add(url);
+					} else {
+						this.loading.delete(url);
 					}
 
-					this.showLoading(this.loading[this.tabs[this.activeTabIndex].webview.props.url]);
+					this.showLoading(this.loading.has(this.tabs[this.activeTabIndex].webview.props.url));
 				},
 				onNetworkError: (index: number) => this.openNetworkTroubleshooting(index),
 				onTitleChange: this.updateBadge.bind(this),
@@ -391,7 +386,7 @@ class ServerManagerView {
 				preload: true
 			})
 		}));
-		this.loading[server.url] = true;
+		this.loading.add(server.url);
 	}
 
 	initActions(): void {
@@ -543,14 +538,14 @@ class ServerManagerView {
 				isActive: () => {
 					return this.functionalTabs.get(tabProps.name) === this.activeTabIndex;
 				},
-				switchLoading: (loading: AnyObject, url: string) => {
-					if (!loading && this.loading[url]) {
-						this.loading[url] = false;
-					} else if (loading && !this.loading[url]) {
-						this.loading[url] = true;
+				switchLoading: (loading: boolean, url: string) => {
+					if (loading) {
+						this.loading.add(url);
+					} else {
+						this.loading.delete(url);
 					}
 
-					this.showLoading(this.loading[this.tabs[this.activeTabIndex].webview.props.url]);
+					this.showLoading(this.loading.has(this.tabs[this.activeTabIndex].webview.props.url));
 				},
 				onNetworkError: (index: number) => this.openNetworkTroubleshooting(index),
 				onTitleChange: this.updateBadge.bind(this),
@@ -645,7 +640,7 @@ class ServerManagerView {
 		this.activeTabIndex = index;
 		this.tabs[index].activate();
 
-		this.showLoading(this.loading[this.tabs[this.activeTabIndex].webview.props.url]);
+		this.showLoading(this.loading.has(this.tabs[this.activeTabIndex].webview.props.url));
 
 		ipcRenderer.send('update-menu', {
 			// JSON stringify this.tabs to avoid a crash
