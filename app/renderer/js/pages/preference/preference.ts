@@ -7,6 +7,7 @@ import GeneralSection from './general-section';
 import NetworkSection from './network-section';
 import ConnectedOrgSection from './connected-org-section';
 import ShortcutsSection from './shortcuts-section';
+import type {DNDSettings} from '../../utils/dnd-util';
 
 type Section = ServersSection | GeneralSection | NetworkSection | ConnectedOrgSection | ShortcutsSection;
 
@@ -112,7 +113,7 @@ export default class PreferenceView extends BaseComponent {
 			this.handleToggle('tray-option', state);
 		});
 
-		ipcRenderer.on('toggle-dnd', (_event: Event, _state: boolean, newSettings: any) => {
+		ipcRenderer.on('toggle-dnd', (_event: Event, _state: boolean, newSettings: DNDSettings) => {
 			this.handleToggle('show-notification-option', newSettings.showNotification);
 			this.handleToggle('silent-option', newSettings.silent);
 

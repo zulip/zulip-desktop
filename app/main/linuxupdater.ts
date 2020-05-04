@@ -24,7 +24,7 @@ export function linuxUpdateNotification(): void {
 		ecdhCurve: 'auto'
 	};
 
-	request(options, (error: any, response: any, body: any) => {
+	request(options, (error, response: request.Response, body: string) => {
 		if (error) {
 			logger.error('Linux update error.');
 			logger.error(error);

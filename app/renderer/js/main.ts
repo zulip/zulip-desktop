@@ -21,6 +21,7 @@ import * as CommonUtil from './utils/common-util';
 import * as EnterpriseUtil from './utils/enterprise-util';
 import * as LinkUtil from './utils/link-util';
 import * as Messages from '../../resources/messages';
+import type {DNDSettings} from './utils/dnd-util';
 
 interface FunctionalTabProps {
 	name: string;
@@ -28,7 +29,7 @@ interface FunctionalTabProps {
 	url: string;
 }
 
-interface SettingsOptions {
+interface SettingsOptions extends DNDSettings {
 	autoHideMenubar: boolean;
 	trayIcon: boolean;
 	useManualProxy: boolean;
@@ -38,23 +39,16 @@ interface SettingsOptions {
 	startAtLogin: boolean;
 	startMinimized: boolean;
 	enableSpellchecker: boolean;
-	showNotification: boolean;
 	autoUpdate: boolean;
 	betaUpdate: boolean;
 	errorReporting: boolean;
 	customCSS: boolean;
-	silent: boolean;
 	lastActiveTab: number;
 	dnd: boolean;
-	dndPreviousSettings: {
-		showNotification: boolean;
-		silent: boolean;
-		flashTaskbarOnMessage?: boolean;
-	};
+	dndPreviousSettings: DNDSettings;
 	downloadsPath: string;
 	quitOnClose: boolean;
 	promptDownload: boolean;
-	flashTaskbarOnMessage?: boolean;
 	dockBouncing?: boolean;
 }
 
@@ -347,7 +341,7 @@ class ServerManagerView {
 		}
 	}
 
-	initServer(server: any, index: number): void {
+	initServer(server: DomainUtil.ServerConf, index: number): void {
 		const tabIndex = this.getTabIndex();
 		this.tabs.push(new ServerTab({
 			role: 'server',
@@ -722,7 +716,7 @@ class ServerManagerView {
 		ipcRenderer.send('update-badge', messageCountAll);
 	}
 
-	updateGeneralSettings(setting: string, value: any): void {
+	updateGeneralSettings(setting: string, value: unknown): void {
 		if (this.getActiveWebview()) {
 			const webContents = this.getActiveWebview().getWebContents();
 			webContents.send(setting, value);
@@ -924,7 +918,7 @@ class ServerManagerView {
 			this.updateGeneralSettings('toggle-menubar-setting', autoHideMenubar);
 		});
 
-		ipcRenderer.on('toggle-dnd', (event: Event, state: boolean, newSettings: SettingsOptions) => {
+		ipcRenderer.on('toggle-dnd', (event: Event, state: boolean, newSettings: DNDSettings) => {
 			this.toggleDNDButton(state);
 			ipcRenderer.send('forward-message', 'toggle-silent', newSettings.silent);
 			const webContents = this.getActiveWebview().getWebContents();

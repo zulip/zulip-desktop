@@ -26,7 +26,7 @@ if (process.type === 'renderer') {
 	// For main process, sentryInit() is handled in index.js
 	const {ipcRenderer} = electron;
 	ipcRenderer.send('error-reporting');
-	ipcRenderer.on('error-reporting-val', (_event: any, errorReporting: boolean) => {
+	ipcRenderer.on('error-reporting-val', (_event: Event, errorReporting: boolean) => {
 		reportErrors = errorReporting;
 		if (reportErrors) {
 			sentryInit();
@@ -125,7 +125,7 @@ export default class Logger {
 		return timestamp;
 	}
 
-	reportSentry(err: string): void {
+	reportSentry(err: unknown): void {
 		if (reportErrors) {
 			captureException(err);
 		}

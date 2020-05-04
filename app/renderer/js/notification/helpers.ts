@@ -21,7 +21,7 @@ export async function loadBots(): Promise<void> {
 	const response = await fetch('/json/users');
 	if (response.ok) {
 		const {members} = await response.json();
-		members.forEach(({is_bot, full_name}: any) => {
+		members.forEach(({is_bot, full_name}: {[key: string]: unknown}) => {
 			if (is_bot && typeof full_name === 'string') {
 				const bot = `@${full_name}`;
 				const mention = `@**${bot.replace(/^@/, '')}**`;
@@ -35,7 +35,7 @@ export async function loadBots(): Promise<void> {
 	}
 }
 
-export function checkElements(...elements: any[]): boolean {
+export function checkElements(...elements: unknown[]): boolean {
 	let status = true;
 	elements.forEach(element => {
 		if (element === null || element === undefined) {

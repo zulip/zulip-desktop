@@ -2,12 +2,12 @@ import {ipcRenderer} from 'electron';
 
 import {EventEmitter} from 'events';
 
-import {ClipboardDecrypter} from './clipboard-decrypter';
+import {ClipboardDecrypterImpl} from './clipboard-decrypter';
 import {NotificationData, newNotification} from './notification';
 
 type ListenerType = ((...args: any[]) => void);
 
-class ElectronBridge extends EventEmitter {
+class ElectronBridgeImpl extends EventEmitter implements ElectronBridge {
 	send_notification_reply_message_supported: boolean;
 	idle_on_system: boolean;
 	last_active_on_system: number;
@@ -22,7 +22,7 @@ class ElectronBridge extends EventEmitter {
 		this.last_active_on_system = Date.now();
 	}
 
-	send_event = (eventName: string | symbol, ...args: any[]): void => {
+	send_event = (eventName: string | symbol, ...args: unknown[]): void => {
 		this.emit(eventName, ...args);
 	};
 
@@ -48,11 +48,11 @@ class ElectronBridge extends EventEmitter {
 		this.send_notification_reply_message_supported = value;
 	};
 
-	decrypt_clipboard = (version: number): ClipboardDecrypter =>
-		new ClipboardDecrypter(version);
+	decrypt_clipboard = (version: number): ClipboardDecrypterImpl =>
+		new ClipboardDecrypterImpl(version);
 }
 
-const electron_bridge = new ElectronBridge();
+const electron_bridge = new ElectronBridgeImpl();
 
 electron_bridge.on('total_unread_count', (...args) => {
 	ipcRenderer.send('unread-count', ...args);

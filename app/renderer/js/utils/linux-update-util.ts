@@ -20,7 +20,7 @@ let db: JsonDB;
 
 reloadDB();
 
-export function getUpdateItem(key: string, defaultValue: any = null): any {
+export function getUpdateItem(key: string, defaultValue: unknown = null): any {
 	reloadDB();
 	const value = db.getData('/')[key];
 	if (value === undefined) {
@@ -31,7 +31,7 @@ export function getUpdateItem(key: string, defaultValue: any = null): any {
 	return value;
 }
 
-export function setUpdateItem(key: string, value: any): void {
+export function setUpdateItem(key: string, value: unknown): void {
 	db.push(`/${key}`, value, true);
 	reloadDB();
 }

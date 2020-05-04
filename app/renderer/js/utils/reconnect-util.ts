@@ -45,7 +45,7 @@ export default class ReconnectUtil {
 						url: `${this.url}/static/favicon.ico`,
 						...RequestUtil.requestOptions(this.url, ignoreCerts)
 					},
-					(error: Error, response: any) => {
+					(error: Error, response: request.Response) => {
 						const isValidResponse =
 							!error && response.statusCode >= 200 && response.statusCode < 400;
 						resolve(isValidResponse);

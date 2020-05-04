@@ -29,7 +29,7 @@ function getHistorySubmenu(enableMenu: boolean): Electron.MenuItemConstructorOpt
 		label: t.__('Back'),
 		accelerator: process.platform === 'darwin' ? 'Command+Left' : 'Alt+Left',
 		enabled: enableMenu,
-		click(_item: any, focusedWindow: any) {
+		click(_item, focusedWindow) {
 			if (focusedWindow) {
 				sendAction('back');
 			}
@@ -38,7 +38,7 @@ function getHistorySubmenu(enableMenu: boolean): Electron.MenuItemConstructorOpt
 		label: t.__('Forward'),
 		accelerator: process.platform === 'darwin' ? 'Command+Right' : 'Alt+Right',
 		enabled: enableMenu,
-		click(_item: any, focusedWindow: any) {
+		click(_item, focusedWindow) {
 			if (focusedWindow) {
 				sendAction('forward');
 			}
@@ -94,7 +94,7 @@ function getToolsSubmenu(): Electron.MenuItemConstructorOptions[] {
 	{
 		label: t.__('Toggle DevTools for Zulip App'),
 		accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
-		click(_item: any, focusedWindow: any) {
+		click(_item, focusedWindow) {
 			if (focusedWindow) {
 				focusedWindow.webContents.openDevTools({mode: 'undocked'});
 			}
@@ -103,7 +103,7 @@ function getToolsSubmenu(): Electron.MenuItemConstructorOptions[] {
 	{
 		label: t.__('Toggle DevTools for Active Tab'),
 		accelerator: process.platform === 'darwin' ? 'Alt+Command+U' : 'Ctrl+Shift+U',
-		click(_item: any, focusedWindow: any) {
+		click(_item, focusedWindow) {
 			if (focusedWindow) {
 				sendAction('tab-devtools');
 			}
@@ -115,7 +115,7 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 	return [{
 		label: t.__('Reload'),
 		accelerator: 'CommandOrControl+R',
-		click(_item: any, focusedWindow: any) {
+		click(_item, focusedWindow) {
 			if (focusedWindow) {
 				sendAction('reload-current-viewer');
 			}
@@ -123,7 +123,7 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 	}, {
 		label: t.__('Hard Reload'),
 		accelerator: 'CommandOrControl+Shift+R',
-		click(_item: any, focusedWindow: any) {
+		click(_item, focusedWindow) {
 			if (focusedWindow) {
 				sendAction('hard-reload');
 			}
@@ -136,7 +136,7 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 	}, {
 		label: t.__('Zoom In'),
 		role: 'zoomIn',
-		click(_item: any, focusedWindow: any) {
+		click(_item, focusedWindow) {
 			if (focusedWindow) {
 				sendAction('zoomIn');
 			}
@@ -145,7 +145,7 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 		label: t.__('Zoom Out'),
 		role: 'zoomOut',
 		accelerator: 'CommandOrControl+-',
-		click(_item: any, focusedWindow: any) {
+		click(_item, focusedWindow) {
 			if (focusedWindow) {
 				sendAction('zoomOut');
 			}
@@ -154,7 +154,7 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 		label: t.__('Actual Size'),
 		role: 'resetZoom',
 		accelerator: 'CommandOrControl+0',
-		click(_item: any, focusedWindow: any) {
+		click(_item, focusedWindow) {
 			if (focusedWindow) {
 				sendAction('zoomActualSize');
 			}
@@ -163,7 +163,7 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 		type: 'separator'
 	}, {
 		label: t.__('Toggle Tray Icon'),
-		click(_item: any, focusedWindow: any) {
+		click(_item, focusedWindow) {
 			if (focusedWindow) {
 				focusedWindow.webContents.send('toggletray');
 			}
@@ -171,7 +171,7 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 	}, {
 		label: t.__('Toggle Sidebar'),
 		accelerator: 'CommandOrControl+Shift+S',
-		click(_item: any, focusedWindow: any) {
+		click(_item, focusedWindow) {
 			if (focusedWindow) {
 				const newValue = !ConfigUtil.getConfigItem('showSidebar');
 				focusedWindow.webContents.send('toggle-sidebar', newValue);
@@ -182,7 +182,7 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 		label: t.__('Auto hide Menu bar'),
 		checked: ConfigUtil.getConfigItem('autoHideMenubar', false),
 		visible: process.platform !== 'darwin',
-		click(_item: any, focusedWindow: any) {
+		click(_item, focusedWindow) {
 			if (focusedWindow) {
 				const newValue = !ConfigUtil.getConfigItem('autoHideMenubar');
 				focusedWindow.autoHideMenuBar = newValue;
@@ -203,7 +203,7 @@ function getHelpSubmenu(): Electron.MenuItemConstructorOptions[] {
 		},
 		{
 			label: t.__('About Zulip'),
-			click(_item: any, focusedWindow: any) {
+			click(_item, focusedWindow) {
 				if (focusedWindow) {
 					sendAction('open-about');
 				}
@@ -254,7 +254,7 @@ function getWindowSubmenu(tabs: ServerOrFunctionalTab[], activeTabIndex: number)
 				label: tab.props.name,
 				accelerator: tab.props.role === 'function' ? '' : `${ShortcutKey} + ${tab.props.index + 1}`,
 				checked: tab.props.index === activeTabIndex,
-				click(_item: any, focusedWindow: any) {
+				click(_item, focusedWindow) {
 					if (focusedWindow) {
 						sendAction('switch-server-tab', tab.props.index);
 					}
@@ -269,7 +269,7 @@ function getWindowSubmenu(tabs: ServerOrFunctionalTab[], activeTabIndex: number)
 			label: t.__('Switch to Next Organization'),
 			accelerator: 'Ctrl+Tab',
 			enabled: tabs.length > 1,
-			click(_item: any, focusedWindow: any) {
+			click(_item, focusedWindow) {
 				if (focusedWindow) {
 					sendAction('switch-server-tab', getNextServer(tabs, activeTabIndex));
 				}
@@ -278,7 +278,7 @@ function getWindowSubmenu(tabs: ServerOrFunctionalTab[], activeTabIndex: number)
 			label: t.__('Switch to Previous Organization'),
 			accelerator: 'Ctrl+Shift+Tab',
 			enabled: tabs.length > 1,
-			click(_item: any, focusedWindow: any) {
+			click(_item, focusedWindow) {
 				if (focusedWindow) {
 					sendAction('switch-server-tab', getPreviousServer(tabs, activeTabIndex));
 				}
@@ -297,7 +297,7 @@ function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 		submenu: [{
 			label: t.__('Add Organization'),
 			accelerator: 'Cmd+Shift+N',
-			click(_item: any, focusedWindow: any) {
+			click(_item, focusedWindow) {
 				if (focusedWindow) {
 					sendAction('new-server');
 				}
@@ -312,7 +312,7 @@ function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 		}, {
 			label: t.__('Desktop Settings'),
 			accelerator: 'Cmd+,',
-			click(_item: any, focusedWindow: any) {
+			click(_item, focusedWindow) {
 				if (focusedWindow) {
 					sendAction('open-settings');
 				}
@@ -321,7 +321,7 @@ function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 			label: t.__('Keyboard Shortcuts'),
 			accelerator: 'Cmd+Shift+K',
 			enabled: enableMenu,
-			click(_item: any, focusedWindow: any) {
+			click(_item, focusedWindow) {
 				if (focusedWindow) {
 					sendAction('shortcut');
 				}
@@ -332,7 +332,7 @@ function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 			label: t.__('Copy Zulip URL'),
 			accelerator: 'Cmd+Shift+C',
 			enabled: enableMenu,
-			click(_item: any, focusedWindow: any) {
+			click(_item, focusedWindow) {
 				if (focusedWindow) {
 					sendAction('copy-zulip-url');
 				}
@@ -341,7 +341,7 @@ function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 			label: t.__('Log Out of Organization'),
 			accelerator: 'Cmd+L',
 			enabled: enableMenu,
-			click(_item: any, focusedWindow: any) {
+			click(_item, focusedWindow) {
 				if (focusedWindow) {
 					sendAction('log-out');
 				}
@@ -380,7 +380,7 @@ function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 		submenu: [{
 			label: t.__('Undo'),
 			accelerator: 'Cmd+Z',
-			click(_item: any, focusedWindow: any) {
+			click(_item, focusedWindow) {
 				if (focusedWindow) {
 					sendAction('undo');
 				}
@@ -388,7 +388,7 @@ function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 		}, {
 			label: t.__('Redo'),
 			accelerator: 'Cmd+Shift+Z',
-			click(_item: any, focusedWindow: any) {
+			click(_item, focusedWindow) {
 				if (focusedWindow) {
 					sendAction('redo');
 				}
@@ -437,7 +437,7 @@ function getOtherTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 		submenu: [{
 			label: t.__('Add Organization'),
 			accelerator: 'Ctrl+Shift+N',
-			click(_item: any, focusedWindow: any) {
+			click(_item, focusedWindow) {
 				if (focusedWindow) {
 					sendAction('new-server');
 				}
@@ -454,7 +454,7 @@ function getOtherTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 		}, {
 			label: t.__('Desktop Settings'),
 			accelerator: 'Ctrl+,',
-			click(_item: any, focusedWindow: any) {
+			click(_item, focusedWindow) {
 				if (focusedWindow) {
 					sendAction('open-settings');
 				}
@@ -463,7 +463,7 @@ function getOtherTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 			label: t.__('Keyboard Shortcuts'),
 			accelerator: 'Ctrl+Shift+K',
 			enabled: enableMenu,
-			click(_item: any, focusedWindow: any) {
+			click(_item, focusedWindow) {
 				if (focusedWindow) {
 					sendAction('shortcut');
 				}
@@ -474,7 +474,7 @@ function getOtherTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 			label: t.__('Copy Zulip URL'),
 			accelerator: 'Ctrl+Shift+C',
 			enabled: enableMenu,
-			click(_item: any, focusedWindow: any) {
+			click(_item, focusedWindow) {
 				if (focusedWindow) {
 					sendAction('copy-zulip-url');
 				}
@@ -483,7 +483,7 @@ function getOtherTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 			label: t.__('Log Out of Organization'),
 			accelerator: 'Ctrl+L',
 			enabled: enableMenu,
-			click(_item: any, focusedWindow: any) {
+			click(_item, focusedWindow) {
 				if (focusedWindow) {
 					sendAction('log-out');
 				}
@@ -548,7 +548,7 @@ function getOtherTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 	}];
 }
 
-function sendAction(action: string, ...parameters: any[]): void {
+function sendAction(action: string, ...parameters: unknown[]): void {
 	const win = BrowserWindow.getAllWindows()[0];
 
 	if (process.platform === 'darwin') {
@@ -562,7 +562,7 @@ function checkForUpdate(): void {
 	appUpdater(true);
 }
 
-function getNextServer(tabs: any[], activeTabIndex: number): number {
+function getNextServer(tabs: ServerOrFunctionalTab[], activeTabIndex: number): number {
 	do {
 		activeTabIndex = (activeTabIndex + 1) % tabs.length;
 	}
@@ -571,7 +571,7 @@ function getNextServer(tabs: any[], activeTabIndex: number): number {
 	return activeTabIndex;
 }
 
-function getPreviousServer(tabs: any[], activeTabIndex: number): number {
+function getPreviousServer(tabs: ServerOrFunctionalTab[], activeTabIndex: number): number {
 	do {
 		activeTabIndex = (activeTabIndex - 1 + tabs.length) % tabs.length;
 	}
@@ -596,7 +596,7 @@ async function resetAppSettings(): Promise<void> {
 	if (response === 0) {
 		settingFiles.forEach(settingFileName => {
 			const getSettingFilesPath = path.join(app.getPath('appData'), appName, settingFileName);
-			fs.access(getSettingFilesPath, (error: any) => {
+			fs.access(getSettingFilesPath, (error: NodeJS.ErrnoException) => {
 				if (error) {
 					logger.error('Error while resetting app settings.');
 					logger.error(error);

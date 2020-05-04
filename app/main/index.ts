@@ -143,7 +143,7 @@ app.disableHardwareAcceleration();
 app.commandLine.appendSwitch('force-color-profile', 'srgb');
 
 // eslint-disable-next-line max-params
-app.on('certificate-error', (event: Event, _webContents: Electron.WebContents, _url: string, _error: string, _certificate: any, callback) => {
+app.on('certificate-error', (event: Event, _webContents: Electron.WebContents, _url: string, _error: string, _certificate: Electron.Certificate, callback) => {
 	event.preventDefault();
 	callback(true);
 });
@@ -304,7 +304,7 @@ app.on('ready', () => {
 		BadgeSettings.updateTaskbarIcon(data, text, mainWindow);
 	});
 
-	ipcMain.on('forward-message', (_event: Electron.IpcMainEvent, listener: string, ...parameters: any[]) => {
+	ipcMain.on('forward-message', (_event: Electron.IpcMainEvent, listener: string, ...parameters: unknown[]) => {
 		page.send(listener, ...parameters);
 	});
 

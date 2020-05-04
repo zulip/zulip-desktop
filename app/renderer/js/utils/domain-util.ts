@@ -106,7 +106,7 @@ export function duplicateDomain(domain: string): boolean {
 	return getDomains().some(server => server.url === domain);
 }
 
-async function checkCertError(domain: string, serverConf: ServerConf, error: string, silent: boolean): Promise<ServerConf> {
+async function checkCertError(domain: string, serverConf: ServerConf, error: any, silent: boolean): Promise<ServerConf> {
 	if (silent) {
 		// Since getting server settings has already failed
 		return serverConf;
@@ -114,7 +114,7 @@ async function checkCertError(domain: string, serverConf: ServerConf, error: str
 
 	// Report error to sentry to get idea of possible certificate errors
 	// users get when adding the servers
-	logger.reportSentry(`Error: ${error}`);
+	logger.reportSentry(error);
 	const certErrorMessage = Messages.certErrorMessage(domain, error);
 	const certErrorDetail = Messages.certErrorDetail();
 
@@ -183,7 +183,7 @@ async function getServerSettings(domain: string, ignoreCerts = false): Promise<S
 	};
 
 	return new Promise((resolve, reject) => {
-		request(serverSettingsOptions, (error: string, response: any) => {
+		request(serverSettingsOptions, (error: Error, response: request.Response) => {
 			if (!error && response.statusCode === 200) {
 				const {realm_name, realm_uri, realm_icon} = JSON.parse(response.body);
 				if (
@@ -223,8 +223,8 @@ export async function saveServerIcon(server: ServerConf, ignoreCerts = false): P
 		const filePath = generateFilePath(url);
 		const file = fs.createWriteStream(filePath);
 		try {
-			request(serverIconOptions).on('response', (response: any) => {
-				response.on('error', (err: string) => {
+			request(serverIconOptions).on('response', (response: request.Response) => {
+				response.on('error', (err: Error) => {
 					logger.log('Could not get server icon.');
 					logger.log(err);
 					logger.reportSentry(err);
@@ -233,7 +233,7 @@ export async function saveServerIcon(server: ServerConf, ignoreCerts = false): P
 				response.pipe(file).on('finish', () => {
 					resolve(filePath);
 				});
-			}).on('error', (err: string) => {
+			}).on('error', (err: Error) => {
 				logger.log('Could not get server icon.');
 				logger.log(err);
 				logger.reportSentry(err);

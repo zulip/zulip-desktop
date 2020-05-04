@@ -28,7 +28,7 @@ let db: JsonDB;
 
 reloadDB();
 
-export function getConfigItem(key: string, defaultValue: any = null): any {
+export function getConfigItem(key: string, defaultValue: unknown = null): any {
 	try {
 		db.reload();
 	} catch (error) {
@@ -68,7 +68,7 @@ export function isConfigItemExists(key: string): boolean {
 	return (value !== undefined);
 }
 
-export function setConfigItem(key: string, value: any, override? : boolean): void {
+export function setConfigItem(key: string, value: unknown, override? : boolean): void {
 	if (EnterpriseUtil.configItemExists(key) && !override) {
 		// If item is in global config and we're not trying to override
 		return;

@@ -1,25 +1,36 @@
 'use strict';
 
+interface CompatElectronBridge extends ElectronBridge {
+	readonly idle_on_system: boolean;
+	readonly last_active_on_system: number;
+	send_notification_reply_message_supported: boolean;
+}
+
 (() => {
 	const zulipWindow = window as typeof window & {
-		electron_bridge: any;
-		narrow: any;
-		page_params: any;
-		raw_electron_bridge: any;
+		electron_bridge: CompatElectronBridge;
+		narrow: {
+			by_subject?: (target_id: number, opts: {trigger?: string}) => void;
+			by_topic?: (target_id: number, opts: {trigger?: string}) => void;
+		};
+		page_params?: {
+			default_language?: string;
+		};
+		raw_electron_bridge: ElectronBridge;
 	};
 
-	const electron_bridge = {
+	const electron_bridge: CompatElectronBridge = {
 		...zulipWindow.raw_electron_bridge,
 
-		get idle_on_system() {
+		get idle_on_system(): boolean {
 			return this.get_idle_on_system();
 		},
 
-		get last_active_on_system() {
+		get last_active_on_system(): number {
 			return this.get_last_active_on_system();
 		},
 
-		get send_notification_reply_message_supported() {
+		get send_notification_reply_message_supported(): boolean {
 			return this.get_send_notification_reply_message_supported();
 		},
 
@@ -47,7 +58,7 @@
 		}
 	})();
 
-	electron_bridge.on_event('narrow-by-topic', (id: string) => {
+	electron_bridge.on_event('narrow-by-topic', (id: number) => {
 		const {narrow} = zulipWindow;
 		const narrowByTopic = narrow.by_topic || narrow.by_subject;
 		narrowByTopic(id, {trigger: 'notification'});

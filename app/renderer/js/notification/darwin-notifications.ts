@@ -17,14 +17,14 @@ interface NotificationHandlerArgs {
 }
 
 class DarwinNotification {
-	tag: string;
+	tag: number;
 
 	constructor(title: string, options: NotificationOptions) {
 		const silent: boolean = ConfigUtil.getConfigItem('silent') || false;
 		const {icon} = options;
 		const profilePic = new URL(icon, location.href).href;
 
-		this.tag = options.tag;
+		this.tag = Number.parseInt(options.tag, 10);
 		const notification = new MacNotifier(title, Object.assign(options, {
 			bundleId: appId,
 			canReply: true,

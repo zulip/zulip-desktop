@@ -21,14 +21,9 @@ let db: JsonDB;
 
 reloadDB();
 
-export function getCertificate(server: string, defaultValue: any = null): any {
+export function getCertificate(server: string): string | undefined {
 	reloadDB();
-	const value = db.getData('/')[server];
-	if (value === undefined) {
-		return defaultValue;
-	}
-
-	return value;
+	return db.getData('/')[server];
 }
 
 // Function to copy the certificate to userData folder

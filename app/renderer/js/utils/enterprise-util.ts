@@ -9,7 +9,7 @@ const logger = new Logger({
 });
 
 // TODO: replace enterpriseSettings type with an interface once settings are final
-let enterpriseSettings: any;
+let enterpriseSettings: {[key: string]: unknown};
 let configFile: boolean;
 
 reloadDB();
@@ -39,7 +39,7 @@ export function hasConfigFile(): boolean {
 	return configFile;
 }
 
-export function getConfigItem(key: string, defaultValue?: any): any {
+export function getConfigItem(key: string, defaultValue?: unknown): any {
 	reloadDB();
 	if (!configFile) {
 		return defaultValue;
@@ -67,6 +67,10 @@ export function isPresetOrg(url: string): boolean {
 	}
 
 	const presetOrgs = enterpriseSettings.presetOrganizations;
+	if (!Array.isArray(presetOrgs)) {
+		throw new TypeError('Expected array for presetOrgs');
+	}
+
 	for (const org of presetOrgs) {
 		if (url.includes(org)) {
 			return true;

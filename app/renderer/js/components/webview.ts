@@ -23,7 +23,7 @@ interface WebViewProps {
 	onNetworkError: (index: number) => void;
 	nodeIntegration: boolean;
 	preload: boolean;
-	onTitleChange: any;
+	onTitleChange: () => void;
 	hasPermission?: (origin: string, permission: string) => boolean;
 }
 
@@ -294,7 +294,7 @@ export default class WebView extends BaseComponent {
 		this.init();
 	}
 
-	async send(channel: string, ...parameters: any[]): Promise<void> {
+	async send(channel: string, ...parameters: unknown[]): Promise<void> {
 		await this.domReady;
 		await this.$el.send(channel, ...parameters);
 	}
