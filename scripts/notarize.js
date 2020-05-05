@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 
 dotenv.config({path: path.join(__dirname, '/../.env')});
 
-const { notarize } = require('electron-notarize');
+const {notarize} = require('electron-notarize');
 
 exports.default = async function (context) {
 	const {electronPlatformName, appOutDir} = context;
@@ -19,6 +19,6 @@ exports.default = async function (context) {
 		appPath: `${appOutDir}/${appName}.app`,
 		appleId: process.env.APPLE_ID,
 		appleIdPassword: process.env.APPLE_ID_PASS,
-		ascProvider: process.env.ASC_PROVIDER // team short name
+		ascProvider: process.env.ASC_PROVIDER // Team short name
 	});
 };
