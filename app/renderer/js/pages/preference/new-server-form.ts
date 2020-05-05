@@ -72,7 +72,7 @@ export default class NewServerForm extends BaseComponent {
 			this.$saveServerButton.innerHTML = 'Connect';
 			await dialog.showMessageBox({
 				type: 'error',
-				message: error,
+				message: error.toString(),
 				buttons: ['OK']
 			});
 			return;
