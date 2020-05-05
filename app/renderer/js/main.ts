@@ -1052,10 +1052,8 @@ class ServerManagerView {
 
 window.addEventListener('load', async () => {
 	// Only start electron-connect (auto reload on change) when its ran
-	// from `npm run dev` or `gulp dev` and not from `npm start` when
-	// app is started `npm start` main process's proces.argv will have
-	// `--no-electron-connect`
-	if (isDev && !remote.getGlobal('process').argv.includes('--no-electron-connect')) {
+	// from `npm run dev` or `gulp dev` and not from `npm start`
+	if (isDev && remote.getGlobal('process').argv.includes('--electron-connect')) {
 		require('electron-connect').client.create();
 	}
 
