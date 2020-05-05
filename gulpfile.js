@@ -29,7 +29,7 @@ gulp.task('compile', () => {
 
 gulp.task('dev', () => {
 	// Start browser process
-	electron.start();
+	electron.start(['--electron-connect']);
 	// Restart browser process
 	gulp.watch('app/main/*.ts', gulp.series('compile', 'restart:browser'));
 	// Reload renderer process
@@ -40,7 +40,7 @@ gulp.task('dev', () => {
 
 gulp.task('restart:browser', done => {
 	electron.stop();
-	electron.restart();
+	electron.restart(['--electron-connect']);
 	done();
 });
 
