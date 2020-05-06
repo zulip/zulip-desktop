@@ -663,6 +663,26 @@ i.open-network-button {
 }
 
 /* responsive grid */
+@media (min-width: 500px) and (max-width: 720px) {
+    #new-server-container {
+        padding-left: 0px;
+        width: 60vw;
+        padding-right: 4vh;
+    }
+    .page-title {
+        width: 60vw;
+    }
+}
+
+@media (max-width: 500px) {
+    #new-server-container {
+        padding-left: 0px;
+        width: 54%;
+    }
+    .page-title {
+        width: 54%;
+    }
+}
 
 @media (max-width: 650px) {
     .selected-css-path,
@@ -694,9 +714,6 @@ i.open-network-button {
         margin-left: 6px;
         margin-right: 6px;
         width: 43%;
-    }
-    #new-server-container {
-        padding-left: 0px;
     }
 }
 
