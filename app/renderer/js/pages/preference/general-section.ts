@@ -412,7 +412,6 @@ export default class GeneralSection extends BaseSection {
 
 	setLocale(): void {
 		const langDiv: HTMLSelectElement = document.querySelector('.lang-div');
-		// This path is for the JSON file that stores key: value pairs for supported locales
 		const langList = this.generateSelectTemplate(supportedLocales, 'lang-menu');
 		langDiv.innerHTML += langList;
 		// `langMenu` is the select-option dropdown menu formed after executing the previous command
