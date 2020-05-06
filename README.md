@@ -29,8 +29,8 @@ project](https://github.com/zulip/zulip-desktop/issues/new).
 
 # Contribute
 
-First, join us on the [Zulip community server](https://zulip.readthedocs.io/en/latest/contributing/chat-zulip-org.html)!
-Also see our [contribution guidelines](./CONTRIBUTING.md) and our [development guide](./development.md).
+Join us on the [Zulip community server](https://zulip.readthedocs.io/en/latest/contributing/chat-zulip-org.html)!
+Make sure you check out our [contribution guidelines](./CONTRIBUTING.md) and our [development guide](./development.md).
 
 # License
 Released under the [Apache-2.0](./LICENSE) license.
