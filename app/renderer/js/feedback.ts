@@ -52,7 +52,7 @@ sendFeedback.buttonLabel = 'Report Issue';
 sendFeedback.loaderSuccessText = '';
 
 sendFeedback.useReporter('emailReporter', {
-	email: 'akash@zulipchat.com'
+	email: 'support@zulipchat.com'
 });
 
 feedbackHolder.addEventListener('click', (event: Event) => {
