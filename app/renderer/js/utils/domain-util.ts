@@ -17,7 +17,6 @@ export interface ServerConf {
 	url: string;
 	alias?: string;
 	icon?: string;
-	ignoreCerts?: boolean;
 }
 
 const logger = new Logger({
@@ -55,26 +54,14 @@ export function getDomain(index: number): ServerConf {
 	return db.getData(`/domains[${index}]`);
 }
 
-export function shouldIgnoreCerts(url: string): boolean {
-	const domains = getDomains();
-	for (const domain of domains) {
-		if (domain.url === url) {
-			return domain.ignoreCerts;
-		}
-	}
-
-	return null;
-}
-
 export function updateDomain(index: number, server: ServerConf): void {
 	reloadDB();
 	db.push(`/domains[${index}]`, server, true);
 }
 
 export async function addDomain(server: ServerConf): Promise<void> {
-	const {ignoreCerts} = server;
 	if (server.icon) {
-		const localIconUrl = await saveServerIcon(server, ignoreCerts);
+		const localIconUrl = await saveServerIcon(server);
 		server.icon = localIconUrl;
 		db.push('/domains[]', server, true);
 		reloadDB();
@@ -118,33 +105,16 @@ async function checkCertError(domain: string, serverConf: ServerConf, error: any
 	const certErrorMessage = Messages.certErrorMessage(domain, error);
 	const certErrorDetail = Messages.certErrorDetail();
 
-	const {response} = await dialog.showMessageBox({
-		type: 'warning',
-		buttons: ['Yes', 'No'],
-		defaultId: 1,
+	await dialog.showMessageBox({
+		type: 'error',
+		buttons: ['OK'],
 		message: certErrorMessage,
 		detail: certErrorDetail
 	});
-	if (response === 0) {
-		// Set ignoreCerts parameter to true in case user responds with yes
-		serverConf.ignoreCerts = true;
-		try {
-			return await getServerSettings(domain, serverConf.ignoreCerts);
-		} catch (_) {
-			if (error === Messages.noOrgsError(domain)) {
-				throw new Error(error);
-			}
-
-			return serverConf;
-		}
-	} else {
-		throw new Error('Untrusted certificate.');
-	}
+	throw new Error('Untrusted certificate.');
 }
 
-// ignoreCerts parameter helps in fetching server icon and
-// other server details when user chooses to ignore certificate warnings
-export async function checkDomain(domain: string, ignoreCerts = false, silent = false): Promise<ServerConf> {
+export async function checkDomain(domain: string, silent = false): Promise<ServerConf> {
 	if (!silent && duplicateDomain(domain)) {
 		// Do not check duplicate in silent mode
 		throw new Error('This server has been added.');
@@ -155,12 +125,11 @@ export async function checkDomain(domain: string, ignoreCerts = false, silent = 
 	const serverConf = {
 		icon: defaultIconUrl,
 		url: domain,
-		alias: domain,
-		ignoreCerts
+		alias: domain
 	};
 
 	try {
-		return await getServerSettings(domain, serverConf.ignoreCerts);
+		return await getServerSettings(domain);
 	} catch (error_) {
 		// Make sure that error is an error or string not undefined
 		// so validation does not throw error.
@@ -176,10 +145,10 @@ export async function checkDomain(domain: string, ignoreCerts = false, silent = 
 	}
 }
 
-async function getServerSettings(domain: string, ignoreCerts = false): Promise<ServerConf> {
+async function getServerSettings(domain: string): Promise<ServerConf> {
 	const serverSettingsOptions = {
 		url: domain + '/api/v1/server_settings',
-		...RequestUtil.requestOptions(domain, ignoreCerts)
+		...RequestUtil.requestOptions(domain)
 	};
 
 	return new Promise((resolve, reject) => {
@@ -196,8 +165,7 @@ async function getServerSettings(domain: string, ignoreCerts = false): Promise<S
 						// Following check handles both the cases
 						icon: realm_icon.startsWith('/') ? realm_uri + realm_icon : realm_icon,
 						url: realm_uri,
-						alias: escape(realm_name),
-						ignoreCerts
+						alias: escape(realm_name)
 					});
 				} else {
 					reject(Messages.noOrgsError(domain));
@@ -209,13 +177,13 @@ async function getServerSettings(domain: string, ignoreCerts = false): Promise<S
 	});
 }
 
-export async function saveServerIcon(server: ServerConf, ignoreCerts = false): Promise<string> {
+export async function saveServerIcon(server: ServerConf): Promise<string> {
 	const url = server.icon;
 	const domain = server.url;
 
 	const serverIconOptions = {
 		url,
-		...RequestUtil.requestOptions(domain, ignoreCerts)
+		...RequestUtil.requestOptions(domain)
 	};
 
 	// The save will always succeed. If url is invalid, downgrade to default icon.
@@ -251,10 +219,9 @@ export async function saveServerIcon(server: ServerConf, ignoreCerts = false): P
 export async function updateSavedServer(url: string, index: number): Promise<void> {
 	// Does not promise successful update
 	const oldIcon = getDomain(index).icon;
-	const {ignoreCerts} = getDomain(index);
 	try {
-		const newServerConf = await checkDomain(url, ignoreCerts, true);
-		const localIconUrl = await saveServerIcon(newServerConf, ignoreCerts);
+		const newServerConf = await checkDomain(url, true);
+		const localIconUrl = await saveServerIcon(newServerConf);
 		if (!oldIcon || localIconUrl !== '../renderer/img/icon.png') {
 			newServerConf.icon = localIconUrl;
 			updateDomain(index, newServerConf);

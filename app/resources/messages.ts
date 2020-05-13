@@ -19,14 +19,12 @@ export function noOrgsError(domain: string): string {
 }
 
 export function certErrorMessage(domain: string, error: string): string {
-	return `Do you trust certificate from ${domain}? \n ${error}`;
+	return `Certificate error for ${domain}\n${error}`;
 }
 
 export function certErrorDetail(): string {
 	return `The organization you're connecting to is either someone impersonating the Zulip server you entered, or the server you're trying to connect to is configured in an insecure way.
-	\nIf you have a valid certificate please add it from Settings>Organizations and try to add the organization again.
-	\nUnless you have a good reason to believe otherwise, you should not proceed.
-	\nYou can click here if you'd like to proceed with the connection.`;
+	\nIf you have a valid certificate please add it from Settings>Organizations and try to add the organization again.`;
 }
 
 export function enterpriseOrgError(length: number, domains: string[]): DialogBoxError {

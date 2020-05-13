@@ -225,7 +225,6 @@ app.on('ready', () => {
 	) /* eslint-disable-line max-params */ => {
 		// TODO: The entire concept of selectively ignoring certificate errors
 		// is ill-conceived, and this handler needs to be deleted.
-		event.preventDefault();
 
 		const {origin} = new URL(url);
 		const filename = CertificateUtil.getCertificate(encodeURIComponent(origin));
@@ -237,6 +236,7 @@ app.on('ready', () => {
 				);
 				if (certificate.data.replace(/[\r\n]/g, '') ===
 					savedCertificate.replace(/[\r\n]/g, '')) {
+					event.preventDefault();
 					callback(true);
 					return;
 				}
@@ -245,20 +245,11 @@ app.on('ready', () => {
 			}
 		}
 
-		page.send(
-			'certificate-error',
-			webContents.id === mainWindow.webContents.id ? null : webContents.id,
-			makeRendererCallback(ignore => {
-				callback(ignore);
-				if (!ignore) {
-					dialog.showErrorBox(
-						'Certificate error',
-						`The server presented an invalid certificate for ${origin}:
+		dialog.showErrorBox(
+			'Certificate error',
+			`The server presented an invalid certificate for ${origin}:
 
 ${error}`
-					);
-				}
-			})
 		);
 	});
 

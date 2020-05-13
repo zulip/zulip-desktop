@@ -20,12 +20,9 @@ interface RequestUtilResponse {
 	proxy: string | void | ProxyUtil.ProxyRule;
 	ecdhCurve: 'auto';
 	headers: { 'User-Agent': string };
-	rejectUnauthorized: boolean;
 }
 
-// ignoreCerts parameter helps in fetching server icon and
-// other server details when user chooses to ignore certificate warnings
-export function requestOptions(domain: string, ignoreCerts: boolean): RequestUtilResponse {
+export function requestOptions(domain: string): RequestUtilResponse {
 	domain = formatUrl(domain);
 	const certificate = CertificateUtil.getCertificate(
 		encodeURIComponent(domain)
@@ -56,8 +53,7 @@ export function requestOptions(domain: string, ignoreCerts: boolean): RequestUti
 		ca: certificateLocation ? certificateLocation : '',
 		proxy: proxyEnabled ? ProxyUtil.getProxy(domain) : '',
 		ecdhCurve: 'auto',
-		headers: {'User-Agent': SystemUtil.getUserAgent()},
-		rejectUnauthorized: !ignoreCerts
+		headers: {'User-Agent': SystemUtil.getUserAgent()}
 	};
 }
 
