@@ -35,8 +35,7 @@
     "dev": "gulp dev && npm test",
     "pack": "tsc && electron-builder --dir",
     "dist": "tsc && electron-builder",
-    "mas": "tsc && electron-builder --mac mas",
-    "build-locales": "node tools/locale-helper"
+    "mas": "tsc && electron-builder --mac mas"
   },
   "pre-commit": [
     "test"
@@ -176,7 +175,6 @@
     "@types/requestidlecallback": "^0.3.1",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
-    "@vitalets/google-translate-api": "^3.0.0",
     "devtron": "^1.4.0",
     "dotenv": "^8.2.0",
     "electron": "^8.2.5",
@@ -226,7 +224,6 @@
           "gulpfile.js",
           "scripts/notarize.js",
           "tests/**/*.js",
-          "tools/locale-helper/index.js",
           "tools/reinstall-node-modules.js"
         ],
         "parserOptions": {
