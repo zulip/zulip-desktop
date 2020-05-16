@@ -56,6 +56,7 @@ sendFeedback.textareaPlaceholder = 'Succinctly describe your issue and steps to 
 
 sendFeedback.buttonLabel = 'Report Issue';
 sendFeedback.loaderSuccessText = '';
+sendFeedback.showCancelButton = 'show';
 
 sendFeedback.useReporter('emailReporter', {
 	email: 'akash@zulipchat.com'
@@ -67,6 +68,10 @@ feedbackHolder.addEventListener('click', (event: Event) => {
 	if (event.target === event.currentTarget) {
 		feedbackHolder.classList.remove('show');
 	}
+});
+
+sendFeedback.addEventListener('feedback-cancelled', () => {
+	feedbackHolder.classList.remove('show');
 });
 
 sendFeedback.addEventListener('feedback-submitted', () => {
