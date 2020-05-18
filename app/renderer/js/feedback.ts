@@ -69,6 +69,10 @@ sendFeedback.addEventListener('feedback-submitted', () => {
 	}, 1000);
 });
 
+sendFeedback.addEventListener('feedback-cancelled', () => {
+	feedbackHolder.classList.remove('show');
+});
+
 const dataDir = app.getPath('userData');
 const logsDir = path.join(dataDir, '/Logs');
 sendFeedback.logs.push(...fs.readdirSync(logsDir).map(file => path.join(logsDir, file)));
