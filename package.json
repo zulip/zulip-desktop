@@ -142,7 +142,7 @@
     "InstantMessaging"
   ],
   "dependencies": {
-    "@electron-elements/send-feedback": "^1.0.8",
+    "@electron-elements/send-feedback": "^2.0.3",
     "@sentry/electron": "^1.3.0",
     "adm-zip": "^0.4.14",
     "auto-launch": "^5.0.5",
