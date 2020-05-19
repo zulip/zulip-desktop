@@ -1,15 +1,19 @@
+:host {
+    --button-color: rgb(69, 166, 149);
+}
+
 button:hover,
 button:focus {
-    border-color: rgb(78, 191, 172);
-    color: rgb(78, 191, 172);
+    border-color: var(--button-color);
+    color: var(--button-color);
 }
   
 button:active {
     background-color: rgb(241, 241, 241);
-    color: rgb(78, 191, 172);
+    color: var(--button-color);
 }
 
 button {
-    background-color: rgb(78, 191, 172);
-    border-color: rgb(78, 191, 172);
+    background-color: var(--button-color);
+    border-color: var(--button-color);
 }
