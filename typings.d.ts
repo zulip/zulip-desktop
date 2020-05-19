@@ -1,6 +1,7 @@
 declare module '@electron-elements/send-feedback' {
 	class SendFeedback extends HTMLElement {
 		customStyles: string;
+		customStylesheet: string;
 		titleLabel: string;
 		titlePlaceholder: string;
 		textareaLabel: string;

@@ -11,22 +11,7 @@ export const sendFeedback: SendFeedback = document.querySelector('send-feedback'
 export const feedbackHolder = sendFeedback.parentElement;
 
 // Make the button color match zulip app's theme
-sendFeedback.customStyles = `
-button:hover, button:focus {
-  border-color: #4EBFAC;
-  color: #4EBFAC;
-}
-
-button:active {
-  background-color: #f1f1f1;
-  color: #4EBFAC;
-}
-
-button {
-  background-color: #4EBFAC;
-  border-color: #4EBFAC;
-}
-`;
+sendFeedback.customStylesheet = 'css/feedback.css';
 
 /* eslint-disable no-multi-str */
 
