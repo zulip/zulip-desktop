@@ -13,25 +13,12 @@ export const feedbackHolder = sendFeedback.parentElement;
 // Make the button color match zulip app's theme
 sendFeedback.customStylesheet = 'css/feedback.css';
 
-/* eslint-disable no-multi-str */
-
-// customize the fields of custom elements
+// Customize the fields of custom elements
 sendFeedback.title = 'Report Issue';
 sendFeedback.titleLabel = 'Issue title:';
 sendFeedback.titlePlaceholder = 'Enter issue title';
 sendFeedback.textareaLabel = 'Describe the issue:';
-sendFeedback.textareaPlaceholder = 'Succinctly describe your issue and steps to reproduce it...\n\n\
----\n\
-<!-- Please Include: -->\n\
-- **Operating System**:\n\
-  - [ ] Windows\n\
-  - [ ] Linux/Ubuntu\n\
-  - [ ] macOS\n\
-- **Clear steps to reproduce the issue**:\n\
-- **Relevant error messages and/or screenshots**:\n\
-';
-
-/* eslint-enable no-multi-str */
+sendFeedback.textareaPlaceholder = 'Succinctly describe your issue and steps to reproduce it...';
 
 sendFeedback.buttonLabel = 'Report Issue';
 sendFeedback.loaderSuccessText = '';
