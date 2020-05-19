@@ -3,14 +3,11 @@ import {ipcRenderer, remote, WebviewTag, NativeImage} from 'electron';
 import path from 'path';
 import * as ConfigUtil from './utils/config-util';
 
-const {Tray, Menu, nativeImage, BrowserWindow, nativeTheme} = remote;
+const {Tray, Menu, nativeImage, BrowserWindow} = remote;
 
 let tray: Electron.Tray;
 
-// Get the theme on macOS
-const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
-
-const ICON_DIR = process.platform === 'darwin' ? `../../resources/tray/${theme}` : '../../resources/tray';
+const ICON_DIR = '../../resources/tray';
 
 const TRAY_SUFFIX = 'tray';
 
@@ -21,7 +18,7 @@ const iconPath = (): string => {
 		return APP_ICON + 'linux.png';
 	}
 
-	return APP_ICON + (process.platform === 'win32' ? 'win.ico' : 'osx.png');
+	return APP_ICON + (process.platform === 'win32' ? 'win.ico' : 'macOSTemplate.png');
 };
 
 let unread = 0;
