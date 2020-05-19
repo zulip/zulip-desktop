@@ -138,12 +138,12 @@ export default class GeneralSection extends BaseSection {
 						<div class="setting-control"></div>
 					</div>
 				</div>
-				<div class="title">${t.__('Reset Application Data')}</div>
+				<div class="title">${t.__('Factory Reset Data')}</div>
                 <div class="settings-card">
-					<div class="setting-row" id="resetdata-option">
-						<div class="setting-description">${t.__('This will delete all application data including all added accounts and preferences')}
+					<div class="setting-row" id="factory-reset-option">
+						<div class="setting-description">${t.__('Reset the application, thus deleting all the connected organizations, accounts, and certificates.')}
 						</div>
-						<button class="reset-data-button red w-150">${t.__('Reset App Data')}</button>
+						<button class="factory-reset-button red w-150">${t.__('Factory Reset')}</button>
 					</div>
 				</div>
 			</div>
@@ -159,7 +159,7 @@ export default class GeneralSection extends BaseSection {
 		this.betaUpdateOption();
 		this.updateSidebarOption();
 		this.updateStartAtLoginOption();
-		this.updateResetDataOption();
+		this.factoryReset();
 		this.showDesktopNotification();
 		this.enableSpellchecker();
 		this.minimizeOnStart();
@@ -372,23 +372,6 @@ export default class GeneralSection extends BaseSection {
 		});
 	}
 
-	async clearAppDataDialog(): Promise<void> {
-		const clearAppDataMessage = 'By clicking proceed you will be removing all added accounts and preferences from Zulip. When the application restarts, it will be as if you are starting Zulip for the first time.';
-		const getAppPath = path.join(app.getPath('appData'), app.name);
-
-		const {response} = await dialog.showMessageBox({
-			type: 'warning',
-			buttons: ['YES', 'NO'],
-			defaultId: 0,
-			message: 'Are you sure',
-			detail: clearAppDataMessage
-		});
-		if (response === 0) {
-			await fs.remove(getAppPath);
-			ipcRenderer.send('forward-message', 'hard-reload');
-		}
-	}
-
 	async customCssDialog(): Promise<void> {
 		const showDialogOptions: OpenDialogOptions = {
 			title: 'Select file',
@@ -401,13 +384,6 @@ export default class GeneralSection extends BaseSection {
 			ConfigUtil.setConfigItem('customCSS', filePaths[0]);
 			ipcRenderer.send('forward-message', 'hard-reload');
 		}
-	}
-
-	updateResetDataOption(): void {
-		const resetDataButton = document.querySelector('#resetdata-option .reset-data-button');
-		resetDataButton.addEventListener('click', async () => {
-			await this.clearAppDataDialog();
-		});
 	}
 
 	setLocale(): void {
@@ -491,6 +467,30 @@ export default class GeneralSection extends BaseSection {
 				ConfigUtil.setConfigItem('promptDownload', newValue);
 				this.updatePromptDownloadOption();
 			}
+		});
+	}
+
+	async factoryResetSettings(): Promise<void> {
+		const clearAppDataMessage = 'When the application restarts, it will be as if you have just downloaded Zulip app.';
+		const getAppPath = path.join(app.getPath('appData'), app.name);
+
+		const {response} = await dialog.showMessageBox({
+			type: 'warning',
+			buttons: ['YES', 'NO'],
+			defaultId: 0,
+			message: 'Are you sure?',
+			detail: clearAppDataMessage
+		});
+		if (response === 0) {
+			await fs.remove(getAppPath);
+			setTimeout(() => ipcRenderer.send('clear-app-settings'), 1000);
+		}
+	}
+
+	factoryReset(): void {
+		const factoryResetButton = document.querySelector('#factory-reset-option .factory-reset-button');
+		factoryResetButton.addEventListener('click', async () => {
+			await this.factoryResetSettings();
 		});
 	}
 }

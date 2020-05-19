@@ -862,10 +862,6 @@ class ServerManagerView {
 			ipcRenderer.send('reload-full-app');
 		});
 
-		ipcRenderer.on('clear-app-data', () => {
-			ipcRenderer.send('clear-app-settings');
-		});
-
 		ipcRenderer.on('switch-server-tab', (event: Event, index: number) => {
 			this.activateLastTab(index);
 		});
