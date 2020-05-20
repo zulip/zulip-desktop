@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.com
+
+[zulip.desktopjson]
+file_filter = app/translations/<lang>.json
+minimum_perc = 0
+source_file = app/translations/en.json
+source_lang = en
+type = KEYVALUEJSON

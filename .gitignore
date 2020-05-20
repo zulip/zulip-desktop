@@ -4,6 +4,9 @@
 # npm cache directory
 .npm
 
+# transifexrc - if user prefers it to be in working tree
+.transifexrc
+
 # Compiled binary build directory
 dist/
 

@@ -395,7 +395,7 @@ export default class GeneralSection extends BaseSection {
 
 		// The next three lines set the selected language visible on the dropdown button
 		let language = ConfigUtil.getConfigItem('appLanguage');
-		language = language && langMenu.options.namedItem(language) ? language : 'en-US';
+		language = language && langMenu.options.namedItem(language) ? language : 'en';
 		langMenu.options.namedItem(language).selected = true;
 
 		langMenu.addEventListener('change', (event: Event) => {
