@@ -1,11 +1,8 @@
-import {app, shell, BrowserWindow, Menu, dialog} from 'electron';
+import {app, shell, BrowserWindow, Menu} from 'electron';
 import {appUpdater} from './autoupdater';
 
 import AdmZip from 'adm-zip';
-import fs from 'fs-extra';
-import path from 'path';
 import * as DNDUtil from '../renderer/js/utils/dnd-util';
-import Logger from '../renderer/js/utils/logger-util';
 import * as ConfigUtil from '../renderer/js/utils/config-util';
 import * as LinkUtil from '../renderer/js/utils/link-util';
 import * as t from '../renderer/js/utils/translation-util';
@@ -18,11 +15,6 @@ export interface MenuProps {
 }
 
 const appName = app.name;
-
-const logger = new Logger({
-	file: 'errors.log',
-	timestamp: true
-});
 
 function getHistorySubmenu(enableMenu: boolean): Electron.MenuItemConstructorOptions[] {
 	return [{
@@ -61,13 +53,6 @@ function getToolsSubmenu(): Electron.MenuItemConstructorOptions[] {
 	},
 	{
 		type: 'separator'
-	},
-	{
-		label: t.__('Factory Reset'),
-		accelerator: process.platform === 'darwin' ? 'Command+Shift+D' : 'Ctrl+Shift+D',
-		async click() {
-			await resetAppSettings();
-		}
 	},
 	{
 		label: t.__('Download App Logs'),
@@ -578,36 +563,6 @@ function getPreviousServer(tabs: ServerOrFunctionalTab[], activeTabIndex: number
 	while (tabs[activeTabIndex].props.role !== 'server');
 
 	return activeTabIndex;
-}
-
-async function resetAppSettings(): Promise<void> {
-	const resetAppSettingsMessage = 'By proceeding you will be removing all connected organizations and preferences from Zulip.';
-
-	// We save App's settings/configurations in following files
-	const settingFiles = ['config/window-state.json', 'config/domain.json', 'config/settings.json', 'config/certificates.json'];
-
-	const {response} = await dialog.showMessageBox({
-		type: 'warning',
-		buttons: ['YES', 'NO'],
-		defaultId: 0,
-		message: 'Are you sure?',
-		detail: resetAppSettingsMessage
-	});
-	if (response === 0) {
-		settingFiles.forEach(settingFileName => {
-			const getSettingFilesPath = path.join(app.getPath('appData'), appName, settingFileName);
-			fs.access(getSettingFilesPath, (error: NodeJS.ErrnoException) => {
-				if (error) {
-					logger.error('Error while resetting app settings.');
-					logger.error(error);
-				} else {
-					fs.unlink(getSettingFilesPath, () => {
-						sendAction('clear-app-data');
-					});
-				}
-			});
-		});
-	}
 }
 
 export function setMenu(props: MenuProps): void {
