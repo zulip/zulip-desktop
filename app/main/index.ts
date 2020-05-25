@@ -167,7 +167,9 @@ app.on('activate', () => {
 app.on('ready', () => {
 	const ses = session.fromPartition('persist:webviewsession');
 	ses.setUserAgent(`ZulipElectron/${app.getVersion()} ${ses.getUserAgent()}`);
-
+	ipcMain.on('set-spellcheck-langs', () => {
+		ses.setSpellCheckerLanguages(ConfigUtil.getConfigItem('spellcheck-languages'));
+	});
 	AppMenu.setMenu({
 		tabs: []
 	});

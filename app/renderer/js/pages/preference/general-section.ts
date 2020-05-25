@@ -3,7 +3,7 @@ import {ipcRenderer, remote, OpenDialogOptions} from 'electron';
 import path from 'path';
 import fs from 'fs-extra';
 
-const {app, dialog} = remote;
+const {app, dialog, session} = remote;
 const currentBrowserWindow = remote.getCurrentWindow();
 
 import BaseSection from './base-section';
@@ -11,6 +11,8 @@ import * as ConfigUtil from '../../utils/config-util';
 import * as EnterpriseUtil from '../../utils/enterprise-util';
 import * as t from '../../utils/translation-util';
 import supportedLocales from '../../../../translations/supported-locales.json';
+import Tagify from '@yaireo/tagify';
+import ISO6391 from 'iso-639-1';
 
 interface GeneralSectionProps {
 	$root: Element;
@@ -93,7 +95,10 @@ export default class GeneralSection extends BaseSection {
 						<div class="setting-description">${t.__('Enable spellchecker (requires restart)')}</div>
 						<div class="setting-control"></div>
 					</div>
+					<div class="setting-row" id="spellcheck-langs"></div>
+					<div class="setting-row" id="note"></div>
 				</div>
+
 				<div class="title">${t.__('Advanced')}</div>
 				<div class="settings-card">
 
@@ -171,6 +176,7 @@ export default class GeneralSection extends BaseSection {
 		this.updatePromptDownloadOption();
 		this.enableErrorReporting();
 		this.setLocale();
+		this.initSpellChecker();
 
 		// Platform specific settings
 
@@ -492,5 +498,60 @@ export default class GeneralSection extends BaseSection {
 		factoryResetButton.addEventListener('click', async () => {
 			await this.factoryResetSettings();
 		});
+	}
+
+	initSpellChecker(): void {
+		// The elctron API is a no-op on macOS and macOS default spellchecker is used.
+		if (process.platform === 'darwin') {
+			const note = document.querySelector('#note');
+			note.innerHTML += 'On macOS, the OS spellchecker is used.<br>Change the language from System Preferences -> Keyboard -> Text -> Spelling.';
+		} else {
+			const note = document.querySelector('#note');
+			note.innerHTML += 'You can select a maximum of 3 languages for spellchecking.';
+			const spellDiv = document.querySelector('#spellcheck-langs');
+			spellDiv.innerHTML += `
+				<div class="setting-description">${t.__('SpellChecker Languages')}</div>
+				<input name='spellcheck' placeholder='Enter Languages'>`;
+
+			const availableLanguages = session.fromPartition('persist:webviewsession').availableSpellCheckerLanguages;
+			const languagePairs: Map<string, string> = new Map();
+			availableLanguages.forEach((l: string) => {
+				if (ISO6391.getName(l) !== '') {
+					languagePairs.set(ISO6391.getName(l), l);
+				}
+			});
+
+			// Manually set names for languages not available in ISO6391
+			languagePairs.set('English (AU)', 'en-AU'); languagePairs.set('English (CA)', 'en-CA'); languagePairs.set('English (GB)', 'en-GB'); languagePairs.set('English (US)', 'en-US'); languagePairs.set('Spanish (Latin America)', 'es-419'); languagePairs.set('Spanish (Argentina)', 'es-AR'); languagePairs.set('Spanish (Mexico)', 'es-MX'); languagePairs.set('Spanish (US)', 'es-US'); languagePairs.set('Portuguese (Brazil)', 'pt-BR'); languagePairs.set('Portuguese (Portugal)', 'pt-PT'); languagePairs.set('Serbo-Croatian', 'sh'); // eslint-disable-line max-statements-per-line
+			const tagField = document.querySelector('input[name=spellcheck]');
+			const tagify = new Tagify(tagField, {
+				whitelist: [...languagePairs.keys()],
+				enforceWhitelist: true,
+				maxTags: 3,
+				dropdown: {
+					enabled: 0,
+					maxItems: 100, // If chromium supports more and more languages in future
+					closeOnSelect: false,
+					highlightFirst: true
+				}
+			});
+
+			const configuredLanguages: string[] = [];
+			ConfigUtil.getConfigItem('spellcheck-languages').forEach((code: any) => {
+				[...languagePairs].forEach((pair): string | void => {
+					if (pair[1] === code) {
+						configuredLanguages.push(pair[0]);
+					}
+				});
+			});
+
+			tagify.addTags(configuredLanguages);
+
+			tagField.addEventListener('change', (event: any) => {
+				const spellLangs: string[] = [...JSON.parse(event.target.value).values()].map(elt => languagePairs.get(elt.value));
+				ConfigUtil.setConfigItem('spellcheck-languages', spellLangs);
+				ipcRenderer.send('set-spellcheck-langs');
+			});
+		}
 	}
 }

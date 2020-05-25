@@ -6,6 +6,7 @@ import * as ConfigUtil from '../utils/config-util';
 import * as SystemUtil from '../utils/system-util';
 import BaseComponent from './base';
 import handleExternalLink from './handle-external-link';
+import {contextMenu} from './context-menu';
 
 const {app, dialog} = remote;
 
@@ -76,6 +77,10 @@ export default class WebView extends BaseComponent {
 	}
 
 	registerListeners(): void {
+		this.$el.addEventListener('context-menu', event => {
+			contextMenu(this, event);
+		});
+
 		this.$el.addEventListener('new-window', event => {
 			handleExternalLink.call(this, event);
 		});
