@@ -21,11 +21,9 @@ if (jsFiles.length !== tsFiles.length) {
 	execSync(`${npx} tsc`);
 }
 
-gulp.task('compile', () => {
-	return tsProject.src()
-		.pipe(tsProject())
-		.js.pipe(gulp.dest('app'));
-});
+gulp.task('compile', () => tsProject.src()
+	.pipe(tsProject())
+	.js.pipe(gulp.dest('app')));
 
 gulp.task('dev', () => {
 	// Start browser process
@@ -50,11 +48,9 @@ gulp.task('reload:renderer', done => {
 	done();
 });
 
-gulp.task('test-e2e', () => {
-	return gulp.src('tests/*.js')
-		.pipe(tape({
-			reporter: tapColorize()
-		}));
-});
+gulp.task('test-e2e', () => gulp.src('tests/*.js')
+	.pipe(tape({
+		reporter: tapColorize()
+	})));
 
 gulp.task('default', gulp.parallel('dev', 'test-e2e'));

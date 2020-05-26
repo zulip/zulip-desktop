@@ -362,9 +362,7 @@ class ServerManagerView {
 				name: CommonUtil.decodeString(server.alias),
 				hasPermission: (origin: string, permission: string) =>
 					origin === server.url && permission === 'notifications',
-				isActive: () => {
-					return index === this.activeTabIndex;
-				},
+				isActive: () => index === this.activeTabIndex,
 				switchLoading: (loading: boolean, url: string) => {
 					if (loading) {
 						this.loading.add(url);
@@ -529,9 +527,7 @@ class ServerManagerView {
 				url: tabProps.url,
 				role: 'function',
 				name: tabProps.name,
-				isActive: () => {
-					return this.functionalTabs.get(tabProps.name) === this.activeTabIndex;
-				},
+				isActive: () => this.functionalTabs.get(tabProps.name) === this.activeTabIndex,
 				switchLoading: (loading: boolean, url: string) => {
 					if (loading) {
 						this.loading.add(url);
@@ -1023,13 +1019,9 @@ class ServerManagerView {
 		});
 
 		// Redo and undo functionality since the default API doesn't work on macOS
-		ipcRenderer.on('undo', () => {
-			return this.getActiveWebview().undo();
-		});
+		ipcRenderer.on('undo', () => this.getActiveWebview().undo());
 
-		ipcRenderer.on('redo', () => {
-			return this.getActiveWebview().redo();
-		});
+		ipcRenderer.on('redo', () => this.getActiveWebview().redo());
 
 		ipcRenderer.on('set-active', async () => {
 			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');

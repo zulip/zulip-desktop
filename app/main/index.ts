@@ -58,9 +58,7 @@ function makeRendererCallback(callback: (...args: any[]) => void): number {
 
 const APP_ICON = path.join(__dirname, '../resources', 'Icon');
 
-const iconPath = (): string => {
-	return APP_ICON + (process.platform === 'win32' ? '.ico' : '.png');
-};
+const iconPath = (): string => APP_ICON + (process.platform === 'win32' ? '.ico' : '.png');
 
 // Toggle the app window
 const toggleApp = (): void => {

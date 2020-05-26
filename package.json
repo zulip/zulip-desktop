@@ -201,6 +201,7 @@
     "rules": {
       "@typescript-eslint/no-dynamic-delete": "off",
       "@typescript-eslint/prefer-readonly-parameter-types": "off",
+      "arrow-body-style": "error",
       "import/unambiguous": "error",
       "max-lines": [
         "warn",
