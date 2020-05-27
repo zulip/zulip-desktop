@@ -88,7 +88,7 @@ function createMainWindow(): Electron.BrowserWindow {
 		y: mainWindowState.y,
 		width: mainWindowState.width,
 		height: mainWindowState.height,
-		minWidth: 300,
+		minWidth: 500,
 		minHeight: 400,
 		webPreferences: {
 			plugins: true,
