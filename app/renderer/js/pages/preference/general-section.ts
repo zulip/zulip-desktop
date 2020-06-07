@@ -504,25 +504,40 @@ export default class GeneralSection extends BaseSection {
 		// The elctron API is a no-op on macOS and macOS default spellchecker is used.
 		if (process.platform === 'darwin') {
 			const note = document.querySelector('#note');
-			note.innerHTML += 'On macOS, the OS spellchecker is used.<br>Change the language from System Preferences -> Keyboard -> Text -> Spelling.';
+			note.append(t.__('On macOS, the OS spellchecker is used.'));
+			note.append(document.createElement('br'));
+			note.append(t.__('Change the language from System Preferences → Keyboard → Text → Spelling.'));
 		} else {
 			const note = document.querySelector('#note');
-			note.innerHTML += 'You can select a maximum of 3 languages for spellchecking.';
+			note.append(t.__('You can select a maximum of 3 languages for spellchecking.'));
 			const spellDiv = document.querySelector('#spellcheck-langs');
 			spellDiv.innerHTML += `
-				<div class="setting-description">${t.__('SpellChecker Languages')}</div>
+				<div class="setting-description">${t.__('Spellchecker Languages')}</div>
 				<input name='spellcheck' placeholder='Enter Languages'>`;
 
 			const availableLanguages = session.fromPartition('persist:webviewsession').availableSpellCheckerLanguages;
-			const languagePairs: Map<string, string> = new Map();
+			let languagePairs: Map<string, string> = new Map();
 			availableLanguages.forEach((l: string) => {
-				if (ISO6391.getName(l) !== '') {
+				if (ISO6391.validate(l)) {
 					languagePairs.set(ISO6391.getName(l), l);
 				}
 			});
 
 			// Manually set names for languages not available in ISO6391
-			languagePairs.set('English (AU)', 'en-AU'); languagePairs.set('English (CA)', 'en-CA'); languagePairs.set('English (GB)', 'en-GB'); languagePairs.set('English (US)', 'en-US'); languagePairs.set('Spanish (Latin America)', 'es-419'); languagePairs.set('Spanish (Argentina)', 'es-AR'); languagePairs.set('Spanish (Mexico)', 'es-MX'); languagePairs.set('Spanish (US)', 'es-US'); languagePairs.set('Portuguese (Brazil)', 'pt-BR'); languagePairs.set('Portuguese (Portugal)', 'pt-PT'); languagePairs.set('Serbo-Croatian', 'sh'); // eslint-disable-line max-statements-per-line
+			languagePairs.set('English (AU)', 'en-AU');
+			languagePairs.set('English (CA)', 'en-CA');
+			languagePairs.set('English (GB)', 'en-GB');
+			languagePairs.set('English (US)', 'en-US');
+			languagePairs.set('Spanish (Latin America)', 'es-419');
+			languagePairs.set('Spanish (Argentina)', 'es-AR');
+			languagePairs.set('Spanish (Mexico)', 'es-MX');
+			languagePairs.set('Spanish (US)', 'es-US');
+			languagePairs.set('Portuguese (Brazil)', 'pt-BR');
+			languagePairs.set('Portuguese (Portugal)', 'pt-PT');
+			languagePairs.set('Serbo-Croatian', 'sh');
+
+			languagePairs = new Map([...languagePairs].sort((a, b) => ((a[0] < b[0]) ? -1 : 1)));
+
 			const tagField = document.querySelector('input[name=spellcheck]');
 			const tagify = new Tagify(tagField, {
 				whitelist: [...languagePairs.keys()],
@@ -530,25 +545,17 @@ export default class GeneralSection extends BaseSection {
 				maxTags: 3,
 				dropdown: {
 					enabled: 0,
-					maxItems: 100, // If chromium supports more and more languages in future
+					maxItems: Infinity,
 					closeOnSelect: false,
 					highlightFirst: true
 				}
 			});
 
-			const configuredLanguages: string[] = [];
-			ConfigUtil.getConfigItem('spellcheck-languages').forEach((code: any) => {
-				[...languagePairs].forEach((pair): string | void => {
-					if (pair[1] === code) {
-						configuredLanguages.push(pair[0]);
-					}
-				});
-			});
-
+			const configuredLanguages: string[] = ConfigUtil.getConfigItem('spellcheck-languages').map((code: string) => [...languagePairs].filter(pair => (pair[1] === code))[0][0]);
 			tagify.addTags(configuredLanguages);
 
-			tagField.addEventListener('change', (event: any) => {
-				const spellLangs: string[] = [...JSON.parse(event.target.value).values()].map(elt => languagePairs.get(elt.value));
+			tagField.addEventListener('change', event => {
+				const spellLangs: string[] = [...JSON.parse((event.target as HTMLInputElement).value).values()].map(elt => languagePairs.get(elt.value));
 				ConfigUtil.setConfigItem('spellcheck-languages', spellLangs);
 				ipcRenderer.send('set-spellcheck-langs');
 			});

@@ -16,10 +16,7 @@ declare module '@electron-elements/send-feedback' {
 
 declare module 'node-mac-notifier';
 
-declare module '@yaireo/tagify' {
-	const tagify: any;
-	export = tagify;
-}
+declare module '@yaireo/tagify';
 
 interface ClipboardDecrypter {
 	version: number;

@@ -18,7 +18,7 @@ export const contextMenu = (webview: WebView, event: any) => {
 	});
 
 	let menuTemplate: Electron.MenuItemConstructorOptions[] = [{
-		label: t.__(`Add "${(props.selectionText as string)}" to Dictionary`),
+		label: t.__('Add to Dictionary'),
 		visible: props.isEditable && isText && props.misspelledWord,
 		click(_item) {
 			webContents.session.addWordToSpellCheckerDictionary(props.misspelledWord);
@@ -26,7 +26,7 @@ export const contextMenu = (webview: WebView, event: any) => {
 	}, {
 		type: 'separator'
 	}, {
-		label: t.__(`Look Up "${(props.selectionText as string)}"`),
+		label: `${t.__('Look Up')} "${(props.selectionText as string)}"`,
 		visible: process.platform === 'darwin' && isText,
 		click(_item) {
 			webContents.showDefinitionForSelection();
@@ -83,7 +83,7 @@ export const contextMenu = (webview: WebView, event: any) => {
 	}, {
 		type: 'separator'
 	}, {
-		label: 'Services',
+		label: t.__('Services'),
 		visible: process.platform === 'darwin',
 		role: 'services'
 	}];
@@ -94,7 +94,7 @@ export const contextMenu = (webview: WebView, event: any) => {
 			menuTemplate = suggestions.concat(menuTemplate);
 		} else {
 			menuTemplate.unshift({
-				label: 'No Suggestion Found',
+				label: t.__('No Suggestion Found'),
 				enabled: false
 			});
 		}
