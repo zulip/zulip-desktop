@@ -9,7 +9,7 @@ Desktop client for Zulip. Available for Mac, Linux, and Windows.
 <img src="http://i.imgur.com/ChzTq4F.png"/>
 
 # Download
-Please see the [installation guide](https://zulipchat.com/help/desktop-app-install-guide).
+Please see the [installation guide](https://zulip.com/help/desktop-app-install-guide).
 
 # Features
 * Sign in to multiple organizations

@@ -847,7 +847,7 @@ class ServerManagerView {
 
 		ipcRenderer.on('open-help', async () => {
 			// Open help page of current active server
-			await LinkUtil.openBrowser(new URL('https://zulipchat.com/help/'));
+			await LinkUtil.openBrowser(new URL('https://zulip.com/help/'));
 		});
 
 		ipcRenderer.on('reload-viewer', this.reloadView.bind(this, this.tabs[this.activeTabIndex].props.index));

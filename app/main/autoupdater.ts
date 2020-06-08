@@ -74,11 +74,11 @@ export function appUpdater(updateFromMenu = false): void {
 				type: 'error',
 				buttons: ['Manual Download', 'Cancel'],
 				message: messageText,
-				detail: `Error: ${error.message}\n\nThe latest version of Zulip Desktop is available at -\nhttps://zulipchat.com/apps/.\n
+				detail: `Error: ${error.message}\n\nThe latest version of Zulip Desktop is available at -\nhttps://zulip.com/apps/.\n
 				Current Version: ${app.getVersion()}`
 			});
 			if (response === 0) {
-				await LinkUtil.openBrowser(new URL('https://zulipchat.com/apps/'));
+				await LinkUtil.openBrowser(new URL('https://zulip.com/apps/'));
 			}
 		}
 	});
