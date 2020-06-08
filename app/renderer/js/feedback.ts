@@ -24,7 +24,7 @@ sendFeedback.buttonLabel = 'Report Issue';
 sendFeedback.loaderSuccessText = '';
 
 sendFeedback.useReporter('emailReporter', {
-	email: 'support@zulipchat.com'
+	email: 'support@zulip.com'
 });
 
 feedbackHolder.addEventListener('click', (event: Event) => {
