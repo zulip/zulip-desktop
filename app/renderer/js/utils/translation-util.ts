@@ -3,7 +3,8 @@ import i18n from 'i18n';
 import * as ConfigUtil from './config-util';
 
 i18n.configure({
-	directory: path.join(__dirname, '../../../translations/')
+	directory: path.join(__dirname, '../../../translations/'),
+	updateFiles: false
 });
 
 /* Fetches the current appLocale from settings.json */
