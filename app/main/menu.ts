@@ -120,7 +120,7 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 		role: 'togglefullscreen'
 	}, {
 		label: t.__('Zoom In'),
-		role: 'zoomIn',
+		accelerator: 'CommandOrControl+=',
 		click(_item, focusedWindow) {
 			if (focusedWindow) {
 				sendAction('zoomIn');
@@ -128,7 +128,6 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 		}
 	}, {
 		label: t.__('Zoom Out'),
-		role: 'zoomOut',
 		accelerator: 'CommandOrControl+-',
 		click(_item, focusedWindow) {
 			if (focusedWindow) {
@@ -137,7 +136,6 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 		}
 	}, {
 		label: t.__('Actual Size'),
-		role: 'resetZoom',
 		accelerator: 'CommandOrControl+0',
 		click(_item, focusedWindow) {
 			if (focusedWindow) {
