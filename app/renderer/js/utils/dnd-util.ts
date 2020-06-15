@@ -14,8 +14,7 @@ interface Toggle {
 	newSettings: DNDSettings;
 }
 
-/*	Node-schedule job instance accepts time parameter and schedules to turn off DND
-	and pops a toast that DND has ended. Cancel a pre-existing job before scheduling a new one. */
+/*	A node-schedule job instance accepts time parameter and schedules the operations provided at that time. */
 let job: schedule.Job = null;
 
 export function toggle(): Toggle {
@@ -42,7 +41,7 @@ export function toggle(): Toggle {
 		ConfigUtil.setConfigItem('dndPreviousSettings', oldSettings);
 	} else {
 		newSettings = ConfigUtil.getConfigItem('dndPreviousSettings');
-		ConfigUtil.setConfigItem('dndSwitchOff', null);
+		ConfigUtil.setConfigItem('dndEndTime', null);
 		if (job !== null) {
 			job.cancel();
 		}
@@ -56,11 +55,12 @@ export function toggle(): Toggle {
 	return {dnd, newSettings};
 }
 
-/*	Create the DND menu and closed it when focussed out. */
-export const makeMenu = (): void => {
+/*	Driver function to be called from main.ts
+	Create the DND menu and closed it when focussed out. */
+export const scheduleDND = (): void => {
 	const actionsContainer = document.querySelector('#actions-container');
-	const dndExist = document.querySelectorAll('.dnd-menu');
-	if (dndExist.length === 0) {
+	const dndMenuExists = Boolean(document.querySelectorAll('.dnd-menu').length);
+	if (!dndMenuExists) {
 		const dndMenu = document.createElement('ul');
 		dndMenu.className = 'dnd-menu';
 		const dndOptions: {[key: string]: string} = {
@@ -74,17 +74,17 @@ export const makeMenu = (): void => {
 		Object.keys(dndOptions).forEach(key => {
 			const opt = document.createElement('li');
 			opt.className = 'dnd-time-btn';
-			opt.innerHTML = key;
+			opt.append(key);
 			opt.id = dndOptions[key];
 			opt.addEventListener('click', () => {
-				configureDND(opt, dndMenu);
+				configureDND(opt.id, dndMenu);
 			}, false);
 			dndMenu.append(opt);
 		});
+
 		actionsContainer.append(dndMenu);
 
 		const dndMenuFocusOut = (event: Event) => {
-			console.log(event);
 			if ((event.target as HTMLLIElement).innerHTML !== 'notifications') {
 				dndMenu.remove();
 				document.removeEventListener('click', dndMenuFocusOut);
@@ -97,18 +97,19 @@ export const makeMenu = (): void => {
 				document.removeEventListener('click', dndMenuFocusOut);
 			}
 		});
+
 		document.addEventListener('click', dndMenuFocusOut);
 	}
 };
 
-/*	Configure DND as per user's selected option and pops a toast showing dnd switch off time. */
-const configureDND = (opt: HTMLLIElement, dndMenu: HTMLUListElement): void => {
-	let dndOffTime;
-	dndOffTime = new Date();
-	const optionElement = document.querySelector('#' + opt.id);
+/*	All the functionality required by scheduleDND()
+	Configure DND as per user's selected option and pops a toast showing dnd switch off time. */
+const configureDND = (dndTime: string, dndMenu: HTMLUListElement): void => {
+	let dndOffTime = new Date();
+	const optionElement = document.querySelector('#' + dndTime);
 	dndMenu.style.height = '75px';
 	optionElement.className = 'dnd-options-btn';
-	switch (opt.id) {
+	switch (dndTime) {
 		case 'thirty_min':
 			dndOffTime.setMinutes(dndOffTime.getMinutes() + 30);
 			break;
@@ -126,7 +127,7 @@ const configureDND = (opt: HTMLLIElement, dndMenu: HTMLUListElement): void => {
 			break;
 	}
 
-	ConfigUtil.setConfigItem('dndSwitchOff', dndOffTime);
+	ConfigUtil.setConfigItem('dndEndTime', dndOffTime);
 
 	dndMenu.remove();
 	showDNDTimeLeft();
@@ -135,23 +136,24 @@ const configureDND = (opt: HTMLLIElement, dndMenu: HTMLUListElement): void => {
 	ipcRenderer.send('forward-message', 'toggle-dnd', state.dnd, state.newSettings);
 };
 
-/*	Fetch DND switch off time and toggle DND off if the time has elapsed. */
+/*	Handle DND state when configuring DND and when the application starts. */
 export const setDNDTimer = (): void => {
-	const dbTime = ConfigUtil.getConfigItem('dndSwitchOff');
+	const dbTime = ConfigUtil.getConfigItem('dndEndTime');
 	if (dbTime !== null) {
 		const time = new Date(dbTime);
+
 		// Handle the case when user closes the app before switch off time and stars it after the time has elapsed.
 		if (time < new Date()) {
 			toggle();
 			return;
 		}
 
-		if (job !== null) {
+		if (job !== null) {	// Prevent scheduling of stale job
 			job.cancel();
 		}
 
-		job = schedule.scheduleJob(time, () => {
-			ConfigUtil.setConfigItem('dndSwitchOff', null);
+		job = schedule.scheduleJob(time, () => { // Perform the following operations at parameter `time`
+			ConfigUtil.setConfigItem('dndEndTime', null);
 			const state = toggle();
 			ipcRenderer.send('forward-message', 'toggle-dnd', state.dnd, state.newSettings);
 			showToast('DND has ended');
@@ -160,20 +162,21 @@ export const setDNDTimer = (): void => {
 };
 
 /*	Show a toast with the clock time when DND will go off. */
-export const showDNDTimeLeft = (): void => {
-	const check = ConfigUtil.getConfigItem('dndSwitchOff');
+const showDNDTimeLeft = (): void => {
+	const check = ConfigUtil.getConfigItem('dndEndTime');
 	if (check !== null) {
 		const dbTime = new Date(check);
-		const timeLeft = `DND goes off at ${dbTime.getHours()} : ${(dbTime.getMinutes() < 10 ? (`0${dbTime.getMinutes()}`) : dbTime.getMinutes())}`;
-		showToast(timeLeft);
+		const timeLeft = `${dbTime.getHours()} : ${(dbTime.getMinutes() < 10 ? (`0${dbTime.getMinutes()}`) : dbTime.getMinutes())}`;
+		showToast(`DND goes off at ${timeLeft}`);
 	}
 };
 
-export const showToast = (t: string): void => {
+/* Toast - can be exported for future use */
+const showToast = (t: string): void => {
 	const actionsContainer = document.querySelector('#actions-container');
 	const toast = document.createElement('p');
 	toast.className = 'toast';
-	toast.innerHTML = t;
+	toast.append(t);
 	actionsContainer.append(toast);
 	setTimeout(() => toast.remove(), 4000);
 };
