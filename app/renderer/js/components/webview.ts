@@ -77,8 +77,9 @@ export default class WebView extends BaseComponent {
 	}
 
 	registerListeners(): void {
-		this.$el.addEventListener('context-menu', event => {
-			contextMenu(this, event);
+		const webContents = this.$el.getWebContents();
+		webContents.addListener('context-menu', (event, menuParameters) => {
+			contextMenu(webContents, event, menuParameters);
 		});
 
 		this.$el.addEventListener('new-window', event => {

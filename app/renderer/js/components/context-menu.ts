@@ -1,11 +1,8 @@
-import {remote} from 'electron';
-import WebView from './webview';
+import {remote, ContextMenuParams} from 'electron';
 import * as t from '../utils/translation-util';
 const {clipboard, Menu} = remote;
 
-export const contextMenu = (webview: WebView, event: any) => {
-	const webContents = webview.$el.getWebContents();
-	const props = event.params;
+export const contextMenu = (webContents: Electron.WebContents, event: Event, props: ContextMenuParams) => {
 	const isText = Boolean(props.selectionText.length);
 	const isLink = Boolean(props.linkURL);
 
@@ -19,14 +16,14 @@ export const contextMenu = (webview: WebView, event: any) => {
 
 	let menuTemplate: Electron.MenuItemConstructorOptions[] = [{
 		label: t.__('Add to Dictionary'),
-		visible: props.isEditable && isText && props.misspelledWord,
+		visible: props.isEditable && isText && props.misspelledWord.length !== 0,
 		click(_item) {
 			webContents.session.addWordToSpellCheckerDictionary(props.misspelledWord);
 		}
 	}, {
 		type: 'separator'
 	}, {
-		label: `${t.__('Look Up')} "${(props.selectionText as string)}"`,
+		label: `${t.__('Look Up')} "${props.selectionText}"`,
 		visible: process.platform === 'darwin' && isText,
 		click(_item) {
 			webContents.showDefinitionForSelection();
