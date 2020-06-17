@@ -4,16 +4,16 @@ about: Create a report to help us improve
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+<!-- A clear and concise description of what the bug is. -->
 
 **To Reproduce**
-Clear steps to reproduce the issue.
+<!-- Clear steps to reproduce the issue. -->
 
 **Expected behavior**
-A clear and concise description of what you expected to happen.
+<!-- A clear and concise description of what you expected to happen. -->
 
 **Screenshots**
-If applicable, add screenshots to help explain your problem.
+<!-- If applicable, add screenshots to help explain your problem. -->
 
 **Desktop (please complete the following information):**
  - Operating System: 
@@ -22,4 +22,4 @@ If applicable, add screenshots to help explain your problem.
 <!-- e.g. 5.2.0 --> 
 
 **Additional context**
-Add any other context about the problem here.
+<!-- Add any other context about the problem here. -->
