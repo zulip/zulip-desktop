@@ -95,7 +95,7 @@ export default class GeneralSection extends BaseSection {
 						<div class="setting-description">${t.__('Enable spellchecker (requires restart)')}</div>
 						<div class="setting-control"></div>
 					</div>
-					<div class="setting-row" id="spellcheck-langs"></div>
+					<div class="setting-row" id="spellcheck-langs" style= "display:${process.platform === 'darwin' ? 'none' : ''}"></div>
 					<div class="setting-row" id="note"></div>
 				</div>
 
@@ -362,6 +362,10 @@ export default class GeneralSection extends BaseSection {
 				const newValue = !ConfigUtil.getConfigItem('enableSpellchecker');
 				ConfigUtil.setConfigItem('enableSpellchecker', newValue);
 				this.enableSpellchecker();
+				const spellcheckerLanguageInput: HTMLElement = document.querySelector('#spellcheck-langs');
+				const spellcheckerNote: HTMLElement = document.querySelector('#note');
+				spellcheckerLanguageInput.style.display = spellcheckerLanguageInput.style.display === 'none' ? '' : 'none';
+				spellcheckerNote.style.display = spellcheckerNote.style.display === 'none' ? '' : 'none';
 			}
 		});
 	}
@@ -503,14 +507,14 @@ export default class GeneralSection extends BaseSection {
 	initSpellChecker(): void {
 		// The elctron API is a no-op on macOS and macOS default spellchecker is used.
 		if (process.platform === 'darwin') {
-			const note = document.querySelector('#note');
+			const note: HTMLElement = document.querySelector('#note');
 			note.append(t.__('On macOS, the OS spellchecker is used.'));
 			note.append(document.createElement('br'));
 			note.append(t.__('Change the language from System Preferences → Keyboard → Text → Spelling.'));
 		} else {
-			const note = document.querySelector('#note');
+			const note: HTMLElement = document.querySelector('#note');
 			note.append(t.__('You can select a maximum of 3 languages for spellchecking.'));
-			const spellDiv = document.querySelector('#spellcheck-langs');
+			const spellDiv: HTMLElement = document.querySelector('#spellcheck-langs');
 			spellDiv.innerHTML += `
 				<div class="setting-description">${t.__('Spellchecker Languages')}</div>
 				<input name='spellcheck' placeholder='Enter Languages'>`;
@@ -538,7 +542,7 @@ export default class GeneralSection extends BaseSection {
 
 			languagePairs = new Map([...languagePairs].sort((a, b) => ((a[0] < b[0]) ? -1 : 1)));
 
-			const tagField = document.querySelector('input[name=spellcheck]');
+			const tagField: HTMLElement = document.querySelector('input[name=spellcheck]');
 			const tagify = new Tagify(tagField, {
 				whitelist: [...languagePairs.keys()],
 				enforceWhitelist: true,
@@ -551,14 +555,27 @@ export default class GeneralSection extends BaseSection {
 				}
 			});
 
-			const configuredLanguages: string[] = ConfigUtil.getConfigItem('spellcheck-languages').map((code: string) => [...languagePairs].filter(pair => (pair[1] === code))[0][0]);
+			const configuredLanguages: string[] = ConfigUtil.getConfigItem('spellcheckerLanguages').map((code: string) => [...languagePairs].filter(pair => (pair[1] === code))[0][0]);
 			tagify.addTags(configuredLanguages);
 
 			tagField.addEventListener('change', event => {
-				const spellLangs: string[] = [...JSON.parse((event.target as HTMLInputElement).value).values()].map(elt => languagePairs.get(elt.value));
-				ConfigUtil.setConfigItem('spellcheck-languages', spellLangs);
-				ipcRenderer.send('set-spellcheck-langs');
+				if ((event.target as HTMLInputElement).value.length === 0) {
+					ConfigUtil.setConfigItem('spellcheckerLanguages', []);
+					ipcRenderer.send('set-spellcheck-langs');
+				} else {
+					const spellLangs: string[] = [...JSON.parse((event.target as HTMLInputElement).value).values()].map(elt => languagePairs.get(elt.value));
+					ConfigUtil.setConfigItem('spellcheckerLanguages', spellLangs);
+					ipcRenderer.send('set-spellcheck-langs');
+				}
 			});
+		}
+
+		// Do not display the spellchecker input and note if it is disabled
+		if (!ConfigUtil.getConfigItem('enableSpellchecker')) {
+			const spellcheckerLanguageInput: HTMLElement = document.querySelector('#spellcheck-langs');
+			const spellcheckerNote: HTMLElement = document.querySelector('#note');
+			spellcheckerLanguageInput.style.display = 'none';
+			spellcheckerNote.style.display = 'none';
 		}
 	}
 }

@@ -50,6 +50,7 @@ interface SettingsOptions extends DNDSettings {
 	quitOnClose: boolean;
 	promptDownload: boolean;
 	dockBouncing?: boolean;
+	spellcheckerLanguages?: string[];
 }
 
 const logger = new Logger({
@@ -137,6 +138,7 @@ class ServerManagerView {
 		await this.initTabs();
 		this.initActions();
 		this.registerIpcs();
+		ipcRenderer.send('set-spellcheck-langs');
 	}
 
 	async loadProxy(): Promise<void> {
@@ -214,6 +216,7 @@ class ServerManagerView {
 
 		if (process.platform !== 'darwin') {
 			settingOptions.autoHideMenubar = false;
+			settingOptions.spellcheckerLanguages = ['en-US'];
 		}
 
 		for (const [setting, value] of Object.entries(settingOptions)) {

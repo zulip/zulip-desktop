@@ -77,11 +77,6 @@ export default class WebView extends BaseComponent {
 	}
 
 	registerListeners(): void {
-		const webContents = this.$el.getWebContents();
-		webContents.addListener('context-menu', (event, menuParameters) => {
-			contextMenu(webContents, event, menuParameters);
-		});
-
 		this.$el.addEventListener('new-window', event => {
 			handleExternalLink.call(this, event);
 		});
@@ -127,6 +122,11 @@ export default class WebView extends BaseComponent {
 		});
 
 		this.$el.addEventListener('dom-ready', () => {
+			const webContents = remote.webContents.fromId(this.$el.getWebContentsId());
+			webContents.addListener('context-menu', (event, menuParameters) => {
+				contextMenu(webContents, event, menuParameters);
+			});
+
 			if (this.props.role === 'server') {
 				this.$el.classList.add('onload');
 			}
