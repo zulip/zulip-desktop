@@ -403,8 +403,23 @@ class ServerManagerView {
 
 	initLeftSidebarEvents(): void {
 		this.$dndButton.addEventListener('click', () => {
-			const dndUtil = DNDUtil.toggle();
-			ipcRenderer.send('forward-message', 'toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
+			const dnd = ConfigUtil.getConfigItem('dnd', false);
+
+			// Case: DND is turned on and user clicks DND button -> switch it off
+			if (dnd) {
+				const dndUtil = DNDUtil.toggle();
+				ipcRenderer.send('forward-message', 'toggle-dnd', dndUtil.dnd, dndUtil.newSettings);
+			} // eslint-disable-line @typescript-eslint/brace-style
+
+			// Case: DND is turned off, there is no DND menu and user clicks DND button -> create menu and schedule
+			else if (document.querySelector('.dnd-menu') === null) {
+				DNDUtil.scheduleDND();
+			} // eslint-disable-line @typescript-eslint/brace-style
+
+			// Case: DND is turned off, DND menu is already created and user clicks DND button -> remove the menu
+			else {
+				document.querySelector('.dnd-menu').remove();
+			}
 		});
 		this.$reloadButton.addEventListener('click', () => {
 			this.tabs[this.activeTabIndex].webview.reload();
@@ -428,6 +443,7 @@ class ServerManagerView {
 	}
 
 	initDNDButton(): void {
+		DNDUtil.setDNDTimer();
 		const dnd = ConfigUtil.getConfigItem('dnd', false);
 		this.toggleDNDButton(dnd);
 	}

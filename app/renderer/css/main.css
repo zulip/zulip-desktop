@@ -82,6 +82,70 @@ body {
     flex-direction: column;
 }
 
+
+/* DND Menu */
+
+@keyframes fading {
+    0% {
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.toast {
+    font-family: Verdana;
+    border-radius: 10px;
+    font-size: 13.5px;
+    left: 45%;
+    top: 10px;
+    position: fixed;
+    background-color: rgba(200, 200, 200, 1.000);
+    padding: 15px 30px  15px 30px;
+    color: rgb(0, 0, 0);
+    animation: fading 4s;
+}
+
+.dnd-menu {
+    font-family: Verdana;
+    font-size: 13px;
+    left: 60px;
+    bottom: 10px;
+    position: fixed;
+    background-color: transparent;
+    padding: 10px;
+    width: 150px;
+    min-height: 150px;
+    color: rgb(255, 255, 255);
+    list-style-type: none;
+}
+
+.dnd-time-btn {
+    background-color: rgba(34, 44, 49, 1.000);
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 1.000);
+    border-width: 1.5px;
+    border-radius: 20px;
+    padding: 10px;
+    text-align: center;
+    margin: 2px 0;
+    transition: .1s;
+}
+
+.dnd-time-btn:hover {
+    background-color: rgba(59, 76, 85, 1.000);
+    transition: .2s;
+    cursor: pointer;
+}
+
+
 .material-icons {
     font-family: 'Material Icons';
     font-weight: normal;
