@@ -6,6 +6,7 @@ import * as ConfigUtil from '../utils/config-util';
 import * as SystemUtil from '../utils/system-util';
 import BaseComponent from './base';
 import handleExternalLink from './handle-external-link';
+import {contextMenu} from './context-menu';
 
 const {app, dialog} = remote;
 
@@ -57,7 +58,11 @@ export default class WebView extends BaseComponent {
 					${this.props.preload ? 'preload="js/preload.js"' : ''}
 					partition="persist:webviewsession"
 					name="${this.props.name}"
-					webpreferences="${this.props.nodeIntegration ? '' : 'contextIsolation, '}javascript=yes">
+					webpreferences="
+						${this.props.nodeIntegration ? '' : 'contextIsolation,'}
+						${ConfigUtil.getConfigItem('enableSpellchecker') ? 'spellcheck,' : ''}
+						javascript
+					">
 				</webview>`;
 	}
 
@@ -117,6 +122,11 @@ export default class WebView extends BaseComponent {
 		});
 
 		this.$el.addEventListener('dom-ready', () => {
+			const webContents = remote.webContents.fromId(this.$el.getWebContentsId());
+			webContents.addListener('context-menu', (event, menuParameters) => {
+				contextMenu(webContents, event, menuParameters);
+			});
+
 			if (this.props.role === 'server') {
 				this.$el.classList.add('onload');
 			}

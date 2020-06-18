@@ -16,6 +16,8 @@ declare module '@electron-elements/send-feedback' {
 
 declare module 'node-mac-notifier';
 
+declare module '@yaireo/tagify';
+
 interface ClipboardDecrypter {
 	version: number;
 	key: Uint8Array;
