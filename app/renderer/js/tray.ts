@@ -207,7 +207,7 @@ function toggleTray(): void {
 
 	const selector = 'webview:not([class*=disabled])';
 	const webview: WebviewTag = document.querySelector(selector);
-	const webContents = webview.getWebContents();
+	const webContents = remote.webContents.fromId(webview.getWebContentsId());
 	webContents.send('toggletray', state);
 }
 

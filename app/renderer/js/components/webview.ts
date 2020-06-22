@@ -216,7 +216,7 @@ export default class WebView extends BaseComponent {
 
 	focus(): void {
 		// Focus Webview and it's contents when Window regain focus.
-		const webContents = this.$el.getWebContents();
+		const webContents = remote.webContents.fromId(this.$el.getWebContentsId());
 		// HACK: webContents.isFocused() seems to be true even without the element
 		// being in focus. So, we check against `document.activeElement`.
 		if (webContents && this.$el !== document.activeElement) {

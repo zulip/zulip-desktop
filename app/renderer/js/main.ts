@@ -717,7 +717,7 @@ class ServerManagerView {
 
 	updateGeneralSettings(setting: string, value: unknown): void {
 		if (this.getActiveWebview()) {
-			const webContents = this.getActiveWebview().getWebContents();
+			const webContents = remote.webContents.fromId(this.getActiveWebview().getWebContentsId());
 			webContents.send(setting, value);
 		}
 	}
@@ -917,7 +917,7 @@ class ServerManagerView {
 		ipcRenderer.on('toggle-dnd', (event: Event, state: boolean, newSettings: DNDSettings) => {
 			this.toggleDNDButton(state);
 			ipcRenderer.send('forward-message', 'toggle-silent', newSettings.silent);
-			const webContents = this.getActiveWebview().getWebContents();
+			const webContents = remote.webContents.fromId(this.getActiveWebview().getWebContentsId());
 			webContents.send('toggle-dnd', state, newSettings);
 		});
 
@@ -969,7 +969,7 @@ class ServerManagerView {
 		ipcRenderer.on('focus-webview-with-id', (event: Event, webviewId: number) => {
 			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');
 			webviews.forEach(webview => {
-				const currentId = webview.getWebContents().id;
+				const currentId = webview.getWebContentsId();
 				const tabId = webview.getAttribute('data-tab-id');
 				const concurrentTab: HTMLButtonElement = document.querySelector(`div[data-tab-id="${tabId}"]`);
 				if (currentId === webviewId) {
