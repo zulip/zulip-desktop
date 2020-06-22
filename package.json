@@ -180,7 +180,7 @@
     "@typescript-eslint/parser": "^3.6.1",
     "devtron": "^1.4.0",
     "dotenv": "^8.2.0",
-    "electron": "^8.4.0",
+    "electron": "^9.1.0",
     "electron-builder": "^22.7.0",
     "electron-connect": "^0.6.3",
     "electron-notarize": "^1.0.0",
