@@ -2,6 +2,27 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.3.0 --2020-06-24
+
+**Security fixes**:
+* Remove the insecure ignoreCerts option.
+
+**Fixes**:
+* Windows: Turn off start at login by default.
+* Fix zoom issues where some webviews would not get zoomed-out once zoomed-in.
+* Fix overflowing contents on 'Add Organization' view.
+
+**New features**:
+* Add a cancel button in the report-issue modal.
+* macOS: Use electron API to get dark tray icon instead of the green icon for the light theme.
+* Remove 'Reset App Data' option. Factory Reset option has been moved to Settings → General.
+* Support pkg installer on macOS.
+* Use electron 8 built-in spellchecker. Linux and Windows users can now choose upto three spellchecker languages from Settings → General. On macOS, default spellchecker is used.
+* Setup Transifex for better synchronization of translations. The application now supports 41 languages instead of 21.
+
+**Dependencies**:
+* Upgrade all dependencies, including Electron 8.3.3.
+
 ### v5.2.0 --2020-05-04
 
 **Security fixes**:
