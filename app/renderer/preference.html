@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width">
         <title>Zulip - Settings</title>
         <link rel="stylesheet" href="css/preference.css" type="text/css" media="screen">
+        <link id="tagify-css" rel="stylesheet" href="data:text/css,">
     </head>
     <body>
         <div id="content">
@@ -13,6 +14,7 @@
         </div>
     </body>
     <script>
+        document.querySelector('#tagify-css').href = require.resolve('@yaireo/tagify/dist/tagify.css');
         require('./js/pages/preference/preference.js');
         require('./js/shared/preventdrag.js')
     </script>

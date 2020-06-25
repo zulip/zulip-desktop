@@ -3,7 +3,7 @@ import {ipcRenderer, remote, OpenDialogOptions} from 'electron';
 import path from 'path';
 import fs from 'fs-extra';
 
-const {app, dialog} = remote;
+const {app, dialog, session} = remote;
 const currentBrowserWindow = remote.getCurrentWindow();
 
 import BaseSection from './base-section';
@@ -11,6 +11,8 @@ import * as ConfigUtil from '../../utils/config-util';
 import * as EnterpriseUtil from '../../utils/enterprise-util';
 import * as t from '../../utils/translation-util';
 import supportedLocales from '../../../../translations/supported-locales.json';
+import Tagify from '@yaireo/tagify';
+import ISO6391 from 'iso-639-1';
 
 interface GeneralSectionProps {
 	$root: Element;
@@ -93,7 +95,10 @@ export default class GeneralSection extends BaseSection {
 						<div class="setting-description">${t.__('Enable spellchecker (requires restart)')}</div>
 						<div class="setting-control"></div>
 					</div>
+					<div class="setting-row" id="spellcheck-langs" style= "display:${process.platform === 'darwin' ? 'none' : ''}"></div>
+					<div class="setting-row" id="note"></div>
 				</div>
+
 				<div class="title">${t.__('Advanced')}</div>
 				<div class="settings-card">
 
@@ -171,6 +176,7 @@ export default class GeneralSection extends BaseSection {
 		this.updatePromptDownloadOption();
 		this.enableErrorReporting();
 		this.setLocale();
+		this.initSpellChecker();
 
 		// Platform specific settings
 
@@ -356,6 +362,10 @@ export default class GeneralSection extends BaseSection {
 				const newValue = !ConfigUtil.getConfigItem('enableSpellchecker');
 				ConfigUtil.setConfigItem('enableSpellchecker', newValue);
 				this.enableSpellchecker();
+				const spellcheckerLanguageInput: HTMLElement = document.querySelector('#spellcheck-langs');
+				const spellcheckerNote: HTMLElement = document.querySelector('#note');
+				spellcheckerLanguageInput.style.display = spellcheckerLanguageInput.style.display === 'none' ? '' : 'none';
+				spellcheckerNote.style.display = spellcheckerNote.style.display === 'none' ? '' : 'none';
 			}
 		});
 	}
@@ -492,5 +502,80 @@ export default class GeneralSection extends BaseSection {
 		factoryResetButton.addEventListener('click', async () => {
 			await this.factoryResetSettings();
 		});
+	}
+
+	initSpellChecker(): void {
+		// The elctron API is a no-op on macOS and macOS default spellchecker is used.
+		if (process.platform === 'darwin') {
+			const note: HTMLElement = document.querySelector('#note');
+			note.append(t.__('On macOS, the OS spellchecker is used.'));
+			note.append(document.createElement('br'));
+			note.append(t.__('Change the language from System Preferences → Keyboard → Text → Spelling.'));
+		} else {
+			const note: HTMLElement = document.querySelector('#note');
+			note.append(t.__('You can select a maximum of 3 languages for spellchecking.'));
+			const spellDiv: HTMLElement = document.querySelector('#spellcheck-langs');
+			spellDiv.innerHTML += `
+				<div class="setting-description">${t.__('Spellchecker Languages')}</div>
+				<input name='spellcheck' placeholder='Enter Languages'>`;
+
+			const availableLanguages = session.fromPartition('persist:webviewsession').availableSpellCheckerLanguages;
+			let languagePairs: Map<string, string> = new Map();
+			availableLanguages.forEach((l: string) => {
+				if (ISO6391.validate(l)) {
+					languagePairs.set(ISO6391.getName(l), l);
+				}
+			});
+
+			// Manually set names for languages not available in ISO6391
+			languagePairs.set('English (AU)', 'en-AU');
+			languagePairs.set('English (CA)', 'en-CA');
+			languagePairs.set('English (GB)', 'en-GB');
+			languagePairs.set('English (US)', 'en-US');
+			languagePairs.set('Spanish (Latin America)', 'es-419');
+			languagePairs.set('Spanish (Argentina)', 'es-AR');
+			languagePairs.set('Spanish (Mexico)', 'es-MX');
+			languagePairs.set('Spanish (US)', 'es-US');
+			languagePairs.set('Portuguese (Brazil)', 'pt-BR');
+			languagePairs.set('Portuguese (Portugal)', 'pt-PT');
+			languagePairs.set('Serbo-Croatian', 'sh');
+
+			languagePairs = new Map([...languagePairs].sort((a, b) => ((a[0] < b[0]) ? -1 : 1)));
+
+			const tagField: HTMLElement = document.querySelector('input[name=spellcheck]');
+			const tagify = new Tagify(tagField, {
+				whitelist: [...languagePairs.keys()],
+				enforceWhitelist: true,
+				maxTags: 3,
+				dropdown: {
+					enabled: 0,
+					maxItems: Infinity,
+					closeOnSelect: false,
+					highlightFirst: true
+				}
+			});
+
+			const configuredLanguages: string[] = ConfigUtil.getConfigItem('spellcheckerLanguages').map((code: string) => [...languagePairs].filter(pair => (pair[1] === code))[0][0]);
+			tagify.addTags(configuredLanguages);
+
+			tagField.addEventListener('change', event => {
+				if ((event.target as HTMLInputElement).value.length === 0) {
+					ConfigUtil.setConfigItem('spellcheckerLanguages', []);
+					ipcRenderer.send('set-spellcheck-langs');
+				} else {
+					const spellLangs: string[] = [...JSON.parse((event.target as HTMLInputElement).value).values()].map(elt => languagePairs.get(elt.value));
+					ConfigUtil.setConfigItem('spellcheckerLanguages', spellLangs);
+					ipcRenderer.send('set-spellcheck-langs');
+				}
+			});
+		}
+
+		// Do not display the spellchecker input and note if it is disabled
+		if (!ConfigUtil.getConfigItem('enableSpellchecker')) {
+			const spellcheckerLanguageInput: HTMLElement = document.querySelector('#spellcheck-langs');
+			const spellcheckerNote: HTMLElement = document.querySelector('#note');
+			spellcheckerLanguageInput.style.display = 'none';
+			spellcheckerNote.style.display = 'none';
+		}
 	}
 }
