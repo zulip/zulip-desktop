@@ -5,6 +5,7 @@ const {clipboard, Menu} = remote;
 export const contextMenu = (webContents: Electron.WebContents, event: Event, props: ContextMenuParams) => {
 	const isText = Boolean(props.selectionText.length);
 	const isLink = Boolean(props.linkURL);
+	const isEmailAddress = Boolean(props.linkURL.startsWith('mailto:'));
 
 	const makeSuggestion = (suggestion: string) => ({
 		label: suggestion,
@@ -55,12 +56,12 @@ export const contextMenu = (webContents: Electron.WebContents, event: Event, pro
 	}, {
 		type: 'separator'
 	}, {
-		label: t.__('Copy Link'),
-		visible: isText && isLink,
+		label: isEmailAddress ? t.__('Copy Email Address') : t.__('Copy Link'),
+		visible: isLink,
 		click(_item) {
 			clipboard.write({
 				bookmark: props.linkText,
-				text: props.linkURL
+				text: isEmailAddress ? props.linkText : props.linkURL
 			});
 		}
 	}, {
