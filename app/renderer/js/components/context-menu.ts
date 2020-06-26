@@ -107,8 +107,7 @@ export const contextMenu = (webContents: Electron.WebContents, event: Event, pro
 	// https://github.com/electron/electron/issues/5869
 	// https://github.com/electron/electron/issues/6906
 
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
-	const filteredMenuTemplate = menuTemplate.filter(menuItem => menuItem.visible !== false);
+	const filteredMenuTemplate = menuTemplate.filter(menuItem => menuItem.visible ?? true);
 	const menu = Menu.buildFromTemplate(filteredMenuTemplate);
 	menu.popup();
 };
