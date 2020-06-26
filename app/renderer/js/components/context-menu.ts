@@ -3,9 +3,10 @@ import * as t from '../utils/translation-util';
 const {clipboard, Menu} = remote;
 
 export const contextMenu = (webContents: Electron.WebContents, event: Event, props: ContextMenuParams) => {
-	const isText = Boolean(props.selectionText.length);
-	const isLink = Boolean(props.linkURL);
-	const isEmailAddress = Boolean(props.linkURL.startsWith('mailto:'));
+	const isText = props.selectionText !== '';
+	const isLink = props.linkURL !== '';
+	const linkURL = isLink ? new URL(props.linkURL) : undefined;
+	const isEmailAddress = isLink ? linkURL.protocol === 'mailto:' : undefined;
 
 	const makeSuggestion = (suggestion: string) => ({
 		label: suggestion,
@@ -63,7 +64,7 @@ export const contextMenu = (webContents: Electron.WebContents, event: Event, pro
 		click(_item) {
 			clipboard.write({
 				bookmark: props.linkText,
-				text: isEmailAddress ? props.linkText : props.linkURL
+				text: isEmailAddress ? linkURL.pathname : props.linkURL
 			});
 		}
 	}, {
