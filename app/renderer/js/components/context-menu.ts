@@ -41,6 +41,7 @@ export const contextMenu = (webContents: Electron.WebContents, event: Event, pro
 	}, {
 		label: t.__('Copy'),
 		accelerator: 'CommandOrControl+C',
+		enabled: props.editFlags.canCopy,
 		click(_item) {
 			webContents.copy();
 		}
