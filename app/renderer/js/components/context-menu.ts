@@ -21,7 +21,8 @@ export const contextMenu = (webContents: Electron.WebContents, event: Event, pro
 			webContents.session.addWordToSpellCheckerDictionary(props.misspelledWord);
 		}
 	}, {
-		type: 'separator'
+		type: 'separator',
+		visible: props.isEditable && isText && props.misspelledWord.length !== 0
 	}, {
 		label: `${t.__('Look Up')} "${props.selectionText}"`,
 		visible: process.platform === 'darwin' && isText,
@@ -29,7 +30,8 @@ export const contextMenu = (webContents: Electron.WebContents, event: Event, pro
 			webContents.showDefinitionForSelection();
 		}
 	}, {
-		type: 'separator'
+		type: 'separator',
+		visible: process.platform === 'darwin' && isText
 	}, {
 		label: t.__('Cut'),
 		visible: isText,
@@ -78,7 +80,8 @@ export const contextMenu = (webContents: Electron.WebContents, event: Event, pro
 			});
 		}
 	}, {
-		type: 'separator'
+		type: 'separator',
+		visible: isLink || props.mediaType === 'image'
 	}, {
 		label: t.__('Services'),
 		visible: process.platform === 'darwin',
@@ -96,7 +99,13 @@ export const contextMenu = (webContents: Electron.WebContents, event: Event, pro
 			});
 		}
 	}
+	// Hide the invisible separators on Linux and Windows
+	// Electron has a bug which ignores visible: false parameter for separator menuitems. So we remove them here.
+	// https://github.com/electron/electron/issues/5869
+	// https://github.com/electron/electron/issues/6906
 
-	const menu = Menu.buildFromTemplate(menuTemplate);
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-boolean-literal-compare
+	const filteredMenuTemplate = menuTemplate.filter(menuItem => menuItem.visible !== false);
+	const menu = Menu.buildFromTemplate(filteredMenuTemplate);
 	menu.popup();
 };
