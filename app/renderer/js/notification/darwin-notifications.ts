@@ -47,7 +47,7 @@ class DarwinNotification {
 	}
 
 	static requestPermission(): void {
-		return; // eslint-disable-line no-useless-return
+		// Do nothing
 	}
 
 	// Override default Notification permission
@@ -104,7 +104,7 @@ class DarwinNotification {
 	// Method specific to notification api
 	// used by zulip
 	close(): void {
-		return; // eslint-disable-line no-useless-return
+		// Do nothing
 	}
 }
 

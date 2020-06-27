@@ -218,7 +218,7 @@ app.on('ready', () => {
 	app.on('certificate-error', (
 		event: Event,
 		webContents: Electron.WebContents,
-		url: string,
+		urlString: string,
 		error: string,
 		certificate: Electron.Certificate,
 		callback: (isTrusted: boolean) => void
@@ -226,8 +226,12 @@ app.on('ready', () => {
 		// TODO: The entire concept of selectively ignoring certificate errors
 		// is ill-conceived, and this handler needs to be deleted.
 
-		const {origin} = new URL(url);
-		const filename = CertificateUtil.getCertificate(encodeURIComponent(origin));
+		const url = new URL(urlString);
+		if (url.protocol === 'wss:') {
+			url.protocol = 'https:';
+		}
+
+		const filename = CertificateUtil.getCertificate(encodeURIComponent(url.origin));
 		if (filename !== undefined) {
 			try {
 				const savedCertificate = fs.readFileSync(
@@ -247,7 +251,7 @@ app.on('ready', () => {
 
 		dialog.showErrorBox(
 			'Certificate error',
-			`The server presented an invalid certificate for ${origin}:
+			`The server presented an invalid certificate for ${url.origin}:
 
 ${error}`
 		);
