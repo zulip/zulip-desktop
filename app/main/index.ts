@@ -12,6 +12,7 @@ import * as BadgeSettings from '../renderer/js/pages/preference/badge-settings';
 import * as CertificateUtil from '../renderer/js/utils/certificate-util';
 import * as ConfigUtil from '../renderer/js/utils/config-util';
 import * as ProxyUtil from '../renderer/js/utils/proxy-util';
+import {_getServerSettings, _saveServerIcon, _isOnline} from './request';
 
 let mainWindowState: windowStateKeeper.State;
 
@@ -160,6 +161,7 @@ app.on('activate', () => {
 app.on('ready', () => {
 	const ses = session.fromPartition('persist:webviewsession');
 	ses.setUserAgent(`ZulipElectron/${app.getVersion()} ${ses.getUserAgent()}`);
+
 	ipcMain.on('set-spellcheck-langs', () => {
 		ses.setSpellCheckerLanguages(ConfigUtil.getConfigItem('spellcheckerLanguages'));
 	});
@@ -200,6 +202,12 @@ app.on('ready', () => {
 	ipcMain.on('fetch-user-agent', event => {
 		event.returnValue = session.fromPartition('persist:webviewsession').getUserAgent();
 	});
+
+	ipcMain.handle('get-server-settings', async (event, domain: string) => _getServerSettings(domain, ses));
+
+	ipcMain.handle('save-server-icon', async (event, url: string) => _saveServerIcon(url, ses));
+
+	ipcMain.handle('is-online', async (event, url: string) => _isOnline(url, ses));
 
 	page.once('did-frame-finish-load', async () => {
 		// Initiate auto-updates on MacOS and Windows

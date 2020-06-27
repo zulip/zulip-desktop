@@ -1,3 +1,8 @@
+declare module 'electron' {
+	// https://github.com/electron/typescript-definitions/issues/170
+	interface IncomingMessage extends NodeJS.ReadableStream {}
+}
+
 declare module '@electron-elements/send-feedback' {
 	class SendFeedback extends HTMLElement {
 		customStyles: string;

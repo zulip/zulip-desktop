@@ -1,4 +1,4 @@
-import {app, dialog} from 'electron';
+import {app, dialog, session} from 'electron';
 import {UpdateDownloadedEvent, UpdateInfo, autoUpdater} from 'electron-updater';
 import util from 'util';
 import {linuxUpdateNotification} from './linuxupdater';	// Required only in case of linux
@@ -17,7 +17,8 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
 	}
 
 	if (process.platform === 'linux' && !process.env.APPIMAGE) {
-		linuxUpdateNotification();
+		const ses = session.fromPartition('persist:webviewsession');
+		await linuxUpdateNotification(ses);
 		return;
 	}
 
