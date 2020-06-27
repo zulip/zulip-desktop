@@ -390,7 +390,11 @@ img.server-info-icon {
 }
 
 #note {
+<<<<<<< HEAD
     font-size: 10px;
+=======
+    font-size: x-small;
+>>>>>>> 25abb79... UX: Font size for spellchecker explanation decreased.
 }
 
 .code {
