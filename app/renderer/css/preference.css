@@ -389,6 +389,10 @@ img.server-info-icon {
     margin: 6px;
 }
 
+#note {
+    font-size: 10px;
+}
+
 .code {
     font-family: Courier New, Courier, monospace;
 }
