@@ -89,20 +89,21 @@ export default class Logger {
 			nodeConsole, timestamp, level, logInDevMode
 		} = this;
 
-		/* eslint-disable no-fallthrough */
 		switch (true) {
 			case typeof timestamp === 'function':
 				args.unshift(timestamp() + ' |\t');
+				// Fall through
 
 			case (level):
 				args.unshift(type.toUpperCase() + ' |');
+				// Fall through
 
 			case isDev || logInDevMode:
 				nodeConsole[type](...args);
+				break;
 
-			default: break;
+			default:
 		}
-		/* eslint-enable no-fallthrough */
 
 		console[type](...args);
 	}
