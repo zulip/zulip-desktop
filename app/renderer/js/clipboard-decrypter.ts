@@ -59,7 +59,7 @@ export class ClipboardDecrypterImpl implements ClipboardDecrypter {
 					plaintext =
 						decipher.update(ciphertext, undefined, 'utf8') +
 						decipher.final('utf8');
-				} catch (_) {
+				} catch {
 					// If the parsing or decryption failed in any way,
 					// the correct token hasn’t been copied yet; try
 					// again next time.

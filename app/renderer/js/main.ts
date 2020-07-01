@@ -627,7 +627,7 @@ class ServerManagerView {
 
 		try {
 			this.tabs[index].webview.canGoBackButton();
-		} catch (_) {
+		} catch {
 		}
 
 		this.activeTabIndex = index;
@@ -893,7 +893,7 @@ class ServerManagerView {
 			webviews.forEach(webview => {
 				try {
 					webview.setAudioMuted(state);
-				} catch (_) {
+				} catch {
 					// Webview is not ready yet
 					webview.addEventListener('dom-ready', () => {
 						webview.setAudioMuted(state);
