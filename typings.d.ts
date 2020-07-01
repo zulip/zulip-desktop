@@ -14,6 +14,8 @@ declare module '@electron-elements/send-feedback' {
 	export = SendFeedback;
 }
 
+declare module 'electron-connect';
+
 declare module 'node-mac-notifier';
 
 declare module '@yaireo/tagify';
