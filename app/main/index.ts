@@ -13,11 +13,7 @@ import * as CertificateUtil from '../renderer/js/utils/certificate-util';
 import * as ConfigUtil from '../renderer/js/utils/config-util';
 import * as ProxyUtil from '../renderer/js/utils/proxy-util';
 
-interface PatchedGlobal extends NodeJS.Global {
-	mainWindowState: windowStateKeeper.State;
-}
-
-const globalPatched = global as PatchedGlobal;
+let mainWindowState: windowStateKeeper.State;
 
 // Prevent window being garbage collected
 let mainWindow: Electron.BrowserWindow;
@@ -76,9 +72,6 @@ function createMainWindow(): Electron.BrowserWindow {
 		defaultHeight: 720,
 		path: `${app.getPath('userData')}/config`
 	});
-
-	// Let's keep the window position global so that we can access it in other process
-	globalPatched.mainWindowState = mainWindowState;
 
 	const win = new electron.BrowserWindow({
 		// This settings needs to be saved in config
@@ -315,7 +308,7 @@ ${error}`
 	});
 
 	ipcMain.on('clear-app-settings', () => {
-		globalPatched.mainWindowState.unmanage();
+		mainWindowState.unmanage();
 		app.relaunch();
 		app.exit();
 	});
