@@ -9,7 +9,7 @@ declare module '@electron-elements/send-feedback' {
 		buttonLabel: string;
 		loaderSuccessText: string;
 		logs: string[];
-		useReporter: (reporter: string, data: object) => void;
+		useReporter: (reporter: string, data: Record<string, unknown>) => void;
 	}
 	export = SendFeedback;
 }

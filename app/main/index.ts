@@ -357,7 +357,7 @@ ${error}`
 		page.downloadURL(url);
 		page.session.once('will-download', async (_event: Event, item) => {
 			if (ConfigUtil.getConfigItem('promptDownload', false)) {
-				const showDialogOptions: object = {
+				const showDialogOptions: electron.SaveDialogOptions = {
 					defaultPath: path.join(downloadPath, item.getFilename())
 				};
 				item.setSaveDialogOptions(showDialogOptions);
