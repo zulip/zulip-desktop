@@ -1046,6 +1046,7 @@ window.addEventListener('load', async () => {
 	// Only start electron-connect (auto reload on change) when its ran
 	// from `npm run dev` or `gulp dev` and not from `npm start`
 	if (isDev && remote.getGlobal('process').argv.includes('--electron-connect')) {
+		// eslint-disable-next-line node/no-unsupported-features/es-syntax
 		(await import('electron-connect')).client.create();
 	}
 
