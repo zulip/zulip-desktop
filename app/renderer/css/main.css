@@ -488,3 +488,79 @@ send-feedback {
 #feedback-modal.show {
     display: flex;
 }
+
+.dialog {
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    font-family: sans-serif;
+    padding: 20px;
+    top: 10%;
+    left: 50%;
+    z-index: 100;
+    width: 400px;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 5px;
+    margin-left: -200px;
+    box-sizing: border-box;
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, .3);
+}
+
+.text-input {
+    width: 100%;
+    font-size: 14px;
+    border-radius: 4px;
+    padding: 13px;
+    border: rgba(237, 237, 237, 1.000) 2px solid;
+    outline-width: 0;
+    background: transparent;
+    max-width: 450px;
+    box-sizing: border-box;
+}
+
+.text-input:focus {
+    border: rgba(78, 191, 172, 1.000) 2px solid;
+}
+
+.text-input.invalid:focus {
+    border: rgba(239, 83, 80, 1) 2px solid;
+}
+
+.btn {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin: auto;
+    align-items: center;
+    text-align: center;
+    color: rgba(255, 255, 255, 1.000);
+    background: rgba(78, 191, 172, 1.000);
+    border-color: none;
+    border: none;
+    width: 100%;
+    height: 46px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: rgba(50, 149, 136, 1.000);
+}
+
+.btn:focus {
+    background: rgba(50, 149, 136, 1.000);
+}
+
+.btn:disabled {
+    background: none;
+    color: rgba(0, 0, 0, .3);
+    border: 1px solid rgba(0, 0, 0, .3);
+    cursor: not-allowed;
+}
+
+.btn-row {
+    display: flex;
+    flex-direction: row;
+    margin: 0 -10px;
+}
+.btn-row .btn {
+    margin: 0 10px;
+}

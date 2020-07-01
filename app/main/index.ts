@@ -468,3 +468,9 @@ process.on('uncaughtException', err => {
 	console.error(err);
 	console.error(err.stack);
 });
+
+// For some reason, we can't prevent the default behaviour of this event (cancelling the authentication)
+// in app/renderer/js/main.ts, so we do it here. The actual logic is implented there.
+app.on('login', event => {
+	event.preventDefault();
+});
