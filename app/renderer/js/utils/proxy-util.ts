@@ -6,12 +6,12 @@ export interface ProxyRule {
 }
 
 // Return proxy to be used for a particular uri, to be used for request
-export function getProxy(_uri: string): ProxyRule | void {
+export function getProxy(_uri: string): ProxyRule | undefined {
 	let uri;
 	try {
 		uri = new URL(_uri);
 	} catch {
-		return;
+		return undefined;
 	}
 
 	const proxyRules = ConfigUtil.getConfigItem('proxyRules', '').split(';');
@@ -19,7 +19,7 @@ export function getProxy(_uri: string): ProxyRule | void {
 	// environment. NO_PROXY = '*' makes request ignore all environment proxy variables.
 	if (proxyRules[0] === '') {
 		process.env.NO_PROXY = '*';
-		return;
+		return undefined;
 	}
 
 	const proxyRule: any = {};
@@ -42,6 +42,8 @@ export function getProxy(_uri: string): ProxyRule | void {
 		});
 		return proxyRule;
 	}
+
+	return undefined;
 }
 
 // TODO: Refactor to async function

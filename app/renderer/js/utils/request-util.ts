@@ -17,7 +17,7 @@ const logger = new Logger({
 
 interface RequestUtilResponse {
 	ca: string;
-	proxy: string | void | ProxyUtil.ProxyRule;
+	proxy: string | undefined | ProxyUtil.ProxyRule;
 	ecdhCurve: 'auto';
 	headers: { 'User-Agent': string };
 }
