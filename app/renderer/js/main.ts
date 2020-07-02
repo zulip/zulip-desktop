@@ -22,7 +22,6 @@ import * as EnterpriseUtil from './utils/enterprise-util';
 import * as LinkUtil from './utils/link-util';
 import * as Messages from '../../resources/messages';
 import type {DNDSettings} from './utils/dnd-util';
-import Dialog from './components/dialog';
 
 interface FunctionalTabProps {
 	name: string;
@@ -131,7 +130,6 @@ class ServerManagerView {
 		await this.loadProxy();
 		this.initDefaultSettings();
 		this.initSidebar();
-		this.initLoginEventHandler();
 		this.removeUAfromDisk();
 		if (EnterpriseUtil.hasConfigFile()) {
 			await this.initPresetOrgs();
@@ -1041,22 +1039,20 @@ class ServerManagerView {
 		ipcRenderer.on('open-network-settings', async () => {
 			await this.openSettings('Network');
 		});
-	}
 
-	initLoginEventHandler() {
-		// This event gets fired whenever a webview triggers a basic authentication.
-		// We show an authentication dialog and return the username and password.
-		app.on('login', async (event, webContents, details, authInfo, callback) => {
-			// This doesn't seem to work, so it's done in app/main/index.ts as well.
-			event.preventDefault();
-			const dialog = new Dialog();
-			dialog.init();
-			try {
-				const {username, password} = await dialog.showAuthenticationDialog();
-				callback(username, password);
-			} catch {
-				// Cancel authentication
-				callback();
+		ipcRenderer.on('app-on-login', async (event, webContentsId: number, url: string) => {
+			const tab = this.tabs.find(tab => tab.webview.$el?.getWebContentsId() === webContentsId);
+			if (tab !== undefined) {
+				try {
+					const {username, password} = await tab.dialog.showAuthenticationDialog(
+						new URL(url).origin,
+						this.tabs.indexOf(tab) !== this.activeTabIndex
+					);
+					ipcRenderer.send('app-on-login-response', webContentsId, {username, password});
+				} catch {
+					// Cancel authentication
+					ipcRenderer.send('app-on-login-response', webContentsId, {});
+				}
 			}
 		});
 	}

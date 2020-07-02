@@ -1,5 +1,6 @@
 import WebView from './webview';
 import BaseComponent from './base';
+import Dialog from './dialog';
 
 export interface TabProps {
 	role: string;
@@ -19,12 +20,15 @@ export interface TabProps {
 export default class Tab extends BaseComponent {
 	props: TabProps;
 	webview: WebView;
+	dialog: Dialog;
 	$el: Element;
+
 	constructor(props: TabProps) {
 		super();
 
 		this.props = props;
 		this.webview = this.props.webview;
+		this.dialog = new Dialog();
 	}
 
 	registerListeners(): void {
@@ -39,11 +43,13 @@ export default class Tab extends BaseComponent {
 
 	activate(): void {
 		this.$el.classList.add('active');
+		this.dialog.show();
 		this.webview.load();
 	}
 
 	deactivate(): void {
 		this.$el.classList.remove('active');
+		this.dialog.hide();
 		this.webview.hide();
 	}
 

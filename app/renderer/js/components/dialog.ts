@@ -1,21 +1,22 @@
 import * as t from '../utils/translation-util';
-import BaseComponent from './base';
 
 export interface AuthenticationDialogResult {
 	username: string;
 	password: string;
 }
 
-export default class Dialog extends BaseComponent {
+export default class Dialog {
+	private readonly $root: HTMLElement;
 	private $el: HTMLElement;
 
-	init() {
-		this.$el = document.querySelector('#dialog');
+	constructor() {
+		this.$root = document.querySelector('body');
 	}
 
-	async showAuthenticationDialog(): Promise<AuthenticationDialogResult> {
+	async showAuthenticationDialog(url: string, hidden = false): Promise<AuthenticationDialogResult> {
 		return new Promise((resolve, reject) => {
-			this.$el.innerHTML = this.authenticationDialogTemplate();
+			this.init();
+			this.$el.innerHTML = this.authenticationDialogTemplate(url);
 			const $form = this.$el.querySelector('form');
 			const $user: HTMLInputElement = this.$el.querySelector('#dialogAuthUser');
 			const $pass: HTMLInputElement = this.$el.querySelector('#dialogAuthPass');
@@ -31,29 +32,53 @@ export default class Dialog extends BaseComponent {
 			$form.addEventListener('submit', event => {
 				event.preventDefault();
 				resolve({username: $user.value, password: $pass.value});
-				this.hide();
+				this.dismiss();
 				$pass.value = '';
 			});
 			$cancel.addEventListener('click', () => {
 				reject();
-				this.hide();
+				this.dismiss();
 				$pass.value = '';
 			});
-			this.show();
+			if (!hidden) {
+				this.show();
+			}
 		});
 	}
 
-	private show() {
-		this.$el.style.display = 'block';
+	show() {
+		if (this.$el !== undefined) {
+			this.$el.style.display = 'block';
+		}
 	}
 
-	private hide() {
-		this.$el.style.display = 'none';
+	hide() {
+		if (this.$el !== undefined) {
+			this.$el.style.display = 'none';
+		}
 	}
 
-	private authenticationDialogTemplate(): string {
+	dismiss() {
+		if (this.$el !== undefined) {
+			this.$el.remove();
+			this.$el = undefined;
+		}
+	}
+
+	private init() {
+		if (this.$el === undefined) {
+			this.$el = document.createElement('div');
+			this.$el.classList.add('dialog');
+			this.$el.style.display = 'none';
+			this.$root.append(this.$el);
+		}
+	}
+
+	private authenticationDialogTemplate(url = ''): string {
+		url = url ? `<p class="muted">${url}</p>` : '';
 		return `
 			<h3>${t.__('Authentication required')}</h3>
+			${url}
 			<form>
 				<p>
 					<input id="dialogAuthUser" class="text-input" type="text" placeholder="${t.__('Username')}" />

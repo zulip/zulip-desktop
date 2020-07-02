@@ -23,6 +23,8 @@ const globalPatched = global as PatchedGlobal;
 let mainWindow: Electron.BrowserWindow;
 let badgeCount: number;
 
+const appLoginEvents = new Map<number, (username?: string, password?: string) => void>();
+
 let isQuitting = false;
 
 // Load this url in main window
@@ -457,6 +459,27 @@ ${error}`
 			page.send('set-idle');
 		}
 	}, idleCheckInterval);
+
+	app.on('login', (event, webContents, details, authInfo, callback) => {
+		event.preventDefault();
+
+		// If there still is a callback stored for the host
+		const oldCallback = appLoginEvents.get(webContents.id);
+		if (oldCallback !== undefined) {
+			oldCallback();
+		}
+
+		appLoginEvents.set(webContents.id, callback);
+		page.send('app-on-login', webContents.id, details.url);
+	});
+
+	ipcMain.on('app-on-login-response', (event, webContentsId, {username, password}) => {
+		const callback = appLoginEvents.get(webContentsId);
+		if (callback !== undefined) {
+			callback(username, password);
+			appLoginEvents.delete(webContentsId);
+		}
+	});
 });
 
 app.on('before-quit', () => {
@@ -467,10 +490,4 @@ app.on('before-quit', () => {
 process.on('uncaughtException', err => {
 	console.error(err);
 	console.error(err.stack);
-});
-
-// For some reason, we can't prevent the default behaviour of this event (cancelling the authentication)
-// in app/renderer/js/main.ts, so we do it here. The actual logic is implented there.
-app.on('login', event => {
-	event.preventDefault();
 });

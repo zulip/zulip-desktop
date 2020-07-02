@@ -564,3 +564,8 @@ send-feedback {
 .btn-row .btn {
     margin: 0 10px;
 }
+
+.muted {
+    color: rgb(100, 100, 100);
+    font-size: .75em;
+}
