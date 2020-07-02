@@ -814,14 +814,14 @@ class ServerManagerView {
 			});
 		}
 
-		ipcRenderer.on('permission-request', (
+		ipcRenderer.on('permission-request', extractRenderCallback((
+			callback,
 			event: Event,
 			{webContentsId, origin, permission}: {
 				webContentsId: number | null;
 				origin: string;
 				permission: string;
-			},
-			rendererCallbackId: number
+			}
 		) => {
 			const grant = webContentsId === null ?
 				origin === 'null' && permission === 'notifications' :
@@ -835,8 +835,8 @@ class ServerManagerView {
 				grant ? 'Granted' : 'Denied', 'permissions request for',
 				permission, 'from', origin
 			);
-			ipcRenderer.send('renderer-callback', rendererCallbackId, grant);
-		});
+			callback(grant);
+		}));
 
 		ipcRenderer.on('show-network-error', (event: Event, index: number) => {
 			this.openNetworkTroubleshooting(index);
@@ -1040,7 +1040,7 @@ class ServerManagerView {
 			await this.openSettings('Network');
 		});
 
-		ipcRenderer.on('app-on-login', async (event, webContentsId: number, url: string) => {
+		ipcRenderer.on('app-on-login', extractRenderCallback(async (callback, event, webContentsId: number, url: string) => {
 			const tab = this.tabs.find(tab => tab.webview.$el?.getWebContentsId() === webContentsId);
 			if (tab !== undefined) {
 				try {
@@ -1048,14 +1048,28 @@ class ServerManagerView {
 						new URL(url).origin,
 						this.tabs.indexOf(tab) !== this.activeTabIndex
 					);
-					ipcRenderer.send('app-on-login-response', webContentsId, {username, password});
+					callback(username, password);
 				} catch {
 					// Cancel authentication
-					ipcRenderer.send('app-on-login-response', webContentsId, {});
+					callback();
 				}
 			}
-		});
+		}));
 	}
+}
+
+// Extracts the last event argument as the callback id and passes a callback and the remaining args to handler
+function extractRenderCallback(handler: (callback: (...callbackArgs: any[]) => void, ...eventArgs: any[]) => void) {
+	return (...args: any[]) => {
+		const id = args.pop();
+		if (typeof id !== 'number') {
+			throw new TypeError('expected last element to be the callback id');
+		}
+
+		handler((...cbargs: any[]) => {
+			ipcRenderer.send('renderer-callback', id, ...cbargs);
+		}, ...args);
+	};
 }
 
 window.addEventListener('load', async () => {
