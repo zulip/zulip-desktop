@@ -41,8 +41,8 @@ function getHistorySubmenu(enableMenu: boolean): Electron.MenuItemConstructorOpt
 function getToolsSubmenu(): Electron.MenuItemConstructorOptions[] {
 	return [{
 		label: t.__('Check for Updates'),
-		click() {
-			checkForUpdate();
+		async click() {
+			await checkForUpdate();
 		}
 	},
 	{
@@ -541,8 +541,8 @@ function sendAction(action: string, ...parameters: unknown[]): void {
 	win.webContents.send(action, ...parameters);
 }
 
-function checkForUpdate(): void {
-	appUpdater(true);
+async function checkForUpdate(): Promise<void> {
+	await appUpdater(true);
 }
 
 function getNextServer(tabs: ServerOrFunctionalTab[], activeTabIndex: number): number {

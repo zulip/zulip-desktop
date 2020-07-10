@@ -201,10 +201,10 @@ app.on('ready', () => {
 		event.returnValue = session.fromPartition('persist:webviewsession').getUserAgent();
 	});
 
-	page.once('did-frame-finish-load', () => {
+	page.once('did-frame-finish-load', async () => {
 		// Initiate auto-updates on MacOS and Windows
 		if (ConfigUtil.getConfigItem('autoUpdate')) {
-			appUpdater();
+			await appUpdater();
 		}
 	});
 
