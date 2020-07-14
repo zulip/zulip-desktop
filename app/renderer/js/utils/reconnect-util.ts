@@ -2,9 +2,7 @@ import {ipcRenderer} from 'electron';
 
 import type WebView from '../components/webview';
 import backoff from 'backoff';
-import request from 'request';
 import Logger from './logger-util';
-import * as RequestUtil from './request-util';
 
 const logger = new Logger({
 	file: 'domain-util.log',
@@ -32,23 +30,7 @@ export default class ReconnectUtil {
 	}
 
 	async isOnline(): Promise<boolean> {
-		return new Promise(resolve => {
-			try {
-				request(
-					{
-						url: `${this.url}/static/favicon.ico`,
-						...RequestUtil.requestOptions(this.url)
-					},
-					(error: Error, response: request.Response) => {
-						const isValidResponse =
-							!error && response.statusCode >= 200 && response.statusCode < 400;
-						resolve(isValidResponse);
-					}
-				);
-			} catch (error) {
-				logger.log(error);
-			}
-		});
+		return ipcRenderer.invoke('is-online', this.url);
 	}
 
 	pollInternetAndReload(): void {

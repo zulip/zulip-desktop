@@ -1,13 +1,10 @@
 import {JsonDB} from 'node-json-db';
 
-import escape from 'escape-html';
-import request from 'request';
 import fs from 'fs';
 import path from 'path';
 import Logger from './logger-util';
-import {remote} from 'electron';
+import {remote, ipcRenderer} from 'electron';
 
-import * as RequestUtil from './request-util';
 import * as EnterpriseUtil from './enterprise-util';
 import * as Messages from '../../../resources/messages';
 
@@ -146,74 +143,11 @@ export async function checkDomain(domain: string, silent = false): Promise<Serve
 }
 
 async function getServerSettings(domain: string): Promise<ServerConf> {
-	const serverSettingsOptions = {
-		url: domain + '/api/v1/server_settings',
-		...RequestUtil.requestOptions(domain)
-	};
-
-	return new Promise((resolve, reject) => {
-		request(serverSettingsOptions, (error: Error, response: request.Response) => {
-			if (!error && response.statusCode === 200) {
-				const {realm_name, realm_uri, realm_icon} = JSON.parse(response.body);
-				if (
-					typeof realm_name === 'string' &&
-					typeof realm_uri === 'string' &&
-					typeof realm_icon === 'string'
-				) {
-					resolve({
-						// Some Zulip Servers use absolute URL for server icon whereas others use relative URL
-						// Following check handles both the cases
-						icon: realm_icon.startsWith('/') ? realm_uri + realm_icon : realm_icon,
-						url: realm_uri,
-						alias: escape(realm_name)
-					});
-				} else {
-					reject(Messages.noOrgsError(domain));
-				}
-			} else {
-				reject(response);
-			}
-		});
-	});
+	return ipcRenderer.invoke('get-server-settings', domain);
 }
 
 export async function saveServerIcon(server: ServerConf): Promise<string> {
-	const url = server.icon;
-	const domain = server.url;
-
-	const serverIconOptions = {
-		url,
-		...RequestUtil.requestOptions(domain)
-	};
-
-	// The save will always succeed. If url is invalid, downgrade to default icon.
-	return new Promise(resolve => {
-		const filePath = generateFilePath(url);
-		const file = fs.createWriteStream(filePath);
-		try {
-			request(serverIconOptions).on('response', (response: request.Response) => {
-				response.on('error', (err: Error) => {
-					logger.log('Could not get server icon.');
-					logger.log(err);
-					logger.reportSentry(err);
-					resolve(defaultIconUrl);
-				});
-				response.pipe(file).on('finish', () => {
-					resolve(filePath);
-				});
-			}).on('error', (err: Error) => {
-				logger.log('Could not get server icon.');
-				logger.log(err);
-				logger.reportSentry(err);
-				resolve(defaultIconUrl);
-			});
-		} catch (error) {
-			logger.log('Could not get server icon.');
-			logger.log(error);
-			logger.reportSentry(error);
-			resolve(defaultIconUrl);
-		}
-	});
+	return ipcRenderer.invoke('save-server-icon', server.icon);
 }
 
 export async function updateSavedServer(url: string, index: number): Promise<void> {
@@ -254,25 +188,6 @@ function reloadDB(): void {
 	}
 
 	db = new JsonDB(domainJsonPath, true, true);
-}
-
-function generateFilePath(url: string): string {
-	const dir = `${app.getPath('userData')}/server-icons`;
-	const extension = path.extname(url).split('?')[0];
-
-	let hash = 5381;
-	let {length} = url;
-
-	while (length) {
-		hash = (hash * 33) ^ url.charCodeAt(--length);
-	}
-
-	// Create 'server-icons' directory if not existed
-	if (!fs.existsSync(dir)) {
-		fs.mkdirSync(dir);
-	}
-
-	return `${dir}/${hash >>> 0}${extension}`;
 }
 
 export function formatUrl(domain: string): string {
