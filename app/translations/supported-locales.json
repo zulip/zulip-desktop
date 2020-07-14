@@ -5,8 +5,8 @@
     "cs": "česky",
     "da": "Dansk",
     "de": "Deutsch",
+    "el_GR": "Greek (Greece)",
     "el": "Ελληνικά",
-    "el-GR": "Greek (Greece)",
     "en_GB": "English (UK)",
     "en": "English (US)",
     "es": "Español",
@@ -29,6 +29,7 @@
     "pt": "Português",
     "ro": "Română",
     "ru": "Русский",
+    "sk": "Slovak",
     "sr": "српски",
     "sv": "svenska",
     "ta": "தமிழ்",
@@ -37,6 +38,6 @@
     "uz": "O'zbek",
     "vi": "Tiếng Việt",
     "zh_TW": "中文 (傳統的)",
-    "zh-hans": "简体中文",
-    "zh-hant": "繁體中文"
+    "zh-Hans": "简体中文",
+    "zh-Hant": "繁體中文"
 }
