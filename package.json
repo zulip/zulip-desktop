@@ -146,8 +146,8 @@
   ],
   "dependencies": {
     "@electron-elements/send-feedback": "^2.0.3",
-    "@sentry/electron": "^1.3.0",
-    "@yaireo/tagify": "^3.12.0",
+    "@sentry/electron": "^1.4.0",
+    "@yaireo/tagify": "^3.15.3",
     "adm-zip": "^0.4.16",
     "auto-launch": "^5.0.5",
     "backoff": "^2.5.0",
@@ -174,13 +174,13 @@
     "@types/escape-html": "^1.0.0",
     "@types/fs-extra": "^9.0.1",
     "@types/i18n": "^0.8.6",
-    "@types/node": "^14.0.14",
+    "@types/node": "^14.0.23",
     "@types/requestidlecallback": "^0.3.1",
-    "@typescript-eslint/eslint-plugin": "^3.5.0",
-    "@typescript-eslint/parser": "^3.5.0",
+    "@typescript-eslint/eslint-plugin": "^3.6.1",
+    "@typescript-eslint/parser": "^3.6.1",
     "devtron": "^1.4.0",
     "dotenv": "^8.2.0",
-    "electron": "^8.3.4",
+    "electron": "^8.4.0",
     "electron-builder": "^22.7.0",
     "electron-connect": "^0.6.3",
     "electron-notarize": "^1.0.0",
@@ -196,8 +196,8 @@
     "stylelint": "^13.6.1",
     "tap-colorize": "^1.2.0",
     "tape": "^5.0.1",
-    "typescript": "^3.9.6",
-    "xo": "^0.32.0"
+    "typescript": "^3.9.7",
+    "xo": "^0.32.1"
   },
   "xo": {
     "rules": {
