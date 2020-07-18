@@ -2,6 +2,25 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.4.0 --2020-07-21
+
+**New features**:
+* Added support for certificates from system store.
+* Added support for Slovak as application language.
+
+**Fixes**:
+* Fix bug in *Copy Link* and add *Copy Email* option in context menu.
+* Enable *Copy* option in context menu only when copying is possible.
+* Remove leading and trailing separators in context menu on non-mac systems.
+* ignoreCerts: Accomodate WebSocket URLs in certificate-error handler.
+
+**Dependencies**:
+* Upgrade all dependencies, including Electron 8.4.0.
+
+**Deprecations**:
+* This release supports certificates from Zulip store as well as system store. Zulip certificate store will be deprecated in the next release.
+Users are hereby requested to move to system store. For more information, please see the [documentation](https://zulip.com/help/custom-certificates).
+
 ### v5.3.0 --2020-06-24
 
 **Security fixes**:
