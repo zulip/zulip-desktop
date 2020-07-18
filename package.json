@@ -50,7 +50,7 @@
     "files": [
       "app/**/*"
     ],
-    "copyright": "©2019 Kandra Labs, Inc.",
+    "copyright": "©2020 Kandra Labs, Inc.",
     "mac": {
       "category": "public.app-category.productivity",
       "target": [
