@@ -12,7 +12,7 @@ All notable changes to the Zulip desktop app are documented in this file.
 * Fix bug in *Copy Link* and add *Copy Email* option in context menu.
 * Enable *Copy* option in context menu only when copying is possible.
 * Remove leading and trailing separators in context menu on non-mac systems.
-* ignoreCerts: Accomodate WebSocket URLs in certificate-error handler.
+* ignoreCerts: Accommodate WebSocket URLs in certificate-error handler.
 
 **Dependencies**:
 * Upgrade all dependencies, including Electron 8.4.0.
