@@ -4,6 +4,13 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
+import Logger from './logger-util';
+
+const logger = new Logger({
+	file: 'link-util.log',
+	timestamp: true
+});
+
 export function isUploadsUrl(server: string, url: URL): boolean {
 	return url.origin === server && url.pathname.startsWith('/user_uploads/');
 }
@@ -36,7 +43,11 @@ export async function openBrowser(url: URL): Promise<void> {
     </body>
 </html>
 `);
-		await shell.openPath(file);
+		const shellResponse = await shell.openPath(file);
+		if (shellResponse.length > 0) {
+			logger.log(shellResponse);
+		}
+
 		setTimeout(() => {
 			fs.unlinkSync(file);
 			fs.rmdirSync(dir);
