@@ -1,8 +1,8 @@
 import {remote, ipcRenderer} from 'electron';
 
+import * as Messages from '../../../../resources/messages';
 import BaseComponent from '../../components/base';
 import * as DomainUtil from '../../utils/domain-util';
-import * as Messages from '../../../../resources/messages';
 import * as t from '../../utils/translation-util';
 
 const {dialog} = remote;

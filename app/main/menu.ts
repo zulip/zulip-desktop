@@ -1,12 +1,14 @@
 import {app, shell, BrowserWindow, Menu} from 'electron';
-import {appUpdater} from './autoupdater';
 
 import AdmZip from 'adm-zip';
-import * as DNDUtil from '../renderer/js/utils/dnd-util';
+
+import type {ServerOrFunctionalTab} from '../renderer/js/main';
 import * as ConfigUtil from '../renderer/js/utils/config-util';
+import * as DNDUtil from '../renderer/js/utils/dnd-util';
 import * as LinkUtil from '../renderer/js/utils/link-util';
 import * as t from '../renderer/js/utils/translation-util';
-import type {ServerOrFunctionalTab} from '../renderer/js/main';
+
+import {appUpdater} from './autoupdater';
 
 export interface MenuProps {
 	tabs: ServerOrFunctionalTab[];

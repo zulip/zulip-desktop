@@ -1,11 +1,12 @@
 import {Console} from 'console'; // eslint-disable-line node/prefer-global/console
-import {initSetUp} from './default-util';
-import {sentryInit, captureException} from './sentry-util';
-
+import electron from 'electron';
 import fs from 'fs';
 import os from 'os';
+
 import isDev from 'electron-is-dev';
-import electron from 'electron';
+
+import {initSetUp} from './default-util';
+import {sentryInit, captureException} from './sentry-util';
 
 interface LoggerOptions {
 	timestamp?: true | (() => string);

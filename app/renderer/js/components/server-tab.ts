@@ -1,7 +1,8 @@
 import {ipcRenderer} from 'electron';
 
-import Tab, {TabProps} from './tab';
 import * as SystemUtil from '../utils/system-util';
+
+import Tab, {TabProps} from './tab';
 
 export default class ServerTab extends Tab {
 	$badge: Element;

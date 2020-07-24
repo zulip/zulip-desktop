@@ -1,8 +1,9 @@
-import {JsonDB} from 'node-json-db';
-
+import electron from 'electron';
 import fs from 'fs';
 import path from 'path';
-import electron from 'electron';
+
+import {JsonDB} from 'node-json-db';
+
 import Logger from './logger-util';
 
 const remote =

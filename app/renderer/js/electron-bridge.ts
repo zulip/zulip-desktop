@@ -1,5 +1,4 @@
 import {ipcRenderer} from 'electron';
-
 import {EventEmitter} from 'events';
 
 import {ClipboardDecrypterImpl} from './clipboard-decrypter';

@@ -1,12 +1,13 @@
-import {JsonDB} from 'node-json-db';
-
+import {remote, ipcRenderer} from 'electron';
 import fs from 'fs';
 import path from 'path';
-import Logger from './logger-util';
-import {remote, ipcRenderer} from 'electron';
+
+import {JsonDB} from 'node-json-db';
+
+import * as Messages from '../../../resources/messages';
 
 import * as EnterpriseUtil from './enterprise-util';
-import * as Messages from '../../../resources/messages';
+import Logger from './logger-util';
 
 const {app, dialog} = remote;
 

@@ -1,7 +1,9 @@
 import {ipcRenderer} from 'electron';
 
-import type WebView from '../components/webview';
 import backoff from 'backoff';
+
+import type WebView from '../components/webview';
+
 import Logger from './logger-util';
 
 const logger = new Logger({

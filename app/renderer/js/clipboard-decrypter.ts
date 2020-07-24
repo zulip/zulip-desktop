@@ -1,5 +1,5 @@
-import {clipboard} from 'electron';
 import crypto from 'crypto';
+import {clipboard} from 'electron';
 
 // This helper is exposed via electron_bridge for use in the social
 // login flow.

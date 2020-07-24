@@ -1,6 +1,7 @@
-import BaseSection from './base-section';
 import * as LinkUtil from '../../utils/link-util';
 import * as t from '../../utils/translation-util';
+
+import BaseSection from './base-section';
 
 interface ShortcutsSectionProps {
 	$root: Element;

@@ -1,11 +1,13 @@
 import {ipcRenderer} from 'electron';
+
+import MacNotifier from 'node-mac-notifier';
+
+import electron_bridge from '../electron-bridge';
+import * as ConfigUtil from '../utils/config-util';
+
 import {
 	appId, customReply, focusCurrentServer, parseReply
 } from './helpers';
-
-import MacNotifier from 'node-mac-notifier';
-import * as ConfigUtil from '../utils/config-util';
-import electron_bridge from '../electron-bridge';
 
 type ReplyHandler = (response: string) => void;
 type ClickHandler = () => void;

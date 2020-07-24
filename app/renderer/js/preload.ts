@@ -3,6 +3,7 @@ import fs from 'fs';
 
 import isDev from 'electron-is-dev';
 
+import electron_bridge from './electron-bridge';
 import * as NetworkError from './pages/network';
 
 // eslint-disable-next-line import/no-unassigned-import
@@ -12,7 +13,6 @@ import './notification';
 // eslint-disable-next-line import/no-unassigned-import
 import './shared/preventdrag';
 
-import electron_bridge from './electron-bridge';
 contextBridge.exposeInMainWorld('raw_electron_bridge', electron_bridge);
 
 ipcRenderer.on('logout', () => {

@@ -1,10 +1,10 @@
 'use strict';
 const path = require('path');
+
 const dotenv = require('dotenv');
+const {notarize} = require('electron-notarize');
 
 dotenv.config({path: path.join(__dirname, '/../.env')});
-
-const {notarize} = require('electron-notarize');
 
 exports.default = async function (context) {
 	const {electronPlatformName, appOutDir} = context;

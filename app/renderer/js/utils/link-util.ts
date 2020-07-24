@@ -1,8 +1,9 @@
 import {shell} from 'electron';
-import escape from 'escape-html';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
+
+import escape from 'escape-html';
 
 export function isUploadsUrl(server: string, url: URL): boolean {
 	return url.origin === server && url.pathname.startsWith('/user_uploads/');

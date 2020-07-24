@@ -1,7 +1,8 @@
 import {ipcRenderer} from 'electron';
-import {focusCurrentServer} from './helpers';
 
 import * as ConfigUtil from '../utils/config-util';
+
+import {focusCurrentServer} from './helpers';
 
 const NativeNotification = window.Notification;
 export default class BaseNotification extends NativeNotification {

@@ -1,18 +1,19 @@
 import {ipcRenderer, remote, OpenDialogOptions} from 'electron';
-
 import path from 'path';
+
+import Tagify from '@yaireo/tagify';
 import fs from 'fs-extra';
+import ISO6391 from 'iso-639-1';
 
-const {app, dialog, session} = remote;
-const currentBrowserWindow = remote.getCurrentWindow();
-
-import BaseSection from './base-section';
+import supportedLocales from '../../../../translations/supported-locales.json';
 import * as ConfigUtil from '../../utils/config-util';
 import * as EnterpriseUtil from '../../utils/enterprise-util';
 import * as t from '../../utils/translation-util';
-import supportedLocales from '../../../../translations/supported-locales.json';
-import Tagify from '@yaireo/tagify';
-import ISO6391 from 'iso-639-1';
+
+import BaseSection from './base-section';
+
+const {app, dialog, session} = remote;
+const currentBrowserWindow = remote.getCurrentWindow();
 
 interface GeneralSectionProps {
 	$root: Element;

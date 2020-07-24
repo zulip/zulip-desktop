@@ -1,5 +1,7 @@
 import path from 'path';
+
 import i18n from 'i18n';
+
 import * as ConfigUtil from './config-util';
 
 i18n.configure({

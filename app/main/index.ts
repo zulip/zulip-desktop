@@ -1,18 +1,20 @@
-import {sentryInit} from '../renderer/js/utils/sentry-util';
-import {appUpdater} from './autoupdater';
-import {setAutoLaunch} from './startup';
+
+import electron, {app, dialog, ipcMain, session} from 'electron';
+import fs from 'fs';
+import path from 'path';
 
 import windowStateKeeper from 'electron-window-state';
-import path from 'path';
-import fs from 'fs';
-import electron, {app, dialog, ipcMain, session} from 'electron';
 
-import * as AppMenu from './menu';
 import * as BadgeSettings from '../renderer/js/pages/preference/badge-settings';
 import * as CertificateUtil from '../renderer/js/utils/certificate-util';
 import * as ConfigUtil from '../renderer/js/utils/config-util';
 import * as ProxyUtil from '../renderer/js/utils/proxy-util';
+import {sentryInit} from '../renderer/js/utils/sentry-util';
+
+import {appUpdater} from './autoupdater';
+import * as AppMenu from './menu';
 import {_getServerSettings, _saveServerIcon, _isOnline} from './request';
+import {setAutoLaunch} from './startup';
 
 let mainWindowState: windowStateKeeper.State;
 

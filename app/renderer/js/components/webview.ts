@@ -1,12 +1,13 @@
 import {ipcRenderer, remote} from 'electron';
-
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
+
 import * as ConfigUtil from '../utils/config-util';
 import * as SystemUtil from '../utils/system-util';
+
 import BaseComponent from './base';
-import handleExternalLink from './handle-external-link';
 import {contextMenu} from './context-menu';
+import handleExternalLink from './handle-external-link';
 
 const {app, dialog} = remote;
 

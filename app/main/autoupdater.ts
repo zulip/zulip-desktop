@@ -1,12 +1,14 @@
 import {app, dialog, session} from 'electron';
-import {UpdateDownloadedEvent, UpdateInfo, autoUpdater} from 'electron-updater';
 import util from 'util';
-import {linuxUpdateNotification} from './linuxupdater';	// Required only in case of linux
 
-import log from 'electron-log';
 import isDev from 'electron-is-dev';
+import log from 'electron-log';
+import {UpdateDownloadedEvent, UpdateInfo, autoUpdater} from 'electron-updater';
+
 import * as ConfigUtil from '../renderer/js/utils/config-util';
 import * as LinkUtil from '../renderer/js/utils/link-util';
+
+import {linuxUpdateNotification} from './linuxupdater';	// Required only in case of linux
 
 const sleep = util.promisify(setTimeout);
 

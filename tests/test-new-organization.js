@@ -1,5 +1,6 @@
 'use strict';
 const test = require('tape');
+
 const setup = require('./setup');
 
 // Create new org link should open in the default browser [WIP]

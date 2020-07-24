@@ -1,9 +1,10 @@
 import electron from 'electron';
-import {JsonDB} from 'node-json-db';
-import {initSetUp} from './default-util';
-
 import fs from 'fs';
 import path from 'path';
+
+import {JsonDB} from 'node-json-db';
+
+import {initSetUp} from './default-util';
 import Logger from './logger-util';
 
 const {app, dialog} =

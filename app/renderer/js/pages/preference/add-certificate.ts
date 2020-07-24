@@ -1,8 +1,8 @@
 'use-strict';
 
 import {remote, OpenDialogOptions} from 'electron';
-
 import path from 'path';
+
 import BaseComponent from '../../components/base';
 import * as CertificateUtil from '../../utils/certificate-util';
 import * as DomainUtil from '../../utils/domain-util';

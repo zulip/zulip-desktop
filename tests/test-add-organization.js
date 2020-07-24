@@ -1,5 +1,6 @@
 'use strict';
 const test = require('tape');
+
 const setup = require('./setup');
 
 test('add-organization', async t => {

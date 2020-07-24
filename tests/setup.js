@@ -1,8 +1,9 @@
 'use strict';
-const {Application} = require('spectron');
 const fs = require('fs');
 const path = require('path');
+
 const rimraf = require('rimraf');
+const {Application} = require('spectron');
 
 const config = require('./config');
 

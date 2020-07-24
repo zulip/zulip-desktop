@@ -1,5 +1,4 @@
 import {ipcRenderer} from 'electron';
-
 import os from 'os';
 
 export const connectivityERR: string[] = [

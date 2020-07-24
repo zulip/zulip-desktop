@@ -1,13 +1,14 @@
 import {ipcRenderer} from 'electron';
 
 import BaseComponent from '../../components/base';
-import Nav from './nav';
-import ServersSection from './servers-section';
-import GeneralSection from './general-section';
-import NetworkSection from './network-section';
-import ConnectedOrgSection from './connected-org-section';
-import ShortcutsSection from './shortcuts-section';
 import type {DNDSettings} from '../../utils/dnd-util';
+
+import ConnectedOrgSection from './connected-org-section';
+import GeneralSection from './general-section';
+import Nav from './nav';
+import NetworkSection from './network-section';
+import ServersSection from './servers-section';
+import ShortcutsSection from './shortcuts-section';
 
 type Section = ServersSection | GeneralSection | NetworkSection | ConnectedOrgSection | ShortcutsSection;
 

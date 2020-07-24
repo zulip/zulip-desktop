@@ -3,11 +3,13 @@ import fs from 'fs';
 import path from 'path';
 import stream from 'stream';
 import util from 'util';
-import * as Messages from '../resources/messages';
-import Logger from '../renderer/js/utils/logger-util';
-import {ServerConf} from '../renderer/js/utils/domain-util';
+
 import escape from 'escape-html';
 import getStream from 'get-stream';
+
+import {ServerConf} from '../renderer/js/utils/domain-util';
+import Logger from '../renderer/js/utils/logger-util';
+import * as Messages from '../resources/messages';
 
 export async function fetchResponse(request: ClientRequest): Promise<IncomingMessage> {
 	return new Promise((resolve, reject) => {

@@ -1,27 +1,29 @@
 import {ipcRenderer, remote, clipboard} from 'electron';
-import {feedbackHolder} from './feedback';
-
 import path from 'path';
-import escape from 'escape-html';
+
 import isDev from 'electron-is-dev';
-const {session, app, Menu, dialog} = remote;
+import escape from 'escape-html';
+
+import * as Messages from '../../resources/messages';
+
+import FunctionalTab from './components/functional-tab';
+import ServerTab from './components/server-tab';
+import WebView from './components/webview';
+import {feedbackHolder} from './feedback';
+import * as CommonUtil from './utils/common-util';
+import * as ConfigUtil from './utils/config-util';
+import * as DNDUtil from './utils/dnd-util';
+import type {DNDSettings} from './utils/dnd-util';
+import * as DomainUtil from './utils/domain-util';
+import * as EnterpriseUtil from './utils/enterprise-util';
+import * as LinkUtil from './utils/link-util';
+import Logger from './utils/logger-util';
+import ReconnectUtil from './utils/reconnect-util';
 
 // eslint-disable-next-line import/no-unassigned-import
 import './tray';
 
-import * as DomainUtil from './utils/domain-util';
-import WebView from './components/webview';
-import ServerTab from './components/server-tab';
-import FunctionalTab from './components/functional-tab';
-import * as ConfigUtil from './utils/config-util';
-import * as DNDUtil from './utils/dnd-util';
-import ReconnectUtil from './utils/reconnect-util';
-import Logger from './utils/logger-util';
-import * as CommonUtil from './utils/common-util';
-import * as EnterpriseUtil from './utils/enterprise-util';
-import * as LinkUtil from './utils/link-util';
-import * as Messages from '../../resources/messages';
-import type {DNDSettings} from './utils/dnd-util';
+const {session, app, Menu, dialog} = remote;
 
 interface FunctionalTabProps {
 	name: string;

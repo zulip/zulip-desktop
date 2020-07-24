@@ -1,6 +1,6 @@
 import {ipcRenderer, remote, WebviewTag, NativeImage} from 'electron';
-
 import path from 'path';
+
 import * as ConfigUtil from './utils/config-util';
 
 const {Tray, Menu, nativeImage, BrowserWindow} = remote;

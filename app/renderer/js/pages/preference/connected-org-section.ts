@@ -1,11 +1,12 @@
 import {ipcRenderer} from 'electron';
 
-import BaseSection from './base-section';
 import * as DomainUtil from '../../utils/domain-util';
-import ServerInfoForm from './server-info-form';
-import AddCertificate from './add-certificate';
-import FindAccounts from './find-accounts';
 import * as t from '../../utils/translation-util';
+
+import AddCertificate from './add-certificate';
+import BaseSection from './base-section';
+import FindAccounts from './find-accounts';
+import ServerInfoForm from './server-info-form';
 
 interface ConnectedOrgSectionProps {
 	$root: Element;

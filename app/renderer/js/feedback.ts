@@ -1,8 +1,8 @@
 import {remote} from 'electron';
-import SendFeedback from '@electron-elements/send-feedback';
-
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
+
+import SendFeedback from '@electron-elements/send-feedback';
 
 const {app} = remote;
 

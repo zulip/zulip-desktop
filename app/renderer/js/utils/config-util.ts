@@ -1,10 +1,11 @@
-import {JsonDB} from 'node-json-db';
-
+import electron from 'electron';
 import fs from 'fs';
 import path from 'path';
-import electron from 'electron';
-import Logger from './logger-util';
+
+import {JsonDB} from 'node-json-db';
+
 import * as EnterpriseUtil from './enterprise-util';
+import Logger from './logger-util';
 
 const logger = new Logger({
 	file: 'config-util.log',

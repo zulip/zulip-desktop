@@ -1,5 +1,4 @@
 import {init} from '@sentry/electron';
-
 import isDev from 'electron-is-dev';
 
 export const sentryInit = (): void => {
