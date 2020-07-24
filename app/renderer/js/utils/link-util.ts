@@ -37,7 +37,7 @@ export async function openBrowser(url: URL): Promise<void> {
     </body>
 </html>
 `);
-		shell.openItem(file);
+		await shell.openPath(file);
 		setTimeout(() => {
 			fs.unlinkSync(file);
 			fs.rmdirSync(dir);
