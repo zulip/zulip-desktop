@@ -1,5 +1,3 @@
-'use-strict';
-
 import BaseComponent from '../../components/base';
 import * as LinkUtil from '../../utils/link-util';
 import * as t from '../../utils/translation-util';

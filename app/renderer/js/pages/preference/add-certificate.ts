@@ -1,5 +1,3 @@
-'use-strict';
-
 import {remote, OpenDialogOptions} from 'electron';
 import path from 'path';
 
