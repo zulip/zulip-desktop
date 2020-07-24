@@ -1,6 +1,7 @@
 import {remote, ContextMenuParams} from 'electron';
 
 import * as t from '../utils/translation-util';
+
 const {clipboard, Menu} = remote;
 
 export const contextMenu = (webContents: Electron.WebContents, event: Event, props: ContextMenuParams) => {
