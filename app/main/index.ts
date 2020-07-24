@@ -355,7 +355,7 @@ ${error}`
 		AppMenu.setMenu(props);
 		const activeTab = props.tabs[props.activeTabIndex];
 		if (activeTab) {
-			mainWindow.setTitle(`Zulip - ${activeTab.webview.props.name}`);
+			mainWindow.setTitle(`Zulip - ${activeTab.webviewName}`);
 		}
 	});
 

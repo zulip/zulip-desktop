@@ -61,7 +61,14 @@ const logger = new Logger({
 });
 
 const rendererDirectory = path.resolve(__dirname, '..');
-export type ServerOrFunctionalTab = ServerTab | FunctionalTab;
+type ServerOrFunctionalTab = ServerTab | FunctionalTab;
+
+export interface TabData {
+	role: string;
+	name: string;
+	index: number;
+	webviewName: string;
+}
 
 class ServerManagerView {
 	$addServerButton: HTMLButtonElement;
@@ -592,19 +599,13 @@ class ServerManagerView {
 	// not crash app when this.tabs is passed into
 	// ipcRenderer. Something about webview, and props.webview
 	// properties in ServerTab causes the app to crash.
-	get tabsForIpc(): ServerOrFunctionalTab[] {
-		const tabs: ServerOrFunctionalTab[] = [];
-		this.tabs.forEach((tab: ServerOrFunctionalTab) => {
-			const proto = Object.create(Object.getPrototypeOf(tab));
-			const tabClone = Object.assign(proto, tab);
-
-			tabClone.webview = {props: {}};
-			tabClone.webview.props.name = tab.webview.props.name;
-			delete tabClone.props.webview;
-			tabs.push(tabClone);
-		});
-
-		return tabs;
+	get tabsForIpc(): TabData[] {
+		return this.tabs.map(tab => ({
+			role: tab.props.role,
+			name: tab.props.name,
+			index: tab.props.index,
+			webviewName: tab.webview.props.name
+		}));
 	}
 
 	activateTab(index: number, hideOldTab = true): void {
