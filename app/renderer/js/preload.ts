@@ -4,16 +4,18 @@ import fs from 'fs';
 import isDev from 'electron-is-dev';
 
 import electron_bridge from './electron-bridge';
+import {loadBots} from './notification/helpers';
 import * as NetworkError from './pages/network';
-
-// eslint-disable-next-line import/no-unassigned-import
-import './notification';
 
 // Prevent drag and drop event in main process which prevents remote code executaion
 // eslint-disable-next-line import/no-unassigned-import
 import './shared/preventdrag';
 
 contextBridge.exposeInMainWorld('raw_electron_bridge', electron_bridge);
+
+electron_bridge.once('zulip-loaded', async () => {
+	await loadBots();
+});
 
 ipcRenderer.on('logout', () => {
 	// Create the menu for the below

@@ -1,9 +1,7 @@
 import {remote} from 'electron';
 
-import electron_bridge from '../electron-bridge';
-
 import DefaultNotification from './default-notification';
-import {appId, loadBots} from './helpers';
+import {appId} from './helpers';
 
 const {app} = remote;
 
@@ -69,7 +67,3 @@ export function newNotification(
 		actions: notification.actions
 	};
 }
-
-electron_bridge.once('zulip-loaded', async () => {
-	await loadBots();
-});
