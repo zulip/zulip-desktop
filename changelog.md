@@ -2,6 +2,17 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.4.1-beta --2020-07-29
+
+**Fixes**:
+* Resized the large application icon on macOS dock to be coherent with other icons.
+
+**Potential Fixes**:
+* macOS: Electron 9 upgrade is a potential fix for the ['grey screen issue'](https://chat.zulip.org/#narrow/stream/9-issues/topic/Grey.20Window.20on.20macOS) reported.
+
+**Dependencies**:
+* Upgrade all dependencies, including Electron 9.1.1.
+
 ### v5.4.0 --2020-07-21
 
 **New features**:
