@@ -1,12 +1,10 @@
 import {ipcRenderer} from 'electron';
 
-import MacNotifier from 'node-mac-notifier';
-
 import electron_bridge from '../electron-bridge';
 import * as ConfigUtil from '../utils/config-util';
 
 import {
-	appId, customReply, focusCurrentServer, parseReply
+	customReply, focusCurrentServer, parseReply
 } from './helpers';
 
 type ReplyHandler = (response: string) => void;
@@ -22,30 +20,22 @@ class DarwinNotification {
 	tag: number;
 
 	constructor(title: string, options: NotificationOptions) {
-		const silent: boolean = ConfigUtil.getConfigItem('silent') || false;
-		const {icon} = options;
-		const profilePic = new URL(icon, location.href).href;
-
+		// X const profilePic = new URL(options.icon, location.href).href;
 		this.tag = Number.parseInt(options.tag, 10);
-		const notification = new MacNotifier(title, Object.assign(options, {
-			bundleId: appId,
-			canReply: true,
-			silent,
-			icon: profilePic
-		}));
+		const notificationOptions: Electron.NotificationConstructorOptions = {
+			title,
+			body: options.body,
+			silent: ConfigUtil.getConfigItem('silent') || false,
+			// X icon: profilePic,
+			hasReply: true,
+			timeoutType: 'default'
+		};
 
-		notification.addEventListener('click', () => {
-			// Focus to the server who sent the
-			// notification if not focused already
-			if (clickHandler) {
-				clickHandler();
-			}
-
-			focusCurrentServer();
-			ipcRenderer.send('focus-app');
+		ipcRenderer.send('create-notification', notificationOptions);
+		ipcRenderer.on('replied', async (_event: Electron.IpcRendererEvent, response: string) => {
+			await this.notificationHandler({response});
+			ipcRenderer.removeAllListeners('replied');
 		});
-
-		notification.addEventListener('reply', this.notificationHandler);
 	}
 
 	static requestPermission(): void {
@@ -103,8 +93,8 @@ class DarwinNotification {
 		customReply(response);
 	}
 
-	// Method specific to notification api
-	// used by zulip
+	// Method specific to Zulip's notification module, not the package used to create the same.
+	// If at all the need arises to migrate to another API (or npm package), DO NOT REMOVE THIS.
 	close(): void {
 		// Do nothing
 	}

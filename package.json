@@ -164,9 +164,6 @@
     "node-json-db": "^1.1.0",
     "semver": "^7.3.2"
   },
-  "optionalDependencies": {
-    "node-mac-notifier": "^1.1.0"
-  },
   "devDependencies": {
     "@types/adm-zip": "^0.4.33",
     "@types/auto-launch": "^5.0.1",

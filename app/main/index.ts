@@ -11,6 +11,7 @@ import * as ProxyUtil from '../renderer/js/utils/proxy-util';
 import {sentryInit} from '../renderer/js/utils/sentry-util';
 
 import {appUpdater} from './autoupdater';
+import {showDarwinNotification} from './ipc-helpers';
 import * as AppMenu from './menu';
 import {_getServerSettings, _saveServerIcon, _isOnline} from './request';
 import {setAutoLaunch} from './startup';
@@ -271,6 +272,10 @@ ${error}`
 
 	ipcMain.on('toggle-app', () => {
 		toggleApp();
+	});
+
+	ipcMain.on('create-notification', (event, notificationOptions: Electron.NotificationConstructorOptions) => {
+		showDarwinNotification(event, notificationOptions);
 	});
 
 	ipcMain.on('toggle-badge-option', () => {
