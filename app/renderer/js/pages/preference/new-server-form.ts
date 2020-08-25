@@ -1,5 +1,7 @@
 import {ipcRenderer, remote} from 'electron';
 
+import {htmlEscape} from 'escape-goat';
+
 import BaseComponent from '../../components/base';
 import * as DomainUtil from '../../utils/domain-util';
 import * as LinkUtil from '../../utils/link-util';
@@ -22,8 +24,8 @@ export default class NewServerForm extends BaseComponent {
 		this.props = props;
 	}
 
-	template(): string {
-		return `
+	templateHTML(): string {
+		return htmlEscape`
 			<div class="server-input-container">
 				<div class="title">${t.__('Organization URL')}</div>
 				<div class="add-server-info-row">
@@ -56,20 +58,20 @@ export default class NewServerForm extends BaseComponent {
 	}
 
 	initForm(): void {
-		this.$newServerForm = this.generateNodeFromTemplate(this.template());
+		this.$newServerForm = this.generateNodeFromHTML(this.templateHTML());
 		this.$saveServerButton = this.$newServerForm.querySelector('#connect');
-		this.props.$root.innerHTML = '';
+		this.props.$root.textContent = '';
 		this.props.$root.append(this.$newServerForm);
 		this.$newServerUrl = this.$newServerForm.querySelectorAll('input.setting-input-value')[0] as HTMLInputElement;
 	}
 
 	async submitFormHandler(): Promise<void> {
-		this.$saveServerButton.innerHTML = 'Connecting...';
+		this.$saveServerButton.textContent = 'Connecting...';
 		let serverConf;
 		try {
 			serverConf = await DomainUtil.checkDomain(this.$newServerUrl.value);
 		} catch (error) {
-			this.$saveServerButton.innerHTML = 'Connect';
+			this.$saveServerButton.textContent = 'Connect';
 			await dialog.showMessageBox({
 				type: 'error',
 				message: error.toString(),

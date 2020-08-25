@@ -1,7 +1,7 @@
 export default class BaseComponent {
-	generateNodeFromTemplate(template: string): Element | null {
+	generateNodeFromHTML(html: string): Element | null {
 		const wrapper = document.createElement('div');
-		wrapper.innerHTML = template;
+		wrapper.innerHTML = html;
 		return wrapper.firstElementChild;
 	}
 }

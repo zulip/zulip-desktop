@@ -1,5 +1,7 @@
 import {ipcRenderer} from 'electron';
 
+import {htmlEscape} from 'escape-goat';
+
 import * as SystemUtil from '../utils/system-util';
 
 import Tab, {TabProps} from './tab';
@@ -12,19 +14,21 @@ export default class ServerTab extends Tab {
 		this.init();
 	}
 
-	template(): string {
-		return `<div class="tab" data-tab-id="${this.props.tabIndex}">
-					<div class="server-tooltip" style="display:none">${this.props.name}</div>
-					<div class="server-tab-badge"></div>
-					<div class="server-tab">
-					<img class="server-icons" src='${this.props.icon}'/>
-					</div>
-					<div class="server-tab-shortcut">${this.generateShortcutText()}</div>
-				</div>`;
+	templateHTML(): string {
+		return htmlEscape`
+			<div class="tab" data-tab-id="${this.props.tabIndex}">
+				<div class="server-tooltip" style="display:none">${this.props.name}</div>
+				<div class="server-tab-badge"></div>
+				<div class="server-tab">
+					<img class="server-icons" src="${this.props.icon}"/>
+				</div>
+				<div class="server-tab-shortcut">${this.generateShortcutText()}</div>
+			</div>
+		`;
 	}
 
 	init(): void {
-		this.$el = this.generateNodeFromTemplate(this.template());
+		this.$el = this.generateNodeFromHTML(this.templateHTML());
 		this.props.$root.append(this.$el);
 		this.registerListeners();
 		this.$badge = this.$el.querySelectorAll('.server-tab-badge')[0];
@@ -33,7 +37,7 @@ export default class ServerTab extends Tab {
 	updateBadge(count: number): void {
 		if (count > 0) {
 			const formattedCount = count > 999 ? '1K+' : count.toString();
-			this.$badge.innerHTML = formattedCount;
+			this.$badge.textContent = formattedCount;
 			this.$badge.classList.add('active');
 		} else {
 			this.$badge.classList.remove('active');

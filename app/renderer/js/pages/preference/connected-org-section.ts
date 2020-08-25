@@ -1,5 +1,7 @@
 import {ipcRenderer} from 'electron';
 
+import {htmlEscape} from 'escape-goat';
+
 import * as DomainUtil from '../../utils/domain-util';
 import * as t from '../../utils/translation-util';
 
@@ -24,8 +26,8 @@ export default class ConnectedOrgSection extends BaseSection {
 		this.props = props;
 	}
 
-	template(): string {
-		return `
+	templateHTML(): string {
+		return htmlEscape`
 			<div class="settings-pane" id="server-settings-pane">
 				<div class="page-title">${t.__('Connected organizations')}</div>
 				<div class="title" id="existing-servers">${t.__('All the connected orgnizations will appear here.')}</div>
@@ -44,10 +46,10 @@ export default class ConnectedOrgSection extends BaseSection {
 	}
 
 	initServers(): void {
-		this.props.$root.innerHTML = '';
+		this.props.$root.textContent = '';
 
 		const servers = DomainUtil.getDomains();
-		this.props.$root.innerHTML = this.template();
+		this.props.$root.innerHTML = this.templateHTML();
 
 		this.$serverInfoContainer = document.querySelector('#server-info-container');
 		this.$existingServers = document.querySelector('#existing-servers');
@@ -57,7 +59,7 @@ export default class ConnectedOrgSection extends BaseSection {
 
 		const noServerText = t.__('All the connected orgnizations will appear here');
 		// Show noServerText if no servers are there otherwise hide it
-		this.$existingServers.innerHTML = servers.length === 0 ? noServerText : '';
+		this.$existingServers.textContent = servers.length === 0 ? noServerText : '';
 
 		for (const [i, server] of servers.entries()) {
 			new ServerInfoForm({

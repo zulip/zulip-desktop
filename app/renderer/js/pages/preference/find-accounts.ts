@@ -1,3 +1,5 @@
+import {htmlEscape} from 'escape-goat';
+
 import BaseComponent from '../../components/base';
 import * as LinkUtil from '../../utils/link-util';
 import * as t from '../../utils/translation-util';
@@ -16,8 +18,8 @@ export default class FindAccounts extends BaseComponent {
 		this.props = props;
 	}
 
-	template(): string {
-		return `
+	templateHTML(): string {
+		return htmlEscape`
 			<div class="settings-card certificate-card">
 				<div class="certificate-input">
 					<div>${t.__('Organization URL')}</div>
@@ -31,7 +33,7 @@ export default class FindAccounts extends BaseComponent {
 	}
 
 	init(): void {
-		this.$findAccounts = this.generateNodeFromTemplate(this.template());
+		this.$findAccounts = this.generateNodeFromHTML(this.templateHTML());
 		this.props.$root.append(this.$findAccounts);
 		this.$findAccountsButton = this.$findAccounts.querySelector('#find-accounts-button');
 		this.$serverUrlField = this.$findAccounts.querySelectorAll('input.setting-input-value')[0] as HTMLInputElement;

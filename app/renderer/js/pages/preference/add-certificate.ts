@@ -1,6 +1,8 @@
 import {remote, OpenDialogOptions} from 'electron';
 import path from 'path';
 
+import {htmlEscape} from 'escape-goat';
+
 import BaseComponent from '../../components/base';
 import * as CertificateUtil from '../../utils/certificate-util';
 import * as DomainUtil from '../../utils/domain-util';
@@ -24,8 +26,8 @@ export default class AddCertificate extends BaseComponent {
 		this._certFile = '';
 	}
 
-	template(): string {
-		return `
+	templateHTML(): string {
+		return htmlEscape`
 			<div class="settings-card certificates-card">
 				<div class="certificate-input">
 					<div>${t.__('Organization URL')}</div>
@@ -40,7 +42,7 @@ export default class AddCertificate extends BaseComponent {
 	}
 
 	init(): void {
-		this.$addCertificate = this.generateNodeFromTemplate(this.template());
+		this.$addCertificate = this.generateNodeFromHTML(this.templateHTML());
 		this.props.$root.append(this.$addCertificate);
 		this.addCertificateButton = this.$addCertificate.querySelector('#add-certificate-button');
 		this.serverUrl = this.$addCertificate.querySelectorAll('input.setting-input-value')[0] as HTMLInputElement;

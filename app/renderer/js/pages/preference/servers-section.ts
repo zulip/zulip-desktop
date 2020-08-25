@@ -1,3 +1,5 @@
+import {htmlEscape} from 'escape-goat';
+
 import * as t from '../../utils/translation-util';
 
 import BaseSection from './base-section';
@@ -15,16 +17,16 @@ export default class ServersSection extends BaseSection {
 		this.props = props;
 	}
 
-	template(): string {
-		return `
-		<div class="add-server-modal">
-			<div class="modal-container">
-				<div class="settings-pane" id="server-settings-pane">
-					<div class="page-title">${t.__('Add a Zulip organization')}</div>
-					<div id="new-server-container"></div>
+	templateHTML(): string {
+		return htmlEscape`
+			<div class="add-server-modal">
+				<div class="modal-container">
+					<div class="settings-pane" id="server-settings-pane">
+						<div class="page-title">${t.__('Add a Zulip organization')}</div>
+						<div id="new-server-container"></div>
+					</div>
 				</div>
 			</div>
-		</div>
 		`;
 	}
 
@@ -33,9 +35,9 @@ export default class ServersSection extends BaseSection {
 	}
 
 	initServers(): void {
-		this.props.$root.innerHTML = '';
+		this.props.$root.textContent = '';
 
-		this.props.$root.innerHTML = this.template();
+		this.props.$root.innerHTML = this.templateHTML();
 		this.$newServerContainer = document.querySelector('#new-server-container');
 
 		this.initNewServerForm();

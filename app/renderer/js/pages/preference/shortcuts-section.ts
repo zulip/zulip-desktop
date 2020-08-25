@@ -1,3 +1,5 @@
+import {htmlEscape} from 'escape-goat';
+
 import * as LinkUtil from '../../utils/link-util';
 import * as t from '../../utils/translation-util';
 
@@ -14,14 +16,14 @@ export default class ShortcutsSection extends BaseSection {
 		this.props = props;
 	}
 
-	// TODO - Deduplicate templateMac and templateWinLin functions. In theory
+	// TODO - Deduplicate templateMacHTML and templateWinLinHTML functions. In theory
 	// they both should be the same the only thing different should be the userOSKey
 	// variable but there seems to be inconsistences between both function, one has more
 	// lines though one may just be using more new lines and other thing is the use of +.
-	templateMac(): string {
+	templateMacHTML(): string {
 		const userOSKey = '⌘';
 
-		return `
+		return htmlEscape`
 						<div class="settings-pane">
 						<div class="settings-card tip"><p><b><i class="material-icons md-14">settings</i>${t.__('Tip')}:  </b>${t.__('These desktop app shortcuts extend the Zulip webapp\'s')} <span id="open-hotkeys-link"> ${t.__('keyboard shortcuts')}</span>.</p></div>
 							<div class="title">${t.__('Application Shortcuts')}</div>
@@ -182,10 +184,10 @@ export default class ShortcutsSection extends BaseSection {
 		`;
 	}
 
-	templateWinLin(): string {
+	templateWinLinHTML(): string {
 		const userOSKey = 'Ctrl';
 
-		return `
+		return htmlEscape`
 						<div class="settings-pane">
 						<div class="settings-card tip"><p><b><i class="material-icons md-14">settings</i>${t.__('Tip')}:  </b>${t.__('These desktop app shortcuts extend the Zulip webapp\'s')} <span id="open-hotkeys-link"> ${t.__('keyboard shortcuts')}</span>.</p></div>
 							<div class="title">${t.__('Application Shortcuts')}</div>
@@ -340,7 +342,7 @@ export default class ShortcutsSection extends BaseSection {
 
 	init(): void {
 		this.props.$root.innerHTML = (process.platform === 'darwin') ?
-			this.templateMac() : this.templateWinLin();
+			this.templateMacHTML() : this.templateWinLinHTML();
 		this.openHotkeysExternalLink();
 	}
 }

@@ -2,6 +2,8 @@ import {ipcRenderer, remote} from 'electron';
 import fs from 'fs';
 import path from 'path';
 
+import {htmlEscape} from 'escape-goat';
+
 import * as ConfigUtil from '../utils/config-util';
 import * as SystemUtil from '../utils/system-util';
 
@@ -50,25 +52,27 @@ export default class WebView extends BaseComponent {
 		this.$webviewsContainer = document.querySelector('#webviews-container').classList;
 	}
 
-	template(): string {
-		return `<webview
-					class="disabled"
-					data-tab-id="${this.props.tabIndex}"
-					src="${this.props.url}"
-					${this.props.nodeIntegration ? 'nodeIntegration' : ''}
-					${this.props.preload ? 'preload="js/preload.js"' : ''}
-					partition="persist:webviewsession"
-					name="${this.props.name}"
-					webpreferences="
-						${this.props.nodeIntegration ? '' : 'contextIsolation,'}
-						${ConfigUtil.getConfigItem('enableSpellchecker') ? 'spellcheck,' : ''}
-						javascript
-					">
-				</webview>`;
+	templateHTML(): string {
+		return htmlEscape`
+			<webview
+				class="disabled"
+				data-tab-id="${this.props.tabIndex}"
+				src="${this.props.url}"
+				` + (this.props.nodeIntegration ? 'nodeIntegration' : '') + htmlEscape`
+				` + (this.props.preload ? 'preload="js/preload.js"' : '') + htmlEscape`
+				partition="persist:webviewsession"
+				name="${this.props.name}"
+				webpreferences="
+					${this.props.nodeIntegration ? '' : 'contextIsolation,'}
+					${ConfigUtil.getConfigItem('enableSpellchecker') ? 'spellcheck,' : ''}
+					javascript
+				">
+			</webview>
+		`;
 	}
 
 	init(): void {
-		this.$el = this.generateNodeFromTemplate(this.template()) as Electron.WebviewTag;
+		this.$el = this.generateNodeFromHTML(this.templateHTML()) as Electron.WebviewTag;
 		this.domReady = new Promise(resolve => {
 			this.$el.addEventListener('dom-ready', () => resolve(), true);
 		});

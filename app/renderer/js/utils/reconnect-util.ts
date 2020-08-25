@@ -1,6 +1,7 @@
 import {ipcRenderer} from 'electron';
 
 import backoff from 'backoff';
+import {htmlEscape} from 'escape-goat';
 
 import type WebView from '../components/webview';
 
@@ -60,7 +61,7 @@ export default class ReconnectUtil {
 		logger.log('There is no internet connection, try checking network cables, modem and router.');
 		const errorMessageHolder = document.querySelector('#description');
 		if (errorMessageHolder) {
-			errorMessageHolder.innerHTML = `
+			errorMessageHolder.innerHTML = htmlEscape`
 						<div>Your internet connection doesn't seem to work properly!</div>
 						<div>Verify that it works and then click try again.</div>`;
 		}

@@ -3,7 +3,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-import escape from 'escape-html';
+import {htmlEscape} from 'escape-goat';
 
 export function isUploadsUrl(server: string, url: URL): boolean {
 	return url.origin === server && url.pathname.startsWith('/user_uploads/');
@@ -19,12 +19,12 @@ export async function openBrowser(url: URL): Promise<void> {
 			path.join(os.tmpdir(), 'zulip-redirect-')
 		);
 		const file = path.join(dir, 'redirect.html');
-		fs.writeFileSync(file, `\
+		fs.writeFileSync(file, htmlEscape`\
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8" />
-        <meta http-equiv="Refresh" content="0; url=${escape(url.href)}" />
+        <meta http-equiv="Refresh" content="0; url=${url.href}" />
         <title>Redirecting</title>
         <style>
             html {
@@ -33,7 +33,7 @@ export async function openBrowser(url: URL): Promise<void> {
         </style>
     </head>
     <body>
-        <p>Opening <a href="${escape(url.href)}">${escape(url.href)}</a>…</p>
+        <p>Opening <a href="${url.href}">${url.href}</a>…</p>
     </body>
 </html>
 `);

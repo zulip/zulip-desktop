@@ -2,6 +2,7 @@ import {ipcRenderer, remote, OpenDialogOptions} from 'electron';
 import path from 'path';
 
 import Tagify from '@yaireo/tagify';
+import {htmlEscape} from 'escape-goat';
 import fs from 'fs-extra';
 import ISO6391 from 'iso-639-1';
 
@@ -26,8 +27,8 @@ export default class GeneralSection extends BaseSection {
 		this.props = props;
 	}
 
-	template(): string {
-		return `
+	templateHTML(): string {
+		return htmlEscape`
             <div class="settings-pane">
                 <div class="title">${t.__('Appearance')}</div>
                 <div id="appearance-option-settings" class="settings-card">
@@ -157,7 +158,7 @@ export default class GeneralSection extends BaseSection {
 	}
 
 	init(): void {
-		this.props.$root.innerHTML = this.template();
+		this.props.$root.innerHTML = this.templateHTML();
 		this.updateTrayOption();
 		this.updateBadgeOption();
 		this.updateSilentOption();
@@ -399,8 +400,8 @@ export default class GeneralSection extends BaseSection {
 
 	setLocale(): void {
 		const langDiv: HTMLSelectElement = document.querySelector('.lang-div');
-		const langList = this.generateSelectTemplate(supportedLocales, 'lang-menu');
-		langDiv.innerHTML += langList;
+		const langListHTML = this.generateSelectHTML(supportedLocales, 'lang-menu');
+		langDiv.innerHTML += langListHTML;
 		// `langMenu` is the select-option dropdown menu formed after executing the previous command
 		const langMenu: HTMLSelectElement = document.querySelector('.lang-menu');
 
@@ -516,7 +517,7 @@ export default class GeneralSection extends BaseSection {
 			const note: HTMLElement = document.querySelector('#note');
 			note.append(t.__('You can select a maximum of 3 languages for spellchecking.'));
 			const spellDiv: HTMLElement = document.querySelector('#spellcheck-langs');
-			spellDiv.innerHTML += `
+			spellDiv.innerHTML += htmlEscape`
 				<div class="setting-description">${t.__('Spellchecker Languages')}</div>
 				<input name='spellcheck' placeholder='Enter Languages'>`;
 

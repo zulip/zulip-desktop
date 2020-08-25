@@ -1,5 +1,7 @@
 import {remote, ipcRenderer} from 'electron';
 
+import {htmlEscape} from 'escape-goat';
+
 import * as Messages from '../../../../resources/messages';
 import BaseComponent from '../../components/base';
 import * as DomainUtil from '../../utils/domain-util';
@@ -26,8 +28,8 @@ export default class ServerInfoForm extends BaseComponent {
 		this.props = props;
 	}
 
-	template(): string {
-		return `
+	templateHTML(): string {
+		return htmlEscape`
 			<div class="settings-card">
 				<div class="server-info-left">
 					<img class="server-info-icon" src="${this.props.server.icon}"/>
@@ -56,7 +58,7 @@ export default class ServerInfoForm extends BaseComponent {
 	}
 
 	initForm(): void {
-		this.$serverInfoForm = this.generateNodeFromTemplate(this.template());
+		this.$serverInfoForm = this.generateNodeFromHTML(this.templateHTML());
 		this.$serverInfoAlias = this.$serverInfoForm.querySelectorAll('.server-info-alias')[0];
 		this.$serverIcon = this.$serverInfoForm.querySelectorAll('.server-info-icon')[0];
 		this.$deleteServerButton = this.$serverInfoForm.querySelectorAll('.server-delete-action')[0];

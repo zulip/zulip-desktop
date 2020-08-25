@@ -4,7 +4,6 @@ import path from 'path';
 import stream from 'stream';
 import util from 'util';
 
-import escape from 'escape-html';
 import getStream from 'get-stream';
 
 import {ServerConf} from '../renderer/js/utils/domain-util';
@@ -73,7 +72,7 @@ export const _getServerSettings = async (domain: string, session: Electron.sessi
 		// Following check handles both the cases
 		icon: realm_icon.startsWith('/') ? realm_uri + realm_icon : realm_icon,
 		url: realm_uri,
-		alias: escape(realm_name)
+		alias: realm_name
 	};
 };
 
