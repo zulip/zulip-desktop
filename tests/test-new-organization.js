@@ -12,7 +12,7 @@ test('new-org-link', async t => {
 	try {
 		await setup.waitForLoad(app, t);
 		await app.client.windowByIndex(1); // Focus on webview
-		await app.client.click('#open-create-org-link'); // Click on new org link button
+		await (await app.client.$('#open-create-org-link')).click(); // Click on new org link button
 		await setup.wait(5000);
 		await setup.endTest(app, t);
 	} catch (error) {

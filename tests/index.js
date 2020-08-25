@@ -10,7 +10,7 @@ test('app runs', async t => {
 	try {
 		await setup.waitForLoad(app, t);
 		await app.client.windowByIndex(1); // Focus on webview
-		await app.client.waitForExist('//*[@id="connect"]'); // Id of the connect button
+		await (await app.client.$('//*[@id="connect"]')).waitForExist(); // Id of the connect button
 		await setup.endTest(app, t);
 	} catch (error) {
 		await setup.endTest(app, t, error || 'error');

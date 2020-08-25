@@ -10,12 +10,12 @@ test('add-organization', async t => {
 	try {
 		await setup.waitForLoad(app, t);
 		await app.client.windowByIndex(1); // Focus on webview
-		await app.client.setValue('.setting-input-value', 'chat.zulip.org');
-		await app.client.click('#connect');
+		await (await app.client.$('.setting-input-value')).setValue('chat.zulip.org');
+		await (await app.client.$('#connect')).click();
 		await setup.wait(5000);
 		await app.client.windowByIndex(0); // Switch focus back to main win
 		await app.client.windowByIndex(1); // Switch focus back to org webview
-		await app.client.waitForExist('//*[@id="id_username"]');
+		await (await app.client.$('//*[@id="id_username"]')).waitForExist();
 		await setup.endTest(app, t);
 	} catch (error) {
 		await setup.endTest(app, t, error || 'error');

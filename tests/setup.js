@@ -67,6 +67,7 @@ async function wait(ms) {
 
 // Quit the app, end the test, either in success (!err) or failure (err)
 async function endTest(app, t, err) {
+	await app.client.windowByIndex(0);
 	await app.stop();
 	t.end(err);
 }
