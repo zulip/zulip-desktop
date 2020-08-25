@@ -461,7 +461,7 @@ class ServerManagerView {
 		const $parent = $img.parentElement;
 		const $container = $parent.parentElement;
 		const webviewId = $container.dataset.tabId;
-		const $webview = document.querySelector(`webview[data-tab-id="${webviewId}"]`);
+		const $webview = document.querySelector(`webview[data-tab-id="${CSS.escape(webviewId)}"]`);
 		const realmName = $webview.getAttribute('name');
 
 		if (realmName === null) {
@@ -972,7 +972,7 @@ class ServerManagerView {
 			webviews.forEach(webview => {
 				const currentId = webview.getWebContentsId();
 				const tabId = webview.getAttribute('data-tab-id');
-				const concurrentTab: HTMLButtonElement = document.querySelector(`div[data-tab-id="${tabId}"]`);
+				const concurrentTab: HTMLButtonElement = document.querySelector(`div[data-tab-id="${CSS.escape(tabId)}"]`);
 				if (currentId === webviewId) {
 					concurrentTab.click();
 				}
