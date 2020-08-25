@@ -556,7 +556,7 @@ export default class GeneralSection extends BaseSection {
 				}
 			});
 
-			const configuredLanguages: string[] = ConfigUtil.getConfigItem('spellcheckerLanguages').map((code: string) => [...languagePairs].filter(pair => (pair[1] === code))[0][0]);
+			const configuredLanguages: string[] = ConfigUtil.getConfigItem('spellcheckerLanguages').map((code: string) => [...languagePairs].find(pair => (pair[1] === code))[0]);
 			tagify.addTags(configuredLanguages);
 
 			tagField.addEventListener('change', event => {
