@@ -20,18 +20,17 @@ class DarwinNotification {
 	tag: number;
 
 	constructor(title: string, options: NotificationOptions) {
-		// X const profilePic = new URL(options.icon, location.href).href;
+		const profilePicURL = new URL(options.icon, location.href).href;
 		this.tag = Number.parseInt(options.tag, 10);
 		const notificationOptions: Electron.NotificationConstructorOptions = {
 			title,
 			body: options.body,
 			silent: ConfigUtil.getConfigItem('silent') || false,
-			// X icon: profilePic,
 			hasReply: true,
 			timeoutType: 'default'
 		};
 
-		ipcRenderer.send('create-notification', notificationOptions);
+		ipcRenderer.send('create-notification', notificationOptions, profilePicURL);
 		ipcRenderer.on('replied', async (_event: Electron.IpcRendererEvent, response: string) => {
 			await this.notificationHandler({response});
 			ipcRenderer.removeAllListeners('replied');

@@ -274,8 +274,8 @@ ${error}`
 		toggleApp();
 	});
 
-	ipcMain.on('create-notification', (event, notificationOptions: Electron.NotificationConstructorOptions) => {
-		showDarwinNotification(event, notificationOptions);
+	ipcMain.on('create-notification', async (event, notificationOptions: Electron.NotificationConstructorOptions, profilePicURL: string) => {
+		await showDarwinNotification(event, notificationOptions, profilePicURL);
 	});
 
 	ipcMain.on('toggle-badge-option', () => {
