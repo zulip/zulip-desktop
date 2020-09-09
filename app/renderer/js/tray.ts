@@ -21,6 +21,8 @@ const iconPath = (): string => {
 	return APP_ICON + (process.platform === 'win32' ? 'win.ico' : 'macOSTemplate.png');
 };
 
+const winUnreadTrayIconPath = (): string => APP_ICON + 'unread.ico';
+
 let unread = 0;
 
 const trayIconSize = (): number => {
@@ -97,6 +99,10 @@ const renderCanvas = function (arg: number): HTMLCanvasElement {
  * @return the native image
  */
 const renderNativeImage = function (arg: number): NativeImage {
+	if (process.platform === 'win32') {
+		return nativeImage.createFromPath(winUnreadTrayIconPath());
+	}
+
 	const canvas = renderCanvas(arg);
 	const pngData = nativeImage.createFromDataURL(canvas.toDataURL('image/png')).toPNG();
 	return nativeImage.createFromBuffer(pngData, {
