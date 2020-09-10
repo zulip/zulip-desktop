@@ -2,6 +2,14 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.4.3 --2020-09-10
+
+**Security fixes**:
+* CVE-2020-24582: Escape all strings interpolated into HTML to close cross-site scripting vulnerabilities that a malicious server could exploit.
+
+**Dependencies**:
+* Upgrade dependencies, including Electron 9.3.0.
+
 ### v5.4.2 --2020-08-12
 
 **Potential Fixes**:
