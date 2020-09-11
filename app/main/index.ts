@@ -70,7 +70,7 @@ const toggleApp = (): void => {
 
 function createMainWindow(): Electron.BrowserWindow {
 	// Load the previous state with fallback to defaults
-	const mainWindowState: windowStateKeeper.State = windowStateKeeper({
+	mainWindowState = windowStateKeeper({
 		defaultWidth: 1100,
 		defaultHeight: 720,
 		path: `${app.getPath('userData')}/config`
