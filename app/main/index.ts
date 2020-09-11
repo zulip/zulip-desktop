@@ -87,7 +87,6 @@ function createMainWindow(): Electron.BrowserWindow {
 		minWidth: 500,
 		minHeight: 400,
 		webPreferences: {
-			plugins: true,
 			nodeIntegration: true,
 			partition: 'persist:webviewsession',
 			webviewTag: true
@@ -284,32 +283,6 @@ ${error}`
 	ipcMain.on('quit-app', () => {
 		app.quit();
 	});
-
-	// Code to show pdf in a new BrowserWindow (currently commented out due to bug-upstream)
-	// ipcMain.on('pdf-view', (event, url) => {
-	// 	// Paddings for pdfWindow so that it fits into the main browserWindow
-	// 	const paddingWidth = 55;
-	// 	const paddingHeight = 22;
-
-	// 	// Get the config of main browserWindow
-	// 	const mainWindowState = global.mainWindowState;
-
-	// 	// Window to view the pdf file
-	// 	const pdfWindow = new electron.BrowserWindow({
-	// 		x: mainWindowState.x + paddingWidth,
-	// 		y: mainWindowState.y + paddingHeight,
-	// 		width: mainWindowState.width - paddingWidth,
-	// 		height: mainWindowState.height - paddingHeight,
-	// 		webPreferences: {
-	// 			plugins: true,
-	// 			partition: 'persist:webviewsession'
-	// 		}
-	// 	});
-	// 	pdfWindow.loadURL(url);
-
-	// 	// We don't want to have the menu bar in pdf window
-	// 	pdfWindow.setMenu(null);
-	// });
 
 	// Reload full app not just webview, useful in debugging
 	ipcMain.on('reload-full-app', () => {
