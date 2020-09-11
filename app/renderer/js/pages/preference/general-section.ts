@@ -148,7 +148,7 @@ export default class GeneralSection extends BaseSection {
 				<div class="title">${t.__('Factory Reset Data')}</div>
                 <div class="settings-card">
 					<div class="setting-row" id="factory-reset-option">
-						<div class="setting-description">${t.__('Reset the application, thus deleting all the connected organizations, accounts, and certificates.')}
+						<div class="setting-description">${t.__('Reset the application, thus deleting all the connected organizations and accounts.')}
 						</div>
 						<button class="factory-reset-button red w-150">${t.__('Factory Reset')}</button>
 					</div>

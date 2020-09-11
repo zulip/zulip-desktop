@@ -6,7 +6,6 @@ import path from 'path';
 import windowStateKeeper from 'electron-window-state';
 
 import * as BadgeSettings from '../renderer/js/pages/preference/badge-settings';
-import * as CertificateUtil from '../renderer/js/utils/certificate-util';
 import * as ConfigUtil from '../renderer/js/utils/config-util';
 import * as ProxyUtil from '../renderer/js/utils/proxy-util';
 import {sentryInit} from '../renderer/js/utils/sentry-util';
@@ -221,36 +220,9 @@ app.on('ready', () => {
 		event: Event,
 		webContents: Electron.WebContents,
 		urlString: string,
-		error: string,
-		certificate: Electron.Certificate,
-		callback: (isTrusted: boolean) => void
-	) /* eslint-disable-line max-params */ => {
-		// TODO: The entire concept of selectively ignoring certificate errors
-		// is ill-conceived, and this handler needs to be deleted.
-
+		error: string
+	) => {
 		const url = new URL(urlString);
-		if (url.protocol === 'wss:') {
-			url.protocol = 'https:';
-		}
-
-		const filename = CertificateUtil.getCertificate(encodeURIComponent(url.origin));
-		if (filename !== undefined) {
-			try {
-				const savedCertificate = fs.readFileSync(
-					path.join(`${app.getPath('userData')}/certificates`, filename),
-					'utf8'
-				);
-				if (certificate.data.replace(/[\r\n]/g, '') ===
-					savedCertificate.replace(/[\r\n]/g, '')) {
-					event.preventDefault();
-					callback(true);
-					return;
-				}
-			} catch (error) {
-				console.error(`Error reading certificate file ${filename}:`, error);
-			}
-		}
-
 		dialog.showErrorBox(
 			'Certificate error',
 			`The server presented an invalid certificate for ${url.origin}:

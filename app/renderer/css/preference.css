@@ -622,10 +622,6 @@ input.toggle-round:checked + label::after {
     max-width: 100%;
 }
 
-#add-certificate-button {
-    margin: 10px 10px 10px 37px;
-}
-
 .tip {
     background: none;
     padding: 0;

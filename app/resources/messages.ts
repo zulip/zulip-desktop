@@ -8,7 +8,7 @@ export function invalidZulipServerError(domain: string): string {
 		\n • You can connect to that URL in a web browser.\
 		\n • If you need a proxy to connect to the Internet, that you've configured your proxy in the Network settings.\
 		\n • It's a Zulip server. (The oldest supported version is 1.6).\
-		\n • The server has a valid certificate. (You can add custom certificates in Settings > Organizations). \
+		\n • The server has a valid certificate. \
 		\n • The SSL is correctly configured for the certificate. Check out the SSL troubleshooting guide -
 		\n https://zulip.readthedocs.io/en/stable/production/ssl-certificates.html`;
 }
@@ -23,8 +23,7 @@ export function certErrorMessage(domain: string, error: string): string {
 }
 
 export function certErrorDetail(): string {
-	return `The organization you're connecting to is either someone impersonating the Zulip server you entered, or the server you're trying to connect to is configured in an insecure way.
-	\nIf you have a valid certificate please add it from Settings>Organizations and try to add the organization again.`;
+	return 'The organization you\'re connecting to is either someone impersonating the Zulip server you entered, or the server you\'re trying to connect to is configured in an insecure way.';
 }
 
 export function enterpriseOrgError(length: number, domains: string[]): DialogBoxError {
