@@ -10,8 +10,8 @@ interface CompatElectronBridge extends ElectronBridge {
 	const zulipWindow = window as typeof window & {
 		electron_bridge: CompatElectronBridge;
 		narrow?: {
-			by_subject?: (target_id: number, opts: {trigger?: string}) => void;
-			by_topic?: (target_id: number, opts: {trigger?: string}) => void;
+			by_subject?: (target_id: number, options: {trigger?: string}) => void;
+			by_topic?: (target_id: number, options: {trigger?: string}) => void;
 		};
 		page_params?: unknown;
 		raw_electron_bridge: ElectronBridge;
