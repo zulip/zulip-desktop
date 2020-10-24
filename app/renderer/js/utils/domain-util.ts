@@ -125,7 +125,7 @@ export async function updateSavedServer(url: string, index: number): Promise<voi
 			updateDomain(index, newServerConf);
 			reloadDB();
 		}
-	} catch (error) {
+	} catch (error: unknown) {
 		logger.log('Could not update server icon.');
 		logger.log(error);
 		logger.reportSentry(error);
@@ -137,7 +137,7 @@ function reloadDB(): void {
 	try {
 		const file = fs.readFileSync(domainJsonPath, 'utf8');
 		JSON.parse(file);
-	} catch (error) {
+	} catch (error: unknown) {
 		if (fs.existsSync(domainJsonPath)) {
 			fs.unlinkSync(domainJsonPath);
 			dialog.showErrorBox(

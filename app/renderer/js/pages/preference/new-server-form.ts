@@ -70,11 +70,12 @@ export default class NewServerForm extends BaseComponent {
 		let serverConf;
 		try {
 			serverConf = await DomainUtil.checkDomain(this.$newServerUrl.value);
-		} catch (error) {
+		} catch (error: unknown) {
 			this.$saveServerButton.textContent = 'Connect';
 			await dialog.showMessageBox({
 				type: 'error',
-				message: error.toString(),
+				message: error instanceof Error ?
+					`${error.name}: ${error.message}` : 'Unknown error',
 				buttons: ['OK']
 			});
 			return;

@@ -38,7 +38,7 @@ export async function linuxUpdateNotification(session: Electron.session): Promis
 				LinuxUpdateUtil.setUpdateItem(latestVersion, true);
 			}
 		}
-	} catch (error) {
+	} catch (error: unknown) {
 		logger.error('Linux update error.');
 		logger.error(error);
 	}

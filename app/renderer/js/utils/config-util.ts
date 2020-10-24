@@ -32,7 +32,7 @@ reloadDB();
 export function getConfigItem(key: string, defaultValue: unknown = null): any {
 	try {
 		db.reload();
-	} catch (error) {
+	} catch (error: unknown) {
 		logger.error('Error while reloading settings.json: ');
 		logger.error(error);
 	}
@@ -60,7 +60,7 @@ export function getConfigString(key: string, defaultValue: string): string {
 export function isConfigItemExists(key: string): boolean {
 	try {
 		db.reload();
-	} catch (error) {
+	} catch (error: unknown) {
 		logger.error('Error while reloading settings.json: ');
 		logger.error(error);
 	}
@@ -89,7 +89,7 @@ function reloadDB(): void {
 	try {
 		const file = fs.readFileSync(settingsJsonPath, 'utf8');
 		JSON.parse(file);
-	} catch (error) {
+	} catch (error: unknown) {
 		if (fs.existsSync(settingsJsonPath)) {
 			fs.unlinkSync(settingsJsonPath);
 			dialog.showErrorBox(

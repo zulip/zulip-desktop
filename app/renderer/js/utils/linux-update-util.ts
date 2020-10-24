@@ -47,7 +47,7 @@ function reloadDB(): void {
 	try {
 		const file = fs.readFileSync(linuxUpdateJsonPath, 'utf8');
 		JSON.parse(file);
-	} catch (error) {
+	} catch (error: unknown) {
 		if (fs.existsSync(linuxUpdateJsonPath)) {
 			fs.unlinkSync(linuxUpdateJsonPath);
 			dialog.showErrorBox(

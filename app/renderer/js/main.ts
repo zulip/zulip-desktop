@@ -255,7 +255,7 @@ class ServerManagerView {
 			const serverConf = await DomainUtil.checkDomain(domain);
 			await DomainUtil.addDomain(serverConf);
 			return true;
-		} catch (error) {
+		} catch (error: unknown) {
 			logger.error(error);
 			logger.error(`Could not add ${domain}. Please contact your system administrator.`);
 			return false;

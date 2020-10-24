@@ -87,7 +87,7 @@ export const _saveServerIcon = async (url: string, session: Electron.session): P
 		const filePath = generateFilePath(url);
 		await pipeline(response, fs.createWriteStream(filePath));
 		return filePath;
-	} catch (error) {
+	} catch (error: unknown) {
 		logger.log('Could not get server icon.');
 		logger.log(error);
 		logger.reportSentry(error);
@@ -105,7 +105,7 @@ export const _isOnline = async (url: string, session: Electron.session): Promise
 		}));
 		const isValidResponse = response.statusCode >= 200 && response.statusCode < 400;
 		return isValidResponse;
-	} catch (error) {
+	} catch (error: unknown) {
 		logger.log(error);
 		return false;
 	}

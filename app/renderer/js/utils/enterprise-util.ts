@@ -26,7 +26,7 @@ function reloadDB(): void {
 		try {
 			const file = fs.readFileSync(enterpriseFile, 'utf8');
 			enterpriseSettings = JSON.parse(file);
-		} catch (error) {
+		} catch (error: unknown) {
 			logger.log('Error while JSON parsing global_config.json: ');
 			logger.log(error);
 		}
