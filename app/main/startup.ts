@@ -19,11 +19,7 @@ export const setAutoLaunch = async (AutoLaunchValue: boolean): Promise<void> => 
 			name: 'Zulip',
 			isHidden: false
 		});
-		if (autoLaunchOption) {
-			await ZulipAutoLauncher.enable();
-		} else {
-			await ZulipAutoLauncher.disable();
-		}
+		await (autoLaunchOption ? ZulipAutoLauncher.enable() : ZulipAutoLauncher.disable());
 	} else {
 		app.setLoginItemSettings({
 			openAtLogin: autoLaunchOption,

@@ -1,13 +1,8 @@
 import electron from 'electron';
 import fs from 'fs';
 
-let app: Electron.App = null;
+const app = process.type === 'renderer' ? electron.remote.app : electron.app;
 let setupCompleted = false;
-if (process.type === 'renderer') {
-	app = electron.remote.app;
-} else {
-	app = electron.app;
-}
 
 const zulipDir = app.getPath('userData');
 const logDir = `${zulipDir}/Logs/`;

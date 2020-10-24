@@ -161,19 +161,15 @@ class ServerManagerView {
 		}
 
 		const proxyEnabled = ConfigUtil.getConfigItem('useManualProxy') || ConfigUtil.getConfigItem('useSystemProxy');
-		if (proxyEnabled) {
-			await session.fromPartition('persist:webviewsession').setProxy({
-				pacScript: ConfigUtil.getConfigItem('proxyPAC', ''),
-				proxyRules: ConfigUtil.getConfigItem('proxyRules', ''),
-				proxyBypassRules: ConfigUtil.getConfigItem('proxyBypass', '')
-			});
-		} else {
-			await session.fromPartition('persist:webviewsession').setProxy({
-				pacScript: '',
-				proxyRules: '',
-				proxyBypassRules: ''
-			});
-		}
+		await session.fromPartition('persist:webviewsession').setProxy(proxyEnabled ? {
+			pacScript: ConfigUtil.getConfigItem('proxyPAC', ''),
+			proxyRules: ConfigUtil.getConfigItem('proxyRules', ''),
+			proxyBypassRules: ConfigUtil.getConfigItem('proxyBypass', '')
+		} : {
+			pacScript: '',
+			proxyRules: '',
+			proxyBypassRules: ''
+		});
 	}
 
 	// Settings are initialized only when user clicks on General/Server/Network section settings
