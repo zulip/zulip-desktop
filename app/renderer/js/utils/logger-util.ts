@@ -133,7 +133,7 @@ export default class Logger {
 		}
 	}
 
-	trimLog(file: string): void{
+	trimLog(file: string): void {
 		fs.readFile(file, 'utf8', (err, data) => {
 			if (err) {
 				throw err;
