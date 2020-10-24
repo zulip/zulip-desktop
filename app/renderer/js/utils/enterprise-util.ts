@@ -9,7 +9,7 @@ const logger = new Logger({
 });
 
 // TODO: replace enterpriseSettings type with an interface once settings are final
-let enterpriseSettings: {[key: string]: unknown};
+let enterpriseSettings: Record<string, unknown>;
 let configFile: boolean;
 
 reloadDB();

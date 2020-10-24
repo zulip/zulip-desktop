@@ -51,7 +51,7 @@ export default class BaseSection extends BaseComponent {
 	/* A method that in future can be used to create dropdown menus using <select> <option> tags.
 		it needs an object which has ``key: value`` pairs and will return a string that can be appended to HTML
 	*/
-	generateSelectHTML(options: {[key: string]: string}, className?: string, idName?: string): string {
+	generateSelectHTML(options: Record<string, string>, className?: string, idName?: string): string {
 		let html = htmlEscape`<select class="${className}" id="${idName}">\n`;
 		Object.keys(options).forEach(key => {
 			html += htmlEscape`<option name="${key}" value="${key}">${options[key]}</option>\n`;

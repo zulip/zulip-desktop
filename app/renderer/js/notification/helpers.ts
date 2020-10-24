@@ -21,7 +21,7 @@ export async function loadBots(): Promise<void> {
 	const response = await fetch('/json/users');
 	if (response.ok) {
 		const {members} = await response.json();
-		members.forEach(({is_bot, full_name}: {[key: string]: unknown}) => {
+		members.forEach(({is_bot, full_name}: Record<string, unknown>) => {
 			if (is_bot && typeof full_name === 'string') {
 				const bot = `@${full_name}`;
 				const mention = `@**${bot.replace(/^@/, '')}**`;
