@@ -18,14 +18,6 @@ export function noOrgsError(domain: string): string {
 	\nPlease contact your server administrator.`;
 }
 
-export function certErrorMessage(domain: string, error: string): string {
-	return `Certificate error for ${domain}\n${error}`;
-}
-
-export function certErrorDetail(): string {
-	return 'The organization you\'re connecting to is either someone impersonating the Zulip server you entered, or the server you\'re trying to connect to is configured in an insecure way.';
-}
-
 export function enterpriseOrgError(length: number, domains: string[]): DialogBoxError {
 	let domainList = '';
 	for (const domain of domains) {

@@ -91,27 +91,6 @@ export function duplicateDomain(domain: string): boolean {
 	return getDomains().some(server => server.url === domain);
 }
 
-async function checkCertError(domain: string, serverConf: ServerConf, error: any, silent: boolean): Promise<ServerConf> {
-	if (silent) {
-		// Since getting server settings has already failed
-		return serverConf;
-	}
-
-	// Report error to sentry to get idea of possible certificate errors
-	// users get when adding the servers
-	logger.reportSentry(error);
-	const certErrorMessage = Messages.certErrorMessage(domain, error);
-	const certErrorDetail = Messages.certErrorDetail();
-
-	await dialog.showMessageBox({
-		type: 'error',
-		buttons: ['OK'],
-		message: certErrorMessage,
-		detail: certErrorDetail
-	});
-	throw new Error('Untrusted certificate.');
-}
-
 export async function checkDomain(domain: string, silent = false): Promise<ServerConf> {
 	if (!silent && duplicateDomain(domain)) {
 		// Do not check duplicate in silent mode
@@ -120,25 +99,9 @@ export async function checkDomain(domain: string, silent = false): Promise<Serve
 
 	domain = formatUrl(domain);
 
-	const serverConf = {
-		icon: defaultIconUrl,
-		url: domain,
-		alias: domain
-	};
-
 	try {
 		return await getServerSettings(domain);
-	} catch (error_) {
-		// Make sure that error is an error or string not undefined
-		// so validation does not throw error.
-		const error = error_ || '';
-
-		const certsError = error.toString().includes('certificate');
-		if (certsError) {
-			const result = await checkCertError(domain, serverConf, error, silent);
-			return result;
-		}
-
+	} catch {
 		throw new Error(Messages.invalidZulipServerError(domain));
 	}
 }
