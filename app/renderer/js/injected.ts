@@ -9,7 +9,7 @@ interface CompatElectronBridge extends ElectronBridge {
 (() => {
 	const zulipWindow = window as typeof window & {
 		electron_bridge: CompatElectronBridge;
-		narrow: {
+		narrow?: {
 			by_subject?: (target_id: number, opts: {trigger?: string}) => void;
 			by_topic?: (target_id: number, opts: {trigger?: string}) => void;
 		};
@@ -56,8 +56,10 @@ interface CompatElectronBridge extends ElectronBridge {
 
 	electron_bridge.on_event('narrow-by-topic', (id: number) => {
 		const {narrow} = zulipWindow;
-		const narrowByTopic = narrow.by_topic || narrow.by_subject;
-		narrowByTopic(id, {trigger: 'notification'});
+		const narrowByTopic = narrow?.by_topic ?? narrow?.by_subject;
+		if (narrowByTopic !== undefined) {
+			narrowByTopic(id, {trigger: 'notification'});
+		}
 	});
 
 	function attributeListener<T extends EventTarget>(type: string): PropertyDescriptor {
