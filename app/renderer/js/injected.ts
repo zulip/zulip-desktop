@@ -13,9 +13,7 @@ interface CompatElectronBridge extends ElectronBridge {
 			by_subject?: (target_id: number, opts: {trigger?: string}) => void;
 			by_topic?: (target_id: number, opts: {trigger?: string}) => void;
 		};
-		page_params?: {
-			default_language?: string;
-		};
+		page_params?: unknown;
 		raw_electron_bridge: ElectronBridge;
 	};
 
@@ -51,7 +49,7 @@ interface CompatElectronBridge extends ElectronBridge {
 		}
 
 		const {page_params} = zulipWindow;
-		if (page_params) {
+		if (page_params !== undefined) {
 			electron_bridge.send_event('zulip-loaded');
 		}
 	})();
