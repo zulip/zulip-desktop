@@ -3,9 +3,19 @@ body {
     margin: 0;
     cursor: default;
     font-size: 14px;
-    color: rgba(51, 51, 51, 1.000);
     background: rgba(255, 255, 255, 1.000);
     user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+ul {
+    margin-left: 36px;
+}
+
+li {
+    margin: 14px;
 }
 
 #content {
@@ -13,20 +23,26 @@ body {
     flex-direction: column;
     font-family: "Trebuchet MS", Helvetica, sans-serif;
     margin: 100px 200px;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
 }
 
 #title {
-    text-align: left;
-    font-size: 24px;
+    text-align: center;
+    font-size: 26px;
     font-weight: bold;
-    margin: 20px 0;
+    margin: 16px 0;
+    text-transform: uppercase;
+    color: rgba(39, 43, 52, 1.000);
 }
 
 #subtitle {
     font-size: 20px;
-    text-align: left;
-    margin: 12px 0;
+    text-align: center;
+    margin: 6px 0;
+    font-weight: bold;
+    color: rgba(102, 102, 102, 1.000);
 }
 
 #description {
@@ -37,10 +53,24 @@ body {
 
 #reconnect {
     float: left;
+    margin-left: 16px;
 }
 
 #settings {
-    margin-left: 116px;
+    float: right;
+    margin-right: 16px;
+}
+
+#troubleshooting {
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 26px;
+    font-weight: bolder;
+    font-size: 14px;
+}
+
+a:link {
+    color: rgba(0, 150, 136, 1.000);
 }
 
 .button {
@@ -49,11 +79,78 @@ body {
     color: rgba(255, 255, 255, 1.000);
     width: 96px;
     height: 32px;
-    border-radius: 5px;
+    border-radius: 7px;
     line-height: 32px;
     cursor: pointer;
+    margin-top: 24px;
 }
 
 .button:hover {
     opacity: 0.8;
+}
+
+.row {
+    display: flex;
+}
+
+.column {
+    flex: 33.33%;
+    padding: 5px;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.dot-flashing {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: rgb(116, 123, 252, 1.000);
+    color: rgb(116, 123, 252, 1.000);
+    animation: dotFlashing 1s infinite linear alternate;
+    animation-delay: 0.5s;
+}
+
+.dot-flashing::before,
+.dot-flashing::after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 0;
+}
+
+.dot-flashing::before {
+    left: -35px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: rgb(116, 123, 252, 1.000);
+    color: rgb(116, 123, 252, 1.000);
+    animation: dotFlashing 1s infinite alternate;
+    animation-delay: 0s;
+}
+
+.dot-flashing::after {
+    left: 35px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: rgb(116, 123, 252, 1.000);
+    color: rgb(116, 123, 252, 1.000);
+    animation: dotFlashing 1s infinite alternate;
+    animation-delay: 1s;
+}
+
+.stage {
+    margin-top: 60px;
+}
+
+@keyframes dotFlashing {
+    0% {
+        background-color: rgb(116, 123, 252, 1.000);
+    }
+    100% {
+        background-color: rgb(235, 230, 255, 1.000);
+    }
 }
