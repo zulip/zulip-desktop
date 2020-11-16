@@ -60,7 +60,9 @@ export function initNewServerForm({$root, onChange}: NewServerFormProps): void {
     $saveServerButton.textContent = "Connecting...";
     let serverConf;
     try {
-      serverConf = await DomainUtil.checkDomain($newServerUrl.value.trim());
+      serverConf = await DomainUtil.checkDomain(
+        await autoComplete($newServerUrl.value.trim()),
+      );
     } catch (error: unknown) {
       $saveServerButton.textContent = "Connect";
       await dialog.showMessageBox({
@@ -76,6 +78,17 @@ export function initNewServerForm({$root, onChange}: NewServerFormProps): void {
 
     await DomainUtil.addDomain(serverConf);
     onChange();
+  }
+
+  async function autoComplete(url: string): Promise<string> {
+    const pattern = /^[a-zA-Z\d-]*$/;
+    let serverUrl = url.trim();
+
+    if (pattern.test(serverUrl)) {
+      serverUrl = "https://" + serverUrl + ".zulipchat.com";
+    }
+
+    return serverUrl;
   }
 
   $saveServerButton.addEventListener("click", async () => {
