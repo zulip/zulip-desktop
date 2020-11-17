@@ -7,10 +7,6 @@ import electron_bridge from './electron-bridge';
 import {loadBots} from './notification/helpers';
 import * as NetworkError from './pages/network';
 
-// Prevent drag and drop event in main process which prevents remote code executaion
-// eslint-disable-next-line import/no-unassigned-import
-import './shared/preventdrag';
-
 contextBridge.exposeInMainWorld('raw_electron_bridge', electron_bridge);
 
 electron_bridge.once('zulip-loaded', async () => {
