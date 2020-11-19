@@ -9,6 +9,7 @@ import * as BadgeSettings from '../renderer/js/pages/preference/badge-settings';
 import * as ConfigUtil from '../renderer/js/utils/config-util';
 import * as ProxyUtil from '../renderer/js/utils/proxy-util';
 import {sentryInit} from '../renderer/js/utils/sentry-util';
+import ViewManager = require('./viewmanager');
 
 import {appUpdater} from './autoupdater';
 import * as AppMenu from './menu';
@@ -18,7 +19,8 @@ import {setAutoLaunch} from './startup';
 let mainWindowState: windowStateKeeper.State;
 
 // Prevent window being garbage collected
-let mainWindow: Electron.BrowserWindow;
+// eslint-disable-next-line import/no-mutable-exports
+export let mainWindow: Electron.BrowserWindow;
 let badgeCount: number;
 
 let isQuitting = false;
@@ -88,8 +90,7 @@ function createMainWindow(): Electron.BrowserWindow {
 		webPreferences: {
 			enableRemoteModule: true,
 			nodeIntegration: true,
-			partition: 'persist:webviewsession',
-			webviewTag: true
+			partition: 'persist:viewsession' // May be persist:view
 		},
 		show: false
 	});
@@ -120,10 +121,12 @@ function createMainWindow(): Electron.BrowserWindow {
 	win.setTitle('Zulip');
 
 	win.on('enter-full-screen', () => {
+		ViewManager.fixBounds();
 		win.webContents.send('enter-fullscreen');
 	});
 
 	win.on('leave-full-screen', () => {
+		ViewManager.fixBounds();
 		win.webContents.send('leave-fullscreen');
 	});
 
@@ -259,6 +262,7 @@ ${error}`
 
 	// Reload full app not just webview, useful in debugging
 	ipcMain.on('reload-full-app', () => {
+		ViewManager.destroyAll();
 		mainWindow.reload();
 		page.send('destroytray');
 	});
@@ -283,6 +287,10 @@ ${error}`
 		page.send('toggle-autohide-menubar', showMenubar, true);
 	});
 
+	ipcMain.on('fix-bounds', () => {
+		ViewManager.fixBounds();
+	});
+
 	ipcMain.on('update-badge', (_event: Electron.IpcMainEvent, messageCount: number) => {
 		badgeCount = messageCount;
 		BadgeSettings.updateBadge(badgeCount, mainWindow);
@@ -301,7 +309,7 @@ ${error}`
 		AppMenu.setMenu(props);
 		const activeTab = props.tabs[props.activeTabIndex];
 		if (activeTab) {
-			mainWindow.setTitle(`Zulip - ${activeTab.webviewName}`);
+			mainWindow.setTitle(`Zulip - ${activeTab.name}`);
 		}
 	});
 

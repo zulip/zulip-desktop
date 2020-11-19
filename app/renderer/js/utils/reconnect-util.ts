@@ -3,8 +3,6 @@ import {ipcRenderer} from 'electron';
 import backoff from 'backoff';
 import {htmlEscape} from 'escape-goat';
 
-import type WebView from '../components/webview';
-
 import Logger from './logger-util';
 
 const logger = new Logger({
@@ -13,14 +11,12 @@ const logger = new Logger({
 });
 
 export default class ReconnectUtil {
-	webview: WebView;
 	url: string;
 	alreadyReloaded: boolean;
 	fibonacciBackoff: backoff.Backoff;
 
-	constructor(webview: WebView) {
-		this.webview = webview;
-		this.url = webview.props.url;
+	constructor(url: string) {
+		this.url = url;
 		this.alreadyReloaded = false;
 		this.clearState();
 	}
