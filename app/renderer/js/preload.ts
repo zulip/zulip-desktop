@@ -51,7 +51,7 @@ ipcRenderer.on('show-notification-settings', () => {
 	}, 100);
 });
 
-electron_bridge.once('zulip-loaded', () => {
+electron_bridge.once('zulip-loaded', ({narrow_by_topic}) => {
 	// Redirect users to network troubleshooting page
 	const getRestartButton = document.querySelector('.restart_get_events_button');
 	if (getRestartButton) {
@@ -59,6 +59,8 @@ electron_bridge.once('zulip-loaded', () => {
 			ipcRenderer.send('forward-message', 'reload-viewer');
 		});
 	}
+
+	electron_bridge.on('narrow-by-topic', narrow_by_topic);
 });
 
 window.addEventListener('load', (event: any): void => {

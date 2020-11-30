@@ -48,19 +48,18 @@ interface CompatElectronBridge extends ElectronBridge {
 			});
 		}
 
-		const {page_params} = zulipWindow;
+		const {narrow, page_params} = zulipWindow;
 		if (page_params !== undefined) {
-			electron_bridge.send_event('zulip-loaded');
+			electron_bridge.send_event('zulip-loaded', {
+				narrow_by_topic: (id: number) => {
+					const narrowByTopic = narrow?.by_topic ?? narrow?.by_subject;
+					if (narrowByTopic !== undefined) {
+						narrowByTopic(id, {trigger: 'notification'});
+					}
+				}
+			});
 		}
 	})();
-
-	electron_bridge.on_event('narrow-by-topic', (id: number) => {
-		const {narrow} = zulipWindow;
-		const narrowByTopic = narrow?.by_topic ?? narrow?.by_subject;
-		if (narrowByTopic !== undefined) {
-			narrowByTopic(id, {trigger: 'notification'});
-		}
-	});
 
 	function attributeListener<T extends EventTarget>(type: string): PropertyDescriptor {
 		const symbol = Symbol('on' + type);
