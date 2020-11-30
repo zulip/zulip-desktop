@@ -63,9 +63,8 @@ export default class WebView extends BaseComponent {
 				partition="persist:webviewsession"
 				name="${this.props.name}"
 				webpreferences="
-					${this.props.nodeIntegration ? '' : 'contextIsolation,'}
-					${ConfigUtil.getConfigItem('enableSpellchecker') ? 'spellcheck,' : ''}
-					javascript
+					contextIsolation=${!this.props.nodeIntegration},
+					spellcheck=${Boolean(ConfigUtil.getConfigItem('enableSpellchecker'))}
 				">
 			</webview>
 		`;
