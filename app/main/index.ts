@@ -86,6 +86,7 @@ function createMainWindow(): Electron.BrowserWindow {
 		minWidth: 500,
 		minHeight: 400,
 		webPreferences: {
+			contextIsolation: false,
 			enableRemoteModule: true,
 			nodeIntegration: true,
 			partition: 'persist:webviewsession',
