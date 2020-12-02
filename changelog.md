@@ -2,6 +2,20 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.5.0 --2020-12-01
+
+**Removed features**:
+* Removed legacy handling of custom certificates. Custom certificates can be configured in the same system certificate store that Chrome uses ([instructions](https://zulip.com/help/custom-certificates#desktop)).
+* Removed the unmaintained notification inline replies feature on macOS. We believe the `node-mac-notifier` library used by this feature had been responsible for the grey screen crash issue.
+
+**Fixes**:
+* Fixed a regression with the factory reset function.
+* Fixed the grey screen crash issue on macOS ([#1016](https://github.com/zulip/zulip-desktop/issues/1016)).
+* Whitespace is now stripped from the organization URL when adding a new organization.
+
+**Dependencies**:
+* Upgraded all dependencies, including Electron 11.0.3.
+
 ### v5.4.3 --2020-09-10
 
 **Security fixes**:
@@ -12,9 +26,6 @@ All notable changes to the Zulip desktop app are documented in this file.
 
 ### v5.4.2 --2020-08-12
 
-**Potential Fixes**:
-* macOS: Electron 9 upgrade is a potential fix for the ['grey screen issue'](https://chat.zulip.org/#narrow/stream/9-issues/topic/Grey.20Window.20on.20macOS) reported.
-
 **Dependencies**:
 * Upgrade all dependencies, including Electron 9.2.0.
 
@@ -22,9 +33,6 @@ All notable changes to the Zulip desktop app are documented in this file.
 
 **Fixes**:
 * Resized the large application icon on macOS dock to be coherent with other icons.
-
-**Potential Fixes**:
-* macOS: Electron 9 upgrade is a potential fix for the ['grey screen issue'](https://chat.zulip.org/#narrow/stream/9-issues/topic/Grey.20Window.20on.20macOS) reported.
 
 **Dependencies**:
 * Upgrade all dependencies, including Electron 9.1.1.
