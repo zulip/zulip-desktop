@@ -1,8 +1,6 @@
 import {contextBridge, ipcRenderer, webFrame} from 'electron';
 import fs from 'fs';
 
-import isDev from 'electron-is-dev';
-
 import electron_bridge from './electron-bridge';
 import * as NetworkError from './pages/network';
 
@@ -70,25 +68,6 @@ document.addEventListener('keydown', event => {
 	} else if (cmdOrCtrl && event.code === 'Numpad0') {
 		ipcRenderer.send('forward-message', 'zoomActualSize');
 	}
-});
-
-// Set user as active and update the time of last activity
-ipcRenderer.on('set-active', () => {
-	if (isDev) {
-		console.log('active');
-	}
-
-	electron_bridge.idle_on_system = false;
-	electron_bridge.last_active_on_system = Date.now();
-});
-
-// Set user as idle and time of last activity is left unchanged
-ipcRenderer.on('set-idle', () => {
-	if (isDev) {
-		console.log('idle');
-	}
-
-	electron_bridge.idle_on_system = true;
 });
 
 (async () => webFrame.executeJavaScript(

@@ -1,68 +1,62 @@
 import {ipcRenderer} from 'electron';
 import {EventEmitter} from 'events';
 
+import isDev from 'electron-is-dev';
+
 import {ClipboardDecrypterImpl} from './clipboard-decrypter';
 import {NotificationData, newNotification} from './notification';
 
 type ListenerType = ((...args: any[]) => void);
 
-class ElectronBridgeImpl extends EventEmitter implements ElectronBridge {
-	send_notification_reply_message_supported: boolean;
-	idle_on_system: boolean;
-	last_active_on_system: number;
+let notificationReplySupported = false;
+// Indicates if the user is idle or not
+let idle = false;
+// Indicates the time at which user was last active
+let lastActive = Date.now();
 
-	constructor() {
-		super();
-		this.send_notification_reply_message_supported = false;
-		// Indicates if the user is idle or not
-		this.idle_on_system = false;
+export const bridgeEvents = new EventEmitter();
 
-		// Indicates the time at which user was last active
-		this.last_active_on_system = Date.now();
-	}
+const electron_bridge: ElectronBridge = {
+	send_event: (eventName: string | symbol, ...args: unknown[]): void => {
+		bridgeEvents.emit(eventName, ...args);
+	},
 
-	send_event = (eventName: string | symbol, ...args: unknown[]): void => {
-		this.emit(eventName, ...args);
-	};
+	on_event: (eventName: string, listener: ListenerType): void => {
+		bridgeEvents.on(eventName, listener);
+	},
 
-	on_event = (eventName: string, listener: ListenerType): void => {
-		this.on(eventName, listener);
-	};
-
-	new_notification = (
+	new_notification: (
 		title: string,
 		options: NotificationOptions | undefined,
 		dispatch: (type: string, eventInit: EventInit) => boolean
 	): NotificationData =>
-		newNotification(title, options, dispatch);
+		newNotification(title, options, dispatch),
 
-	get_idle_on_system = (): boolean => this.idle_on_system;
+	get_idle_on_system: (): boolean => idle,
 
-	get_last_active_on_system = (): number => this.last_active_on_system;
+	get_last_active_on_system: (): number => lastActive,
 
-	get_send_notification_reply_message_supported = (): boolean =>
-		this.send_notification_reply_message_supported;
+	get_send_notification_reply_message_supported: (): boolean =>
+		notificationReplySupported,
 
-	set_send_notification_reply_message_supported = (value: boolean): void => {
-		this.send_notification_reply_message_supported = value;
-	};
+	set_send_notification_reply_message_supported: (value: boolean): void => {
+		notificationReplySupported = value;
+	},
 
-	decrypt_clipboard = (version: number): ClipboardDecrypterImpl =>
-		new ClipboardDecrypterImpl(version);
-}
+	decrypt_clipboard: (version: number): ClipboardDecrypterImpl =>
+		new ClipboardDecrypterImpl(version)
+};
 
-const electron_bridge = new ElectronBridgeImpl();
-
-electron_bridge.on('total_unread_count', (...args) => {
+bridgeEvents.on('total_unread_count', (...args) => {
 	ipcRenderer.send('unread-count', ...args);
 });
 
-electron_bridge.on('realm_name', realmName => {
+bridgeEvents.on('realm_name', realmName => {
 	const serverURL = location.origin;
 	ipcRenderer.send('realm-name-changed', serverURL, realmName);
 });
 
-electron_bridge.on('realm_icon_url', (iconURL: unknown) => {
+bridgeEvents.on('realm_icon_url', (iconURL: unknown) => {
 	if (typeof iconURL !== 'string') {
 		throw new TypeError('Expected string for iconURL');
 	}
@@ -70,6 +64,25 @@ electron_bridge.on('realm_icon_url', (iconURL: unknown) => {
 	const serverURL = location.origin;
 	iconURL = iconURL.includes('http') ? iconURL : `${serverURL}${iconURL}`;
 	ipcRenderer.send('realm-icon-changed', serverURL, iconURL);
+});
+
+// Set user as active and update the time of last activity
+ipcRenderer.on('set-active', () => {
+	if (isDev) {
+		console.log('active');
+	}
+
+	idle = false;
+	lastActive = Date.now();
+});
+
+// Set user as idle and time of last activity is left unchanged
+ipcRenderer.on('set-idle', () => {
+	if (isDev) {
+		console.log('idle');
+	}
+
+	idle = true;
 });
 
 // This follows node's idiomatic implementation of event
