@@ -30,7 +30,7 @@ interface ClipboardDecrypter {
 }
 
 interface ElectronBridge {
-	send_event: (eventName: string | symbol, ...args: unknown[]) => void;
+	send_event: (eventName: string | symbol, ...args: unknown[]) => boolean;
 	on_event: (eventName: string, listener: ListenerType) => void;
 	new_notification: (
 		title: string,

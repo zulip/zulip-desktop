@@ -17,9 +17,8 @@ let lastActive = Date.now();
 export const bridgeEvents = new EventEmitter();
 
 const electron_bridge: ElectronBridge = {
-	send_event: (eventName: string | symbol, ...args: unknown[]): void => {
-		bridgeEvents.emit(eventName, ...args);
-	},
+	send_event: (eventName: string | symbol, ...args: unknown[]): boolean =>
+		bridgeEvents.emit(eventName, ...args),
 
 	on_event: (eventName: string, listener: ListenerType): void => {
 		bridgeEvents.on(eventName, listener);
