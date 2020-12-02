@@ -43,7 +43,7 @@ interface CompatElectronBridge extends ElectronBridge {
 		if (document.readyState === 'loading') {
 			await new Promise(resolve => {
 				document.addEventListener('DOMContentLoaded', () => {
-					resolve();
+					resolve(undefined);
 				});
 			});
 		}

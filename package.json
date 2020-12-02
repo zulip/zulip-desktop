@@ -146,13 +146,13 @@
   ],
   "dependencies": {
     "@electron-elements/send-feedback": "^2.0.3",
-    "@sentry/electron": "^2.0.1",
-    "@yaireo/tagify": "^3.20.2",
-    "adm-zip": "^0.4.16",
+    "@sentry/electron": "^2.0.4",
+    "@yaireo/tagify": "^3.21.5",
+    "adm-zip": "^0.5.1",
     "auto-launch": "^5.0.5",
     "backoff": "^2.5.0",
     "electron-is-dev": "^1.2.0",
-    "electron-log": "^4.2.4",
+    "electron-log": "^4.3.0",
     "electron-updater": "^4.3.5",
     "electron-window-state": "^5.0.3",
     "escape-goat": "^3.0.0",
@@ -162,7 +162,7 @@
     "iso-639-1": "^2.1.4",
     "nan": "^2.14.2",
     "node-json-db": "^1.1.0",
-    "semver": "^7.3.2"
+    "semver": "^7.3.4"
   },
   "optionalDependencies": {
     "node-mac-notifier": "^1.1.0"
@@ -171,12 +171,12 @@
     "@types/adm-zip": "^0.4.33",
     "@types/auto-launch": "^5.0.1",
     "@types/backoff": "^2.5.1",
-    "@types/fs-extra": "^9.0.2",
-    "@types/i18n": "^0.8.7",
-    "@types/node": "^14.14.2",
+    "@types/fs-extra": "^9.0.4",
+    "@types/i18n": "^0.8.8",
+    "@types/node": "^14.14.10",
     "@types/requestidlecallback": "^0.3.1",
     "dotenv": "^8.2.0",
-    "electron": "^10.1.5",
+    "electron": "^11.0.3",
     "electron-builder": "^22.9.1",
     "electron-connect": "^0.6.3",
     "electron-notarize": "^1.0.0",
@@ -184,16 +184,16 @@
     "gulp": "^4.0.2",
     "gulp-tape": "^1.0.0",
     "gulp-typescript": "^6.0.0-alpha.1",
-    "htmlhint": "^0.14.1",
+    "htmlhint": "^0.14.2",
     "nodemon": "^2.0.6",
     "pre-commit": "^1.2.2",
     "rimraf": "^3.0.2",
-    "spectron": "^12.0.0",
-    "stylelint": "^13.7.2",
+    "spectron": "^13.0.0",
+    "stylelint": "^13.8.0",
     "tap-colorize": "^1.2.0",
     "tape": "^5.0.1",
-    "typescript": "^4.0.3",
-    "xo": "^0.34.1"
+    "typescript": "^4.1.2",
+    "xo": "^0.35.0"
   },
   "xo": {
     "rules": {
