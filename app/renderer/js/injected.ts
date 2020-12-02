@@ -35,21 +35,6 @@ interface CompatElectronBridge extends ElectronBridge {
 
 	zulipWindow.electron_bridge = electron_bridge;
 
-	(async () => {
-		if (document.readyState === 'loading') {
-			await new Promise(resolve => {
-				document.addEventListener('DOMContentLoaded', () => {
-					resolve(undefined);
-				});
-			});
-		}
-
-		const {page_params} = zulipWindow;
-		if (page_params !== undefined) {
-			electron_bridge.send_event('zulip-loaded');
-		}
-	})();
-
 	function attributeListener<T extends EventTarget>(type: string): PropertyDescriptor {
 		const symbol = Symbol('on' + type);
 

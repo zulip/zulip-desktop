@@ -46,16 +46,6 @@ ipcRenderer.on('show-notification-settings', () => {
 	}, 100);
 });
 
-electron_bridge.once('zulip-loaded', () => {
-	// Redirect users to network troubleshooting page
-	const getRestartButton = document.querySelector('.restart_get_events_button');
-	if (getRestartButton) {
-		getRestartButton.addEventListener('click', () => {
-			ipcRenderer.send('forward-message', 'reload-viewer');
-		});
-	}
-});
-
 window.addEventListener('load', (event: any): void => {
 	if (!event.target.URL.includes('app/renderer/network.html')) {
 		return;
