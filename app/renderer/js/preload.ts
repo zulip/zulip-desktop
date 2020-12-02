@@ -1,12 +1,16 @@
 import {contextBridge, ipcRenderer, webFrame} from 'electron';
 import fs from 'fs';
 
-import electron_bridge from './electron-bridge';
+import electron_bridge, {bridgeEvents} from './electron-bridge';
 import * as NetworkError from './pages/network';
 
 contextBridge.exposeInMainWorld('raw_electron_bridge', electron_bridge);
 
 ipcRenderer.on('logout', () => {
+	if (bridgeEvents.emit('logout')) {
+		return;
+	}
+
 	// Create the menu for the below
 	const dropdown: HTMLElement = document.querySelector('.dropdown-toggle');
 	dropdown.click();
@@ -15,7 +19,11 @@ ipcRenderer.on('logout', () => {
 	nodes[nodes.length - 1].click();
 });
 
-ipcRenderer.on('shortcut', () => {
+ipcRenderer.on('show-keyboard-shortcuts', () => {
+	if (bridgeEvents.emit('show-keyboard-shortcuts')) {
+		return;
+	}
+
 	// Create the menu for the below
 	const node: HTMLElement = document.querySelector('a[data-overlay-trigger=keyboard-shortcuts]');
 	// Additional check
@@ -29,6 +37,10 @@ ipcRenderer.on('shortcut', () => {
 });
 
 ipcRenderer.on('show-notification-settings', () => {
+	if (bridgeEvents.emit('show-notification-settings')) {
+		return;
+	}
+
 	// Create the menu for the below
 	const dropdown: HTMLElement = document.querySelector('.dropdown-toggle');
 	dropdown.click();

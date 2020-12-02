@@ -798,7 +798,7 @@ class ServerManagerView {
 			['zoomOut', webview => webview.zoomOut()],
 			['zoomActualSize', webview => webview.zoomActualSize()],
 			['log-out', webview => webview.logOut()],
-			['shortcut', webview => webview.showShortcut()],
+			['show-keyboard-shortcuts', webview => webview.showKeyboardShortcuts()],
 			['tab-devtools', webview => webview.openDevTools()]
 		];
 

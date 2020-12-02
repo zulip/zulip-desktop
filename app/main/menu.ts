@@ -308,7 +308,7 @@ function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 			enabled: enableMenu,
 			click(_item, focusedWindow) {
 				if (focusedWindow) {
-					sendAction('shortcut');
+					sendAction('show-keyboard-shortcuts');
 				}
 			}
 		}, {
@@ -450,7 +450,7 @@ function getOtherTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 			enabled: enableMenu,
 			click(_item, focusedWindow) {
 				if (focusedWindow) {
-					sendAction('shortcut');
+					sendAction('show-keyboard-shortcuts');
 				}
 			}
 		}, {

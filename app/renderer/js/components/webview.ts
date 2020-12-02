@@ -265,8 +265,8 @@ export default class WebView extends BaseComponent {
 		ipcRenderer.sendTo(this.$el.getWebContentsId(), 'logout');
 	}
 
-	showShortcut(): void {
-		ipcRenderer.sendTo(this.$el.getWebContentsId(), 'shortcut');
+	showKeyboardShortcuts(): void {
+		ipcRenderer.sendTo(this.$el.getWebContentsId(), 'show-keyboard-shortcuts');
 	}
 
 	openDevTools(): void {
