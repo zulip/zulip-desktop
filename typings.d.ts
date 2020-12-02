@@ -21,8 +21,6 @@ declare module '@electron-elements/send-feedback' {
 
 declare module 'electron-connect';
 
-declare module 'node-mac-notifier';
-
 declare module '@yaireo/tagify';
 
 interface ClipboardDecrypter {

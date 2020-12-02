@@ -4,14 +4,9 @@ import fs from 'fs';
 import isDev from 'electron-is-dev';
 
 import electron_bridge from './electron-bridge';
-import {loadBots} from './notification/helpers';
 import * as NetworkError from './pages/network';
 
 contextBridge.exposeInMainWorld('raw_electron_bridge', electron_bridge);
-
-electron_bridge.once('zulip-loaded', async () => {
-	await loadBots();
-});
 
 ipcRenderer.on('logout', () => {
 	// Create the menu for the below
@@ -51,7 +46,7 @@ ipcRenderer.on('show-notification-settings', () => {
 	}, 100);
 });
 
-electron_bridge.once('zulip-loaded', ({narrow_by_topic}) => {
+electron_bridge.once('zulip-loaded', () => {
 	// Redirect users to network troubleshooting page
 	const getRestartButton = document.querySelector('.restart_get_events_button');
 	if (getRestartButton) {
@@ -59,8 +54,6 @@ electron_bridge.once('zulip-loaded', ({narrow_by_topic}) => {
 			ipcRenderer.send('forward-message', 'reload-viewer');
 		});
 	}
-
-	electron_bridge.on('narrow-by-topic', narrow_by_topic);
 });
 
 window.addEventListener('load', (event: any): void => {

@@ -9,12 +9,6 @@ const {app} = remote;
 // On windows 8 we have to explicitly set the appUserModelId otherwise notification won't work.
 app.setAppUserModelId(appId);
 
-let Notification = DefaultNotification;
-
-if (process.platform === 'darwin') {
-	Notification = require('./darwin-notifications');
-}
-
 export interface NotificationData {
 	close: () => void;
 	title: string;
@@ -39,7 +33,7 @@ export function newNotification(
 	options: NotificationOptions | undefined,
 	dispatch: (type: string, eventInit: EventInit) => boolean
 ): NotificationData {
-	const notification = new Notification(title, options);
+	const notification = new DefaultNotification(title, options);
 	for (const type of ['click', 'close', 'error', 'show']) {
 		notification.addEventListener(type, (ev: Event) => {
 			if (!dispatch(type, ev)) {
