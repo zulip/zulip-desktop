@@ -1018,11 +1018,6 @@ class ServerManagerView {
 			await this.openSettings('AddServer');
 		});
 
-		// Redo and undo functionality since the default API doesn't work on macOS
-		ipcRenderer.on('undo', () => this.getActiveWebview().undo());
-
-		ipcRenderer.on('redo', () => this.getActiveWebview().redo());
-
 		ipcRenderer.on('set-active', async () => {
 			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');
 			await Promise.all([...webviews].map(async webview => webview.send('set-active')));

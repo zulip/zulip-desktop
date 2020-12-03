@@ -364,20 +364,10 @@ function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 		label: t.__('Edit'),
 		submenu: [{
 			label: t.__('Undo'),
-			accelerator: 'Cmd+Z',
-			click(_item, focusedWindow) {
-				if (focusedWindow) {
-					sendAction('undo');
-				}
-			}
+			role: 'undo'
 		}, {
 			label: t.__('Redo'),
-			accelerator: 'Cmd+Shift+Z',
-			click(_item, focusedWindow) {
-				if (focusedWindow) {
-					sendAction('redo');
-				}
-			}
+			role: 'redo'
 		}, {
 			type: 'separator'
 		}, {
