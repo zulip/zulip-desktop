@@ -9,7 +9,6 @@ interface CompatElectronBridge extends ElectronBridge {
 (() => {
 	const zulipWindow = window as typeof window & {
 		electron_bridge: CompatElectronBridge;
-		page_params?: unknown;
 		raw_electron_bridge: ElectronBridge;
 	};
 
