@@ -67,8 +67,8 @@ function createMainWindow(): Electron.BrowserWindow {
     minHeight: 400,
     webPreferences: {
       contextIsolation: false,
-      nodeIntegration: true,
       partition: "persist:webviewsession",
+      preload: require.resolve("../renderer/js/main"),
       webviewTag: true,
       worldSafeExecuteJavaScript: true,
     },
