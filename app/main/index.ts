@@ -143,9 +143,6 @@ function createMainWindow(): Electron.BrowserWindow {
 	return win;
 }
 
-// Decrease load on GPU (experimental)
-app.disableHardwareAcceleration();
-
 // Temporary fix for Electron render colors differently
 // More info here - https://github.com/electron/electron/issues/10732
 app.commandLine.appendSwitch('force-color-profile', 'srgb');
