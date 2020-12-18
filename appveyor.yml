@@ -2,15 +2,14 @@ version: build{build}
 
 platform:
   - x64
-os: Previous Visual Studio 2015
+
+os: Visual Studio 2015
 
 cache:
   - node_modules -> appveyor.yml
 
 install:
-  - ps: Install-Product node 10 x64
-  - git reset --hard HEAD
-  - npm install npm -g
+  - ps: Install-Product node LTS $env:platform
   - node --version
   - npm --version
   - python --version
