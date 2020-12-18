@@ -1,9 +1,9 @@
 import {ipcRenderer, remote, OpenDialogOptions} from 'electron';
+import fs from 'fs';
 import path from 'path';
 
 import Tagify from '@yaireo/tagify';
 import {htmlEscape} from 'escape-goat';
-import fs from 'fs-extra';
 import ISO6391 from 'iso-639-1';
 
 import supportedLocales from '../../../../translations/supported-locales.json';
@@ -494,7 +494,7 @@ export default class GeneralSection extends BaseSection {
 			detail: clearAppDataMessage
 		});
 		if (response === 0) {
-			await fs.remove(getAppPath);
+			await fs.promises.rmdir(getAppPath, {recursive: true});
 			setTimeout(() => ipcRenderer.send('clear-app-settings'), 1000);
 		}
 	}

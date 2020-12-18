@@ -70,9 +70,9 @@ export default class Logger {
 
 		// Trim log according to type of process
 		if (process.type === 'renderer') {
-			requestIdleCallback(() => this.trimLog(file));
+			requestIdleCallback(async () => this.trimLog(file));
 		} else {
-			process.nextTick(() => this.trimLog(file));
+			process.nextTick(async () => this.trimLog(file));
 		}
 
 		const fileStream = fs.createWriteStream(file, {flags: 'a'});
@@ -133,22 +133,18 @@ export default class Logger {
 		}
 	}
 
-	trimLog(file: string): void {
-		fs.readFile(file, 'utf8', (err, data) => {
-			if (err) {
-				throw err;
-			}
+	async trimLog(file: string): Promise<void> {
+		const data = await fs.promises.readFile(file, 'utf8');
 
-			const MAX_LOG_FILE_LINES = 500;
-			const logs = data.split(os.EOL);
-			const logLength = logs.length - 1;
+		const MAX_LOG_FILE_LINES = 500;
+		const logs = data.split(os.EOL);
+		const logLength = logs.length - 1;
 
-			// Keep bottom MAX_LOG_FILE_LINES of each log instance
-			if (logLength > MAX_LOG_FILE_LINES) {
-				const trimmedLogs = logs.slice(logLength - MAX_LOG_FILE_LINES);
-				const toWrite = trimmedLogs.join(os.EOL);
-				fs.writeFileSync(file, toWrite);
-			}
-		});
+		// Keep bottom MAX_LOG_FILE_LINES of each log instance
+		if (logLength > MAX_LOG_FILE_LINES) {
+			const trimmedLogs = logs.slice(logLength - MAX_LOG_FILE_LINES);
+			const toWrite = trimmedLogs.join(os.EOL);
+			await fs.promises.writeFile(file, toWrite);
+		}
 	}
 }
