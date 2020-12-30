@@ -519,7 +519,7 @@ export default class GeneralSection extends BaseSection {
 			const spellDiv: HTMLElement = document.querySelector('#spellcheck-langs');
 			spellDiv.innerHTML += htmlEscape`
 				<div class="setting-description">${t.__('Spellchecker Languages')}</div>
-				<input name='spellcheck' placeholder='Enter Languages'>`;
+				<input class="spellcheckInput" name='spellcheck' placeholder='Enter Languages'>`;
 
 			const availableLanguages = session.fromPartition('persist:webviewsession').availableSpellCheckerLanguages;
 			let languagePairs: Map<string, string> = new Map();
