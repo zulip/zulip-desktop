@@ -92,7 +92,7 @@ class ServerManagerView {
 	$sortableList: any;
 	loading: Set<string>;
 	activeTabIndex: number;
-	servers: Domain[];
+	servers: DomainUtil.ServerConf[];
 	tabs: ServerOrFunctionalTab[];
 	functionalTabs: Map<string, number>;
 	tabIndex: number;
@@ -238,25 +238,25 @@ class ServerManagerView {
 		}
 	}
 
-	onEnd(): void {
-		const newServers: Domain[] = [];
+	async onEnd(): Promise<void> {
+		const newServers: DomainUtil.ServerConf[] = [];
 		const tabElements = document.querySelectorAll('#tabs-container .tab');
-		tabElements.forEach((el, index) => {
-			const oldIndex = Number(el.getAttribute('data-tab-id')) % this.servers.length;
+		tabElements.forEach((element, index) => {
+			const oldIndex = Number(element.getAttribute('data-tab-id')) % this.servers.length;
 			newServers.push(this.servers[oldIndex]);
 			// TODO: Change this to read data from in-memory store or DomainUtil.
-			el.setAttribute('data-tab-id', index.toString());
+			(element as HTMLElement).dataset.tabId = index.toString();
 		});
 		this.servers = newServers;
 		DomainUtil.batchUpdateDomain(this.servers);
-		this.reloadView(false);
+		await this.reloadView(false);
 	}
 
 	initSidebar(): void {
 		const showSidebar = ConfigUtil.getConfigItem('showSidebar', true);
 		this.toggleSidebar(showSidebar);
 		this.$sortableList = Sortable.create(this.$orgsList, {
-			dataIdattr: 'data-sortable-id',
+			dataIdAttr: 'data-sortable-id',
 			onEnd: this.onEnd.bind(this)
 		});
 	}
@@ -335,10 +335,11 @@ class ServerManagerView {
 		}
 	}
 
-	async initTabs(refresh: boolean = true): Promise<void> {
+	async initTabs(refresh = true): Promise<void> {
 		if (refresh) {
 			this.servers = DomainUtil.getDomains();
 		}
+
 		if (this.servers.length > 0) {
 			for (const [i, server] of this.servers.entries()) {
 				this.initServer(server, i);
@@ -708,7 +709,7 @@ class ServerManagerView {
 		this.$webviewsContainer.textContent = '';
 	}
 
-	async reloadView(refresh: boolean = true): Promise<void> {
+	async reloadView(refresh = true): Promise<void> {
 		// Save and remember the index of last active tab so that we can use it later
 		const lastActiveTab = this.tabs[this.activeTabIndex].props.index;
 		ConfigUtil.setConfigItem('lastActiveTab', lastActiveTab);
@@ -876,7 +877,7 @@ class ServerManagerView {
 			await LinkUtil.openBrowser(new URL('https://zulip.com/help/'));
 		});
 
-		ipcRenderer.on('reload-viewer', this.reloadView.bind(this, this.tabs[this.activeTabIndex].props.index));
+		ipcRenderer.on('reload-viewer', this.reloadView.bind(this, true));
 
 		ipcRenderer.on('reload-current-viewer', this.reloadCurrentView.bind(this));
 

@@ -45,8 +45,8 @@ interface ElectronBridge {
 }
 
 interface Domain {
-  icon: string;
-  url: string;
-  alias: string;
-  ignoreCerts: boolean;
+	icon: string;
+	url: string;
+	alias: string;
+	ignoreCerts: boolean;
 }
