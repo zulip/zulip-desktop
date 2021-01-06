@@ -32,7 +32,7 @@ export default class GeneralSection extends BaseSection {
             <div class="settings-pane">
                 <div class="title">${t.__('Appearance')}</div>
                 <div id="appearance-option-settings" class="settings-card">
-					<div class="setting-row" id="tray-option">
+					<div class="setting-row" id="tray-option" style="display:${process.platform === 'linux' ? 'none' : ''}">
 						<div class="setting-description">${t.__('Show app icon in system tray')}</div>
 						<div class="setting-control"></div>
 					</div>
