@@ -148,6 +148,7 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 		type: 'separator'
 	}, {
 		label: t.__('Toggle Tray Icon'),
+		enabled: process.platform !== 'linux',
 		click(_item, focusedWindow) {
 			if (focusedWindow) {
 				focusedWindow.webContents.send('toggletray');
