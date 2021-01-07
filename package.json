@@ -161,7 +161,8 @@
     "i18n": "^0.13.2",
     "iso-639-1": "^2.1.4",
     "node-json-db": "^1.1.0",
-    "semver": "^7.3.4"
+    "semver": "^7.3.4",
+    "sortablejs": "^1.10.2"
   },
   "devDependencies": {
     "@types/adm-zip": "^0.4.33",

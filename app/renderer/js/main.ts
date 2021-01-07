@@ -89,7 +89,7 @@ class ServerManagerView {
 	$sidebar: Element;
 	$fullscreenPopup: Element;
 	$fullscreenEscapeKey: string;
-	$sortableList: any;
+	$sortableList: Sortable;
 	loading: Set<string>;
 	activeTabIndex: number;
 	servers: DomainUtil.ServerConf[];
@@ -244,7 +244,6 @@ class ServerManagerView {
 		tabElements.forEach((element, index) => {
 			const oldIndex = Number(element.getAttribute('data-tab-id')) % this.servers.length;
 			newServers.push(this.servers[oldIndex]);
-			// TODO: Change this to read data from in-memory store or DomainUtil.
 			(element as HTMLElement).dataset.tabId = index.toString();
 		});
 		this.servers = newServers;

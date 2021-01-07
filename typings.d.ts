@@ -43,10 +43,3 @@ interface ElectronBridge {
 	set_send_notification_reply_message_supported: (value: boolean) => void;
 	decrypt_clipboard: (version: number) => ClipboardDecrypter;
 }
-
-interface Domain {
-	icon: string;
-	url: string;
-	alias: string;
-	ignoreCerts: boolean;
-}
