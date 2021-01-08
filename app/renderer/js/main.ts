@@ -90,6 +90,7 @@ class ServerManagerView {
 	$fullscreenPopup: Element;
 	$fullscreenEscapeKey: string;
 	$sortableList: Sortable;
+	isReorderDragging: boolean;
 	loading: Set<string>;
 	activeTabIndex: number;
 	servers: DomainUtil.ServerConf[];
@@ -137,6 +138,7 @@ class ServerManagerView {
 		this.presetOrgs = [];
 		this.functionalTabs = new Map();
 		this.tabIndex = 0;
+		this.isReorderDragging = false;
 	}
 
 	async init(): Promise<void> {
@@ -239,6 +241,7 @@ class ServerManagerView {
 	}
 
 	async onEnd(): Promise<void> {
+		this.isReorderDragging = false;
 		const newServers: DomainUtil.ServerConf[] = [];
 		const tabElements = document.querySelectorAll('#tabs-container .tab');
 		tabElements.forEach((element, index) => {
@@ -251,12 +254,20 @@ class ServerManagerView {
 		await this.reloadView(false);
 	}
 
+	onStart(evt: Sortable.SortableEvent): void {
+		this.isReorderDragging = true;
+		this.$serverIconTooltip[evt.oldIndex].removeAttribute('style');
+	}
+
 	initSidebar(): void {
 		const showSidebar = ConfigUtil.getConfigItem('showSidebar', true);
 		this.toggleSidebar(showSidebar);
 		this.$sortableList = Sortable.create(this.$orgsList, {
 			dataIdAttr: 'data-sortable-id',
-			onEnd: this.onEnd.bind(this)
+			direction: 'vertical',
+			onStart: this.onStart.bind(this),
+			onEnd: this.onEnd.bind(this),
+			forceFallback: true
 		});
 	}
 
@@ -519,6 +530,11 @@ class ServerManagerView {
 	}
 
 	onHover(index: number): void {
+		// We don't to show tooltip when dragging is going on in sidebar to reorder
+		if (this.isReorderDragging) {
+			return;
+		}
+
 		// `this.$serverIconTooltip[index].textContent` already has realm name, so we are just
 		// removing the style.
 		this.$serverIconTooltip[index].removeAttribute('style');
