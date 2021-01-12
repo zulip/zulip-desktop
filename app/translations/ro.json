@@ -118,7 +118,7 @@
 	"Hide Others": "Ascunde pe ceilalți",
 	"Unhide": "Arată",
 	"AddServer": "AddServer",
-	"App language (requires restart)": "Limba aplicației (necesită restart)",
+	"App language ": "Limba aplicației (necesită restart)",
 	"Factory Reset Data": "Resetează la setările de bază",
 	"Reset the application, thus deleting all the connected organizations, accounts, and certificates.": "Resetați aplicația, ștergând astfel toate organizațiile, conturile și certificatele conectate.",
 	"On macOS, the OS spellchecker is used.": "Pe macOS, este folosita verificarea ortografică OS. ",

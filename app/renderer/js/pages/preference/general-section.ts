@@ -110,7 +110,7 @@ export default class GeneralSection extends BaseSection {
 					</div>
 
 					<div class="setting-row" id="app-language">
-						<div class="setting-description">${t.__('App language (requires restart)')}</div>
+						<div class="setting-description">${t.__('App language ')}</div>
 						<div  id="lang-div" class="lang-div"></div>
 					</div>
 
@@ -412,6 +412,7 @@ export default class GeneralSection extends BaseSection {
 
 		langMenu.addEventListener('change', (event: Event) => {
 			ConfigUtil.setConfigItem('appLanguage', (event.target as HTMLSelectElement).value);
+			ipcRenderer.send('forward-message', 'reload-current-viewer');
 		});
 	}
 

@@ -118,7 +118,7 @@
 	"Hide Others": "Ocultar otros",
 	"Unhide": "Dejar de ocultar",
 	"AddServer": "AddServer",
-	"App language (requires restart)": "Idioma de la aplicación (requiere reinicio)",
+	"App language ": "Idioma de la aplicación",
 	"Factory Reset Data": "Factory Reset Data",
 	"Reset the application, thus deleting all the connected organizations, accounts, and certificates.": "Reinicia la aplicación, borrando todas las organizaciones, cuentas y certificados conectados.",
 	"On macOS, the OS spellchecker is used.": "En macOS se utiliza la verificación ortográfica del sistema operativo.",

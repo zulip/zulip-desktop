@@ -118,7 +118,7 @@
 	"Hide Others": "Diğerlerini Gizle",
 	"Unhide": "Göster",
 	"AddServer": "SunucuEkle",
-	"App language (requires restart)": "Uygulama dili (yeniden başlatma gerekir)",
+	"App language ": "Uygulama dili (yeniden başlatma gerekir)",
 	"Factory Reset Data": "Fabrika Verilerine Sıfırla",
 	"Reset the application, thus deleting all the connected organizations, accounts, and certificates.": "Uygulamayı sıfırla, tüm bağlı organizasyonlar, hesaplar ve sertifikalar dahil.",
 	"On macOS, the OS spellchecker is used.": "macOS için, İşletim Sistemi kelime denetimi kullanılır.",

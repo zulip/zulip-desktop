@@ -118,7 +118,7 @@
 	"Hide Others": "Skrýt jiné",
 	"Unhide": "Zobrazit",
 	"AddServer": "Přidat server",
-	"App language (requires restart)": "Jazyk programu (vyžaduje opětovné spuštění programu)",
+	"App language ": "Jazyk programu",
 	"Factory Reset Data": "Obnovení dat do továrního nastavení",
 	"Reset the application, thus deleting all the connected organizations, accounts, and certificates.": "Obnovit program do výchozího nastavení. čili smazat všechny připojené organizace, účty a certifikáty.",
 	"On macOS, the OS spellchecker is used.": "Na macOS se používá kontrola pravopisu OS.",

@@ -118,7 +118,7 @@
 	"Hide Others": "A többi elrejtése",
 	"Unhide": "Felfedés",
 	"AddServer": "Szerver hozzáadás",
-	"App language (requires restart)": "Alkalmazás nyelve (újraindítást igényel)",
+	"App language ": "Alkalmazás nyelve (újraindítást igényel)",
 	"Factory Reset Data": "Gyári adatok visszaállítása",
 	"Reset the application, thus deleting all the connected organizations, accounts, and certificates.": "Alkalmazásadatok törlése - törlődnek a csatlakoztatott szervezetek, fiókok és tanúsítványok is.",
 	"On macOS, the OS spellchecker is used.": "MacOS rendszereken az operációs rendszer helyesírásellenőrzőjét használjuk.",

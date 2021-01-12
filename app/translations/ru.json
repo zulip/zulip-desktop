@@ -118,7 +118,7 @@
 	"Hide Others": "Скрыть другие",
 	"Unhide": "Не скрывать",
 	"AddServer": "Добавить Сервер",
-	"App language (requires restart)": "Язык приложения (требует перезапуска)",
+	"App language ": "Язык приложения (требует перезапуска)",
 	"Factory Reset Data": "Сброс данных приложения",
 	"Reset the application, thus deleting all the connected organizations, accounts, and certificates.": "Сбросить все настройки приложения, и удалить все подключенные организации, учетные записи и сертификаты.",
 	"On macOS, the OS spellchecker is used.": "На macOS используется орфографический корректор OS.",
