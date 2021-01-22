@@ -1,6 +1,6 @@
 # Zulip Desktop Client
-[![Build Status](https://travis-ci.com/zulip/zulip-desktop.svg?branch=master)](https://travis-ci.com/github/zulip/zulip-desktop)
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/zulip/zulip-desktop?branch=master&svg=true)](https://ci.appveyor.com/project/zulip/zulip-desktop/branch/master)
+[![Build Status](https://travis-ci.com/zulip/zulip-desktop.svg?branch=main)](https://travis-ci.com/github/zulip/zulip-desktop)
+[![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/zulip/zulip-desktop?branch=main&svg=true)](https://ci.appveyor.com/project/zulip/zulip-desktop/branch/main)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 [![project chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://chat.zulip.org)
 

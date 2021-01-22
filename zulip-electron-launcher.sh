@@ -3,7 +3,7 @@
 # Zulip Beta Client Launcher
 
 # This script ensures that you have the latest version of the specified branch
-# (defaults to master if none specified) and then updates or installs all your
+# (defaults to main if none specified) and then updates or installs all your
 # required npm modules.
 
 # I recommend symlinking this script into your PATH.
@@ -22,7 +22,7 @@ showUsage()
 
 envSetup()
 {
-	defaultBranch="master"
+	defaultBranch="main"
 	startingDir=`pwd`
 	requirePop=0
 
@@ -64,12 +64,12 @@ gitCheckout()
 {
 	git fetch $upstreamRemote
 	git checkout $myBranch
-	git rebase $upstreamRemote/master
+	git rebase $upstreamRemote/main
 	if [ $? -gt 0 ]
 	then
 		echo "Stashing uncommitted changes and doing a new git pull"
 		git stash && requirePop=1
-		git rebase $upstreamRemote/master
+		git rebase $upstreamRemote/main
 	fi
 }
 

@@ -11,7 +11,7 @@ if "%~1"=="" (
     echo "Error you must specify the PR number"
 )
 
-if "%~2"=="" ( 
+if "%~2"=="" (
     set remote="upstream"
 ) else (
     set remote=%2
@@ -19,6 +19,6 @@ if "%~2"=="" (
 
 set request_id="%1"
 git fetch "%remote%" "pull/%request_id%/head"
-git checkout -B "review-%request_id%" %remote%/master
+git checkout -B "review-%request_id%" %remote%/main
 git reset --hard FETCH_HEAD
 git pull --rebase
