@@ -57,6 +57,13 @@ export function updateDomain(index: number, server: ServerConf): void {
 	db.push(`/domains[${index}]`, server, true);
 }
 
+export function	batchUpdateDomain(servers: ServerConf[]): void {
+	db.delete('/domains');
+	for (const server of servers) {
+		db.push('/domains[]', server, true);
+	}
+}
+
 export async function addDomain(server: ServerConf): Promise<void> {
 	if (server.icon) {
 		const localIconUrl = await saveServerIcon(server);

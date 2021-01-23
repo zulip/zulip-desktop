@@ -64,6 +64,12 @@ body {
     outline: 1px solid rgba(169, 169, 169, 1.000);
 }
 
+
+/* Class for the dragging element of sidebar used in sortablejs */
+.sortable-drag {
+    visibility: hidden;
+}
+
 @font-face {
     font-family: 'Material Icons';
     font-style: normal;
