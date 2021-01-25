@@ -193,7 +193,6 @@
   "xo": {
     "rules": {
       "@typescript-eslint/no-dynamic-delete": "off",
-      "@typescript-eslint/prefer-readonly-parameter-types": "off",
       "arrow-body-style": "error",
       "import/first": "error",
       "import/newline-after-import": "error",
