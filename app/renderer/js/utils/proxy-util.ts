@@ -15,12 +15,10 @@ export async function resolveSystemProxy(mainWindow: Electron.BrowserWindow): Pr
 	const httpProxy = (async () => {
 		const proxy = await ses.resolveProxy('http://' + resolveProxyUrl);
 		let httpString = '';
-		if (proxy !== 'DIRECT') {
+		if (proxy !== 'DIRECT' && (proxy.includes('PROXY') || proxy.includes('HTTPS'))) {
 			// In case of proxy HTTPS url:port, windows gives first word as HTTPS while linux gives PROXY
 			// for all other HTTP or direct url:port both uses PROXY
-			if (proxy.includes('PROXY') || proxy.includes('HTTPS')) {
-				httpString = 'http=' + proxy.split('PROXY')[1] + ';';
-			}
+			httpString = 'http=' + proxy.split('PROXY')[1] + ';';
 		}
 
 		return httpString;
@@ -29,12 +27,10 @@ export async function resolveSystemProxy(mainWindow: Electron.BrowserWindow): Pr
 	const httpsProxy = (async () => {
 		const proxy = await ses.resolveProxy('https://' + resolveProxyUrl);
 		let httpsString = '';
-		if (proxy !== 'DIRECT' || proxy.includes('HTTPS')) {
+		if ((proxy !== 'DIRECT' || proxy.includes('HTTPS')) && (proxy.includes('PROXY') || proxy.includes('HTTPS'))) {
 			// In case of proxy HTTPS url:port, windows gives first word as HTTPS while linux gives PROXY
 			// for all other HTTP or direct url:port both uses PROXY
-			if (proxy.includes('PROXY') || proxy.includes('HTTPS')) {
-				httpsString += 'https=' + proxy.split('PROXY')[1] + ';';
-			}
+			httpsString += 'https=' + proxy.split('PROXY')[1] + ';';
 		}
 
 		return httpsString;
@@ -44,10 +40,8 @@ export async function resolveSystemProxy(mainWindow: Electron.BrowserWindow): Pr
 	const ftpProxy = (async () => {
 		const proxy = await ses.resolveProxy('ftp://' + resolveProxyUrl);
 		let ftpString = '';
-		if (proxy !== 'DIRECT') {
-			if (proxy.includes('PROXY')) {
-				ftpString += 'ftp=' + proxy.split('PROXY')[1] + ';';
-			}
+		if (proxy !== 'DIRECT' && proxy.includes('PROXY')) {
+			ftpString += 'ftp=' + proxy.split('PROXY')[1] + ';';
 		}
 
 		return ftpString;
