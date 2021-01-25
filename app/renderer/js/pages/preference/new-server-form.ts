@@ -95,7 +95,9 @@ export default class NewServerForm extends BaseComponent {
 
 	networkSettingsLink(): void {
 		const networkSettingsId = document.querySelectorAll('.server-network-option')[0];
-		networkSettingsId.addEventListener('click', () => ipcRenderer.send('forward-message', 'open-network-settings'));
+		networkSettingsId.addEventListener('click', () => {
+			ipcRenderer.send('forward-message', 'open-network-settings');
+		});
 	}
 
 	initActions(): void {

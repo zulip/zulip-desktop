@@ -73,7 +73,9 @@ export default class WebView extends BaseComponent {
 	init(): void {
 		this.$el = this.generateNodeFromHTML(this.templateHTML()) as Electron.WebviewTag;
 		this.domReady = new Promise(resolve => {
-			this.$el.addEventListener('dom-ready', () => resolve(), true);
+			this.$el.addEventListener('dom-ready', () => {
+				resolve();
+			}, true);
 		});
 		this.props.$root.append(this.$el);
 

@@ -13,7 +13,9 @@ import * as Messages from '../resources/messages';
 export async function fetchResponse(request: ClientRequest): Promise<IncomingMessage> {
 	return new Promise((resolve, reject) => {
 		request.on('response', resolve);
-		request.on('abort', () => reject(new Error('Request aborted')));
+		request.on('abort', () => {
+			reject(new Error('Request aborted'));
+		});
 		request.on('error', reject);
 		request.end();
 	});

@@ -43,7 +43,9 @@ export function newNotification(
 	}
 
 	return {
-		close: () => notification.close(),
+		close: () => {
+			notification.close();
+		},
 		title: notification.title,
 		dir: notification.dir,
 		lang: notification.lang,

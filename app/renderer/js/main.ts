@@ -378,7 +378,9 @@ class ServerManagerView {
 
 					this.showLoading(this.loading.has(this.tabs[this.activeTabIndex].webview.props.url));
 				},
-				onNetworkError: (index: number) => this.openNetworkTroubleshooting(index),
+				onNetworkError: (index: number) => {
+					this.openNetworkTroubleshooting(index);
+				},
 				onTitleChange: this.updateBadge.bind(this),
 				nodeIntegration: false,
 				preload: true
@@ -543,7 +545,9 @@ class ServerManagerView {
 
 					this.showLoading(this.loading.has(this.tabs[this.activeTabIndex].webview.props.url));
 				},
-				onNetworkError: (index: number) => this.openNetworkTroubleshooting(index),
+				onNetworkError: (index: number) => {
+					this.openNetworkTroubleshooting(index);
+				},
 				onTitleChange: this.updateBadge.bind(this),
 				nodeIntegration: true,
 				preload: false
@@ -790,16 +794,36 @@ class ServerManagerView {
 
 	registerIpcs(): void {
 		const webviewListeners: Array<[string, (webview: WebView) => void]> = [
-			['webview-reload', webview => webview.reload()],
-			['back', webview => webview.back()],
-			['focus', webview => webview.focus()],
-			['forward', webview => webview.forward()],
-			['zoomIn', webview => webview.zoomIn()],
-			['zoomOut', webview => webview.zoomOut()],
-			['zoomActualSize', webview => webview.zoomActualSize()],
-			['log-out', webview => webview.logOut()],
-			['show-keyboard-shortcuts', webview => webview.showKeyboardShortcuts()],
-			['tab-devtools', webview => webview.openDevTools()]
+			['webview-reload', webview => {
+				webview.reload();
+			}],
+			['back', webview => {
+				webview.back();
+			}],
+			['focus', webview => {
+				webview.focus();
+			}],
+			['forward', webview => {
+				webview.forward();
+			}],
+			['zoomIn', webview => {
+				webview.zoomIn();
+			}],
+			['zoomOut', webview => {
+				webview.zoomOut();
+			}],
+			['zoomActualSize', webview => {
+				webview.zoomActualSize();
+			}],
+			['log-out', webview => {
+				webview.logOut();
+			}],
+			['show-keyboard-shortcuts', webview => {
+				webview.showKeyboardShortcuts();
+			}],
+			['tab-devtools', webview => {
+				webview.openDevTools();
+			}]
 		];
 
 		for (const [channel, listener] of webviewListeners) {

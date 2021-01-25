@@ -495,7 +495,9 @@ export default class GeneralSection extends BaseSection {
 		});
 		if (response === 0) {
 			await fs.promises.rmdir(getAppPath, {recursive: true});
-			setTimeout(() => ipcRenderer.send('clear-app-settings'), 1000);
+			setTimeout(() => {
+				ipcRenderer.send('clear-app-settings');
+			}, 1000);
 		}
 	}
 
