@@ -20,13 +20,13 @@ export const contextMenu = (webContents: Electron.WebContents, event: Event, pro
 
 	let menuTemplate: Electron.MenuItemConstructorOptions[] = [{
 		label: t.__('Add to Dictionary'),
-		visible: props.isEditable && isText && props.misspelledWord.length !== 0,
+		visible: props.isEditable && isText && props.misspelledWord.length > 0,
 		click(_item) {
 			webContents.session.addWordToSpellCheckerDictionary(props.misspelledWord);
 		}
 	}, {
 		type: 'separator',
-		visible: props.isEditable && isText && props.misspelledWord.length !== 0
+		visible: props.isEditable && isText && props.misspelledWord.length > 0
 	}, {
 		label: `${t.__('Look Up')} "${props.selectionText}"`,
 		visible: process.platform === 'darwin' && isText,
