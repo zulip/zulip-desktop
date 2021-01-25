@@ -553,7 +553,7 @@ export default class GeneralSection extends BaseSection {
 				maxTags: 3,
 				dropdown: {
 					enabled: 0,
-					maxItems: Infinity,
+					maxItems: Number.POSITIVE_INFINITY,
 					closeOnSelect: false,
 					highlightFirst: true
 				}
