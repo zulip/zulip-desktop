@@ -1,7 +1,7 @@
 import {app, Notification, net} from 'electron';
 
 import getStream from 'get-stream';
-import semver from 'semver';
+import * as semver from 'semver';
 
 import * as ConfigUtil from '../renderer/js/utils/config-util';
 import * as LinuxUpdateUtil from '../renderer/js/utils/linux-update-util';

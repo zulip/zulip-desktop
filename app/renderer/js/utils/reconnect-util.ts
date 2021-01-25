@@ -1,6 +1,6 @@
 import {ipcRenderer} from 'electron';
 
-import backoff from 'backoff';
+import * as backoff from 'backoff';
 import {htmlEscape} from 'escape-goat';
 
 import type WebView from '../components/webview';
