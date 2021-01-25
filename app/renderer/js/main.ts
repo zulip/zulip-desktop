@@ -628,8 +628,7 @@ class ServerManagerView {
 
 		try {
 			this.tabs[index].webview.canGoBackButton();
-		} catch {
-		}
+		} catch {}
 
 		this.activeTabIndex = index;
 		this.tabs[index].activate();
