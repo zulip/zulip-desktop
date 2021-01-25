@@ -411,7 +411,7 @@ app.on('before-quit', () => {
 });
 
 // Send crash reports
-process.on('uncaughtException', err => {
-	console.error(err);
-	console.error(err.stack);
+process.on('uncaughtException', error => {
+	console.error(error);
+	console.error(error.stack);
 });

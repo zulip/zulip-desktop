@@ -129,9 +129,9 @@ export default class Logger {
 		return timestamp;
 	}
 
-	reportSentry(err: unknown): void {
+	reportSentry(error: unknown): void {
 		if (reportErrors) {
-			captureException(err);
+			captureException(error);
 		}
 	}
 

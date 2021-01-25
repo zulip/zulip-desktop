@@ -66,10 +66,10 @@ async function wait(ms) {
 }
 
 // Quit the app, end the test, either in success (!err) or failure (err)
-async function endTest(app, t, err) {
+async function endTest(app, t, error) {
 	await app.client.windowByIndex(0);
 	await app.stop();
-	t.end(err);
+	t.end(error);
 }
 
 function getAppDataDir() {
