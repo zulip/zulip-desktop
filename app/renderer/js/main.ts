@@ -76,6 +76,7 @@ class ServerManagerView {
 	$settingsButton: HTMLButtonElement;
 	$webviewsContainer: Element;
 	$backButton: HTMLButtonElement;
+	$forwardButton: HTMLButtonElement;
 	$dndButton: HTMLButtonElement;
 	$addServerTooltip: HTMLElement;
 	$reloadTooltip: HTMLElement;
@@ -83,6 +84,7 @@ class ServerManagerView {
 	$settingsTooltip: HTMLElement;
 	$serverIconTooltip: HTMLCollectionOf<HTMLElement>;
 	$backTooltip: HTMLElement;
+	$forwardTooltip: HTMLElement;
 	$dndTooltip: HTMLElement;
 	$sidebar: Element;
 	$fullscreenPopup: Element;
@@ -103,6 +105,7 @@ class ServerManagerView {
 		this.$settingsButton = $actionsContainer.querySelector('#settings-action');
 		this.$webviewsContainer = document.querySelector('#webviews-container');
 		this.$backButton = $actionsContainer.querySelector('#back-action');
+		this.$forwardButton = $actionsContainer.querySelector('#forward-action');
 		this.$dndButton = $actionsContainer.querySelector('#dnd-action');
 
 		this.$addServerTooltip = document.querySelector('#add-server-tooltip');
@@ -117,6 +120,7 @@ class ServerManagerView {
 		// eslint-disable-next-line unicorn/prefer-query-selector
 		this.$serverIconTooltip = document.getElementsByClassName('server-tooltip') as HTMLCollectionOf<HTMLElement>;
 		this.$backTooltip = $actionsContainer.querySelector('#back-tooltip');
+		this.$forwardTooltip = $actionsContainer.querySelector('#forward-tooltip');
 		this.$dndTooltip = $actionsContainer.querySelector('#dnd-tooltip');
 
 		this.$sidebar = document.querySelector('#sidebar');
@@ -423,6 +427,9 @@ class ServerManagerView {
 		this.$settingsButton.addEventListener('click', async () => {
 			await this.openSettings('General');
 		});
+		this.$forwardButton.addEventListener('click', () => {
+			this.tabs[this.activeTabIndex].webview.forward();
+		});
 		this.$backButton.addEventListener('click', () => {
 			this.tabs[this.activeTabIndex].webview.back();
 		});
@@ -431,6 +438,7 @@ class ServerManagerView {
 		this.sidebarHoverEvent(this.$loadingIndicator, this.$loadingTooltip);
 		this.sidebarHoverEvent(this.$settingsButton, this.$settingsTooltip);
 		this.sidebarHoverEvent(this.$reloadButton, this.$reloadTooltip);
+		this.sidebarHoverEvent(this.$forwardButton, this.$forwardTooltip);
 		this.sidebarHoverEvent(this.$backButton, this.$backTooltip);
 		this.sidebarHoverEvent(this.$dndButton, this.$dndTooltip);
 	}
@@ -628,6 +636,7 @@ class ServerManagerView {
 
 		try {
 			this.tabs[index].webview.canGoBackButton();
+			this.tabs[index].webview.canGoForwardButton();
 		} catch {}
 
 		this.activeTabIndex = index;

@@ -343,6 +343,7 @@ webview.focus {
 #loading-tooltip,
 #dnd-tooltip,
 #back-tooltip,
+#forward-tooltip,
 #reload-tooltip,
 #setting-tooltip {
     font-family: sans-serif;
@@ -362,6 +363,7 @@ webview.focus {
 #loading-tooltip::after,
 #dnd-tooltip::after,
 #back-tooltip::after,
+#forward-tooltip::after,
 #reload-tooltip::after,
 #setting-tooltip::after {
     content: " ";
