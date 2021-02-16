@@ -116,6 +116,15 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 			}
 		}
 	}, {
+		label: t.__('Hard Reload'),
+		visible: false,
+		accelerator: 'F5',
+		click(_item, focusedWindow) {
+			if (focusedWindow) {
+				sendAction('hard-reload');
+			}
+		}
+	}, {
 		type: 'separator'
 	}, {
 		label: t.__('Toggle Full Screen'),
@@ -123,6 +132,24 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 	}, {
 		label: t.__('Zoom In'),
 		accelerator: 'CommandOrControl+=',
+		click(_item, focusedWindow) {
+			if (focusedWindow) {
+				sendAction('zoomIn');
+			}
+		}
+	}, {
+		label: t.__('Zoom In'),
+		visible: false,
+		accelerator: 'CommandOrControl+Plus',
+		click(_item, focusedWindow) {
+			if (focusedWindow) {
+				sendAction('zoomIn');
+			}
+		}
+	}, {
+		label: t.__('Zoom In'),
+		visible: false,
+		accelerator: 'CommandOrControl+numadd',
 		click(_item, focusedWindow) {
 			if (focusedWindow) {
 				sendAction('zoomIn');
@@ -137,8 +164,26 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
 			}
 		}
 	}, {
+		label: t.__('Zoom Out'),
+		visible: false,
+		accelerator: 'CommandOrControl+numsub',
+		click(_item, focusedWindow) {
+			if (focusedWindow) {
+				sendAction('zoomOut');
+			}
+		}
+	}, {
 		label: t.__('Actual Size'),
 		accelerator: 'CommandOrControl+0',
+		click(_item, focusedWindow) {
+			if (focusedWindow) {
+				sendAction('zoomActualSize');
+			}
+		}
+	}, {
+		label: t.__('Actual Size'),
+		visible: false,
+		accelerator: 'CommandOrControl+num0',
 		click(_item, focusedWindow) {
 			if (focusedWindow) {
 				sendAction('zoomActualSize');
