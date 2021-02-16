@@ -2,6 +2,17 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.6.0 --2021-02-16
+
+**Fixes**:
+* Fixed zoom in keyboard shortcut not to zoom twice.
+
+**Enhancements**:
+* Restored hardware acceleration to the Electron default.
+
+**Dependencies**:
+* Upgraded all dependencies, including Electron 11.2.3.
+
 ### v5.5.0 --2020-12-01
 
 **Removed features**:
