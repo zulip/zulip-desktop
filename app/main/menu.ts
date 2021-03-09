@@ -295,8 +295,7 @@ function getWindowSubmenu(tabs: TabData[], activeTabIndex: number): Electron.Men
 
 		initialSubmenu.push({
 			type: 'separator'
-		});
-		initialSubmenu.push({
+		}, {
 			label: t.__('Switch to Next Organization'),
 			accelerator: 'Ctrl+Tab',
 			enabled: tabs.length > 1,
