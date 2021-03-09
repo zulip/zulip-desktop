@@ -525,11 +525,11 @@ export default class GeneralSection extends BaseSection {
 
 			const availableLanguages = session.fromPartition('persist:webviewsession').availableSpellCheckerLanguages;
 			let languagePairs: Map<string, string> = new Map();
-			availableLanguages.forEach((l: string) => {
+			for (const l of availableLanguages) {
 				if (ISO6391.validate(l)) {
 					languagePairs.set(ISO6391.getName(l), l);
 				}
-			});
+			}
 
 			// Manually set names for languages not available in ISO6391
 			languagePairs.set('English (AU)', 'en-AU');

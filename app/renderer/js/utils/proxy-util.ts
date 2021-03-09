@@ -65,10 +65,7 @@ export async function resolveSystemProxy(mainWindow: Electron.BrowserWindow): Pr
 	})();
 
 	const values = await Promise.all([httpProxy, httpsProxy, ftpProxy, socksProxy]);
-	let proxyString = '';
-	values.forEach(proxy => {
-		proxyString += proxy;
-	});
+	const proxyString = values.join('');
 	ConfigUtil.setConfigItem('systemProxyRules', proxyString);
 	const useSystemProxy = ConfigUtil.getConfigItem('useSystemProxy');
 	if (useSystemProxy) {

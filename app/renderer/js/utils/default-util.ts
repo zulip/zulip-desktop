@@ -42,12 +42,13 @@ export const initSetUp = (): void => {
 					fileName: 'updates.json'
 				}
 			];
-			configData.forEach(data => {
+			for (const data of configData) {
 				if (fs.existsSync(data.path)) {
 					fs.copyFileSync(data.path, configDir + data.fileName);
 					fs.unlinkSync(data.path);
 				}
-			});
+			}
+
 			// `window-state.json` is only deleted not moved, as the electron-window-state
 			// package will recreate the file in the config folder.
 			if (fs.existsSync(windowStateJson)) {

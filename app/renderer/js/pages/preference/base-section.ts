@@ -53,9 +53,11 @@ export default class BaseSection extends BaseComponent {
 	*/
 	generateSelectHTML(options: Record<string, string>, className?: string, idName?: string): string {
 		let html = htmlEscape`<select class="${className}" id="${idName}">\n`;
-		Object.keys(options).forEach(key => {
+
+		for (const key of Object.keys(options)) {
 			html += htmlEscape`<option name="${key}" value="${key}">${options[key]}</option>\n`;
-		});
+		}
+
 		html += '</select>';
 		return html;
 	}

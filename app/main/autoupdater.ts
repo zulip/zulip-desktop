@@ -45,9 +45,9 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
 			updateAvailable = true;
 
 			// This is to prevent removal of 'update-downloaded' and 'error' event listener.
-			eventsListenerRemove.forEach(event => {
+			for (const event of eventsListenerRemove) {
 				autoUpdater.removeAllListeners(event);
-			});
+			}
 
 			await dialog.showMessageBox({
 				message: `A new version ${info.version}, of Zulip Desktop is available`,

@@ -397,7 +397,7 @@ class ServerManagerView {
 
 	initServerActions(): void {
 		const $serverImgs: NodeListOf<HTMLImageElement> = document.querySelectorAll('.server-icons');
-		$serverImgs.forEach(($serverImg, index) => {
+		for (const [index, $serverImg] of $serverImgs.entries()) {
 			this.addContextMenu($serverImg, index);
 			if ($serverImg.src.includes('img/icon.png')) {
 				this.displayInitialCharLogo($serverImg, index);
@@ -406,7 +406,7 @@ class ServerManagerView {
 			$serverImg.addEventListener('error', () => {
 				this.displayInitialCharLogo($serverImg, index);
 			});
-		});
+		}
 	}
 
 	initLeftSidebarEvents(): void {
@@ -910,7 +910,7 @@ class ServerManagerView {
 
 		ipcRenderer.on('toggle-silent', (event: Event, state: boolean) => {
 			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');
-			webviews.forEach(webview => {
+			for (const webview of webviews) {
 				try {
 					webview.setAudioMuted(state);
 				} catch {
@@ -919,7 +919,7 @@ class ServerManagerView {
 						webview.setAudioMuted(state);
 					});
 				}
-			});
+			}
 		});
 
 		ipcRenderer.on('toggle-autohide-menubar', (event: Event, autoHideMenubar: boolean, updateMenu: boolean) => {
@@ -942,7 +942,7 @@ class ServerManagerView {
 		});
 
 		ipcRenderer.on('update-realm-name', (event: Event, serverURL: string, realmName: string) => {
-			DomainUtil.getDomains().forEach((domain: DomainUtil.ServerConf, index: number) => {
+			for (const [index, domain] of DomainUtil.getDomains().entries()) {
 				if (domain.url.includes(serverURL)) {
 					const serverTooltipSelector = '.tab .server-tooltip';
 					const serverTooltips = document.querySelectorAll(serverTooltipSelector);
@@ -958,11 +958,11 @@ class ServerManagerView {
 						activeTabIndex: this.activeTabIndex
 					});
 				}
-			});
+			}
 		});
 
-		ipcRenderer.on('update-realm-icon', (event: Event, serverURL: string, iconURL: string) => {
-			DomainUtil.getDomains().forEach(async (domain, index) => {
+		ipcRenderer.on('update-realm-icon', async (event: Event, serverURL: string, iconURL: string) => {
+			await Promise.all(DomainUtil.getDomains().map(async (domain, index) => {
 				if (domain.url.includes(serverURL)) {
 					const localIconUrl: string = await DomainUtil.saveServerIcon({
 						url: serverURL,
@@ -974,7 +974,7 @@ class ServerManagerView {
 					domain.icon = localIconUrl;
 					DomainUtil.updateDomain(index, domain);
 				}
-			});
+			}));
 		});
 
 		ipcRenderer.on('enter-fullscreen', () => {
@@ -988,14 +988,14 @@ class ServerManagerView {
 
 		ipcRenderer.on('focus-webview-with-id', (event: Event, webviewId: number) => {
 			const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll('webview');
-			webviews.forEach(webview => {
+			for (const webview of webviews) {
 				const currentId = webview.getWebContentsId();
 				const tabId = webview.getAttribute('data-tab-id');
 				const concurrentTab: HTMLButtonElement = document.querySelector(`div[data-tab-id="${CSS.escape(tabId)}"]`);
 				if (currentId === webviewId) {
 					concurrentTab.click();
 				}
-			});
+			}
 		});
 
 		ipcRenderer.on('render-taskbar-icon', (event: Event, messageCount: number) => {

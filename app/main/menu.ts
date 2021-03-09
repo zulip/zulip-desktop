@@ -252,9 +252,9 @@ function getHelpSubmenu(): Electron.MenuItemConstructorOptions[] {
 			click() {
 				// The goal is to notify the main.html BrowserWindow
 				// which may not be the focused window.
-				BrowserWindow.getAllWindows().forEach(window => {
+				for (const window of BrowserWindow.getAllWindows()) {
 					window.webContents.send('open-feedback-modal');
-				});
+				}
 			}
 		}
 	];
@@ -274,10 +274,10 @@ function getWindowSubmenu(tabs: TabData[], activeTabIndex: number): Electron.Men
 		initialSubmenu.push({
 			type: 'separator'
 		});
-		tabs.forEach(tab => {
+		for (const tab of tabs) {
 			// Do not add functional tab settings to list of windows in menu bar
 			if (tab.role === 'function' && tab.name === 'Settings') {
-				return;
+				continue;
 			}
 
 			initialSubmenu.push({
@@ -291,7 +291,8 @@ function getWindowSubmenu(tabs: TabData[], activeTabIndex: number): Electron.Men
 				},
 				type: 'checkbox'
 			});
-		});
+		}
+
 		initialSubmenu.push({
 			type: 'separator'
 		});
