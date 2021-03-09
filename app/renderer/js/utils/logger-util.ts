@@ -3,8 +3,6 @@ import electron from 'electron';
 import fs from 'fs';
 import os from 'os';
 
-import isDev from 'electron-is-dev';
-
 import {initSetUp} from './default-util';
 import {sentryInit, captureException} from './sentry-util';
 
@@ -99,7 +97,7 @@ export default class Logger {
 				args.unshift(type.toUpperCase() + ' |');
 				// Fall through
 
-			case isDev || logInDevMode:
+			case !app.isPackaged || logInDevMode:
 				nodeConsole[type](...args);
 				break;
 

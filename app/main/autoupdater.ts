@@ -1,7 +1,6 @@
 import {app, dialog, session} from 'electron';
 import util from 'util';
 
-import isDev from 'electron-is-dev';
 import log from 'electron-log';
 import {UpdateDownloadedEvent, UpdateInfo, autoUpdater} from 'electron-updater';
 
@@ -14,7 +13,7 @@ const sleep = util.promisify(setTimeout);
 
 export async function appUpdater(updateFromMenu = false): Promise<void> {
 	// Don't initiate auto-updates in development
-	if (isDev) {
+	if (!app.isPackaged) {
 		return;
 	}
 

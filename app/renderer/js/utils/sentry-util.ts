@@ -1,8 +1,11 @@
+import electron from 'electron';
+
 import {init} from '@sentry/electron';
-import isDev from 'electron-is-dev';
+
+const {app} = process.type === 'renderer' ? electron.remote : electron;
 
 export const sentryInit = (): void => {
-	if (!isDev) {
+	if (app.isPackaged) {
 		init({
 			dsn: 'https://628dc2f2864243a08ead72e63f94c7b1@sentry.io/204668',
 			// We should ignore this error since it's harmless and we know the reason behind this

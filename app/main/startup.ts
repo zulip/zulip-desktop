@@ -1,13 +1,12 @@
 import {app} from 'electron';
 
 import AutoLaunch from 'auto-launch';
-import isDev from 'electron-is-dev';
 
 import * as ConfigUtil from '../renderer/js/utils/config-util';
 
 export const setAutoLaunch = async (AutoLaunchValue: boolean): Promise<void> => {
 	// Don't run this in development
-	if (isDev) {
+	if (!app.isPackaged) {
 		return;
 	}
 

@@ -1,7 +1,5 @@
-import {ipcRenderer} from 'electron';
+import {ipcRenderer, remote} from 'electron';
 import {EventEmitter} from 'events';
-
-import isDev from 'electron-is-dev';
 
 import {ClipboardDecrypterImpl} from './clipboard-decrypter';
 import {NotificationData, newNotification} from './notification';
@@ -67,7 +65,7 @@ bridgeEvents.on('realm_icon_url', (iconURL: unknown) => {
 
 // Set user as active and update the time of last activity
 ipcRenderer.on('set-active', () => {
-	if (isDev) {
+	if (!remote.app.isPackaged) {
 		console.log('active');
 	}
 
@@ -77,7 +75,7 @@ ipcRenderer.on('set-active', () => {
 
 // Set user as idle and time of last activity is left unchanged
 ipcRenderer.on('set-idle', () => {
-	if (isDev) {
+	if (!remote.app.isPackaged) {
 		console.log('idle');
 	}
 

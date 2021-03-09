@@ -155,7 +155,6 @@
     "adm-zip": "^0.5.2",
     "auto-launch": "^5.0.5",
     "backoff": "^2.5.0",
-    "electron-is-dev": "^1.2.0",
     "electron-log": "^4.3.1",
     "electron-updater": "^4.3.5",
     "electron-window-state": "^5.0.3",
