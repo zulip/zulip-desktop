@@ -64,7 +64,8 @@ export default class WebView extends BaseComponent {
 				name="${this.props.name}"
 				webpreferences="
 					contextIsolation=${!this.props.nodeIntegration},
-					spellcheck=${Boolean(ConfigUtil.getConfigItem('enableSpellchecker'))}
+					spellcheck=${Boolean(ConfigUtil.getConfigItem('enableSpellchecker'))},
+					worldSafeExecuteJavaScript=true
 				">
 			</webview>
 		`;

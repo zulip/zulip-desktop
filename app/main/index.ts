@@ -90,7 +90,8 @@ function createMainWindow(): Electron.BrowserWindow {
 			enableRemoteModule: true,
 			nodeIntegration: true,
 			partition: 'persist:webviewsession',
-			webviewTag: true
+			webviewTag: true,
+			worldSafeExecuteJavaScript: true
 		},
 		show: false
 	});
