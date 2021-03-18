@@ -1,6 +1,6 @@
 import {htmlEscape} from 'escape-goat';
 
-import * as t from '../../utils/translation-util';
+import * as t from '../../../../common/translation-util';
 
 import BaseSection from './base-section';
 import NewServerForm from './new-server-form';

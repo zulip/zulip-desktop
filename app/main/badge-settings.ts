@@ -1,6 +1,6 @@
 import electron, {app} from 'electron';
 
-import * as ConfigUtil from '../../utils/config-util';
+import * as ConfigUtil from '../common/config-util';
 
 function showBadgeCount(messageCount: number, mainWindow: electron.BrowserWindow): void {
 	if (process.platform === 'win32') {

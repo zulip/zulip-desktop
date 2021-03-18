@@ -1,7 +1,7 @@
 import {htmlEscape} from 'escape-goat';
 
+import * as t from '../../../../common/translation-util';
 import * as LinkUtil from '../../utils/link-util';
-import * as t from '../../utils/translation-util';
 
 import BaseSection from './base-section';
 

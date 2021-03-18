@@ -5,13 +5,13 @@ import path from 'path';
 
 import windowStateKeeper from 'electron-window-state';
 
-import * as BadgeSettings from '../renderer/js/pages/preference/badge-settings';
-import * as ConfigUtil from '../renderer/js/utils/config-util';
-import * as ProxyUtil from '../renderer/js/utils/proxy-util';
-import {sentryInit} from '../renderer/js/utils/sentry-util';
+import * as ConfigUtil from '../common/config-util';
+import {sentryInit} from '../common/sentry-util';
 
 import {appUpdater} from './autoupdater';
+import * as BadgeSettings from './badge-settings';
 import * as AppMenu from './menu';
+import * as ProxyUtil from './proxy-util';
 import {_getServerSettings, _saveServerIcon, _isOnline} from './request';
 import {setAutoLaunch} from './startup';
 

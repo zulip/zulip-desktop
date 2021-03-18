@@ -1,7 +1,7 @@
 import {htmlEscape} from 'escape-goat';
 
+import * as t from '../../../../common/translation-util';
 import BaseComponent from '../../components/base';
-import * as t from '../../utils/translation-util';
 
 interface PreferenceNavProps {
 	$root: Element;

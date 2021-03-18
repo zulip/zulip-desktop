@@ -4,7 +4,7 @@ import path from 'path';
 
 import {htmlEscape} from 'escape-goat';
 
-import * as ConfigUtil from '../utils/config-util';
+import * as ConfigUtil from '../../../common/config-util';
 import * as SystemUtil from '../utils/system-util';
 
 import BaseComponent from './base';

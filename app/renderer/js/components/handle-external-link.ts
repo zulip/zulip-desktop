@@ -1,6 +1,6 @@
 import {ipcRenderer, remote} from 'electron';
 
-import * as ConfigUtil from '../utils/config-util';
+import * as ConfigUtil from '../../../common/config-util';
 import * as LinkUtil from '../utils/link-util';
 
 import type WebView from './webview';

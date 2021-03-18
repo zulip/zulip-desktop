@@ -2,7 +2,7 @@ import type {WebviewTag, NativeImage} from 'electron';
 import {ipcRenderer, remote} from 'electron';
 import path from 'path';
 
-import * as ConfigUtil from './utils/config-util';
+import * as ConfigUtil from '../../common/config-util';
 
 const {Tray, Menu, nativeImage, BrowserWindow} = remote;
 

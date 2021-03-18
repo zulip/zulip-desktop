@@ -1,19 +1,20 @@
 import {ipcRenderer, remote, clipboard} from 'electron';
 import path from 'path';
 
-import * as Messages from '../../resources/messages';
+import * as ConfigUtil from '../../common/config-util';
+import * as DNDUtil from '../../common/dnd-util';
+import type {DNDSettings} from '../../common/dnd-util';
+import * as EnterpriseUtil from '../../common/enterprise-util';
+import Logger from '../../common/logger-util';
+import * as Messages from '../../common/messages';
+import type {ServerConf, TabData} from '../../common/types';
 
 import FunctionalTab from './components/functional-tab';
 import ServerTab from './components/server-tab';
 import WebView from './components/webview';
 import {feedbackHolder} from './feedback';
-import * as ConfigUtil from './utils/config-util';
-import * as DNDUtil from './utils/dnd-util';
-import type {DNDSettings} from './utils/dnd-util';
 import * as DomainUtil from './utils/domain-util';
-import * as EnterpriseUtil from './utils/enterprise-util';
 import * as LinkUtil from './utils/link-util';
-import Logger from './utils/logger-util';
 import ReconnectUtil from './utils/reconnect-util';
 
 // eslint-disable-next-line import/no-unassigned-import
@@ -58,13 +59,6 @@ const logger = new Logger({
 
 const rendererDirectory = path.resolve(__dirname, '..');
 type ServerOrFunctionalTab = ServerTab | FunctionalTab;
-
-export interface TabData {
-	role: string;
-	name: string;
-	index: number;
-	webviewName: string;
-}
 
 class ServerManagerView {
 	$addServerButton: HTMLButtonElement;
@@ -345,7 +339,7 @@ class ServerManagerView {
 		}
 	}
 
-	initServer(server: DomainUtil.ServerConf, index: number): void {
+	initServer(server: ServerConf, index: number): void {
 		const tabIndex = this.getTabIndex();
 		this.tabs.push(new ServerTab({
 			role: 'server',

@@ -7,9 +7,9 @@ import util from 'util';
 
 import getStream from 'get-stream';
 
-import type {ServerConf} from '../renderer/js/utils/domain-util';
-import Logger from '../renderer/js/utils/logger-util';
-import * as Messages from '../resources/messages';
+import Logger from '../common/logger-util';
+import * as Messages from '../common/messages';
+import type {ServerConf} from '../common/types';
 
 export async function fetchResponse(request: ClientRequest): Promise<IncomingMessage> {
 	return new Promise((resolve, reject) => {

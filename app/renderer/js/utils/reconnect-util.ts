@@ -3,9 +3,8 @@ import {ipcRenderer} from 'electron';
 import * as backoff from 'backoff';
 import {htmlEscape} from 'escape-goat';
 
+import Logger from '../../../common/logger-util';
 import type WebView from '../components/webview';
-
-import Logger from './logger-util';
 
 const logger = new Logger({
 	file: 'domain-util.log',

@@ -7,10 +7,10 @@ import Tagify from '@yaireo/tagify';
 import {htmlEscape} from 'escape-goat';
 import ISO6391 from 'iso-639-1';
 
+import * as ConfigUtil from '../../../../common/config-util';
+import * as EnterpriseUtil from '../../../../common/enterprise-util';
+import * as t from '../../../../common/translation-util';
 import supportedLocales from '../../../../translations/supported-locales.json';
-import * as ConfigUtil from '../../utils/config-util';
-import * as EnterpriseUtil from '../../utils/enterprise-util';
-import * as t from '../../utils/translation-util';
 
 import BaseSection from './base-section';
 

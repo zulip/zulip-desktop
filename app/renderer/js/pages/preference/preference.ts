@@ -1,7 +1,7 @@
 import {ipcRenderer} from 'electron';
 
+import type {DNDSettings} from '../../../../common/dnd-util';
 import BaseComponent from '../../components/base';
-import type {DNDSettings} from '../../utils/dnd-util';
 
 import ConnectedOrgSection from './connected-org-section';
 import GeneralSection from './general-section';

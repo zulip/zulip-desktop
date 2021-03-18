@@ -4,18 +4,12 @@ import path from 'path';
 
 import {JsonDB} from 'node-json-db';
 
-import * as Messages from '../../../resources/messages';
-
-import * as EnterpriseUtil from './enterprise-util';
-import Logger from './logger-util';
+import * as EnterpriseUtil from '../../../common/enterprise-util';
+import Logger from '../../../common/logger-util';
+import * as Messages from '../../../common/messages';
+import type {ServerConf} from '../../../common/types';
 
 const {app, dialog} = remote;
-
-export interface ServerConf {
-	url: string;
-	alias?: string;
-	icon?: string;
-}
 
 const logger = new Logger({
 	file: 'domain-util.log',

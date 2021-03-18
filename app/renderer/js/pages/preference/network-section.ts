@@ -2,8 +2,8 @@ import {ipcRenderer} from 'electron';
 
 import {htmlEscape} from 'escape-goat';
 
-import * as ConfigUtil from '../../utils/config-util';
-import * as t from '../../utils/translation-util';
+import * as ConfigUtil from '../../../../common/config-util';
+import * as t from '../../../../common/translation-util';
 
 import BaseSection from './base-section';
 

@@ -1,4 +1,4 @@
-import * as ConfigUtil from './config-util';
+import * as ConfigUtil from '../common/config-util';
 
 export interface ProxyRule {
 	hostname?: string;

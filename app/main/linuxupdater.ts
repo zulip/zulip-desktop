@@ -3,10 +3,10 @@ import {app, Notification, net} from 'electron';
 import getStream from 'get-stream';
 import * as semver from 'semver';
 
-import * as ConfigUtil from '../renderer/js/utils/config-util';
-import * as LinuxUpdateUtil from '../renderer/js/utils/linux-update-util';
-import Logger from '../renderer/js/utils/logger-util';
+import * as ConfigUtil from '../common/config-util';
+import Logger from '../common/logger-util';
 
+import * as LinuxUpdateUtil from './linux-update-util';
 import {fetchResponse} from './request';
 
 const logger = new Logger({

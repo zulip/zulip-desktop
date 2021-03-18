@@ -2,8 +2,8 @@ import {ipcRenderer} from 'electron';
 
 import {htmlEscape} from 'escape-goat';
 
+import * as t from '../../../../common/translation-util';
 import * as DomainUtil from '../../utils/domain-util';
-import * as t from '../../utils/translation-util';
 
 import BaseSection from './base-section';
 import FindAccounts from './find-accounts';

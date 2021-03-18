@@ -1,7 +1,7 @@
 import type {ContextMenuParams} from 'electron';
 import {remote} from 'electron';
 
-import * as t from '../utils/translation-util';
+import * as t from '../../../common/translation-util';
 
 const {clipboard, Menu} = remote;
 

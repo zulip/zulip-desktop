@@ -2,10 +2,10 @@ import {app, shell, BrowserWindow, Menu} from 'electron';
 
 import AdmZip from 'adm-zip';
 
-import type {TabData} from '../renderer/js/main';
-import * as ConfigUtil from '../renderer/js/utils/config-util';
-import * as DNDUtil from '../renderer/js/utils/dnd-util';
-import * as t from '../renderer/js/utils/translation-util';
+import * as ConfigUtil from '../common/config-util';
+import * as DNDUtil from '../common/dnd-util';
+import * as t from '../common/translation-util';
+import type {TabData} from '../common/types';
 
 import {appUpdater} from './autoupdater';
 

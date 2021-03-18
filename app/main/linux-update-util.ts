@@ -1,21 +1,15 @@
-import electron from 'electron';
+import {app, dialog} from 'electron';
 import fs from 'fs';
 import path from 'path';
 
 import {JsonDB} from 'node-json-db';
 
-import Logger from './logger-util';
-
-const remote =
-	process.type === 'renderer' ? electron.remote : electron;
+import Logger from '../common/logger-util';
 
 const logger = new Logger({
 	file: 'linux-update-util.log',
 	timestamp: true
 });
-
-/* To make the util runnable in both main and renderer process */
-const {dialog, app} = remote;
 
 let db: JsonDB;
 
