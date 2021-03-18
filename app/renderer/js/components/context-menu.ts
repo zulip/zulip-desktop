@@ -1,4 +1,5 @@
-import {remote, ContextMenuParams} from 'electron';
+import type {ContextMenuParams} from 'electron';
+import {remote} from 'electron';
 
 import * as t from '../utils/translation-util';
 

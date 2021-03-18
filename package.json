@@ -229,6 +229,9 @@
         "files": [
           "**/*.ts"
         ],
+        "rules": {
+          "@typescript-eslint/consistent-type-imports": "error"
+        },
         "settings": {
           "import/resolver": "typescript"
         }

@@ -1,6 +1,7 @@
 import {htmlEscape} from 'escape-goat';
 
-import Tab, {TabProps} from './tab';
+import type {TabProps} from './tab';
+import Tab from './tab';
 
 export default class FunctionalTab extends Tab {
 	$closeButton: Element;

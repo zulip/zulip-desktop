@@ -1,5 +1,5 @@
 import BaseComponent from './base';
-import WebView from './webview';
+import type WebView from './webview';
 
 export interface TabProps {
 	role: string;

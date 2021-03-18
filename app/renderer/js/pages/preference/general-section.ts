@@ -1,4 +1,5 @@
-import {ipcRenderer, remote, OpenDialogOptions} from 'electron';
+import type {OpenDialogOptions} from 'electron';
+import {ipcRenderer, remote} from 'electron';
 import fs from 'fs';
 import path from 'path';
 

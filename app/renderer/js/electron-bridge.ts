@@ -2,7 +2,8 @@ import {ipcRenderer, remote} from 'electron';
 import {EventEmitter} from 'events';
 
 import {ClipboardDecrypterImpl} from './clipboard-decrypter';
-import {NotificationData, newNotification} from './notification';
+import type {NotificationData} from './notification';
+import {newNotification} from './notification';
 
 type ListenerType = ((...args: any[]) => void);
 

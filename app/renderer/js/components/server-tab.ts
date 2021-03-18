@@ -4,7 +4,8 @@ import {htmlEscape} from 'escape-goat';
 
 import * as SystemUtil from '../utils/system-util';
 
-import Tab, {TabProps} from './tab';
+import type {TabProps} from './tab';
+import Tab from './tab';
 
 export default class ServerTab extends Tab {
 	$badge: Element;

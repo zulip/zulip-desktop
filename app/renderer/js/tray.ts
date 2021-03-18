@@ -1,4 +1,5 @@
-import {ipcRenderer, remote, WebviewTag, NativeImage} from 'electron';
+import type {WebviewTag, NativeImage} from 'electron';
+import {ipcRenderer, remote} from 'electron';
 import path from 'path';
 
 import * as ConfigUtil from './utils/config-util';

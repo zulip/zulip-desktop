@@ -2,7 +2,8 @@ import {app, dialog, session} from 'electron';
 import util from 'util';
 
 import log from 'electron-log';
-import {UpdateDownloadedEvent, UpdateInfo, autoUpdater} from 'electron-updater';
+import type {UpdateDownloadedEvent, UpdateInfo} from 'electron-updater';
+import {autoUpdater} from 'electron-updater';
 
 import * as ConfigUtil from '../renderer/js/utils/config-util';
 import * as LinkUtil from '../renderer/js/utils/link-util';

@@ -1,4 +1,5 @@
-import {ClientRequest, IncomingMessage, app, net} from 'electron';
+import type {ClientRequest, IncomingMessage} from 'electron';
+import {app, net} from 'electron';
 import fs from 'fs';
 import path from 'path';
 import stream from 'stream';
@@ -6,7 +7,7 @@ import util from 'util';
 
 import getStream from 'get-stream';
 
-import {ServerConf} from '../renderer/js/utils/domain-util';
+import type {ServerConf} from '../renderer/js/utils/domain-util';
 import Logger from '../renderer/js/utils/logger-util';
 import * as Messages from '../resources/messages';
 
