@@ -199,6 +199,39 @@
       "arrow-body-style": "error",
       "import/first": "error",
       "import/newline-after-import": "error",
+      "import/no-restricted-paths": [
+        "error",
+        {
+          "zones": [
+            {
+              "target": "./app/common",
+              "from": "./app",
+              "except": [
+                "./common",
+                "./translations"
+              ]
+            },
+            {
+              "target": "./app/main",
+              "from": "./app",
+              "except": [
+                "./common",
+                "./main",
+                "./translations"
+              ]
+            },
+            {
+              "target": "./app/renderer",
+              "from": "./app",
+              "except": [
+                "./common",
+                "./renderer",
+                "./translations"
+              ]
+            }
+          ]
+        }
+      ],
       "import/order": [
         "error",
         {
