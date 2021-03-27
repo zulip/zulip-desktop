@@ -46,8 +46,8 @@ export default class ServerTab extends Tab {
 	}
 
 	generateShortcutText(): string {
-		// Only provide shortcuts for server [0..10]
-		if (this.props.index >= 10) {
+		// Only provide shortcuts for server [0..9]
+		if (this.props.index >= 9) {
 			return '';
 		}
 
