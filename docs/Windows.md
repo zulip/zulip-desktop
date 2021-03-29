@@ -50,9 +50,3 @@ npm run pack
 npm run dist
 ```
 It will start the packaging process. The ready for distribution file (e.g. dmg, windows installer, deb package) will be outputted to the `dist` directory.
-
-# Troubleshooting
-If you have any problems running the app please see the [most common issues](./troubleshooting.md).
-
-
-

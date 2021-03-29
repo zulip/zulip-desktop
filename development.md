@@ -89,11 +89,6 @@ you find in the [issue tracker](https://github.com/zulip/zulip-desktop/issues).
 
 You can read more about making contributions in our [Contributing Guide](./CONTRIBUTING.md).
 
-## Troubleshooting
-
-If you have any problems running the app, see the [most common
-issues](./troubleshooting.md).
-
 ## Making a release
 
 To package the app into an installer:
