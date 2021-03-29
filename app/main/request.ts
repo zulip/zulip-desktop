@@ -102,7 +102,8 @@ export const _saveServerIcon = async (url: string, session: Electron.session): P
 export const _isOnline = async (url: string, session: Electron.session): Promise<boolean> => {
 	try {
 		const response = await fetchResponse(net.request({
-			url: `${url}/static/favicon.ico`,
+			method: 'HEAD',
+			url: `${url}/api/v1/server_settings`,
 			session
 		}));
 		const isValidResponse = response.statusCode >= 200 && response.statusCode < 400;
