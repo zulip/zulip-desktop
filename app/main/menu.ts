@@ -5,7 +5,6 @@ import AdmZip from 'adm-zip';
 import type {TabData} from '../renderer/js/main';
 import * as ConfigUtil from '../renderer/js/utils/config-util';
 import * as DNDUtil from '../renderer/js/utils/dnd-util';
-import * as LinkUtil from '../renderer/js/utils/link-util';
 import * as t from '../renderer/js/utils/translation-util';
 
 import {appUpdater} from './autoupdater';
@@ -50,7 +49,7 @@ function getToolsSubmenu(): Electron.MenuItemConstructorOptions[] {
 	{
 		label: t.__('Release Notes'),
 		async click() {
-			await LinkUtil.openBrowser(new URL(`https://github.com/zulip/zulip-desktop/releases/tag/v${app.getVersion()}`));
+			await shell.openExternal(`https://github.com/zulip/zulip-desktop/releases/tag/v${app.getVersion()}`);
 		}
 	},
 	{

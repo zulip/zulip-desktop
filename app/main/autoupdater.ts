@@ -1,4 +1,4 @@
-import {app, dialog, session} from 'electron';
+import {app, dialog, session, shell} from 'electron';
 import util from 'util';
 
 import log from 'electron-log';
@@ -6,7 +6,6 @@ import type {UpdateDownloadedEvent, UpdateInfo} from 'electron-updater';
 import {autoUpdater} from 'electron-updater';
 
 import * as ConfigUtil from '../renderer/js/utils/config-util';
-import * as LinkUtil from '../renderer/js/utils/link-util';
 
 import {linuxUpdateNotification} from './linuxupdater';	// Required only in case of linux
 
@@ -84,7 +83,7 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
 				Current Version: ${app.getVersion()}`
 			});
 			if (response === 0) {
-				await LinkUtil.openBrowser(new URL('https://zulip.com/apps/'));
+				await shell.openExternal('https://zulip.com/apps/');
 			}
 		}
 	});
