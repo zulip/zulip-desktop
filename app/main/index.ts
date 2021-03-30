@@ -15,6 +15,8 @@ import * as ProxyUtil from './proxy-util';
 import {_getServerSettings, _saveServerIcon, _isOnline} from './request';
 import {setAutoLaunch} from './startup';
 
+const {GDK_BACKEND} = process.env;
+
 let mainWindowState: windowStateKeeper.State;
 
 // Prevent window being garbage collected
@@ -159,6 +161,15 @@ app.on('activate', () => {
 });
 
 app.on('ready', () => {
+	if (process.env.GDK_BACKEND !== GDK_BACKEND) {
+		console.warn('Reverting GDK_BACKEND to work around https://github.com/electron/electron/issues/28436');
+		if (GDK_BACKEND === undefined) {
+			delete process.env.GDK_BACKEND;
+		} else {
+			process.env.GDK_BACKEND = GDK_BACKEND;
+		}
+	}
+
 	const ses = session.fromPartition('persist:webviewsession');
 	ses.setUserAgent(`ZulipElectron/${app.getVersion()} ${ses.getUserAgent()}`);
 
