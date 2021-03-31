@@ -13,7 +13,6 @@ export const contextMenu = (
   const isText = props.selectionText !== "";
   const isLink = props.linkURL !== "";
   const linkURL = isLink ? new URL(props.linkURL) : undefined;
-  const isEmailAddress = isLink ? linkURL.protocol === "mailto:" : undefined;
 
   const makeSuggestion = (suggestion: string) => ({
     label: suggestion,
@@ -77,12 +76,16 @@ export const contextMenu = (
       type: "separator",
     },
     {
-      label: isEmailAddress ? t.__("Copy Email Address") : t.__("Copy Link"),
+      label:
+        linkURL?.protocol === "mailto:"
+          ? t.__("Copy Email Address")
+          : t.__("Copy Link"),
       visible: isLink,
       click(_item) {
         clipboard.write({
           bookmark: props.linkText,
-          text: isEmailAddress ? linkURL.pathname : props.linkURL,
+          text:
+            linkURL?.protocol === "mailto:" ? linkURL.pathname : props.linkURL,
         });
       },
     },
