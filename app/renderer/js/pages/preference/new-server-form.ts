@@ -72,9 +72,9 @@ export default class NewServerForm extends BaseComponent {
     this.$saveServerButton = this.$newServerForm.querySelector("#connect");
     this.props.$root.textContent = "";
     this.props.$root.append(this.$newServerForm);
-    this.$newServerUrl = this.$newServerForm.querySelectorAll(
+    this.$newServerUrl = this.$newServerForm.querySelector(
       "input.setting-input-value",
-    )[0] as HTMLInputElement;
+    );
   }
 
   async submitFormHandler(): Promise<void> {
@@ -112,9 +112,7 @@ export default class NewServerForm extends BaseComponent {
   }
 
   networkSettingsLink(): void {
-    const networkSettingsId = document.querySelectorAll(
-      ".server-network-option",
-    )[0];
+    const networkSettingsId = document.querySelector(".server-network-option");
     networkSettingsId.addEventListener("click", () => {
       ipcRenderer.send("forward-message", "open-network-settings");
     });

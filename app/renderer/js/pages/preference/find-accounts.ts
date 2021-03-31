@@ -40,9 +40,9 @@ export default class FindAccounts extends BaseComponent {
     this.$findAccountsButton = this.$findAccounts.querySelector(
       "#find-accounts-button",
     );
-    this.$serverUrlField = this.$findAccounts.querySelectorAll(
+    this.$serverUrlField = this.$findAccounts.querySelector(
       "input.setting-input-value",
-    )[0] as HTMLInputElement;
+    );
     this.initListeners();
   }
 

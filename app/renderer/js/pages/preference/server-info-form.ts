@@ -62,18 +62,16 @@ export default class ServerInfoForm extends BaseComponent {
 
   initForm(): void {
     this.$serverInfoForm = this.generateNodeFromHTML(this.templateHTML());
-    this.$serverInfoAlias = this.$serverInfoForm.querySelectorAll(
+    this.$serverInfoAlias = this.$serverInfoForm.querySelector(
       ".server-info-alias",
-    )[0];
-    this.$serverIcon = this.$serverInfoForm.querySelectorAll(
-      ".server-info-icon",
-    )[0];
-    this.$deleteServerButton = this.$serverInfoForm.querySelectorAll(
+    );
+    this.$serverIcon = this.$serverInfoForm.querySelector(".server-info-icon");
+    this.$deleteServerButton = this.$serverInfoForm.querySelector(
       ".server-delete-action",
-    )[0];
-    this.$openServerButton = this.$serverInfoForm.querySelectorAll(
+    );
+    this.$openServerButton = this.$serverInfoForm.querySelector(
       ".open-tab-button",
-    )[0];
+    );
     this.props.$root.append(this.$serverInfoForm);
   }
 

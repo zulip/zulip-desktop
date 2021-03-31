@@ -29,7 +29,7 @@ export default class FunctionalTab extends Tab {
     this.$el = this.generateNodeFromHTML(this.templateHTML());
     if (this.props.name !== "Settings") {
       this.props.$root.append(this.$el);
-      this.$closeButton = this.$el.querySelectorAll(".server-tab-badge")[0];
+      this.$closeButton = this.$el.querySelector(".server-tab-badge");
       this.registerListeners();
     }
   }
