@@ -8,7 +8,6 @@ import type WebView from "../components/webview";
 
 const logger = new Logger({
   file: "domain-util.log",
-  timestamp: true,
 });
 
 export default class ReconnectUtil {

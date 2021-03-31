@@ -5,7 +5,6 @@ import Logger from "./logger-util";
 
 const logger = new Logger({
   file: "enterprise-util.log",
-  timestamp: true,
 });
 
 // TODO: replace enterpriseSettings type with an interface once settings are final

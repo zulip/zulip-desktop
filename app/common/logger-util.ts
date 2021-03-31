@@ -9,10 +9,7 @@ import {sentryInit, captureException} from "./sentry-util";
 const {app} = process.type === "renderer" ? electron.remote : electron;
 
 interface LoggerOptions {
-  timestamp?: true | (() => string);
   file?: string;
-  level?: boolean;
-  logInDevMode?: boolean;
 }
 
 initSetUp();
@@ -41,22 +38,11 @@ type Level = "log" | "debug" | "info" | "warn" | "error";
 
 export default class Logger {
   nodeConsole: Console;
-  timestamp?: () => string;
-  level: boolean;
-  logInDevMode: boolean;
 
   constructor(options: LoggerOptions = {}) {
-    let {
-      timestamp = true,
-      file = "console.log",
-      level = true,
-      logInDevMode = false,
-    } = options;
+    let {file = "console.log"} = options;
 
     file = `${logDir}/${file}`;
-    if (timestamp === true) {
-      timestamp = this.getTimestamp;
-    }
 
     // Trim log according to type of process
     if (process.type === "renderer") {
@@ -69,30 +55,12 @@ export default class Logger {
     const nodeConsole = new Console(fileStream);
 
     this.nodeConsole = nodeConsole;
-    this.timestamp = timestamp;
-    this.level = level;
-    this.logInDevMode = logInDevMode;
   }
 
   _log(type: Level, ...args: unknown[]): void {
-    const {nodeConsole, timestamp, level, logInDevMode} = this;
-
-    switch (true) {
-      case typeof timestamp === "function":
-        args.unshift(timestamp() + " |\t");
-      // Fall through
-
-      case level:
-        args.unshift(type.toUpperCase() + " |");
-      // Fall through
-
-      case !app.isPackaged || logInDevMode:
-        nodeConsole[type](...args);
-        break;
-
-      default:
-    }
-
+    args.unshift(this.getTimestamp() + " |\t");
+    args.unshift(type.toUpperCase() + " |");
+    this.nodeConsole[type](...args);
     console[type](...args);
   }
 

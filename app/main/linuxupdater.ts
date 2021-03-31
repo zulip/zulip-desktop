@@ -11,7 +11,6 @@ import {fetchResponse} from "./request";
 
 const logger = new Logger({
   file: "linux-update-util.log",
-  timestamp: true,
 });
 
 export async function linuxUpdateNotification(

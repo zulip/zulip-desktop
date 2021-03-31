@@ -32,7 +32,6 @@ const defaultIconUrl = "../renderer/img/icon.png";
 
 const logger = new Logger({
   file: "domain-util.log",
-  timestamp: true,
 });
 
 const generateFilePath = (url: string): string => {

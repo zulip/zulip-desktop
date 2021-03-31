@@ -8,7 +8,6 @@ import Logger from "../common/logger-util";
 
 const logger = new Logger({
   file: "linux-update-util.log",
-  timestamp: true,
 });
 
 let db: JsonDB;

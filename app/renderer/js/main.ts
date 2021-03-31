@@ -54,7 +54,6 @@ interface SettingsOptions extends DNDSettings {
 
 const logger = new Logger({
   file: "errors.log",
-  timestamp: true,
 });
 
 const rendererDirectory = path.resolve(__dirname, "..");

@@ -12,7 +12,6 @@ const {app, dialog} = process.type === "renderer" ? electron.remote : electron;
 
 const logger = new Logger({
   file: "config-util.log",
-  timestamp: true,
 });
 
 let db: JsonDB;

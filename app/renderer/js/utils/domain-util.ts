@@ -13,7 +13,6 @@ const {app, dialog} = remote;
 
 const logger = new Logger({
   file: "domain-util.log",
-  timestamp: true,
 });
 
 const defaultIconUrl = "../renderer/img/icon.png";
