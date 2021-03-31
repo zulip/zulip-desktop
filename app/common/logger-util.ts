@@ -38,16 +38,8 @@ if (process.type === "renderer") {
 const logDir = `${app.getPath("userData")}/Logs`;
 
 type Level = "log" | "debug" | "info" | "warn" | "error";
-const levels: Level[] = ["log", "debug", "info", "warn", "error"];
-type LogMethod = (...args: unknown[]) => void;
 
 export default class Logger {
-  log: LogMethod;
-  debug: LogMethod;
-  info: LogMethod;
-  warn: LogMethod;
-  error: LogMethod;
-
   nodeConsole: Console;
   timestamp?: () => string;
   level: boolean;
@@ -80,7 +72,6 @@ export default class Logger {
     this.timestamp = timestamp;
     this.level = level;
     this.logInDevMode = logInDevMode;
-    this.setUpConsole();
   }
 
   _log(type: Level, ...args: unknown[]): void {
@@ -105,16 +96,24 @@ export default class Logger {
     console[type](...args);
   }
 
-  setUpConsole(): void {
-    for (const type of levels) {
-      this.setupConsoleMethod(type);
-    }
+  log(...args: unknown[]): void {
+    this._log("log", ...args);
   }
 
-  setupConsoleMethod(type: Level): void {
-    this[type] = (...args: unknown[]) => {
-      this._log(type, ...args);
-    };
+  debug(...args: unknown[]): void {
+    this._log("debug", ...args);
+  }
+
+  info(...args: unknown[]): void {
+    this._log("info", ...args);
+  }
+
+  warn(...args: unknown[]): void {
+    this._log("warn", ...args);
+  }
+
+  error(...args: unknown[]): void {
+    this._log("error", ...args);
   }
 
   getTimestamp(): string {
