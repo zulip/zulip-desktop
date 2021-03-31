@@ -352,8 +352,8 @@ ${error}`,
     "update-menu",
     (_event: Electron.IpcMainEvent, props: AppMenu.MenuProps) => {
       AppMenu.setMenu(props);
-      const activeTab = props.tabs[props.activeTabIndex];
-      if (activeTab) {
+      if (props.activeTabIndex !== undefined) {
+        const activeTab = props.tabs[props.activeTabIndex];
         mainWindow.setTitle(`Zulip - ${activeTab.webviewName}`);
       }
     },
