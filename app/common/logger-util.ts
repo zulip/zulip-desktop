@@ -6,6 +6,8 @@ import os from "os";
 import {initSetUp} from "./default-util";
 import {sentryInit, captureException} from "./sentry-util";
 
+const {app} = process.type === "renderer" ? electron.remote : electron;
+
 interface LoggerOptions {
   timestamp?: true | (() => string);
   file?: string;
@@ -15,11 +17,8 @@ interface LoggerOptions {
 
 initSetUp();
 
-let app: Electron.App = null;
 let reportErrors = true;
 if (process.type === "renderer") {
-  app = electron.remote.app;
-
   // Report Errors to Sentry only if it is enabled in settings
   // Gets the value of reportErrors from config-util for renderer process
   // For main process, sentryInit() is handled in index.js
@@ -34,8 +33,6 @@ if (process.type === "renderer") {
       }
     },
   );
-} else {
-  app = electron.app;
 }
 
 const logDir = `${app.getPath("userData")}/Logs`;

@@ -1,7 +1,8 @@
 import electron from "electron";
 import fs from "fs";
 
-const app = process.type === "renderer" ? electron.remote.app : electron.app;
+const {app} = process.type === "renderer" ? electron.remote : electron;
+
 let setupCompleted = false;
 
 const zulipDir = app.getPath("userData");

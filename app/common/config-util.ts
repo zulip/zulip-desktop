@@ -7,23 +7,13 @@ import {JsonDB} from "node-json-db";
 import * as EnterpriseUtil from "./enterprise-util";
 import Logger from "./logger-util";
 
+/* To make the util runnable in both main and renderer process */
+const {app, dialog} = process.type === "renderer" ? electron.remote : electron;
+
 const logger = new Logger({
   file: "config-util.log",
   timestamp: true,
 });
-
-let dialog: Electron.Dialog = null;
-let app: Electron.App = null;
-
-/* To make the util runnable in both main and renderer process */
-if (process.type === "renderer") {
-  const {remote} = electron;
-  dialog = remote.dialog;
-  app = remote.app;
-} else {
-  dialog = electron.dialog;
-  app = electron.app;
-}
 
 let db: JsonDB;
 
