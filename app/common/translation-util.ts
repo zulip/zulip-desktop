@@ -1,18 +1,18 @@
-import path from 'path';
+import path from "path";
 
-import i18n from 'i18n';
+import i18n from "i18n";
 
-import * as ConfigUtil from './config-util';
+import * as ConfigUtil from "./config-util";
 
 i18n.configure({
-	directory: path.join(__dirname, '../translations/'),
-	updateFiles: false
+  directory: path.join(__dirname, "../translations/"),
+  updateFiles: false,
 });
 
 /* Fetches the current appLocale from settings.json */
-const appLocale = ConfigUtil.getConfigItem('appLanguage');
+const appLocale = ConfigUtil.getConfigItem("appLanguage");
 
 /* If no locale present in the json, en is set default */
 export function __(phrase: string): string {
-	return i18n.__({phrase, locale: appLocale ? appLocale : 'en'});
+  return i18n.__({phrase, locale: appLocale ? appLocale : "en"});
 }

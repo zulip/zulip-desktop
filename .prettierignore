@@ -1,0 +1,3 @@
+/app/**/*.js
+/app/translations/*.json
+/dist

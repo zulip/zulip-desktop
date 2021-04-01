@@ -1,10 +1,9 @@
 {
-    "extends": ["stylelint-config-standard"],
+    "extends": ["stylelint-config-standard", "stylelint-config-prettier"],
     "rules": {
         "color-named": "never",
         "color-no-hex": true,
         "font-family-no-missing-generic-family-keyword": [true, {"ignoreFontFamilies": ["Material Icons"]}],
-        "indentation": 4,
         "selector-type-no-unknown": [true, {"ignoreTypes": ["send-feedback", "webview"]}],
     }
 }

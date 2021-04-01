@@ -1,0 +1,4 @@
+*.js
+*.ts
+/app/translations/*.json
+/dist

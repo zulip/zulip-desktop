@@ -1,2 +1,3 @@
 # Installation instructions
-* [[Windows]]
+
+- [[Windows]]

@@ -1,11 +1,11 @@
-import {ipcRenderer, remote} from 'electron';
-import {EventEmitter} from 'events';
+import {ipcRenderer, remote} from "electron";
+import {EventEmitter} from "events";
 
-import {ClipboardDecrypterImpl} from './clipboard-decrypter';
-import type {NotificationData} from './notification';
-import {newNotification} from './notification';
+import {ClipboardDecrypterImpl} from "./clipboard-decrypter";
+import type {NotificationData} from "./notification";
+import {newNotification} from "./notification";
 
-type ListenerType = ((...args: any[]) => void);
+type ListenerType = (...args: any[]) => void;
 
 let notificationReplySupported = false;
 // Indicates if the user is idle or not
@@ -16,71 +16,70 @@ let lastActive = Date.now();
 export const bridgeEvents = new EventEmitter();
 
 const electron_bridge: ElectronBridge = {
-	send_event: (eventName: string | symbol, ...args: unknown[]): boolean =>
-		bridgeEvents.emit(eventName, ...args),
+  send_event: (eventName: string | symbol, ...args: unknown[]): boolean =>
+    bridgeEvents.emit(eventName, ...args),
 
-	on_event: (eventName: string, listener: ListenerType): void => {
-		bridgeEvents.on(eventName, listener);
-	},
+  on_event: (eventName: string, listener: ListenerType): void => {
+    bridgeEvents.on(eventName, listener);
+  },
 
-	new_notification: (
-		title: string,
-		options: NotificationOptions | undefined,
-		dispatch: (type: string, eventInit: EventInit) => boolean
-	): NotificationData =>
-		newNotification(title, options, dispatch),
+  new_notification: (
+    title: string,
+    options: NotificationOptions | undefined,
+    dispatch: (type: string, eventInit: EventInit) => boolean,
+  ): NotificationData => newNotification(title, options, dispatch),
 
-	get_idle_on_system: (): boolean => idle,
+  get_idle_on_system: (): boolean => idle,
 
-	get_last_active_on_system: (): number => lastActive,
+  get_last_active_on_system: (): number => lastActive,
 
-	get_send_notification_reply_message_supported: (): boolean =>
-		notificationReplySupported,
+  get_send_notification_reply_message_supported: (): boolean =>
+    notificationReplySupported,
 
-	set_send_notification_reply_message_supported: (value: boolean): void => {
-		notificationReplySupported = value;
-	},
+  set_send_notification_reply_message_supported: (value: boolean): void => {
+    notificationReplySupported = value;
+  },
 
-	decrypt_clipboard: (version: number): ClipboardDecrypterImpl =>
-		new ClipboardDecrypterImpl(version)
+  decrypt_clipboard: (version: number): ClipboardDecrypterImpl =>
+    new ClipboardDecrypterImpl(version),
 };
 
-bridgeEvents.on('total_unread_count', (...args) => {
-	ipcRenderer.send('unread-count', ...args);
+bridgeEvents.on("total_unread_count", (...args) => {
+  ipcRenderer.send("unread-count", ...args);
 });
 
-bridgeEvents.on('realm_name', realmName => {
-	const serverURL = location.origin;
-	ipcRenderer.send('realm-name-changed', serverURL, realmName);
+bridgeEvents.on("realm_name", (realmName) => {
+  const serverURL = location.origin;
+  ipcRenderer.send("realm-name-changed", serverURL, realmName);
 });
 
-bridgeEvents.on('realm_icon_url', (iconURL: unknown) => {
-	if (typeof iconURL !== 'string') {
-		throw new TypeError('Expected string for iconURL');
-	}
+bridgeEvents.on("realm_icon_url", (iconURL: unknown) => {
+  if (typeof iconURL !== "string") {
+    throw new TypeError("Expected string for iconURL");
+  }
 
-	const serverURL = location.origin;
-	iconURL = iconURL.includes('http') ? iconURL : `${serverURL}${iconURL}`;
-	ipcRenderer.send('realm-icon-changed', serverURL, iconURL);
+  const serverURL = location.origin;
+  iconURL = iconURL.includes("http") ? iconURL : `${serverURL}${iconURL}`;
+  ipcRenderer.send("realm-icon-changed", serverURL, iconURL);
 });
 
 // Set user as active and update the time of last activity
-ipcRenderer.on('set-active', () => {
-	if (!remote.app.isPackaged) {
-		console.log('active');
-	}
+ipcRenderer.on("set-active", () => {
+  if (!remote.app.isPackaged) {
+    console.log("active");
+  }
 
-	idle = false;
-	lastActive = Date.now();
+  idle = false;
+  lastActive = Date.now();
 });
 
 // Set user as idle and time of last activity is left unchanged
-ipcRenderer.on('set-idle', () => {
-	if (!remote.app.isPackaged) {
-		console.log('idle');
-	}
+ipcRenderer.on("set-idle", () => {
+  if (!remote.app.isPackaged) {
+    console.log("idle");
+  }
 
-	idle = true;
+  idle = true;
 });
 
 // This follows node's idiomatic implementation of event
