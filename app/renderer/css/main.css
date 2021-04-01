@@ -16,7 +16,7 @@ body {
 }
 
 .toggle-sidebar {
-    background: rgba(34, 44, 49, 1.000);
+    background: rgba(34, 44, 49, 1);
     width: 54px;
     padding: 27px 0 20px 0;
     justify-content: space-between;
@@ -47,10 +47,6 @@ body {
     overflow-y: hidden;
 }
 
-#view-controls-container:hover {
-    overflow-y: overlay;
-}
-
 #view-controls-container::-webkit-scrollbar {
     width: 4px;
 }
@@ -60,8 +56,12 @@ body {
 }
 
 #view-controls-container::-webkit-scrollbar-thumb {
-    background-color: rgba(169, 169, 169, 1.000);
-    outline: 1px solid rgba(169, 169, 169, 1.000);
+    background-color: rgba(169, 169, 169, 1);
+    outline: 1px solid rgba(169, 169, 169, 1);
+}
+
+#view-controls-container:hover {
+    overflow-y: overlay;
 }
 
 @font-face {
@@ -86,6 +86,7 @@ body {
     font-family: 'Material Icons';
     font-weight: normal;
     font-style: normal;
+
     /* Preferred icon size */
     font-size: 24px;
     display: inline-block;
@@ -95,8 +96,10 @@ body {
     word-wrap: normal;
     white-space: nowrap;
     direction: ltr;
+
     /* Support for all WebKit browsers. */
     -webkit-font-smoothing: antialiased;
+
     /* Support for Safari and Chrome. */
     text-rendering: optimizeLegibility;
 }
@@ -119,12 +122,23 @@ body {
 }
 
 .action-button i {
-    color: rgba(108, 133, 146, 1.000);
+    color: rgba(108, 133, 146, 1);
     font-size: 28px;
 }
 
 .action-button:hover i {
-    color: rgba(152, 169, 179, 1.000);
+    color: rgba(152, 169, 179, 1);
+}
+
+.action-button.active {
+    /* background-color: rgba(255, 255, 255, 0.25); */
+    background-color: rgba(239, 239, 239, 1);
+    opacity: 0.9;
+    padding-right: 14px;
+}
+
+.action-button.active i {
+    color: rgba(28, 38, 43, 1);
 }
 
 .action-button.disable {
@@ -136,22 +150,7 @@ body {
 }
 
 .action-button.disable:hover i {
-    color: rgba(108, 133, 146, 1.000);
-}
-
-.action-button.active {
-    /* background-color: rgba(255, 255, 255, 0.25); */
-    background-color: rgba(239, 239, 239, 1.000);
-    opacity: 0.9;
-    padding-right: 14px;
-}
-
-.action-button.active i {
-    color: rgba(28, 38, 43, 1.000);
-}
-
-.tab:first-child {
-    margin-top: 9px;
+    color: rgba(108, 133, 146, 1);
 }
 
 .tab {
@@ -162,6 +161,10 @@ body {
     flex-direction: column;
     align-items: center;
     width: 100%;
+}
+
+.tab:first-child {
+    margin-top: 9px;
 }
 
 .tab .server-icons {
@@ -177,7 +180,7 @@ body {
     margin-top: 5px;
     z-index: 11;
     line-height: 31px;
-    color: rgba(238, 238, 238, 1.000);
+    color: rgba(238, 238, 238, 1);
     text-align: center;
     overflow: hidden;
     opacity: 0.6;
@@ -185,10 +188,10 @@ body {
 }
 
 .server-tab .alt-icon {
-    font-family: Verdana;
+    font-family: Verdana, sans-serif;
     font-weight: 600;
     font-size: 22px;
-    border: 2px solid rgba(34, 44, 49, 1.000);
+    border: 2px solid rgba(34, 44, 49, 1);
     margin-left: 17%;
     width: 35px;
     border-radius: 4px;
@@ -196,6 +199,11 @@ body {
 
 .tab .server-tab:hover {
     opacity: 0.8;
+}
+
+.tab.active .server-tab {
+    opacity: 1;
+    background-color: rgba(100, 132, 120, 1);
 }
 
 .tab.functional-tab {
@@ -214,25 +222,19 @@ body {
     line-height: 36px;
 }
 
-.tab.active .server-tab {
-    opacity: 1;
-    background-color: rgba(100, 132, 120, 1.000);
-}
-
 .tab .server-tab-badge.active {
     border-radius: 9px;
     min-width: 11px;
     padding: 0 3px;
     height: 17px;
-    background-color: rgba(244, 67, 54, 1.000);
+    background-color: rgba(244, 67, 54, 1);
     font-size: 10px;
     font-family: sans-serif;
     position: absolute;
-    right: 5px;
     z-index: 15;
     top: 6px;
     float: right;
-    color: rgba(255, 255, 255, 1.000);
+    color: rgba(255, 255, 255, 1);
     text-align: center;
     line-height: 17px;
     display: block;
@@ -260,7 +262,7 @@ body {
 }
 
 .tab .server-tab-shortcut {
-    color: rgba(100, 132, 120, 1.000);
+    color: rgba(100, 132, 120, 1);
     font-size: 12px;
     text-align: center;
     font-family: sans-serif;
@@ -275,6 +277,7 @@ body {
     from {
         transform: rotate(0);
     }
+
     to {
         transform: rotate(-360deg);
     }
@@ -295,7 +298,7 @@ body {
     content: "";
     position: absolute;
     z-index: 1;
-    background: rgba(255, 255, 255, 1.000) url(../img/ic_loading.gif) no-repeat;
+    background: rgba(255, 255, 255, 1) url(../img/ic_loading.gif) no-repeat;
     background-size: 60px 60px;
     background-position: center;
     width: 100%;
@@ -311,7 +314,6 @@ body {
 
 webview {
     /* transition: opacity 0.3s ease-in; */
-    flex-grow: 1;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -335,7 +337,7 @@ webview.disabled {
 }
 
 webview.focus {
-    outline: 0px solid transparent;
+    outline: 0 solid transparent;
 }
 
 /* Tooltip styling */
@@ -346,13 +348,13 @@ webview.focus {
 #reload-tooltip,
 #setting-tooltip {
     font-family: sans-serif;
-    background: rgba(34, 44, 49, 1.000);
+    background: rgba(34, 44, 49, 1);
     margin-left: 48px;
     padding: 6px 8px;
     position: absolute;
-    margin-top: 0px;
+    margin-top: 0;
     z-index: 1000;
-    color: rgba(255, 255, 255, 1.000);
+    color: rgba(255, 255, 255, 1);
     border-radius: 4px;
     text-align: center;
     width: 55px;
@@ -367,7 +369,7 @@ webview.focus {
     content: " ";
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
-    border-right: 8px solid rgba(34, 44, 49, 1.000);
+    border-right: 8px solid rgba(34, 44, 49, 1);
     position: absolute;
     top: 7px;
     right: 68px;
@@ -375,14 +377,14 @@ webview.focus {
 
 #add-server-tooltip,
 .server-tooltip {
-    font-family: 'arial';
-    background: rgba(34, 44, 49, 1.000);
+    font-family: 'arial', sans-serif;
+    background: rgba(34, 44, 49, 1);
     left: 56px;
     padding: 10px 20px;
     position: fixed;
     margin-top: 11px;
     z-index: 5000 !important;
-    color: rgba(255, 255, 255, 1.000);
+    color: rgba(255, 255, 255, 1);
     border-radius: 4px;
     text-align: center;
     width: max-content;
@@ -394,7 +396,7 @@ webview.focus {
     content: " ";
     border-top: 8px solid transparent;
     border-bottom: 8px solid transparent;
-    border-right: 8px solid rgba(34, 44, 49, 1.000);
+    border-right: 8px solid rgba(34, 44, 49, 1);
     position: absolute;
     top: 10px;
     left: -5px;
@@ -406,14 +408,14 @@ webview.focus {
     position: absolute;
     width: 24px;
     height: 24px;
-    background: rgba(34, 44, 49, 1.000);
+    background: rgba(34, 44, 49, 1);
     border-radius: 20px;
     cursor: pointer;
-    box-shadow: rgba(153, 153, 153, 1.000) 1px 1px;
+    box-shadow: rgba(153, 153, 153, 1) 1px 1px;
 }
 
 #collapse-button i {
-    color: rgba(239, 239, 239, 1.000);
+    color: rgba(239, 239, 239, 1);
 }
 
 #main-container {
@@ -422,7 +424,7 @@ webview.focus {
     width: 100%;
     position: relative;
     flex-grow: 1;
-    flex-basis: 0px;
+    flex-basis: 0;
 }
 
 .hidden {
@@ -434,14 +436,14 @@ webview.focus {
 
 .popup .popuptext {
     visibility: hidden;
-    background-color: rgba(85, 85, 85, 1.000);
-    color: rgba(255, 255, 255, 1.000);
+    background-color: rgba(85, 85, 85, 1);
+    color: rgba(255, 255, 255, 1);
     text-align: center;
     border-radius: 6px;
     padding: 9px 0;
     position: absolute;
     z-index: 1000;
-    font-family: arial;
+    font-family: arial, sans-serif;
     width: 240px;
     top: 15px;
     height: 20px;
@@ -458,6 +460,7 @@ webview.focus {
     from {
         opacity: 0;
     }
+
     to {
         width: 0;
         height: 0;
