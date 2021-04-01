@@ -19,8 +19,6 @@ declare module '@electron-elements/send-feedback' {
 	export = SendFeedback;
 }
 
-declare module 'electron-connect';
-
 declare module '@yaireo/tagify';
 
 interface ClipboardDecrypter {

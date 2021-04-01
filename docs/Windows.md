@@ -37,11 +37,6 @@ Start the app:
 $ npm start
 ```
 
-Start and watch changes
-
-```sh
-$ npm run dev
-```
 ### Making a release
 
 To package app into an installer use command:

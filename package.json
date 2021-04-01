@@ -30,9 +30,7 @@
     "lint-html": "./node_modules/.bin/htmlhint \"app/renderer/*.html\" ",
     "lint-js": "xo",
     "test": "tsc --noEmit && npm run lint-html && npm run lint-css && npm run lint-js",
-    "test-e2e": "gulp test-e2e",
-    "compile": "gulp compile",
-    "dev": "gulp dev && npm test",
+    "test-e2e": "tsc && tape 'tests/*.js'",
     "pack": "tsc && electron-builder --dir",
     "dist": "tsc && electron-builder",
     "mas": "tsc && electron-builder --mac mas"
@@ -175,20 +173,13 @@
     "dotenv": "^8.2.0",
     "electron": "^12.0.2",
     "electron-builder": "^22.10.5",
-    "electron-connect": "^0.6.3",
     "electron-notarize": "^1.0.0",
     "eslint-import-resolver-typescript": "^2.4.0",
-    "glob": "^7.1.6",
-    "gulp": "^4.0.2",
-    "gulp-tape": "^1.0.0",
-    "gulp-typescript": "^6.0.0-alpha.1",
     "htmlhint": "^0.14.2",
-    "nodemon": "^2.0.7",
     "pre-commit": "^1.2.2",
     "rimraf": "^3.0.2",
     "spectron": "^14.0.0",
     "stylelint": "^13.12.0",
-    "tap-colorize": "^1.2.0",
     "tape": "^5.2.2",
     "typescript": "^4.2.3",
     "xo": "^0.38.2"
@@ -272,7 +263,6 @@
       {
         "files": [
           "app/renderer/js/injected.ts",
-          "gulpfile.js",
           "scripts/notarize.js",
           "tests/**/*.js"
         ],

@@ -72,11 +72,6 @@ Start the app:
 $ npm start
 ```
 
-Start and watch changes:
-```sh
-$ npm run dev
-```
-
 Run tests:
 ```sh
 $ npm test
