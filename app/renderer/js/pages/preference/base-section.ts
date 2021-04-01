@@ -1,7 +1,7 @@
 import {ipcRenderer} from 'electron';
 
-import {htmlEscape} from 'escape-goat';
-
+import type {HTML} from '../../../../common/html';
+import {html} from '../../../../common/html';
 import BaseComponent from '../../components/base';
 
 interface BaseSectionProps {
@@ -25,24 +25,24 @@ export default class BaseSection extends BaseComponent {
 		}
 	}
 
-	generateOptionHTML(settingOption: boolean, disabled?: boolean): string {
-		const labelHTML = disabled ? '<label class="disallowed" title="Setting locked by system administrator."></label>' : '<label></label>';
+	generateOptionHTML(settingOption: boolean, disabled?: boolean): HTML {
+		const labelHTML = disabled ? html`<label class="disallowed" title="Setting locked by system administrator."></label>` : html`<label></label>`;
 		if (settingOption) {
-			return htmlEscape`
+			return html`
 				<div class="action">
 					<div class="switch">
 						<input class="toggle toggle-round" type="checkbox" checked disabled>
-						` + labelHTML + htmlEscape`
+						${labelHTML}
 					</div>
 				</div>
 			`;
 		}
 
-		return htmlEscape`
+		return html`
 			<div class="action">
 				<div class="switch">
 					<input class="toggle toggle-round" type="checkbox">
-					` + labelHTML + htmlEscape`
+					${labelHTML}
 				</div>
 			</div>
 		`;
@@ -51,15 +51,15 @@ export default class BaseSection extends BaseComponent {
 	/* A method that in future can be used to create dropdown menus using <select> <option> tags.
 		it needs an object which has ``key: value`` pairs and will return a string that can be appended to HTML
 	*/
-	generateSelectHTML(options: Record<string, string>, className?: string, idName?: string): string {
-		let html = htmlEscape`<select class="${className}" id="${idName}">\n`;
-
-		for (const key of Object.keys(options)) {
-			html += htmlEscape`<option name="${key}" value="${key}">${options[key]}</option>\n`;
-		}
-
-		html += '</select>';
-		return html;
+	generateSelectHTML(options: Record<string, string>, className?: string, idName?: string): HTML {
+		const optionsHTML = html``.join(Object.keys(options).map(key => html`
+			<option name="${key}" value="${key}">${options[key]}</option>
+		`));
+		return html`
+			<select class="${className}" id="${idName}">
+				${optionsHTML}
+			</select>
+		`;
 	}
 
 	reloadApp(): void {

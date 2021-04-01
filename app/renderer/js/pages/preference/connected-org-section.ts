@@ -1,7 +1,7 @@
 import {ipcRenderer} from 'electron';
 
-import {htmlEscape} from 'escape-goat';
-
+import type {HTML} from '../../../../common/html';
+import {html} from '../../../../common/html';
 import * as t from '../../../../common/translation-util';
 import * as DomainUtil from '../../utils/domain-util';
 
@@ -24,8 +24,8 @@ export default class ConnectedOrgSection extends BaseSection {
 		this.props = props;
 	}
 
-	templateHTML(): string {
-		return htmlEscape`
+	templateHTML(): HTML {
+		return html`
 			<div class="settings-pane" id="server-settings-pane">
 				<div class="page-title">${t.__('Connected organizations')}</div>
 				<div class="title" id="existing-servers">${t.__('All the connected orgnizations will appear here.')}</div>
@@ -45,7 +45,7 @@ export default class ConnectedOrgSection extends BaseSection {
 		this.props.$root.textContent = '';
 
 		const servers = DomainUtil.getDomains();
-		this.props.$root.innerHTML = this.templateHTML();
+		this.props.$root.innerHTML = this.templateHTML().html;
 
 		this.$serverInfoContainer = document.querySelector('#server-info-container');
 		this.$existingServers = document.querySelector('#existing-servers');

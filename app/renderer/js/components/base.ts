@@ -1,7 +1,9 @@
+import type {HTML} from '../../../common/html';
+
 export default class BaseComponent {
-	generateNodeFromHTML(html: string): Element | null {
+	generateNodeFromHTML(html: HTML): Element | null {
 		const wrapper = document.createElement('div');
-		wrapper.innerHTML = html;
+		wrapper.innerHTML = html.html;
 		return wrapper.firstElementChild;
 	}
 }

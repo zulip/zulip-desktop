@@ -2,9 +2,8 @@ import {ipcRenderer, remote} from 'electron';
 import fs from 'fs';
 import path from 'path';
 
-import {htmlEscape} from 'escape-goat';
-
 import * as ConfigUtil from '../../../common/config-util';
+import {HTML, html} from '../../../common/html';
 import * as SystemUtil from '../utils/system-util';
 
 import BaseComponent from './base';
@@ -52,14 +51,14 @@ export default class WebView extends BaseComponent {
 		this.$webviewsContainer = document.querySelector('#webviews-container').classList;
 	}
 
-	templateHTML(): string {
-		return htmlEscape`
+	templateHTML(): HTML {
+		return html`
 			<webview
 				class="disabled"
 				data-tab-id="${this.props.tabIndex}"
 				src="${this.props.url}"
-				` + (this.props.nodeIntegration ? 'nodeIntegration' : '') + htmlEscape`
-				` + (this.props.preload ? 'preload="js/preload.js"' : '') + htmlEscape`
+				${new HTML({html: this.props.nodeIntegration ? 'nodeIntegration' : ''})}
+				${new HTML({html: this.props.preload ? 'preload="js/preload.js"' : ''})}
 				partition="persist:webviewsession"
 				name="${this.props.name}"
 				webpreferences="

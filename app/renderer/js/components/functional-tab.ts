@@ -1,4 +1,5 @@
-import {htmlEscape} from 'escape-goat';
+import type {HTML} from '../../../common/html';
+import {html} from '../../../common/html';
 
 import type {TabProps} from './tab';
 import Tab from './tab';
@@ -11,8 +12,8 @@ export default class FunctionalTab extends Tab {
 		this.init();
 	}
 
-	templateHTML(): string {
-		return htmlEscape`
+	templateHTML(): HTML {
+		return html`
 			<div class="tab functional-tab" data-tab-id="${this.props.tabIndex}">
 				<div class="server-tab-badge close-button">
 					<i class="material-icons">close</i>

@@ -1,5 +1,5 @@
-import {htmlEscape} from 'escape-goat';
-
+import type {HTML} from '../../../../common/html';
+import {html} from '../../../../common/html';
 import * as t from '../../../../common/translation-util';
 import * as LinkUtil from '../../utils/link-util';
 
@@ -17,10 +17,10 @@ export default class ShortcutsSection extends BaseSection {
 	}
 
 	// eslint-disable-next-line complexity
-	templateHTML(): string {
+	templateHTML(): HTML {
 		const cmdOrCtrl = process.platform === 'darwin' ? '⌘' : 'Ctrl';
 
-		return htmlEscape`
+		return html`
 						<div class="settings-pane">
 						<div class="settings-card tip"><p><b><i class="material-icons md-14">settings</i>${t.__('Tip')}:  </b>${t.__('These desktop app shortcuts extend the Zulip webapp\'s')} <span id="open-hotkeys-link"> ${t.__('keyboard shortcuts')}</span>.</p></div>
 							<div class="title">${t.__('Application Shortcuts')}</div>
@@ -234,7 +234,7 @@ export default class ShortcutsSection extends BaseSection {
 	}
 
 	init(): void {
-		this.props.$root.innerHTML = this.templateHTML();
+		this.props.$root.innerHTML = this.templateHTML().html;
 		this.openHotkeysExternalLink();
 	}
 }

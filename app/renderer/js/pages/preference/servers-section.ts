@@ -1,5 +1,5 @@
-import {htmlEscape} from 'escape-goat';
-
+import type {HTML} from '../../../../common/html';
+import {html} from '../../../../common/html';
 import * as t from '../../../../common/translation-util';
 
 import BaseSection from './base-section';
@@ -17,8 +17,8 @@ export default class ServersSection extends BaseSection {
 		this.props = props;
 	}
 
-	templateHTML(): string {
-		return htmlEscape`
+	templateHTML(): HTML {
+		return html`
 			<div class="add-server-modal">
 				<div class="modal-container">
 					<div class="settings-pane" id="server-settings-pane">
@@ -37,7 +37,7 @@ export default class ServersSection extends BaseSection {
 	initServers(): void {
 		this.props.$root.textContent = '';
 
-		this.props.$root.innerHTML = this.templateHTML();
+		this.props.$root.innerHTML = this.templateHTML().html;
 		this.$newServerContainer = document.querySelector('#new-server-container');
 
 		this.initNewServerForm();

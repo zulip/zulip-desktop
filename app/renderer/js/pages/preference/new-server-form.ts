@@ -1,7 +1,7 @@
 import {ipcRenderer, remote} from 'electron';
 
-import {htmlEscape} from 'escape-goat';
-
+import {html} from '../../../../common/html';
+import type {HTML} from '../../../../common/html';
 import * as t from '../../../../common/translation-util';
 import BaseComponent from '../../components/base';
 import * as DomainUtil from '../../utils/domain-util';
@@ -24,8 +24,8 @@ export default class NewServerForm extends BaseComponent {
 		this.props = props;
 	}
 
-	templateHTML(): string {
-		return htmlEscape`
+	templateHTML(): HTML {
+		return html`
 			<div class="server-input-container">
 				<div class="title">${t.__('Organization URL')}</div>
 				<div class="add-server-info-row">

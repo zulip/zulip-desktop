@@ -1,5 +1,5 @@
-import {htmlEscape} from 'escape-goat';
-
+import type {HTML} from '../../../../common/html';
+import {html} from '../../../../common/html';
 import * as t from '../../../../common/translation-util';
 import BaseComponent from '../../components/base';
 import * as LinkUtil from '../../utils/link-util';
@@ -18,8 +18,8 @@ export default class FindAccounts extends BaseComponent {
 		this.props = props;
 	}
 
-	templateHTML(): string {
-		return htmlEscape`
+	templateHTML(): HTML {
+		return html`
 			<div class="settings-card certificate-card">
 				<div class="certificate-input">
 					<div>${t.__('Organization URL')}</div>

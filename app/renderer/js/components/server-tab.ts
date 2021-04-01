@@ -1,7 +1,7 @@
 import {ipcRenderer} from 'electron';
 
-import {htmlEscape} from 'escape-goat';
-
+import type {HTML} from '../../../common/html';
+import {html} from '../../../common/html';
 import * as SystemUtil from '../utils/system-util';
 
 import type {TabProps} from './tab';
@@ -15,8 +15,8 @@ export default class ServerTab extends Tab {
 		this.init();
 	}
 
-	templateHTML(): string {
-		return htmlEscape`
+	templateHTML(): HTML {
+		return html`
 			<div class="tab" data-tab-id="${this.props.tabIndex}">
 				<div class="server-tooltip" style="display:none">${this.props.name}</div>
 				<div class="server-tab-badge"></div>

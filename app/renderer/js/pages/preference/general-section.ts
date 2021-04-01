@@ -4,11 +4,12 @@ import fs from 'fs';
 import path from 'path';
 
 import Tagify from '@yaireo/tagify';
-import {htmlEscape} from 'escape-goat';
 import ISO6391 from 'iso-639-1';
 
 import * as ConfigUtil from '../../../../common/config-util';
 import * as EnterpriseUtil from '../../../../common/enterprise-util';
+import type {HTML} from '../../../../common/html';
+import {html} from '../../../../common/html';
 import * as t from '../../../../common/translation-util';
 import supportedLocales from '../../../../translations/supported-locales.json';
 
@@ -28,8 +29,8 @@ export default class GeneralSection extends BaseSection {
 		this.props = props;
 	}
 
-	templateHTML(): string {
-		return htmlEscape`
+	templateHTML(): HTML {
+		return html`
             <div class="settings-pane">
                 <div class="title">${t.__('Appearance')}</div>
                 <div id="appearance-option-settings" class="settings-card">
@@ -159,7 +160,7 @@ export default class GeneralSection extends BaseSection {
 	}
 
 	init(): void {
-		this.props.$root.innerHTML = this.templateHTML();
+		this.props.$root.innerHTML = this.templateHTML().html;
 		this.updateTrayOption();
 		this.updateBadgeOption();
 		this.updateSilentOption();
@@ -402,7 +403,7 @@ export default class GeneralSection extends BaseSection {
 	setLocale(): void {
 		const langDiv: HTMLSelectElement = document.querySelector('.lang-div');
 		const langListHTML = this.generateSelectHTML(supportedLocales, 'lang-menu');
-		langDiv.innerHTML += langListHTML;
+		langDiv.innerHTML += langListHTML.html;
 		// `langMenu` is the select-option dropdown menu formed after executing the previous command
 		const langMenu: HTMLSelectElement = document.querySelector('.lang-menu');
 
@@ -520,9 +521,10 @@ export default class GeneralSection extends BaseSection {
 			const note: HTMLElement = document.querySelector('#note');
 			note.append(t.__('You can select a maximum of 3 languages for spellchecking.'));
 			const spellDiv: HTMLElement = document.querySelector('#spellcheck-langs');
-			spellDiv.innerHTML += htmlEscape`
+			spellDiv.innerHTML += html`
 				<div class="setting-description">${t.__('Spellchecker Languages')}</div>
-				<input name='spellcheck' placeholder='Enter Languages'>`;
+				<input name='spellcheck' placeholder='Enter Languages'>
+			`.html;
 
 			const availableLanguages = session.fromPartition('persist:webviewsession').availableSpellCheckerLanguages;
 			let languagePairs: Map<string, string> = new Map();

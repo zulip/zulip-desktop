@@ -1,5 +1,5 @@
-import {htmlEscape} from 'escape-goat';
-
+import type {HTML} from '../../../../common/html';
+import {html} from '../../../../common/html';
 import * as t from '../../../../common/translation-util';
 import BaseComponent from '../../components/base';
 
@@ -19,16 +19,15 @@ export default class PreferenceNav extends BaseComponent {
 		this.init();
 	}
 
-	templateHTML(): string {
-		let navItemsHTML = '';
-		for (const navItem of this.navItems) {
-			navItemsHTML += htmlEscape`<div class="nav" id="nav-${navItem}">${t.__(navItem)}</div>`;
-		}
+	templateHTML(): HTML {
+		const navItemsHTML = html``.join(this.navItems.map(navItem => html`
+			<div class="nav" id="nav-${navItem}">${t.__(navItem)}</div>
+		`));
 
-		return htmlEscape`
+		return html`
 			<div>
 				<div id="settings-header">${t.__('Settings')}</div>
-				<div id="nav-container">` + navItemsHTML + htmlEscape`</div>
+				<div id="nav-container">${navItemsHTML}</div>
 			</div>
 		`;
 	}

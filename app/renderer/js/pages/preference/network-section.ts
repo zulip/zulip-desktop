@@ -1,8 +1,8 @@
 import {ipcRenderer} from 'electron';
 
-import {htmlEscape} from 'escape-goat';
-
 import * as ConfigUtil from '../../../../common/config-util';
+import type {HTML} from '../../../../common/html';
+import {html} from '../../../../common/html';
 import * as t from '../../../../common/translation-util';
 
 import BaseSection from './base-section';
@@ -23,8 +23,8 @@ export default class NetworkSection extends BaseSection {
 		this.props = props;
 	}
 
-	templateHTML(): string {
-		return htmlEscape`
+	templateHTML(): HTML {
+		return html`
             <div class="settings-pane">
                 <div class="title">${t.__('Proxy')}</div>
                 <div id="appearance-option-settings" class="settings-card">
@@ -61,7 +61,7 @@ export default class NetworkSection extends BaseSection {
 	}
 
 	init(): void {
-		this.props.$root.innerHTML = this.templateHTML();
+		this.props.$root.innerHTML = this.templateHTML().html;
 		this.$proxyPAC = document.querySelector('#proxy-pac-option .setting-input-value');
 		this.$proxyRules = document.querySelector('#proxy-rules-option .setting-input-value');
 		this.$proxyBypass = document.querySelector('#proxy-bypass-option .setting-input-value');

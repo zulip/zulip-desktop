@@ -1,7 +1,7 @@
 import {remote, ipcRenderer} from 'electron';
 
-import {htmlEscape} from 'escape-goat';
-
+import {html} from '../../../../common/html';
+import type {HTML} from '../../../../common/html';
 import * as Messages from '../../../../common/messages';
 import * as t from '../../../../common/translation-util';
 import type {ServerConf} from '../../../../common/types';
@@ -29,8 +29,8 @@ export default class ServerInfoForm extends BaseComponent {
 		this.props = props;
 	}
 
-	templateHTML(): string {
-		return htmlEscape`
+	templateHTML(): HTML {
+		return html`
 			<div class="settings-card">
 				<div class="server-info-left">
 					<img class="server-info-icon" src="${this.props.server.icon}"/>
