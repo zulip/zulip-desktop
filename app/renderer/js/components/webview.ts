@@ -107,10 +107,12 @@ export default class WebView extends BaseComponent {
 			}
 
 			this.canGoBackButton();
+			this.canGoForwardButton();
 		});
 
 		this.$el.addEventListener('did-navigate', () => {
 			this.canGoBackButton();
+			this.canGoForwardButton();
 		});
 
 		this.$el.addEventListener('page-favicon-updated', event => {
@@ -295,6 +297,16 @@ export default class WebView extends BaseComponent {
 	forward(): void {
 		if (this.$el.canGoForward()) {
 			this.$el.goForward();
+			this.focus();
+		}
+	}
+
+	canGoForwardButton(): void {
+		const $forwardButton = document.querySelector('#actions-container #forward-action');
+		if (this.$el.canGoForward()) {
+			$forwardButton.classList.remove('disable');
+		} else {
+			$forwardButton.classList.add('disable');
 		}
 	}
 
