@@ -65,11 +65,22 @@ export default class NewServerForm extends BaseComponent {
 		this.$newServerUrl = this.$newServerForm.querySelectorAll('input.setting-input-value')[0] as HTMLInputElement;
 	}
 
+	autoComplete(url: string): string {
+		const pattern = /^[a-zA-Z\d-]*$/;
+		let serverUrl = url.trim();
+
+		if (pattern.test(serverUrl)) {
+			serverUrl = 'https://' + serverUrl + '.zulipchat.com';
+		}
+
+		return serverUrl;
+	}
+
 	async submitFormHandler(): Promise<void> {
 		this.$saveServerButton.textContent = 'Connecting...';
 		let serverConf;
 		try {
-			serverConf = await DomainUtil.checkDomain(this.$newServerUrl.value.trim());
+			serverConf = await DomainUtil.checkDomain(this.autoComplete(this.$newServerUrl.value));
 		} catch (error: unknown) {
 			this.$saveServerButton.textContent = 'Connect';
 			await dialog.showMessageBox({
