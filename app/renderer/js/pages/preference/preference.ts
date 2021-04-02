@@ -6,6 +6,7 @@ import BaseComponent from "../../components/base";
 import ConnectedOrgSection from "./connected-org-section";
 import GeneralSection from "./general-section";
 import Nav from "./nav";
+import type {NavItem} from "./nav";
 import NetworkSection from "./network-section";
 import ServersSection from "./servers-section";
 import ShortcutsSection from "./shortcuts-section";
@@ -39,16 +40,15 @@ export default class PreferenceView extends BaseComponent {
   }
 
   setDefaultView(): void {
-    let nav = "General";
-    const hasTag = window.location.hash;
-    if (hasTag) {
-      nav = hasTag.slice(1);
-    }
+    const navItem =
+      this.nav.navItems.find(
+        (navItem) => window.location.hash === `#${navItem}`,
+      ) ?? "General";
 
-    this.handleNavigation(nav);
+    this.handleNavigation(navItem);
   }
 
-  handleNavigation(navItem: string): void {
+  handleNavigation(navItem: NavItem): void {
     this.nav.select(navItem);
     switch (navItem) {
       case "AddServer": {
@@ -87,7 +87,7 @@ export default class PreferenceView extends BaseComponent {
       }
 
       default:
-        break;
+        ((n: never) => n)(navItem);
     }
 
     this.section.init();
@@ -104,7 +104,7 @@ export default class PreferenceView extends BaseComponent {
   }
 
   registerIpcs(): void {
-    ipcRenderer.on("switch-settings-nav", (_event: Event, navItem: string) => {
+    ipcRenderer.on("switch-settings-nav", (_event: Event, navItem: NavItem) => {
       this.handleNavigation(navItem);
     });
 

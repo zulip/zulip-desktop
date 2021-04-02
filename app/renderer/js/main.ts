@@ -13,6 +13,7 @@ import FunctionalTab from "./components/functional-tab";
 import ServerTab from "./components/server-tab";
 import WebView from "./components/webview";
 import {feedbackHolder} from "./feedback";
+import type {NavItem} from "./pages/preference/nav";
 import * as DomainUtil from "./utils/domain-util";
 import * as LinkUtil from "./utils/link-util";
 import ReconnectUtil from "./utils/reconnect-util";
@@ -612,7 +613,7 @@ class ServerManagerView {
     this.activateTab(this.functionalTabs.get(tabProps.name));
   }
 
-  async openSettings(nav = "General"): Promise<void> {
+  async openSettings(nav: NavItem = "General"): Promise<void> {
     this.openFunctionalTab({
       name: "Settings",
       materialIcon: "settings",
@@ -971,12 +972,9 @@ class ServerManagerView {
       this.openNetworkTroubleshooting(index);
     });
 
-    ipcRenderer.on(
-      "open-settings",
-      async (event: Event, settingNav: string) => {
-        await this.openSettings(settingNav);
-      },
-    );
+    ipcRenderer.on("open-settings", async () => {
+      await this.openSettings();
+    });
 
     ipcRenderer.on("open-about", this.openAbout.bind(this));
 

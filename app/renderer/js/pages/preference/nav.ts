@@ -3,14 +3,21 @@ import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
 import BaseComponent from "../../components/base";
 
+export type NavItem =
+  | "General"
+  | "Network"
+  | "AddServer"
+  | "Organizations"
+  | "Shortcuts";
+
 interface PreferenceNavProps {
   $root: Element;
-  onItemSelected: (navItem: string) => void;
+  onItemSelected: (navItem: NavItem) => void;
 }
 
 export default class PreferenceNav extends BaseComponent {
   props: PreferenceNavProps;
-  navItems: string[];
+  navItems: NavItem[];
   $el: Element;
   constructor(props: PreferenceNavProps) {
     super();
@@ -57,7 +64,7 @@ export default class PreferenceNav extends BaseComponent {
     }
   }
 
-  select(navItemToSelect: string): void {
+  select(navItemToSelect: NavItem): void {
     for (const navItem of this.navItems) {
       if (navItem === navItemToSelect) {
         this.activate(navItem);
@@ -67,12 +74,12 @@ export default class PreferenceNav extends BaseComponent {
     }
   }
 
-  activate(navItem: string): void {
+  activate(navItem: NavItem): void {
     const $item = document.querySelector(`#nav-${CSS.escape(navItem)}`);
     $item.classList.add("active");
   }
 
-  deactivate(navItem: string): void {
+  deactivate(navItem: NavItem): void {
     const $item = document.querySelector(`#nav-${CSS.escape(navItem)}`);
     $item.classList.remove("active");
   }
