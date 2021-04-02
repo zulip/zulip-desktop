@@ -12,7 +12,11 @@ export default class ServerTab extends Tab {
 
   constructor(props: TabProps) {
     super(props);
-    this.init();
+
+    this.$el = this.generateNodeFromHTML(this.templateHTML());
+    this.props.$root.append(this.$el);
+    this.registerListeners();
+    this.$badge = this.$el.querySelector(".server-tab-badge");
   }
 
   templateHTML(): HTML {
@@ -28,13 +32,6 @@ export default class ServerTab extends Tab {
         <div class="server-tab-shortcut">${this.generateShortcutText()}</div>
       </div>
     `;
-  }
-
-  init(): void {
-    this.$el = this.generateNodeFromHTML(this.templateHTML());
-    this.props.$root.append(this.$el);
-    this.registerListeners();
-    this.$badge = this.$el.querySelector(".server-tab-badge");
   }
 
   updateBadge(count: number): void {
