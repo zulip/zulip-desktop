@@ -7,7 +7,7 @@ import * as DomainUtil from "../../utils/domain-util";
 
 import {reloadApp} from "./base-section";
 import {initFindAccounts} from "./find-accounts";
-import ServerInfoForm from "./server-info-form";
+import {initServerInfoForm} from "./server-info-form";
 
 interface ConnectedOrgSectionProps {
   $root: Element;
@@ -69,12 +69,12 @@ export default class ConnectedOrgSection {
       servers.length === 0 ? noServerText : "";
 
     for (const [i, server] of servers.entries()) {
-      new ServerInfoForm({
+      initServerInfoForm({
         $root: this.$serverInfoContainer,
         server,
         index: i,
         onChange: reloadApp,
-      }).init();
+      });
     }
 
     this.$newOrgButton.addEventListener("click", () => {
