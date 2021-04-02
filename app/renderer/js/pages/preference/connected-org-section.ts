@@ -5,7 +5,7 @@ import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
 import * as DomainUtil from "../../utils/domain-util";
 
-import BaseSection from "./base-section";
+import {reloadApp} from "./base-section";
 import FindAccounts from "./find-accounts";
 import ServerInfoForm from "./server-info-form";
 
@@ -13,14 +13,13 @@ interface ConnectedOrgSectionProps {
   $root: Element;
 }
 
-export default class ConnectedOrgSection extends BaseSection {
+export default class ConnectedOrgSection {
   props: ConnectedOrgSectionProps;
   $serverInfoContainer: Element | null;
   $existingServers: Element | null;
   $newOrgButton: HTMLButtonElement | null;
   $findAccountsContainer: Element | null;
   constructor(props: ConnectedOrgSectionProps) {
-    super();
     this.props = props;
   }
 
@@ -74,7 +73,7 @@ export default class ConnectedOrgSection extends BaseSection {
         $root: this.$serverInfoContainer,
         server,
         index: i,
-        onChange: this.reloadApp,
+        onChange: reloadApp,
       }).init();
     }
 

@@ -2,18 +2,17 @@ import type {HTML} from "../../../../common/html";
 import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
 
-import BaseSection from "./base-section";
+import {reloadApp} from "./base-section";
 import NewServerForm from "./new-server-form";
 
 interface ServersSectionProps {
   $root: Element;
 }
 
-export default class ServersSection extends BaseSection {
+export default class ServersSection {
   props: ServersSectionProps;
   $newServerContainer: Element;
   constructor(props: ServersSectionProps) {
-    super();
     this.props = props;
   }
 
@@ -46,7 +45,7 @@ export default class ServersSection extends BaseSection {
   initNewServerForm(): void {
     new NewServerForm({
       $root: this.$newServerContainer,
-      onChange: this.reloadApp,
+      onChange: reloadApp,
     }).init();
   }
 }

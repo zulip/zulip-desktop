@@ -5,13 +5,13 @@ import type {HTML} from "../../../../common/html";
 import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
 
-import BaseSection from "./base-section";
+import {generateSettingOption} from "./base-section";
 
 interface NetworkSectionProps {
   $root: Element;
 }
 
-export default class NetworkSection extends BaseSection {
+export default class NetworkSection {
   props: NetworkSectionProps;
   $proxyPAC: HTMLInputElement;
   $proxyRules: HTMLInputElement;
@@ -19,7 +19,6 @@ export default class NetworkSection extends BaseSection {
   $proxySaveAction: Element;
   $manualProxyBlock: Element;
   constructor(props: NetworkSectionProps) {
-    super();
     this.props = props;
   }
 
@@ -124,7 +123,7 @@ export default class NetworkSection extends BaseSection {
   }
 
   updateProxyOption(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector("#use-system-settings .setting-control"),
       value: ConfigUtil.getConfigItem("useSystemProxy", false),
       clickHandler: () => {
@@ -145,7 +144,7 @@ export default class NetworkSection extends BaseSection {
         this.updateProxyOption();
       },
     });
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector("#use-manual-settings .setting-control"),
       value: ConfigUtil.getConfigItem("useManualProxy", false),
       clickHandler: () => {

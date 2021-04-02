@@ -3,16 +3,13 @@ import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
 import * as LinkUtil from "../../utils/link-util";
 
-import BaseSection from "./base-section";
-
 interface ShortcutsSectionProps {
   $root: Element;
 }
 
-export default class ShortcutsSection extends BaseSection {
+export default class ShortcutsSection {
   props: ShortcutsSectionProps;
   constructor(props: ShortcutsSectionProps) {
-    super();
     this.props = props;
   }
 

@@ -13,7 +13,7 @@ import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
 import supportedLocales from "../../../../translations/supported-locales.json";
 
-import BaseSection from "./base-section";
+import {generateSelectHTML, generateSettingOption} from "./base-section";
 
 const {app, dialog, session} = remote;
 const currentBrowserWindow = remote.getCurrentWindow();
@@ -22,10 +22,9 @@ interface GeneralSectionProps {
   $root: Element;
 }
 
-export default class GeneralSection extends BaseSection {
+export default class GeneralSection {
   props: GeneralSectionProps;
   constructor(props: GeneralSectionProps) {
-    super();
     this.props = props;
   }
 
@@ -262,7 +261,7 @@ export default class GeneralSection extends BaseSection {
   }
 
   updateTrayOption(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector("#tray-option .setting-control"),
       value: ConfigUtil.getConfigItem("trayIcon", true),
       clickHandler: () => {
@@ -275,7 +274,7 @@ export default class GeneralSection extends BaseSection {
   }
 
   updateMenubarOption(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector("#menubar-option .setting-control"),
       value: ConfigUtil.getConfigItem("autoHideMenubar", false),
       clickHandler: () => {
@@ -288,7 +287,7 @@ export default class GeneralSection extends BaseSection {
   }
 
   updateBadgeOption(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector("#badge-option .setting-control"),
       value: ConfigUtil.getConfigItem("badgeOption", true),
       clickHandler: () => {
@@ -301,7 +300,7 @@ export default class GeneralSection extends BaseSection {
   }
 
   updateDockBouncing(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector("#dock-bounce-option .setting-control"),
       value: ConfigUtil.getConfigItem("dockBouncing", true),
       clickHandler: () => {
@@ -313,7 +312,7 @@ export default class GeneralSection extends BaseSection {
   }
 
   updateFlashTaskbar(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector(
         "#flash-taskbar-option .setting-control",
       ),
@@ -327,7 +326,7 @@ export default class GeneralSection extends BaseSection {
   }
 
   autoUpdateOption(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector("#autoupdate-option .setting-control"),
       disabled: EnterpriseUtil.configItemExists("autoUpdate"),
       value: ConfigUtil.getConfigItem("autoUpdate", true),
@@ -345,7 +344,7 @@ export default class GeneralSection extends BaseSection {
   }
 
   betaUpdateOption(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector("#betaupdate-option .setting-control"),
       value: ConfigUtil.getConfigItem("betaUpdate", false),
       clickHandler: () => {
@@ -359,7 +358,7 @@ export default class GeneralSection extends BaseSection {
   }
 
   updateSilentOption(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector("#silent-option .setting-control"),
       value: ConfigUtil.getConfigItem("silent", false),
       clickHandler: () => {
@@ -372,7 +371,7 @@ export default class GeneralSection extends BaseSection {
   }
 
   showDesktopNotification(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector(
         "#show-notification-option .setting-control",
       ),
@@ -386,7 +385,7 @@ export default class GeneralSection extends BaseSection {
   }
 
   updateSidebarOption(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector("#sidebar-option .setting-control"),
       value: ConfigUtil.getConfigItem("showSidebar", true),
       clickHandler: () => {
@@ -399,7 +398,7 @@ export default class GeneralSection extends BaseSection {
   }
 
   updateStartAtLoginOption(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector("#startAtLogin-option .setting-control"),
       value: ConfigUtil.getConfigItem("startAtLogin", false),
       clickHandler: () => {
@@ -412,7 +411,7 @@ export default class GeneralSection extends BaseSection {
   }
 
   updateQuitOnCloseOption(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector("#quitOnClose-option .setting-control"),
       value: ConfigUtil.getConfigItem("quitOnClose", false),
       clickHandler: () => {
@@ -424,7 +423,7 @@ export default class GeneralSection extends BaseSection {
   }
 
   enableSpellchecker(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector(
         "#enable-spellchecker-option .setting-control",
       ),
@@ -446,7 +445,7 @@ export default class GeneralSection extends BaseSection {
   }
 
   enableErrorReporting(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector(
         "#enable-error-reporting .setting-control",
       ),
@@ -477,7 +476,7 @@ export default class GeneralSection extends BaseSection {
 
   setLocale(): void {
     const langDiv: HTMLSelectElement = document.querySelector(".lang-div");
-    const langListHTML = this.generateSelectHTML(supportedLocales, "lang-menu");
+    const langListHTML = generateSelectHTML(supportedLocales, "lang-menu");
     langDiv.innerHTML += langListHTML.html;
     // `langMenu` is the select-option dropdown menu formed after executing the previous command
     const langMenu: HTMLSelectElement = document.querySelector(".lang-menu");
@@ -497,7 +496,7 @@ export default class GeneralSection extends BaseSection {
   }
 
   minimizeOnStart(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector(
         "#start-minimize-option .setting-control",
       ),
@@ -562,7 +561,7 @@ export default class GeneralSection extends BaseSection {
   }
 
   updatePromptDownloadOption(): void {
-    this.generateSettingOption({
+    generateSettingOption({
       $element: document.querySelector("#prompt-download .setting-control"),
       value: ConfigUtil.getConfigItem("promptDownload", false),
       clickHandler: () => {
