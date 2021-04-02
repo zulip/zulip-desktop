@@ -3,7 +3,7 @@ import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
 
 import {reloadApp} from "./base-section";
-import NewServerForm from "./new-server-form";
+import {initNewServerForm} from "./new-server-form";
 
 interface ServersSectionProps {
   $root: Element;
@@ -43,9 +43,9 @@ export default class ServersSection {
   }
 
   initNewServerForm(): void {
-    new NewServerForm({
+    initNewServerForm({
       $root: this.$newServerContainer,
       onChange: reloadApp,
-    }).init();
+    });
   }
 }
