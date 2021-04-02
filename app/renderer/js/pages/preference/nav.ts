@@ -53,7 +53,7 @@ export default class PreferenceNav {
 
   registerListeners(): void {
     for (const navItem of this.navItems) {
-      const $item = document.querySelector(`#nav-${CSS.escape(navItem)}`);
+      const $item = document.querySelector(`#nav-${CSS.escape(navItem)}`)!;
       $item.addEventListener("click", () => {
         this.props.onItemSelected(navItem);
       });
@@ -71,12 +71,12 @@ export default class PreferenceNav {
   }
 
   activate(navItem: NavItem): void {
-    const $item = document.querySelector(`#nav-${CSS.escape(navItem)}`);
+    const $item = document.querySelector(`#nav-${CSS.escape(navItem)}`)!;
     $item.classList.add("active");
   }
 
   deactivate(navItem: NavItem): void {
-    const $item = document.querySelector(`#nav-${CSS.escape(navItem)}`);
+    const $item = document.querySelector(`#nav-${CSS.escape(navItem)}`)!;
     $item.classList.remove("active");
   }
 }

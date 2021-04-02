@@ -292,7 +292,7 @@ function getHelpSubmenu(): Electron.MenuItemConstructorOptions[] {
 
 function getWindowSubmenu(
   tabs: TabData[],
-  activeTabIndex: number,
+  activeTabIndex?: number,
 ): Electron.MenuItemConstructorOptions[] {
   const initialSubmenu: Electron.MenuItemConstructorOptions[] = [
     {
@@ -342,7 +342,7 @@ function getWindowSubmenu(
           if (focusedWindow) {
             sendAction(
               "switch-server-tab",
-              getNextServer(tabs, activeTabIndex),
+              getNextServer(tabs, activeTabIndex!),
             );
           }
         },
@@ -355,7 +355,7 @@ function getWindowSubmenu(
           if (focusedWindow) {
             sendAction(
               "switch-server-tab",
-              getPreviousServer(tabs, activeTabIndex),
+              getPreviousServer(tabs, activeTabIndex!),
             );
           }
         },
@@ -367,7 +367,7 @@ function getWindowSubmenu(
 }
 
 function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
-  const {tabs, activeTabIndex, enableMenu} = props;
+  const {tabs, activeTabIndex, enableMenu = false} = props;
 
   return [
     {
@@ -533,7 +533,7 @@ function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
 }
 
 function getOtherTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
-  const {tabs, activeTabIndex, enableMenu} = props;
+  const {tabs, activeTabIndex, enableMenu = false} = props;
   return [
     {
       label: t.__("File"),

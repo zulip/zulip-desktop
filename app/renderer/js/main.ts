@@ -86,21 +86,25 @@ class ServerManagerView {
   tabIndex: number;
   presetOrgs: string[];
   constructor() {
-    this.$addServerButton = document.querySelector("#add-tab");
-    this.$tabsContainer = document.querySelector("#tabs-container");
+    this.$addServerButton = document.querySelector("#add-tab")!;
+    this.$tabsContainer = document.querySelector("#tabs-container")!;
 
-    const $actionsContainer = document.querySelector("#actions-container");
-    this.$reloadButton = $actionsContainer.querySelector("#reload-action");
-    this.$loadingIndicator = $actionsContainer.querySelector("#loading-action");
-    this.$settingsButton = $actionsContainer.querySelector("#settings-action");
-    this.$webviewsContainer = document.querySelector("#webviews-container");
-    this.$backButton = $actionsContainer.querySelector("#back-action");
-    this.$dndButton = $actionsContainer.querySelector("#dnd-action");
+    const $actionsContainer = document.querySelector("#actions-container")!;
+    this.$reloadButton = $actionsContainer.querySelector("#reload-action")!;
+    this.$loadingIndicator = $actionsContainer.querySelector(
+      "#loading-action",
+    )!;
+    this.$settingsButton = $actionsContainer.querySelector("#settings-action")!;
+    this.$webviewsContainer = document.querySelector("#webviews-container")!;
+    this.$backButton = $actionsContainer.querySelector("#back-action")!;
+    this.$dndButton = $actionsContainer.querySelector("#dnd-action")!;
 
-    this.$addServerTooltip = document.querySelector("#add-server-tooltip");
-    this.$reloadTooltip = $actionsContainer.querySelector("#reload-tooltip");
-    this.$loadingTooltip = $actionsContainer.querySelector("#loading-tooltip");
-    this.$settingsTooltip = $actionsContainer.querySelector("#setting-tooltip");
+    this.$addServerTooltip = document.querySelector("#add-server-tooltip")!;
+    this.$reloadTooltip = $actionsContainer.querySelector("#reload-tooltip")!;
+    this.$loadingTooltip = $actionsContainer.querySelector("#loading-tooltip")!;
+    this.$settingsTooltip = $actionsContainer.querySelector(
+      "#setting-tooltip",
+    )!;
 
     // TODO: This should have been querySelector but the problem is that
     // querySelector doesn't return elements not present in dom whereas somehow
@@ -110,12 +114,12 @@ class ServerManagerView {
     this.$serverIconTooltip = document.getElementsByClassName(
       "server-tooltip",
     ) as HTMLCollectionOf<HTMLElement>;
-    this.$backTooltip = $actionsContainer.querySelector("#back-tooltip");
-    this.$dndTooltip = $actionsContainer.querySelector("#dnd-tooltip");
+    this.$backTooltip = $actionsContainer.querySelector("#back-tooltip")!;
+    this.$dndTooltip = $actionsContainer.querySelector("#dnd-tooltip")!;
 
-    this.$sidebar = document.querySelector("#sidebar");
+    this.$sidebar = document.querySelector("#sidebar")!;
 
-    this.$fullscreenPopup = document.querySelector("#fullscreen-popup");
+    this.$fullscreenPopup = document.querySelector("#fullscreen-popup")!;
     this.$fullscreenEscapeKey = process.platform === "darwin" ? "^⌘F" : "F11";
     this.$fullscreenPopup.textContent = `Press ${this.$fullscreenEscapeKey} to exit full screen`;
 
@@ -486,12 +490,12 @@ class ServerManagerView {
     // error
 
     const $altIcon = document.createElement("div");
-    const $parent = $img.parentElement;
-    const $container = $parent.parentElement;
-    const webviewId = $container.dataset.tabId;
+    const $parent = $img.parentElement!;
+    const $container = $parent.parentElement!;
+    const webviewId = $container.dataset.tabId!;
     const $webview = document.querySelector(
       `webview[data-tab-id="${CSS.escape(webviewId)}"]`,
-    );
+    )!;
     const realmName = $webview.getAttribute("name");
 
     if (realmName === null) {
@@ -539,7 +543,7 @@ class ServerManagerView {
     // as that of its parent element.
     const {top} = this.$serverIconTooltip[
       index
-    ].parentElement.getBoundingClientRect();
+    ].parentElement!.getBoundingClientRect();
     this.$serverIconTooltip[index].style.top = `${top}px`;
   }
 
@@ -549,7 +553,7 @@ class ServerManagerView {
 
   openFunctionalTab(tabProps: FunctionalTabProps): void {
     if (this.functionalTabs.has(tabProps.name)) {
-      this.activateTab(this.functionalTabs.get(tabProps.name));
+      this.activateTab(this.functionalTabs.get(tabProps.name)!);
       return;
     }
 
@@ -563,20 +567,20 @@ class ServerManagerView {
         materialIcon: tabProps.materialIcon,
         name: tabProps.name,
         $root: this.$tabsContainer,
-        index: this.functionalTabs.get(tabProps.name),
+        index: this.functionalTabs.get(tabProps.name)!,
         tabIndex,
         onClick: this.activateTab.bind(
           this,
-          this.functionalTabs.get(tabProps.name),
+          this.functionalTabs.get(tabProps.name)!,
         ),
         onDestroy: this.destroyTab.bind(
           this,
           tabProps.name,
-          this.functionalTabs.get(tabProps.name),
+          this.functionalTabs.get(tabProps.name)!,
         ),
         webview: new WebView({
           $root: this.$webviewsContainer,
-          index: this.functionalTabs.get(tabProps.name),
+          index: this.functionalTabs.get(tabProps.name)!,
           tabIndex,
           url: tabProps.url,
           role: "function",
@@ -610,7 +614,7 @@ class ServerManagerView {
     // closed when the functional tab DOM is ready, handled in webview.js
     this.$webviewsContainer.classList.remove("loaded");
 
-    this.activateTab(this.functionalTabs.get(tabProps.name));
+    this.activateTab(this.functionalTabs.get(tabProps.name)!);
   }
 
   async openSettings(nav: NavItem = "General"): Promise<void> {
@@ -620,7 +624,7 @@ class ServerManagerView {
       url: `file://${rendererDirectory}/preference.html#${nav}`,
     });
     this.$settingsButton.classList.add("active");
-    await this.tabs[this.functionalTabs.get("Settings")].webview.send(
+    await this.tabs[this.functionalTabs.get("Settings")!].webview.send(
       "switch-settings-nav",
       nav,
     );
@@ -798,19 +802,19 @@ class ServerManagerView {
   toggleDNDButton(alert: boolean): void {
     this.$dndTooltip.textContent =
       (alert ? "Disable" : "Enable") + " Do Not Disturb";
-    this.$dndButton.querySelector("i").textContent = alert
+    this.$dndButton.querySelector("i")!.textContent = alert
       ? "notifications_off"
       : "notifications";
   }
 
   isLoggedIn(tabIndex: number): boolean {
-    const url = this.tabs[tabIndex].webview.$el.src;
+    const url = this.tabs[tabIndex].webview.$el!.src;
     return !(url.endsWith("/login/") || this.tabs[tabIndex].webview.loading);
   }
 
   getActiveWebview(): Electron.WebviewTag {
     const selector = "webview:not(.disabled)";
-    const webview: Electron.WebviewTag = document.querySelector(selector);
+    const webview: Electron.WebviewTag = document.querySelector(selector)!;
     return webview;
   }
 
@@ -954,7 +958,7 @@ class ServerManagerView {
             : this.tabs.some(
                 ({webview}) =>
                   !webview.loading &&
-                  webview.$el.getWebContentsId() === webContentsId &&
+                  webview.$el!.getWebContentsId() === webContentsId &&
                   webview.props.hasPermission?.(origin, permission),
               );
         console.log(
@@ -1132,10 +1136,10 @@ class ServerManagerView {
         );
         for (const webview of webviews) {
           const currentId = webview.getWebContentsId();
-          const tabId = webview.getAttribute("data-tab-id");
+          const tabId = webview.getAttribute("data-tab-id")!;
           const concurrentTab: HTMLButtonElement = document.querySelector(
             `div[data-tab-id="${CSS.escape(tabId)}"]`,
-          );
+          )!;
           if (currentId === webviewId) {
             concurrentTab.click();
           }
@@ -1152,7 +1156,7 @@ class ServerManagerView {
           canvas.height = 128;
           canvas.width = 128;
           canvas.style.letterSpacing = "-5px";
-          const ctx = canvas.getContext("2d");
+          const ctx = canvas.getContext("2d")!;
           ctx.fillStyle = "#f42020";
           ctx.beginPath();
           ctx.ellipse(64, 64, 64, 64, 0, 0, 2 * Math.PI);

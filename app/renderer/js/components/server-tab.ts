@@ -9,6 +9,7 @@ import type {TabProps} from "./tab";
 import Tab from "./tab";
 
 export default class ServerTab extends Tab {
+  $el: Element;
   $badge: Element;
 
   constructor(props: TabProps) {
@@ -17,7 +18,7 @@ export default class ServerTab extends Tab {
     this.$el = generateNodeFromHTML(this.templateHTML());
     this.props.$root.append(this.$el);
     this.registerListeners();
-    this.$badge = this.$el.querySelector(".server-tab-badge");
+    this.$badge = this.$el.querySelector(".server-tab-badge")!;
   }
 
   templateHTML(): HTML {

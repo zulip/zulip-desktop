@@ -6,7 +6,8 @@ import type {TabProps} from "./tab";
 import Tab from "./tab";
 
 export default class FunctionalTab extends Tab {
-  $closeButton: Element;
+  $el: Element;
+  $closeButton?: Element;
 
   constructor(props: TabProps) {
     super(props);
@@ -14,7 +15,7 @@ export default class FunctionalTab extends Tab {
     this.$el = generateNodeFromHTML(this.templateHTML());
     if (this.props.name !== "Settings") {
       this.props.$root.append(this.$el);
-      this.$closeButton = this.$el.querySelector(".server-tab-badge");
+      this.$closeButton = this.$el.querySelector(".server-tab-badge")!;
       this.registerListeners();
     }
   }
@@ -36,15 +37,15 @@ export default class FunctionalTab extends Tab {
     super.registerListeners();
 
     this.$el.addEventListener("mouseover", () => {
-      this.$closeButton.classList.add("active");
+      this.$closeButton?.classList.add("active");
     });
 
     this.$el.addEventListener("mouseout", () => {
-      this.$closeButton.classList.remove("active");
+      this.$closeButton?.classList.remove("active");
     });
 
-    this.$closeButton.addEventListener("click", (event: Event) => {
-      this.props.onDestroy();
+    this.$closeButton?.addEventListener("click", (event: Event) => {
+      this.props.onDestroy?.();
       event.stopPropagation();
     });
   }

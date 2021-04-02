@@ -6,7 +6,7 @@ import * as ConfigUtil from "../../common/config-util";
 
 const {Tray, Menu, nativeImage, BrowserWindow} = remote;
 
-let tray: Electron.Tray;
+let tray: Electron.Tray | null = null;
 
 const ICON_DIR = "../../resources/tray";
 
@@ -69,7 +69,7 @@ const renderCanvas = function (arg: number): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
   canvas.width = SIZE;
   canvas.height = SIZE;
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d")!;
 
   // Circle
   // If (!config.thick || config.thick && HAS_COUNT) {
@@ -210,15 +210,15 @@ function toggleTray(): void {
     createTray();
     if (process.platform === "linux" || process.platform === "win32") {
       const image = renderNativeImage(unread);
-      tray.setImage(image);
-      tray.setToolTip(`${unread} unread messages`);
+      tray!.setImage(image);
+      tray!.setToolTip(`${unread} unread messages`);
     }
 
     ConfigUtil.setConfigItem("trayIcon", true);
   }
 
   const selector = "webview:not([class*=disabled])";
-  const webview: WebviewTag = document.querySelector(selector);
+  const webview: WebviewTag = document.querySelector(selector)!;
   const webContents = remote.webContents.fromId(webview.getWebContentsId());
   webContents.send("toggletray", state);
 }

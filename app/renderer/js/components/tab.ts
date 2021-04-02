@@ -15,10 +15,11 @@ export interface TabProps {
   onDestroy?: () => void;
 }
 
-export default class Tab {
+export default abstract class Tab {
   props: TabProps;
   webview: WebView;
-  $el: Element;
+  abstract $el: Element;
+
   constructor(props: TabProps) {
     this.props = props;
     this.webview = this.props.webview;
@@ -26,8 +27,14 @@ export default class Tab {
 
   registerListeners(): void {
     this.$el.addEventListener("click", this.props.onClick);
-    this.$el.addEventListener("mouseover", this.props.onHover);
-    this.$el.addEventListener("mouseout", this.props.onHoverOut);
+
+    if (this.props.onHover !== undefined) {
+      this.$el.addEventListener("mouseover", this.props.onHover);
+    }
+
+    if (this.props.onHoverOut !== undefined) {
+      this.$el.addEventListener("mouseout", this.props.onHoverOut);
+    }
   }
 
   showNetworkError(): void {
@@ -46,6 +53,6 @@ export default class Tab {
 
   destroy(): void {
     this.$el.remove();
-    this.webview.$el.remove();
+    this.webview.$el!.remove();
   }
 }

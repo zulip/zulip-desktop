@@ -12,7 +12,7 @@ ipcRenderer.on("logout", () => {
   }
 
   // Create the menu for the below
-  const dropdown: HTMLElement = document.querySelector(".dropdown-toggle");
+  const dropdown: HTMLElement = document.querySelector(".dropdown-toggle")!;
   dropdown.click();
 
   const nodes: NodeListOf<HTMLElement> = document.querySelectorAll(
@@ -29,13 +29,13 @@ ipcRenderer.on("show-keyboard-shortcuts", () => {
   // Create the menu for the below
   const node: HTMLElement = document.querySelector(
     "a[data-overlay-trigger=keyboard-shortcuts]",
-  );
+  )!;
   // Additional check
-  if (node.textContent.trim().toLowerCase() === "keyboard shortcuts (?)") {
+  if (node.textContent!.trim().toLowerCase() === "keyboard shortcuts (?)") {
     node.click();
   } else {
     // Atleast click the dropdown
-    const dropdown: HTMLElement = document.querySelector(".dropdown-toggle");
+    const dropdown: HTMLElement = document.querySelector(".dropdown-toggle")!;
     dropdown.click();
   }
 });
@@ -46,7 +46,7 @@ ipcRenderer.on("show-notification-settings", () => {
   }
 
   // Create the menu for the below
-  const dropdown: HTMLElement = document.querySelector(".dropdown-toggle");
+  const dropdown: HTMLElement = document.querySelector(".dropdown-toggle")!;
   dropdown.click();
 
   const nodes: NodeListOf<HTMLElement> = document.querySelectorAll(
@@ -69,8 +69,8 @@ window.addEventListener("load", (event: any): void => {
     return;
   }
 
-  const $reconnectButton = document.querySelector("#reconnect");
-  const $settingsButton = document.querySelector("#settings");
+  const $reconnectButton = document.querySelector("#reconnect")!;
+  const $settingsButton = document.querySelector("#settings")!;
   NetworkError.init($reconnectButton, $settingsButton);
 });
 

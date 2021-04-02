@@ -10,7 +10,6 @@
     /* Strict type-checking */
     "strict": true,
     "noImplicitAny": true,
-    "strictNullChecks": false,
     "noImplicitThis": true,
     "alwaysStrict": true,
 

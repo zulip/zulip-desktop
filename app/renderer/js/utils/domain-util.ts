@@ -17,7 +17,7 @@ const logger = new Logger({
 
 const defaultIconUrl = "../renderer/img/icon.png";
 
-let db: JsonDB;
+let db!: JsonDB;
 
 reloadDB();
 // Migrate from old schema

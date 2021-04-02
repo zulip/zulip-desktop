@@ -35,9 +35,9 @@ export default class WebView {
   zoomFactor: number;
   badgeCount: number;
   loading: boolean;
-  customCSS: string;
+  customCSS: string | null;
   $webviewsContainer: DOMTokenList;
-  $el: Electron.WebviewTag;
+  $el?: Electron.WebviewTag;
   domReady?: Promise<void>;
 
   constructor(props: WebViewProps) {
@@ -48,7 +48,7 @@ export default class WebView {
     this.customCSS = ConfigUtil.getConfigItem("customCSS");
     this.$webviewsContainer = document.querySelector(
       "#webviews-container",
-    ).classList;
+    )!.classList;
   }
 
   templateHTML(): HTML {
@@ -74,7 +74,7 @@ export default class WebView {
   init(): void {
     this.$el = generateNodeFromHTML(this.templateHTML()) as Electron.WebviewTag;
     this.domReady = new Promise((resolve) => {
-      this.$el.addEventListener(
+      this.$el!.addEventListener(
         "dom-ready",
         () => {
           resolve();
@@ -88,23 +88,23 @@ export default class WebView {
   }
 
   registerListeners(): void {
-    this.$el.addEventListener("new-window", (event) => {
+    this.$el!.addEventListener("new-window", (event) => {
       handleExternalLink.call(this, event);
     });
 
     if (shouldSilentWebview) {
-      this.$el.addEventListener("dom-ready", () => {
-        this.$el.setAudioMuted(true);
+      this.$el!.addEventListener("dom-ready", () => {
+        this.$el!.setAudioMuted(true);
       });
     }
 
-    this.$el.addEventListener("page-title-updated", (event) => {
+    this.$el!.addEventListener("page-title-updated", (event) => {
       const {title} = event;
       this.badgeCount = this.getBadgeCount(title);
       this.props.onTitleChange();
     });
 
-    this.$el.addEventListener("did-navigate-in-page", (event) => {
+    this.$el!.addEventListener("did-navigate-in-page", (event) => {
       const isSettingPage = event.url.includes("renderer/preference.html");
       if (isSettingPage) {
         return;
@@ -113,11 +113,11 @@ export default class WebView {
       this.canGoBackButton();
     });
 
-    this.$el.addEventListener("did-navigate", () => {
+    this.$el!.addEventListener("did-navigate", () => {
       this.canGoBackButton();
     });
 
-    this.$el.addEventListener("page-favicon-updated", (event) => {
+    this.$el!.addEventListener("page-favicon-updated", (event) => {
       const {favicons} = event;
 
       // This returns a string of favicons URL. If there is a PM counts in unread messages then the URL would be like
@@ -135,16 +135,16 @@ export default class WebView {
       }
     });
 
-    this.$el.addEventListener("dom-ready", () => {
+    this.$el!.addEventListener("dom-ready", () => {
       const webContents = remote.webContents.fromId(
-        this.$el.getWebContentsId(),
+        this.$el!.getWebContentsId(),
       );
       webContents.addListener("context-menu", (event, menuParameters) => {
         contextMenu(webContents, event, menuParameters);
       });
 
       if (this.props.role === "server") {
-        this.$el.classList.add("onload");
+        this.$el!.classList.add("onload");
       }
 
       this.loading = false;
@@ -153,11 +153,11 @@ export default class WebView {
 
       // Refocus text boxes after reload
       // Remove when upstream issue https://github.com/electron/electron/issues/14474 is fixed
-      this.$el.blur();
-      this.$el.focus();
+      this.$el!.blur();
+      this.$el!.focus();
     });
 
-    this.$el.addEventListener("did-fail-load", (event) => {
+    this.$el!.addEventListener("did-fail-load", (event) => {
       const {errorDescription} = event;
       const hasConnectivityError = SystemUtil.connectivityERR.includes(
         errorDescription,
@@ -170,14 +170,14 @@ export default class WebView {
       }
     });
 
-    this.$el.addEventListener("did-start-loading", () => {
+    this.$el!.addEventListener("did-start-loading", () => {
       const isSettingPage = this.props.url.includes("renderer/preference.html");
       if (!isSettingPage) {
         this.props.switchLoading(true, this.props.url);
       }
     });
 
-    this.$el.addEventListener("did-stop-loading", () => {
+    this.$el!.addEventListener("did-stop-loading", () => {
       this.props.switchLoading(false, this.props.url);
     });
   }
@@ -189,7 +189,7 @@ export default class WebView {
 
   showNotificationSettings(): void {
     ipcRenderer.sendTo(
-      this.$el.getWebContentsId(),
+      this.$el!.getWebContentsId(),
       "show-notification-settings",
     );
   }
@@ -207,18 +207,18 @@ export default class WebView {
       this.$webviewsContainer.add("loaded");
     }
 
-    this.$el.classList.remove("disabled");
-    this.$el.classList.add("active");
+    this.$el!.classList.remove("disabled");
+    this.$el!.classList.add("active");
     setTimeout(() => {
       if (this.props.role === "server") {
-        this.$el.classList.remove("onload");
+        this.$el!.classList.remove("onload");
       }
     }, 1000);
     this.focus();
     this.props.onTitleChange();
     // Injecting preload css in webview to override some css rules
     (async () =>
-      this.$el.insertCSS(
+      this.$el!.insertCSS(
         fs.readFileSync(path.join(__dirname, "/../../css/preload.css"), "utf8"),
       ))();
 
@@ -235,15 +235,15 @@ export default class WebView {
       }
 
       (async () =>
-        this.$el.insertCSS(
-          fs.readFileSync(path.resolve(__dirname, this.customCSS), "utf8"),
+        this.$el!.insertCSS(
+          fs.readFileSync(path.resolve(__dirname, this.customCSS!), "utf8"),
         ))();
     }
   }
 
   focus(): void {
     // Focus Webview and it's contents when Window regain focus.
-    const webContents = remote.webContents.fromId(this.$el.getWebContentsId());
+    const webContents = remote.webContents.fromId(this.$el!.getWebContentsId());
     // HACK: webContents.isFocused() seems to be true even without the element
     // being in focus. So, we check against `document.activeElement`.
     if (webContents && this.$el !== document.activeElement) {
@@ -251,14 +251,14 @@ export default class WebView {
       // element to transfer focus correctly, in Electron v3.0.10
       // See https://github.com/electron/electron/issues/15718
       (document.activeElement as HTMLElement).blur();
-      this.$el.focus();
+      this.$el!.focus();
       webContents.focus();
     }
   }
 
   hide(): void {
-    this.$el.classList.add("disabled");
-    this.$el.classList.remove("active");
+    this.$el!.classList.add("disabled");
+    this.$el!.classList.remove("active");
   }
 
   load(): void {
@@ -271,34 +271,34 @@ export default class WebView {
 
   zoomIn(): void {
     this.zoomFactor += 0.1;
-    this.$el.setZoomFactor(this.zoomFactor);
+    this.$el!.setZoomFactor(this.zoomFactor);
   }
 
   zoomOut(): void {
     this.zoomFactor -= 0.1;
-    this.$el.setZoomFactor(this.zoomFactor);
+    this.$el!.setZoomFactor(this.zoomFactor);
   }
 
   zoomActualSize(): void {
     this.zoomFactor = 1;
-    this.$el.setZoomFactor(this.zoomFactor);
+    this.$el!.setZoomFactor(this.zoomFactor);
   }
 
   logOut(): void {
-    ipcRenderer.sendTo(this.$el.getWebContentsId(), "logout");
+    ipcRenderer.sendTo(this.$el!.getWebContentsId(), "logout");
   }
 
   showKeyboardShortcuts(): void {
-    ipcRenderer.sendTo(this.$el.getWebContentsId(), "show-keyboard-shortcuts");
+    ipcRenderer.sendTo(this.$el!.getWebContentsId(), "show-keyboard-shortcuts");
   }
 
   openDevTools(): void {
-    this.$el.openDevTools();
+    this.$el!.openDevTools();
   }
 
   back(): void {
-    if (this.$el.canGoBack()) {
-      this.$el.goBack();
+    if (this.$el!.canGoBack()) {
+      this.$el!.goBack();
       this.focus();
     }
   }
@@ -306,8 +306,8 @@ export default class WebView {
   canGoBackButton(): void {
     const $backButton = document.querySelector(
       "#actions-container #back-action",
-    );
-    if (this.$el.canGoBack()) {
+    )!;
+    if (this.$el!.canGoBack()) {
       $backButton.classList.remove("disable");
     } else {
       $backButton.classList.add("disable");
@@ -315,8 +315,8 @@ export default class WebView {
   }
 
   forward(): void {
-    if (this.$el.canGoForward()) {
-      this.$el.goForward();
+    if (this.$el!.canGoForward()) {
+      this.$el!.goForward();
     }
   }
 
@@ -326,7 +326,7 @@ export default class WebView {
     this.$webviewsContainer.remove("loaded");
     this.loading = true;
     this.props.switchLoading(true, this.props.url);
-    this.$el.reload();
+    this.$el!.reload();
   }
 
   forceLoad(): void {
@@ -335,6 +335,6 @@ export default class WebView {
 
   async send(channel: string, ...parameters: unknown[]): Promise<void> {
     await this.domReady;
-    await this.$el.send(channel, ...parameters);
+    await this.$el!.send(channel, ...parameters);
   }
 }
