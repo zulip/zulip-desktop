@@ -30,7 +30,7 @@ export interface NotificationData {
 
 export function newNotification(
   title: string,
-  options: NotificationOptions | undefined,
+  options: NotificationOptions,
   dispatch: (type: string, eventInit: EventInit) => boolean,
 ): NotificationData {
   const notification = new DefaultNotification(title, options);

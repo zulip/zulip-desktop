@@ -25,7 +25,7 @@ const electron_bridge: ElectronBridge = {
 
   new_notification: (
     title: string,
-    options: NotificationOptions | undefined,
+    options: NotificationOptions,
     dispatch: (type: string, eventInit: EventInit) => boolean,
   ): NotificationData => newNotification(title, options, dispatch),
 

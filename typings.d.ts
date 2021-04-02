@@ -32,7 +32,7 @@ interface ElectronBridge {
   on_event: (eventName: string, listener: ListenerType) => void;
   new_notification: (
     title: string,
-    options: NotificationOptions | undefined,
+    options: NotificationOptions,
     dispatch: (type: string, eventInit: EventInit) => boolean,
   ) => NotificationData;
   get_idle_on_system: () => boolean;

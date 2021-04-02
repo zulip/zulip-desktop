@@ -69,7 +69,7 @@ interface CompatElectronBridge extends ElectronBridge {
   const NativeNotification = Notification;
 
   class InjectedNotification extends EventTarget {
-    constructor(title: string, options?: NotificationOptions) {
+    constructor(title: string, options: NotificationOptions = {}) {
       super();
       Object.assign(
         this,
