@@ -1099,10 +1099,9 @@ class ServerManagerView {
         await Promise.all(
           DomainUtil.getDomains().map(async (domain, index) => {
             if (domain.url.includes(serverURL)) {
-              const localIconUrl: string = await DomainUtil.saveServerIcon({
-                url: serverURL,
-                icon: iconURL,
-              });
+              const localIconUrl: string = await DomainUtil.saveServerIcon(
+                iconURL,
+              );
               const serverImgsSelector = ".tab .server-icons";
               const serverImgs: NodeListOf<HTMLImageElement> = document.querySelectorAll(
                 serverImgsSelector,

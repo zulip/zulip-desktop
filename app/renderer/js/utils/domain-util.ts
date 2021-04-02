@@ -50,9 +50,13 @@ export function updateDomain(index: number, server: ServerConf): void {
   db.push(`/domains[${index}]`, server, true);
 }
 
-export async function addDomain(server: ServerConf): Promise<void> {
+export async function addDomain(server: {
+  url: string;
+  alias: string;
+  icon?: string;
+}): Promise<void> {
   if (server.icon) {
-    const localIconUrl = await saveServerIcon(server);
+    const localIconUrl = await saveServerIcon(server.icon);
     server.icon = localIconUrl;
     db.push("/domains[]", server, true);
     reloadDB();
@@ -106,8 +110,8 @@ async function getServerSettings(domain: string): Promise<ServerConf> {
   return ipcRenderer.invoke("get-server-settings", domain);
 }
 
-export async function saveServerIcon(server: ServerConf): Promise<string> {
-  return ipcRenderer.invoke("save-server-icon", server.icon);
+export async function saveServerIcon(iconURL: string): Promise<string> {
+  return ipcRenderer.invoke("save-server-icon", iconURL);
 }
 
 export async function updateSavedServer(
@@ -118,7 +122,7 @@ export async function updateSavedServer(
   const oldIcon = getDomain(index).icon;
   try {
     const newServerConf = await checkDomain(url, true);
-    const localIconUrl = await saveServerIcon(newServerConf);
+    const localIconUrl = await saveServerIcon(newServerConf.icon);
     if (!oldIcon || localIconUrl !== "../renderer/img/icon.png") {
       newServerConf.icon = localIconUrl;
       updateDomain(index, newServerConf);
