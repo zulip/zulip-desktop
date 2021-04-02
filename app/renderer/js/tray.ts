@@ -162,23 +162,18 @@ const createTray = function (): void {
   }
 };
 
-ipcRenderer.on(
-  "destroytray",
-  (event: Event): Event => {
-    if (!tray) {
-      return undefined;
-    }
+ipcRenderer.on("destroytray", (_event: Event) => {
+  if (!tray) {
+    return;
+  }
 
-    tray.destroy();
-    if (tray.isDestroyed()) {
-      tray = null;
-    } else {
-      throw new Error("Tray icon not properly destroyed.");
-    }
-
-    return event;
-  },
-);
+  tray.destroy();
+  if (tray.isDestroyed()) {
+    tray = null;
+  } else {
+    throw new Error("Tray icon not properly destroyed.");
+  }
+});
 
 ipcRenderer.on("tray", (_event: Event, arg: number): void => {
   if (!tray) {
