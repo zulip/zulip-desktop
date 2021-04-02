@@ -6,7 +6,7 @@ import * as t from "../../../../common/translation-util";
 import * as DomainUtil from "../../utils/domain-util";
 
 import {reloadApp} from "./base-section";
-import FindAccounts from "./find-accounts";
+import {initFindAccounts} from "./find-accounts";
 import ServerInfoForm from "./server-info-form";
 
 interface ConnectedOrgSectionProps {
@@ -85,8 +85,8 @@ export default class ConnectedOrgSection {
   }
 
   initFindAccounts(): void {
-    new FindAccounts({
+    initFindAccounts({
       $root: this.$findAccountsContainer,
-    }).init();
+    });
   }
 }
