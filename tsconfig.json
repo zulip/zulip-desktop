@@ -6,16 +6,6 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-
-    /* Strict type-checking */
-    "strict": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-
-    /* Additional checks */
-    "noUnusedLocals": true,
-    "noUnusedParameters": false,
-    "noImplicitReturns": true
+    "strict": true
   }
 }
