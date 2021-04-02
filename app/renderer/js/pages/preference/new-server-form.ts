@@ -3,7 +3,7 @@ import {ipcRenderer, remote} from "electron";
 import {html} from "../../../../common/html";
 import type {HTML} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
-import BaseComponent from "../../components/base";
+import {generateNodeFromHTML} from "../../components/base";
 import * as DomainUtil from "../../utils/domain-util";
 import * as LinkUtil from "../../utils/link-util";
 
@@ -14,13 +14,12 @@ interface NewServerFormProps {
   onChange: () => void;
 }
 
-export default class NewServerForm extends BaseComponent {
+export default class NewServerForm {
   props: NewServerFormProps;
   $newServerForm: Element;
   $saveServerButton: HTMLButtonElement;
   $newServerUrl: HTMLInputElement;
   constructor(props: NewServerFormProps) {
-    super();
     this.props = props;
   }
 
@@ -68,7 +67,7 @@ export default class NewServerForm extends BaseComponent {
   }
 
   initForm(): void {
-    this.$newServerForm = this.generateNodeFromHTML(this.templateHTML());
+    this.$newServerForm = generateNodeFromHTML(this.templateHTML());
     this.$saveServerButton = this.$newServerForm.querySelector("#connect");
     this.props.$root.textContent = "";
     this.props.$root.append(this.$newServerForm);

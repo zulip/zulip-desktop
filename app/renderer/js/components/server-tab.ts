@@ -4,6 +4,7 @@ import type {HTML} from "../../../common/html";
 import {html} from "../../../common/html";
 import * as SystemUtil from "../utils/system-util";
 
+import {generateNodeFromHTML} from "./base";
 import type {TabProps} from "./tab";
 import Tab from "./tab";
 
@@ -13,7 +14,7 @@ export default class ServerTab extends Tab {
   constructor(props: TabProps) {
     super(props);
 
-    this.$el = this.generateNodeFromHTML(this.templateHTML());
+    this.$el = generateNodeFromHTML(this.templateHTML());
     this.props.$root.append(this.$el);
     this.registerListeners();
     this.$badge = this.$el.querySelector(".server-tab-badge");

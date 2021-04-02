@@ -1,20 +1,19 @@
 import type {HTML} from "../../../../common/html";
 import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
-import BaseComponent from "../../components/base";
+import {generateNodeFromHTML} from "../../components/base";
 import * as LinkUtil from "../../utils/link-util";
 
 interface FindAccountsProps {
   $root: Element;
 }
 
-export default class FindAccounts extends BaseComponent {
+export default class FindAccounts {
   props: FindAccountsProps;
   $findAccounts: Element | null;
   $findAccountsButton: Element | null;
   $serverUrlField: HTMLInputElement | null;
   constructor(props: FindAccountsProps) {
-    super();
     this.props = props;
   }
 
@@ -35,7 +34,7 @@ export default class FindAccounts extends BaseComponent {
   }
 
   init(): void {
-    this.$findAccounts = this.generateNodeFromHTML(this.templateHTML());
+    this.$findAccounts = generateNodeFromHTML(this.templateHTML());
     this.props.$root.append(this.$findAccounts);
     this.$findAccountsButton = this.$findAccounts.querySelector(
       "#find-accounts-button",

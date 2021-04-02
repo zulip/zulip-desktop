@@ -2,7 +2,7 @@ import {ipcRenderer} from "electron";
 
 import type {HTML} from "../../../../common/html";
 import {html} from "../../../../common/html";
-import BaseComponent from "../../components/base";
+import {generateNodeFromHTML} from "../../components/base";
 
 interface BaseSectionProps {
   $element: HTMLElement;
@@ -11,13 +11,13 @@ interface BaseSectionProps {
   clickHandler: () => void;
 }
 
-export default class BaseSection extends BaseComponent {
+export default class BaseSection {
   generateSettingOption(props: BaseSectionProps): void {
     const {$element, disabled, value, clickHandler} = props;
 
     $element.textContent = "";
 
-    const $optionControl = this.generateNodeFromHTML(
+    const $optionControl = generateNodeFromHTML(
       this.generateOptionHTML(value, disabled),
     );
     $element.append($optionControl);

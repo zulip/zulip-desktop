@@ -1,7 +1,7 @@
 import type {HTML} from "../../../../common/html";
 import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
-import BaseComponent from "../../components/base";
+import {generateNodeFromHTML} from "../../components/base";
 
 export type NavItem =
   | "General"
@@ -15,12 +15,11 @@ interface PreferenceNavProps {
   onItemSelected: (navItem: NavItem) => void;
 }
 
-export default class PreferenceNav extends BaseComponent {
+export default class PreferenceNav {
   props: PreferenceNavProps;
   navItems: NavItem[];
   $el: Element;
   constructor(props: PreferenceNavProps) {
-    super();
     this.props = props;
     this.navItems = [
       "General",
@@ -50,7 +49,7 @@ export default class PreferenceNav extends BaseComponent {
   }
 
   init(): void {
-    this.$el = this.generateNodeFromHTML(this.templateHTML());
+    this.$el = generateNodeFromHTML(this.templateHTML());
     this.props.$root.append(this.$el);
     this.registerListeners();
   }

@@ -1,4 +1,3 @@
-import BaseComponent from "./base";
 import type WebView from "./webview";
 
 export interface TabProps {
@@ -16,13 +15,11 @@ export interface TabProps {
   onDestroy?: () => void;
 }
 
-export default class Tab extends BaseComponent {
+export default class Tab {
   props: TabProps;
   webview: WebView;
   $el: Element;
   constructor(props: TabProps) {
-    super();
-
     this.props = props;
     this.webview = this.props.webview;
   }

@@ -1,6 +1,7 @@
 import type {HTML} from "../../../common/html";
 import {html} from "../../../common/html";
 
+import {generateNodeFromHTML} from "./base";
 import type {TabProps} from "./tab";
 import Tab from "./tab";
 
@@ -10,7 +11,7 @@ export default class FunctionalTab extends Tab {
   constructor(props: TabProps) {
     super(props);
 
-    this.$el = this.generateNodeFromHTML(this.templateHTML());
+    this.$el = generateNodeFromHTML(this.templateHTML());
     if (this.props.name !== "Settings") {
       this.props.$root.append(this.$el);
       this.$closeButton = this.$el.querySelector(".server-tab-badge");

@@ -5,7 +5,7 @@ import type {HTML} from "../../../../common/html";
 import * as Messages from "../../../../common/messages";
 import * as t from "../../../../common/translation-util";
 import type {ServerConf} from "../../../../common/types";
-import BaseComponent from "../../components/base";
+import {generateNodeFromHTML} from "../../components/base";
 import * as DomainUtil from "../../utils/domain-util";
 
 const {dialog} = remote;
@@ -17,7 +17,7 @@ interface ServerInfoFormProps {
   onChange: () => void;
 }
 
-export default class ServerInfoForm extends BaseComponent {
+export default class ServerInfoForm {
   props: ServerInfoFormProps;
   $serverInfoForm: Element;
   $serverInfoAlias: Element;
@@ -25,7 +25,6 @@ export default class ServerInfoForm extends BaseComponent {
   $deleteServerButton: Element;
   $openServerButton: Element;
   constructor(props: ServerInfoFormProps) {
-    super();
     this.props = props;
   }
 
@@ -61,7 +60,7 @@ export default class ServerInfoForm extends BaseComponent {
   }
 
   initForm(): void {
-    this.$serverInfoForm = this.generateNodeFromHTML(this.templateHTML());
+    this.$serverInfoForm = generateNodeFromHTML(this.templateHTML());
     this.$serverInfoAlias = this.$serverInfoForm.querySelector(
       ".server-info-alias",
     );

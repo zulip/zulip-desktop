@@ -6,7 +6,7 @@ import * as ConfigUtil from "../../../common/config-util";
 import {HTML, html} from "../../../common/html";
 import * as SystemUtil from "../utils/system-util";
 
-import BaseComponent from "./base";
+import {generateNodeFromHTML} from "./base";
 import {contextMenu} from "./context-menu";
 import handleExternalLink from "./handle-external-link";
 
@@ -30,7 +30,7 @@ interface WebViewProps {
   hasPermission?: (origin: string, permission: string) => boolean;
 }
 
-export default class WebView extends BaseComponent {
+export default class WebView {
   props: WebViewProps;
   zoomFactor: number;
   badgeCount: number;
@@ -41,8 +41,6 @@ export default class WebView extends BaseComponent {
   domReady?: Promise<void>;
 
   constructor(props: WebViewProps) {
-    super();
-
     this.props = props;
     this.zoomFactor = 1;
     this.loading = true;
@@ -74,9 +72,7 @@ export default class WebView extends BaseComponent {
   }
 
   init(): void {
-    this.$el = this.generateNodeFromHTML(
-      this.templateHTML(),
-    ) as Electron.WebviewTag;
+    this.$el = generateNodeFromHTML(this.templateHTML()) as Electron.WebviewTag;
     this.domReady = new Promise((resolve) => {
       this.$el.addEventListener(
         "dom-ready",

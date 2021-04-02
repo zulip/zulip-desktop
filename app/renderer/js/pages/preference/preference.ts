@@ -1,7 +1,6 @@
 import {ipcRenderer} from "electron";
 
 import type {DNDSettings} from "../../../../common/dnd-util";
-import BaseComponent from "../../components/base";
 
 import ConnectedOrgSection from "./connected-org-section";
 import GeneralSection from "./general-section";
@@ -18,13 +17,12 @@ type Section =
   | ConnectedOrgSection
   | ShortcutsSection;
 
-export default class PreferenceView extends BaseComponent {
+export default class PreferenceView {
   $sidebarContainer: Element;
   $settingsContainer: Element;
   nav: Nav;
   section: Section;
   constructor() {
-    super();
     this.$sidebarContainer = document.querySelector("#sidebar");
     this.$settingsContainer = document.querySelector("#settings-container");
   }
