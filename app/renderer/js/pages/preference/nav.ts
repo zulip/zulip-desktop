@@ -28,7 +28,10 @@ export default class PreferenceNav {
       "Organizations",
       "Shortcuts",
     ];
-    this.init();
+
+    this.$el = generateNodeFromHTML(this.templateHTML());
+    this.props.$root.append(this.$el);
+    this.registerListeners();
   }
 
   templateHTML(): HTML {
@@ -46,12 +49,6 @@ export default class PreferenceNav {
         <div id="nav-container">${navItemsHTML}</div>
       </div>
     `;
-  }
-
-  init(): void {
-    this.$el = generateNodeFromHTML(this.templateHTML());
-    this.props.$root.append(this.$el);
-    this.registerListeners();
   }
 
   registerListeners(): void {
