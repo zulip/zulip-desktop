@@ -9,7 +9,13 @@ export default class FunctionalTab extends Tab {
 
   constructor(props: TabProps) {
     super(props);
-    this.init();
+
+    this.$el = this.generateNodeFromHTML(this.templateHTML());
+    if (this.props.name !== "Settings") {
+      this.props.$root.append(this.$el);
+      this.$closeButton = this.$el.querySelector(".server-tab-badge");
+      this.registerListeners();
+    }
   }
 
   templateHTML(): HTML {
@@ -23,15 +29,6 @@ export default class FunctionalTab extends Tab {
         </div>
       </div>
     `;
-  }
-
-  init(): void {
-    this.$el = this.generateNodeFromHTML(this.templateHTML());
-    if (this.props.name !== "Settings") {
-      this.props.$root.append(this.$el);
-      this.$closeButton = this.$el.querySelector(".server-tab-badge");
-      this.registerListeners();
-    }
   }
 
   registerListeners(): void {
