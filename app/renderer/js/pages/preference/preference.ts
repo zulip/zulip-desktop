@@ -8,15 +8,12 @@ import Nav from "./nav";
 import type {NavItem} from "./nav";
 import {initNetworkSection} from "./network-section";
 import {initServersSection} from "./servers-section";
-import ShortcutsSection from "./shortcuts-section";
-
-type Section = ShortcutsSection;
+import {initShortcutsSection} from "./shortcuts-section";
 
 export default class PreferenceView {
   $sidebarContainer: Element;
   $settingsContainer: Element;
   nav: Nav;
-  section: Section;
   constructor() {
     this.$sidebarContainer = document.querySelector("#sidebar");
     this.$settingsContainer = document.querySelector("#settings-container");
@@ -69,10 +66,9 @@ export default class PreferenceView {
         break;
 
       case "Shortcuts": {
-        this.section = new ShortcutsSection({
+        initShortcutsSection({
           $root: this.$settingsContainer,
         });
-        this.section.init();
         break;
       }
 
