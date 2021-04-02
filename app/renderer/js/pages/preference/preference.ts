@@ -10,64 +10,51 @@ import {initNetworkSection} from "./network-section";
 import {initServersSection} from "./servers-section";
 import {initShortcutsSection} from "./shortcuts-section";
 
-export default class PreferenceView {
-  $sidebarContainer: Element;
-  $settingsContainer: Element;
-  nav: Nav;
-  constructor() {
-    this.$sidebarContainer = document.querySelector("#sidebar");
-    this.$settingsContainer = document.querySelector("#settings-container");
-  }
+export function initPreferenceView(): void {
+  const $sidebarContainer = document.querySelector("#sidebar")!;
+  const $settingsContainer = document.querySelector("#settings-container")!;
 
-  init(): void {
-    this.nav = new Nav({
-      $root: this.$sidebarContainer,
-      onItemSelected: this.handleNavigation.bind(this),
-    });
+  const nav = new Nav({
+    $root: $sidebarContainer,
+    onItemSelected: handleNavigation,
+  });
 
-    this.setDefaultView();
-    this.registerIpcs();
-  }
+  const navItem =
+    nav.navItems.find((navItem) => window.location.hash === `#${navItem}`) ??
+    "General";
 
-  setDefaultView(): void {
-    const navItem =
-      this.nav.navItems.find(
-        (navItem) => window.location.hash === `#${navItem}`,
-      ) ?? "General";
+  handleNavigation(navItem);
 
-    this.handleNavigation(navItem);
-  }
-
-  handleNavigation(navItem: NavItem): void {
-    this.nav.select(navItem);
+  function handleNavigation(navItem: NavItem): void {
+    nav.select(navItem);
     switch (navItem) {
       case "AddServer":
         initServersSection({
-          $root: this.$settingsContainer,
+          $root: $settingsContainer,
         });
         break;
 
       case "General":
         initGeneralSection({
-          $root: this.$settingsContainer,
+          $root: $settingsContainer,
         });
         break;
 
       case "Organizations":
         initConnectedOrgSection({
-          $root: this.$settingsContainer,
+          $root: $settingsContainer,
         });
         break;
 
       case "Network":
         initNetworkSection({
-          $root: this.$settingsContainer,
+          $root: $settingsContainer,
         });
         break;
 
       case "Shortcuts": {
         initShortcutsSection({
-          $root: this.$settingsContainer,
+          $root: $settingsContainer,
         });
         break;
       }
@@ -80,58 +67,41 @@ export default class PreferenceView {
   }
 
   // Handle toggling and reflect changes in preference page
-  handleToggle(elementName: string, state: boolean): void {
+  function handleToggle(elementName: string, state = false): void {
     const inputSelector = `#${elementName} .action .switch input`;
-    const input: HTMLInputElement = document.querySelector(inputSelector);
+    const input: HTMLInputElement = document.querySelector(inputSelector)!;
     if (input) {
       input.checked = state;
     }
   }
 
-  registerIpcs(): void {
-    ipcRenderer.on("switch-settings-nav", (_event: Event, navItem: NavItem) => {
-      this.handleNavigation(navItem);
-    });
+  ipcRenderer.on("switch-settings-nav", (_event: Event, navItem: NavItem) => {
+    handleNavigation(navItem);
+  });
 
-    ipcRenderer.on(
-      "toggle-sidebar-setting",
-      (_event: Event, state: boolean) => {
-        this.handleToggle("sidebar-option", state);
-      },
-    );
+  ipcRenderer.on("toggle-sidebar-setting", (_event: Event, state: boolean) => {
+    handleToggle("sidebar-option", state);
+  });
 
-    ipcRenderer.on(
-      "toggle-menubar-setting",
-      (_event: Event, state: boolean) => {
-        this.handleToggle("menubar-option", state);
-      },
-    );
+  ipcRenderer.on("toggle-menubar-setting", (_event: Event, state: boolean) => {
+    handleToggle("menubar-option", state);
+  });
 
-    ipcRenderer.on("toggletray", (_event: Event, state: boolean) => {
-      this.handleToggle("tray-option", state);
-    });
+  ipcRenderer.on("toggletray", (_event: Event, state: boolean) => {
+    handleToggle("tray-option", state);
+  });
 
-    ipcRenderer.on(
-      "toggle-dnd",
-      (_event: Event, _state: boolean, newSettings: DNDSettings) => {
-        this.handleToggle(
-          "show-notification-option",
-          newSettings.showNotification,
-        );
-        this.handleToggle("silent-option", newSettings.silent);
+  ipcRenderer.on(
+    "toggle-dnd",
+    (_event: Event, _state: boolean, newSettings: DNDSettings) => {
+      handleToggle("show-notification-option", newSettings.showNotification);
+      handleToggle("silent-option", newSettings.silent);
 
-        if (process.platform === "win32") {
-          this.handleToggle(
-            "flash-taskbar-option",
-            newSettings.flashTaskbarOnMessage,
-          );
-        }
-      },
-    );
-  }
+      if (process.platform === "win32") {
+        handleToggle("flash-taskbar-option", newSettings.flashTaskbarOnMessage);
+      }
+    },
+  );
 }
 
-window.addEventListener("load", () => {
-  const preferenceView = new PreferenceView();
-  preferenceView.init();
-});
+window.addEventListener("load", initPreferenceView);
