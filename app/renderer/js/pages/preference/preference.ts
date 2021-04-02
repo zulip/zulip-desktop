@@ -55,6 +55,7 @@ export default class PreferenceView extends BaseComponent {
         this.section = new ServersSection({
           $root: this.$settingsContainer,
         });
+        this.section.init();
         break;
       }
 
@@ -62,6 +63,7 @@ export default class PreferenceView extends BaseComponent {
         this.section = new GeneralSection({
           $root: this.$settingsContainer,
         });
+        this.section.init();
         break;
       }
 
@@ -69,6 +71,7 @@ export default class PreferenceView extends BaseComponent {
         this.section = new ConnectedOrgSection({
           $root: this.$settingsContainer,
         });
+        this.section.init();
         break;
       }
 
@@ -76,6 +79,7 @@ export default class PreferenceView extends BaseComponent {
         this.section = new NetworkSection({
           $root: this.$settingsContainer,
         });
+        this.section.init();
         break;
       }
 
@@ -83,6 +87,7 @@ export default class PreferenceView extends BaseComponent {
         this.section = new ShortcutsSection({
           $root: this.$settingsContainer,
         });
+        this.section.init();
         break;
       }
 
@@ -90,7 +95,6 @@ export default class PreferenceView extends BaseComponent {
         ((n: never) => n)(navItem);
     }
 
-    this.section.init();
     window.location.hash = `#${navItem}`;
   }
 
