@@ -6,11 +6,11 @@ import {initConnectedOrgSection} from "./connected-org-section";
 import {initGeneralSection} from "./general-section";
 import Nav from "./nav";
 import type {NavItem} from "./nav";
-import NetworkSection from "./network-section";
+import {initNetworkSection} from "./network-section";
 import {initServersSection} from "./servers-section";
 import ShortcutsSection from "./shortcuts-section";
 
-type Section = NetworkSection | ShortcutsSection;
+type Section = ShortcutsSection;
 
 export default class PreferenceView {
   $sidebarContainer: Element;
@@ -62,13 +62,11 @@ export default class PreferenceView {
         });
         break;
 
-      case "Network": {
-        this.section = new NetworkSection({
+      case "Network":
+        initNetworkSection({
           $root: this.$settingsContainer,
         });
-        this.section.init();
         break;
-      }
 
       case "Shortcuts": {
         this.section = new ShortcutsSection({
