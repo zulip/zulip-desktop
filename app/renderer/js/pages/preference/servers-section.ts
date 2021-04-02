@@ -1,4 +1,3 @@
-import type {HTML} from "../../../../common/html";
 import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
 
@@ -9,43 +8,23 @@ interface ServersSectionProps {
   $root: Element;
 }
 
-export default class ServersSection {
-  props: ServersSectionProps;
-  $newServerContainer: Element;
-  constructor(props: ServersSectionProps) {
-    this.props = props;
-  }
+export function initServersSection(props: ServersSectionProps): void {
+  props.$root.textContent = "";
 
-  templateHTML(): HTML {
-    return html`
-      <div class="add-server-modal">
-        <div class="modal-container">
-          <div class="settings-pane" id="server-settings-pane">
-            <div class="page-title">${t.__("Add a Zulip organization")}</div>
-            <div id="new-server-container"></div>
-          </div>
+  props.$root.innerHTML = html`
+    <div class="add-server-modal">
+      <div class="modal-container">
+        <div class="settings-pane" id="server-settings-pane">
+          <div class="page-title">${t.__("Add a Zulip organization")}</div>
+          <div id="new-server-container"></div>
         </div>
       </div>
-    `;
-  }
+    </div>
+  `.html;
+  const $newServerContainer = document.querySelector("#new-server-container")!;
 
-  init(): void {
-    this.initServers();
-  }
-
-  initServers(): void {
-    this.props.$root.textContent = "";
-
-    this.props.$root.innerHTML = this.templateHTML().html;
-    this.$newServerContainer = document.querySelector("#new-server-container");
-
-    this.initNewServerForm();
-  }
-
-  initNewServerForm(): void {
-    initNewServerForm({
-      $root: this.$newServerContainer,
-      onChange: reloadApp,
-    });
-  }
+  initNewServerForm({
+    $root: $newServerContainer,
+    onChange: reloadApp,
+  });
 }

@@ -7,11 +7,10 @@ import GeneralSection from "./general-section";
 import Nav from "./nav";
 import type {NavItem} from "./nav";
 import NetworkSection from "./network-section";
-import ServersSection from "./servers-section";
+import {initServersSection} from "./servers-section";
 import ShortcutsSection from "./shortcuts-section";
 
 type Section =
-  | ServersSection
   | GeneralSection
   | NetworkSection
   | ConnectedOrgSection
@@ -49,13 +48,11 @@ export default class PreferenceView {
   handleNavigation(navItem: NavItem): void {
     this.nav.select(navItem);
     switch (navItem) {
-      case "AddServer": {
-        this.section = new ServersSection({
+      case "AddServer":
+        initServersSection({
           $root: this.$settingsContainer,
         });
-        this.section.init();
         break;
-      }
 
       case "General": {
         this.section = new GeneralSection({
