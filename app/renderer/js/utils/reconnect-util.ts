@@ -20,10 +20,6 @@ export default class ReconnectUtil {
     this.webview = webview;
     this.url = webview.props.url;
     this.alreadyReloaded = false;
-    this.clearState();
-  }
-
-  clearState(): void {
     this.fibonacciBackoff = backoff.fibonacci({
       initialDelay: 5000,
       maxDelay: 300000,
