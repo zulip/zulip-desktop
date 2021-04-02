@@ -2,7 +2,7 @@ import {ipcRenderer} from "electron";
 
 import type {DNDSettings} from "../../../../common/dnd-util";
 
-import ConnectedOrgSection from "./connected-org-section";
+import {initConnectedOrgSection} from "./connected-org-section";
 import {initGeneralSection} from "./general-section";
 import Nav from "./nav";
 import type {NavItem} from "./nav";
@@ -10,7 +10,7 @@ import NetworkSection from "./network-section";
 import {initServersSection} from "./servers-section";
 import ShortcutsSection from "./shortcuts-section";
 
-type Section = NetworkSection | ConnectedOrgSection | ShortcutsSection;
+type Section = NetworkSection | ShortcutsSection;
 
 export default class PreferenceView {
   $sidebarContainer: Element;
@@ -56,13 +56,11 @@ export default class PreferenceView {
         });
         break;
 
-      case "Organizations": {
-        this.section = new ConnectedOrgSection({
+      case "Organizations":
+        initConnectedOrgSection({
           $root: this.$settingsContainer,
         });
-        this.section.init();
         break;
-      }
 
       case "Network": {
         this.section = new NetworkSection({

@@ -1,6 +1,5 @@
 import {ipcRenderer} from "electron";
 
-import type {HTML} from "../../../../common/html";
 import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
 import * as DomainUtil from "../../utils/domain-util";
@@ -13,80 +12,56 @@ interface ConnectedOrgSectionProps {
   $root: Element;
 }
 
-export default class ConnectedOrgSection {
-  props: ConnectedOrgSectionProps;
-  $serverInfoContainer: Element | null;
-  $existingServers: Element | null;
-  $newOrgButton: HTMLButtonElement | null;
-  $findAccountsContainer: Element | null;
-  constructor(props: ConnectedOrgSectionProps) {
-    this.props = props;
-  }
+export function initConnectedOrgSection(props: ConnectedOrgSectionProps): void {
+  props.$root.textContent = "";
 
-  templateHTML(): HTML {
-    return html`
-      <div class="settings-pane" id="server-settings-pane">
-        <div class="page-title">${t.__("Connected organizations")}</div>
-        <div class="title" id="existing-servers">
-          ${t.__("All the connected orgnizations will appear here.")}
-        </div>
-        <div id="server-info-container"></div>
-        <div id="new-org-button">
-          <button class="green sea w-250">
-            ${t.__("Connect to another organization")}
-          </button>
-        </div>
-        <div class="page-title">${t.__("Find accounts by email")}</div>
-        <div id="find-accounts-container"></div>
+  const servers = DomainUtil.getDomains();
+  props.$root.innerHTML = html`
+    <div class="settings-pane" id="server-settings-pane">
+      <div class="page-title">${t.__("Connected organizations")}</div>
+      <div class="title" id="existing-servers">
+        ${t.__("All the connected orgnizations will appear here.")}
       </div>
-    `;
-  }
+      <div id="server-info-container"></div>
+      <div id="new-org-button">
+        <button class="green sea w-250">
+          ${t.__("Connect to another organization")}
+        </button>
+      </div>
+      <div class="page-title">${t.__("Find accounts by email")}</div>
+      <div id="find-accounts-container"></div>
+    </div>
+  `.html;
 
-  init(): void {
-    this.initServers();
-  }
+  const $serverInfoContainer = document.querySelector(
+    "#server-info-container",
+  )!;
+  const $existingServers = document.querySelector("#existing-servers")!;
+  const $newOrgButton: HTMLButtonElement = document.querySelector(
+    "#new-org-button",
+  )!;
+  const $findAccountsContainer = document.querySelector(
+    "#find-accounts-container",
+  )!;
 
-  initServers(): void {
-    this.props.$root.textContent = "";
+  const noServerText = t.__("All the connected orgnizations will appear here");
+  // Show noServerText if no servers are there otherwise hide it
+  $existingServers.textContent = servers.length === 0 ? noServerText : "";
 
-    const servers = DomainUtil.getDomains();
-    this.props.$root.innerHTML = this.templateHTML().html;
-
-    this.$serverInfoContainer = document.querySelector(
-      "#server-info-container",
-    );
-    this.$existingServers = document.querySelector("#existing-servers");
-    this.$newOrgButton = document.querySelector("#new-org-button");
-    this.$findAccountsContainer = document.querySelector(
-      "#find-accounts-container",
-    );
-
-    const noServerText = t.__(
-      "All the connected orgnizations will appear here",
-    );
-    // Show noServerText if no servers are there otherwise hide it
-    this.$existingServers.textContent =
-      servers.length === 0 ? noServerText : "";
-
-    for (const [i, server] of servers.entries()) {
-      initServerInfoForm({
-        $root: this.$serverInfoContainer,
-        server,
-        index: i,
-        onChange: reloadApp,
-      });
-    }
-
-    this.$newOrgButton.addEventListener("click", () => {
-      ipcRenderer.send("forward-message", "open-org-tab");
-    });
-
-    this.initFindAccounts();
-  }
-
-  initFindAccounts(): void {
-    initFindAccounts({
-      $root: this.$findAccountsContainer,
+  for (const [i, server] of servers.entries()) {
+    initServerInfoForm({
+      $root: $serverInfoContainer,
+      server,
+      index: i,
+      onChange: reloadApp,
     });
   }
+
+  $newOrgButton.addEventListener("click", () => {
+    ipcRenderer.send("forward-message", "open-org-tab");
+  });
+
+  initFindAccounts({
+    $root: $findAccountsContainer,
+  });
 }
