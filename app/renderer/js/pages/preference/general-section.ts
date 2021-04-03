@@ -642,7 +642,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
         [...languagePairs].sort((a, b) => (a[0] < b[0] ? -1 : 1)),
       );
 
-      const tagField: HTMLElement = document.querySelector(
+      const tagField: HTMLInputElement = document.querySelector(
         "input[name=spellcheck]",
       )!;
       const tagify = new Tagify(tagField, {
