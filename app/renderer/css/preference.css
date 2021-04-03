@@ -768,10 +768,10 @@ i.open-network-button {
 }
 
 .tagify__input {
-    min-width: 130px !important;
+  min-width: 130px !important;
 }
 
 .tagify__input::before {
-    top: 0;
-    bottom: 0;
+  top: 0;
+  bottom: 0;
 }
