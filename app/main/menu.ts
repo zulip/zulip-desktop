@@ -1,4 +1,4 @@
-import {app, shell, BrowserWindow, Menu} from "electron";
+import {BrowserWindow, Menu, app, shell} from "electron";
 
 import AdmZip from "adm-zip";
 

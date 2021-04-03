@@ -1,4 +1,4 @@
-import {app, Notification, net} from "electron";
+import {Notification, app, net} from "electron";
 
 import getStream from "get-stream";
 import * as semver from "semver";

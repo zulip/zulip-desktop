@@ -1,4 +1,4 @@
-import {remote, ipcRenderer} from "electron";
+import {ipcRenderer, remote} from "electron";
 import fs from "fs";
 import path from "path";
 

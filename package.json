@@ -244,6 +244,12 @@
       ],
       "import/unambiguous": "error",
       "no-warning-comments": "off",
+      "sort-imports": [
+        "error",
+        {
+          "ignoreDeclarationSort": true
+        }
+      ],
       "strict": "error"
     },
     "envs": [

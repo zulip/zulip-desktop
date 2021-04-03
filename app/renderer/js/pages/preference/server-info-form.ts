@@ -1,4 +1,4 @@
-import {remote, ipcRenderer} from "electron";
+import {ipcRenderer, remote} from "electron";
 
 import {html} from "../../../../common/html";
 import * as Messages from "../../../../common/messages";

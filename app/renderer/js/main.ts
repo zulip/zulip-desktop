@@ -1,4 +1,4 @@
-import {ipcRenderer, remote, clipboard} from "electron";
+import {clipboard, ipcRenderer, remote} from "electron";
 import path from "path";
 
 import * as ConfigUtil from "../../common/config-util";

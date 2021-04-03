@@ -1,4 +1,4 @@
-import type {WebviewTag, NativeImage} from "electron";
+import type {NativeImage, WebviewTag} from "electron";
 import {ipcRenderer, remote} from "electron";
 import path from "path";
 

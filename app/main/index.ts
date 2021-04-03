@@ -11,7 +11,7 @@ import {appUpdater} from "./autoupdater";
 import * as BadgeSettings from "./badge-settings";
 import * as AppMenu from "./menu";
 import * as ProxyUtil from "./proxy-util";
-import {_getServerSettings, _saveServerIcon, _isOnline} from "./request";
+import {_getServerSettings, _isOnline, _saveServerIcon} from "./request";
 import {setAutoLaunch} from "./startup";
 
 const {GDK_BACKEND} = process.env;
