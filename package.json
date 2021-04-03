@@ -162,9 +162,7 @@
     "i18n": "^0.13.2",
     "iso-639-1": "^2.1.9",
     "node-json-db": "^1.3.0",
-    "semver": "^7.3.5",
-    "stylelint-config-prettier": "^8.0.2",
-    "stylelint-config-standard": "^21.0.0"
+    "semver": "^7.3.5"
   },
   "devDependencies": {
     "@types/adm-zip": "^0.4.33",
@@ -183,6 +181,8 @@
     "rimraf": "^3.0.2",
     "spectron": "^14.0.0",
     "stylelint": "^13.12.0",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-standard": "^21.0.0",
     "tape": "^5.2.2",
     "typescript": "^4.2.3",
     "xo": "^0.38.2"
