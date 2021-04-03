@@ -37,11 +37,11 @@ interface CompatElectronBridge extends ElectronBridge {
   function attributeListener<T extends EventTarget>(
     type: string,
   ): PropertyDescriptor {
-    const symbol = Symbol("on" + type);
+    const handlers = new WeakMap<T, (event: Event) => unknown>();
 
-    function listener(this: T, ev: Event): void {
-      if ((this as any)[symbol].call(this, ev) === false) {
-        ev.preventDefault();
+    function listener(this: T, event: Event): void {
+      if (handlers.get(this)!.call(this, event) === false) {
+        event.preventDefault();
       }
     }
 
@@ -49,18 +49,18 @@ interface CompatElectronBridge extends ElectronBridge {
       configurable: true,
       enumerable: true,
       get(this: T) {
-        return (this as any)[symbol];
+        return handlers.get(this);
       },
       set(this: T, value: unknown) {
         if (typeof value === "function") {
-          if (!(symbol in this)) {
+          if (!handlers.has(this)) {
             this.addEventListener(type, listener);
           }
 
-          (this as any)[symbol] = value;
-        } else if (symbol in this) {
+          handlers.set(this, value as (event: Event) => unknown);
+        } else if (handlers.has(this)) {
           this.removeEventListener(type, listener);
-          delete (this as any)[symbol];
+          handlers.delete(this);
         }
       },
     };
