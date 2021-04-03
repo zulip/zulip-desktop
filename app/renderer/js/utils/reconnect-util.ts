@@ -1,71 +1,68 @@
-import {ipcRenderer} from 'electron';
+import {ipcRenderer} from "electron";
 
-import * as backoff from 'backoff';
-import {htmlEscape} from 'escape-goat';
+import * as backoff from "backoff";
 
-import type WebView from '../components/webview';
-
-import Logger from './logger-util';
+import {html} from "../../../common/html";
+import Logger from "../../../common/logger-util";
+import type WebView from "../components/webview";
 
 const logger = new Logger({
-	file: 'domain-util.log',
-	timestamp: true
+  file: "domain-util.log",
 });
 
 export default class ReconnectUtil {
-	webview: WebView;
-	url: string;
-	alreadyReloaded: boolean;
-	fibonacciBackoff: backoff.Backoff;
+  webview: WebView;
+  url: string;
+  alreadyReloaded: boolean;
+  fibonacciBackoff: backoff.Backoff;
 
-	constructor(webview: WebView) {
-		this.webview = webview;
-		this.url = webview.props.url;
-		this.alreadyReloaded = false;
-		this.clearState();
-	}
+  constructor(webview: WebView) {
+    this.webview = webview;
+    this.url = webview.props.url;
+    this.alreadyReloaded = false;
+    this.fibonacciBackoff = backoff.fibonacci({
+      initialDelay: 5000,
+      maxDelay: 300000,
+    });
+  }
 
-	clearState(): void {
-		this.fibonacciBackoff = backoff.fibonacci({
-			initialDelay: 5000,
-			maxDelay: 300000
-		});
-	}
+  async isOnline(): Promise<boolean> {
+    return ipcRenderer.invoke("is-online", this.url);
+  }
 
-	async isOnline(): Promise<boolean> {
-		return ipcRenderer.invoke('is-online', this.url);
-	}
+  pollInternetAndReload(): void {
+    this.fibonacciBackoff.backoff();
+    this.fibonacciBackoff.on("ready", async () => {
+      if (await this._checkAndReload()) {
+        this.fibonacciBackoff.reset();
+      } else {
+        this.fibonacciBackoff.backoff();
+      }
+    });
+  }
 
-	pollInternetAndReload(): void {
-		this.fibonacciBackoff.backoff();
-		this.fibonacciBackoff.on('ready', async () => {
-			if (await this._checkAndReload()) {
-				this.fibonacciBackoff.reset();
-			} else {
-				this.fibonacciBackoff.backoff();
-			}
-		});
-	}
+  async _checkAndReload(): Promise<boolean> {
+    if (this.alreadyReloaded) {
+      return true;
+    }
 
-	async _checkAndReload(): Promise<boolean> {
-		if (this.alreadyReloaded) {
-			return true;
-		}
+    if (await this.isOnline()) {
+      ipcRenderer.send("forward-message", "reload-viewer");
+      logger.log("You're back online.");
+      return true;
+    }
 
-		if (await this.isOnline()) {
-			ipcRenderer.send('forward-message', 'reload-viewer');
-			logger.log('You\'re back online.');
-			return true;
-		}
+    logger.log(
+      "There is no internet connection, try checking network cables, modem and router.",
+    );
+    const errorMessageHolder = document.querySelector("#description");
+    if (errorMessageHolder) {
+      errorMessageHolder.innerHTML = html`
+        <div>Your internet connection doesn't seem to work properly!</div>
+        <div>Verify that it works and then click try again.</div>
+      `.html;
+    }
 
-		logger.log('There is no internet connection, try checking network cables, modem and router.');
-		const errorMessageHolder = document.querySelector('#description');
-		if (errorMessageHolder) {
-			errorMessageHolder.innerHTML = htmlEscape`
-						<div>Your internet connection doesn't seem to work properly!</div>
-						<div>Verify that it works and then click try again.</div>`;
-		}
-
-		return false;
-	}
+    return false;
+  }
 }

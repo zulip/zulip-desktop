@@ -1,131 +1,107 @@
-import {ipcRenderer} from 'electron';
+import {ipcRenderer} from "electron";
 
-import BaseComponent from '../../components/base';
-import type {DNDSettings} from '../../utils/dnd-util';
+import type {DNDSettings} from "../../../../common/dnd-util";
 
-import ConnectedOrgSection from './connected-org-section';
-import GeneralSection from './general-section';
-import Nav from './nav';
-import NetworkSection from './network-section';
-import ServersSection from './servers-section';
-import ShortcutsSection from './shortcuts-section';
+import {initConnectedOrgSection} from "./connected-org-section";
+import {initGeneralSection} from "./general-section";
+import Nav from "./nav";
+import type {NavItem} from "./nav";
+import {initNetworkSection} from "./network-section";
+import {initServersSection} from "./servers-section";
+import {initShortcutsSection} from "./shortcuts-section";
 
-type Section = ServersSection | GeneralSection | NetworkSection | ConnectedOrgSection | ShortcutsSection;
+export function initPreferenceView(): void {
+  const $sidebarContainer = document.querySelector("#sidebar")!;
+  const $settingsContainer = document.querySelector("#settings-container")!;
 
-export default class PreferenceView extends BaseComponent {
-	$sidebarContainer: Element;
-	$settingsContainer: Element;
-	nav: Nav;
-	section: Section;
-	constructor() {
-		super();
-		this.$sidebarContainer = document.querySelector('#sidebar');
-		this.$settingsContainer = document.querySelector('#settings-container');
-	}
+  const nav = new Nav({
+    $root: $sidebarContainer,
+    onItemSelected: handleNavigation,
+  });
 
-	init(): void {
-		this.nav = new Nav({
-			$root: this.$sidebarContainer,
-			onItemSelected: this.handleNavigation.bind(this)
-		});
+  const navItem =
+    nav.navItems.find((navItem) => window.location.hash === `#${navItem}`) ??
+    "General";
 
-		this.setDefaultView();
-		this.registerIpcs();
-	}
+  handleNavigation(navItem);
 
-	setDefaultView(): void {
-		let nav = 'General';
-		const hasTag = window.location.hash;
-		if (hasTag) {
-			nav = hasTag.slice(1);
-		}
+  function handleNavigation(navItem: NavItem): void {
+    nav.select(navItem);
+    switch (navItem) {
+      case "AddServer":
+        initServersSection({
+          $root: $settingsContainer,
+        });
+        break;
 
-		this.handleNavigation(nav);
-	}
+      case "General":
+        initGeneralSection({
+          $root: $settingsContainer,
+        });
+        break;
 
-	handleNavigation(navItem: string): void {
-		this.nav.select(navItem);
-		switch (navItem) {
-			case 'AddServer': {
-				this.section = new ServersSection({
-					$root: this.$settingsContainer
-				});
-				break;
-			}
+      case "Organizations":
+        initConnectedOrgSection({
+          $root: $settingsContainer,
+        });
+        break;
 
-			case 'General': {
-				this.section = new GeneralSection({
-					$root: this.$settingsContainer
-				});
-				break;
-			}
+      case "Network":
+        initNetworkSection({
+          $root: $settingsContainer,
+        });
+        break;
 
-			case 'Organizations': {
-				this.section = new ConnectedOrgSection({
-					$root: this.$settingsContainer
-				});
-				break;
-			}
+      case "Shortcuts": {
+        initShortcutsSection({
+          $root: $settingsContainer,
+        });
+        break;
+      }
 
-			case 'Network': {
-				this.section = new NetworkSection({
-					$root: this.$settingsContainer
-				});
-				break;
-			}
+      default:
+        ((n: never) => n)(navItem);
+    }
 
-			case 'Shortcuts': {
-				this.section = new ShortcutsSection({
-					$root: this.$settingsContainer
-				});
-				break;
-			}
+    window.location.hash = `#${navItem}`;
+  }
 
-			default: break;
-		}
+  // Handle toggling and reflect changes in preference page
+  function handleToggle(elementName: string, state = false): void {
+    const inputSelector = `#${elementName} .action .switch input`;
+    const input: HTMLInputElement = document.querySelector(inputSelector)!;
+    if (input) {
+      input.checked = state;
+    }
+  }
 
-		this.section.init();
-		window.location.hash = `#${navItem}`;
-	}
+  ipcRenderer.on("switch-settings-nav", (_event: Event, navItem: NavItem) => {
+    handleNavigation(navItem);
+  });
 
-	// Handle toggling and reflect changes in preference page
-	handleToggle(elementName: string, state: boolean): void {
-		const inputSelector = `#${elementName} .action .switch input`;
-		const input: HTMLInputElement = document.querySelector(inputSelector);
-		if (input) {
-			input.checked = state;
-		}
-	}
+  ipcRenderer.on("toggle-sidebar-setting", (_event: Event, state: boolean) => {
+    handleToggle("sidebar-option", state);
+  });
 
-	registerIpcs(): void {
-		ipcRenderer.on('switch-settings-nav', (_event: Event, navItem: string) => {
-			this.handleNavigation(navItem);
-		});
+  ipcRenderer.on("toggle-menubar-setting", (_event: Event, state: boolean) => {
+    handleToggle("menubar-option", state);
+  });
 
-		ipcRenderer.on('toggle-sidebar-setting', (_event: Event, state: boolean) => {
-			this.handleToggle('sidebar-option', state);
-		});
+  ipcRenderer.on("toggletray", (_event: Event, state: boolean) => {
+    handleToggle("tray-option", state);
+  });
 
-		ipcRenderer.on('toggle-menubar-setting', (_event: Event, state: boolean) => {
-			this.handleToggle('menubar-option', state);
-		});
+  ipcRenderer.on(
+    "toggle-dnd",
+    (_event: Event, _state: boolean, newSettings: DNDSettings) => {
+      handleToggle("show-notification-option", newSettings.showNotification);
+      handleToggle("silent-option", newSettings.silent);
 
-		ipcRenderer.on('toggletray', (_event: Event, state: boolean) => {
-			this.handleToggle('tray-option', state);
-		});
-
-		ipcRenderer.on('toggle-dnd', (_event: Event, _state: boolean, newSettings: DNDSettings) => {
-			this.handleToggle('show-notification-option', newSettings.showNotification);
-			this.handleToggle('silent-option', newSettings.silent);
-
-			if (process.platform === 'win32') {
-				this.handleToggle('flash-taskbar-option', newSettings.flashTaskbarOnMessage);
-			}
-		});
-	}
+      if (process.platform === "win32") {
+        handleToggle("flash-taskbar-option", newSettings.flashTaskbarOnMessage);
+      }
+    },
+  );
 }
 
-window.addEventListener('load', () => {
-	const preferenceView = new PreferenceView();
-	preferenceView.init();
-});
+window.addEventListener("load", initPreferenceView);
