@@ -31,7 +31,7 @@
     "lint-js": "xo",
     "prettier-non-js": "prettier --check --ignore-path=.prettierignore.non-js --loglevel=warn .",
     "test": "tsc --noEmit && npm run lint-html && npm run lint-css && npm run lint-js && npm run prettier-non-js",
-    "test-e2e": "tsc && tape 'tests/*.js'",
+    "test-e2e": "tsc && tape 'tests/Spectron/*.js'",
     "pack": "tsc && electron-builder --dir",
     "dist": "tsc && electron-builder",
     "mas": "tsc && electron-builder --mac mas"

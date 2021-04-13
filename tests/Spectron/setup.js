@@ -24,6 +24,7 @@ function createApp() {
     path: path.join(
       __dirname,
       "..",
+      "..",
       "node_modules",
       ".bin",
       "electron" + (process.platform === "win32" ? ".cmd" : ""),
@@ -38,9 +39,9 @@ function createApp() {
 // Reads app package.json and updates the productName to config.TEST_APP_PRODUCT_NAME
 // We do this so that the app integration doesn't doesn't share the same appDataDir as the dev application
 function generateTestAppPackageJson() {
-  const packageJson = require(path.join(__dirname, "../package.json"));
+  const packageJson = require(path.join(__dirname, "..", "..", "package.json"));
   packageJson.productName = config.TEST_APP_PRODUCT_NAME;
-  packageJson.main = "../app/main";
+  packageJson.main = "../../app/main";
 
   const testPackageJsonPath = path.join(__dirname, "package.json");
   fs.writeFileSync(
@@ -104,5 +105,5 @@ function getAppDataDir() {
 function resetTestDataDir() {
   const appDataDir = getAppDataDir();
   rimraf.sync(appDataDir);
-  rimraf.sync(path.join(__dirname, "package.json"));
+  rimraf.sync(path.join(__dirname, "../package.json"));
 }
