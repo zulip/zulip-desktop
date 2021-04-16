@@ -200,6 +200,7 @@
       "arrow-body-style": "error",
       "import/first": "error",
       "import/newline-after-import": "error",
+      "import/no-cycle": "error",
       "import/no-restricted-paths": [
         "error",
         {
