@@ -91,26 +91,8 @@
       "synopsis": "Zulip Desktop App"
     },
     "dmg": {
-      "background": "build/appdmg.png",
-      "icon": "build/dmg-icon.icns",
-      "iconSize": 100,
-      "contents": [
-        {
-          "x": 380,
-          "y": 280,
-          "type": "link",
-          "path": "/Applications"
-        },
-        {
-          "x": 110,
-          "y": 280,
-          "type": "file"
-        }
-      ],
-      "window": {
-        "width": 500,
-        "height": 500
-      }
+      "background": "build/dmg-background.tiff",
+      "icon": "build/dmg-icon.icns"
     },
     "win": {
       "target": [
