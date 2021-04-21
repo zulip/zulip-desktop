@@ -92,7 +92,7 @@
     },
     "dmg": {
       "background": "build/appdmg.png",
-      "icon": "build/icon.icns",
+      "icon": "build/dmg-icon.icns",
       "iconSize": 100,
       "contents": [
         {
