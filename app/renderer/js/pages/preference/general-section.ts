@@ -476,11 +476,8 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       language && langMenu.options.namedItem(language) ? language : "en";
     langMenu.options.namedItem(language)!.selected = true;
 
-    langMenu.addEventListener("change", (event: Event) => {
-      ConfigUtil.setConfigItem(
-        "appLanguage",
-        (event.target as HTMLSelectElement).value,
-      );
+    langMenu.addEventListener("change", () => {
+      ConfigUtil.setConfigItem("appLanguage", langMenu.value);
     });
   }
 
@@ -665,14 +662,14 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       );
       tagify.addTags(configuredLanguages);
 
-      tagField.addEventListener("change", (event) => {
-        if ((event.target as HTMLInputElement).value.length === 0) {
+      tagField.addEventListener("change", () => {
+        if (tagField.value.length === 0) {
           ConfigUtil.setConfigItem("spellcheckerLanguages", []);
           ipcRenderer.send("set-spellcheck-langs");
         } else {
-          const spellLangs: string[] = [
-            ...JSON.parse((event.target as HTMLInputElement).value).values(),
-          ].map((elt) => languagePairs.get(elt.value)!);
+          const spellLangs: string[] = [...JSON.parse(tagField.value)].map(
+            (elt: {value: string}) => languagePairs.get(elt.value)!,
+          );
           ConfigUtil.setConfigItem("spellcheckerLanguages", spellLangs);
           ipcRenderer.send("set-spellcheck-langs");
         }
