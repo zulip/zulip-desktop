@@ -44,11 +44,19 @@ const electron_bridge: ElectronBridge = {
     new ClipboardDecrypterImpl(version),
 };
 
-bridgeEvents.on("total_unread_count", (...args) => {
-  ipcRenderer.send("unread-count", ...args);
+bridgeEvents.on("total_unread_count", (unreadCount: unknown) => {
+  if (typeof unreadCount !== "number") {
+    throw new TypeError("Expected string for unreadCount");
+  }
+
+  ipcRenderer.send("unread-count", unreadCount);
 });
 
-bridgeEvents.on("realm_name", (realmName) => {
+bridgeEvents.on("realm_name", (realmName: unknown) => {
+  if (typeof realmName !== "string") {
+    throw new TypeError("Expected string for realmName");
+  }
+
   const serverURL = location.origin;
   ipcRenderer.send("realm-name-changed", serverURL, realmName);
 });
