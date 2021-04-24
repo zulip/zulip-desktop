@@ -1,7 +1,6 @@
-import {ipcRenderer} from "electron";
-
 import type {HTML} from "../../../common/html";
 import {html} from "../../../common/html";
+import {ipcRenderer} from "../typed-ipc-renderer";
 import * as SystemUtil from "../utils/system-util";
 
 import {generateNodeFromHTML} from "./base";

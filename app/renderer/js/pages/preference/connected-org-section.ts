@@ -1,7 +1,6 @@
-import {ipcRenderer} from "electron";
-
 import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
+import {ipcRenderer} from "../../typed-ipc-renderer";
 import * as DomainUtil from "../../utils/domain-util";
 
 import {reloadApp} from "./base-section";

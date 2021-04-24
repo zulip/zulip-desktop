@@ -1,4 +1,4 @@
-import electron, {app, dialog, ipcMain, session} from "electron";
+import electron, {app, dialog, session} from "electron";
 import fs from "fs";
 import path from "path";
 
@@ -6,6 +6,8 @@ import windowStateKeeper from "electron-window-state";
 
 import * as ConfigUtil from "../common/config-util";
 import {sentryInit} from "../common/sentry-util";
+import type {RendererMessage} from "../common/typed-ipc";
+import type {MenuProps} from "../common/types";
 
 import {appUpdater} from "./autoupdater";
 import * as BadgeSettings from "./badge-settings";
@@ -13,6 +15,7 @@ import * as AppMenu from "./menu";
 import * as ProxyUtil from "./proxy-util";
 import {_getServerSettings, _isOnline, _saveServerIcon} from "./request";
 import {setAutoLaunch} from "./startup";
+import {ipcMain, send} from "./typed-ipc-main";
 
 const {GDK_BACKEND} = process.env;
 
@@ -97,7 +100,7 @@ function createMainWindow(): Electron.BrowserWindow {
   });
 
   win.on("focus", () => {
-    win.webContents.send("focus");
+    send(win.webContents, "focus");
   });
 
   (async () => win.loadURL(mainURL))();
@@ -122,17 +125,17 @@ function createMainWindow(): Electron.BrowserWindow {
   win.setTitle("Zulip");
 
   win.on("enter-full-screen", () => {
-    win.webContents.send("enter-fullscreen");
+    send(win.webContents, "enter-fullscreen");
   });
 
   win.on("leave-full-screen", () => {
-    win.webContents.send("leave-fullscreen");
+    send(win.webContents, "leave-fullscreen");
   });
 
   //  To destroy tray icon when navigate to a new URL
   win.webContents.on("will-navigate", (event) => {
     if (event) {
-      win.webContents.send("destroytray");
+      send(win.webContents, "destroytray");
     }
   });
 
@@ -260,7 +263,8 @@ ${error}`,
       const {origin} = new URL(details.requestingUrl);
       const permissionCallbackId = nextPermissionCallbackId++;
       permissionCallbacks.set(permissionCallbackId, callback);
-      page.send(
+      send(
+        page,
         "permission-request",
         {
           webContentsId:
@@ -278,7 +282,7 @@ ${error}`,
   // Temporarily remove this event
   // electron.powerMonitor.on('resume', () => {
   // 	mainWindow.reload();
-  // 	page.send('destroytray');
+  // 	send(page, 'destroytray');
   // });
 
   ipcMain.on("focus-app", () => {
@@ -292,7 +296,7 @@ ${error}`,
   // Reload full app not just webview, useful in debugging
   ipcMain.on("reload-full-app", () => {
     mainWindow.reload();
-    page.send("destroytray");
+    send(page, "destroytray");
   });
 
   ipcMain.on("clear-app-settings", () => {
@@ -314,7 +318,7 @@ ${error}`,
     (_event: Electron.IpcMainEvent, showMenubar: boolean) => {
       mainWindow.autoHideMenuBar = showMenubar;
       mainWindow.setMenuBarVisibility(!showMenubar);
-      page.send("toggle-autohide-menubar", showMenubar, true);
+      send(page, "toggle-autohide-menubar", showMenubar, true);
     },
   );
 
@@ -323,7 +327,7 @@ ${error}`,
     (_event: Electron.IpcMainEvent, messageCount: number) => {
       badgeCount = messageCount;
       BadgeSettings.updateBadge(badgeCount, mainWindow);
-      page.send("tray", messageCount);
+      send(page, "tray", messageCount);
     },
   );
 
@@ -336,18 +340,18 @@ ${error}`,
 
   ipcMain.on(
     "forward-message",
-    (
+    <Channel extends keyof RendererMessage>(
       _event: Electron.IpcMainEvent,
-      listener: string,
-      ...parameters: unknown[]
+      listener: Channel,
+      ...parameters: Parameters<RendererMessage[Channel]>
     ) => {
-      page.send(listener, ...parameters);
+      send(page, listener, ...parameters);
     },
   );
 
   ipcMain.on(
     "update-menu",
-    (_event: Electron.IpcMainEvent, props: AppMenu.MenuProps) => {
+    (_event: Electron.IpcMainEvent, props: MenuProps) => {
       AppMenu.setMenu(props);
       if (props.activeTabIndex !== undefined) {
         const activeTab = props.tabs[props.activeTabIndex];
@@ -424,14 +428,15 @@ ${error}`,
         item.on("updated", updatedListener);
         item.once("done", (_event: Event, state) => {
           if (state === "completed") {
-            page.send(
+            send(
+              page,
               "downloadFileCompleted",
               item.getSavePath(),
               path.basename(item.getSavePath()),
             );
           } else {
             console.log("Download failed state:", state);
-            page.send("downloadFileFailed", state);
+            send(page, "downloadFileFailed", state);
           }
 
           // To stop item for listening to updated events of this file
@@ -444,21 +449,21 @@ ${error}`,
   ipcMain.on(
     "realm-name-changed",
     (_event: Electron.IpcMainEvent, serverURL: string, realmName: string) => {
-      page.send("update-realm-name", serverURL, realmName);
+      send(page, "update-realm-name", serverURL, realmName);
     },
   );
 
   ipcMain.on(
     "realm-icon-changed",
     (_event: Electron.IpcMainEvent, serverURL: string, iconURL: string) => {
-      page.send("update-realm-icon", serverURL, iconURL);
+      send(page, "update-realm-icon", serverURL, iconURL);
     },
   );
 
   // Using event.sender.send instead of page.send here to
   // make sure the value of errorReporting is sent only once on load.
   ipcMain.on("error-reporting", (event: Electron.IpcMainEvent) => {
-    event.sender.send("error-reporting-val", errorReporting);
+    send(event.sender, "error-reporting-val", errorReporting);
   });
 
   ipcMain.on(
@@ -477,9 +482,9 @@ ${error}`,
       idleThresholdSeconds,
     );
     if (idleState === "active") {
-      page.send("set-active");
+      send(page, "set-active");
     } else {
-      page.send("set-idle");
+      send(page, "set-idle");
     }
   }, idleCheckInterval);
 });

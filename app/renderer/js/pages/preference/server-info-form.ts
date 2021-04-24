@@ -1,10 +1,11 @@
-import {ipcRenderer, remote} from "electron";
+import {remote} from "electron";
 
 import {html} from "../../../../common/html";
 import * as Messages from "../../../../common/messages";
 import * as t from "../../../../common/translation-util";
 import type {ServerConf} from "../../../../common/types";
 import {generateNodeFromHTML} from "../../components/base";
+import {ipcRenderer} from "../../typed-ipc-renderer";
 import * as DomainUtil from "../../utils/domain-util";
 
 const {dialog} = remote;

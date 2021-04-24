@@ -5,15 +5,11 @@ import AdmZip from "adm-zip";
 import * as ConfigUtil from "../common/config-util";
 import * as DNDUtil from "../common/dnd-util";
 import * as t from "../common/translation-util";
-import type {TabData} from "../common/types";
+import type {RendererMessage} from "../common/typed-ipc";
+import type {MenuProps, TabData} from "../common/types";
 
 import {appUpdater} from "./autoupdater";
-
-export interface MenuProps {
-  tabs: TabData[];
-  activeTabIndex?: number;
-  enableMenu?: boolean;
-}
+import {send} from "./typed-ipc-main";
 
 const appName = app.name;
 
@@ -222,7 +218,7 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
       label: t.__("Toggle Tray Icon"),
       click(_item, focusedWindow) {
         if (focusedWindow) {
-          focusedWindow.webContents.send("toggletray");
+          send(focusedWindow.webContents, "toggletray");
         }
       },
     },
@@ -232,7 +228,7 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
       click(_item, focusedWindow) {
         if (focusedWindow) {
           const newValue = !ConfigUtil.getConfigItem("showSidebar");
-          focusedWindow.webContents.send("toggle-sidebar", newValue);
+          send(focusedWindow.webContents, "toggle-sidebar", newValue);
           ConfigUtil.setConfigItem("showSidebar", newValue);
         }
       },
@@ -246,7 +242,12 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
           const newValue = !ConfigUtil.getConfigItem("autoHideMenubar");
           focusedWindow.autoHideMenuBar = newValue;
           focusedWindow.setMenuBarVisibility(!newValue);
-          focusedWindow.webContents.send("toggle-autohide-menubar", newValue);
+          send(
+            focusedWindow.webContents,
+            "toggle-autohide-menubar",
+            newValue,
+            false,
+          );
           ConfigUtil.setConfigItem("autoHideMenubar", newValue);
         }
       },
@@ -283,7 +284,7 @@ function getHelpSubmenu(): Electron.MenuItemConstructorOptions[] {
         // The goal is to notify the main.html BrowserWindow
         // which may not be the focused window.
         for (const window of BrowserWindow.getAllWindows()) {
-          window.webContents.send("open-feedback-modal");
+          send(window.webContents, "open-feedback-modal");
         }
       },
     },
@@ -681,14 +682,17 @@ function getOtherTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
   ];
 }
 
-function sendAction(action: string, ...parameters: unknown[]): void {
+function sendAction<Channel extends keyof RendererMessage>(
+  channel: Channel,
+  ...args: Parameters<RendererMessage[Channel]>
+): void {
   const win = BrowserWindow.getAllWindows()[0];
 
   if (process.platform === "darwin") {
     win.restore();
   }
 
-  win.webContents.send(action, ...parameters);
+  send(win.webContents, channel, ...args);
 }
 
 async function checkForUpdate(): Promise<void> {

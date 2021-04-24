@@ -226,6 +226,21 @@
         }
       ],
       "import/unambiguous": "error",
+      "no-restricted-imports": [
+        "error",
+        {
+          "paths": [
+            {
+              "name": "electron",
+              "importNames": [
+                "ipcMain",
+                "ipcRenderer"
+              ],
+              "message": "Use typed-ipc-main and typed-ipc-renderer."
+            }
+          ]
+        }
+      ],
       "no-warning-comments": "off",
       "sort-imports": [
         "error",

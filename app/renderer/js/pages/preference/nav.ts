@@ -1,14 +1,8 @@
 import type {HTML} from "../../../../common/html";
 import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
+import type {NavItem} from "../../../../common/types";
 import {generateNodeFromHTML} from "../../components/base";
-
-export type NavItem =
-  | "General"
-  | "Network"
-  | "AddServer"
-  | "Organizations"
-  | "Shortcuts";
 
 interface PreferenceNavProps {
   $root: Element;

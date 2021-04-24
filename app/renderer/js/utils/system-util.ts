@@ -1,5 +1,6 @@
-import {ipcRenderer} from "electron";
 import os from "os";
+
+import {ipcRenderer} from "../typed-ipc-renderer";
 
 export const connectivityERR: string[] = [
   "ERR_INTERNET_DISCONNECTED",

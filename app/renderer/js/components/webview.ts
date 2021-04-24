@@ -1,9 +1,11 @@
-import {ipcRenderer, remote} from "electron";
+import {remote} from "electron";
 import fs from "fs";
 import path from "path";
 
 import * as ConfigUtil from "../../../common/config-util";
 import {HTML, html} from "../../../common/html";
+import type {RendererMessage} from "../../../common/typed-ipc";
+import {ipcRenderer} from "../typed-ipc-renderer";
 import * as SystemUtil from "../utils/system-util";
 
 import {generateNodeFromHTML} from "./base";
@@ -330,8 +332,11 @@ export default class WebView {
     this.init();
   }
 
-  async send(channel: string, ...parameters: unknown[]): Promise<void> {
+  async send<Channel extends keyof RendererMessage>(
+    channel: Channel,
+    ...args: Parameters<RendererMessage[Channel]>
+  ): Promise<void> {
     await this.domReady;
-    ipcRenderer.sendTo(this.$el!.getWebContentsId(), channel, ...parameters);
+    ipcRenderer.sendTo(this.$el!.getWebContentsId(), channel, ...args);
   }
 }

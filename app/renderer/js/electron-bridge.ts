@@ -1,9 +1,10 @@
-import {ipcRenderer, remote} from "electron";
+import {remote} from "electron";
 import {EventEmitter} from "events";
 
 import {ClipboardDecrypterImpl} from "./clipboard-decrypter";
 import type {NotificationData} from "./notification";
 import {newNotification} from "./notification";
+import {ipcRenderer} from "./typed-ipc-renderer";
 
 type ListenerType = (...args: any[]) => void;
 
@@ -67,8 +68,11 @@ bridgeEvents.on("realm_icon_url", (iconURL: unknown) => {
   }
 
   const serverURL = location.origin;
-  iconURL = iconURL.includes("http") ? iconURL : `${serverURL}${iconURL}`;
-  ipcRenderer.send("realm-icon-changed", serverURL, iconURL);
+  ipcRenderer.send(
+    "realm-icon-changed",
+    serverURL,
+    iconURL.includes("http") ? iconURL : `${serverURL}${iconURL}`,
+  );
 });
 
 // Set user as active and update the time of last activity

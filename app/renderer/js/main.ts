@@ -1,4 +1,4 @@
-import {clipboard, ipcRenderer, remote} from "electron";
+import {clipboard, remote} from "electron";
 import path from "path";
 
 import * as ConfigUtil from "../../common/config-util";
@@ -7,13 +7,14 @@ import type {DNDSettings} from "../../common/dnd-util";
 import * as EnterpriseUtil from "../../common/enterprise-util";
 import Logger from "../../common/logger-util";
 import * as Messages from "../../common/messages";
-import type {ServerConf, TabData} from "../../common/types";
+import type {RendererMessage} from "../../common/typed-ipc";
+import type {NavItem, ServerConf, TabData} from "../../common/types";
 
 import FunctionalTab from "./components/functional-tab";
 import ServerTab from "./components/server-tab";
 import WebView from "./components/webview";
 import {feedbackHolder} from "./feedback";
-import type {NavItem} from "./pages/preference/nav";
+import {ipcRenderer} from "./typed-ipc-renderer";
 import * as DomainUtil from "./utils/domain-util";
 import * as LinkUtil from "./utils/link-util";
 import ReconnectUtil from "./utils/reconnect-util";
@@ -52,6 +53,18 @@ interface SettingsOptions extends DNDSettings {
   dockBouncing?: boolean;
   spellcheckerLanguages?: string[];
 }
+
+type WebviewListener =
+  | "webview-reload"
+  | "back"
+  | "focus"
+  | "forward"
+  | "zoomIn"
+  | "zoomOut"
+  | "zoomActualSize"
+  | "log-out"
+  | "show-keyboard-shortcuts"
+  | "tab-devtools";
 
 const logger = new Logger({
   file: "errors.log",
@@ -781,10 +794,13 @@ class ServerManagerView {
     ipcRenderer.send("update-badge", messageCountAll);
   }
 
-  updateGeneralSettings(setting: string, value: unknown): void {
+  updateGeneralSettings<Channel extends keyof RendererMessage>(
+    channel: Channel,
+    ...args: Parameters<RendererMessage[Channel]>
+  ): void {
     if (this.getActiveWebview()) {
       const webContentsId = this.getActiveWebview().getWebContentsId();
-      ipcRenderer.sendTo(webContentsId, setting, value);
+      ipcRenderer.sendTo(webContentsId, channel, ...args);
     }
   }
 
@@ -864,7 +880,7 @@ class ServerManagerView {
 
   registerIpcs(): void {
     const webviewListeners: Array<
-      [string, (webview: WebView) => void | Promise<void>]
+      [WebviewListener, (webview: WebView) => void | Promise<void>]
     > = [
       [
         "webview-reload",
@@ -1063,7 +1079,7 @@ class ServerManagerView {
         ipcRenderer.send(
           "forward-message",
           "toggle-silent",
-          newSettings.silent,
+          newSettings.silent ?? false,
         );
         const webContentsId = this.getActiveWebview().getWebContentsId();
         ipcRenderer.sendTo(webContentsId, "toggle-dnd", state, newSettings);

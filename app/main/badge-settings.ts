@@ -2,6 +2,8 @@ import electron, {app} from "electron";
 
 import * as ConfigUtil from "../common/config-util";
 
+import {send} from "./typed-ipc-main";
+
 function showBadgeCount(
   messageCount: number,
   mainWindow: electron.BrowserWindow,
@@ -43,7 +45,7 @@ function updateOverlayIcon(
   if (messageCount === 0) {
     mainWindow.setOverlayIcon(null, "");
   } else {
-    mainWindow.webContents.send("render-taskbar-icon", messageCount);
+    send(mainWindow.webContents, "render-taskbar-icon", messageCount);
   }
 }
 

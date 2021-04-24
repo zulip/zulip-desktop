@@ -1,8 +1,7 @@
-import {ipcRenderer} from "electron";
-
 import * as ConfigUtil from "../../../../common/config-util";
 import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
+import {ipcRenderer} from "../../typed-ipc-renderer";
 
 import {generateSettingOption} from "./base-section";
 

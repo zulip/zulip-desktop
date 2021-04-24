@@ -1,4 +1,6 @@
-import {ipcRenderer, remote} from "electron";
+import {remote} from "electron";
+
+import {ipcRenderer} from "../typed-ipc-renderer";
 
 // Do not change this
 export const appId = "org.zulip.zulip-electron";

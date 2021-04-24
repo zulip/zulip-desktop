@@ -1,5 +1,5 @@
 import type {OpenDialogOptions} from "electron";
-import {ipcRenderer, remote} from "electron";
+import {remote} from "electron";
 import fs from "fs";
 import path from "path";
 
@@ -11,6 +11,7 @@ import * as EnterpriseUtil from "../../../../common/enterprise-util";
 import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
 import supportedLocales from "../../../../translations/supported-locales.json";
+import {ipcRenderer} from "../../typed-ipc-renderer";
 
 import {generateSelectHTML, generateSettingOption} from "./base-section";
 
