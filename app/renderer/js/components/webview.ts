@@ -335,6 +335,6 @@ export default class WebView {
 
   async send(channel: string, ...parameters: unknown[]): Promise<void> {
     await this.domReady;
-    await this.$el!.send(channel, ...parameters);
+    ipcRenderer.sendTo(this.$el!.getWebContentsId(), channel, ...parameters);
   }
 }

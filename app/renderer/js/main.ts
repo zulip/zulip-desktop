@@ -783,10 +783,8 @@ class ServerManagerView {
 
   updateGeneralSettings(setting: string, value: unknown): void {
     if (this.getActiveWebview()) {
-      const webContents = remote.webContents.fromId(
-        this.getActiveWebview().getWebContentsId(),
-      );
-      webContents.send(setting, value);
+      const webContentsId = this.getActiveWebview().getWebContentsId();
+      ipcRenderer.sendTo(webContentsId, setting, value);
     }
   }
 
@@ -1065,10 +1063,8 @@ class ServerManagerView {
           "toggle-silent",
           newSettings.silent,
         );
-        const webContents = remote.webContents.fromId(
-          this.getActiveWebview().getWebContentsId(),
-        );
-        webContents.send("toggle-dnd", state, newSettings);
+        const webContentsId = this.getActiveWebview().getWebContentsId();
+        ipcRenderer.sendTo(webContentsId, "toggle-dnd", state, newSettings);
       },
     );
 
@@ -1197,22 +1193,22 @@ class ServerManagerView {
       await this.openSettings("AddServer");
     });
 
-    ipcRenderer.on("set-active", async () => {
+    ipcRenderer.on("set-active", () => {
       const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll(
         "webview",
       );
-      await Promise.all(
-        [...webviews].map(async (webview) => webview.send("set-active")),
-      );
+      for (const webview of webviews) {
+        ipcRenderer.sendTo(webview.getWebContentsId(), "set-active");
+      }
     });
 
-    ipcRenderer.on("set-idle", async () => {
+    ipcRenderer.on("set-idle", () => {
       const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll(
         "webview",
       );
-      await Promise.all(
-        [...webviews].map(async (webview) => webview.send("set-idle")),
-      );
+      for (const webview of webviews) {
+        ipcRenderer.sendTo(webview.getWebContentsId(), "set-idle");
+      }
     });
 
     ipcRenderer.on("open-network-settings", async () => {

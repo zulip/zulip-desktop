@@ -352,7 +352,11 @@ export function initGeneralSection(props: GeneralSectionProps): void {
         const newValue = !ConfigUtil.getConfigItem("silent", true);
         ConfigUtil.setConfigItem("silent", newValue);
         updateSilentOption();
-        currentBrowserWindow.webContents.send("toggle-silent", newValue);
+        ipcRenderer.sendTo(
+          currentBrowserWindow.webContents.id,
+          "toggle-silent",
+          newValue,
+        );
       },
     });
   }

@@ -125,7 +125,7 @@ function sendAction(action: string): void {
     win.restore();
   }
 
-  win.webContents.send(action);
+  ipcRenderer.sendTo(win.webContents.id, action);
 }
 
 const createTray = function (): void {
@@ -219,8 +219,7 @@ function toggleTray(): void {
 
   const selector = "webview:not([class*=disabled])";
   const webview: WebviewTag = document.querySelector(selector)!;
-  const webContents = remote.webContents.fromId(webview.getWebContentsId());
-  webContents.send("toggletray", state);
+  ipcRenderer.sendTo(webview.getWebContentsId(), "toggletray", state);
 }
 
 ipcRenderer.on("toggletray", toggleTray);
