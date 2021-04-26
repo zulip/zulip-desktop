@@ -187,11 +187,8 @@ export default class WebView {
     return messageCountInTitle ? Number(messageCountInTitle[1]) : 0;
   }
 
-  showNotificationSettings(): void {
-    ipcRenderer.sendTo(
-      this.$el!.getWebContentsId(),
-      "show-notification-settings",
-    );
+  async showNotificationSettings(): Promise<void> {
+    await this.send("show-notification-settings");
   }
 
   show(): void {
@@ -284,12 +281,12 @@ export default class WebView {
     this.$el!.setZoomFactor(this.zoomFactor);
   }
 
-  logOut(): void {
-    ipcRenderer.sendTo(this.$el!.getWebContentsId(), "logout");
+  async logOut(): Promise<void> {
+    await this.send("logout");
   }
 
-  showKeyboardShortcuts(): void {
-    ipcRenderer.sendTo(this.$el!.getWebContentsId(), "show-keyboard-shortcuts");
+  async showKeyboardShortcuts(): Promise<void> {
+    await this.send("show-keyboard-shortcuts");
   }
 
   openDevTools(): void {

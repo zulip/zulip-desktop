@@ -844,10 +844,10 @@ class ServerManagerView {
         {
           label: "Notification settings",
           enabled: this.isLoggedIn(index),
-          click: () => {
+          click: async () => {
             // Switch to tab whose icon was right-clicked
             this.activateTab(index);
-            this.tabs[index].webview.showNotificationSettings();
+            await this.tabs[index].webview.showNotificationSettings();
           },
         },
         {
@@ -863,7 +863,9 @@ class ServerManagerView {
   }
 
   registerIpcs(): void {
-    const webviewListeners: Array<[string, (webview: WebView) => void]> = [
+    const webviewListeners: Array<
+      [string, (webview: WebView) => void | Promise<void>]
+    > = [
       [
         "webview-reload",
         (webview) => {
@@ -908,14 +910,14 @@ class ServerManagerView {
       ],
       [
         "log-out",
-        (webview) => {
-          webview.logOut();
+        async (webview) => {
+          await webview.logOut();
         },
       ],
       [
         "show-keyboard-shortcuts",
-        (webview) => {
-          webview.showKeyboardShortcuts();
+        async (webview) => {
+          await webview.showKeyboardShortcuts();
         },
       ],
       [
@@ -927,10 +929,10 @@ class ServerManagerView {
     ];
 
     for (const [channel, listener] of webviewListeners) {
-      ipcRenderer.on(channel, () => {
+      ipcRenderer.on(channel, async () => {
         const activeWebview = this.tabs[this.activeTabIndex].webview;
         if (activeWebview) {
-          listener(activeWebview);
+          await listener(activeWebview);
         }
       });
     }
