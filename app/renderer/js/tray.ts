@@ -219,7 +219,7 @@ function toggleTray(): void {
 
   const selector = "webview:not([class*=disabled])";
   const webview: WebviewTag = document.querySelector(selector)!;
-  ipcRenderer.sendTo(webview.getWebContentsId(), "toggletray", state);
+  ipcRenderer.sendTo(webview.getWebContentsId(), "toggle-tray", state);
 }
 
 ipcRenderer.on("toggletray", toggleTray);

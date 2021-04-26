@@ -87,7 +87,7 @@ export function initPreferenceView(): void {
     handleToggle("menubar-option", state);
   });
 
-  ipcRenderer.on("toggletray", (_event: Event, state: boolean) => {
+  ipcRenderer.on("toggle-tray", (_event: Event, state: boolean) => {
     handleToggle("tray-option", state);
   });
 
