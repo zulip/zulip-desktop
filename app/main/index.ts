@@ -42,21 +42,16 @@ if (singleInstanceLock) {
   app.quit();
 }
 
-const rendererCallbacks = new Map();
-let nextRendererCallbackId = 0;
+const permissionCallbacks = new Map();
+let nextPermissionCallbackId = 0;
 
 ipcMain.on(
-  "renderer-callback",
-  (event: Event, rendererCallbackId: number, ...args: any[]) => {
-    rendererCallbacks.get(rendererCallbackId)(...args);
-    rendererCallbacks.delete(rendererCallbackId);
+  "permission-callback",
+  (event: Event, permissionCallbackId: number, grant: boolean) => {
+    permissionCallbacks.get(permissionCallbackId)(grant);
+    permissionCallbacks.delete(permissionCallbackId);
   },
 );
-
-function makeRendererCallback(callback: (...args: any[]) => void): number {
-  rendererCallbacks.set(nextRendererCallbackId, callback);
-  return nextRendererCallbackId++;
-}
 
 const APP_ICON = path.join(__dirname, "../resources", "Icon");
 
@@ -263,6 +258,8 @@ ${error}`,
   page.session.setPermissionRequestHandler(
     (webContents, permission, callback, details) => {
       const {origin} = new URL(details.requestingUrl);
+      const permissionCallbackId = nextPermissionCallbackId++;
+      permissionCallbacks.set(permissionCallbackId, callback);
       page.send(
         "permission-request",
         {
@@ -273,7 +270,7 @@ ${error}`,
           origin,
           permission,
         },
-        makeRendererCallback(callback),
+        permissionCallbackId,
       );
     },
   );

@@ -950,7 +950,7 @@ class ServerManagerView {
           origin: string;
           permission: string;
         },
-        rendererCallbackId: number,
+        permissionCallbackId: number,
       ) => {
         const grant =
           webContentsId === null
@@ -968,7 +968,7 @@ class ServerManagerView {
           "from",
           origin,
         );
-        ipcRenderer.send("renderer-callback", rendererCallbackId, grant);
+        ipcRenderer.send("permission-callback", permissionCallbackId, grant);
       },
     );
 
