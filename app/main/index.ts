@@ -30,31 +30,8 @@ let isQuitting = false;
 // Load this url in main window
 const mainURL = "file://" + path.join(__dirname, "../renderer", "main.html");
 
-const singleInstanceLock = app.requestSingleInstanceLock();
-if (singleInstanceLock) {
-  app.on("second-instance", () => {
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) {
-        mainWindow.restore();
-      }
-
-      mainWindow.show();
-    }
-  });
-} else {
-  app.quit();
-}
-
 const permissionCallbacks = new Map();
 let nextPermissionCallbackId = 0;
-
-ipcMain.on(
-  "permission-callback",
-  (event: Event, permissionCallbackId: number, grant: boolean) => {
-    permissionCallbacks.get(permissionCallbackId)(grant);
-    permissionCallbacks.delete(permissionCallbackId);
-  },
-);
 
 const APP_ICON = path.join(__dirname, "../resources", "Icon");
 
@@ -151,17 +128,14 @@ function createMainWindow(): Electron.BrowserWindow {
 // More info here - https://github.com/electron/electron/issues/10732
 app.commandLine.appendSwitch("force-color-profile", "srgb");
 
-// This event is only available on macOS. Triggers when you click on the dock icon.
-app.on("activate", () => {
-  if (mainWindow) {
-    // If there is already a window show it
-    mainWindow.show();
-  } else {
-    mainWindow = createMainWindow();
+(async () => {
+  if (!app.requestSingleInstanceLock()) {
+    app.quit();
+    return;
   }
-});
 
-app.on("ready", () => {
+  await app.whenReady();
+
   if (process.env.GDK_BACKEND !== GDK_BACKEND) {
     console.warn(
       "Reverting GDK_BACKEND to work around https://github.com/electron/electron/issues/28436",
@@ -172,6 +146,34 @@ app.on("ready", () => {
       process.env.GDK_BACKEND = GDK_BACKEND;
     }
   }
+
+  app.on("second-instance", () => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
+      }
+
+      mainWindow.show();
+    }
+  });
+
+  ipcMain.on(
+    "permission-callback",
+    (event: Event, permissionCallbackId: number, grant: boolean) => {
+      permissionCallbacks.get(permissionCallbackId)(grant);
+      permissionCallbacks.delete(permissionCallbackId);
+    },
+  );
+
+  // This event is only available on macOS. Triggers when you click on the dock icon.
+  app.on("activate", () => {
+    if (mainWindow) {
+      // If there is already a window show it
+      mainWindow.show();
+    } else {
+      mainWindow = createMainWindow();
+    }
+  });
 
   const ses = session.fromPartition("persist:webviewsession");
   ses.setUserAgent(`ZulipElectron/${app.getVersion()} ${ses.getUserAgent()}`);
@@ -487,7 +489,7 @@ ${error}`,
       send(page, "set-idle");
     }
   }, idleCheckInterval);
-});
+})();
 
 app.on("before-quit", () => {
   isQuitting = true;
