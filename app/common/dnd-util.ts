@@ -3,14 +3,14 @@ import * as ConfigUtil from "./config-util";
 type SettingName = "showNotification" | "silent" | "flashTaskbarOnMessage";
 
 export interface DNDSettings {
-  showNotification?: boolean;
-  silent?: boolean;
-  flashTaskbarOnMessage?: boolean;
+  showNotification: boolean;
+  silent: boolean;
+  flashTaskbarOnMessage: boolean;
 }
 
 interface Toggle {
   dnd: boolean;
-  newSettings: DNDSettings;
+  newSettings: Partial<DNDSettings>;
 }
 
 export function toggle(): Toggle {
@@ -20,9 +20,9 @@ export function toggle(): Toggle {
     dndSettingList.push("flashTaskbarOnMessage");
   }
 
-  let newSettings: DNDSettings;
+  let newSettings: Partial<DNDSettings>;
   if (dnd) {
-    const oldSettings: DNDSettings = {};
+    const oldSettings: Partial<DNDSettings> = {};
     newSettings = {};
 
     // Iterate through the dndSettingList.

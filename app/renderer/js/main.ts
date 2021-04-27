@@ -46,12 +46,12 @@ interface SettingsOptions extends DNDSettings {
   customCSS: boolean;
   lastActiveTab: number;
   dnd: boolean;
-  dndPreviousSettings: DNDSettings;
+  dndPreviousSettings: Partial<DNDSettings>;
   downloadsPath: string;
   quitOnClose: boolean;
   promptDownload: boolean;
-  dockBouncing?: boolean;
-  spellcheckerLanguages?: string[];
+  dockBouncing: boolean;
+  spellcheckerLanguages: string[];
 }
 
 type WebviewListener =
@@ -194,7 +194,7 @@ class ServerManagerView {
   // This will make sure the default settings are correctly set to either true or false
   initDefaultSettings(): void {
     // Default settings which should be respected
-    const settingOptions: SettingsOptions = {
+    const settingOptions: Partial<SettingsOptions> = {
       autoHideMenubar: false,
       trayIcon: true,
       useManualProxy: false,
@@ -226,7 +226,7 @@ class ServerManagerView {
     if (process.platform === "win32") {
       // Only available on Windows
       settingOptions.flashTaskbarOnMessage = true;
-      settingOptions.dndPreviousSettings.flashTaskbarOnMessage = true;
+      settingOptions.dndPreviousSettings!.flashTaskbarOnMessage = true;
     }
 
     if (process.platform === "darwin") {
@@ -1074,7 +1074,7 @@ class ServerManagerView {
 
     ipcRenderer.on(
       "toggle-dnd",
-      (event: Event, state: boolean, newSettings: DNDSettings) => {
+      (event: Event, state: boolean, newSettings: Partial<DNDSettings>) => {
         this.toggleDNDButton(state);
         ipcRenderer.send(
           "forward-message",
