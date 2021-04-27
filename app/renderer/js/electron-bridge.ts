@@ -1,9 +1,10 @@
-import {ipcRenderer, remote} from "electron";
+import {remote} from "electron";
 import {EventEmitter} from "events";
 
 import {ClipboardDecrypterImpl} from "./clipboard-decrypter";
 import type {NotificationData} from "./notification";
 import {newNotification} from "./notification";
+import {ipcRenderer} from "./typed-ipc-renderer";
 
 type ListenerType = (...args: any[]) => void;
 
@@ -44,11 +45,19 @@ const electron_bridge: ElectronBridge = {
     new ClipboardDecrypterImpl(version),
 };
 
-bridgeEvents.on("total_unread_count", (...args) => {
-  ipcRenderer.send("unread-count", ...args);
+bridgeEvents.on("total_unread_count", (unreadCount: unknown) => {
+  if (typeof unreadCount !== "number") {
+    throw new TypeError("Expected string for unreadCount");
+  }
+
+  ipcRenderer.send("unread-count", unreadCount);
 });
 
-bridgeEvents.on("realm_name", (realmName) => {
+bridgeEvents.on("realm_name", (realmName: unknown) => {
+  if (typeof realmName !== "string") {
+    throw new TypeError("Expected string for realmName");
+  }
+
   const serverURL = location.origin;
   ipcRenderer.send("realm-name-changed", serverURL, realmName);
 });
@@ -59,8 +68,11 @@ bridgeEvents.on("realm_icon_url", (iconURL: unknown) => {
   }
 
   const serverURL = location.origin;
-  iconURL = iconURL.includes("http") ? iconURL : `${serverURL}${iconURL}`;
-  ipcRenderer.send("realm-icon-changed", serverURL, iconURL);
+  ipcRenderer.send(
+    "realm-icon-changed",
+    serverURL,
+    iconURL.includes("http") ? iconURL : `${serverURL}${iconURL}`,
+  );
 });
 
 // Set user as active and update the time of last activity

@@ -1,4 +1,4 @@
-import {ipcRenderer, remote} from "electron";
+import {remote} from "electron";
 import fs from "fs";
 import path from "path";
 
@@ -8,6 +8,7 @@ import * as EnterpriseUtil from "../../../common/enterprise-util";
 import Logger from "../../../common/logger-util";
 import * as Messages from "../../../common/messages";
 import type {ServerConf} from "../../../common/types";
+import {ipcRenderer} from "../typed-ipc-renderer";
 
 const {app, dialog} = remote;
 

@@ -1,5 +1,5 @@
 import type {OpenDialogOptions} from "electron";
-import {ipcRenderer, remote} from "electron";
+import {remote} from "electron";
 import fs from "fs";
 import path from "path";
 
@@ -11,6 +11,7 @@ import * as EnterpriseUtil from "../../../../common/enterprise-util";
 import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
 import supportedLocales from "../../../../translations/supported-locales.json";
+import {ipcRenderer} from "../../typed-ipc-renderer";
 
 import {generateSelectHTML, generateSettingOption} from "./base-section";
 
@@ -352,7 +353,11 @@ export function initGeneralSection(props: GeneralSectionProps): void {
         const newValue = !ConfigUtil.getConfigItem("silent", true);
         ConfigUtil.setConfigItem("silent", newValue);
         updateSilentOption();
-        currentBrowserWindow.webContents.send("toggle-silent", newValue);
+        ipcRenderer.sendTo(
+          currentBrowserWindow.webContents.id,
+          "toggle-silent",
+          newValue,
+        );
       },
     });
   }
@@ -476,11 +481,8 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       language && langMenu.options.namedItem(language) ? language : "en";
     langMenu.options.namedItem(language)!.selected = true;
 
-    langMenu.addEventListener("change", (event: Event) => {
-      ConfigUtil.setConfigItem(
-        "appLanguage",
-        (event.target as HTMLSelectElement).value,
-      );
+    langMenu.addEventListener("change", () => {
+      ConfigUtil.setConfigItem("appLanguage", langMenu.value);
     });
   }
 
@@ -665,14 +667,14 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       );
       tagify.addTags(configuredLanguages);
 
-      tagField.addEventListener("change", (event) => {
-        if ((event.target as HTMLInputElement).value.length === 0) {
+      tagField.addEventListener("change", () => {
+        if (tagField.value.length === 0) {
           ConfigUtil.setConfigItem("spellcheckerLanguages", []);
           ipcRenderer.send("set-spellcheck-langs");
         } else {
-          const spellLangs: string[] = [
-            ...JSON.parse((event.target as HTMLInputElement).value).values(),
-          ].map((elt) => languagePairs.get(elt.value)!);
+          const spellLangs: string[] = [...JSON.parse(tagField.value)].map(
+            (elt: {value: string}) => languagePairs.get(elt.value)!,
+          );
           ConfigUtil.setConfigItem("spellcheckerLanguages", spellLangs);
           ipcRenderer.send("set-spellcheck-langs");
         }

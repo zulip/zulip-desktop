@@ -1,9 +1,11 @@
-import {ipcRenderer, remote} from "electron";
+import {remote} from "electron";
 import fs from "fs";
 import path from "path";
 
 import * as ConfigUtil from "../../../common/config-util";
 import {HTML, html} from "../../../common/html";
+import type {RendererMessage} from "../../../common/typed-ipc";
+import {ipcRenderer} from "../typed-ipc-renderer";
 import * as SystemUtil from "../utils/system-util";
 
 import {generateNodeFromHTML} from "./base";
@@ -187,11 +189,8 @@ export default class WebView {
     return messageCountInTitle ? Number(messageCountInTitle[1]) : 0;
   }
 
-  showNotificationSettings(): void {
-    ipcRenderer.sendTo(
-      this.$el!.getWebContentsId(),
-      "show-notification-settings",
-    );
+  async showNotificationSettings(): Promise<void> {
+    await this.send("show-notification-settings");
   }
 
   show(): void {
@@ -284,12 +283,12 @@ export default class WebView {
     this.$el!.setZoomFactor(this.zoomFactor);
   }
 
-  logOut(): void {
-    ipcRenderer.sendTo(this.$el!.getWebContentsId(), "logout");
+  async logOut(): Promise<void> {
+    await this.send("logout");
   }
 
-  showKeyboardShortcuts(): void {
-    ipcRenderer.sendTo(this.$el!.getWebContentsId(), "show-keyboard-shortcuts");
+  async showKeyboardShortcuts(): Promise<void> {
+    await this.send("show-keyboard-shortcuts");
   }
 
   openDevTools(): void {
@@ -333,8 +332,11 @@ export default class WebView {
     this.init();
   }
 
-  async send(channel: string, ...parameters: unknown[]): Promise<void> {
+  async send<Channel extends keyof RendererMessage>(
+    channel: Channel,
+    ...args: Parameters<RendererMessage[Channel]>
+  ): Promise<void> {
     await this.domReady;
-    await this.$el!.send(channel, ...parameters);
+    ipcRenderer.sendTo(this.$el!.getWebContentsId(), channel, ...args);
   }
 }

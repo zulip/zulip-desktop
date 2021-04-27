@@ -1,6 +1,5 @@
-import {ipcRenderer} from "electron";
-
 import * as ConfigUtil from "../../../common/config-util";
+import {ipcRenderer} from "../typed-ipc-renderer";
 
 import {focusCurrentServer} from "./helpers";
 

@@ -1,8 +1,7 @@
-import {ipcRenderer} from "electron";
-
 import type {HTML} from "../../../../common/html";
 import {html} from "../../../../common/html";
 import {generateNodeFromHTML} from "../../components/base";
+import {ipcRenderer} from "../../typed-ipc-renderer";
 
 interface BaseSectionProps {
   $element: HTMLElement;

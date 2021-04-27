@@ -1,3 +1,16 @@
+export interface MenuProps {
+  tabs: TabData[];
+  activeTabIndex?: number;
+  enableMenu?: boolean;
+}
+
+export type NavItem =
+  | "General"
+  | "Network"
+  | "AddServer"
+  | "Organizations"
+  | "Shortcuts";
+
 export interface ServerConf {
   url: string;
   alias: string;

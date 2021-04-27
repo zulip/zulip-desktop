@@ -1,4 +1,4 @@
-import {clipboard, ipcRenderer, remote} from "electron";
+import {clipboard, remote} from "electron";
 import path from "path";
 
 import * as ConfigUtil from "../../common/config-util";
@@ -7,13 +7,14 @@ import type {DNDSettings} from "../../common/dnd-util";
 import * as EnterpriseUtil from "../../common/enterprise-util";
 import Logger from "../../common/logger-util";
 import * as Messages from "../../common/messages";
-import type {ServerConf, TabData} from "../../common/types";
+import type {RendererMessage} from "../../common/typed-ipc";
+import type {NavItem, ServerConf, TabData} from "../../common/types";
 
 import FunctionalTab from "./components/functional-tab";
 import ServerTab from "./components/server-tab";
 import WebView from "./components/webview";
 import {feedbackHolder} from "./feedback";
-import type {NavItem} from "./pages/preference/nav";
+import {ipcRenderer} from "./typed-ipc-renderer";
 import * as DomainUtil from "./utils/domain-util";
 import * as LinkUtil from "./utils/link-util";
 import ReconnectUtil from "./utils/reconnect-util";
@@ -52,6 +53,18 @@ interface SettingsOptions extends DNDSettings {
   dockBouncing?: boolean;
   spellcheckerLanguages?: string[];
 }
+
+type WebviewListener =
+  | "webview-reload"
+  | "back"
+  | "focus"
+  | "forward"
+  | "zoomIn"
+  | "zoomOut"
+  | "zoomActualSize"
+  | "log-out"
+  | "show-keyboard-shortcuts"
+  | "tab-devtools";
 
 const logger = new Logger({
   file: "errors.log",
@@ -781,12 +794,13 @@ class ServerManagerView {
     ipcRenderer.send("update-badge", messageCountAll);
   }
 
-  updateGeneralSettings(setting: string, value: unknown): void {
+  updateGeneralSettings<Channel extends keyof RendererMessage>(
+    channel: Channel,
+    ...args: Parameters<RendererMessage[Channel]>
+  ): void {
     if (this.getActiveWebview()) {
-      const webContents = remote.webContents.fromId(
-        this.getActiveWebview().getWebContentsId(),
-      );
-      webContents.send(setting, value);
+      const webContentsId = this.getActiveWebview().getWebContentsId();
+      ipcRenderer.sendTo(webContentsId, channel, ...args);
     }
   }
 
@@ -846,10 +860,10 @@ class ServerManagerView {
         {
           label: "Notification settings",
           enabled: this.isLoggedIn(index),
-          click: () => {
+          click: async () => {
             // Switch to tab whose icon was right-clicked
             this.activateTab(index);
-            this.tabs[index].webview.showNotificationSettings();
+            await this.tabs[index].webview.showNotificationSettings();
           },
         },
         {
@@ -865,7 +879,9 @@ class ServerManagerView {
   }
 
   registerIpcs(): void {
-    const webviewListeners: Array<[string, (webview: WebView) => void]> = [
+    const webviewListeners: Array<
+      [WebviewListener, (webview: WebView) => void | Promise<void>]
+    > = [
       [
         "webview-reload",
         (webview) => {
@@ -910,14 +926,14 @@ class ServerManagerView {
       ],
       [
         "log-out",
-        (webview) => {
-          webview.logOut();
+        async (webview) => {
+          await webview.logOut();
         },
       ],
       [
         "show-keyboard-shortcuts",
-        (webview) => {
-          webview.showKeyboardShortcuts();
+        async (webview) => {
+          await webview.showKeyboardShortcuts();
         },
       ],
       [
@@ -929,10 +945,10 @@ class ServerManagerView {
     ];
 
     for (const [channel, listener] of webviewListeners) {
-      ipcRenderer.on(channel, () => {
+      ipcRenderer.on(channel, async () => {
         const activeWebview = this.tabs[this.activeTabIndex].webview;
         if (activeWebview) {
-          listener(activeWebview);
+          await listener(activeWebview);
         }
       });
     }
@@ -950,7 +966,7 @@ class ServerManagerView {
           origin: string;
           permission: string;
         },
-        rendererCallbackId: number,
+        permissionCallbackId: number,
       ) => {
         const grant =
           webContentsId === null
@@ -968,7 +984,7 @@ class ServerManagerView {
           "from",
           origin,
         );
-        ipcRenderer.send("renderer-callback", rendererCallbackId, grant);
+        ipcRenderer.send("permission-callback", permissionCallbackId, grant);
       },
     );
 
@@ -1063,12 +1079,10 @@ class ServerManagerView {
         ipcRenderer.send(
           "forward-message",
           "toggle-silent",
-          newSettings.silent,
+          newSettings.silent ?? false,
         );
-        const webContents = remote.webContents.fromId(
-          this.getActiveWebview().getWebContentsId(),
-        );
-        webContents.send("toggle-dnd", state, newSettings);
+        const webContentsId = this.getActiveWebview().getWebContentsId();
+        ipcRenderer.sendTo(webContentsId, "toggle-dnd", state, newSettings);
       },
     );
 
@@ -1197,22 +1211,22 @@ class ServerManagerView {
       await this.openSettings("AddServer");
     });
 
-    ipcRenderer.on("set-active", async () => {
+    ipcRenderer.on("set-active", () => {
       const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll(
         "webview",
       );
-      await Promise.all(
-        [...webviews].map(async (webview) => webview.send("set-active")),
-      );
+      for (const webview of webviews) {
+        ipcRenderer.sendTo(webview.getWebContentsId(), "set-active");
+      }
     });
 
-    ipcRenderer.on("set-idle", async () => {
+    ipcRenderer.on("set-idle", () => {
       const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll(
         "webview",
       );
-      await Promise.all(
-        [...webviews].map(async (webview) => webview.send("set-idle")),
-      );
+      for (const webview of webviews) {
+        ipcRenderer.sendTo(webview.getWebContentsId(), "set-idle");
+      }
     });
 
     ipcRenderer.on("open-network-settings", async () => {

@@ -1,10 +1,9 @@
-import {ipcRenderer} from "electron";
-
 import * as backoff from "backoff";
 
 import {html} from "../../../common/html";
 import Logger from "../../../common/logger-util";
 import type WebView from "../components/webview";
+import {ipcRenderer} from "../typed-ipc-renderer";
 
 const logger = new Logger({
   file: "domain-util.log",

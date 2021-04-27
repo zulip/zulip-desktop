@@ -1,11 +1,10 @@
-import {ipcRenderer} from "electron";
-
 import type {DNDSettings} from "../../../../common/dnd-util";
+import type {NavItem} from "../../../../common/types";
+import {ipcRenderer} from "../../typed-ipc-renderer";
 
 import {initConnectedOrgSection} from "./connected-org-section";
 import {initGeneralSection} from "./general-section";
 import Nav from "./nav";
-import type {NavItem} from "./nav";
 import {initNetworkSection} from "./network-section";
 import {initServersSection} from "./servers-section";
 import {initShortcutsSection} from "./shortcuts-section";
@@ -87,7 +86,7 @@ export function initPreferenceView(): void {
     handleToggle("menubar-option", state);
   });
 
-  ipcRenderer.on("toggletray", (_event: Event, state: boolean) => {
+  ipcRenderer.on("toggle-tray", (_event: Event, state: boolean) => {
     handleToggle("tray-option", state);
   });
 

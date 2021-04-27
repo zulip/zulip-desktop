@@ -91,26 +91,8 @@
       "synopsis": "Zulip Desktop App"
     },
     "dmg": {
-      "background": "build/appdmg.png",
-      "icon": "build/icon.icns",
-      "iconSize": 100,
-      "contents": [
-        {
-          "x": 380,
-          "y": 280,
-          "type": "link",
-          "path": "/Applications"
-        },
-        {
-          "x": 110,
-          "y": 280,
-          "type": "file"
-        }
-      ],
-      "window": {
-        "width": 500,
-        "height": 500
-      }
+      "background": "build/dmg-background.tiff",
+      "icon": "build/dmg-icon.icns"
     },
     "win": {
       "target": [
@@ -151,29 +133,29 @@
     "@electron-elements/send-feedback": "^2.0.3",
     "@sentry/electron": "^2.4.0",
     "@yaireo/tagify": "^3.25.0",
-    "adm-zip": "^0.5.4",
+    "adm-zip": "^0.5.5",
     "auto-launch": "^5.0.5",
     "backoff": "^2.5.0",
-    "electron-log": "^4.3.2",
+    "electron-log": "^4.3.4",
     "electron-updater": "^4.3.8",
     "electron-window-state": "^5.0.3",
     "escape-goat": "^3.0.0",
-    "get-stream": "^6.0.0",
+    "get-stream": "^6.0.1",
     "i18n": "^0.13.2",
     "iso-639-1": "^2.1.9",
     "node-json-db": "^1.3.0",
     "semver": "^7.3.5"
   },
   "devDependencies": {
-    "@types/adm-zip": "^0.4.33",
+    "@types/adm-zip": "^0.4.34",
     "@types/auto-launch": "^5.0.1",
     "@types/backoff": "^2.5.1",
     "@types/i18n": "^0.13.0",
-    "@types/node": "^14.14.35",
+    "@types/node": "^14.14.41",
     "@types/requestidlecallback": "^0.3.1",
-    "@types/yaireo__tagify": "^4.0.0",
+    "@types/yaireo__tagify": "^4.0.1",
     "dotenv": "^8.2.0",
-    "electron": "^12.0.2",
+    "electron": "^12.0.4",
     "electron-builder": "^22.10.5",
     "electron-notarize": "^1.0.0",
     "eslint-import-resolver-typescript": "^2.4.0",
@@ -185,7 +167,7 @@
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^21.0.0",
     "tape": "^5.2.2",
-    "typescript": "^4.2.3",
+    "typescript": "^4.2.4",
     "xo": "^0.38.2"
   },
   "prettier": {
@@ -200,6 +182,7 @@
       "arrow-body-style": "error",
       "import/first": "error",
       "import/newline-after-import": "error",
+      "import/no-cycle": "error",
       "import/no-restricted-paths": [
         "error",
         {
@@ -243,6 +226,21 @@
         }
       ],
       "import/unambiguous": "error",
+      "no-restricted-imports": [
+        "error",
+        {
+          "paths": [
+            {
+              "name": "electron",
+              "importNames": [
+                "ipcMain",
+                "ipcRenderer"
+              ],
+              "message": "Use typed-ipc-main and typed-ipc-renderer."
+            }
+          ]
+        }
+      ],
       "no-warning-comments": "off",
       "sort-imports": [
         "error",

@@ -1,8 +1,9 @@
-import {contextBridge, ipcRenderer, webFrame} from "electron";
+import {contextBridge, webFrame} from "electron";
 import fs from "fs";
 
 import electron_bridge, {bridgeEvents} from "./electron-bridge";
 import * as NetworkError from "./pages/network";
+import {ipcRenderer} from "./typed-ipc-renderer";
 
 contextBridge.exposeInMainWorld("raw_electron_bridge", electron_bridge);
 

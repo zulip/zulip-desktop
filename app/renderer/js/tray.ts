@@ -1,8 +1,11 @@
 import type {NativeImage, WebviewTag} from "electron";
-import {ipcRenderer, remote} from "electron";
+import {remote} from "electron";
 import path from "path";
 
 import * as ConfigUtil from "../../common/config-util";
+import type {RendererMessage} from "../../common/typed-ipc";
+
+import {ipcRenderer} from "./typed-ipc-renderer";
 
 const {Tray, Menu, nativeImage, BrowserWindow} = remote;
 
@@ -118,14 +121,17 @@ const renderNativeImage = function (arg: number): NativeImage {
   });
 };
 
-function sendAction(action: string): void {
+function sendAction<Channel extends keyof RendererMessage>(
+  channel: Channel,
+  ...args: Parameters<RendererMessage[Channel]>
+): void {
   const win = BrowserWindow.getAllWindows()[0];
 
   if (process.platform === "darwin") {
     win.restore();
   }
 
-  win.webContents.send(action);
+  ipcRenderer.sendTo(win.webContents.id, channel, ...args);
 }
 
 const createTray = function (): void {
@@ -219,8 +225,7 @@ function toggleTray(): void {
 
   const selector = "webview:not([class*=disabled])";
   const webview: WebviewTag = document.querySelector(selector)!;
-  const webContents = remote.webContents.fromId(webview.getWebContentsId());
-  webContents.send("toggletray", state);
+  ipcRenderer.sendTo(webview.getWebContentsId(), "toggle-tray", state);
 }
 
 ipcRenderer.on("toggletray", toggleTray);
