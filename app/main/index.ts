@@ -84,7 +84,7 @@ function createMainWindow(): Electron.BrowserWindow {
 
   // Keep the app running in background on close event
   win.on("close", (event) => {
-    if (ConfigUtil.getConfigItem("quitOnClose")) {
+    if (ConfigUtil.getConfigItem("quitOnClose", false)) {
       app.quit();
     }
 
@@ -180,7 +180,7 @@ app.commandLine.appendSwitch("force-color-profile", "srgb");
 
   ipcMain.on("set-spellcheck-langs", () => {
     ses.setSpellCheckerLanguages(
-      ConfigUtil.getConfigItem("spellcheckerLanguages"),
+      ConfigUtil.getConfigItem("spellcheckerLanguages", null) ?? [],
     );
   });
   AppMenu.setMenu({
@@ -190,18 +190,18 @@ app.commandLine.appendSwitch("force-color-profile", "srgb");
 
   // Auto-hide menu bar on Windows + Linux
   if (process.platform !== "darwin") {
-    const shouldHideMenu = ConfigUtil.getConfigItem("autoHideMenubar") || false;
+    const shouldHideMenu = ConfigUtil.getConfigItem("autoHideMenubar", false);
     mainWindow.autoHideMenuBar = shouldHideMenu;
     mainWindow.setMenuBarVisibility(!shouldHideMenu);
   }
 
   // Initialize sentry for main process
-  const errorReporting = ConfigUtil.getConfigItem("errorReporting");
+  const errorReporting = ConfigUtil.getConfigItem("errorReporting", true);
   if (errorReporting) {
     sentryInit();
   }
 
-  const isSystemProxy = ConfigUtil.getConfigItem("useSystemProxy");
+  const isSystemProxy = ConfigUtil.getConfigItem("useSystemProxy", false);
 
   if (isSystemProxy) {
     (async () => ProxyUtil.resolveSystemProxy(mainWindow))();
@@ -210,7 +210,7 @@ app.commandLine.appendSwitch("force-color-profile", "srgb");
   const page = mainWindow.webContents;
 
   page.on("dom-ready", () => {
-    if (ConfigUtil.getConfigItem("startMinimized")) {
+    if (ConfigUtil.getConfigItem("startMinimized", false)) {
       mainWindow.hide();
     } else {
       mainWindow.show();
@@ -237,7 +237,7 @@ app.commandLine.appendSwitch("force-color-profile", "srgb");
 
   page.once("did-frame-finish-load", async () => {
     // Initiate auto-updates on MacOS and Windows
-    if (ConfigUtil.getConfigItem("autoUpdate")) {
+    if (ConfigUtil.getConfigItem("autoUpdate", true)) {
       await appUpdater();
     }
   });

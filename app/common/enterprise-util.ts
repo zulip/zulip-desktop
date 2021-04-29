@@ -1,14 +1,18 @@
 import fs from "fs";
 import path from "path";
 
+import type {Config} from "./config-util";
 import Logger from "./logger-util";
+
+interface EnterpriseConfig extends Config {
+  presetOrganizations: string[];
+}
 
 const logger = new Logger({
   file: "enterprise-util.log",
 });
 
-// TODO: replace enterpriseSettings type with an interface once settings are final
-let enterpriseSettings: Record<string, unknown>;
+let enterpriseSettings: Partial<EnterpriseConfig>;
 let configFile: boolean;
 
 reloadDB();
@@ -39,20 +43,20 @@ export function hasConfigFile(): boolean {
   return configFile;
 }
 
-export function getConfigItem(key: string, defaultValue?: unknown): any {
+export function getConfigItem<Key extends keyof EnterpriseConfig>(
+  key: Key,
+  defaultValue: EnterpriseConfig[Key],
+): EnterpriseConfig[Key] {
   reloadDB();
   if (!configFile) {
     return defaultValue;
   }
 
-  if (defaultValue === undefined) {
-    defaultValue = null;
-  }
-
-  return configItemExists(key) ? enterpriseSettings[key] : defaultValue;
+  const value = enterpriseSettings[key];
+  return value === undefined ? defaultValue : (value as EnterpriseConfig[Key]);
 }
 
-export function configItemExists(key: string): boolean {
+export function configItemExists(key: keyof EnterpriseConfig): boolean {
   reloadDB();
   if (!configFile) {
     return false;

@@ -23,6 +23,8 @@ export default class BaseNotification extends NativeNotification {
 
   // Override default Notification permission
   static get permission(): NotificationPermission {
-    return ConfigUtil.getConfigItem("showNotification") ? "granted" : "denied";
+    return ConfigUtil.getConfigItem("showNotification", true)
+      ? "granted"
+      : "denied";
   }
 }

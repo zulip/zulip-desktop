@@ -34,9 +34,9 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
   autoUpdater.logger = log;
 
   // Handle auto updates for beta/pre releases
-  const isBetaUpdate = ConfigUtil.getConfigItem("betaUpdate");
+  const isBetaUpdate = ConfigUtil.getConfigItem("betaUpdate", false);
 
-  autoUpdater.allowPrerelease = isBetaUpdate || false;
+  autoUpdater.allowPrerelease = isBetaUpdate;
 
   const eventsListenerRemove = ["update-available", "update-not-available"];
   autoUpdater.on("update-available", async (info: UpdateInfo) => {

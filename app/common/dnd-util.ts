@@ -1,6 +1,6 @@
 import * as ConfigUtil from "./config-util";
 
-type SettingName = "showNotification" | "silent" | "flashTaskbarOnMessage";
+type SettingName = keyof DNDSettings;
 
 export interface DNDSettings {
   showNotification: boolean;
@@ -28,7 +28,10 @@ export function toggle(): Toggle {
     // Iterate through the dndSettingList.
     for (const settingName of dndSettingList) {
       // Store the current value of setting.
-      oldSettings[settingName] = ConfigUtil.getConfigItem(settingName);
+      oldSettings[settingName] = ConfigUtil.getConfigItem(
+        settingName,
+        settingName !== "silent",
+      );
       // New value of setting.
       newSettings[settingName] = settingName === "silent";
     }
@@ -36,11 +39,15 @@ export function toggle(): Toggle {
     // Store old value in oldSettings.
     ConfigUtil.setConfigItem("dndPreviousSettings", oldSettings);
   } else {
-    newSettings = ConfigUtil.getConfigItem("dndPreviousSettings");
+    newSettings = ConfigUtil.getConfigItem("dndPreviousSettings", {
+      showNotification: true,
+      silent: false,
+      ...(process.platform === "win32" && {flashTaskbarOnMessage: true}),
+    });
   }
 
   for (const settingName of dndSettingList) {
-    ConfigUtil.setConfigItem(settingName, newSettings[settingName]);
+    ConfigUtil.setConfigItem(settingName, newSettings[settingName]!);
   }
 
   ConfigUtil.setConfigItem("dnd", dnd);

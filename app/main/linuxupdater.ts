@@ -17,7 +17,7 @@ export async function linuxUpdateNotification(
   session: Electron.session,
 ): Promise<void> {
   let url = "https://api.github.com/repos/zulip/zulip-desktop/releases";
-  url = ConfigUtil.getConfigItem("betaUpdate") ? url : url + "/latest";
+  url = ConfigUtil.getConfigItem("betaUpdate", false) ? url : url + "/latest";
 
   try {
     const response = await fetchResponse(net.request({url, session}));
@@ -27,7 +27,7 @@ export async function linuxUpdateNotification(
     }
 
     const data = JSON.parse(await getStream(response));
-    const latestVersion = ConfigUtil.getConfigItem("betaUpdate")
+    const latestVersion = ConfigUtil.getConfigItem("betaUpdate", false)
       ? data[0].tag_name
       : data.tag_name;
     if (typeof latestVersion !== "string") {

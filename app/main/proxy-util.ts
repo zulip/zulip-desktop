@@ -80,7 +80,7 @@ export async function resolveSystemProxy(
   ]);
   const proxyString = values.join("");
   ConfigUtil.setConfigItem("systemProxyRules", proxyString);
-  const useSystemProxy = ConfigUtil.getConfigItem("useSystemProxy");
+  const useSystemProxy = ConfigUtil.getConfigItem("useSystemProxy", false);
   if (useSystemProxy) {
     ConfigUtil.setConfigItem("proxyRules", proxyString);
   }
