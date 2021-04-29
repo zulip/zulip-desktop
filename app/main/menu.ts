@@ -227,7 +227,7 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
       accelerator: "CommandOrControl+Shift+S",
       click(_item, focusedWindow) {
         if (focusedWindow) {
-          const newValue = !ConfigUtil.getConfigItem("showSidebar");
+          const newValue = !ConfigUtil.getConfigItem("showSidebar", true);
           send(focusedWindow.webContents, "toggle-sidebar", newValue);
           ConfigUtil.setConfigItem("showSidebar", newValue);
         }
@@ -239,7 +239,7 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
       visible: process.platform !== "darwin",
       click(_item, focusedWindow) {
         if (focusedWindow) {
-          const newValue = !ConfigUtil.getConfigItem("autoHideMenubar");
+          const newValue = !ConfigUtil.getConfigItem("autoHideMenubar", false);
           focusedWindow.autoHideMenuBar = newValue;
           focusedWindow.setMenuBarVisibility(!newValue);
           send(

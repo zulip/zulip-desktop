@@ -92,7 +92,7 @@ export function initPreferenceView(): void {
 
   ipcRenderer.on(
     "toggle-dnd",
-    (_event: Event, _state: boolean, newSettings: DNDSettings) => {
+    (_event: Event, _state: boolean, newSettings: Partial<DNDSettings>) => {
       handleToggle("show-notification-option", newSettings.showNotification);
       handleToggle("silent-option", newSettings.silent);
 

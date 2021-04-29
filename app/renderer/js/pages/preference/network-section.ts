@@ -97,8 +97,11 @@ export function initNetworkSection(props: NetworkSectionProps): void {
       )!,
       value: ConfigUtil.getConfigItem("useSystemProxy", false),
       clickHandler: () => {
-        const newValue = !ConfigUtil.getConfigItem("useSystemProxy");
-        const manualProxyValue = ConfigUtil.getConfigItem("useManualProxy");
+        const newValue = !ConfigUtil.getConfigItem("useSystemProxy", false);
+        const manualProxyValue = ConfigUtil.getConfigItem(
+          "useManualProxy",
+          false,
+        );
         if (manualProxyValue && newValue) {
           ConfigUtil.setConfigItem("useManualProxy", !manualProxyValue);
           toggleManualProxySettings(!manualProxyValue);
@@ -120,8 +123,11 @@ export function initNetworkSection(props: NetworkSectionProps): void {
       )!,
       value: ConfigUtil.getConfigItem("useManualProxy", false),
       clickHandler: () => {
-        const newValue = !ConfigUtil.getConfigItem("useManualProxy");
-        const systemProxyValue = ConfigUtil.getConfigItem("useSystemProxy");
+        const newValue = !ConfigUtil.getConfigItem("useManualProxy", false);
+        const systemProxyValue = ConfigUtil.getConfigItem(
+          "useSystemProxy",
+          false,
+        );
         toggleManualProxySettings(newValue);
         if (systemProxyValue && newValue) {
           ConfigUtil.setConfigItem("useSystemProxy", !systemProxyValue);

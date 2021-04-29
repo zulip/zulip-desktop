@@ -39,7 +39,7 @@ export default function handleExternalLink(
         ipcRenderer.removeAllListeners("downloadFileFailed");
 
         // Play sound to indicate download complete
-        if (!ConfigUtil.getConfigItem("silent")) {
+        if (!ConfigUtil.getConfigItem("silent", false)) {
           await dingSound.play();
         }
       },

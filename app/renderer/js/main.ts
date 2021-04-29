@@ -1,6 +1,7 @@
 import {clipboard, remote} from "electron";
 import path from "path";
 
+import type {Config} from "../../common/config-util";
 import * as ConfigUtil from "../../common/config-util";
 import * as DNDUtil from "../../common/dnd-util";
 import type {DNDSettings} from "../../common/dnd-util";
@@ -28,30 +29,6 @@ interface FunctionalTabProps {
   name: string;
   materialIcon: string;
   url: string;
-}
-
-interface SettingsOptions extends DNDSettings {
-  autoHideMenubar: boolean;
-  trayIcon: boolean;
-  useManualProxy: boolean;
-  useSystemProxy: boolean;
-  showSidebar: boolean;
-  badgeOption: boolean;
-  startAtLogin: boolean;
-  startMinimized: boolean;
-  enableSpellchecker: boolean;
-  autoUpdate: boolean;
-  betaUpdate: boolean;
-  errorReporting: boolean;
-  customCSS: boolean;
-  lastActiveTab: number;
-  dnd: boolean;
-  dndPreviousSettings: DNDSettings;
-  downloadsPath: string;
-  quitOnClose: boolean;
-  promptDownload: boolean;
-  dockBouncing?: boolean;
-  spellcheckerLanguages?: string[];
 }
 
 type WebviewListener =
@@ -163,7 +140,7 @@ class ServerManagerView {
     // To change proxyEnable to useManualProxy in older versions
     const proxyEnabledOld = ConfigUtil.isConfigItemExists("useProxy");
     if (proxyEnabledOld) {
-      const proxyEnableOldState = ConfigUtil.getConfigItem("useProxy");
+      const proxyEnableOldState = ConfigUtil.getConfigItem("useProxy", false);
       if (proxyEnableOldState) {
         ConfigUtil.setConfigItem("useManualProxy", true);
       }
@@ -172,8 +149,8 @@ class ServerManagerView {
     }
 
     const proxyEnabled =
-      ConfigUtil.getConfigItem("useManualProxy") ||
-      ConfigUtil.getConfigItem("useSystemProxy");
+      ConfigUtil.getConfigItem("useManualProxy", false) ||
+      ConfigUtil.getConfigItem("useSystemProxy", false);
     await session.fromPartition("persist:webviewsession").setProxy(
       proxyEnabled
         ? {
@@ -194,7 +171,7 @@ class ServerManagerView {
   // This will make sure the default settings are correctly set to either true or false
   initDefaultSettings(): void {
     // Default settings which should be respected
-    const settingOptions: SettingsOptions = {
+    const settingOptions: Partial<Config> = {
       autoHideMenubar: false,
       trayIcon: true,
       useManualProxy: false,
@@ -226,7 +203,7 @@ class ServerManagerView {
     if (process.platform === "win32") {
       // Only available on Windows
       settingOptions.flashTaskbarOnMessage = true;
-      settingOptions.dndPreviousSettings.flashTaskbarOnMessage = true;
+      settingOptions.dndPreviousSettings!.flashTaskbarOnMessage = true;
     }
 
     if (process.platform === "darwin") {
@@ -239,15 +216,17 @@ class ServerManagerView {
       settingOptions.spellcheckerLanguages = ["en-US"];
     }
 
-    for (const [setting, value] of Object.entries(settingOptions)) {
+    for (const [setting, value] of Object.entries(settingOptions) as Array<
+      {[Key in keyof Config]: [Key, Config[Key]]}[keyof Config]
+    >) {
       // Give preference to defaults defined in global_config.json
       if (EnterpriseUtil.configItemExists(setting)) {
         ConfigUtil.setConfigItem(
           setting,
-          EnterpriseUtil.getConfigItem(setting),
+          EnterpriseUtil.getConfigItem(setting, value),
           true,
         );
-      } else if (ConfigUtil.getConfigItem(setting) === null) {
+      } else if (!ConfigUtil.isConfigItemExists(setting)) {
         ConfigUtil.setConfigItem(setting, value);
       }
     }
@@ -348,7 +327,7 @@ class ServerManagerView {
       }
 
       // Open last active tab
-      let lastActiveTab = ConfigUtil.getConfigItem("lastActiveTab");
+      let lastActiveTab = ConfigUtil.getConfigItem("lastActiveTab", 0);
       if (lastActiveTab >= servers.length) {
         lastActiveTab = 0;
       }
@@ -1074,7 +1053,7 @@ class ServerManagerView {
 
     ipcRenderer.on(
       "toggle-dnd",
-      (event: Event, state: boolean, newSettings: DNDSettings) => {
+      (event: Event, state: boolean, newSettings: Partial<DNDSettings>) => {
         this.toggleDNDButton(state);
         ipcRenderer.send(
           "forward-message",

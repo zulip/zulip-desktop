@@ -14,7 +14,7 @@ import handleExternalLink from "./handle-external-link";
 
 const {app, dialog} = remote;
 
-const shouldSilentWebview = ConfigUtil.getConfigItem("silent");
+const shouldSilentWebview = ConfigUtil.getConfigItem("silent", false);
 
 interface WebViewProps {
   $root: Element;
@@ -37,7 +37,7 @@ export default class WebView {
   zoomFactor: number;
   badgeCount: number;
   loading: boolean;
-  customCSS: string | null;
+  customCSS: string | false | null;
   $webviewsContainer: DOMTokenList;
   $el?: Electron.WebviewTag;
   domReady?: Promise<void>;
@@ -47,7 +47,7 @@ export default class WebView {
     this.zoomFactor = 1;
     this.loading = true;
     this.badgeCount = 0;
-    this.customCSS = ConfigUtil.getConfigItem("customCSS");
+    this.customCSS = ConfigUtil.getConfigItem("customCSS", null);
     this.$webviewsContainer = document.querySelector(
       "#webviews-container",
     )!.classList;
@@ -65,7 +65,9 @@ export default class WebView {
         name="${this.props.name}"
         webpreferences="
           contextIsolation=${!this.props.nodeIntegration},
-          spellcheck=${Boolean(ConfigUtil.getConfigItem("enableSpellchecker"))},
+          spellcheck=${Boolean(
+          ConfigUtil.getConfigItem("enableSpellchecker", true),
+        )},
           worldSafeExecuteJavaScript=true
         "
       >
@@ -131,7 +133,7 @@ export default class WebView {
         // This api is only supported on macOS
         app.dock.setBadge("●");
         // Bounce the dock
-        if (ConfigUtil.getConfigItem("dockBouncing")) {
+        if (ConfigUtil.getConfigItem("dockBouncing", true)) {
           app.dock.bounce();
         }
       }
@@ -222,9 +224,10 @@ export default class WebView {
       ))();
 
     // Get customCSS again from config util to avoid warning user again
-    this.customCSS = ConfigUtil.getConfigItem("customCSS");
-    if (this.customCSS) {
-      if (!fs.existsSync(this.customCSS)) {
+    const customCSS = ConfigUtil.getConfigItem("customCSS", null);
+    this.customCSS = customCSS;
+    if (customCSS) {
+      if (!fs.existsSync(customCSS)) {
         this.customCSS = null;
         ConfigUtil.setConfigItem("customCSS", null);
 
@@ -235,7 +238,7 @@ export default class WebView {
 
       (async () =>
         this.$el!.insertCSS(
-          fs.readFileSync(path.resolve(__dirname, this.customCSS!), "utf8"),
+          fs.readFileSync(path.resolve(__dirname, customCSS), "utf8"),
         ))();
     }
   }

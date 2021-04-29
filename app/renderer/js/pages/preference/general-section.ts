@@ -161,7 +161,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
         <div class="setting-row" id="remove-custom-css">
           <div class="setting-description">
             <div class="selected-css-path" id="custom-css-path">
-              ${ConfigUtil.getConfigString("customCSS", "")}
+              ${ConfigUtil.getConfigItem("customCSS", "")}
             </div>
           </div>
           <div class="action red" id="css-delete-action">
@@ -180,7 +180,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
         <div class="setting-row">
           <div class="setting-description">
             <div class="download-folder-path">
-              ${ConfigUtil.getConfigString(
+              ${ConfigUtil.getConfigItem(
                 "downloadsPath",
                 app.getPath("downloads"),
               )}
@@ -253,7 +253,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       $element: document.querySelector("#tray-option .setting-control")!,
       value: ConfigUtil.getConfigItem("trayIcon", true),
       clickHandler: () => {
-        const newValue = !ConfigUtil.getConfigItem("trayIcon");
+        const newValue = !ConfigUtil.getConfigItem("trayIcon", true);
         ConfigUtil.setConfigItem("trayIcon", newValue);
         ipcRenderer.send("forward-message", "toggletray");
         updateTrayOption();
@@ -266,7 +266,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       $element: document.querySelector("#menubar-option .setting-control")!,
       value: ConfigUtil.getConfigItem("autoHideMenubar", false),
       clickHandler: () => {
-        const newValue = !ConfigUtil.getConfigItem("autoHideMenubar");
+        const newValue = !ConfigUtil.getConfigItem("autoHideMenubar", false);
         ConfigUtil.setConfigItem("autoHideMenubar", newValue);
         ipcRenderer.send("toggle-menubar", newValue);
         updateMenubarOption();
@@ -279,7 +279,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       $element: document.querySelector("#badge-option .setting-control")!,
       value: ConfigUtil.getConfigItem("badgeOption", true),
       clickHandler: () => {
-        const newValue = !ConfigUtil.getConfigItem("badgeOption");
+        const newValue = !ConfigUtil.getConfigItem("badgeOption", true);
         ConfigUtil.setConfigItem("badgeOption", newValue);
         ipcRenderer.send("toggle-badge-option", newValue);
         updateBadgeOption();
@@ -292,7 +292,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       $element: document.querySelector("#dock-bounce-option .setting-control")!,
       value: ConfigUtil.getConfigItem("dockBouncing", true),
       clickHandler: () => {
-        const newValue = !ConfigUtil.getConfigItem("dockBouncing");
+        const newValue = !ConfigUtil.getConfigItem("dockBouncing", true);
         ConfigUtil.setConfigItem("dockBouncing", newValue);
         updateDockBouncing();
       },
@@ -306,7 +306,10 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       )!,
       value: ConfigUtil.getConfigItem("flashTaskbarOnMessage", true),
       clickHandler: () => {
-        const newValue = !ConfigUtil.getConfigItem("flashTaskbarOnMessage");
+        const newValue = !ConfigUtil.getConfigItem(
+          "flashTaskbarOnMessage",
+          true,
+        );
         ConfigUtil.setConfigItem("flashTaskbarOnMessage", newValue);
         updateFlashTaskbar();
       },
@@ -319,7 +322,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       disabled: EnterpriseUtil.configItemExists("autoUpdate"),
       value: ConfigUtil.getConfigItem("autoUpdate", true),
       clickHandler: () => {
-        const newValue = !ConfigUtil.getConfigItem("autoUpdate");
+        const newValue = !ConfigUtil.getConfigItem("autoUpdate", true);
         ConfigUtil.setConfigItem("autoUpdate", newValue);
         if (!newValue) {
           ConfigUtil.setConfigItem("betaUpdate", false);
@@ -336,8 +339,8 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       $element: document.querySelector("#betaupdate-option .setting-control")!,
       value: ConfigUtil.getConfigItem("betaUpdate", false),
       clickHandler: () => {
-        const newValue = !ConfigUtil.getConfigItem("betaUpdate");
-        if (ConfigUtil.getConfigItem("autoUpdate")) {
+        const newValue = !ConfigUtil.getConfigItem("betaUpdate", false);
+        if (ConfigUtil.getConfigItem("autoUpdate", true)) {
           ConfigUtil.setConfigItem("betaUpdate", newValue);
           betaUpdateOption();
         }
@@ -381,7 +384,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       $element: document.querySelector("#sidebar-option .setting-control")!,
       value: ConfigUtil.getConfigItem("showSidebar", true),
       clickHandler: () => {
-        const newValue = !ConfigUtil.getConfigItem("showSidebar");
+        const newValue = !ConfigUtil.getConfigItem("showSidebar", true);
         ConfigUtil.setConfigItem("showSidebar", newValue);
         ipcRenderer.send("forward-message", "toggle-sidebar", newValue);
         updateSidebarOption();
@@ -396,7 +399,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       )!,
       value: ConfigUtil.getConfigItem("startAtLogin", false),
       clickHandler: () => {
-        const newValue = !ConfigUtil.getConfigItem("startAtLogin");
+        const newValue = !ConfigUtil.getConfigItem("startAtLogin", false);
         ConfigUtil.setConfigItem("startAtLogin", newValue);
         ipcRenderer.send("toggleAutoLauncher", newValue);
         updateStartAtLoginOption();
@@ -409,7 +412,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       $element: document.querySelector("#quitOnClose-option .setting-control")!,
       value: ConfigUtil.getConfigItem("quitOnClose", false),
       clickHandler: () => {
-        const newValue = !ConfigUtil.getConfigItem("quitOnClose");
+        const newValue = !ConfigUtil.getConfigItem("quitOnClose", false);
         ConfigUtil.setConfigItem("quitOnClose", newValue);
         updateQuitOnCloseOption();
       },
@@ -423,7 +426,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       )!,
       value: ConfigUtil.getConfigItem("enableSpellchecker", true),
       clickHandler: () => {
-        const newValue = !ConfigUtil.getConfigItem("enableSpellchecker");
+        const newValue = !ConfigUtil.getConfigItem("enableSpellchecker", true);
         ConfigUtil.setConfigItem("enableSpellchecker", newValue);
         enableSpellchecker();
         const spellcheckerLanguageInput: HTMLElement = document.querySelector(
@@ -445,7 +448,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       )!,
       value: ConfigUtil.getConfigItem("errorReporting", true),
       clickHandler: () => {
-        const newValue = !ConfigUtil.getConfigItem("errorReporting");
+        const newValue = !ConfigUtil.getConfigItem("errorReporting", true);
         ConfigUtil.setConfigItem("errorReporting", newValue);
         enableErrorReporting();
       },
@@ -476,7 +479,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
     const langMenu: HTMLSelectElement = document.querySelector(".lang-menu")!;
 
     // The next three lines set the selected language visible on the dropdown button
-    let language = ConfigUtil.getConfigItem("appLanguage");
+    let language = ConfigUtil.getConfigItem("appLanguage", "en");
     language =
       language && langMenu.options.namedItem(language) ? language : "en";
     langMenu.options.namedItem(language)!.selected = true;
@@ -493,7 +496,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       )!,
       value: ConfigUtil.getConfigItem("startMinimized", false),
       clickHandler: () => {
-        const newValue = !ConfigUtil.getConfigItem("startMinimized");
+        const newValue = !ConfigUtil.getConfigItem("startMinimized", false);
         ConfigUtil.setConfigItem("startMinimized", newValue);
         minimizeOnStart();
       },
@@ -510,7 +513,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
   }
 
   function showCustomCSSPath(): void {
-    if (!ConfigUtil.getConfigItem("customCSS")) {
+    if (!ConfigUtil.getConfigItem("customCSS", null)) {
       const cssPATH: HTMLElement = document.querySelector(
         "#remove-custom-css",
       )!;
@@ -558,7 +561,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       $element: document.querySelector("#prompt-download .setting-control")!,
       value: ConfigUtil.getConfigItem("promptDownload", false),
       clickHandler: () => {
-        const newValue = !ConfigUtil.getConfigItem("promptDownload");
+        const newValue = !ConfigUtil.getConfigItem("promptDownload", false);
         ConfigUtil.setConfigItem("promptDownload", newValue);
         updatePromptDownloadOption();
       },
@@ -659,8 +662,8 @@ export function initGeneralSection(props: GeneralSectionProps): void {
         },
       });
 
-      const configuredLanguages: string[] = ConfigUtil.getConfigItem(
-        "spellcheckerLanguages",
+      const configuredLanguages: string[] = (
+        ConfigUtil.getConfigItem("spellcheckerLanguages", null) ?? []
       ).map(
         (code: string) =>
           [...languagePairs].find((pair) => pair[1] === code)![0],
@@ -682,7 +685,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
     }
 
     // Do not display the spellchecker input and note if it is disabled
-    if (!ConfigUtil.getConfigItem("enableSpellchecker")) {
+    if (!ConfigUtil.getConfigItem("enableSpellchecker", true)) {
       const spellcheckerLanguageInput: HTMLElement = document.querySelector(
         "#spellcheck-langs",
       )!;

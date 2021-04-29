@@ -4,8 +4,39 @@ import path from "path";
 
 import {JsonDB} from "node-json-db";
 
+import type {DNDSettings} from "./dnd-util";
 import * as EnterpriseUtil from "./enterprise-util";
 import Logger from "./logger-util";
+
+export interface Config extends DNDSettings {
+  appLanguage: string | null;
+  autoHideMenubar: boolean;
+  autoUpdate: boolean;
+  badgeOption: boolean;
+  betaUpdate: boolean;
+  customCSS: string | false | null;
+  dnd: boolean;
+  dndPreviousSettings: Partial<DNDSettings>;
+  dockBouncing: boolean;
+  downloadsPath: string;
+  enableSpellchecker: boolean;
+  errorReporting: boolean;
+  lastActiveTab: number;
+  promptDownload: boolean;
+  proxyBypass: string;
+  proxyPAC: string;
+  proxyRules: string;
+  quitOnClose: boolean;
+  showSidebar: boolean;
+  spellcheckerLanguages: string[] | null;
+  startAtLogin: boolean;
+  startMinimized: boolean;
+  systemProxyRules: string;
+  trayIcon: boolean;
+  useManualProxy: boolean;
+  useProxy: boolean;
+  useSystemProxy: boolean;
+}
 
 /* To make the util runnable in both main and renderer process */
 const {app, dialog} = process.type === "renderer" ? electron.remote : electron;
@@ -18,7 +49,10 @@ let db: JsonDB;
 
 reloadDB();
 
-export function getConfigItem(key: string, defaultValue: unknown = null): any {
+export function getConfigItem<Key extends keyof Config>(
+  key: Key,
+  defaultValue: Config[Key],
+): Config[Key] {
   try {
     db.reload();
   } catch (error: unknown) {
@@ -35,16 +69,6 @@ export function getConfigItem(key: string, defaultValue: unknown = null): any {
   return value;
 }
 
-export function getConfigString(key: string, defaultValue: string): string {
-  const value = getConfigItem(key, defaultValue);
-  if (typeof value === "string") {
-    return value;
-  }
-
-  setConfigItem(key, defaultValue);
-  return defaultValue;
-}
-
 // This function returns whether a key exists in the configuration file (settings.json)
 export function isConfigItemExists(key: string): boolean {
   try {
@@ -58,9 +82,9 @@ export function isConfigItemExists(key: string): boolean {
   return value !== undefined;
 }
 
-export function setConfigItem(
-  key: string,
-  value: unknown,
+export function setConfigItem<Key extends keyof Config>(
+  key: Key,
+  value: Config[Key],
   override?: boolean,
 ): void {
   if (EnterpriseUtil.configItemExists(key) && !override) {
