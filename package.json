@@ -53,9 +53,14 @@
     "mac": {
       "category": "public.app-category.productivity",
       "target": [
-        "dmg",
-        "pkg",
-        "zip"
+        {
+          "target": "default",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        "pkg"
       ],
       "darkModeSupport": true,
       "artifactName": "${productName}-${version}-${arch}.${ext}",
