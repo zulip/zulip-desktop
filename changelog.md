@@ -2,6 +2,17 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.7.0 --2021-04-30
+
+**Fixes**:
+
+- Fixed perpetual CPU usage on Windows after re-launching the app when it’s already open.
+- Fixed shortcut display to avoid generating “Ctrl+10”.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 12.0.6.
+
 ### v5.6.0 --2021-02-16
 
 **Fixes**:
