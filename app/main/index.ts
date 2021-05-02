@@ -124,10 +124,6 @@ function createMainWindow(): Electron.BrowserWindow {
   return win;
 }
 
-// Temporary fix for Electron render colors differently
-// More info here - https://github.com/electron/electron/issues/10732
-app.commandLine.appendSwitch("force-color-profile", "srgb");
-
 (async () => {
   if (!app.requestSingleInstanceLock()) {
     app.quit();
