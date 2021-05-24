@@ -425,7 +425,6 @@ function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
         },
         {
           label: t.__("Log Out of Organization"),
-          accelerator: "Cmd+L",
           enabled: enableMenu,
           click(_item, focusedWindow) {
             if (focusedWindow) {
@@ -593,7 +592,6 @@ function getOtherTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
         },
         {
           label: t.__("Log Out of Organization"),
-          accelerator: "Ctrl+L",
           enabled: enableMenu,
           click(_item, focusedWindow) {
             if (focusedWindow) {
