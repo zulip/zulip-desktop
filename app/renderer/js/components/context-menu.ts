@@ -119,9 +119,10 @@ export const contextMenu = (
 
   if (props.misspelledWord) {
     if (props.dictionarySuggestions.length > 0) {
-      const suggestions: Electron.MenuItemConstructorOptions[] = props.dictionarySuggestions.map(
-        (suggestion: string) => makeSuggestion(suggestion),
-      );
+      const suggestions: Electron.MenuItemConstructorOptions[] =
+        props.dictionarySuggestions.map((suggestion: string) =>
+          makeSuggestion(suggestion),
+        );
       menuTemplate = [...suggestions, ...menuTemplate];
     } else {
       menuTemplate.unshift({

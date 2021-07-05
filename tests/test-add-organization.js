@@ -10,9 +10,9 @@ test("add-organization", async (t) => {
   try {
     await setup.waitForLoad(app, t);
     await app.client.windowByIndex(1); // Focus on webview
-    await (await app.client.$(".setting-input-value")).setValue(
-      "chat.zulip.org",
-    );
+    await (
+      await app.client.$(".setting-input-value")
+    ).setValue("chat.zulip.org");
     await (await app.client.$("#connect")).click();
     await setup.wait(5000);
     await app.client.windowByIndex(0); // Switch focus back to main win

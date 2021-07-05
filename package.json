@@ -166,6 +166,7 @@
     "eslint-import-resolver-typescript": "^2.4.0",
     "htmlhint": "^0.14.2",
     "pre-commit": "^1.2.2",
+    "prettier": "^2.3.2",
     "rimraf": "^3.0.2",
     "spectron": "^14.0.0",
     "stylelint": "^13.13.0",

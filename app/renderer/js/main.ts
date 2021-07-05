@@ -81,9 +81,8 @@ class ServerManagerView {
 
     const $actionsContainer = document.querySelector("#actions-container")!;
     this.$reloadButton = $actionsContainer.querySelector("#reload-action")!;
-    this.$loadingIndicator = $actionsContainer.querySelector(
-      "#loading-action",
-    )!;
+    this.$loadingIndicator =
+      $actionsContainer.querySelector("#loading-action")!;
     this.$settingsButton = $actionsContainer.querySelector("#settings-action")!;
     this.$webviewsContainer = document.querySelector("#webviews-container")!;
     this.$backButton = $actionsContainer.querySelector("#back-action")!;
@@ -92,9 +91,8 @@ class ServerManagerView {
     this.$addServerTooltip = document.querySelector("#add-server-tooltip")!;
     this.$reloadTooltip = $actionsContainer.querySelector("#reload-tooltip")!;
     this.$loadingTooltip = $actionsContainer.querySelector("#loading-tooltip")!;
-    this.$settingsTooltip = $actionsContainer.querySelector(
-      "#setting-tooltip",
-    )!;
+    this.$settingsTooltip =
+      $actionsContainer.querySelector("#setting-tooltip")!;
 
     // TODO: This should have been querySelector but the problem is that
     // querySelector doesn't return elements not present in dom whereas somehow
@@ -415,9 +413,8 @@ class ServerManagerView {
   }
 
   initServerActions(): void {
-    const $serverImgs: NodeListOf<HTMLImageElement> = document.querySelectorAll(
-      ".server-icons",
-    );
+    const $serverImgs: NodeListOf<HTMLImageElement> =
+      document.querySelectorAll(".server-icons");
     for (const [index, $serverImg] of $serverImgs.entries()) {
       this.addContextMenu($serverImg, index);
       if ($serverImg.src.includes("img/icon.png")) {
@@ -533,9 +530,8 @@ class ServerManagerView {
     // To handle position of servers' tooltip due to scrolling of list of organizations
     // This could not be handled using CSS, hence the top of the tooltip is made same
     // as that of its parent element.
-    const {top} = this.$serverIconTooltip[
-      index
-    ].parentElement!.getBoundingClientRect();
+    const {top} =
+      this.$serverIconTooltip[index].parentElement!.getBoundingClientRect();
     this.$serverIconTooltip[index].style.top = `${top}px`;
   }
 
@@ -1021,9 +1017,8 @@ class ServerManagerView {
     });
 
     ipcRenderer.on("toggle-silent", (event: Event, state: boolean) => {
-      const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll(
-        "webview",
-      );
+      const webviews: NodeListOf<Electron.WebviewTag> =
+        document.querySelectorAll("webview");
       for (const webview of webviews) {
         try {
           webview.setAudioMuted(state);
@@ -1100,9 +1095,8 @@ class ServerManagerView {
                 iconURL,
               );
               const serverImgsSelector = ".tab .server-icons";
-              const serverImgs: NodeListOf<HTMLImageElement> = document.querySelectorAll(
-                serverImgsSelector,
-              );
+              const serverImgs: NodeListOf<HTMLImageElement> =
+                document.querySelectorAll(serverImgsSelector);
               serverImgs[index].src = localIconUrl;
               domain.icon = localIconUrl;
               DomainUtil.updateDomain(index, domain);
@@ -1124,9 +1118,8 @@ class ServerManagerView {
     ipcRenderer.on(
       "focus-webview-with-id",
       (event: Event, webviewId: number) => {
-        const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll(
-          "webview",
-        );
+        const webviews: NodeListOf<Electron.WebviewTag> =
+          document.querySelectorAll("webview");
         for (const webview of webviews) {
           const currentId = webview.getWebContentsId();
           const tabId = webview.getAttribute("data-tab-id")!;
@@ -1191,18 +1184,16 @@ class ServerManagerView {
     });
 
     ipcRenderer.on("set-active", () => {
-      const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll(
-        "webview",
-      );
+      const webviews: NodeListOf<Electron.WebviewTag> =
+        document.querySelectorAll("webview");
       for (const webview of webviews) {
         ipcRenderer.sendTo(webview.getWebContentsId(), "set-active");
       }
     });
 
     ipcRenderer.on("set-idle", () => {
-      const webviews: NodeListOf<Electron.WebviewTag> = document.querySelectorAll(
-        "webview",
-      );
+      const webviews: NodeListOf<Electron.WebviewTag> =
+        document.querySelectorAll("webview");
       for (const webview of webviews) {
         ipcRenderer.sendTo(webview.getWebContentsId(), "set-idle");
       }

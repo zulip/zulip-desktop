@@ -9,11 +9,10 @@ import type {
   RendererMessage,
 } from "../../common/typed-ipc";
 
-type RendererListener<
-  Channel extends keyof RendererMessage
-> = RendererMessage[Channel] extends (...args: infer Args) => void
-  ? (event: IpcRendererEvent, ...args: Args) => void
-  : never;
+type RendererListener<Channel extends keyof RendererMessage> =
+  RendererMessage[Channel] extends (...args: infer Args) => void
+    ? (event: IpcRendererEvent, ...args: Args) => void
+    : never;
 
 export const ipcRenderer: {
   on<Channel extends keyof RendererMessage>(

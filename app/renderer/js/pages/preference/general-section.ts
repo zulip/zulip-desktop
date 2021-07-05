@@ -429,9 +429,8 @@ export function initGeneralSection(props: GeneralSectionProps): void {
         const newValue = !ConfigUtil.getConfigItem("enableSpellchecker", true);
         ConfigUtil.setConfigItem("enableSpellchecker", newValue);
         enableSpellchecker();
-        const spellcheckerLanguageInput: HTMLElement = document.querySelector(
-          "#spellcheck-langs",
-        )!;
+        const spellcheckerLanguageInput: HTMLElement =
+          document.querySelector("#spellcheck-langs")!;
         const spellcheckerNote: HTMLElement = document.querySelector("#note")!;
         spellcheckerLanguageInput.style.display =
           spellcheckerLanguageInput.style.display === "none" ? "" : "none";
@@ -514,9 +513,8 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function showCustomCSSPath(): void {
     if (!ConfigUtil.getConfigItem("customCSS", null)) {
-      const cssPATH: HTMLElement = document.querySelector(
-        "#remove-custom-css",
-      )!;
+      const cssPATH: HTMLElement =
+        document.querySelector("#remove-custom-css")!;
       cssPATH.style.display = "none";
     }
   }
@@ -613,16 +611,16 @@ export function initGeneralSection(props: GeneralSectionProps): void {
       note.append(
         t.__("You can select a maximum of 3 languages for spellchecking."),
       );
-      const spellDiv: HTMLElement = document.querySelector(
-        "#spellcheck-langs",
-      )!;
+      const spellDiv: HTMLElement =
+        document.querySelector("#spellcheck-langs")!;
       spellDiv.innerHTML += html`
         <div class="setting-description">${t.__("Spellchecker Languages")}</div>
         <input name="spellcheck" placeholder="Enter Languages" />
       `.html;
 
-      const availableLanguages = session.fromPartition("persist:webviewsession")
-        .availableSpellCheckerLanguages;
+      const availableLanguages = session.fromPartition(
+        "persist:webviewsession",
+      ).availableSpellCheckerLanguages;
       let languagePairs: Map<string, string> = new Map();
       for (const l of availableLanguages) {
         if (ISO6391.validate(l)) {
@@ -686,9 +684,8 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
     // Do not display the spellchecker input and note if it is disabled
     if (!ConfigUtil.getConfigItem("enableSpellchecker", true)) {
-      const spellcheckerLanguageInput: HTMLElement = document.querySelector(
-        "#spellcheck-langs",
-      )!;
+      const spellcheckerLanguageInput: HTMLElement =
+        document.querySelector("#spellcheck-langs")!;
       const spellcheckerNote: HTMLElement = document.querySelector("#note")!;
       spellcheckerLanguageInput.style.display = "none";
       spellcheckerNote.style.display = "none";

@@ -7,9 +7,8 @@ import SendFeedback from "@electron-elements/send-feedback";
 const {app} = remote;
 
 customElements.define("send-feedback", SendFeedback);
-export const sendFeedback: SendFeedback = document.querySelector(
-  "send-feedback",
-)!;
+export const sendFeedback: SendFeedback =
+  document.querySelector("send-feedback")!;
 export const feedbackHolder = sendFeedback.parentElement!;
 
 // Make the button color match zulip app's theme

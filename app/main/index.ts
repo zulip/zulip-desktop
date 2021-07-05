@@ -476,9 +476,8 @@ ${error}`,
   setInterval(() => {
     // Set user idle if no activity in 1 second (idleThresholdSeconds)
     const idleThresholdSeconds = 1; // 1 second
-    const idleState = electron.powerMonitor.getSystemIdleState(
-      idleThresholdSeconds,
-    );
+    const idleState =
+      electron.powerMonitor.getSystemIdleState(idleThresholdSeconds);
     if (idleState === "active") {
       send(page, "set-active");
     } else {

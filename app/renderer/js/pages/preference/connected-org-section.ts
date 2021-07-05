@@ -36,9 +36,8 @@ export function initConnectedOrgSection(props: ConnectedOrgSectionProps): void {
     "#server-info-container",
   )!;
   const $existingServers = document.querySelector("#existing-servers")!;
-  const $newOrgButton: HTMLButtonElement = document.querySelector(
-    "#new-org-button",
-  )!;
+  const $newOrgButton: HTMLButtonElement =
+    document.querySelector("#new-org-button")!;
   const $findAccountsContainer = document.querySelector(
     "#find-accounts-container",
   )!;

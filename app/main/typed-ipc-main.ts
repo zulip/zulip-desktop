@@ -5,11 +5,10 @@ import {
 
 import type {MainCall, MainMessage, RendererMessage} from "../common/typed-ipc";
 
-type MainListener<
-  Channel extends keyof MainMessage
-> = MainMessage[Channel] extends (...args: infer Args) => infer Return
-  ? (event: IpcMainEvent & {returnValue: Return}, ...args: Args) => void
-  : never;
+type MainListener<Channel extends keyof MainMessage> =
+  MainMessage[Channel] extends (...args: infer Args) => infer Return
+    ? (event: IpcMainEvent & {returnValue: Return}, ...args: Args) => void
+    : never;
 
 type MainHandler<Channel extends keyof MainCall> = MainCall[Channel] extends (
   ...args: infer Args

@@ -163,9 +163,8 @@ export default class WebView {
 
     this.$el!.addEventListener("did-fail-load", (event) => {
       const {errorDescription} = event;
-      const hasConnectivityError = SystemUtil.connectivityERR.includes(
-        errorDescription,
-      );
+      const hasConnectivityError =
+        SystemUtil.connectivityERR.includes(errorDescription);
       if (hasConnectivityError) {
         console.error("error", errorDescription);
         if (!this.props.url.includes("network.html")) {

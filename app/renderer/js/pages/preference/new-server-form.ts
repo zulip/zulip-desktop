@@ -50,9 +50,8 @@ export function initNewServerForm(props: NewServerFormProps): void {
       </div>
     </div>
   `);
-  const $saveServerButton: HTMLButtonElement = $newServerForm.querySelector(
-    "#connect",
-  )!;
+  const $saveServerButton: HTMLButtonElement =
+    $newServerForm.querySelector("#connect")!;
   props.$root.textContent = "";
   props.$root.append($newServerForm);
   const $newServerUrl: HTMLInputElement = $newServerForm.querySelector(
