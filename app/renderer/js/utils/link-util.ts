@@ -40,6 +40,6 @@ export async function openBrowser(url: URL): Promise<void> {
     setTimeout(() => {
       fs.unlinkSync(file);
       fs.rmdirSync(dir);
-    }, 15000);
+    }, 15_000);
   }
 }

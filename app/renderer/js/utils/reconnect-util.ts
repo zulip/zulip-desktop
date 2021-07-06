@@ -21,7 +21,7 @@ export default class ReconnectUtil {
     this.alreadyReloaded = false;
     this.fibonacciBackoff = backoff.fibonacci({
       initialDelay: 5000,
-      maxDelay: 300000,
+      maxDelay: 300_000,
     });
   }
 
