@@ -65,8 +65,8 @@ ipcRenderer.on("show-notification-settings", () => {
   }, 100);
 });
 
-window.addEventListener("load", (event: any): void => {
-  if (!event.target.URL.includes("app/renderer/network.html")) {
+window.addEventListener("load", () => {
+  if (!location.href.includes("app/renderer/network.html")) {
     return;
   }
 
