@@ -108,5 +108,5 @@ interface CompatElectronBridge extends ElectronBridge {
     onshow: attributeListener("show"),
   });
 
-  window.Notification = InjectedNotification as any;
+  window.Notification = InjectedNotification as unknown as typeof Notification;
 })();
