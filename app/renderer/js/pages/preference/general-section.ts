@@ -5,6 +5,7 @@ import path from "path";
 
 import Tagify from "@yaireo/tagify";
 import ISO6391 from "iso-639-1";
+import * as z from "zod";
 
 import * as ConfigUtil from "../../../../common/config-util";
 import * as EnterpriseUtil from "../../../../common/enterprise-util";
@@ -673,9 +674,11 @@ export function initGeneralSection(props: GeneralSectionProps): void {
           ConfigUtil.setConfigItem("spellcheckerLanguages", []);
           ipcRenderer.send("set-spellcheck-langs");
         } else {
-          const spellLangs: string[] = [...JSON.parse(tagField.value)].map(
-            (elt: {value: string}) => languagePairs.get(elt.value)!,
-          );
+          const data: unknown = JSON.parse(tagField.value);
+          const spellLangs: string[] = z
+            .array(z.object({value: z.string()}))
+            .parse(data)
+            .map((elt) => languagePairs.get(elt.value)!);
           ConfigUtil.setConfigItem("spellcheckerLanguages", spellLangs);
           ipcRenderer.send("set-spellcheck-langs");
         }
