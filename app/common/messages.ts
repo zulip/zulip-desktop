@@ -13,11 +13,6 @@ export function invalidZulipServerError(domain: string): string {
  https://zulip.readthedocs.io/en/stable/production/ssl-certificates.html`;
 }
 
-export function noOrgsError(domain: string): string {
-  return `${domain} does not have any organizations added.
-Please contact your server administrator.`;
-}
-
 export function enterpriseOrgError(
   length: number,
   domains: string[],

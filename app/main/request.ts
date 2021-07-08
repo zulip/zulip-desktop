@@ -6,6 +6,7 @@ import stream from "stream";
 import util from "util";
 
 import getStream from "get-stream";
+import * as z from "zod";
 
 import Logger from "../common/logger-util";
 import * as Messages from "../common/messages";
@@ -67,16 +68,14 @@ export const _getServerSettings = async (
     throw new Error(Messages.invalidZulipServerError(domain));
   }
 
-  const {realm_name, realm_uri, realm_icon} = JSON.parse(
-    await getStream(response),
-  );
-  if (
-    typeof realm_name !== "string" ||
-    typeof realm_uri !== "string" ||
-    typeof realm_icon !== "string"
-  ) {
-    throw new TypeError(Messages.noOrgsError(domain));
-  }
+  const data: unknown = JSON.parse(await getStream(response));
+  const {realm_name, realm_uri, realm_icon} = z
+    .object({
+      realm_name: z.string(),
+      realm_uri: z.string(),
+      realm_icon: z.string(),
+    })
+    .parse(data);
 
   return {
     // Some Zulip Servers use absolute URL for server icon whereas others use relative URL
