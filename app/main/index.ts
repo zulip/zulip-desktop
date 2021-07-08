@@ -30,7 +30,7 @@ let isQuitting = false;
 // Load this url in main window
 const mainURL = "file://" + path.join(__dirname, "../renderer", "main.html");
 
-const permissionCallbacks = new Map();
+const permissionCallbacks = new Map<number, (grant: boolean) => void>();
 let nextPermissionCallbackId = 0;
 
 const APP_ICON = path.join(__dirname, "../resources", "Icon");
@@ -156,7 +156,7 @@ function createMainWindow(): Electron.BrowserWindow {
   ipcMain.on(
     "permission-callback",
     (event: Event, permissionCallbackId: number, grant: boolean) => {
-      permissionCallbacks.get(permissionCallbackId)(grant);
+      permissionCallbacks.get(permissionCallbackId)?.(grant);
       permissionCallbacks.delete(permissionCallbackId);
     },
   );
