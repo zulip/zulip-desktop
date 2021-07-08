@@ -2,6 +2,7 @@ import {Notification, app, net} from "electron";
 
 import getStream from "get-stream";
 import * as semver from "semver";
+import * as z from "zod";
 
 import * as ConfigUtil from "../common/config-util";
 import Logger from "../common/logger-util";
@@ -26,13 +27,10 @@ export async function linuxUpdateNotification(
       return;
     }
 
-    const data = JSON.parse(await getStream(response));
+    const data: unknown = JSON.parse(await getStream(response));
     const latestVersion = ConfigUtil.getConfigItem("betaUpdate", false)
-      ? data[0].tag_name
-      : data.tag_name;
-    if (typeof latestVersion !== "string") {
-      throw new TypeError("Expected string for tag_name");
-    }
+      ? z.array(z.object({tag_name: z.string()})).parse(data)[0].tag_name
+      : z.object({tag_name: z.string()}).parse(data).tag_name;
 
     if (semver.gt(latestVersion, app.getVersion())) {
       const notified = LinuxUpdateUtil.getUpdateItem(latestVersion);
