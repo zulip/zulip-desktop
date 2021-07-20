@@ -176,9 +176,13 @@ function createMainWindow(): Electron.BrowserWindow {
 
   ipcMain.on("set-spellcheck-langs", () => {
     ses.setSpellCheckerLanguages(
-      ConfigUtil.getConfigItem("spellcheckerLanguages", null) ?? [],
+      process.platform === "darwin"
+        ? // Work around https://github.com/electron/electron/issues/30215.
+          mainWindow.webContents.session.getSpellCheckerLanguages()
+        : ConfigUtil.getConfigItem("spellcheckerLanguages", null) ?? [],
     );
   });
+
   AppMenu.setMenu({
     tabs: [],
   });
