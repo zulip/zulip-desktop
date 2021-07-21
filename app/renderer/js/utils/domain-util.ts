@@ -3,6 +3,8 @@ import fs from "fs";
 import path from "path";
 
 import {JsonDB} from "node-json-db";
+import {DataError} from "node-json-db/dist/lib/Errors";
+import * as z from "zod";
 
 import * as EnterpriseUtil from "../../../common/enterprise-util";
 import Logger from "../../../common/logger-util";
@@ -18,36 +20,50 @@ const logger = new Logger({
 
 const defaultIconUrl = "../renderer/img/icon.png";
 
+const serverConfSchema = z.object({
+  url: z.string(),
+  alias: z.string(),
+  icon: z.string(),
+});
+
 let db!: JsonDB;
 
 reloadDB();
+
 // Migrate from old schema
-if (db.getData("/").domain) {
-  (async () => {
-    await addDomain({
-      alias: "Zulip",
-      url: db.getData("/domain"),
-    });
-    db.delete("/domain");
-  })();
+try {
+  const oldDomain = db.getObject<unknown>("/domain");
+  if (typeof oldDomain === "string") {
+    (async () => {
+      await addDomain({
+        alias: "Zulip",
+        url: oldDomain,
+      });
+      db.delete("/domain");
+    })();
+  }
+} catch (error: unknown) {
+  if (!(error instanceof DataError)) throw error;
 }
 
 export function getDomains(): ServerConf[] {
   reloadDB();
-  if (db.getData("/").domains === undefined) {
+  try {
+    return serverConfSchema.array().parse(db.getObject<unknown>("/domains"));
+  } catch (error: unknown) {
+    if (!(error instanceof DataError)) throw error;
     return [];
   }
-
-  return db.getData("/domains");
 }
 
 export function getDomain(index: number): ServerConf {
   reloadDB();
-  return db.getData(`/domains[${index}]`);
+  return serverConfSchema.parse(db.getObject<unknown>(`/domains[${index}]`));
 }
 
 export function updateDomain(index: number, server: ServerConf): void {
   reloadDB();
+  serverConfSchema.parse(server);
   db.push(`/domains[${index}]`, server, true);
 }
 
@@ -59,10 +75,12 @@ export async function addDomain(server: {
   if (server.icon) {
     const localIconUrl = await saveServerIcon(server.icon);
     server.icon = localIconUrl;
+    serverConfSchema.parse(server);
     db.push("/domains[]", server, true);
     reloadDB();
   } else {
     server.icon = defaultIconUrl;
+    serverConfSchema.parse(server);
     db.push("/domains[]", server, true);
     reloadDB();
   }
