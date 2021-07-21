@@ -499,7 +499,7 @@ class ServerManagerView {
     $img.remove();
     $parent.append($altIcon);
 
-    this.addContextMenu($altIcon as HTMLImageElement, index);
+    this.addContextMenu($altIcon, index);
   }
 
   sidebarHoverEvent(
@@ -807,7 +807,7 @@ class ServerManagerView {
     return webview;
   }
 
-  addContextMenu($serverImg: HTMLImageElement, index: number): void {
+  addContextMenu($serverImg: HTMLElement, index: number): void {
     $serverImg.addEventListener("contextmenu", (event) => {
       event.preventDefault();
       const template = [
