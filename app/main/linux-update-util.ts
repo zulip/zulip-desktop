@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 
 import {JsonDB} from "node-json-db";
+import {DataError} from "node-json-db/dist/lib/Errors";
 
 import Logger from "../common/logger-util";
 
@@ -14,10 +15,19 @@ let db: JsonDB;
 
 reloadDB();
 
-export function getUpdateItem(key: string, defaultValue: unknown = null): any {
+export function getUpdateItem(
+  key: string,
+  defaultValue: true | null = null,
+): true | null {
   reloadDB();
-  const value = db.getData("/")[key];
-  if (value === undefined) {
+  let value: unknown;
+  try {
+    value = db.getObject<unknown>(`/${key}`);
+  } catch (error: unknown) {
+    if (!(error instanceof DataError)) throw error;
+  }
+
+  if (value !== true && value !== null) {
     setUpdateItem(key, defaultValue);
     return defaultValue;
   }
@@ -25,7 +35,7 @@ export function getUpdateItem(key: string, defaultValue: unknown = null): any {
   return value;
 }
 
-export function setUpdateItem(key: string, value: unknown): void {
+export function setUpdateItem(key: string, value: true | null): void {
   db.push(`/${key}`, value, true);
   reloadDB();
 }
