@@ -312,6 +312,10 @@ function getWindowSubmenu(
       type: "separator",
     });
     for (const tab of tabs) {
+      // Skip missing elements left by `delete this.tabs[index]` in
+      // ServerManagerView.
+      if (tab === undefined) continue;
+
       // Do not add functional tab settings to list of windows in menu bar
       if (tab.role === "function" && tab.name === "Settings") {
         continue;
@@ -700,7 +704,7 @@ async function checkForUpdate(): Promise<void> {
 function getNextServer(tabs: TabData[], activeTabIndex: number): number {
   do {
     activeTabIndex = (activeTabIndex + 1) % tabs.length;
-  } while (tabs[activeTabIndex].role !== "server");
+  } while (tabs[activeTabIndex]?.role !== "server");
 
   return activeTabIndex;
 }
@@ -708,7 +712,7 @@ function getNextServer(tabs: TabData[], activeTabIndex: number): number {
 function getPreviousServer(tabs: TabData[], activeTabIndex: number): number {
   do {
     activeTabIndex = (activeTabIndex - 1 + tabs.length) % tabs.length;
-  } while (tabs[activeTabIndex].role !== "server");
+  } while (tabs[activeTabIndex]?.role !== "server");
 
   return activeTabIndex;
 }
