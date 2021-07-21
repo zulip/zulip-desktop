@@ -1,12 +1,16 @@
 import fs from "fs";
 import path from "path";
 
-import type {Config} from "./config-util";
+import * as z from "zod";
+
+import {enterpriseConfigSchemata} from "./config-schemata";
 import Logger from "./logger-util";
 
-interface EnterpriseConfig extends Config {
-  presetOrganizations: string[];
-}
+type EnterpriseConfig = {
+  [Key in keyof typeof enterpriseConfigSchemata]: z.output<
+    typeof enterpriseConfigSchemata[Key]
+  >;
+};
 
 const logger = new Logger({
   file: "enterprise-util.log",
@@ -29,7 +33,11 @@ function reloadDB(): void {
     configFile = true;
     try {
       const file = fs.readFileSync(enterpriseFile, "utf8");
-      enterpriseSettings = JSON.parse(file);
+      const data: unknown = JSON.parse(file);
+      enterpriseSettings = z
+        .object(enterpriseConfigSchemata)
+        .partial()
+        .parse(data);
     } catch (error: unknown) {
       logger.log("Error while JSON parsing global_config.json: ");
       logger.log(error);

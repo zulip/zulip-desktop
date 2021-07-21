@@ -36,3 +36,8 @@ export const configSchemata = {
   useProxy: z.boolean(),
   useSystemProxy: z.boolean(),
 };
+
+export const enterpriseConfigSchemata = {
+  ...configSchemata,
+  presetOrganizations: z.string().array(),
+};
