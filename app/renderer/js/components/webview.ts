@@ -5,6 +5,7 @@ import path from "path";
 import * as ConfigUtil from "../../../common/config-util";
 import {HTML, html} from "../../../common/html";
 import type {RendererMessage} from "../../../common/typed-ipc";
+import type {TabRole} from "../../../common/types";
 import {ipcRenderer} from "../typed-ipc-renderer";
 import * as SystemUtil from "../utils/system-util";
 
@@ -21,7 +22,7 @@ interface WebViewProps {
   index: number;
   tabIndex: number;
   url: string;
-  role: string;
+  role: TabRole;
   name: string;
   isActive: () => boolean;
   switchLoading: (loading: boolean, url: string) => void;

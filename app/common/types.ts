@@ -17,8 +17,10 @@ export interface ServerConf {
   icon: string;
 }
 
+export type TabRole = "server" | "function";
+
 export interface TabData {
-  role: string;
+  role: TabRole;
   name: string;
   index: number;
   webviewName: string;

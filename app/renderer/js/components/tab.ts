@@ -1,7 +1,9 @@
+import type {TabRole} from "../../../common/types";
+
 import type WebView from "./webview";
 
 export interface TabProps {
-  role: string;
+  role: TabRole;
   icon?: string;
   name: string;
   $root: Element;
