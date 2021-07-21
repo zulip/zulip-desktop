@@ -1,12 +1,15 @@
+import type * as z from "zod";
+
+import type {dndSettingsSchemata} from "./config-schemata";
 import * as ConfigUtil from "./config-util";
 
-type SettingName = keyof DNDSettings;
+export type DNDSettings = {
+  [Key in keyof typeof dndSettingsSchemata]: z.output<
+    typeof dndSettingsSchemata[Key]
+  >;
+};
 
-export interface DNDSettings {
-  showNotification: boolean;
-  silent: boolean;
-  flashTaskbarOnMessage: boolean;
-}
+type SettingName = keyof DNDSettings;
 
 interface Toggle {
   dnd: boolean;

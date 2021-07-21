@@ -3,40 +3,16 @@ import fs from "fs";
 import path from "path";
 
 import {JsonDB} from "node-json-db";
+import {DataError} from "node-json-db/dist/lib/Errors";
+import type * as z from "zod";
 
-import type {DNDSettings} from "./dnd-util";
+import {configSchemata} from "./config-schemata";
 import * as EnterpriseUtil from "./enterprise-util";
 import Logger from "./logger-util";
 
-export interface Config extends DNDSettings {
-  appLanguage: string | null;
-  autoHideMenubar: boolean;
-  autoUpdate: boolean;
-  badgeOption: boolean;
-  betaUpdate: boolean;
-  customCSS: string | false | null;
-  dnd: boolean;
-  dndPreviousSettings: Partial<DNDSettings>;
-  dockBouncing: boolean;
-  downloadsPath: string;
-  enableSpellchecker: boolean;
-  errorReporting: boolean;
-  lastActiveTab: number;
-  promptDownload: boolean;
-  proxyBypass: string;
-  proxyPAC: string;
-  proxyRules: string;
-  quitOnClose: boolean;
-  showSidebar: boolean;
-  spellcheckerLanguages: string[] | null;
-  startAtLogin: boolean;
-  startMinimized: boolean;
-  systemProxyRules: string;
-  trayIcon: boolean;
-  useManualProxy: boolean;
-  useProxy: boolean;
-  useSystemProxy: boolean;
-}
+export type Config = {
+  [Key in keyof typeof configSchemata]: z.output<typeof configSchemata[Key]>;
+};
 
 /* To make the util runnable in both main and renderer process */
 const {app, dialog} = process.type === "renderer" ? electron.remote : electron;
@@ -52,7 +28,7 @@ reloadDB();
 export function getConfigItem<Key extends keyof Config>(
   key: Key,
   defaultValue: Config[Key],
-): Config[Key] {
+): z.output<typeof configSchemata[Key]> {
   try {
     db.reload();
   } catch (error: unknown) {
@@ -60,13 +36,13 @@ export function getConfigItem<Key extends keyof Config>(
     logger.error(error);
   }
 
-  const value = db.getData("/")[key];
-  if (value === undefined) {
+  try {
+    return configSchemata[key].parse(db.getObject<unknown>(`/${key}`));
+  } catch (error: unknown) {
+    if (!(error instanceof DataError)) throw error;
     setConfigItem(key, defaultValue);
     return defaultValue;
   }
-
-  return value;
 }
 
 // This function returns whether a key exists in the configuration file (settings.json)
@@ -78,8 +54,7 @@ export function isConfigItemExists(key: string): boolean {
     logger.error(error);
   }
 
-  const value = db.getData("/")[key];
-  return value !== undefined;
+  return db.exists(`/${key}`);
 }
 
 export function setConfigItem<Key extends keyof Config>(
@@ -92,6 +67,7 @@ export function setConfigItem<Key extends keyof Config>(
     return;
   }
 
+  configSchemata[key].parse(value);
   db.push(`/${key}`, value, true);
   db.save();
 }
