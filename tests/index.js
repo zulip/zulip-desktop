@@ -1,7 +1,7 @@
 "use strict";
 const test = require("tape");
 
-const setup = require("./setup");
+const setup = require("./setup.js");
 
 test("app runs", async (t) => {
   t.timeoutAfter(10e3);

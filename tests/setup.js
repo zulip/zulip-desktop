@@ -5,7 +5,7 @@ const path = require("path");
 const rimraf = require("rimraf");
 const {Application} = require("spectron");
 
-const config = require("./config");
+const config = require("./config.js");
 
 module.exports = {
   createApp,

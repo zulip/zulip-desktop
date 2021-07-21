@@ -1,7 +1,7 @@
 "use strict";
 const test = require("tape");
 
-const setup = require("./setup");
+const setup = require("./setup.js");
 
 test("add-organization", async (t) => {
   t.timeoutAfter(50e3);
