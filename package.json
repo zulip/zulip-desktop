@@ -60,7 +60,13 @@
             "arm64"
           ]
         },
-        "pkg"
+        {
+          "target": "pkg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
       ],
       "darkModeSupport": true,
       "artifactName": "${productName}-${version}-${arch}.${ext}",
