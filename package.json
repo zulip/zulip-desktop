@@ -123,13 +123,18 @@
         }
       ],
       "icon": "build/icon.ico",
-      "artifactName": "${productName}-Web-Setup-${version}.${ext}",
       "publisherName": "Kandra Labs, Inc."
+    },
+    "msi": {
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "nsis": {
       "allowToChangeInstallationDirectory": true,
       "oneClick": false,
       "perMachine": false
+    },
+    "nsisWeb": {
+      "artifactName": "${productName}-Web-Setup-${version}.${ext}"
     }
   },
   "keywords": [
