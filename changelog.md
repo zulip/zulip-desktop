@@ -2,6 +2,21 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.8.0 --2021-07-21
+
+**Fixes**:
+
+- Fixed the spell checker on macOS.
+- Fixed `TypeError` after closing the About page.
+
+**Enhancements**:
+
+- Removed `Ctrl`+`L`/`⌘L` keyboard shortcut to prevent accidental logouts.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 13.1.7.
+
 ### v5.7.0 --2021-04-30
 
 **Fixes**:
