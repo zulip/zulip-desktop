@@ -153,7 +153,7 @@
     "auto-launch": "^5.0.5",
     "backoff": "^2.5.0",
     "electron-log": "^4.3.5",
-    "electron-updater": "^4.3.9",
+    "electron-updater": "4.3.5",
     "electron-window-state": "^5.0.3",
     "escape-goat": "^3.0.0",
     "get-stream": "^6.0.1",
