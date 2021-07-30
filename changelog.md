@@ -2,6 +2,13 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.8.1 --2021-07-29
+
+**Fixes**:
+
+- Downgraded electron-updater to fix automatic updates on macOS.
+  (Note that 5.7.0 and 5.8.0 users may still trigger electron-updater bugs trying to automatically update _to_ 5.8.1; once updated, future updates _from_ 5.8.1 should work correctly.)
+
 ### v5.8.0 --2021-07-21
 
 **Fixes**:
