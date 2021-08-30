@@ -47,8 +47,7 @@ sendFeedback.addEventListener("feedback-cancelled", () => {
   feedbackHolder.classList.remove("show");
 });
 
-const dataDir = app.getPath("userData");
-const logsDir = path.join(dataDir, "/Logs");
+const logsDir = app.getPath("logs");
 sendFeedback.logs.push(
   ...fs.readdirSync(logsDir).map((file) => path.join(logsDir, file)),
 );

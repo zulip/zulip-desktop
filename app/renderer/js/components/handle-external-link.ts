@@ -19,7 +19,7 @@ export default function handleExternalLink(
   const url = new URL(event.url);
   const downloadPath = ConfigUtil.getConfigItem(
     "downloadsPath",
-    `${app.getPath("downloads")}`,
+    app.getPath("downloads"),
   );
 
   if (LinkUtil.isUploadsUrl(this.props.url, url)) {

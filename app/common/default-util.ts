@@ -1,13 +1,13 @@
 import electron from "electron";
 import fs from "fs";
+import path from "path";
 
 const {app} = process.type === "renderer" ? electron.remote : electron;
 
 let setupCompleted = false;
 
 const zulipDir = app.getPath("userData");
-const logDir = `${zulipDir}/Logs/`;
-const configDir = `${zulipDir}/config/`;
+const configDir = path.join(zulipDir, "config");
 export const initSetUp = (): void => {
   // If it is the first time the app is running
   // create zulip dir in userData folder to
@@ -17,18 +17,14 @@ export const initSetUp = (): void => {
       fs.mkdirSync(zulipDir);
     }
 
-    if (!fs.existsSync(logDir)) {
-      fs.mkdirSync(logDir);
-    }
-
     // Migrate config files from app data folder to config folder inside app
     // data folder. This will be done once when a user updates to the new version.
     if (!fs.existsSync(configDir)) {
       fs.mkdirSync(configDir);
-      const domainJson = `${zulipDir}/domain.json`;
-      const settingsJson = `${zulipDir}/settings.json`;
-      const updatesJson = `${zulipDir}/updates.json`;
-      const windowStateJson = `${zulipDir}/window-state.json`;
+      const domainJson = path.join(zulipDir, "domain.json");
+      const settingsJson = path.join(zulipDir, "settings.json");
+      const updatesJson = path.join(zulipDir, "updates.json");
+      const windowStateJson = path.join(zulipDir, "window-state.json");
       const configData = [
         {
           path: domainJson,

@@ -80,7 +80,7 @@ export function removeConfigItem(key: string): void {
 function reloadDB(): void {
   const settingsJsonPath = path.join(
     app.getPath("userData"),
-    "/config/settings.json",
+    "config/settings.json",
   );
   try {
     const file = fs.readFileSync(settingsJsonPath, "utf8");

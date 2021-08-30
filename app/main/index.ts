@@ -27,8 +27,8 @@ let badgeCount: number;
 
 let isQuitting = false;
 
-// Load this url in main window
-const mainURL = "file://" + path.join(__dirname, "../renderer", "main.html");
+// Load this file in main window
+const mainFile = "app/renderer/main.html";
 
 const permissionCallbacks = new Map<number, (grant: boolean) => void>();
 let nextPermissionCallbackId = 0;
@@ -52,7 +52,7 @@ function createMainWindow(): Electron.BrowserWindow {
   mainWindowState = windowStateKeeper({
     defaultWidth: 1100,
     defaultHeight: 720,
-    path: `${app.getPath("userData")}/config`,
+    path: path.join(app.getPath("userData"), "config"),
   });
 
   const win = new electron.BrowserWindow({
@@ -80,7 +80,7 @@ function createMainWindow(): Electron.BrowserWindow {
     send(win.webContents, "focus");
   });
 
-  (async () => win.loadURL(mainURL))();
+  (async () => win.loadFile(mainFile))();
 
   // Keep the app running in background on close event
   win.on("close", (event) => {

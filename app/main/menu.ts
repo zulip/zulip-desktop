@@ -1,4 +1,5 @@
 import {BrowserWindow, Menu, app, shell} from "electron";
+import * as path from "path";
 
 import AdmZip from "adm-zip";
 
@@ -68,13 +69,14 @@ function getToolsSubmenu(): Electron.MenuItemConstructorOptions[] {
         const dateString = date.toLocaleDateString().replace(/\//g, "-");
 
         // Create a zip file of all the logs and config data
-        zip.addLocalFolder(`${app.getPath("appData")}/${appName}/Logs`);
-        zip.addLocalFolder(`${app.getPath("appData")}/${appName}/config`);
+        zip.addLocalFolder(app.getPath("logs"));
+        zip.addLocalFolder(path.join(app.getPath("userData"), "config"));
 
         // Put the log file in downloads folder
-        const logFilePath = `${app.getPath(
-          "downloads",
-        )}/Zulip-logs-${dateString}.zip`;
+        const logFilePath = path.join(
+          app.getPath("downloads"),
+          `Zulip-logs-${dateString}.zip`,
+        );
         zip.writeZip(logFilePath);
 
         // Open and select the log file
