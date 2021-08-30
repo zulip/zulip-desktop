@@ -32,7 +32,7 @@ if (process.type === "renderer") {
   );
 }
 
-const logDir = `${app.getPath("userData")}/Logs`;
+const logDir = app.getPath("logs");
 
 type Level = "log" | "debug" | "info" | "warn" | "error";
 

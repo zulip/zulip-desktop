@@ -6,7 +6,6 @@ const {app} = process.type === "renderer" ? electron.remote : electron;
 let setupCompleted = false;
 
 const zulipDir = app.getPath("userData");
-const logDir = `${zulipDir}/Logs/`;
 const configDir = `${zulipDir}/config/`;
 export const initSetUp = (): void => {
   // If it is the first time the app is running
@@ -15,10 +14,6 @@ export const initSetUp = (): void => {
   if (!setupCompleted) {
     if (!fs.existsSync(zulipDir)) {
       fs.mkdirSync(zulipDir);
-    }
-
-    if (!fs.existsSync(logDir)) {
-      fs.mkdirSync(logDir);
     }
 
     // Migrate config files from app data folder to config folder inside app

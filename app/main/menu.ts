@@ -68,7 +68,7 @@ function getToolsSubmenu(): Electron.MenuItemConstructorOptions[] {
         const dateString = date.toLocaleDateString().replace(/\//g, "-");
 
         // Create a zip file of all the logs and config data
-        zip.addLocalFolder(`${app.getPath("appData")}/${appName}/Logs`);
+        zip.addLocalFolder(app.getPath("logs"));
         zip.addLocalFolder(`${app.getPath("appData")}/${appName}/config`);
 
         // Put the log file in downloads folder
