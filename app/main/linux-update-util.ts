@@ -48,7 +48,7 @@ export function removeUpdateItem(key: string): void {
 function reloadDB(): void {
   const linuxUpdateJsonPath = path.join(
     app.getPath("userData"),
-    "/config/updates.json",
+    "config/updates.json",
   );
   try {
     const file = fs.readFileSync(linuxUpdateJsonPath, "utf8");

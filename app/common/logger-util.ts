@@ -2,6 +2,7 @@ import {Console} from "console"; // eslint-disable-line node/prefer-global/conso
 import electron from "electron";
 import fs from "fs";
 import os from "os";
+import path from "path";
 
 import {initSetUp} from "./default-util";
 import {captureException, sentryInit} from "./sentry-util";
@@ -42,7 +43,7 @@ export default class Logger {
   constructor(options: LoggerOptions = {}) {
     let {file = "console.log"} = options;
 
-    file = `${logDir}/${file}`;
+    file = path.join(logDir, file);
 
     // Trim log according to type of process
     if (process.type === "renderer") {

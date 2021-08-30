@@ -36,7 +36,7 @@ const logger = new Logger({
 });
 
 const generateFilePath = (url: string): string => {
-  const dir = `${app.getPath("userData")}/server-icons`;
+  const dir = path.join(app.getPath("userData"), "server-icons");
   const extension = path.extname(url).split("?")[0];
 
   let hash = 5381;
@@ -51,7 +51,7 @@ const generateFilePath = (url: string): string => {
     fs.mkdirSync(dir);
   }
 
-  return `${dir}/${hash >>> 0}${extension}`;
+  return path.join(dir, `${hash >>> 0}${extension}`);
 };
 
 export const _getServerSettings = async (

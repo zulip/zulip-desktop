@@ -52,7 +52,7 @@ function createMainWindow(): Electron.BrowserWindow {
   mainWindowState = windowStateKeeper({
     defaultWidth: 1100,
     defaultHeight: 720,
-    path: `${app.getPath("userData")}/config`,
+    path: path.join(app.getPath("userData"), "config"),
   });
 
   const win = new electron.BrowserWindow({

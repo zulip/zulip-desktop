@@ -73,9 +73,10 @@ function getToolsSubmenu(): Electron.MenuItemConstructorOptions[] {
         zip.addLocalFolder(path.join(app.getPath("userData"), "config"));
 
         // Put the log file in downloads folder
-        const logFilePath = `${app.getPath(
-          "downloads",
-        )}/Zulip-logs-${dateString}.zip`;
+        const logFilePath = path.join(
+          app.getPath("downloads"),
+          `Zulip-logs-${dateString}.zip`,
+        );
         zip.writeZip(logFilePath);
 
         // Open and select the log file
