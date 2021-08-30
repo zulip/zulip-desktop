@@ -25,11 +25,8 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
 
   let updateAvailable = false;
 
-  // Create Logs directory
-  const LogsDir = `${app.getPath("userData")}/Logs`;
-
   // Log whats happening
-  log.transports.file.file = `${LogsDir}/updates.log`;
+  log.transports.file.fileName = "updates.log";
   log.transports.file.level = "info";
   autoUpdater.logger = log;
 
