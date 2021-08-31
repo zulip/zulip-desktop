@@ -146,7 +146,6 @@
     "InstantMessaging"
   ],
   "dependencies": {
-    "@electron-elements/send-feedback": "^2.0.3",
     "@sentry/electron": "^2.5.1",
     "@yaireo/tagify": "^4.5.0",
     "adm-zip": "^0.5.5",

@@ -467,26 +467,3 @@ webview.focus {
     opacity: 1;
   }
 }
-
-send-feedback {
-  width: 60%;
-  height: 85%;
-}
-
-#feedback-modal {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(68, 67, 67, 0.81);
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  transition: all 1s ease-out;
-}
-
-#feedback-modal.show {
-  display: flex;
-}

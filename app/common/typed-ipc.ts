@@ -48,7 +48,6 @@ export interface RendererMessage {
   logout: () => void;
   "new-server": () => void;
   "open-about": () => void;
-  "open-feedback-modal": () => void;
   "open-help": () => void;
   "open-network-settings": () => void;
   "open-org-tab": () => void;

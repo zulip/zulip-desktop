@@ -14,7 +14,6 @@ import type {NavItem, ServerConf, TabData} from "../../common/types";
 import FunctionalTab from "./components/functional-tab";
 import ServerTab from "./components/server-tab";
 import WebView from "./components/webview";
-import {feedbackHolder} from "./feedback";
 import {ipcRenderer} from "./typed-ipc-renderer";
 import * as DomainUtil from "./utils/domain-util";
 import * as LinkUtil from "./utils/link-util";
@@ -1170,10 +1169,6 @@ class ServerManagerView {
         );
       },
     );
-
-    ipcRenderer.on("open-feedback-modal", () => {
-      feedbackHolder.classList.add("show");
-    });
 
     ipcRenderer.on("copy-zulip-url", () => {
       clipboard.writeText(this.getCurrentActiveServer());

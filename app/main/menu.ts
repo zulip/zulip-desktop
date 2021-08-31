@@ -280,12 +280,8 @@ function getHelpSubmenu(): Electron.MenuItemConstructorOptions[] {
     },
     {
       label: t.__("Report an Issue"),
-      click() {
-        // The goal is to notify the main.html BrowserWindow
-        // which may not be the focused window.
-        for (const window of BrowserWindow.getAllWindows()) {
-          send(window.webContents, "open-feedback-modal");
-        }
+      async click() {
+        await shell.openExternal("https://zulip.com/help/contact-support");
       },
     },
   ];

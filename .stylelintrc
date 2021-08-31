@@ -4,6 +4,6 @@
         "color-named": "never",
         "color-no-hex": true,
         "font-family-no-missing-generic-family-keyword": [true, {"ignoreFontFamilies": ["Material Icons"]}],
-        "selector-type-no-unknown": [true, {"ignoreTypes": ["send-feedback", "webview"]}],
+        "selector-type-no-unknown": [true, {"ignoreTypes": ["webview"]}],
     }
 }
