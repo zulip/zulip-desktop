@@ -1,4 +1,3 @@
-import electron from "electron";
 import fs from "fs";
 import path from "path";
 
@@ -9,13 +8,11 @@ import type * as z from "zod";
 import {configSchemata} from "./config-schemata";
 import * as EnterpriseUtil from "./enterprise-util";
 import Logger from "./logger-util";
+import {app, dialog} from "./remote";
 
 export type Config = {
   [Key in keyof typeof configSchemata]: z.output<typeof configSchemata[Key]>;
 };
-
-/* To make the util runnable in both main and renderer process */
-const {app, dialog} = process.type === "renderer" ? electron.remote : electron;
 
 const logger = new Logger({
   file: "config-util.log",

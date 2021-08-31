@@ -1,7 +1,6 @@
-import electron from "electron";
 import fs from "fs";
 
-const {app} = process.type === "renderer" ? electron.remote : electron;
+import {app} from "./remote";
 
 let setupCompleted = false;
 

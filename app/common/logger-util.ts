@@ -4,9 +4,8 @@ import fs from "fs";
 import os from "os";
 
 import {initSetUp} from "./default-util";
+import {app} from "./remote";
 import {captureException, sentryInit} from "./sentry-util";
-
-const {app} = process.type === "renderer" ? electron.remote : electron;
 
 interface LoggerOptions {
   file?: string;

@@ -1,8 +1,6 @@
-import electron from "electron";
-
 import {init} from "@sentry/electron";
 
-const {app} = process.type === "renderer" ? electron.remote : electron;
+import {app} from "./remote";
 
 export const sentryInit = (): void => {
   if (app.isPackaged) {
