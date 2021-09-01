@@ -1,12 +1,28 @@
 import {remote} from "electron";
 import {EventEmitter} from "events";
 
+import type {ClipboardDecrypter} from "./clipboard-decrypter";
 import {ClipboardDecrypterImpl} from "./clipboard-decrypter";
 import type {NotificationData} from "./notification";
 import {newNotification} from "./notification";
 import {ipcRenderer} from "./typed-ipc-renderer";
 
 type ListenerType = (...args: any[]) => void;
+
+export interface ElectronBridge {
+  send_event: (eventName: string | symbol, ...args: unknown[]) => boolean;
+  on_event: (eventName: string, listener: ListenerType) => void;
+  new_notification: (
+    title: string,
+    options: NotificationOptions,
+    dispatch: (type: string, eventInit: EventInit) => boolean,
+  ) => NotificationData;
+  get_idle_on_system: () => boolean;
+  get_last_active_on_system: () => number;
+  get_send_notification_reply_message_supported: () => boolean;
+  set_send_notification_reply_message_supported: (value: boolean) => void;
+  decrypt_clipboard: (version: number) => ClipboardDecrypter;
+}
 
 let notificationReplySupported = false;
 // Indicates if the user is idle or not
@@ -41,7 +57,7 @@ const electron_bridge: ElectronBridge = {
     notificationReplySupported = value;
   },
 
-  decrypt_clipboard: (version: number): ClipboardDecrypterImpl =>
+  decrypt_clipboard: (version: number): ClipboardDecrypter =>
     new ClipboardDecrypterImpl(version),
 };
 

@@ -1,5 +1,7 @@
 "use strict";
 
+type ElectronBridge = import("./electron-bridge").ElectronBridge;
+
 interface CompatElectronBridge extends ElectronBridge {
   readonly idle_on_system: boolean;
   readonly last_active_on_system: number;
