@@ -389,7 +389,7 @@ export class ServerManagerView {
           },
           onTitleChange: this.updateBadge.bind(this),
           nodeIntegration: false,
-          preload: true,
+          preload: "js/preload.js",
         }),
       }),
     );

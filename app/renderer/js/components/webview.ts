@@ -5,7 +5,8 @@ import * as remote from "@electron/remote";
 import {app, dialog} from "@electron/remote";
 
 import * as ConfigUtil from "../../../common/config-util";
-import {HTML, html} from "../../../common/html";
+import type {HTML} from "../../../common/html";
+import {html} from "../../../common/html";
 import type {RendererMessage} from "../../../common/typed-ipc";
 import type {TabRole} from "../../../common/types";
 import {ipcRenderer} from "../typed-ipc-renderer";
@@ -27,7 +28,7 @@ interface WebViewProps {
   switchLoading: (loading: boolean, url: string) => void;
   onNetworkError: (index: number) => void;
   nodeIntegration: boolean;
-  preload: boolean;
+  preload?: string;
   onTitleChange: () => void;
   hasPermission?: (origin: string, permission: string) => boolean;
 }
@@ -58,8 +59,10 @@ export default class WebView {
       <webview
         data-tab-id="${this.props.tabIndex}"
         src="${this.props.url}"
-        ${new HTML({html: this.props.nodeIntegration ? "nodeIntegration" : ""})}
-        ${new HTML({html: this.props.preload ? 'preload="js/preload.js"' : ""})}
+        ${this.props.nodeIntegration ? html`nodeIntegration` : html``}
+        ${this.props.preload === undefined
+          ? html``
+          : html`preload="${this.props.preload}"`}
         partition="persist:webviewsession"
         webpreferences="
           contextIsolation=${!this.props.nodeIntegration},
