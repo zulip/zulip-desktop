@@ -388,8 +388,8 @@ class ServerManagerView {
               ),
             );
           },
-          onNetworkError: (index: number) => {
-            this.openNetworkTroubleshooting(index);
+          onNetworkError: async (index: number) => {
+            await this.openNetworkTroubleshooting(index);
           },
           onTitleChange: this.updateBadge.bind(this),
           nodeIntegration: false,
@@ -582,8 +582,8 @@ class ServerManagerView {
               ),
             );
           },
-          onNetworkError: (index: number) => {
-            this.openNetworkTroubleshooting(index);
+          onNetworkError: async (index: number) => {
+            await this.openNetworkTroubleshooting(index);
           },
           onTitleChange: this.updateBadge.bind(this),
           nodeIntegration: true,
@@ -620,13 +620,12 @@ class ServerManagerView {
     });
   }
 
-  openNetworkTroubleshooting(index: number): void {
+  async openNetworkTroubleshooting(index: number): Promise<void> {
     const reconnectUtil = new ReconnectUtil(this.tabs[index].webview);
     reconnectUtil.pollInternetAndReload();
-    this.tabs[
-      index
-    ].webview.props.url = `file://${rendererDirectory}/network.html`;
-    this.tabs[index].showNetworkError();
+    await this.tabs[index].webview.$el!.loadURL(
+      `file://${rendererDirectory}/network.html`,
+    );
   }
 
   activateLastTab(index: number): void {

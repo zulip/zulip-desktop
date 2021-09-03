@@ -328,10 +328,6 @@ export default class WebView {
     this.$el!.reload();
   }
 
-  forceLoad(): void {
-    this.init();
-  }
-
   async send<Channel extends keyof RendererMessage>(
     channel: Channel,
     ...args: Parameters<RendererMessage[Channel]>
