@@ -64,7 +64,6 @@ export interface RendererMessage {
   "set-active": () => void;
   "set-idle": () => void;
   "show-keyboard-shortcuts": () => void;
-  "show-network-error": (index: number) => void;
   "show-notification-settings": () => void;
   "switch-server-tab": (index: number) => void;
   "switch-settings-nav": (navItem: NavItem) => void;
