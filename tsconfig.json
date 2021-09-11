@@ -5,6 +5,7 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "strict": true
+    "strict": true,
+    "noImplicitOverride": true
   }
 }

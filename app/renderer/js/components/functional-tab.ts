@@ -33,7 +33,7 @@ export default class FunctionalTab extends Tab {
     `;
   }
 
-  registerListeners(): void {
+  override registerListeners(): void {
     super.registerListeners();
 
     this.$el.addEventListener("mouseover", () => {

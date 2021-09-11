@@ -17,12 +17,12 @@ export default class BaseNotification extends NativeNotification {
     });
   }
 
-  static async requestPermission(): Promise<NotificationPermission> {
+  static override async requestPermission(): Promise<NotificationPermission> {
     return this.permission;
   }
 
   // Override default Notification permission
-  static get permission(): NotificationPermission {
+  static override get permission(): NotificationPermission {
     return ConfigUtil.getConfigItem("showNotification", true)
       ? "granted"
       : "denied";
