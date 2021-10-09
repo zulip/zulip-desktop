@@ -1023,7 +1023,7 @@ class ServerManagerView {
           webview.setAudioMuted(state);
         } catch {
           // Webview is not ready yet
-          webview.addEventListener("dom-ready", () => {
+          webview.addEventListener("did-attach", () => {
             webview.setAudioMuted(state);
           });
         }

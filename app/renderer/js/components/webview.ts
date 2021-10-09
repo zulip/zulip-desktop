@@ -41,7 +41,7 @@ export default class WebView {
   customCSS: string | false | null;
   $webviewsContainer: DOMTokenList;
   $el?: Electron.WebviewTag;
-  domReady?: Promise<void>;
+  whenAttached?: Promise<void>;
 
   constructor(props: WebViewProps) {
     this.props = props;
@@ -78,9 +78,9 @@ export default class WebView {
 
   init(): void {
     this.$el = generateNodeFromHTML(this.templateHTML()) as Electron.WebviewTag;
-    this.domReady = new Promise((resolve) => {
+    this.whenAttached = new Promise((resolve) => {
       this.$el!.addEventListener(
-        "dom-ready",
+        "did-attach",
         () => {
           resolve();
         },
@@ -98,7 +98,7 @@ export default class WebView {
     });
 
     if (shouldSilentWebview) {
-      this.$el!.addEventListener("dom-ready", () => {
+      this.$el!.addEventListener("did-attach", () => {
         this.$el!.setAudioMuted(true);
       });
     }
@@ -140,14 +140,16 @@ export default class WebView {
       }
     });
 
-    this.$el!.addEventListener("dom-ready", () => {
+    this.$el!.addEventListener("did-attach", () => {
       const webContents = remote.webContents.fromId(
         this.$el!.getWebContentsId(),
       );
       webContents.addListener("context-menu", (event, menuParameters) => {
         contextMenu(webContents, event, menuParameters);
       });
+    });
 
+    this.$el!.addEventListener("dom-ready", () => {
       if (this.props.role === "server") {
         this.$el!.classList.add("onload");
       }
@@ -334,7 +336,7 @@ export default class WebView {
     channel: Channel,
     ...args: Parameters<RendererMessage[Channel]>
   ): Promise<void> {
-    await this.domReady;
+    await this.whenAttached;
     ipcRenderer.sendTo(this.$el!.getWebContentsId(), channel, ...args);
   }
 }
