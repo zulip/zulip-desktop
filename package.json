@@ -29,7 +29,7 @@
     "lint-css": "stylelint app/renderer/css/*.css",
     "lint-html": "./node_modules/.bin/htmlhint \"app/renderer/*.html\" ",
     "lint-js": "xo",
-    "prettier-non-js": "prettier --check --loglevel=warn . '!**/*.{js,ts}'",
+    "prettier-non-js": "prettier --check --loglevel=warn . \"!**/*.{js,ts}\"",
     "test": "tsc --noEmit && npm run lint-html && npm run lint-css && npm run lint-js && npm run prettier-non-js",
     "test-e2e": "tsc && tape 'tests/*.js'",
     "pack": "tsc && electron-builder --dir",
