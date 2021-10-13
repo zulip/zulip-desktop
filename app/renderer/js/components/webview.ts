@@ -39,7 +39,7 @@ export default class WebView {
   loading: boolean;
   customCSS: string | false | null;
   $webviewsContainer: DOMTokenList;
-  $el?: Electron.WebviewTag;
+  $el: Electron.WebviewTag;
 
   private constructor(props: WebViewProps, $element: Electron.WebviewTag) {
     this.props = props;
@@ -98,29 +98,29 @@ export default class WebView {
   }
 
   registerListeners(): void {
-    this.$el!.addEventListener("new-window", (event) => {
+    this.$el.addEventListener("new-window", (event) => {
       handleExternalLink.call(this, event);
     });
 
     if (shouldSilentWebview) {
-      this.$el!.setAudioMuted(true);
+      this.$el.setAudioMuted(true);
     }
 
-    this.$el!.addEventListener("page-title-updated", (event) => {
+    this.$el.addEventListener("page-title-updated", (event) => {
       const {title} = event;
       this.badgeCount = this.getBadgeCount(title);
       this.props.onTitleChange();
     });
 
-    this.$el!.addEventListener("did-navigate-in-page", () => {
+    this.$el.addEventListener("did-navigate-in-page", () => {
       this.canGoBackButton();
     });
 
-    this.$el!.addEventListener("did-navigate", () => {
+    this.$el.addEventListener("did-navigate", () => {
       this.canGoBackButton();
     });
 
-    this.$el!.addEventListener("page-favicon-updated", (event) => {
+    this.$el.addEventListener("page-favicon-updated", (event) => {
       const {favicons} = event;
 
       // This returns a string of favicons URL. If there is a PM counts in unread messages then the URL would be like
@@ -138,18 +138,18 @@ export default class WebView {
       }
     });
 
-    const webContents = remote.webContents.fromId(this.$el!.getWebContentsId());
+    const webContents = remote.webContents.fromId(this.$el.getWebContentsId());
     webContents.addListener("context-menu", (event, menuParameters) => {
       contextMenu(webContents, event, menuParameters);
     });
 
-    this.$el!.addEventListener("dom-ready", () => {
+    this.$el.addEventListener("dom-ready", () => {
       this.loading = false;
       this.props.switchLoading(false, this.props.url);
       this.show();
     });
 
-    this.$el!.addEventListener("did-fail-load", (event) => {
+    this.$el.addEventListener("did-fail-load", (event) => {
       const {errorDescription} = event;
       const hasConnectivityError =
         SystemUtil.connectivityERR.includes(errorDescription);
@@ -161,11 +161,11 @@ export default class WebView {
       }
     });
 
-    this.$el!.addEventListener("did-start-loading", () => {
+    this.$el.addEventListener("did-start-loading", () => {
       this.props.switchLoading(true, this.props.url);
     });
 
-    this.$el!.addEventListener("did-stop-loading", () => {
+    this.$el.addEventListener("did-stop-loading", () => {
       this.props.switchLoading(false, this.props.url);
     });
   }
@@ -192,12 +192,12 @@ export default class WebView {
       this.$webviewsContainer.add("loaded");
     }
 
-    this.$el!.classList.add("active");
+    this.$el.classList.add("active");
     this.focus();
     this.props.onTitleChange();
     // Injecting preload css in webview to override some css rules
     (async () =>
-      this.$el!.insertCSS(
+      this.$el.insertCSS(
         fs.readFileSync(path.join(__dirname, "/../../css/preload.css"), "utf8"),
       ))();
 
@@ -215,20 +215,20 @@ export default class WebView {
       }
 
       (async () =>
-        this.$el!.insertCSS(
+        this.$el.insertCSS(
           fs.readFileSync(path.resolve(__dirname, customCSS), "utf8"),
         ))();
     }
   }
 
   focus(): void {
-    this.$el!.focus();
+    this.$el.focus();
     // Work around https://github.com/electron/electron/issues/31918
-    this.$el!.shadowRoot?.querySelector("iframe")?.focus();
+    this.$el.shadowRoot?.querySelector("iframe")?.focus();
   }
 
   hide(): void {
-    this.$el!.classList.remove("active");
+    this.$el.classList.remove("active");
   }
 
   load(): void {
@@ -237,17 +237,17 @@ export default class WebView {
 
   zoomIn(): void {
     this.zoomFactor += 0.1;
-    this.$el!.setZoomFactor(this.zoomFactor);
+    this.$el.setZoomFactor(this.zoomFactor);
   }
 
   zoomOut(): void {
     this.zoomFactor -= 0.1;
-    this.$el!.setZoomFactor(this.zoomFactor);
+    this.$el.setZoomFactor(this.zoomFactor);
   }
 
   zoomActualSize(): void {
     this.zoomFactor = 1;
-    this.$el!.setZoomFactor(this.zoomFactor);
+    this.$el.setZoomFactor(this.zoomFactor);
   }
 
   logOut(): void {
@@ -259,12 +259,12 @@ export default class WebView {
   }
 
   openDevTools(): void {
-    this.$el!.openDevTools();
+    this.$el.openDevTools();
   }
 
   back(): void {
-    if (this.$el!.canGoBack()) {
-      this.$el!.goBack();
+    if (this.$el.canGoBack()) {
+      this.$el.goBack();
       this.focus();
     }
   }
@@ -273,7 +273,7 @@ export default class WebView {
     const $backButton = document.querySelector(
       "#actions-container #back-action",
     )!;
-    if (this.$el!.canGoBack()) {
+    if (this.$el.canGoBack()) {
       $backButton.classList.remove("disable");
     } else {
       $backButton.classList.add("disable");
@@ -281,8 +281,8 @@ export default class WebView {
   }
 
   forward(): void {
-    if (this.$el!.canGoForward()) {
-      this.$el!.goForward();
+    if (this.$el.canGoForward()) {
+      this.$el.goForward();
     }
   }
 
@@ -292,13 +292,13 @@ export default class WebView {
     this.$webviewsContainer.remove("loaded");
     this.loading = true;
     this.props.switchLoading(true, this.props.url);
-    this.$el!.reload();
+    this.$el.reload();
   }
 
   send<Channel extends keyof RendererMessage>(
     channel: Channel,
     ...args: Parameters<RendererMessage[Channel]>
   ): void {
-    ipcRenderer.sendTo(this.$el!.getWebContentsId(), channel, ...args);
+    ipcRenderer.sendTo(this.$el.getWebContentsId(), channel, ...args);
   }
 }

@@ -613,7 +613,7 @@ export class ServerManagerView {
     const webview = await tab.webview;
     const reconnectUtil = new ReconnectUtil(webview);
     reconnectUtil.pollInternetAndReload();
-    await webview.$el!.loadURL(`file://${rendererDirectory}/network.html`);
+    await webview.$el.loadURL(`file://${rendererDirectory}/network.html`);
   }
 
   async activateLastTab(index: number): Promise<void> {
@@ -781,7 +781,7 @@ export class ServerManagerView {
     const tab = this.tabs[tabIndex];
     if (!(tab instanceof ServerTab)) return false;
     const webview = await tab.webview;
-    const url = webview.$el!.src;
+    const url = webview.$el.src;
     return !(url.endsWith("/login/") || webview.loading);
   }
 
@@ -933,7 +933,7 @@ export class ServerManagerView {
                     if (!(tab instanceof ServerTab)) return false;
                     const webview = await tab.webview;
                     return (
-                      webview.$el!.getWebContentsId() === webContentsId &&
+                      webview.$el.getWebContentsId() === webContentsId &&
                       webview.props.hasPermission?.(origin, permission)
                     );
                   }),

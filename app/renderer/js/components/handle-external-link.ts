@@ -58,7 +58,7 @@ export default function handleExternalLink(
             body: "Download failed",
           });
         } else {
-          this.$el!.downloadURL(url.href);
+          this.$el.downloadURL(url.href);
         }
       }
 

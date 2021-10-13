@@ -38,7 +38,7 @@ export default class ServerTab extends Tab {
 
   override async destroy(): Promise<void> {
     await super.destroy();
-    (await this.webview).$el!.remove();
+    (await this.webview).$el.remove();
   }
 
   templateHTML(): HTML {
