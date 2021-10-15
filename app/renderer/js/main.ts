@@ -14,13 +14,11 @@ import type {NavItem, ServerConf, TabData} from "../../common/types";
 import FunctionalTab from "./components/functional-tab";
 import ServerTab from "./components/server-tab";
 import WebView from "./components/webview";
+import {initializeTray} from "./tray";
 import {ipcRenderer} from "./typed-ipc-renderer";
 import * as DomainUtil from "./utils/domain-util";
 import * as LinkUtil from "./utils/link-util";
 import ReconnectUtil from "./utils/reconnect-util";
-
-// eslint-disable-next-line import/no-unassigned-import
-import "./tray";
 
 const {session, app, Menu, dialog} = remote;
 
@@ -113,6 +111,7 @@ class ServerManagerView {
   }
 
   async init(): Promise<void> {
+    initializeTray();
     await this.loadProxy();
     this.initDefaultSettings();
     this.initSidebar();

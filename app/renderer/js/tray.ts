@@ -168,73 +168,75 @@ const createTray = function (): void {
   }
 };
 
-ipcRenderer.on("destroytray", (_event: Event) => {
-  if (!tray) {
-    return;
-  }
-
-  tray.destroy();
-  if (tray.isDestroyed()) {
-    tray = null;
-  } else {
-    throw new Error("Tray icon not properly destroyed.");
-  }
-});
-
-ipcRenderer.on("tray", (_event: Event, arg: number): void => {
-  if (!tray) {
-    return;
-  }
-
-  // We don't want to create tray from unread messages on macOS since it already has dock badges.
-  if (process.platform === "linux" || process.platform === "win32") {
-    if (arg === 0) {
-      unread = arg;
-      tray.setImage(iconPath());
-      tray.setToolTip("No unread messages");
-    } else {
-      unread = arg;
-      const image = renderNativeImage(arg);
-      tray.setImage(image);
-      tray.setToolTip(`${arg} unread messages`);
+export function initializeTray() {
+  ipcRenderer.on("destroytray", (_event: Event) => {
+    if (!tray) {
+      return;
     }
-  }
-});
 
-function toggleTray(): void {
-  let state;
-  if (tray) {
-    state = false;
     tray.destroy();
     if (tray.isDestroyed()) {
       tray = null;
+    } else {
+      throw new Error("Tray icon not properly destroyed.");
+    }
+  });
+
+  ipcRenderer.on("tray", (_event: Event, arg: number): void => {
+    if (!tray) {
+      return;
     }
 
-    ConfigUtil.setConfigItem("trayIcon", false);
-  } else {
-    state = true;
-    createTray();
+    // We don't want to create tray from unread messages on macOS since it already has dock badges.
     if (process.platform === "linux" || process.platform === "win32") {
-      const image = renderNativeImage(unread);
-      tray!.setImage(image);
-      tray!.setToolTip(`${unread} unread messages`);
+      if (arg === 0) {
+        unread = arg;
+        tray.setImage(iconPath());
+        tray.setToolTip("No unread messages");
+      } else {
+        unread = arg;
+        const image = renderNativeImage(arg);
+        tray.setImage(image);
+        tray.setToolTip(`${arg} unread messages`);
+      }
+    }
+  });
+
+  function toggleTray(): void {
+    let state;
+    if (tray) {
+      state = false;
+      tray.destroy();
+      if (tray.isDestroyed()) {
+        tray = null;
+      }
+
+      ConfigUtil.setConfigItem("trayIcon", false);
+    } else {
+      state = true;
+      createTray();
+      if (process.platform === "linux" || process.platform === "win32") {
+        const image = renderNativeImage(unread);
+        tray!.setImage(image);
+        tray!.setToolTip(`${unread} unread messages`);
+      }
+
+      ConfigUtil.setConfigItem("trayIcon", true);
     }
 
-    ConfigUtil.setConfigItem("trayIcon", true);
+    const webview = document.querySelector<WebviewTag>(
+      "webview:not([class*=disabled])",
+    );
+    if (webview !== null) {
+      ipcRenderer.sendTo(webview.getWebContentsId(), "toggle-tray", state);
+    }
   }
 
-  const webview = document.querySelector<WebviewTag>(
-    "webview:not([class*=disabled])",
-  );
-  if (webview !== null) {
-    ipcRenderer.sendTo(webview.getWebContentsId(), "toggle-tray", state);
+  ipcRenderer.on("toggletray", toggleTray);
+
+  if (ConfigUtil.getConfigItem("trayIcon", true)) {
+    createTray();
   }
-}
-
-ipcRenderer.on("toggletray", toggleTray);
-
-if (ConfigUtil.getConfigItem("trayIcon", true)) {
-  createTray();
 }
 
 export {};
