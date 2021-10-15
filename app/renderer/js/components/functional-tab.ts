@@ -29,12 +29,10 @@ export default class FunctionalTab extends Tab {
   override activate(): void {
     super.activate();
     this.$view.classList.add("active");
-    this.$view.classList.remove("disabled");
   }
 
   override deactivate(): void {
     super.deactivate();
-    this.$view.classList.add("disabled");
     this.$view.classList.remove("active");
   }
 

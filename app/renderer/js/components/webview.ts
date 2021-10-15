@@ -56,7 +56,6 @@ export default class WebView {
   templateHTML(): HTML {
     return html`
       <webview
-        class="disabled"
         data-tab-id="${this.props.tabIndex}"
         src="${this.props.url}"
         ${new HTML({html: this.props.nodeIntegration ? "nodeIntegration" : ""})}
@@ -191,7 +190,6 @@ export default class WebView {
       this.$webviewsContainer.add("loaded");
     }
 
-    this.$el!.classList.remove("disabled");
     this.$el!.classList.add("active");
     this.focus();
     this.props.onTitleChange();
@@ -237,7 +235,6 @@ export default class WebView {
   }
 
   hide(): void {
-    this.$el!.classList.add("disabled");
     this.$el!.classList.remove("active");
   }
 

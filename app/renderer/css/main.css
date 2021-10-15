@@ -309,17 +309,13 @@ webview,
   width: 100%;
   height: 100%;
   flex-grow: 1;
+  visibility: hidden;
 }
 
 webview.active,
 .functional-view.active {
   z-index: 1;
   visibility: visible;
-}
-
-webview.disabled,
-.functional-view.disabled {
-  visibility: hidden;
 }
 
 webview.focus {
