@@ -613,7 +613,9 @@ export class ServerManagerView {
     const webview = await tab.webview;
     const reconnectUtil = new ReconnectUtil(webview);
     reconnectUtil.pollInternetAndReload();
-    await webview.$el.loadURL(`file://${rendererDirectory}/network.html`);
+    await webview
+      .getWebContents()
+      .loadURL(`file://${rendererDirectory}/network.html`);
   }
 
   async activateLastTab(index: number): Promise<void> {
@@ -781,7 +783,7 @@ export class ServerManagerView {
     const tab = this.tabs[tabIndex];
     if (!(tab instanceof ServerTab)) return false;
     const webview = await tab.webview;
-    const url = webview.$el.src;
+    const url = webview.getWebContents().getURL();
     return !(url.endsWith("/login/") || webview.loading);
   }
 
@@ -996,20 +998,14 @@ export class ServerManagerView {
       this.toggleSidebar(show);
     });
 
-    ipcRenderer.on("toggle-silent", (event: Event, state: boolean) => {
-      const webviews: NodeListOf<Electron.WebviewTag> =
-        document.querySelectorAll("webview");
-      for (const webview of webviews) {
-        try {
-          webview.setAudioMuted(state);
-        } catch {
-          // Webview is not ready yet
-          webview.addEventListener("did-attach", () => {
-            webview.setAudioMuted(state);
-          });
-        }
-      }
-    });
+    ipcRenderer.on("toggle-silent", async (event: Event, state: boolean) =>
+      Promise.all(
+        this.tabs.map(async (tab) => {
+          if (tab instanceof ServerTab)
+            (await tab.webview).getWebContents().setAudioMuted(state);
+        }),
+      ),
+    );
 
     ipcRenderer.on(
       "toggle-autohide-menubar",

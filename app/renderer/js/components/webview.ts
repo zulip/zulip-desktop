@@ -113,7 +113,7 @@ export default class WebView {
     });
 
     if (shouldSilentWebview) {
-      this.$el.setAudioMuted(true);
+      this.getWebContents().setAudioMuted(true);
     }
 
     this.$el.addEventListener("page-title-updated", (event) => {
@@ -207,7 +207,7 @@ export default class WebView {
     this.props.onTitleChange();
     // Injecting preload css in webview to override some css rules
     (async () =>
-      this.$el.insertCSS(
+      this.getWebContents().insertCSS(
         fs.readFileSync(path.join(__dirname, "/../../css/preload.css"), "utf8"),
       ))();
 
@@ -225,7 +225,7 @@ export default class WebView {
       }
 
       (async () =>
-        this.$el.insertCSS(
+        this.getWebContents().insertCSS(
           fs.readFileSync(path.resolve(__dirname, customCSS), "utf8"),
         ))();
     }
@@ -247,17 +247,17 @@ export default class WebView {
 
   zoomIn(): void {
     this.zoomFactor += 0.1;
-    this.$el.setZoomFactor(this.zoomFactor);
+    this.getWebContents().setZoomFactor(this.zoomFactor);
   }
 
   zoomOut(): void {
     this.zoomFactor -= 0.1;
-    this.$el.setZoomFactor(this.zoomFactor);
+    this.getWebContents().setZoomFactor(this.zoomFactor);
   }
 
   zoomActualSize(): void {
     this.zoomFactor = 1;
-    this.$el.setZoomFactor(this.zoomFactor);
+    this.getWebContents().setZoomFactor(this.zoomFactor);
   }
 
   logOut(): void {
@@ -269,12 +269,12 @@ export default class WebView {
   }
 
   openDevTools(): void {
-    this.$el.openDevTools();
+    this.getWebContents().openDevTools();
   }
 
   back(): void {
-    if (this.$el.canGoBack()) {
-      this.$el.goBack();
+    if (this.getWebContents().canGoBack()) {
+      this.getWebContents().goBack();
       this.focus();
     }
   }
@@ -283,7 +283,7 @@ export default class WebView {
     const $backButton = document.querySelector(
       "#actions-container #back-action",
     )!;
-    if (this.$el.canGoBack()) {
+    if (this.getWebContents().canGoBack()) {
       $backButton.classList.remove("disable");
     } else {
       $backButton.classList.add("disable");
@@ -291,8 +291,8 @@ export default class WebView {
   }
 
   forward(): void {
-    if (this.$el.canGoForward()) {
-      this.$el.goForward();
+    if (this.getWebContents().canGoForward()) {
+      this.getWebContents().goForward();
     }
   }
 
@@ -302,7 +302,7 @@ export default class WebView {
     this.$webviewsContainer.remove("loaded");
     this.loading = true;
     this.props.switchLoading(true, this.props.url);
-    this.$el.reload();
+    this.getWebContents().reload();
   }
 
   send<Channel extends keyof RendererMessage>(
