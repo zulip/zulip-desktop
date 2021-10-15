@@ -143,10 +143,6 @@ export default class WebView {
     });
 
     this.$el!.addEventListener("dom-ready", () => {
-      if (this.props.role === "server") {
-        this.$el!.classList.add("onload");
-      }
-
       this.loading = false;
       this.props.switchLoading(false, this.props.url);
       this.show();
@@ -197,11 +193,6 @@ export default class WebView {
 
     this.$el!.classList.remove("disabled");
     this.$el!.classList.add("active");
-    setTimeout(() => {
-      if (this.props.role === "server") {
-        this.$el!.classList.remove("onload");
-      }
-    }, 1000);
     this.focus();
     this.props.onTitleChange();
     // Injecting preload css in webview to override some css rules

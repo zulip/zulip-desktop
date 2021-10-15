@@ -299,34 +299,27 @@ body {
 
 /* When the active webview is loaded */
 #webviews-container.loaded::before {
-  opacity: 0;
   z-index: -1;
   visibility: hidden;
 }
 
 webview,
 .functional-view {
-  /* transition: opacity 0.3s ease-in; */
   position: absolute;
   width: 100%;
   height: 100%;
   flex-grow: 1;
 }
 
-webview.onload {
-  transition: opacity 1s cubic-bezier(0.95, 0.05, 0.795, 0.035);
-}
-
 webview.active,
 .functional-view.active {
-  opacity: 1;
   z-index: 1;
   visibility: visible;
 }
 
 webview.disabled,
 .functional-view.disabled {
-  opacity: 0;
+  visibility: hidden;
 }
 
 webview.focus {
