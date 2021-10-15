@@ -223,9 +223,12 @@ function toggleTray(): void {
     ConfigUtil.setConfigItem("trayIcon", true);
   }
 
-  const selector = "webview:not([class*=disabled])";
-  const webview: WebviewTag = document.querySelector(selector)!;
-  ipcRenderer.sendTo(webview.getWebContentsId(), "toggle-tray", state);
+  const webview = document.querySelector<WebviewTag>(
+    "webview:not([class*=disabled])",
+  );
+  if (webview !== null) {
+    ipcRenderer.sendTo(webview.getWebContentsId(), "toggle-tray", state);
+  }
 }
 
 ipcRenderer.on("toggletray", toggleTray);
