@@ -818,7 +818,7 @@ export class ServerManagerView {
             await this.activateTab(index);
             const tab = this.tabs[index];
             if (tab instanceof ServerTab)
-              await (await tab.webview).showNotificationSettings();
+              (await tab.webview).showNotificationSettings();
           },
         },
         {
@@ -835,7 +835,7 @@ export class ServerManagerView {
 
   registerIpcs(): void {
     const webviewListeners: Array<
-      [WebviewListener, (webview: WebView) => void | Promise<void>]
+      [WebviewListener, (webview: WebView) => void]
     > = [
       [
         "webview-reload",
@@ -881,14 +881,14 @@ export class ServerManagerView {
       ],
       [
         "log-out",
-        async (webview) => {
-          await webview.logOut();
+        (webview) => {
+          webview.logOut();
         },
       ],
       [
         "show-keyboard-shortcuts",
-        async (webview) => {
-          await webview.showKeyboardShortcuts();
+        (webview) => {
+          webview.showKeyboardShortcuts();
         },
       ],
       [
@@ -904,7 +904,7 @@ export class ServerManagerView {
         const tab = this.tabs[this.activeTabIndex];
         if (tab instanceof ServerTab) {
           const activeWebview = await tab.webview;
-          if (activeWebview) await listener(activeWebview);
+          if (activeWebview) listener(activeWebview);
         }
       });
     }

@@ -175,8 +175,8 @@ export default class WebView {
     return messageCountInTitle ? Number(messageCountInTitle[1]) : 0;
   }
 
-  async showNotificationSettings(): Promise<void> {
-    await this.send("show-notification-settings");
+  showNotificationSettings(): void {
+    this.send("show-notification-settings");
   }
 
   show(): void {
@@ -250,12 +250,12 @@ export default class WebView {
     this.$el!.setZoomFactor(this.zoomFactor);
   }
 
-  async logOut(): Promise<void> {
-    await this.send("logout");
+  logOut(): void {
+    this.send("logout");
   }
 
-  async showKeyboardShortcuts(): Promise<void> {
-    await this.send("show-keyboard-shortcuts");
+  showKeyboardShortcuts(): void {
+    this.send("show-keyboard-shortcuts");
   }
 
   openDevTools(): void {
@@ -295,10 +295,10 @@ export default class WebView {
     this.$el!.reload();
   }
 
-  async send<Channel extends keyof RendererMessage>(
+  send<Channel extends keyof RendererMessage>(
     channel: Channel,
     ...args: Parameters<RendererMessage[Channel]>
-  ): Promise<void> {
+  ): void {
     ipcRenderer.sendTo(this.$el!.getWebContentsId(), channel, ...args);
   }
 }
