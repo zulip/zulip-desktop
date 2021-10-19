@@ -993,7 +993,7 @@ export class ServerManagerView {
       }
     });
 
-    ipcRenderer.on("toggle-sidebar", (event: Event, show: boolean) => {
+    ipcRenderer.on("toggle-sidebar", async (event: Event, show: boolean) => {
       // Toggle the left sidebar
       this.toggleSidebar(show);
     });
@@ -1009,7 +1009,7 @@ export class ServerManagerView {
 
     ipcRenderer.on(
       "toggle-autohide-menubar",
-      (event: Event, autoHideMenubar: boolean, updateMenu: boolean) => {
+      async (event: Event, autoHideMenubar: boolean, updateMenu: boolean) => {
         if (updateMenu) {
           ipcRenderer.send("update-menu", {
             tabs: this.tabsForIpc,
@@ -1021,7 +1021,11 @@ export class ServerManagerView {
 
     ipcRenderer.on(
       "toggle-dnd",
-      (event: Event, state: boolean, newSettings: Partial<DNDSettings>) => {
+      async (
+        event: Event,
+        state: boolean,
+        newSettings: Partial<DNDSettings>,
+      ) => {
         this.toggleDNDButton(state);
         ipcRenderer.send(
           "forward-message",
@@ -1087,20 +1091,20 @@ export class ServerManagerView {
 
     ipcRenderer.on(
       "focus-webview-with-id",
-      (event: Event, webviewId: number) => {
-        const webviews: NodeListOf<Electron.WebviewTag> =
-          document.querySelectorAll("webview");
-        for (const webview of webviews) {
-          const currentId = webview.getWebContentsId();
-          const tabId = webview.getAttribute("data-tab-id")!;
-          const concurrentTab: HTMLButtonElement = document.querySelector(
-            `div[data-tab-id="${CSS.escape(tabId)}"]`,
-          )!;
-          if (currentId === webviewId) {
-            concurrentTab.click();
-          }
-        }
-      },
+      async (event: Event, webviewId: number) =>
+        Promise.all(
+          this.tabs.map(async (tab) => {
+            if (
+              tab instanceof ServerTab &&
+              (await tab.webview).webContentsId === webviewId
+            ) {
+              const concurrentTab: HTMLButtonElement = document.querySelector(
+                `div[data-tab-id="${CSS.escape(`${tab.props.tabIndex}`)}"]`,
+              )!;
+              concurrentTab.click();
+            }
+          }),
+        ),
     );
 
     ipcRenderer.on(
@@ -1149,21 +1153,21 @@ export class ServerManagerView {
       await this.openSettings("AddServer");
     });
 
-    ipcRenderer.on("set-active", () => {
-      const webviews: NodeListOf<Electron.WebviewTag> =
-        document.querySelectorAll("webview");
-      for (const webview of webviews) {
-        ipcRenderer.sendTo(webview.getWebContentsId(), "set-active");
-      }
-    });
+    ipcRenderer.on("set-active", async () =>
+      Promise.all(
+        this.tabs.map(async (tab) => {
+          if (tab instanceof ServerTab) (await tab.webview).send("set-active");
+        }),
+      ),
+    );
 
-    ipcRenderer.on("set-idle", () => {
-      const webviews: NodeListOf<Electron.WebviewTag> =
-        document.querySelectorAll("webview");
-      for (const webview of webviews) {
-        ipcRenderer.sendTo(webview.getWebContentsId(), "set-idle");
-      }
-    });
+    ipcRenderer.on("set-idle", async () =>
+      Promise.all(
+        this.tabs.map(async (tab) => {
+          if (tab instanceof ServerTab) (await tab.webview).send("set-idle");
+        }),
+      ),
+    );
 
     ipcRenderer.on("open-network-settings", async () => {
       await this.openSettings("Network");
@@ -1175,5 +1179,3 @@ window.addEventListener("load", async () => {
   const serverManagerView = new ServerManagerView();
   await serverManagerView.init();
 });
-
-export {};
