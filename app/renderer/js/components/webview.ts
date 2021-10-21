@@ -20,6 +20,7 @@ const shouldSilentWebview = ConfigUtil.getConfigItem("silent", false);
 
 interface WebViewProps {
   $root: Element;
+  rootWebContents: Electron.WebContents;
   index: number;
   tabIndex: number;
   url: string;
@@ -100,7 +101,28 @@ export default class WebView {
       );
     });
 
-    return new WebView(props, $element, $element.getWebContentsId());
+    // Work around https://github.com/electron/electron/issues/26904
+    function getWebContentsIdFunction(
+      this: undefined,
+      selector: string,
+    ): number {
+      return document
+        .querySelector<Electron.WebviewTag>(selector)!
+        .getWebContentsId();
+    }
+
+    const selector = `webview[data-tab-id="${CSS.escape(
+      `${props.tabIndex}`,
+    )}"]`;
+    const webContentsId: unknown =
+      await props.rootWebContents.executeJavaScript(
+        `(${getWebContentsIdFunction.toString()})(${JSON.stringify(selector)})`,
+      );
+    if (typeof webContentsId !== "number") {
+      throw new TypeError("Failed to get WebContents ID");
+    }
+
+    return new WebView(props, $element, webContentsId);
   }
 
   getWebContents(): Electron.WebContents {

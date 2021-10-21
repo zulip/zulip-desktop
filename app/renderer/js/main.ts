@@ -43,6 +43,8 @@ const logger = new Logger({
 const rendererDirectory = path.resolve(__dirname, "..");
 type ServerOrFunctionalTab = ServerTab | FunctionalTab;
 
+const rootWebContents = remote.getCurrentWebContents();
+
 export class ServerManagerView {
   $addServerButton: HTMLButtonElement;
   $tabsContainer: Element;
@@ -364,6 +366,7 @@ export class ServerManagerView {
         onHoverOut: this.onHoverOut.bind(this, index),
         webview: WebView.create({
           $root: this.$webviewsContainer,
+          rootWebContents,
           index,
           tabIndex,
           url: server.url,
