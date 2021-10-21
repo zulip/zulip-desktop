@@ -933,7 +933,7 @@ export class ServerManagerView {
                     if (!(tab instanceof ServerTab)) return false;
                     const webview = await tab.webview;
                     return (
-                      webview.$el.getWebContentsId() === webContentsId &&
+                      webview.webContentsId === webContentsId &&
                       webview.props.hasPermission?.(origin, permission)
                     );
                   }),

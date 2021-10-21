@@ -40,8 +40,13 @@ export default class WebView {
   customCSS: string | false | null;
   $webviewsContainer: DOMTokenList;
   $el: Electron.WebviewTag;
+  webContentsId: number;
 
-  private constructor(props: WebViewProps, $element: Electron.WebviewTag) {
+  private constructor(
+    props: WebViewProps,
+    $element: Electron.WebviewTag,
+    webContentsId: number,
+  ) {
     this.props = props;
     this.zoomFactor = 1;
     this.loading = true;
@@ -51,6 +56,7 @@ export default class WebView {
       "#webviews-container",
     )!.classList;
     this.$el = $element;
+    this.webContentsId = webContentsId;
 
     this.registerListeners();
   }
@@ -94,7 +100,11 @@ export default class WebView {
       );
     });
 
-    return new WebView(props, $element);
+    return new WebView(props, $element, $element.getWebContentsId());
+  }
+
+  getWebContents(): Electron.WebContents {
+    return remote.webContents.fromId(this.webContentsId);
   }
 
   registerListeners(): void {
@@ -138,7 +148,7 @@ export default class WebView {
       }
     });
 
-    const webContents = remote.webContents.fromId(this.$el.getWebContentsId());
+    const webContents = this.getWebContents();
     webContents.addListener("context-menu", (event, menuParameters) => {
       contextMenu(webContents, event, menuParameters);
     });
@@ -299,6 +309,6 @@ export default class WebView {
     channel: Channel,
     ...args: Parameters<RendererMessage[Channel]>
   ): void {
-    ipcRenderer.sendTo(this.$el.getWebContentsId(), channel, ...args);
+    ipcRenderer.sendTo(this.webContentsId, channel, ...args);
   }
 }
