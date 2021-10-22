@@ -1,4 +1,5 @@
 "use strict";
+const {chan, put, take} = require("medium");
 const test = require("tape");
 
 const setup = require("./setup.js");
@@ -6,13 +7,18 @@ const setup = require("./setup.js");
 test("app runs", async (t) => {
   t.timeoutAfter(10e3);
   setup.resetTestDataDir();
-  const app = setup.createApp();
+  const app = await setup.createApp();
   try {
-    await setup.waitForLoad(app, t);
-    await app.client.windowByIndex(1); // Focus on webview
-    await (await app.client.$('//*[@id="connect"]')).waitForExist(); // Id of the connect button
-    await setup.endTest(app, t);
-  } catch (error) {
-    await setup.endTest(app, t, error || "error");
+    const windows = chan();
+    for (const win of app.windows()) put(windows, win);
+    app.on("window", (win) => put(windows, win));
+
+    const mainWindow = await take(windows);
+    t.equal(await mainWindow.title(), "Zulip");
+
+    const mainWebview = await take(windows);
+    await mainWebview.waitForSelector("#connect");
+  } finally {
+    await setup.endTest(app);
   }
 });

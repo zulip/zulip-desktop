@@ -1,4 +1,5 @@
 "use strict";
+const {chan, put, take} = require("medium");
 const test = require("tape");
 
 const setup = require("./setup.js");
@@ -8,14 +9,18 @@ const setup = require("./setup.js");
 test("new-org-link", async (t) => {
   t.timeoutAfter(50e3);
   setup.resetTestDataDir();
-  const app = setup.createApp();
+  const app = await setup.createApp();
   try {
-    await setup.waitForLoad(app, t);
-    await app.client.windowByIndex(1); // Focus on webview
-    await (await app.client.$("#open-create-org-link")).click(); // Click on new org link button
-    await setup.wait(5000);
-    await setup.endTest(app, t);
-  } catch (error) {
-    await setup.endTest(app, t, error || "error");
+    const windows = chan();
+    for (const win of app.windows()) put(windows, win);
+    app.on("window", (win) => put(windows, win));
+
+    const mainWindow = await take(windows);
+    t.equal(await mainWindow.title(), "Zulip");
+
+    const mainWebview = await take(windows);
+    await mainWebview.click("#open-create-org-link");
+  } finally {
+    await setup.endTest(app);
   }
 });
