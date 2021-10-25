@@ -362,7 +362,7 @@ export class ServerManagerView {
         tabIndex,
         onHover: this.onHover.bind(this, index),
         onHoverOut: this.onHoverOut.bind(this, index),
-        webview: new WebView({
+        webview: WebView.create({
           $root: this.$webviewsContainer,
           index,
           tabIndex,

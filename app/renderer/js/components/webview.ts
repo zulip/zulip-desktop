@@ -42,7 +42,7 @@ export default class WebView {
   $el?: Electron.WebviewTag;
   whenAttached?: Promise<void>;
 
-  constructor(props: WebViewProps) {
+  private constructor(props: WebViewProps) {
     this.props = props;
     this.zoomFactor = 1;
     this.loading = true;
@@ -72,6 +72,10 @@ export default class WebView {
       >
       </webview>
     `;
+  }
+
+  static create(props: WebViewProps): WebView {
+    return new WebView(props);
   }
 
   init(): void {
