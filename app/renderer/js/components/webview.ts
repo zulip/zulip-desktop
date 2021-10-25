@@ -53,14 +53,14 @@ export default class WebView {
     )!.classList;
   }
 
-  templateHTML(): HTML {
+  static templateHTML(props: WebViewProps): HTML {
     return html`
       <webview
-        data-tab-id="${this.props.tabIndex}"
-        src="${this.props.url}"
-        ${this.props.preload === undefined
+        data-tab-id="${props.tabIndex}"
+        src="${props.url}"
+        ${props.preload === undefined
           ? html``
-          : html`preload="${this.props.preload}"`}
+          : html`preload="${props.preload}"`}
         partition="persist:webviewsession"
         webpreferences="
           contextIsolation,
@@ -75,7 +75,9 @@ export default class WebView {
   }
 
   init(): void {
-    this.$el = generateNodeFromHTML(this.templateHTML()) as Electron.WebviewTag;
+    this.$el = generateNodeFromHTML(
+      WebView.templateHTML(this.props),
+    ) as Electron.WebviewTag;
     this.whenAttached = new Promise((resolve) => {
       this.$el!.addEventListener(
         "did-attach",
