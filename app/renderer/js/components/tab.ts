@@ -34,15 +34,15 @@ export default abstract class Tab {
     }
   }
 
-  activate(): void {
+  async activate(): Promise<void> {
     this.$el.classList.add("active");
   }
 
-  deactivate(): void {
+  async deactivate(): Promise<void> {
     this.$el.classList.remove("active");
   }
 
-  destroy(): void {
+  async destroy(): Promise<void> {
     this.$el.remove();
   }
 }

@@ -40,9 +40,8 @@ export default class WebView {
   customCSS: string | false | null;
   $webviewsContainer: DOMTokenList;
   $el?: Electron.WebviewTag;
-  whenAttached?: Promise<void>;
 
-  private constructor(props: WebViewProps) {
+  private constructor(props: WebViewProps, $element: Electron.WebviewTag) {
     this.props = props;
     this.zoomFactor = 1;
     this.loading = true;
@@ -51,6 +50,9 @@ export default class WebView {
     this.$webviewsContainer = document.querySelector(
       "#webviews-container",
     )!.classList;
+    this.$el = $element;
+
+    this.registerListeners();
   }
 
   static templateHTML(props: WebViewProps): HTML {
@@ -74,26 +76,25 @@ export default class WebView {
     `;
   }
 
-  static create(props: WebViewProps): WebView {
-    return new WebView(props);
-  }
-
-  init(): void {
-    this.$el = generateNodeFromHTML(
-      WebView.templateHTML(this.props),
+  static async create(props: WebViewProps): Promise<WebView> {
+    const $element = generateNodeFromHTML(
+      WebView.templateHTML(props),
     ) as Electron.WebviewTag;
-    this.whenAttached = new Promise((resolve) => {
-      this.$el!.addEventListener(
-        "did-attach",
+    props.$root.append($element);
+
+    // Wait for did-navigate rather than did-attach to work around
+    // https://github.com/electron/electron/issues/31918
+    await new Promise<void>((resolve) => {
+      $element.addEventListener(
+        "did-navigate",
         () => {
           resolve();
         },
         true,
       );
     });
-    this.props.$root.append(this.$el);
 
-    this.registerListeners();
+    return new WebView(props, $element);
   }
 
   registerListeners(): void {
@@ -102,9 +103,7 @@ export default class WebView {
     });
 
     if (shouldSilentWebview) {
-      this.$el!.addEventListener("did-attach", () => {
-        this.$el!.setAudioMuted(true);
-      });
+      this.$el!.setAudioMuted(true);
     }
 
     this.$el!.addEventListener("page-title-updated", (event) => {
@@ -139,13 +138,9 @@ export default class WebView {
       }
     });
 
-    this.$el!.addEventListener("did-attach", () => {
-      const webContents = remote.webContents.fromId(
-        this.$el!.getWebContentsId(),
-      );
-      webContents.addListener("context-menu", (event, menuParameters) => {
-        contextMenu(webContents, event, menuParameters);
-      });
+    const webContents = remote.webContents.fromId(this.$el!.getWebContentsId());
+    webContents.addListener("context-menu", (event, menuParameters) => {
+      contextMenu(webContents, event, menuParameters);
     });
 
     this.$el!.addEventListener("dom-ready", () => {
@@ -237,11 +232,7 @@ export default class WebView {
   }
 
   load(): void {
-    if (this.$el) {
-      this.show();
-    } else {
-      this.init();
-    }
+    this.show();
   }
 
   zoomIn(): void {
@@ -308,7 +299,6 @@ export default class WebView {
     channel: Channel,
     ...args: Parameters<RendererMessage[Channel]>
   ): Promise<void> {
-    await this.whenAttached;
     ipcRenderer.sendTo(this.$el!.getWebContentsId(), channel, ...args);
   }
 }

@@ -26,18 +26,18 @@ export default class FunctionalTab extends Tab {
     }
   }
 
-  override activate(): void {
-    super.activate();
+  override async activate(): Promise<void> {
+    await super.activate();
     this.$view.classList.add("active");
   }
 
-  override deactivate(): void {
-    super.deactivate();
+  override async deactivate(): Promise<void> {
+    await super.deactivate();
     this.$view.classList.remove("active");
   }
 
-  override destroy(): void {
-    super.destroy();
+  override async destroy(): Promise<void> {
+    await super.destroy();
     this.$view.remove();
   }
 

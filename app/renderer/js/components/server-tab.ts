@@ -8,11 +8,11 @@ import Tab from "./tab";
 import type WebView from "./webview";
 
 export interface ServerTabProps extends TabProps {
-  webview: WebView;
+  webview: Promise<WebView>;
 }
 
 export default class ServerTab extends Tab {
-  webview: WebView;
+  webview: Promise<WebView>;
   $el: Element;
   $badge: Element;
 
@@ -26,19 +26,19 @@ export default class ServerTab extends Tab {
     this.$badge = this.$el.querySelector(".server-tab-badge")!;
   }
 
-  override activate(): void {
-    super.activate();
-    this.webview.load();
+  override async activate(): Promise<void> {
+    await super.activate();
+    (await this.webview).load();
   }
 
-  override deactivate(): void {
-    super.deactivate();
-    this.webview.hide();
+  override async deactivate(): Promise<void> {
+    await super.deactivate();
+    (await this.webview).hide();
   }
 
-  override destroy(): void {
-    super.destroy();
-    this.webview.$el!.remove();
+  override async destroy(): Promise<void> {
+    await super.destroy();
+    (await this.webview).$el!.remove();
   }
 
   templateHTML(): HTML {
