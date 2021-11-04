@@ -14,7 +14,11 @@ import * as t from "../../../../common/translation-util";
 import supportedLocales from "../../../../translations/supported-locales.json";
 import {ipcRenderer} from "../../typed-ipc-renderer";
 
-import {generateSelectHTML, generateSettingOption} from "./base-section";
+import {
+  exitSettings,
+  generateSelectHTML,
+  generateSettingOption,
+} from "./base-section";
 
 const {app, dialog, session} = remote;
 const currentBrowserWindow = remote.getCurrentWindow();
@@ -26,6 +30,7 @@ interface GeneralSectionProps {
 export function initGeneralSection(props: GeneralSectionProps): void {
   props.$root.innerHTML = html`
     <div class="settings-pane">
+      <span class="exit-sign">×</span>
       <div class="title">${t.__("Appearance")}</div>
       <div id="appearance-option-settings" class="settings-card">
         <div class="setting-row" id="tray-option">
@@ -211,6 +216,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
     </div>
   `.html;
 
+  exitSettings();
   updateTrayOption();
   updateBadgeOption();
   updateSilentOption();

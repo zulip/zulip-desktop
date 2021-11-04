@@ -3,7 +3,7 @@ import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
 import {ipcRenderer} from "../../typed-ipc-renderer";
 
-import {generateSettingOption} from "./base-section";
+import {exitSettings, generateSettingOption} from "./base-section";
 
 interface NetworkSectionProps {
   $root: Element;
@@ -12,6 +12,7 @@ interface NetworkSectionProps {
 export function initNetworkSection(props: NetworkSectionProps): void {
   props.$root.innerHTML = html`
     <div class="settings-pane">
+      <span class="exit-sign">×</span>
       <div class="title">${t.__("Proxy")}</div>
       <div id="appearance-option-settings" class="settings-card">
         <div class="setting-row" id="use-system-settings">
@@ -54,6 +55,8 @@ export function initNetworkSection(props: NetworkSectionProps): void {
       </div>
     </div>
   `.html;
+
+  exitSettings();
 
   const $proxyPAC: HTMLInputElement = document.querySelector(
     "#proxy-pac-option .setting-input-value",

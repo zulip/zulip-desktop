@@ -86,6 +86,17 @@ td:nth-child(odd) {
   text-rendering: optimizeLegibility;
 }
 
+.exit-sign {
+  float: right;
+  position: relative;
+  top: 1px;
+  margin-left: 3px;
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 #content {
   display: flex;
   height: 100%;
