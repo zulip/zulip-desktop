@@ -227,18 +227,9 @@ export default class WebView {
   }
 
   focus(): void {
-    // Focus Webview and it's contents when Window regain focus.
-    const webContents = remote.webContents.fromId(this.$el!.getWebContentsId());
-    // HACK: webContents.isFocused() seems to be true even without the element
-    // being in focus. So, we check against `document.activeElement`.
-    if (webContents && this.$el !== document.activeElement) {
-      // HACK: Looks like blur needs to be called on the previously focused
-      // element to transfer focus correctly, in Electron v3.0.10
-      // See https://github.com/electron/electron/issues/15718
-      (document.activeElement as HTMLElement).blur();
-      this.$el!.focus();
-      webContents.focus();
-    }
+    this.$el!.focus();
+    // Work around https://github.com/electron/electron/issues/31918
+    this.$el!.shadowRoot?.querySelector("iframe")?.focus();
   }
 
   hide(): void {
