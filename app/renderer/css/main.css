@@ -155,12 +155,11 @@ body {
 
 .tab {
   position: relative;
-  margin: 2px 2px 0px 0px;
+  margin: 2px 2px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
 }
 
 .tab:first-child {
@@ -185,7 +184,6 @@ body {
   padding: 11px;
 }
 
-div#add-action {}
 
 .server-tab .alt-icon {
   font-family: Verdana, sans-serif;
