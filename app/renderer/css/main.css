@@ -155,12 +155,11 @@ body {
 
 .tab {
   position: relative;
-  margin: 2px 0;
+  margin: 2px 2px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
 }
 
 .tab:first-child {
@@ -174,25 +173,24 @@ body {
 }
 
 .tab .server-tab {
-  width: 100%;
-  height: 35px;
   position: relative;
-  margin-top: 5px;
+  display:flex;
   z-index: 11;
   line-height: 31px;
   color: rgba(238, 238, 238, 1);
   text-align: center;
   overflow: hidden;
   opacity: 0.6;
-  padding: 6px 0;
+  padding: 11px;
 }
+
 
 .server-tab .alt-icon {
   font-family: Verdana, sans-serif;
   font-weight: 600;
   font-size: 22px;
   border: 2px solid rgba(34, 44, 49, 1);
-  margin-left: 17%;
+  margin-left: 37%;
   width: 35px;
   border-radius: 4px;
 }
