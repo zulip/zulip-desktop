@@ -1,7 +1,6 @@
 import type {HTML} from "../../../common/html";
 import {html} from "../../../common/html";
 import {ipcRenderer} from "../typed-ipc-renderer";
-import * as SystemUtil from "../utils/system-util";
 
 import {generateNodeFromHTML} from "./base";
 import type {TabProps} from "./tab";
@@ -56,7 +55,7 @@ export default class ServerTab extends Tab {
     // Array index == Shown index - 1
     ipcRenderer.send("switch-server-tab", shownIndex - 1);
 
-    return SystemUtil.getOS() === "Mac"
+    return process.platform === "darwin"
       ? `⌘${shownIndex}`
       : `Ctrl+${shownIndex}`;
   }

@@ -1,5 +1,3 @@
-import os from "os";
-
 import {ipcRenderer} from "../typed-ipc-renderer";
 
 export const connectivityERR: string[] = [
@@ -12,27 +10,6 @@ export const connectivityERR: string[] = [
 ];
 
 const userAgent = ipcRenderer.sendSync("fetch-user-agent");
-
-export function getOS(): string {
-  const platform = os.platform();
-  if (platform === "darwin") {
-    return "Mac";
-  }
-
-  if (platform === "linux") {
-    return "Linux";
-  }
-
-  if (platform === "win32") {
-    if (Number.parseFloat(os.release()) < 6.2) {
-      return "Windows 7";
-    }
-
-    return "Windows 10";
-  }
-
-  return "";
-}
 
 export function getUserAgent(): string {
   return userAgent;
