@@ -53,14 +53,11 @@ export default class ServerTab extends Tab {
 
     const shownIndex = this.props.index + 1;
 
-    let shortcutText = "";
-
-    shortcutText =
-      SystemUtil.getOS() === "Mac" ? `⌘ ${shownIndex}` : `Ctrl+${shownIndex}`;
-
     // Array index == Shown index - 1
     ipcRenderer.send("switch-server-tab", shownIndex - 1);
 
-    return shortcutText;
+    return SystemUtil.getOS() === "Mac"
+      ? `⌘${shownIndex}`
+      : `Ctrl+${shownIndex}`;
   }
 }
