@@ -145,21 +145,16 @@ class ServerManagerView {
       ConfigUtil.removeConfigItem("useProxy");
     }
 
-    const proxyEnabled =
-      ConfigUtil.getConfigItem("useManualProxy", false) ||
-      ConfigUtil.getConfigItem("useSystemProxy", false);
     await session.fromPartition("persist:webviewsession").setProxy(
-      proxyEnabled
+      ConfigUtil.getConfigItem("useSystemProxy", false)
+        ? {mode: "system"}
+        : ConfigUtil.getConfigItem("useManualProxy", false)
         ? {
             pacScript: ConfigUtil.getConfigItem("proxyPAC", ""),
             proxyRules: ConfigUtil.getConfigItem("proxyRules", ""),
             proxyBypassRules: ConfigUtil.getConfigItem("proxyBypass", ""),
           }
-        : {
-            pacScript: "",
-            proxyRules: "",
-            proxyBypassRules: "",
-          },
+        : {mode: "direct"},
     );
   }
 

@@ -12,7 +12,6 @@ import type {MenuProps} from "../common/types";
 import {appUpdater} from "./autoupdater";
 import * as BadgeSettings from "./badge-settings";
 import * as AppMenu from "./menu";
-import * as ProxyUtil from "./proxy-util";
 import {_getServerSettings, _isOnline, _saveServerIcon} from "./request";
 import {setAutoLaunch} from "./startup";
 import {ipcMain, send} from "./typed-ipc-main";
@@ -194,12 +193,6 @@ function createMainWindow(): Electron.BrowserWindow {
   const errorReporting = ConfigUtil.getConfigItem("errorReporting", true);
   if (errorReporting) {
     sentryInit();
-  }
-
-  const isSystemProxy = ConfigUtil.getConfigItem("useSystemProxy", false);
-
-  if (isSystemProxy) {
-    (async () => ProxyUtil.resolveSystemProxy(mainWindow))();
   }
 
   const page = mainWindow.webContents;
