@@ -30,7 +30,6 @@ export const configSchemata = {
   spellcheckerLanguages: z.string().array().nullable(),
   startAtLogin: z.boolean(),
   startMinimized: z.boolean(),
-  systemProxyRules: z.string(),
   trayIcon: z.boolean(),
   useManualProxy: z.boolean(),
   useProxy: z.boolean(),
