@@ -163,12 +163,7 @@ function createMainWindow(): Electron.BrowserWindow {
 
   // This event is only available on macOS. Triggers when you click on the dock icon.
   app.on("activate", () => {
-    if (mainWindow) {
-      // If there is already a window show it
-      mainWindow.show();
-    } else {
-      mainWindow = createMainWindow();
-    }
+    mainWindow.show();
   });
 
   const ses = session.fromPartition("persist:webviewsession");
