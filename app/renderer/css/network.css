@@ -17,7 +17,7 @@ body {
 }
 
 #title {
-  text-align: left;
+  text-align: center;
   font-size: 24px;
   font-weight: bold;
   margin: 20px 0;
@@ -25,7 +25,7 @@ body {
 
 #subtitle {
   font-size: 20px;
-  text-align: left;
+  text-align: center;
   margin: 12px 0;
 }
 
@@ -33,25 +33,36 @@ body {
   text-align: left;
   font-size: 16px;
   list-style-position: inside;
+  width: 400px;
+  margin: 0 auto;
 }
 
 #reconnect {
   float: left;
+  -ms-transform: translateX(460%);
+  transform: translateX(460%);
+  margin: 20px;
+  text-align: center;
 }
 
 #settings {
+  margin: 20px;
   margin-left: 116px;
+  -ms-transform: translateX(490%);
+  transform: translateX(490%);
+  text-align: left;
 }
 
 .button {
   font-size: 16px;
   background: rgba(0, 150, 136, 1);
   color: rgba(255, 255, 255, 1);
-  width: 96px;
-  height: 32px;
+  width: 100px;
+  height: 36px;
   border-radius: 5px;
   line-height: 32px;
   cursor: pointer;
+
 }
 
 .button:hover {
