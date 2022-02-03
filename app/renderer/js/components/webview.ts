@@ -40,12 +40,12 @@ export default class WebView {
   loading: boolean;
   customCSS: string | false | null;
   $webviewsContainer: DOMTokenList;
-  $el: Electron.WebviewTag;
+  $el: HTMLElement;
   webContentsId: number;
 
   private constructor(
     props: WebViewProps,
-    $element: Electron.WebviewTag,
+    $element: HTMLElement,
     webContentsId: number,
   ) {
     this.props = props;
@@ -86,7 +86,7 @@ export default class WebView {
   static async create(props: WebViewProps): Promise<WebView> {
     const $element = generateNodeFromHTML(
       WebView.templateHTML(props),
-    ) as Electron.WebviewTag;
+    ) as HTMLElement;
     props.$root.append($element);
 
     // Wait for did-navigate rather than did-attach to work around
