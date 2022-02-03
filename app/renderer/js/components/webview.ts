@@ -130,16 +130,18 @@ export default class WebView {
   }
 
   registerListeners(): void {
-    this.$el.addEventListener("new-window", (event) => {
-      handleExternalLink.call(this, event);
+    const webContents = this.getWebContents();
+
+    webContents.setWindowOpenHandler((details) => {
+      handleExternalLink.call(this, details);
+      return {action: "deny"};
     });
 
     if (shouldSilentWebview) {
-      this.getWebContents().setAudioMuted(true);
+      webContents.setAudioMuted(true);
     }
 
-    this.$el.addEventListener("page-title-updated", (event) => {
-      const {title} = event;
+    webContents.on("page-title-updated", (_event, title) => {
       this.badgeCount = this.getBadgeCount(title);
       this.props.onTitleChange();
     });
@@ -152,9 +154,7 @@ export default class WebView {
       this.canGoBackButton();
     });
 
-    this.$el.addEventListener("page-favicon-updated", (event) => {
-      const {favicons} = event;
-
+    webContents.on("page-favicon-updated", (_event, favicons) => {
       // This returns a string of favicons URL. If there is a PM counts in unread messages then the URL would be like
       // https://chat.zulip.org/static/images/favicon/favicon-pms.png
       if (
@@ -170,7 +170,6 @@ export default class WebView {
       }
     });
 
-    const webContents = this.getWebContents();
     webContents.addListener("context-menu", (event, menuParameters) => {
       contextMenu(webContents, event, menuParameters);
     });
@@ -181,8 +180,7 @@ export default class WebView {
       this.show();
     });
 
-    this.$el.addEventListener("did-fail-load", (event) => {
-      const {errorDescription} = event;
+    webContents.on("did-fail-load", (_event, _errorCode, errorDescription) => {
       const hasConnectivityError =
         SystemUtil.connectivityERR.includes(errorDescription);
       if (hasConnectivityError) {

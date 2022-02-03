@@ -10,11 +10,9 @@ const dingSound = new Audio("../resources/sounds/ding.ogg");
 
 export default function handleExternalLink(
   this: WebView,
-  event: Electron.NewWindowEvent,
+  details: Electron.HandlerDetails,
 ): void {
-  event.preventDefault();
-
-  const url = new URL(event.url);
+  const url = new URL(details.url);
   const downloadPath = ConfigUtil.getConfigItem(
     "downloadsPath",
     `${app.getPath("downloads")}`,
