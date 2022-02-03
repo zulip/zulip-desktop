@@ -348,7 +348,7 @@ ${error}`,
       AppMenu.setMenu(props);
       if (props.activeTabIndex !== undefined) {
         const activeTab = props.tabs[props.activeTabIndex];
-        mainWindow.setTitle(`Zulip - ${activeTab.webviewName}`);
+        mainWindow.setTitle(`Zulip - ${activeTab.name}`);
       }
     },
   );

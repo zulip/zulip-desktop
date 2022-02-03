@@ -23,5 +23,4 @@ export interface TabData {
   role: TabRole;
   name: string;
   index: number;
-  webviewName: string;
 }

@@ -371,7 +371,6 @@ class ServerManagerView {
           tabIndex,
           url: server.url,
           role: "server",
-          name: server.alias,
           hasPermission: (origin: string, permission: string) =>
             origin === server.url && permission === "notifications",
           isActive: () => index === this.activeTabIndex,
@@ -566,7 +565,6 @@ class ServerManagerView {
           tabIndex,
           url: tabProps.url,
           role: "function",
-          name: tabProps.name,
           isActive: () =>
             this.functionalTabs.get(tabProps.name) === this.activeTabIndex,
           switchLoading: (loading: boolean, url: string) => {
@@ -644,7 +642,6 @@ class ServerManagerView {
       role: tab.props.role,
       name: tab.props.name,
       index: tab.props.index,
-      webviewName: tab.webview.props.name,
     }));
   }
 
@@ -1060,7 +1057,6 @@ class ServerManagerView {
             );
             serverTooltips[index].textContent = realmName;
             this.tabs[index].props.name = realmName;
-            this.tabs[index].webview.props.name = realmName;
 
             domain.alias = realmName;
             DomainUtil.updateDomain(index, domain);

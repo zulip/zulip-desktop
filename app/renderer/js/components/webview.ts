@@ -23,7 +23,6 @@ interface WebViewProps {
   tabIndex: number;
   url: string;
   role: TabRole;
-  name: string;
   isActive: () => boolean;
   switchLoading: (loading: boolean, url: string) => void;
   onNetworkError: (index: number) => void;
@@ -63,7 +62,6 @@ export default class WebView {
         ${new HTML({html: this.props.nodeIntegration ? "nodeIntegration" : ""})}
         ${new HTML({html: this.props.preload ? 'preload="js/preload.js"' : ""})}
         partition="persist:webviewsession"
-        name="${this.props.name}"
         webpreferences="
           contextIsolation=${!this.props.nodeIntegration},
           spellcheck=${Boolean(
