@@ -1,8 +1,9 @@
 import type {OpenDialogOptions} from "electron";
-import {remote} from "electron";
 import fs from "fs";
 import path from "path";
 
+import * as remote from "@electron/remote";
+import {app, dialog, session} from "@electron/remote";
 import Tagify from "@yaireo/tagify";
 import ISO6391 from "iso-639-1";
 import * as z from "zod";
@@ -16,7 +17,6 @@ import {ipcRenderer} from "../../typed-ipc-renderer";
 
 import {generateSelectHTML, generateSettingOption} from "./base-section";
 
-const {app, dialog, session} = remote;
 const currentBrowserWindow = remote.getCurrentWindow();
 
 interface GeneralSectionProps {

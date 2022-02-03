@@ -1,9 +1,8 @@
 import type {ContextMenuParams} from "electron";
-import {remote} from "electron";
+
+import {Menu, clipboard} from "@electron/remote";
 
 import * as t from "../../../common/translation-util";
-
-const {clipboard, Menu} = remote;
 
 export const contextMenu = (
   webContents: Electron.WebContents,

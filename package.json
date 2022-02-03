@@ -146,6 +146,7 @@
     "InstantMessaging"
   ],
   "dependencies": {
+    "@electron/remote": "github:andersk/electron-remote#2.0.6-fixes",
     "@sentry/electron": "^2.5.1",
     "@yaireo/tagify": "^4.5.0",
     "adm-zip": "^0.5.5",

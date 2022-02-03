@@ -1,5 +1,8 @@
-import {clipboard, remote} from "electron";
+import {clipboard} from "electron";
 import path from "path";
+
+import {Menu, app, dialog, session} from "@electron/remote";
+import * as remote from "@electron/remote";
 
 import type {Config} from "../../common/config-util";
 import * as ConfigUtil from "../../common/config-util";
@@ -20,8 +23,6 @@ import {ipcRenderer} from "./typed-ipc-renderer";
 import * as DomainUtil from "./utils/domain-util";
 import * as LinkUtil from "./utils/link-util";
 import ReconnectUtil from "./utils/reconnect-util";
-
-const {session, app, Menu, dialog} = remote;
 
 type WebviewListener =
   | "webview-reload"

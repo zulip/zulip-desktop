@@ -1,6 +1,8 @@
-import {remote} from "electron";
 import fs from "fs";
 import path from "path";
+
+import * as remote from "@electron/remote";
+import {app, dialog} from "@electron/remote";
 
 import * as ConfigUtil from "../../../common/config-util";
 import {HTML, html} from "../../../common/html";
@@ -12,8 +14,6 @@ import * as SystemUtil from "../utils/system-util";
 import {generateNodeFromHTML} from "./base";
 import {contextMenu} from "./context-menu";
 import handleExternalLink from "./handle-external-link";
-
-const {app, dialog} = remote;
 
 const shouldSilentWebview = ConfigUtil.getConfigItem("silent", false);
 

@@ -1,8 +1,6 @@
-import {remote} from "electron";
+import {app} from "@electron/remote";
 
 import {html} from "../../../common/html";
-
-const {app} = remote;
 
 export class AboutView {
   readonly $view: HTMLElement;

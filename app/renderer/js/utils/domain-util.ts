@@ -1,7 +1,7 @@
-import {remote} from "electron";
 import fs from "fs";
 import path from "path";
 
+import {app, dialog} from "@electron/remote";
 import {JsonDB} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors";
 import * as z from "zod";
@@ -11,8 +11,6 @@ import Logger from "../../../common/logger-util";
 import * as Messages from "../../../common/messages";
 import type {ServerConf} from "../../../common/types";
 import {ipcRenderer} from "../typed-ipc-renderer";
-
-const {app, dialog} = remote;
 
 const logger = new Logger({
   file: "domain-util.log",

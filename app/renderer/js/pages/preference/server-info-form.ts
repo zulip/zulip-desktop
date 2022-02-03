@@ -1,4 +1,4 @@
-import {remote} from "electron";
+import {dialog} from "@electron/remote";
 
 import {html} from "../../../../common/html";
 import * as Messages from "../../../../common/messages";
@@ -7,8 +7,6 @@ import type {ServerConf} from "../../../../common/types";
 import {generateNodeFromHTML} from "../../components/base";
 import {ipcRenderer} from "../../typed-ipc-renderer";
 import * as DomainUtil from "../../utils/domain-util";
-
-const {dialog} = remote;
 
 interface ServerInfoFormProps {
   $root: Element;

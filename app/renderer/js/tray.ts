@@ -1,14 +1,13 @@
 import type {NativeImage} from "electron";
-import {remote} from "electron";
 import path from "path";
+
+import {BrowserWindow, Menu, Tray, nativeImage} from "@electron/remote";
 
 import * as ConfigUtil from "../../common/config-util";
 import type {RendererMessage} from "../../common/typed-ipc";
 
 import type {ServerManagerView} from "./main";
 import {ipcRenderer} from "./typed-ipc-renderer";
-
-const {Tray, Menu, nativeImage, BrowserWindow} = remote;
 
 let tray: Electron.Tray | null = null;
 

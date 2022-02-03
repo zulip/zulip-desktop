@@ -2,6 +2,7 @@ import electron, {app, dialog, session} from "electron";
 import fs from "fs";
 import path from "path";
 
+import * as remoteMain from "@electron/remote/main";
 import windowStateKeeper from "electron-window-state";
 
 import * as ConfigUtil from "../common/config-util";
@@ -66,7 +67,6 @@ function createMainWindow(): Electron.BrowserWindow {
     minHeight: 400,
     webPreferences: {
       contextIsolation: false,
-      enableRemoteModule: true,
       nodeIntegration: true,
       partition: "persist:webviewsession",
       webviewTag: true,
@@ -74,6 +74,7 @@ function createMainWindow(): Electron.BrowserWindow {
     },
     show: false,
   });
+  remoteMain.enable(win.webContents);
 
   win.on("focus", () => {
     send(win.webContents, "focus");
@@ -144,6 +145,8 @@ function createMainWindow(): Electron.BrowserWindow {
 
   // Used for notifications on Windows
   app.setAppUserModelId("org.zulip.zulip-electron");
+
+  remoteMain.initialize();
 
   app.on("second-instance", () => {
     if (mainWindow) {
