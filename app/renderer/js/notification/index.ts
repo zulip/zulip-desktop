@@ -1,13 +1,4 @@
-import {remote} from "electron";
-
 import DefaultNotification from "./default-notification";
-import {appId} from "./helpers";
-
-const {app} = remote;
-
-// From https://github.com/felixrieseberg/electron-windows-notifications#appusermodelid
-// On windows 8 we have to explicitly set the appUserModelId otherwise notification won't work.
-app.setAppUserModelId(appId);
 
 export interface NotificationData {
   close: () => void;

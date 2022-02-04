@@ -142,6 +142,9 @@ function createMainWindow(): Electron.BrowserWindow {
     }
   }
 
+  // Used for notifications on Windows
+  app.setAppUserModelId("org.zulip.zulip-electron");
+
   app.on("second-instance", () => {
     if (mainWindow) {
       if (mainWindow.isMinimized()) {
