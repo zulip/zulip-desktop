@@ -1,4 +1,3 @@
-import {remote} from "electron";
 import {EventEmitter} from "events";
 
 import type {ClipboardDecrypter} from "./clipboard-decrypter";
@@ -93,20 +92,12 @@ bridgeEvents.on("realm_icon_url", (iconURL: unknown) => {
 
 // Set user as active and update the time of last activity
 ipcRenderer.on("set-active", () => {
-  if (!remote.app.isPackaged) {
-    console.log("active");
-  }
-
   idle = false;
   lastActive = Date.now();
 });
 
 // Set user as idle and time of last activity is left unchanged
 ipcRenderer.on("set-idle", () => {
-  if (!remote.app.isPackaged) {
-    console.log("idle");
-  }
-
   idle = true;
 });
 
