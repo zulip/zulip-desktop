@@ -463,6 +463,10 @@ ${error}`,
     },
   );
 
+  ipcMain.on("focus-this-webview", (event: Electron.IpcMainEvent) => {
+    send(page, "focus-webview-with-id", event.sender.id);
+  });
+
   // Update user idle status for each realm after every 15s
   const idleCheckInterval = 15 * 1000; // 15 seconds
   setInterval(() => {

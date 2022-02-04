@@ -7,6 +7,7 @@ export interface MainMessage {
   "error-reporting": () => void;
   "fetch-user-agent": () => string;
   "focus-app": () => void;
+  "focus-this-webview": () => void;
   "permission-callback": (permissionCallbackId: number, grant: boolean) => void;
   "quit-app": () => void;
   "realm-icon-changed": (serverURL: string, iconURL: string) => void;
