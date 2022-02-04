@@ -1,4 +1,4 @@
-import DefaultNotification from "./default-notification";
+import {ipcRenderer} from "../typed-ipc-renderer";
 
 export interface NotificationData {
   close: () => void;
@@ -24,9 +24,10 @@ export function newNotification(
   options: NotificationOptions,
   dispatch: (type: string, eventInit: EventInit) => boolean,
 ): NotificationData {
-  const notification = new DefaultNotification(title, options);
+  const notification = new Notification(title, {...options, silent: true});
   for (const type of ["click", "close", "error", "show"]) {
     notification.addEventListener(type, (ev: Event) => {
+      if (type === "click") ipcRenderer.send("focus-this-webview");
       if (!dispatch(type, ev)) {
         ev.preventDefault();
       }
