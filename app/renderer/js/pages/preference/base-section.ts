@@ -81,3 +81,10 @@ export function generateSelectHTML(
 export function reloadApp(): void {
   ipcRenderer.send("forward-message", "reload-viewer");
 }
+
+export function exitSettings(): void {
+  const exitButton = document.querySelector(".exit-sign")!;
+  exitButton.addEventListener("click", async () => {
+    ipcRenderer.send("forward-message", "exit-settings");
+  });
+}

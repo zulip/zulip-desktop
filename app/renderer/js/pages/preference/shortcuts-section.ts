@@ -2,6 +2,8 @@ import {html} from "../../../../common/html";
 import * as t from "../../../../common/translation-util";
 import * as LinkUtil from "../../utils/link-util";
 
+import {exitSettings} from "./base-section";
+
 interface ShortcutsSectionProps {
   $root: Element;
 }
@@ -12,6 +14,7 @@ export function initShortcutsSection(props: ShortcutsSectionProps): void {
 
   props.$root.innerHTML = html`
     <div class="settings-pane">
+      <span class="exit-sign">×</span>
       <div class="settings-card tip">
         <p>
           <b><i class="material-icons md-14">settings</i>${t.__("Tip")}: </b
@@ -221,6 +224,8 @@ export function initShortcutsSection(props: ShortcutsSectionProps): void {
       </div>
     </div>
   `.html;
+
+  exitSettings();
 
   const link = "https://zulip.com/help/keyboard-shortcuts";
   const externalCreateNewOrgElement =

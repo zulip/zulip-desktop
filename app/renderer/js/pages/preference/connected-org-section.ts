@@ -3,7 +3,7 @@ import * as t from "../../../../common/translation-util";
 import {ipcRenderer} from "../../typed-ipc-renderer";
 import * as DomainUtil from "../../utils/domain-util";
 
-import {reloadApp} from "./base-section";
+import {exitSettings, reloadApp} from "./base-section";
 import {initFindAccounts} from "./find-accounts";
 import {initServerInfoForm} from "./server-info-form";
 
@@ -17,6 +17,7 @@ export function initConnectedOrgSection(props: ConnectedOrgSectionProps): void {
   const servers = DomainUtil.getDomains();
   props.$root.innerHTML = html`
     <div class="settings-pane" id="server-settings-pane">
+      <span class="exit-sign">×</span>
       <div class="page-title">${t.__("Connected organizations")}</div>
       <div class="title" id="existing-servers">
         ${t.__("All the connected orgnizations will appear here.")}
@@ -31,6 +32,8 @@ export function initConnectedOrgSection(props: ConnectedOrgSectionProps): void {
       <div id="find-accounts-container"></div>
     </div>
   `.html;
+
+  exitSettings();
 
   const $serverInfoContainer = document.querySelector(
     "#server-info-container",

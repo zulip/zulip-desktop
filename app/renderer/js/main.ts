@@ -922,6 +922,22 @@ class ServerManagerView {
       });
     }
 
+    ipcRenderer.on("exit-settings", () => {
+      let lastActiveServerTabIndex = -1;
+
+      for (const tab of this.tabs) {
+        if (tab.props.role === "server") {
+          lastActiveServerTabIndex = tab.props.tabIndex;
+        }
+      }
+
+      console.log(typeof this.tabs[lastActiveServerTabIndex]);
+      if (lastActiveServerTabIndex >= 0) {
+        console.log("Tab to be focussed");
+        this.tabs[lastActiveServerTabIndex].webview.focus();
+      }
+    });
+
     ipcRenderer.on(
       "permission-request",
       (

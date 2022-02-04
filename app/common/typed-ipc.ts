@@ -84,6 +84,7 @@ export interface RendererMessage {
   "update-realm-icon": (serverURL: string, iconURL: string) => void;
   "update-realm-name": (serveRURL: string, realmName: string) => void;
   "webview-reload": () => void;
+  "exit-settings": () => void;
   zoomActualSize: () => void;
   zoomIn: () => void;
   zoomOut: () => void;
