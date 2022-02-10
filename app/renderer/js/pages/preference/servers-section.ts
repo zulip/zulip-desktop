@@ -8,10 +8,8 @@ interface ServersSectionProps {
   $root: Element;
 }
 
-export function initServersSection(props: ServersSectionProps): void {
-  props.$root.textContent = "";
-
-  props.$root.innerHTML = html`
+export function initServersSection({$root}: ServersSectionProps): void {
+  $root.innerHTML = html`
     <div class="add-server-modal">
       <div class="modal-container">
         <div class="settings-pane" id="server-settings-pane">
@@ -21,7 +19,7 @@ export function initServersSection(props: ServersSectionProps): void {
       </div>
     </div>
   `.html;
-  const $newServerContainer = document.querySelector("#new-server-container")!;
+  const $newServerContainer = $root.querySelector("#new-server-container")!;
 
   initNewServerForm({
     $root: $newServerContainer,

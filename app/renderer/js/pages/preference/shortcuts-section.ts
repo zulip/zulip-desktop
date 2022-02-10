@@ -7,10 +7,10 @@ interface ShortcutsSectionProps {
 }
 
 // eslint-disable-next-line complexity
-export function initShortcutsSection(props: ShortcutsSectionProps): void {
+export function initShortcutsSection({$root}: ShortcutsSectionProps): void {
   const cmdOrCtrl = process.platform === "darwin" ? "⌘" : "Ctrl";
 
-  props.$root.innerHTML = html`
+  $root.innerHTML = html`
     <div class="settings-pane">
       <div class="settings-card tip">
         <p>
@@ -224,7 +224,7 @@ export function initShortcutsSection(props: ShortcutsSectionProps): void {
 
   const link = "https://zulip.com/help/keyboard-shortcuts";
   const externalCreateNewOrgElement =
-    document.querySelector("#open-hotkeys-link")!;
+    $root.querySelector("#open-hotkeys-link")!;
   externalCreateNewOrgElement.addEventListener("click", async () => {
     await LinkUtil.openBrowser(new URL(link));
   });

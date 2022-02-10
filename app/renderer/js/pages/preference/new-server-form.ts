@@ -14,7 +14,7 @@ interface NewServerFormProps {
   onChange: () => void;
 }
 
-export function initNewServerForm(props: NewServerFormProps): void {
+export function initNewServerForm({$root, onChange}: NewServerFormProps): void {
   const $newServerForm = generateNodeFromHTML(html`
     <div class="server-input-container">
       <div class="title">${t.__("Organization URL")}</div>
@@ -52,8 +52,8 @@ export function initNewServerForm(props: NewServerFormProps): void {
   `);
   const $saveServerButton: HTMLButtonElement =
     $newServerForm.querySelector("#connect")!;
-  props.$root.textContent = "";
-  props.$root.append($newServerForm);
+  $root.textContent = "";
+  $root.append($newServerForm);
   const $newServerUrl: HTMLInputElement = $newServerForm.querySelector(
     "input.setting-input-value",
   )!;
@@ -77,7 +77,7 @@ export function initNewServerForm(props: NewServerFormProps): void {
     }
 
     await DomainUtil.addDomain(serverConf);
-    props.onChange();
+    onChange();
   }
 
   $saveServerButton.addEventListener("click", async () => {
@@ -91,14 +91,14 @@ export function initNewServerForm(props: NewServerFormProps): void {
 
   // Open create new org link in default browser
   const link = "https://zulip.com/new/";
-  const externalCreateNewOrgElement = document.querySelector(
+  const externalCreateNewOrgElement = $root.querySelector(
     "#open-create-org-link",
   )!;
   externalCreateNewOrgElement.addEventListener("click", async () => {
     await LinkUtil.openBrowser(new URL(link));
   });
 
-  const networkSettingsId = document.querySelector(".server-network-option")!;
+  const networkSettingsId = $root.querySelector(".server-network-option")!;
   networkSettingsId.addEventListener("click", () => {
     ipcRenderer.send("forward-message", "open-network-settings");
   });

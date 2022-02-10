@@ -9,8 +9,8 @@ interface NetworkSectionProps {
   $root: Element;
 }
 
-export function initNetworkSection(props: NetworkSectionProps): void {
-  props.$root.innerHTML = html`
+export function initNetworkSection({$root}: NetworkSectionProps): void {
+  $root.innerHTML = html`
     <div class="settings-pane">
       <div class="title">${t.__("Proxy")}</div>
       <div id="appearance-option-settings" class="settings-card">
@@ -55,17 +55,17 @@ export function initNetworkSection(props: NetworkSectionProps): void {
     </div>
   `.html;
 
-  const $proxyPAC: HTMLInputElement = document.querySelector(
+  const $proxyPAC: HTMLInputElement = $root.querySelector(
     "#proxy-pac-option .setting-input-value",
   )!;
-  const $proxyRules: HTMLInputElement = document.querySelector(
+  const $proxyRules: HTMLInputElement = $root.querySelector(
     "#proxy-rules-option .setting-input-value",
   )!;
-  const $proxyBypass: HTMLInputElement = document.querySelector(
+  const $proxyBypass: HTMLInputElement = $root.querySelector(
     "#proxy-bypass-option .setting-input-value",
   )!;
-  const $proxySaveAction = document.querySelector("#proxy-save-action")!;
-  const $manualProxyBlock = props.$root.querySelector(".manual-proxy-block")!;
+  const $proxySaveAction = $root.querySelector("#proxy-save-action")!;
+  const $manualProxyBlock = $root.querySelector(".manual-proxy-block")!;
 
   toggleManualProxySettings(ConfigUtil.getConfigItem("useManualProxy", false));
   updateProxyOption();
@@ -92,9 +92,7 @@ export function initNetworkSection(props: NetworkSectionProps): void {
 
   function updateProxyOption(): void {
     generateSettingOption({
-      $element: document.querySelector(
-        "#use-system-settings .setting-control",
-      )!,
+      $element: $root.querySelector("#use-system-settings .setting-control")!,
       value: ConfigUtil.getConfigItem("useSystemProxy", false),
       clickHandler: () => {
         const newValue = !ConfigUtil.getConfigItem("useSystemProxy", false);
@@ -118,9 +116,7 @@ export function initNetworkSection(props: NetworkSectionProps): void {
       },
     });
     generateSettingOption({
-      $element: document.querySelector(
-        "#use-manual-settings .setting-control",
-      )!,
+      $element: $root.querySelector("#use-manual-settings .setting-control")!,
       value: ConfigUtil.getConfigItem("useManualProxy", false),
       clickHandler: () => {
         const newValue = !ConfigUtil.getConfigItem("useManualProxy", false);

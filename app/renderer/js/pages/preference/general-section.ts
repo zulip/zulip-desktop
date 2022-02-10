@@ -23,8 +23,8 @@ interface GeneralSectionProps {
   $root: Element;
 }
 
-export function initGeneralSection(props: GeneralSectionProps): void {
-  props.$root.innerHTML = html`
+export function initGeneralSection({$root}: GeneralSectionProps): void {
+  $root.innerHTML = html`
     <div class="settings-pane">
       <div class="title">${t.__("Appearance")}</div>
       <div id="appearance-option-settings" class="settings-card">
@@ -251,7 +251,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function updateTrayOption(): void {
     generateSettingOption({
-      $element: document.querySelector("#tray-option .setting-control")!,
+      $element: $root.querySelector("#tray-option .setting-control")!,
       value: ConfigUtil.getConfigItem("trayIcon", true),
       clickHandler: () => {
         const newValue = !ConfigUtil.getConfigItem("trayIcon", true);
@@ -264,7 +264,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function updateMenubarOption(): void {
     generateSettingOption({
-      $element: document.querySelector("#menubar-option .setting-control")!,
+      $element: $root.querySelector("#menubar-option .setting-control")!,
       value: ConfigUtil.getConfigItem("autoHideMenubar", false),
       clickHandler: () => {
         const newValue = !ConfigUtil.getConfigItem("autoHideMenubar", false);
@@ -277,7 +277,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function updateBadgeOption(): void {
     generateSettingOption({
-      $element: document.querySelector("#badge-option .setting-control")!,
+      $element: $root.querySelector("#badge-option .setting-control")!,
       value: ConfigUtil.getConfigItem("badgeOption", true),
       clickHandler: () => {
         const newValue = !ConfigUtil.getConfigItem("badgeOption", true);
@@ -290,7 +290,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function updateDockBouncing(): void {
     generateSettingOption({
-      $element: document.querySelector("#dock-bounce-option .setting-control")!,
+      $element: $root.querySelector("#dock-bounce-option .setting-control")!,
       value: ConfigUtil.getConfigItem("dockBouncing", true),
       clickHandler: () => {
         const newValue = !ConfigUtil.getConfigItem("dockBouncing", true);
@@ -302,9 +302,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function updateFlashTaskbar(): void {
     generateSettingOption({
-      $element: document.querySelector(
-        "#flash-taskbar-option .setting-control",
-      )!,
+      $element: $root.querySelector("#flash-taskbar-option .setting-control")!,
       value: ConfigUtil.getConfigItem("flashTaskbarOnMessage", true),
       clickHandler: () => {
         const newValue = !ConfigUtil.getConfigItem(
@@ -319,7 +317,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function autoUpdateOption(): void {
     generateSettingOption({
-      $element: document.querySelector("#autoupdate-option .setting-control")!,
+      $element: $root.querySelector("#autoupdate-option .setting-control")!,
       disabled: EnterpriseUtil.configItemExists("autoUpdate"),
       value: ConfigUtil.getConfigItem("autoUpdate", true),
       clickHandler: () => {
@@ -337,7 +335,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function betaUpdateOption(): void {
     generateSettingOption({
-      $element: document.querySelector("#betaupdate-option .setting-control")!,
+      $element: $root.querySelector("#betaupdate-option .setting-control")!,
       value: ConfigUtil.getConfigItem("betaUpdate", false),
       clickHandler: () => {
         const newValue = !ConfigUtil.getConfigItem("betaUpdate", false);
@@ -351,7 +349,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function updateSilentOption(): void {
     generateSettingOption({
-      $element: document.querySelector("#silent-option .setting-control")!,
+      $element: $root.querySelector("#silent-option .setting-control")!,
       value: ConfigUtil.getConfigItem("silent", false),
       clickHandler: () => {
         const newValue = !ConfigUtil.getConfigItem("silent", true);
@@ -368,7 +366,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function showDesktopNotification(): void {
     generateSettingOption({
-      $element: document.querySelector(
+      $element: $root.querySelector(
         "#show-notification-option .setting-control",
       )!,
       value: ConfigUtil.getConfigItem("showNotification", true),
@@ -382,7 +380,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function updateSidebarOption(): void {
     generateSettingOption({
-      $element: document.querySelector("#sidebar-option .setting-control")!,
+      $element: $root.querySelector("#sidebar-option .setting-control")!,
       value: ConfigUtil.getConfigItem("showSidebar", true),
       clickHandler: () => {
         const newValue = !ConfigUtil.getConfigItem("showSidebar", true);
@@ -395,9 +393,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function updateStartAtLoginOption(): void {
     generateSettingOption({
-      $element: document.querySelector(
-        "#startAtLogin-option .setting-control",
-      )!,
+      $element: $root.querySelector("#startAtLogin-option .setting-control")!,
       value: ConfigUtil.getConfigItem("startAtLogin", false),
       clickHandler: () => {
         const newValue = !ConfigUtil.getConfigItem("startAtLogin", false);
@@ -410,7 +406,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function updateQuitOnCloseOption(): void {
     generateSettingOption({
-      $element: document.querySelector("#quitOnClose-option .setting-control")!,
+      $element: $root.querySelector("#quitOnClose-option .setting-control")!,
       value: ConfigUtil.getConfigItem("quitOnClose", false),
       clickHandler: () => {
         const newValue = !ConfigUtil.getConfigItem("quitOnClose", false);
@@ -422,7 +418,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function enableSpellchecker(): void {
     generateSettingOption({
-      $element: document.querySelector(
+      $element: $root.querySelector(
         "#enable-spellchecker-option .setting-control",
       )!,
       value: ConfigUtil.getConfigItem("enableSpellchecker", true),
@@ -431,8 +427,8 @@ export function initGeneralSection(props: GeneralSectionProps): void {
         ConfigUtil.setConfigItem("enableSpellchecker", newValue);
         enableSpellchecker();
         const spellcheckerLanguageInput: HTMLElement =
-          document.querySelector("#spellcheck-langs")!;
-        const spellcheckerNote: HTMLElement = document.querySelector("#note")!;
+          $root.querySelector("#spellcheck-langs")!;
+        const spellcheckerNote: HTMLElement = $root.querySelector("#note")!;
         spellcheckerLanguageInput.style.display =
           spellcheckerLanguageInput.style.display === "none" ? "" : "none";
         spellcheckerNote.style.display =
@@ -443,7 +439,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function enableErrorReporting(): void {
     generateSettingOption({
-      $element: document.querySelector(
+      $element: $root.querySelector(
         "#enable-error-reporting .setting-control",
       )!,
       value: ConfigUtil.getConfigItem("errorReporting", true),
@@ -472,11 +468,11 @@ export function initGeneralSection(props: GeneralSectionProps): void {
   }
 
   function setLocale(): void {
-    const langDiv: HTMLSelectElement = document.querySelector(".lang-div")!;
+    const langDiv: HTMLSelectElement = $root.querySelector(".lang-div")!;
     const langListHTML = generateSelectHTML(supportedLocales, "lang-menu");
     langDiv.innerHTML += langListHTML.html;
     // `langMenu` is the select-option dropdown menu formed after executing the previous command
-    const langMenu: HTMLSelectElement = document.querySelector(".lang-menu")!;
+    const langMenu: HTMLSelectElement = $root.querySelector(".lang-menu")!;
 
     // The next three lines set the selected language visible on the dropdown button
     let language = ConfigUtil.getConfigItem("appLanguage", "en");
@@ -491,9 +487,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function minimizeOnStart(): void {
     generateSettingOption({
-      $element: document.querySelector(
-        "#start-minimize-option .setting-control",
-      )!,
+      $element: $root.querySelector("#start-minimize-option .setting-control")!,
       value: ConfigUtil.getConfigItem("startMinimized", false),
       clickHandler: () => {
         const newValue = !ConfigUtil.getConfigItem("startMinimized", false);
@@ -504,7 +498,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
   }
 
   function addCustomCSS(): void {
-    const customCSSButton = document.querySelector(
+    const customCSSButton = $root.querySelector(
       "#add-custom-css .custom-css-button",
     )!;
     customCSSButton.addEventListener("click", async () => {
@@ -514,14 +508,13 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function showCustomCSSPath(): void {
     if (!ConfigUtil.getConfigItem("customCSS", null)) {
-      const cssPATH: HTMLElement =
-        document.querySelector("#remove-custom-css")!;
+      const cssPATH: HTMLElement = $root.querySelector("#remove-custom-css")!;
       cssPATH.style.display = "none";
     }
   }
 
   function removeCustomCSS(): void {
-    const removeCSSButton = document.querySelector("#css-delete-action")!;
+    const removeCSSButton = $root.querySelector("#css-delete-action")!;
     removeCSSButton.addEventListener("click", () => {
       ConfigUtil.setConfigItem("customCSS", "");
       ipcRenderer.send("forward-message", "hard-reload");
@@ -539,7 +532,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
     );
     if (!canceled) {
       ConfigUtil.setConfigItem("downloadsPath", filePaths[0]);
-      const downloadFolderPath: HTMLElement = document.querySelector(
+      const downloadFolderPath: HTMLElement = $root.querySelector(
         ".download-folder-path",
       )!;
       downloadFolderPath.textContent = filePaths[0];
@@ -547,7 +540,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
   }
 
   function downloadFolder(): void {
-    const downloadFolder = document.querySelector(
+    const downloadFolder = $root.querySelector(
       "#download-folder .download-folder-button",
     )!;
     downloadFolder.addEventListener("click", async () => {
@@ -557,7 +550,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
 
   function updatePromptDownloadOption(): void {
     generateSettingOption({
-      $element: document.querySelector("#prompt-download .setting-control")!,
+      $element: $root.querySelector("#prompt-download .setting-control")!,
       value: ConfigUtil.getConfigItem("promptDownload", false),
       clickHandler: () => {
         const newValue = !ConfigUtil.getConfigItem("promptDownload", false);
@@ -588,7 +581,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
   }
 
   function factoryReset(): void {
-    const factoryResetButton = document.querySelector(
+    const factoryResetButton = $root.querySelector(
       "#factory-reset-option .factory-reset-button",
     )!;
     factoryResetButton.addEventListener("click", async () => {
@@ -599,7 +592,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
   function initSpellChecker(): void {
     // The elctron API is a no-op on macOS and macOS default spellchecker is used.
     if (process.platform === "darwin") {
-      const note: HTMLElement = document.querySelector("#note")!;
+      const note: HTMLElement = $root.querySelector("#note")!;
       note.append(t.__("On macOS, the OS spellchecker is used."));
       note.append(document.createElement("br"));
       note.append(
@@ -608,12 +601,11 @@ export function initGeneralSection(props: GeneralSectionProps): void {
         ),
       );
     } else {
-      const note: HTMLElement = document.querySelector("#note")!;
+      const note: HTMLElement = $root.querySelector("#note")!;
       note.append(
         t.__("You can select a maximum of 3 languages for spellchecking."),
       );
-      const spellDiv: HTMLElement =
-        document.querySelector("#spellcheck-langs")!;
+      const spellDiv: HTMLElement = $root.querySelector("#spellcheck-langs")!;
       spellDiv.innerHTML += html`
         <div class="setting-description">${t.__("Spellchecker Languages")}</div>
         <input name="spellcheck" placeholder="Enter Languages" />
@@ -646,7 +638,7 @@ export function initGeneralSection(props: GeneralSectionProps): void {
         [...languagePairs].sort((a, b) => (a[0] < b[0] ? -1 : 1)),
       );
 
-      const tagField: HTMLInputElement = document.querySelector(
+      const tagField: HTMLInputElement = $root.querySelector(
         "input[name=spellcheck]",
       )!;
       const tagify = new Tagify(tagField, {
@@ -688,8 +680,8 @@ export function initGeneralSection(props: GeneralSectionProps): void {
     // Do not display the spellchecker input and note if it is disabled
     if (!ConfigUtil.getConfigItem("enableSpellchecker", true)) {
       const spellcheckerLanguageInput: HTMLElement =
-        document.querySelector("#spellcheck-langs")!;
-      const spellcheckerNote: HTMLElement = document.querySelector("#note")!;
+        $root.querySelector("#spellcheck-langs")!;
+      const spellcheckerNote: HTMLElement = $root.querySelector("#note")!;
       spellcheckerLanguageInput.style.display = "none";
       spellcheckerNote.style.display = "none";
     }

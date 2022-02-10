@@ -11,11 +11,13 @@ interface ConnectedOrgSectionProps {
   $root: Element;
 }
 
-export function initConnectedOrgSection(props: ConnectedOrgSectionProps): void {
-  props.$root.textContent = "";
+export function initConnectedOrgSection({
+  $root,
+}: ConnectedOrgSectionProps): void {
+  $root.textContent = "";
 
   const servers = DomainUtil.getDomains();
-  props.$root.innerHTML = html`
+  $root.innerHTML = html`
     <div class="settings-pane" id="server-settings-pane">
       <div class="page-title">${t.__("Connected organizations")}</div>
       <div class="title" id="existing-servers">
@@ -32,13 +34,11 @@ export function initConnectedOrgSection(props: ConnectedOrgSectionProps): void {
     </div>
   `.html;
 
-  const $serverInfoContainer = document.querySelector(
-    "#server-info-container",
-  )!;
-  const $existingServers = document.querySelector("#existing-servers")!;
+  const $serverInfoContainer = $root.querySelector("#server-info-container")!;
+  const $existingServers = $root.querySelector("#existing-servers")!;
   const $newOrgButton: HTMLButtonElement =
-    document.querySelector("#new-org-button")!;
-  const $findAccountsContainer = document.querySelector(
+    $root.querySelector("#new-org-button")!;
+  const $findAccountsContainer = $root.querySelector(
     "#find-accounts-container",
   )!;
 
