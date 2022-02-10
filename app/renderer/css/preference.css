@@ -1,7 +1,6 @@
-html,
-body {
-  height: 100%;
-  margin: 0;
+:host {
+  contain: strict;
+  display: flow-root;
   cursor: default;
   user-select: none;
   font-family: menu, "Helvetica Neue", sans-serif;
@@ -74,7 +73,7 @@ td:nth-child(odd) {
 }
 
 #content {
-  display: flex;
+  display: flex !important;
   height: 100%;
   font-family: "Montserrat", sans-serif;
 }

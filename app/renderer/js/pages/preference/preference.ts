@@ -1,4 +1,5 @@
 import type {DNDSettings} from "../../../../common/dnd-util";
+import {html} from "../../../../common/html";
 import type {NavItem} from "../../../../common/types";
 import {ipcRenderer} from "../../typed-ipc-renderer";
 
@@ -9,51 +10,89 @@ import {initNetworkSection} from "./network-section";
 import {initServersSection} from "./servers-section";
 import {initShortcutsSection} from "./shortcuts-section";
 
-export function initPreferenceView(): void {
-  const $sidebarContainer = document.querySelector("#sidebar")!;
-  const $settingsContainer = document.querySelector("#settings-container")!;
+export class PreferenceView {
+  readonly $view: HTMLElement;
+  private readonly $shadow: ShadowRoot;
+  private readonly $settingsContainer: Element;
+  private readonly nav: Nav;
 
-  const nav = new Nav({
-    $root: $sidebarContainer,
-    onItemSelected: handleNavigation,
-  });
+  constructor() {
+    this.$view = document.createElement("div");
+    this.$shadow = this.$view.attachShadow({mode: "open"});
+    this.$shadow.innerHTML = html`
+      <link
+        rel="stylesheet"
+        href="${require.resolve("../../../css/fonts.css")}"
+      />
+      <link
+        rel="stylesheet"
+        href="${require.resolve("../../../css/preference.css")}"
+      />
+      <link
+        rel="stylesheet"
+        href="${require.resolve("@yaireo/tagify/dist/tagify.css")}"
+      />
+      <!-- Initially hidden to prevent FOUC -->
+      <div id="content" hidden>
+        <div id="sidebar"></div>
+        <div id="settings-container"></div>
+      </div>
+    `.html;
 
-  const navItem =
-    nav.navItems.find((navItem) => window.location.hash === `#${navItem}`) ??
-    "General";
+    const $sidebarContainer = this.$shadow.querySelector("#sidebar")!;
+    this.$settingsContainer = this.$shadow.querySelector(
+      "#settings-container",
+    )!;
 
-  handleNavigation(navItem);
+    this.nav = new Nav({
+      $root: $sidebarContainer,
+      onItemSelected: this.handleNavigation,
+    });
 
-  function handleNavigation(navItem: NavItem): void {
-    nav.select(navItem);
+    const navItem =
+      this.nav.navItems.find(
+        (navItem) => window.location.hash === `#${navItem}`,
+      ) ?? "General";
+
+    this.handleNavigation(navItem);
+
+    ipcRenderer.on("switch-settings-nav", this.handleSwitchSettingsNav);
+    ipcRenderer.on("toggle-sidebar-setting", this.handleToggleSidebar);
+    ipcRenderer.on("toggle-menubar-setting", this.handleToggleMenubar);
+    ipcRenderer.on("toggle-tray", this.handleToggleTray);
+    ipcRenderer.on("toggle-dnd", this.handleToggleDnd);
+  }
+
+  handleNavigation = (navItem: NavItem): void => {
+    this.nav.select(navItem);
     switch (navItem) {
       case "AddServer":
         initServersSection({
-          $root: $settingsContainer,
+          $root: this.$settingsContainer,
         });
         break;
 
       case "General":
         initGeneralSection({
-          $root: $settingsContainer,
+          $root: this.$settingsContainer,
         });
         break;
 
       case "Organizations":
         initConnectedOrgSection({
-          $root: $settingsContainer,
+          $root: this.$settingsContainer,
         });
         break;
 
       case "Network":
         initNetworkSection({
-          $root: $settingsContainer,
+          $root: this.$settingsContainer,
         });
         break;
 
       case "Shortcuts": {
         initShortcutsSection({
-          $root: $settingsContainer,
+          $root: this.$settingsContainer,
         });
         break;
       }
@@ -63,44 +102,57 @@ export function initPreferenceView(): void {
     }
 
     window.location.hash = `#${navItem}`;
+  };
+
+  destroy(): void {
+    ipcRenderer.off("switch-settings-nav", this.handleSwitchSettingsNav);
+    ipcRenderer.off("toggle-sidebar-setting", this.handleToggleSidebar);
+    ipcRenderer.off("toggle-menubar-setting", this.handleToggleMenubar);
+    ipcRenderer.off("toggle-tray", this.handleToggleTray);
+    ipcRenderer.off("toggle-dnd", this.handleToggleDnd);
   }
 
   // Handle toggling and reflect changes in preference page
-  function handleToggle(elementName: string, state = false): void {
+  private handleToggle(elementName: string, state = false): void {
     const inputSelector = `#${elementName} .action .switch input`;
-    const input: HTMLInputElement = document.querySelector(inputSelector)!;
+    const input: HTMLInputElement = this.$shadow.querySelector(inputSelector)!;
     if (input) {
       input.checked = state;
     }
   }
 
-  ipcRenderer.on("switch-settings-nav", (_event: Event, navItem: NavItem) => {
-    handleNavigation(navItem);
-  });
+  private readonly handleSwitchSettingsNav = (
+    _event: Event,
+    navItem: NavItem,
+  ) => {
+    this.handleNavigation(navItem);
+  };
 
-  ipcRenderer.on("toggle-sidebar-setting", (_event: Event, state: boolean) => {
-    handleToggle("sidebar-option", state);
-  });
+  private readonly handleToggleSidebar = (_event: Event, state: boolean) => {
+    this.handleToggle("sidebar-option", state);
+  };
 
-  ipcRenderer.on("toggle-menubar-setting", (_event: Event, state: boolean) => {
-    handleToggle("menubar-option", state);
-  });
+  private readonly handleToggleMenubar = (_event: Event, state: boolean) => {
+    this.handleToggle("menubar-option", state);
+  };
 
-  ipcRenderer.on("toggle-tray", (_event: Event, state: boolean) => {
-    handleToggle("tray-option", state);
-  });
+  private readonly handleToggleTray = (_event: Event, state: boolean) => {
+    this.handleToggle("tray-option", state);
+  };
 
-  ipcRenderer.on(
-    "toggle-dnd",
-    (_event: Event, _state: boolean, newSettings: Partial<DNDSettings>) => {
-      handleToggle("show-notification-option", newSettings.showNotification);
-      handleToggle("silent-option", newSettings.silent);
+  private readonly handleToggleDnd = (
+    _event: Event,
+    _state: boolean,
+    newSettings: Partial<DNDSettings>,
+  ) => {
+    this.handleToggle("show-notification-option", newSettings.showNotification);
+    this.handleToggle("silent-option", newSettings.silent);
 
-      if (process.platform === "win32") {
-        handleToggle("flash-taskbar-option", newSettings.flashTaskbarOnMessage);
-      }
-    },
-  );
+    if (process.platform === "win32") {
+      this.handleToggle(
+        "flash-taskbar-option",
+        newSettings.flashTaskbarOnMessage,
+      );
+    }
+  };
 }
-
-window.addEventListener("load", initPreferenceView);

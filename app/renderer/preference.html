@@ -5,24 +5,20 @@
     <meta name="viewport" content="width=device-width" />
     <title>Zulip - Settings</title>
     <link rel="stylesheet" href="css/fonts.css" />
-    <link
-      rel="stylesheet"
-      href="css/preference.css"
-      type="text/css"
-      media="screen"
-    />
-    <link id="tagify-css" rel="stylesheet" href="data:text/css," />
+    <style>
+      html,
+      body,
+      body > div {
+        margin: 0;
+        height: 100%;
+      }
+    </style>
   </head>
   <body>
-    <div id="content">
-      <div id="sidebar"></div>
-      <div id="settings-container"></div>
-    </div>
+    <zd-preference-view></zd-preference-view>
+    <script>
+      const {PreferenceView} = require("./js/pages/preference/preference.js");
+      document.body.append(new PreferenceView().$view);
+    </script>
   </body>
-  <script>
-    document.querySelector("#tagify-css").href = require.resolve(
-      "@yaireo/tagify/dist/tagify.css",
-    );
-    require("./js/pages/preference/preference.js");
-  </script>
 </html>

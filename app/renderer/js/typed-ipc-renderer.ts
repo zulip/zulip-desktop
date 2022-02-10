@@ -23,6 +23,10 @@ export const ipcRenderer: {
     channel: Channel,
     listener: RendererListener<Channel>,
   ): void;
+  off<Channel extends keyof RendererMessage>(
+    channel: Channel,
+    listener: RendererListener<Channel>,
+  ): void;
   removeListener<Channel extends keyof RendererMessage>(
     channel: Channel,
     listener: RendererListener<Channel>,
