@@ -333,7 +333,8 @@ class ServerManagerView {
           }
 
           await DomainUtil.updateSavedServer(server.url, i);
-          this.tabs[i].webview.load();
+          const tab = this.tabs[i];
+          if (tab instanceof ServerTab) tab.webview.load();
         }),
       );
       // Remove focus from the settings icon at sidebar bottom
@@ -375,10 +376,10 @@ class ServerManagerView {
               this.loading.delete(url);
             }
 
+            const tab = this.tabs[this.activeTabIndex];
             this.showLoading(
-              this.loading.has(
-                this.tabs[this.activeTabIndex].webview.props.url,
-              ),
+              tab instanceof ServerTab &&
+                this.loading.has(tab.webview.props.url),
             );
           },
           onNetworkError: async (index: number) => {
@@ -425,7 +426,8 @@ class ServerManagerView {
       );
     });
     this.$reloadButton.addEventListener("click", () => {
-      this.tabs[this.activeTabIndex].webview.reload();
+      const tab = this.tabs[this.activeTabIndex];
+      if (tab instanceof ServerTab) tab.webview.reload();
     });
     this.$addServerButton.addEventListener("click", async () => {
       await this.openSettings("AddServer");
@@ -434,7 +436,8 @@ class ServerManagerView {
       await this.openSettings("General");
     });
     this.$backButton.addEventListener("click", () => {
-      this.tabs[this.activeTabIndex].webview.back();
+      const tab = this.tabs[this.activeTabIndex];
+      if (tab instanceof ServerTab) tab.webview.back();
     });
 
     this.sidebarHoverEvent(this.$addServerButton, this.$addServerTooltip, true);
@@ -457,7 +460,8 @@ class ServerManagerView {
   }
 
   getCurrentActiveServer(): string {
-    return this.tabs[this.activeTabIndex].webview.props.url;
+    const tab = this.tabs[this.activeTabIndex];
+    return tab instanceof ServerTab ? tab.webview.props.url : "";
   }
 
   displayInitialCharLogo($img: HTMLImageElement, index: number): void {
@@ -572,10 +576,10 @@ class ServerManagerView {
               this.loading.delete(url);
             }
 
+            const tab = this.tabs[this.activeTabIndex];
             this.showLoading(
-              this.loading.has(
-                this.tabs[this.activeTabIndex].webview.props.url,
-              ),
+              tab instanceof ServerTab &&
+                this.loading.has(tab.webview.props.url),
             );
           },
           onNetworkError: async (index: number) => {
@@ -617,11 +621,11 @@ class ServerManagerView {
   }
 
   async openNetworkTroubleshooting(index: number): Promise<void> {
-    const reconnectUtil = new ReconnectUtil(this.tabs[index].webview);
+    const tab = this.tabs[index];
+    if (!(tab instanceof ServerTab)) return;
+    const reconnectUtil = new ReconnectUtil(tab.webview);
     reconnectUtil.pollInternetAndReload();
-    await this.tabs[index].webview.$el!.loadURL(
-      `file://${rendererDirectory}/network.html`,
-    );
+    await tab.webview.$el!.loadURL(`file://${rendererDirectory}/network.html`);
   }
 
   activateLastTab(index: number): void {
@@ -644,7 +648,8 @@ class ServerManagerView {
   }
 
   activateTab(index: number, hideOldTab = true): void {
-    if (!this.tabs[index]) {
+    const tab = this.tabs[index];
+    if (!tab) {
       return;
     }
 
@@ -666,15 +671,21 @@ class ServerManagerView {
       }
     }
 
-    try {
-      this.tabs[index].webview.canGoBackButton();
-    } catch {}
+    if (tab instanceof ServerTab) {
+      try {
+        tab.webview.canGoBackButton();
+      } catch {}
+    } else {
+      document
+        .querySelector("#actions-container #back-action")!
+        .classList.add("disable");
+    }
 
     this.activeTabIndex = index;
-    this.tabs[index].activate();
+    tab.activate();
 
     this.showLoading(
-      this.loading.has(this.tabs[this.activeTabIndex].webview.props.url),
+      tab instanceof ServerTab && this.loading.has(tab.webview.props.url),
     );
 
     ipcRenderer.send("update-menu", {
@@ -683,7 +694,7 @@ class ServerManagerView {
       tabs: this.tabsForIpc,
       activeTabIndex: this.activeTabIndex,
       // Following flag controls whether a menu item should be enabled or not
-      enableMenu: this.tabs[index].props.role === "server",
+      enableMenu: tab.props.role === "server",
     });
   }
 
@@ -698,11 +709,12 @@ class ServerManagerView {
   }
 
   destroyTab(name: string, index: number): void {
-    if (this.tabs[index].webview.loading) {
+    const tab = this.tabs[index];
+    if (tab instanceof ServerTab && tab.webview.loading) {
       return;
     }
 
-    this.tabs[index].destroy();
+    tab.destroy();
 
     delete this.tabs[index];
     this.functionalTabs.delete(name);
@@ -785,8 +797,10 @@ class ServerManagerView {
   }
 
   isLoggedIn(tabIndex: number): boolean {
-    const url = this.tabs[tabIndex].webview.$el!.src;
-    return !(url.endsWith("/login/") || this.tabs[tabIndex].webview.loading);
+    const tab = this.tabs[tabIndex];
+    if (!(tab instanceof ServerTab)) return false;
+    const url = tab.webview.$el!.src;
+    return !(url.endsWith("/login/") || tab.webview.loading);
   }
 
   getActiveWebview(): Electron.WebviewTag {
@@ -826,7 +840,9 @@ class ServerManagerView {
           click: async () => {
             // Switch to tab whose icon was right-clicked
             this.activateTab(index);
-            await this.tabs[index].webview.showNotificationSettings();
+            const tab = this.tabs[index];
+            if (tab instanceof ServerTab)
+              await tab.webview.showNotificationSettings();
           },
         },
         {
@@ -909,9 +925,10 @@ class ServerManagerView {
 
     for (const [channel, listener] of webviewListeners) {
       ipcRenderer.on(channel, async () => {
-        const activeWebview = this.tabs[this.activeTabIndex].webview;
-        if (activeWebview) {
-          await listener(activeWebview);
+        const tab = this.tabs[this.activeTabIndex];
+        if (tab instanceof ServerTab) {
+          const activeWebview = tab.webview;
+          if (activeWebview) await listener(activeWebview);
         }
       });
     }
@@ -935,10 +952,11 @@ class ServerManagerView {
           webContentsId === null
             ? origin === "null" && permission === "notifications"
             : this.tabs.some(
-                ({webview}) =>
-                  !webview.loading &&
-                  webview.$el!.getWebContentsId() === webContentsId &&
-                  webview.props.hasPermission?.(origin, permission),
+                (tab) =>
+                  tab instanceof ServerTab &&
+                  !tab.webview.loading &&
+                  tab.webview.$el!.getWebContentsId() === webContentsId &&
+                  tab.webview.props.hasPermission?.(origin, permission),
               );
         console.log(
           grant ? "Granted" : "Denied",
