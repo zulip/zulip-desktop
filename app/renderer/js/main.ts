@@ -388,7 +388,6 @@ export class ServerManagerView {
             await this.openNetworkTroubleshooting(index);
           },
           onTitleChange: this.updateBadge.bind(this),
-          nodeIntegration: false,
           preload: "js/preload.js",
         }),
       }),

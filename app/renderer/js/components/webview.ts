@@ -27,7 +27,6 @@ interface WebViewProps {
   isActive: () => boolean;
   switchLoading: (loading: boolean, url: string) => void;
   onNetworkError: (index: number) => void;
-  nodeIntegration: boolean;
   preload?: string;
   onTitleChange: () => void;
   hasPermission?: (origin: string, permission: string) => boolean;
@@ -59,13 +58,12 @@ export default class WebView {
       <webview
         data-tab-id="${this.props.tabIndex}"
         src="${this.props.url}"
-        ${this.props.nodeIntegration ? html`nodeIntegration` : html``}
         ${this.props.preload === undefined
           ? html``
           : html`preload="${this.props.preload}"`}
         partition="persist:webviewsession"
         webpreferences="
-          contextIsolation=${!this.props.nodeIntegration},
+          contextIsolation,
           spellcheck=${Boolean(
           ConfigUtil.getConfigItem("enableSpellchecker", true),
         )},
