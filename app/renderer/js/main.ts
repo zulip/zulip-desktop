@@ -24,12 +24,6 @@ import "./tray";
 
 const {session, app, Menu, dialog} = remote;
 
-interface FunctionalTabProps {
-  name: string;
-  materialIcon: string;
-  url: string;
-}
-
 type WebviewListener =
   | "webview-reload"
   | "back"
@@ -532,7 +526,11 @@ class ServerManagerView {
     this.$serverIconTooltip[index].style.display = "none";
   }
 
-  openFunctionalTab(tabProps: FunctionalTabProps): void {
+  openFunctionalTab(tabProps: {
+    name: string;
+    materialIcon: string;
+    url: string;
+  }): void {
     if (this.functionalTabs.has(tabProps.name)) {
       this.activateTab(this.functionalTabs.get(tabProps.name)!);
       return;
