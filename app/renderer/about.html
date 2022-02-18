@@ -2,36 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="css/about.css" />
     <title>Zulip - About</title>
+    <style>
+      html,
+      body,
+      body > div {
+        margin: 0;
+        height: 100%;
+      }
+    </style>
   </head>
-
   <body>
-    <div class="about">
-      <img class="logo" src="../resources/zulip.png" />
-      <p class="detail" id="version">v?.?.?</p>
-      <div class="maintenance-info">
-        <p class="detail maintainer">
-          Maintained by
-          <a href="https://zulip.com" target="_blank" rel="noopener noreferrer"
-            >Zulip</a
-          >
-        </p>
-        <p class="detail license">
-          Available under the
-          <a
-            href="https://github.com/zulip/zulip-desktop/blob/main/LICENSE"
-            target="_blank"
-            rel="noopener noreferrer"
-            >Apache 2.0 License</a
-          >
-        </p>
-      </div>
-    </div>
     <script>
-      const {app} = require("electron").remote;
-      const version_tag = document.querySelector("#version");
-      version_tag.textContent = "v" + app.getVersion();
+      const {AboutView} = require("./js/pages/about.js");
+      document.body.append(new AboutView().$view);
     </script>
   </body>
 </html>
