@@ -1028,7 +1028,11 @@ class ServerManagerView {
           return;
         }
 
-        this.updateGeneralSettings("toggle-menubar-setting", autoHideMenubar);
+        this.updateGeneralSettings(
+          "toggle-autohide-menubar",
+          autoHideMenubar,
+          updateMenu,
+        );
       },
     );
 
