@@ -177,7 +177,7 @@
     "eslint-import-resolver-typescript": "^2.4.0",
     "htmlhint": "^0.15.1",
     "medium": "^1.2.0",
-    "playwright-core": "^1.16.3",
+    "playwright-core": "^1.19.1",
     "pre-commit": "^1.2.2",
     "prettier": "^2.3.2",
     "rimraf": "^3.0.2",
