@@ -15,6 +15,7 @@ export class PreferenceView {
   private readonly $shadow: ShadowRoot;
   private readonly $settingsContainer: Element;
   private readonly nav: Nav;
+  private navItem: NavItem = "General";
 
   constructor() {
     this.$view = document.createElement("div");
@@ -49,21 +50,15 @@ export class PreferenceView {
       onItemSelected: this.handleNavigation,
     });
 
-    const navItem =
-      this.nav.navItems.find(
-        (navItem) => window.location.hash === `#${navItem}`,
-      ) ?? "General";
-
-    this.handleNavigation(navItem);
-
-    ipcRenderer.on("switch-settings-nav", this.handleSwitchSettingsNav);
     ipcRenderer.on("toggle-sidebar", this.handleToggleSidebar);
     ipcRenderer.on("toggle-autohide-menubar", this.handleToggleMenubar);
-    ipcRenderer.on("toggle-tray", this.handleToggleTray);
     ipcRenderer.on("toggle-dnd", this.handleToggleDnd);
+
+    this.handleNavigation(this.navItem);
   }
 
   handleNavigation = (navItem: NavItem): void => {
+    this.navItem = navItem;
     this.nav.select(navItem);
     switch (navItem) {
       case "AddServer":
@@ -104,11 +99,13 @@ export class PreferenceView {
     window.location.hash = `#${navItem}`;
   };
 
+  handleToggleTray(state: boolean) {
+    this.handleToggle("tray-option", state);
+  }
+
   destroy(): void {
-    ipcRenderer.off("switch-settings-nav", this.handleSwitchSettingsNav);
     ipcRenderer.off("toggle-sidebar", this.handleToggleSidebar);
     ipcRenderer.off("toggle-autohide-menubar", this.handleToggleMenubar);
-    ipcRenderer.off("toggle-tray", this.handleToggleTray);
     ipcRenderer.off("toggle-dnd", this.handleToggleDnd);
   }
 
@@ -121,23 +118,12 @@ export class PreferenceView {
     }
   }
 
-  private readonly handleSwitchSettingsNav = (
-    _event: Event,
-    navItem: NavItem,
-  ) => {
-    this.handleNavigation(navItem);
-  };
-
   private readonly handleToggleSidebar = (_event: Event, state: boolean) => {
     this.handleToggle("sidebar-option", state);
   };
 
   private readonly handleToggleMenubar = (_event: Event, state: boolean) => {
     this.handleToggle("menubar-option", state);
-  };
-
-  private readonly handleToggleTray = (_event: Event, state: boolean) => {
-    this.handleToggle("tray-option", state);
   };
 
   private readonly handleToggleDnd = (

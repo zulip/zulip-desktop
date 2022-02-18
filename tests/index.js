@@ -16,8 +16,7 @@ test("app runs", async (t) => {
     const mainWindow = await take(windows);
     t.equal(await mainWindow.title(), "Zulip");
 
-    const mainWebview = await take(windows);
-    await mainWebview.waitForSelector("#connect");
+    await mainWindow.waitForSelector("#connect");
   } finally {
     await setup.endTest(app);
   }

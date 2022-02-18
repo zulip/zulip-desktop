@@ -16,9 +16,8 @@ test("add-organization", async (t) => {
     const mainWindow = await take(windows);
     t.equal(await mainWindow.title(), "Zulip");
 
-    const mainWebview = await take(windows);
-    await mainWebview.fill(".setting-input-value", "chat.zulip.org");
-    await mainWebview.click("#connect");
+    await mainWindow.fill(".setting-input-value", "chat.zulip.org");
+    await mainWindow.click("#connect");
 
     const orgWebview = await take(windows);
     await orgWebview.waitForSelector("#id_username");

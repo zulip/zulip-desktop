@@ -1,10 +1,11 @@
-import type {NativeImage, WebviewTag} from "electron";
+import type {NativeImage} from "electron";
 import {remote} from "electron";
 import path from "path";
 
 import * as ConfigUtil from "../../common/config-util";
 import type {RendererMessage} from "../../common/typed-ipc";
 
+import type {ServerManagerView} from "./main";
 import {ipcRenderer} from "./typed-ipc-renderer";
 
 const {Tray, Menu, nativeImage, BrowserWindow} = remote;
@@ -168,7 +169,7 @@ const createTray = function (): void {
   }
 };
 
-export function initializeTray() {
+export function initializeTray(serverManagerView: ServerManagerView) {
   ipcRenderer.on("destroytray", (_event: Event) => {
     if (!tray) {
       return;
@@ -224,12 +225,7 @@ export function initializeTray() {
       ConfigUtil.setConfigItem("trayIcon", true);
     }
 
-    const webview = document.querySelector<WebviewTag>(
-      "webview:not([class*=disabled])",
-    );
-    if (webview !== null) {
-      ipcRenderer.sendTo(webview.getWebContentsId(), "toggle-tray", state);
-    }
+    serverManagerView.preferenceView?.handleToggleTray(state);
   }
 
   ipcRenderer.on("toggletray", toggleTray);

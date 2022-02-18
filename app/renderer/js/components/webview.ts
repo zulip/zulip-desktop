@@ -107,12 +107,7 @@ export default class WebView {
       this.props.onTitleChange();
     });
 
-    this.$el!.addEventListener("did-navigate-in-page", (event) => {
-      const isSettingPage = event.url.includes("renderer/preference.html");
-      if (isSettingPage) {
-        return;
-      }
-
+    this.$el!.addEventListener("did-navigate-in-page", () => {
       this.canGoBackButton();
     });
 
@@ -170,10 +165,7 @@ export default class WebView {
     });
 
     this.$el!.addEventListener("did-start-loading", () => {
-      const isSettingPage = this.props.url.includes("renderer/preference.html");
-      if (!isSettingPage) {
-        this.props.switchLoading(true, this.props.url);
-      }
+      this.props.switchLoading(true, this.props.url);
     });
 
     this.$el!.addEventListener("did-stop-loading", () => {

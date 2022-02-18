@@ -8,12 +8,13 @@ import type {DNDSettings} from "../../common/dnd-util";
 import * as EnterpriseUtil from "../../common/enterprise-util";
 import Logger from "../../common/logger-util";
 import * as Messages from "../../common/messages";
-import type {RendererMessage} from "../../common/typed-ipc";
 import type {NavItem, ServerConf, TabData} from "../../common/types";
 
 import FunctionalTab from "./components/functional-tab";
 import ServerTab from "./components/server-tab";
 import WebView from "./components/webview";
+import {AboutView} from "./pages/about";
+import {PreferenceView} from "./pages/preference/preference";
 import {initializeTray} from "./tray";
 import {ipcRenderer} from "./typed-ipc-renderer";
 import * as DomainUtil from "./utils/domain-util";
@@ -41,7 +42,7 @@ const logger = new Logger({
 const rendererDirectory = path.resolve(__dirname, "..");
 type ServerOrFunctionalTab = ServerTab | FunctionalTab;
 
-class ServerManagerView {
+export class ServerManagerView {
   $addServerButton: HTMLButtonElement;
   $tabsContainer: Element;
   $reloadButton: HTMLButtonElement;
@@ -66,6 +67,7 @@ class ServerManagerView {
   functionalTabs: Map<string, number>;
   tabIndex: number;
   presetOrgs: string[];
+  preferenceView?: PreferenceView;
   constructor() {
     this.$addServerButton = document.querySelector("#add-tab")!;
     this.$tabsContainer = document.querySelector("#tabs-container")!;
@@ -111,7 +113,7 @@ class ServerManagerView {
   }
 
   async init(): Promise<void> {
-    initializeTray();
+    initializeTray(this);
     await this.loadProxy();
     this.initDefaultSettings();
     this.initSidebar();
@@ -532,16 +534,20 @@ class ServerManagerView {
   openFunctionalTab(tabProps: {
     name: string;
     materialIcon: string;
-    url: string;
+    makeView: () => Element;
+    destroyView: () => void;
   }): void {
     if (this.functionalTabs.has(tabProps.name)) {
       this.activateTab(this.functionalTabs.get(tabProps.name)!);
       return;
     }
 
-    this.functionalTabs.set(tabProps.name, this.tabs.length);
+    const index = this.tabs.length;
+    this.functionalTabs.set(tabProps.name, index);
 
     const tabIndex = this.getTabIndex();
+    const $view = tabProps.makeView();
+    this.$webviewsContainer.append($view);
 
     this.tabs.push(
       new FunctionalTab({
@@ -549,45 +555,14 @@ class ServerManagerView {
         materialIcon: tabProps.materialIcon,
         name: tabProps.name,
         $root: this.$tabsContainer,
-        index: this.functionalTabs.get(tabProps.name)!,
+        index,
         tabIndex,
-        onClick: this.activateTab.bind(
-          this,
-          this.functionalTabs.get(tabProps.name)!,
-        ),
-        onDestroy: this.destroyTab.bind(
-          this,
-          tabProps.name,
-          this.functionalTabs.get(tabProps.name)!,
-        ),
-        webview: new WebView({
-          $root: this.$webviewsContainer,
-          index: this.functionalTabs.get(tabProps.name)!,
-          tabIndex,
-          url: tabProps.url,
-          role: "function",
-          isActive: () =>
-            this.functionalTabs.get(tabProps.name) === this.activeTabIndex,
-          switchLoading: (loading: boolean, url: string) => {
-            if (loading) {
-              this.loading.add(url);
-            } else {
-              this.loading.delete(url);
-            }
-
-            const tab = this.tabs[this.activeTabIndex];
-            this.showLoading(
-              tab instanceof ServerTab &&
-                this.loading.has(tab.webview.props.url),
-            );
-          },
-          onNetworkError: async (index: number) => {
-            await this.openNetworkTroubleshooting(index);
-          },
-          onTitleChange: this.updateBadge.bind(this),
-          nodeIntegration: true,
-          preload: false,
-        }),
+        onClick: this.activateTab.bind(this, index),
+        onDestroy: () => {
+          this.destroyTab(tabProps.name, index);
+          tabProps.destroyView();
+        },
+        $view,
       }),
     );
 
@@ -602,20 +577,33 @@ class ServerManagerView {
     this.openFunctionalTab({
       name: "Settings",
       materialIcon: "settings",
-      url: `file://${rendererDirectory}/preference.html#${nav}`,
+      makeView: () => {
+        this.preferenceView = new PreferenceView();
+        this.preferenceView.$view.classList.add("functional-view");
+        return this.preferenceView.$view;
+      },
+      destroyView: () => {
+        this.preferenceView!.destroy();
+        this.preferenceView = undefined;
+      },
     });
     this.$settingsButton.classList.add("active");
-    await this.tabs[this.functionalTabs.get("Settings")!].webview.send(
-      "switch-settings-nav",
-      nav,
-    );
+    this.preferenceView!.handleNavigation(nav);
   }
 
   openAbout(): void {
+    let aboutView: AboutView;
     this.openFunctionalTab({
       name: "About",
       materialIcon: "sentiment_very_satisfied",
-      url: `file://${rendererDirectory}/about.html`,
+      makeView: () => {
+        aboutView = new AboutView();
+        aboutView.$view.classList.add("functional-view");
+        return aboutView.$view;
+      },
+      destroyView: () => {
+        aboutView.destroy();
+      },
     });
   }
 
@@ -768,16 +756,6 @@ class ServerManagerView {
     ipcRenderer.send("update-badge", messageCountAll);
   }
 
-  updateGeneralSettings<Channel extends keyof RendererMessage>(
-    channel: Channel,
-    ...args: Parameters<RendererMessage[Channel]>
-  ): void {
-    if (this.getActiveWebview()) {
-      const webContentsId = this.getActiveWebview().getWebContentsId();
-      ipcRenderer.sendTo(webContentsId, channel, ...args);
-    }
-  }
-
   toggleSidebar(show: boolean): void {
     if (show) {
       this.$sidebar.classList.remove("sidebar-hide");
@@ -800,12 +778,6 @@ class ServerManagerView {
     if (!(tab instanceof ServerTab)) return false;
     const url = tab.webview.$el!.src;
     return !(url.endsWith("/login/") || tab.webview.loading);
-  }
-
-  getActiveWebview(): Electron.WebviewTag {
-    const selector = "webview:not(.disabled)";
-    const webview: Electron.WebviewTag = document.querySelector(selector)!;
-    return webview;
   }
 
   addContextMenu($serverImg: HTMLElement, index: number): void {
@@ -1012,9 +984,6 @@ class ServerManagerView {
     ipcRenderer.on("toggle-sidebar", (event: Event, show: boolean) => {
       // Toggle the left sidebar
       this.toggleSidebar(show);
-
-      // Toggle sidebar switch in the general settings
-      this.updateGeneralSettings("toggle-sidebar", show);
     });
 
     ipcRenderer.on("toggle-silent", (event: Event, state: boolean) => {
@@ -1040,14 +1009,7 @@ class ServerManagerView {
             tabs: this.tabsForIpc,
             activeTabIndex: this.activeTabIndex,
           });
-          return;
         }
-
-        this.updateGeneralSettings(
-          "toggle-autohide-menubar",
-          autoHideMenubar,
-          updateMenu,
-        );
       },
     );
 
@@ -1060,8 +1022,6 @@ class ServerManagerView {
           "toggle-silent",
           newSettings.silent ?? false,
         );
-        const webContentsId = this.getActiveWebview().getWebContentsId();
-        ipcRenderer.sendTo(webContentsId, "toggle-dnd", state, newSettings);
       },
     );
 

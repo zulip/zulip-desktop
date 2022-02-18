@@ -1,7 +1,5 @@
 import type {TabRole} from "../../../common/types";
 
-import type WebView from "./webview";
-
 export interface TabProps {
   role: TabRole;
   icon?: string;
@@ -12,19 +10,16 @@ export interface TabProps {
   tabIndex: number;
   onHover?: () => void;
   onHoverOut?: () => void;
-  webview: WebView;
   materialIcon?: string;
   onDestroy?: () => void;
 }
 
 export default abstract class Tab {
   props: TabProps;
-  webview: WebView;
   abstract $el: Element;
 
   constructor(props: TabProps) {
     this.props = props;
-    this.webview = this.props.webview;
   }
 
   registerListeners(): void {
@@ -41,16 +36,13 @@ export default abstract class Tab {
 
   activate(): void {
     this.$el.classList.add("active");
-    this.webview.load();
   }
 
   deactivate(): void {
     this.$el.classList.remove("active");
-    this.webview.hide();
   }
 
   destroy(): void {
     this.$el.remove();
-    this.webview.$el!.remove();
   }
 }

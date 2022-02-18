@@ -18,8 +18,7 @@ test("new-org-link", async (t) => {
     const mainWindow = await take(windows);
     t.equal(await mainWindow.title(), "Zulip");
 
-    const mainWebview = await take(windows);
-    await mainWebview.click("#open-create-org-link");
+    await mainWindow.click("#open-create-org-link");
   } finally {
     await setup.endTest(app);
   }

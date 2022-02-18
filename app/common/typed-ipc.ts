@@ -1,5 +1,5 @@
 import type {DNDSettings} from "./dnd-util";
-import type {MenuProps, NavItem, ServerConf} from "./types";
+import type {MenuProps, ServerConf} from "./types";
 
 export interface MainMessage {
   "clear-app-settings": () => void;
@@ -66,7 +66,6 @@ export interface RendererMessage {
   "show-keyboard-shortcuts": () => void;
   "show-notification-settings": () => void;
   "switch-server-tab": (index: number) => void;
-  "switch-settings-nav": (navItem: NavItem) => void;
   "tab-devtools": () => void;
   "toggle-autohide-menubar": (
     autoHideMenubar: boolean,

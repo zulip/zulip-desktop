@@ -5,18 +5,40 @@ import {ipcRenderer} from "../typed-ipc-renderer";
 import {generateNodeFromHTML} from "./base";
 import type {TabProps} from "./tab";
 import Tab from "./tab";
+import type WebView from "./webview";
+
+export interface ServerTabProps extends TabProps {
+  webview: WebView;
+}
 
 export default class ServerTab extends Tab {
+  webview: WebView;
   $el: Element;
   $badge: Element;
 
-  constructor(props: TabProps) {
+  constructor({webview, ...props}: ServerTabProps) {
     super(props);
 
+    this.webview = webview;
     this.$el = generateNodeFromHTML(this.templateHTML());
     this.props.$root.append(this.$el);
     this.registerListeners();
     this.$badge = this.$el.querySelector(".server-tab-badge")!;
+  }
+
+  override activate(): void {
+    super.activate();
+    this.webview.load();
+  }
+
+  override deactivate(): void {
+    super.deactivate();
+    this.webview.hide();
+  }
+
+  override destroy(): void {
+    super.destroy();
+    this.webview.$el!.remove();
   }
 
   templateHTML(): HTML {
