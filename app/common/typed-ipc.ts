@@ -74,7 +74,6 @@ export interface RendererMessage {
   ) => void;
   "toggle-dnd": (state: boolean, newSettings: Partial<DNDSettings>) => void;
   "toggle-sidebar": (show: boolean) => void;
-  "toggle-sidebar-setting": (state: boolean) => void;
   "toggle-silent": (state: boolean) => void;
   "toggle-tray": (state: boolean) => void;
   toggletray: () => void;

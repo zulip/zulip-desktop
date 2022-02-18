@@ -57,7 +57,7 @@ export class PreferenceView {
     this.handleNavigation(navItem);
 
     ipcRenderer.on("switch-settings-nav", this.handleSwitchSettingsNav);
-    ipcRenderer.on("toggle-sidebar-setting", this.handleToggleSidebar);
+    ipcRenderer.on("toggle-sidebar", this.handleToggleSidebar);
     ipcRenderer.on("toggle-autohide-menubar", this.handleToggleMenubar);
     ipcRenderer.on("toggle-tray", this.handleToggleTray);
     ipcRenderer.on("toggle-dnd", this.handleToggleDnd);
@@ -106,7 +106,7 @@ export class PreferenceView {
 
   destroy(): void {
     ipcRenderer.off("switch-settings-nav", this.handleSwitchSettingsNav);
-    ipcRenderer.off("toggle-sidebar-setting", this.handleToggleSidebar);
+    ipcRenderer.off("toggle-sidebar", this.handleToggleSidebar);
     ipcRenderer.off("toggle-autohide-menubar", this.handleToggleMenubar);
     ipcRenderer.off("toggle-tray", this.handleToggleTray);
     ipcRenderer.off("toggle-dnd", this.handleToggleDnd);

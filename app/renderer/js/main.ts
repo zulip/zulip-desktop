@@ -999,7 +999,7 @@ class ServerManagerView {
       this.toggleSidebar(show);
 
       // Toggle sidebar switch in the general settings
-      this.updateGeneralSettings("toggle-sidebar-setting", show);
+      this.updateGeneralSettings("toggle-sidebar", show);
     });
 
     ipcRenderer.on("toggle-silent", (event: Event, state: boolean) => {
