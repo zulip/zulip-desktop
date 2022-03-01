@@ -1,9 +1,12 @@
 {
-    "extends": ["stylelint-config-standard", "stylelint-config-prettier"],
-    "rules": {
-        "color-named": "never",
-        "color-no-hex": true,
-        "font-family-no-missing-generic-family-keyword": [true, {"ignoreFontFamilies": ["Material Icons"]}],
-        "selector-type-no-unknown": [true, {"ignoreTypes": ["webview"]}],
-    }
+  "extends": ["stylelint-config-standard", "stylelint-config-prettier"],
+  "rules": {
+    "color-named": "never",
+    "color-no-hex": true,
+    "font-family-no-missing-generic-family-keyword": [
+      true,
+      {"ignoreFontFamilies": ["Material Icons"]}
+    ],
+    "selector-type-no-unknown": [true, {"ignoreTypes": ["webview"]}]
+  }
 }
