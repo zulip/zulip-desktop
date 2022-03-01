@@ -71,7 +71,6 @@ export default class WebView {
           ? html``
           : html`preload="${props.preload}"`}
         partition="persist:webviewsession"
-        webpreferences="contextIsolation, worldSafeExecuteJavaScript=true"
       >
       </webview>
     `;

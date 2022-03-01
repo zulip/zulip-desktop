@@ -69,10 +69,8 @@ function createMainWindow(): Electron.BrowserWindow {
     minWidth: 500,
     minHeight: 400,
     webPreferences: {
-      contextIsolation: true,
       preload: require.resolve("../renderer/js/main"),
       webviewTag: true,
-      worldSafeExecuteJavaScript: true,
     },
     show: false,
   });
