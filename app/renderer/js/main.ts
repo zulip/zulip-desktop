@@ -56,6 +56,7 @@ export class ServerManagerView {
   $loadingTooltip: HTMLElement;
   $settingsTooltip: HTMLElement;
   $serverIconTooltip: HTMLCollectionOf<HTMLElement>;
+  $serverShortcuts: HTMLCollectionOf<HTMLElement>;
   $backTooltip: HTMLElement;
   $dndTooltip: HTMLElement;
   $sidebar: Element;
@@ -94,6 +95,10 @@ export class ServerManagerView {
     // eslint-disable-next-line unicorn/prefer-query-selector
     this.$serverIconTooltip = document.getElementsByClassName(
       "server-tooltip",
+    ) as HTMLCollectionOf<HTMLElement>;
+    // eslint-disable-next-line unicorn/prefer-query-selector
+    this.$serverShortcuts = document.getElementsByClassName(
+      "server-tab-shortcut",
     ) as HTMLCollectionOf<HTMLElement>;
     this.$backTooltip = $actionsContainer.querySelector("#back-tooltip")!;
     this.$dndTooltip = $actionsContainer.querySelector("#dnd-tooltip")!;
@@ -984,6 +989,19 @@ export class ServerManagerView {
     ipcRenderer.on("toggle-sidebar", (event: Event, show: boolean) => {
       // Toggle the left sidebar
       this.toggleSidebar(show);
+    });
+
+    ipcRenderer.on("toggleOrgShortcuts", () => {
+      for (const $serverShortcut of this.$serverShortcuts) {
+        if (
+          $serverShortcut.getAttribute("style") === null ||
+          $serverShortcut.getAttribute("style") === ""
+        ) {
+          $serverShortcut.style.display = "none";
+        } else {
+          $serverShortcut.removeAttribute("style");
+        }
+      }
     });
 
     ipcRenderer.on("toggle-silent", (event: Event, state: boolean) => {
