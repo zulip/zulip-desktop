@@ -15,7 +15,7 @@ const logger = new Logger({
 });
 
 export async function linuxUpdateNotification(
-  session: Electron.session,
+  session: Electron.Session,
 ): Promise<void> {
   let url = "https://api.github.com/repos/zulip/zulip-desktop/releases";
   url = ConfigUtil.getConfigItem("betaUpdate", false) ? url : url + "/latest";
