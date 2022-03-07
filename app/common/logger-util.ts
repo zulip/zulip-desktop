@@ -1,35 +1,15 @@
 import {Console} from "console"; // eslint-disable-line node/prefer-global/console
-import electron from "electron";
 import fs from "fs";
 import os from "os";
 
 import {initSetUp} from "./default-util";
 import {app} from "./remote";
-import {captureException, sentryInit} from "./sentry-util";
 
 interface LoggerOptions {
   file?: string;
 }
 
 initSetUp();
-
-let reportErrors = true;
-if (process.type === "renderer") {
-  // Report Errors to Sentry only if it is enabled in settings
-  // Gets the value of reportErrors from config-util for renderer process
-  // For main process, sentryInit() is handled in index.js
-  const {ipcRenderer} = electron;
-  ipcRenderer.send("error-reporting");
-  ipcRenderer.on(
-    "error-reporting-val",
-    (_event: Event, errorReporting: boolean) => {
-      reportErrors = errorReporting;
-      if (reportErrors) {
-        sentryInit();
-      }
-    },
-  );
-}
 
 const logDir = `${app.getPath("userData")}/Logs`;
 
@@ -89,12 +69,6 @@ export default class Logger {
       `${date.getMonth()}/${date.getDate()} ` +
       `${date.getMinutes()}:${date.getSeconds()}`;
     return timestamp;
-  }
-
-  reportSentry(error: unknown): void {
-    if (reportErrors) {
-      captureException(error);
-    }
   }
 
   async trimLog(file: string): Promise<void> {

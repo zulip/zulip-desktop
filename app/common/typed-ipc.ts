@@ -5,7 +5,6 @@ export interface MainMessage {
   "clear-app-settings": () => void;
   "configure-spell-checker": () => void;
   downloadFile: (url: string, downloadPath: string) => void;
-  "error-reporting": () => void;
   "fetch-user-agent": () => string;
   "focus-app": () => void;
   "focus-this-webview": () => void;
@@ -39,7 +38,6 @@ export interface RendererMessage {
   downloadFileCompleted: (filePath: string, fileName: string) => void;
   downloadFileFailed: (state: string) => void;
   "enter-fullscreen": () => void;
-  "error-reporting-val": (errorReporting: boolean) => void;
   focus: () => void;
   "focus-webview-with-id": (webviewId: number) => void;
   forward: () => void;

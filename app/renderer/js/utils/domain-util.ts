@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 
 import {app, dialog} from "@electron/remote";
+import * as Sentry from "@sentry/electron";
 import {JsonDB} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors";
 import * as z from "zod";
@@ -148,7 +149,7 @@ export async function updateSavedServer(
   } catch (error: unknown) {
     logger.log("Could not update server icon.");
     logger.log(error);
-    logger.reportSentry(error);
+    Sentry.captureException(error);
   }
 }
 
@@ -170,7 +171,7 @@ function reloadDB(): void {
       );
       logger.error("Error while JSON parsing domain.json: ");
       logger.error(error);
-      logger.reportSentry(error);
+      Sentry.captureException(error);
     }
   }
 

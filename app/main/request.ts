@@ -5,6 +5,7 @@ import path from "path";
 import stream from "stream";
 import util from "util";
 
+import * as Sentry from "@sentry/electron";
 import getStream from "get-stream";
 import * as z from "zod";
 
@@ -103,7 +104,7 @@ export const _saveServerIcon = async (
   } catch (error: unknown) {
     logger.log("Could not get server icon.");
     logger.log(error);
-    logger.reportSentry(error);
+    Sentry.captureException(error);
     return defaultIconUrl;
   }
 };

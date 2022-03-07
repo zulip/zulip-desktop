@@ -6,7 +6,6 @@ import * as remoteMain from "@electron/remote/main";
 import windowStateKeeper from "electron-window-state";
 
 import * as ConfigUtil from "../common/config-util";
-import {sentryInit} from "../common/sentry-util";
 import type {RendererMessage} from "../common/typed-ipc";
 import type {MenuProps} from "../common/types";
 
@@ -14,10 +13,14 @@ import {appUpdater} from "./autoupdater";
 import * as BadgeSettings from "./badge-settings";
 import * as AppMenu from "./menu";
 import {_getServerSettings, _isOnline, _saveServerIcon} from "./request";
+import {sentryInit} from "./sentry";
 import {setAutoLaunch} from "./startup";
 import {ipcMain, send} from "./typed-ipc-main";
 
 const {GDK_BACKEND} = process.env;
+
+// Initialize sentry for main process
+sentryInit();
 
 let mainWindowState: windowStateKeeper.State;
 
@@ -197,12 +200,6 @@ function createMainWindow(): Electron.BrowserWindow {
     const shouldHideMenu = ConfigUtil.getConfigItem("autoHideMenubar", false);
     mainWindow.autoHideMenuBar = shouldHideMenu;
     mainWindow.setMenuBarVisibility(!shouldHideMenu);
-  }
-
-  // Initialize sentry for main process
-  const errorReporting = ConfigUtil.getConfigItem("errorReporting", true);
-  if (errorReporting) {
-    sentryInit();
   }
 
   const page = mainWindow.webContents;
@@ -459,12 +456,6 @@ ${error}`,
       send(page, "update-realm-icon", serverURL, iconURL);
     },
   );
-
-  // Using event.sender.send instead of page.send here to
-  // make sure the value of errorReporting is sent only once on load.
-  ipcMain.on("error-reporting", (event: Electron.IpcMainEvent) => {
-    send(event.sender, "error-reporting-val", errorReporting);
-  });
 
   ipcMain.on(
     "save-last-tab",

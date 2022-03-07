@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 
+import * as Sentry from "@sentry/electron";
 import {JsonDB} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors";
 import type * as z from "zod";
@@ -91,7 +92,7 @@ function reloadDB(): void {
       );
       logger.error("Error while JSON parsing settings.json: ");
       logger.error(error);
-      logger.reportSentry(error);
+      Sentry.captureException(error);
     }
   }
 
