@@ -174,14 +174,19 @@ function createMainWindow(): Electron.BrowserWindow {
   const ses = session.fromPartition("persist:webviewsession");
   ses.setUserAgent(`ZulipElectron/${app.getVersion()} ${ses.getUserAgent()}`);
 
-  ipcMain.on("set-spellcheck-langs", () => {
-    ses.setSpellCheckerLanguages(
-      process.platform === "darwin"
-        ? // Work around https://github.com/electron/electron/issues/30215.
-          mainWindow.webContents.session.getSpellCheckerLanguages()
-        : ConfigUtil.getConfigItem("spellcheckerLanguages", null) ?? [],
-    );
-  });
+  function configureSpellChecker() {
+    const enable = ConfigUtil.getConfigItem("enableSpellchecker", true);
+    if (enable && process.platform !== "darwin") {
+      ses.setSpellCheckerLanguages(
+        ConfigUtil.getConfigItem("spellcheckerLanguages", null) ?? [],
+      );
+    }
+
+    ses.setSpellCheckerEnabled(enable);
+  }
+
+  configureSpellChecker();
+  ipcMain.on("configure-spell-checker", configureSpellChecker);
 
   AppMenu.setMenu({
     tabs: [],

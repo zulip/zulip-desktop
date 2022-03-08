@@ -3,6 +3,7 @@ import type {MenuProps, ServerConf} from "./types";
 
 export interface MainMessage {
   "clear-app-settings": () => void;
+  "configure-spell-checker": () => void;
   downloadFile: (url: string, downloadPath: string) => void;
   "error-reporting": () => void;
   "fetch-user-agent": () => string;
@@ -14,7 +15,6 @@ export interface MainMessage {
   "realm-name-changed": (serverURL: string, realmName: string) => void;
   "reload-full-app": () => void;
   "save-last-tab": (index: number) => void;
-  "set-spellcheck-langs": () => void;
   "switch-server-tab": (index: number) => void;
   "toggle-app": () => void;
   "toggle-badge-option": (newValue: boolean) => void;

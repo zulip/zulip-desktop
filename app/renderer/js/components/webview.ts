@@ -71,13 +71,7 @@ export default class WebView {
           ? html``
           : html`preload="${props.preload}"`}
         partition="persist:webviewsession"
-        webpreferences="
-          contextIsolation,
-          spellcheck=${Boolean(
-          ConfigUtil.getConfigItem("enableSpellchecker", true),
-        )},
-          worldSafeExecuteJavaScript=true
-        "
+        webpreferences="contextIsolation, worldSafeExecuteJavaScript=true"
       >
       </webview>
     `;

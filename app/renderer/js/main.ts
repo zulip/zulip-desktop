@@ -128,7 +128,6 @@ export class ServerManagerView {
     await this.initTabs();
     this.initActions();
     this.registerIpcs();
-    ipcRenderer.send("set-spellcheck-langs");
   }
 
   async loadProxy(): Promise<void> {

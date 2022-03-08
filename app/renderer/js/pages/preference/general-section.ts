@@ -425,6 +425,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
       clickHandler: () => {
         const newValue = !ConfigUtil.getConfigItem("enableSpellchecker", true);
         ConfigUtil.setConfigItem("enableSpellchecker", newValue);
+        ipcRenderer.send("configure-spell-checker");
         enableSpellchecker();
         const spellcheckerLanguageInput: HTMLElement =
           $root.querySelector("#spellcheck-langs")!;
@@ -664,7 +665,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
       tagField.addEventListener("change", () => {
         if (tagField.value.length === 0) {
           ConfigUtil.setConfigItem("spellcheckerLanguages", []);
-          ipcRenderer.send("set-spellcheck-langs");
+          ipcRenderer.send("configure-spell-checker");
         } else {
           const data: unknown = JSON.parse(tagField.value);
           const spellLangs: string[] = z
@@ -672,7 +673,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
             .parse(data)
             .map((elt) => languagePairs.get(elt.value)!);
           ConfigUtil.setConfigItem("spellcheckerLanguages", spellLangs);
-          ipcRenderer.send("set-spellcheck-langs");
+          ipcRenderer.send("configure-spell-checker");
         }
       });
     }
