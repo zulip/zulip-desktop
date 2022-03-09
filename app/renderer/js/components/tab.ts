@@ -1,4 +1,4 @@
-import type {TabRole} from "../../../common/types.js";
+import type {TabRole} from "../../../common/types";
 
 export interface TabProps {
   role: TabRole;

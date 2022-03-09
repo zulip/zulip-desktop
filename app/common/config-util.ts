@@ -6,10 +6,10 @@ import {JsonDB} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors";
 import type * as z from "zod";
 
-import {configSchemata} from "./config-schemata.js";
-import * as EnterpriseUtil from "./enterprise-util.js";
-import Logger from "./logger-util.js";
-import {app, dialog} from "./remote.js";
+import {configSchemata} from "./config-schemata";
+import * as EnterpriseUtil from "./enterprise-util";
+import Logger from "./logger-util";
+import {app, dialog} from "./remote";
 
 export type Config = {
   [Key in keyof typeof configSchemata]: z.output<typeof configSchemata[Key]>;

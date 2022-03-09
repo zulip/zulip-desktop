@@ -1,10 +1,10 @@
 import {app, shell} from "@electron/remote";
 
-import * as ConfigUtil from "../../../common/config-util.js";
-import {ipcRenderer} from "../typed-ipc-renderer.js";
-import * as LinkUtil from "../utils/link-util.js";
+import * as ConfigUtil from "../../../common/config-util";
+import {ipcRenderer} from "../typed-ipc-renderer";
+import * as LinkUtil from "../utils/link-util";
 
-import type WebView from "./webview.js";
+import type WebView from "./webview";
 
 const dingSound = new Audio("../resources/sounds/ding.ogg");
 

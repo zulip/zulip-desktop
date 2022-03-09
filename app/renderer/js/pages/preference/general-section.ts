@@ -8,14 +8,14 @@ import Tagify from "@yaireo/tagify";
 import ISO6391 from "iso-639-1";
 import * as z from "zod";
 
-import * as ConfigUtil from "../../../../common/config-util.js";
-import * as EnterpriseUtil from "../../../../common/enterprise-util.js";
-import {html} from "../../../../common/html.js";
-import * as t from "../../../../common/translation-util.js";
+import * as ConfigUtil from "../../../../common/config-util";
+import * as EnterpriseUtil from "../../../../common/enterprise-util";
+import {html} from "../../../../common/html";
+import * as t from "../../../../common/translation-util";
 import supportedLocales from "../../../../translations/supported-locales.json";
-import {ipcRenderer} from "../../typed-ipc-renderer.js";
+import {ipcRenderer} from "../../typed-ipc-renderer";
 
-import {generateSelectHtml, generateSettingOption} from "./base-section.js";
+import {generateSelectHtml, generateSettingOption} from "./base-section";
 
 const currentBrowserWindow = remote.getCurrentWindow();
 

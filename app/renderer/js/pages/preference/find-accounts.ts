@@ -1,7 +1,7 @@
-import {html} from "../../../../common/html.js";
-import * as t from "../../../../common/translation-util.js";
-import {generateNodeFromHtml} from "../../components/base.js";
-import * as LinkUtil from "../../utils/link-util.js";
+import {html} from "../../../../common/html";
+import * as t from "../../../../common/translation-util";
+import {generateNodeFromHtml} from "../../components/base";
+import * as LinkUtil from "../../utils/link-util";
 
 interface FindAccountsProps {
   $root: Element;

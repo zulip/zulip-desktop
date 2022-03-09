@@ -2,8 +2,8 @@ import {Console} from "console"; // eslint-disable-line node/prefer-global/conso
 import fs from "fs";
 import os from "os";
 
-import {initSetUp} from "./default-util.js";
-import {app} from "./remote.js";
+import {initSetUp} from "./default-util";
+import {app} from "./remote";
 
 interface LoggerOptions {
   file?: string;

@@ -5,17 +5,17 @@ import path from "path";
 import * as remoteMain from "@electron/remote/main";
 import windowStateKeeper from "electron-window-state";
 
-import * as ConfigUtil from "../common/config-util.js";
-import type {RendererMessage} from "../common/typed-ipc.js";
-import type {MenuProps} from "../common/types.js";
+import * as ConfigUtil from "../common/config-util";
+import type {RendererMessage} from "../common/typed-ipc";
+import type {MenuProps} from "../common/types";
 
-import {appUpdater} from "./autoupdater.js";
-import * as BadgeSettings from "./badge-settings.js";
-import * as AppMenu from "./menu.js";
-import {_getServerSettings, _isOnline, _saveServerIcon} from "./request.js";
-import {sentryInit} from "./sentry.js";
-import {setAutoLaunch} from "./startup.js";
-import {ipcMain, send} from "./typed-ipc-main.js";
+import {appUpdater} from "./autoupdater";
+import * as BadgeSettings from "./badge-settings";
+import * as AppMenu from "./menu";
+import {_getServerSettings, _isOnline, _saveServerIcon} from "./request";
+import {sentryInit} from "./sentry";
+import {setAutoLaunch} from "./startup";
+import {ipcMain, send} from "./typed-ipc-main";
 
 const {GDK_BACKEND} = process.env;
 

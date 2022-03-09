@@ -1,7 +1,7 @@
 import type * as z from "zod";
 
-import type {dndSettingsSchemata} from "./config-schemata.js";
-import * as ConfigUtil from "./config-util.js";
+import type {dndSettingsSchemata} from "./config-schemata";
+import * as ConfigUtil from "./config-util";
 
 export type DndSettings = {
   [Key in keyof typeof dndSettingsSchemata]: z.output<

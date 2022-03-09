@@ -1,9 +1,9 @@
 import * as backoff from "backoff";
 
-import {html} from "../../../common/html.js";
-import Logger from "../../../common/logger-util.js";
-import type WebView from "../components/webview.js";
-import {ipcRenderer} from "../typed-ipc-renderer.js";
+import {html} from "../../../common/html";
+import Logger from "../../../common/logger-util";
+import type WebView from "../components/webview";
+import {ipcRenderer} from "../typed-ipc-renderer";
 
 const logger = new Logger({
   file: "domain-util.log",

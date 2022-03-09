@@ -5,7 +5,7 @@ import path from "path";
 import {JsonDB} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors";
 
-import Logger from "../common/logger-util.js";
+import Logger from "../common/logger-util";
 
 const logger = new Logger({
   file: "linux-update-util.log",

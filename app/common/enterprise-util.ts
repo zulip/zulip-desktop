@@ -3,8 +3,8 @@ import path from "path";
 
 import * as z from "zod";
 
-import {enterpriseConfigSchemata} from "./config-schemata.js";
-import Logger from "./logger-util.js";
+import {enterpriseConfigSchemata} from "./config-schemata";
+import Logger from "./logger-util";
 
 type EnterpriseConfig = {
   [Key in keyof typeof enterpriseConfigSchemata]: z.output<

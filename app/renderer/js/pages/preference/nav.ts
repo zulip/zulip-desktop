@@ -1,8 +1,8 @@
-import type {Html} from "../../../../common/html.js";
-import {html} from "../../../../common/html.js";
-import * as t from "../../../../common/translation-util.js";
-import type {NavItem} from "../../../../common/types.js";
-import {generateNodeFromHtml} from "../../components/base.js";
+import type {Html} from "../../../../common/html";
+import {html} from "../../../../common/html";
+import * as t from "../../../../common/translation-util";
+import type {NavItem} from "../../../../common/types";
+import {generateNodeFromHtml} from "../../components/base";
 
 interface PreferenceNavProps {
   $root: Element;

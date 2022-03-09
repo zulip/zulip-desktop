@@ -1,6 +1,6 @@
-import {html} from "../../../../common/html.js";
-import * as t from "../../../../common/translation-util.js";
-import * as LinkUtil from "../../utils/link-util.js";
+import {html} from "../../../../common/html";
+import * as t from "../../../../common/translation-util";
+import * as LinkUtil from "../../utils/link-util";
 
 interface ShortcutsSectionProps {
   $root: Element;

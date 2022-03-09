@@ -1,6 +1,6 @@
 import fs from "fs";
 
-import {app} from "./remote.js";
+import {app} from "./remote";
 
 let setupCompleted = false;
 

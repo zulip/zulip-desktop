@@ -9,9 +9,9 @@ import * as Sentry from "@sentry/electron";
 import getStream from "get-stream";
 import * as z from "zod";
 
-import Logger from "../common/logger-util.js";
-import * as Messages from "../common/messages.js";
-import type {ServerConf} from "../common/types.js";
+import Logger from "../common/logger-util";
+import * as Messages from "../common/messages";
+import type {ServerConf} from "../common/types";
 
 export async function fetchResponse(
   request: ClientRequest,
