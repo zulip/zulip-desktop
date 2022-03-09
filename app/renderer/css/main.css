@@ -359,7 +359,7 @@ webview.focus {
 
 #add-server-tooltip,
 .server-tooltip {
-  font-family: "arial", sans-serif;
+  font-family: arial, sans-serif;
   background: rgb(34 44 49 / 100%);
   left: 56px;
   padding: 10px 20px;

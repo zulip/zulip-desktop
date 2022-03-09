@@ -17,7 +17,7 @@ kbd {
   border: 1px solid rgb(204 204 204 / 100%);
   border-radius: 4px;
   font-size: 15px;
-  font-family: Courier New, Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   font-weight: bold;
   white-space: nowrap;
   background-color: rgb(247 247 247 / 100%);
@@ -75,7 +75,7 @@ td:nth-child(odd) {
 #content {
   display: flex !important;
   height: 100%;
-  font-family: "Montserrat", sans-serif;
+  font-family: Montserrat, sans-serif;
 }
 
 #sidebar {
@@ -376,7 +376,7 @@ img.server-info-icon {
 }
 
 .code {
-  font-family: Courier New, Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
 }
 
 i.open-tab-button {
