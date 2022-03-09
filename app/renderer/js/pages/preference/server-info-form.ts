@@ -1,12 +1,12 @@
 import {dialog} from "@electron/remote";
 
-import {html} from "../../../../common/html";
-import * as Messages from "../../../../common/messages";
-import * as t from "../../../../common/translation-util";
-import type {ServerConf} from "../../../../common/types";
-import {generateNodeFromHTML} from "../../components/base";
-import {ipcRenderer} from "../../typed-ipc-renderer";
-import * as DomainUtil from "../../utils/domain-util";
+import {html} from "../../../../common/html.js";
+import * as Messages from "../../../../common/messages.js";
+import * as t from "../../../../common/translation-util.js";
+import type {ServerConf} from "../../../../common/types.js";
+import {generateNodeFromHTML} from "../../components/base.js";
+import {ipcRenderer} from "../../typed-ipc-renderer.js";
+import * as DomainUtil from "../../utils/domain-util.js";
 
 interface ServerInfoFormProps {
   $root: Element;

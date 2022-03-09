@@ -1,4 +1,4 @@
-import {ipcRenderer} from "../typed-ipc-renderer";
+import {ipcRenderer} from "../typed-ipc-renderer.js";
 
 export interface NotificationData {
   close: () => void;

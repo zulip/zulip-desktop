@@ -2,14 +2,14 @@ import {BrowserWindow, Menu, app, shell} from "electron";
 
 import AdmZip from "adm-zip";
 
-import * as ConfigUtil from "../common/config-util";
-import * as DNDUtil from "../common/dnd-util";
-import * as t from "../common/translation-util";
-import type {RendererMessage} from "../common/typed-ipc";
-import type {MenuProps, TabData} from "../common/types";
+import * as ConfigUtil from "../common/config-util.js";
+import * as DNDUtil from "../common/dnd-util.js";
+import * as t from "../common/translation-util.js";
+import type {RendererMessage} from "../common/typed-ipc.js";
+import type {MenuProps, TabData} from "../common/types.js";
 
-import {appUpdater} from "./autoupdater";
-import {send} from "./typed-ipc-main";
+import {appUpdater} from "./autoupdater.js";
+import {send} from "./typed-ipc-main.js";
 
 const appName = app.name;
 

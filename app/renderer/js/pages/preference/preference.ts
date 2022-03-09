@@ -1,14 +1,14 @@
-import type {DNDSettings} from "../../../../common/dnd-util";
-import {html} from "../../../../common/html";
-import type {NavItem} from "../../../../common/types";
-import {ipcRenderer} from "../../typed-ipc-renderer";
+import type {DNDSettings} from "../../../../common/dnd-util.js";
+import {html} from "../../../../common/html.js";
+import type {NavItem} from "../../../../common/types.js";
+import {ipcRenderer} from "../../typed-ipc-renderer.js";
 
-import {initConnectedOrgSection} from "./connected-org-section";
-import {initGeneralSection} from "./general-section";
-import Nav from "./nav";
-import {initNetworkSection} from "./network-section";
-import {initServersSection} from "./servers-section";
-import {initShortcutsSection} from "./shortcuts-section";
+import {initConnectedOrgSection} from "./connected-org-section.js";
+import {initGeneralSection} from "./general-section.js";
+import Nav from "./nav.js";
+import {initNetworkSection} from "./network-section.js";
+import {initServersSection} from "./servers-section.js";
+import {initShortcutsSection} from "./shortcuts-section.js";
 
 export class PreferenceView {
   readonly $view: HTMLElement;

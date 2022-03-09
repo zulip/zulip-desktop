@@ -3,7 +3,11 @@ import {
   ipcMain as untypedIpcMain, // eslint-disable-line no-restricted-imports
 } from "electron";
 
-import type {MainCall, MainMessage, RendererMessage} from "../common/typed-ipc";
+import type {
+  MainCall,
+  MainMessage,
+  RendererMessage,
+} from "../common/typed-ipc.js";
 
 type MainListener<Channel extends keyof MainMessage> =
   MainMessage[Channel] extends (...args: infer Args) => infer Return

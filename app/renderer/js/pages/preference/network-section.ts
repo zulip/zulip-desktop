@@ -1,9 +1,9 @@
-import * as ConfigUtil from "../../../../common/config-util";
-import {html} from "../../../../common/html";
-import * as t from "../../../../common/translation-util";
-import {ipcRenderer} from "../../typed-ipc-renderer";
+import * as ConfigUtil from "../../../../common/config-util.js";
+import {html} from "../../../../common/html.js";
+import * as t from "../../../../common/translation-util.js";
+import {ipcRenderer} from "../../typed-ipc-renderer.js";
 
-import {generateSettingOption} from "./base-section";
+import {generateSettingOption} from "./base-section.js";
 
 interface NetworkSectionProps {
   $root: Element;

@@ -1,7 +1,7 @@
-import type {HTML} from "../../../../common/html";
-import {html} from "../../../../common/html";
-import {generateNodeFromHTML} from "../../components/base";
-import {ipcRenderer} from "../../typed-ipc-renderer";
+import type {HTML} from "../../../../common/html.js";
+import {html} from "../../../../common/html.js";
+import {generateNodeFromHTML} from "../../components/base.js";
+import {ipcRenderer} from "../../typed-ipc-renderer.js";
 
 interface BaseSectionProps {
   $element: HTMLElement;

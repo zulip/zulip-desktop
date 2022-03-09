@@ -1,8 +1,8 @@
 import electron, {app} from "electron";
 
-import * as ConfigUtil from "../common/config-util";
+import * as ConfigUtil from "../common/config-util.js";
 
-import {send} from "./typed-ipc-main";
+import {send} from "./typed-ipc-main.js";
 
 function showBadgeCount(
   messageCount: number,

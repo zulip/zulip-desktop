@@ -4,11 +4,11 @@ import getStream from "get-stream";
 import * as semver from "semver";
 import * as z from "zod";
 
-import * as ConfigUtil from "../common/config-util";
-import Logger from "../common/logger-util";
+import * as ConfigUtil from "../common/config-util.js";
+import Logger from "../common/logger-util.js";
 
-import * as LinuxUpdateUtil from "./linux-update-util";
-import {fetchResponse} from "./request";
+import * as LinuxUpdateUtil from "./linux-update-util.js";
+import {fetchResponse} from "./request.js";
 
 const logger = new Logger({
   file: "linux-update-util.log",

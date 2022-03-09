@@ -3,7 +3,7 @@ import fs from "fs";
 import os from "os";
 import path from "path";
 
-import {html} from "../../../common/html";
+import {html} from "../../../common/html.js";
 
 export function isUploadsUrl(server: string, url: URL): boolean {
   return url.origin === server && url.pathname.startsWith("/user_uploads/");

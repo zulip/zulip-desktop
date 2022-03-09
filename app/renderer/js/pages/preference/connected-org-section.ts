@@ -1,11 +1,11 @@
-import {html} from "../../../../common/html";
-import * as t from "../../../../common/translation-util";
-import {ipcRenderer} from "../../typed-ipc-renderer";
-import * as DomainUtil from "../../utils/domain-util";
+import {html} from "../../../../common/html.js";
+import * as t from "../../../../common/translation-util.js";
+import {ipcRenderer} from "../../typed-ipc-renderer.js";
+import * as DomainUtil from "../../utils/domain-util.js";
 
-import {reloadApp} from "./base-section";
-import {initFindAccounts} from "./find-accounts";
-import {initServerInfoForm} from "./server-info-form";
+import {reloadApp} from "./base-section.js";
+import {initFindAccounts} from "./find-accounts.js";
+import {initServerInfoForm} from "./server-info-form.js";
 
 interface ConnectedOrgSectionProps {
   $root: Element;

@@ -1,9 +1,9 @@
-import type {HTML} from "../../../common/html";
-import {html} from "../../../common/html";
+import type {HTML} from "../../../common/html.js";
+import {html} from "../../../common/html.js";
 
-import {generateNodeFromHTML} from "./base";
-import type {TabProps} from "./tab";
-import Tab from "./tab";
+import {generateNodeFromHTML} from "./base.js";
+import type {TabProps} from "./tab.js";
+import Tab from "./tab.js";
 
 export interface FunctionalTabProps extends TabProps {
   $view: Element;

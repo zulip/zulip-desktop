@@ -2,7 +2,7 @@ import {app} from "electron";
 
 import AutoLaunch from "auto-launch";
 
-import * as ConfigUtil from "../common/config-util";
+import * as ConfigUtil from "../common/config-util.js";
 
 export const setAutoLaunch = async (
   AutoLaunchValue: boolean,

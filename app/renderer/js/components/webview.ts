@@ -4,17 +4,17 @@ import path from "path";
 import * as remote from "@electron/remote";
 import {app, dialog} from "@electron/remote";
 
-import * as ConfigUtil from "../../../common/config-util";
-import type {HTML} from "../../../common/html";
-import {html} from "../../../common/html";
-import type {RendererMessage} from "../../../common/typed-ipc";
-import type {TabRole} from "../../../common/types";
-import {ipcRenderer} from "../typed-ipc-renderer";
-import * as SystemUtil from "../utils/system-util";
+import * as ConfigUtil from "../../../common/config-util.js";
+import type {HTML} from "../../../common/html.js";
+import {html} from "../../../common/html.js";
+import type {RendererMessage} from "../../../common/typed-ipc.js";
+import type {TabRole} from "../../../common/types.js";
+import {ipcRenderer} from "../typed-ipc-renderer.js";
+import * as SystemUtil from "../utils/system-util.js";
 
-import {generateNodeFromHTML} from "./base";
-import {contextMenu} from "./context-menu";
-import handleExternalLink from "./handle-external-link";
+import {generateNodeFromHTML} from "./base.js";
+import {contextMenu} from "./context-menu.js";
+import handleExternalLink from "./handle-external-link.js";
 
 const shouldSilentWebview = ConfigUtil.getConfigItem("silent", false);
 

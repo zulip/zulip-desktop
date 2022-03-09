@@ -1,11 +1,11 @@
 import {dialog} from "@electron/remote";
 
-import {html} from "../../../../common/html";
-import * as t from "../../../../common/translation-util";
-import {generateNodeFromHTML} from "../../components/base";
-import {ipcRenderer} from "../../typed-ipc-renderer";
-import * as DomainUtil from "../../utils/domain-util";
-import * as LinkUtil from "../../utils/link-util";
+import {html} from "../../../../common/html.js";
+import * as t from "../../../../common/translation-util.js";
+import {generateNodeFromHTML} from "../../components/base.js";
+import {ipcRenderer} from "../../typed-ipc-renderer.js";
+import * as DomainUtil from "../../utils/domain-util.js";
+import * as LinkUtil from "../../utils/link-util.js";
 
 interface NewServerFormProps {
   $root: Element;

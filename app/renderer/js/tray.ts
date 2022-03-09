@@ -3,11 +3,11 @@ import path from "path";
 
 import {BrowserWindow, Menu, Tray, nativeImage} from "@electron/remote";
 
-import * as ConfigUtil from "../../common/config-util";
-import type {RendererMessage} from "../../common/typed-ipc";
+import * as ConfigUtil from "../../common/config-util.js";
+import type {RendererMessage} from "../../common/typed-ipc.js";
 
-import type {ServerManagerView} from "./main";
-import {ipcRenderer} from "./typed-ipc-renderer";
+import type {ServerManagerView} from "./main.js";
+import {ipcRenderer} from "./typed-ipc-renderer.js";
 
 let tray: Electron.Tray | null = null;
 

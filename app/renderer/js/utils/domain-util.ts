@@ -7,11 +7,11 @@ import {JsonDB} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors";
 import * as z from "zod";
 
-import * as EnterpriseUtil from "../../../common/enterprise-util";
-import Logger from "../../../common/logger-util";
-import * as Messages from "../../../common/messages";
-import type {ServerConf} from "../../../common/types";
-import {ipcRenderer} from "../typed-ipc-renderer";
+import * as EnterpriseUtil from "../../../common/enterprise-util.js";
+import Logger from "../../../common/logger-util.js";
+import * as Messages from "../../../common/messages.js";
+import type {ServerConf} from "../../../common/types.js";
+import {ipcRenderer} from "../typed-ipc-renderer.js";
 
 const logger = new Logger({
   file: "domain-util.log",

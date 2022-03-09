@@ -1,11 +1,11 @@
-import type {HTML} from "../../../common/html";
-import {html} from "../../../common/html";
-import {ipcRenderer} from "../typed-ipc-renderer";
+import type {HTML} from "../../../common/html.js";
+import {html} from "../../../common/html.js";
+import {ipcRenderer} from "../typed-ipc-renderer.js";
 
-import {generateNodeFromHTML} from "./base";
-import type {TabProps} from "./tab";
-import Tab from "./tab";
-import type WebView from "./webview";
+import {generateNodeFromHTML} from "./base.js";
+import type {TabProps} from "./tab.js";
+import Tab from "./tab.js";
+import type WebView from "./webview.js";
 
 export interface ServerTabProps extends TabProps {
   webview: Promise<WebView>;
