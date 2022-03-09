@@ -303,7 +303,7 @@ function getWindowSubmenu(
   ];
 
   if (tabs.length > 0) {
-    const ShortcutKey = process.platform === "darwin" ? "Cmd" : "Ctrl";
+    const shortcutKey = process.platform === "darwin" ? "Cmd" : "Ctrl";
     initialSubmenu.push({
       type: "separator",
     });
@@ -320,7 +320,7 @@ function getWindowSubmenu(
       initialSubmenu.push({
         label: tab.name,
         accelerator:
-          tab.role === "function" ? "" : `${ShortcutKey} + ${tab.index + 1}`,
+          tab.role === "function" ? "" : `${shortcutKey} + ${tab.index + 1}`,
         checked: tab.index === activeTabIndex,
         click(_item, focusedWindow) {
           if (focusedWindow) {

@@ -1,6 +1,6 @@
 import {ipcRenderer} from "../typed-ipc-renderer.js";
 
-export const connectivityERR: string[] = [
+export const connectivityError: string[] = [
   "ERR_INTERNET_DISCONNECTED",
   "ERR_PROXY_CONNECTION_FAILED",
   "ERR_CONNECTION_RESET",

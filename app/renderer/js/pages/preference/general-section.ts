@@ -15,7 +15,7 @@ import * as t from "../../../../common/translation-util.js";
 import supportedLocales from "../../../../translations/supported-locales.json";
 import {ipcRenderer} from "../../typed-ipc-renderer.js";
 
-import {generateSelectHTML, generateSettingOption} from "./base-section.js";
+import {generateSelectHtml, generateSettingOption} from "./base-section.js";
 
 const currentBrowserWindow = remote.getCurrentWindow();
 
@@ -222,9 +222,9 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
   showDesktopNotification();
   enableSpellchecker();
   minimizeOnStart();
-  addCustomCSS();
-  showCustomCSSPath();
-  removeCustomCSS();
+  addCustomCss();
+  showCustomCssPath();
+  removeCustomCss();
   downloadFolder();
   updateQuitOnCloseOption();
   updatePromptDownloadOption();
@@ -470,8 +470,8 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
 
   function setLocale(): void {
     const langDiv: HTMLSelectElement = $root.querySelector(".lang-div")!;
-    const langListHTML = generateSelectHTML(supportedLocales, "lang-menu");
-    langDiv.innerHTML += langListHTML.html;
+    const langListHtml = generateSelectHtml(supportedLocales, "lang-menu");
+    langDiv.innerHTML += langListHtml.html;
     // `langMenu` is the select-option dropdown menu formed after executing the previous command
     const langMenu: HTMLSelectElement = $root.querySelector(".lang-menu")!;
 
@@ -498,25 +498,25 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
     });
   }
 
-  function addCustomCSS(): void {
-    const customCSSButton = $root.querySelector(
+  function addCustomCss(): void {
+    const customCssButton = $root.querySelector(
       "#add-custom-css .custom-css-button",
     )!;
-    customCSSButton.addEventListener("click", async () => {
+    customCssButton.addEventListener("click", async () => {
       await customCssDialog();
     });
   }
 
-  function showCustomCSSPath(): void {
+  function showCustomCssPath(): void {
     if (!ConfigUtil.getConfigItem("customCSS", null)) {
-      const cssPATH: HTMLElement = $root.querySelector("#remove-custom-css")!;
-      cssPATH.style.display = "none";
+      const cssPath: HTMLElement = $root.querySelector("#remove-custom-css")!;
+      cssPath.style.display = "none";
     }
   }
 
-  function removeCustomCSS(): void {
-    const removeCSSButton = $root.querySelector("#css-delete-action")!;
-    removeCSSButton.addEventListener("click", () => {
+  function removeCustomCss(): void {
+    const removeCssButton = $root.querySelector("#css-delete-action")!;
+    removeCssButton.addEventListener("click", () => {
       ConfigUtil.setConfigItem("customCSS", "");
       ipcRenderer.send("forward-message", "hard-reload");
     });

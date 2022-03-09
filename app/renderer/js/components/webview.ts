@@ -5,14 +5,14 @@ import * as remote from "@electron/remote";
 import {app, dialog} from "@electron/remote";
 
 import * as ConfigUtil from "../../../common/config-util.js";
-import type {HTML} from "../../../common/html.js";
+import type {Html} from "../../../common/html.js";
 import {html} from "../../../common/html.js";
 import type {RendererMessage} from "../../../common/typed-ipc.js";
 import type {TabRole} from "../../../common/types.js";
 import {ipcRenderer} from "../typed-ipc-renderer.js";
 import * as SystemUtil from "../utils/system-util.js";
 
-import {generateNodeFromHTML} from "./base.js";
+import {generateNodeFromHtml} from "./base.js";
 import {contextMenu} from "./context-menu.js";
 import handleExternalLink from "./handle-external-link.js";
 
@@ -38,7 +38,7 @@ export default class WebView {
   zoomFactor: number;
   badgeCount: number;
   loading: boolean;
-  customCSS: string | false | null;
+  customCss: string | false | null;
   $webviewsContainer: DOMTokenList;
   $el: HTMLElement;
   webContentsId: number;
@@ -52,7 +52,7 @@ export default class WebView {
     this.zoomFactor = 1;
     this.loading = true;
     this.badgeCount = 0;
-    this.customCSS = ConfigUtil.getConfigItem("customCSS", null);
+    this.customCss = ConfigUtil.getConfigItem("customCSS", null);
     this.$webviewsContainer = document.querySelector(
       "#webviews-container",
     )!.classList;
@@ -62,7 +62,7 @@ export default class WebView {
     this.registerListeners();
   }
 
-  static templateHTML(props: WebViewProps): HTML {
+  static templateHtml(props: WebViewProps): Html {
     return html`
       <webview
         data-tab-id="${props.tabIndex}"
@@ -77,8 +77,8 @@ export default class WebView {
   }
 
   static async create(props: WebViewProps): Promise<WebView> {
-    const $element = generateNodeFromHTML(
-      WebView.templateHTML(props),
+    const $element = generateNodeFromHtml(
+      WebView.templateHtml(props),
     ) as HTMLElement;
     props.$root.append($element);
 
@@ -175,7 +175,7 @@ export default class WebView {
 
     webContents.on("did-fail-load", (_event, _errorCode, errorDescription) => {
       const hasConnectivityError =
-        SystemUtil.connectivityERR.includes(errorDescription);
+        SystemUtil.connectivityError.includes(errorDescription);
       if (hasConnectivityError) {
         console.error("error", errorDescription);
         if (!this.props.url.includes("network.html")) {
@@ -225,11 +225,11 @@ export default class WebView {
       ))();
 
     // Get customCSS again from config util to avoid warning user again
-    const customCSS = ConfigUtil.getConfigItem("customCSS", null);
-    this.customCSS = customCSS;
-    if (customCSS) {
-      if (!fs.existsSync(customCSS)) {
-        this.customCSS = null;
+    const customCss = ConfigUtil.getConfigItem("customCSS", null);
+    this.customCss = customCss;
+    if (customCss) {
+      if (!fs.existsSync(customCss)) {
+        this.customCss = null;
         ConfigUtil.setConfigItem("customCSS", null);
 
         const errorMessage = "The custom css previously set is deleted!";
@@ -239,7 +239,7 @@ export default class WebView {
 
       (async () =>
         this.getWebContents().insertCSS(
-          fs.readFileSync(path.resolve(__dirname, customCSS), "utf8"),
+          fs.readFileSync(path.resolve(__dirname, customCss), "utf8"),
         ))();
     }
   }

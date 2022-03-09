@@ -3,17 +3,17 @@ import type * as z from "zod";
 import type {dndSettingsSchemata} from "./config-schemata.js";
 import * as ConfigUtil from "./config-util.js";
 
-export type DNDSettings = {
+export type DndSettings = {
   [Key in keyof typeof dndSettingsSchemata]: z.output<
     typeof dndSettingsSchemata[Key]
   >;
 };
 
-type SettingName = keyof DNDSettings;
+type SettingName = keyof DndSettings;
 
 interface Toggle {
   dnd: boolean;
-  newSettings: Partial<DNDSettings>;
+  newSettings: Partial<DndSettings>;
 }
 
 export function toggle(): Toggle {
@@ -23,9 +23,9 @@ export function toggle(): Toggle {
     dndSettingList.push("flashTaskbarOnMessage");
   }
 
-  let newSettings: Partial<DNDSettings>;
+  let newSettings: Partial<DndSettings>;
   if (dnd) {
-    const oldSettings: Partial<DNDSettings> = {};
+    const oldSettings: Partial<DndSettings> = {};
     newSettings = {};
 
     // Iterate through the dndSettingList.

@@ -1,6 +1,6 @@
-import type {HTML} from "../../../../common/html.js";
+import type {Html} from "../../../../common/html.js";
 import {html} from "../../../../common/html.js";
-import {generateNodeFromHTML} from "../../components/base.js";
+import {generateNodeFromHtml} from "../../components/base.js";
 import {ipcRenderer} from "../../typed-ipc-renderer.js";
 
 interface BaseSectionProps {
@@ -15,8 +15,8 @@ export function generateSettingOption(props: BaseSectionProps): void {
 
   $element.textContent = "";
 
-  const $optionControl = generateNodeFromHTML(
-    generateOptionHTML(value, disabled),
+  const $optionControl = generateNodeFromHtml(
+    generateOptionHtml(value, disabled),
   );
   $element.append($optionControl);
 
@@ -25,11 +25,11 @@ export function generateSettingOption(props: BaseSectionProps): void {
   }
 }
 
-export function generateOptionHTML(
+export function generateOptionHtml(
   settingOption: boolean,
   disabled?: boolean,
-): HTML {
-  const labelHTML = disabled
+): Html {
+  const labelHtml = disabled
     ? html`<label
         class="disallowed"
         title="Setting locked by system administrator."
@@ -40,7 +40,7 @@ export function generateOptionHTML(
       <div class="action">
         <div class="switch">
           <input class="toggle toggle-round" type="checkbox" checked disabled />
-          ${labelHTML}
+          ${labelHtml}
         </div>
       </div>
     `;
@@ -50,7 +50,7 @@ export function generateOptionHTML(
     <div class="action">
       <div class="switch">
         <input class="toggle toggle-round" type="checkbox" />
-        ${labelHTML}
+        ${labelHtml}
       </div>
     </div>
   `;
@@ -59,12 +59,12 @@ export function generateOptionHTML(
 /* A method that in future can be used to create dropdown menus using <select> <option> tags.
      it needs an object which has ``key: value`` pairs and will return a string that can be appended to HTML
   */
-export function generateSelectHTML(
+export function generateSelectHtml(
   options: Record<string, string>,
   className?: string,
   idName?: string,
-): HTML {
-  const optionsHTML = html``.join(
+): Html {
+  const optionsHtml = html``.join(
     Object.keys(options).map(
       (key) => html`
         <option name="${key}" value="${key}">${options[key]}</option>
@@ -73,7 +73,7 @@ export function generateSelectHTML(
   );
   return html`
     <select class="${className}" id="${idName}">
-      ${optionsHTML}
+      ${optionsHtml}
     </select>
   `;
 }

@@ -4,7 +4,7 @@ import {html} from "../../../../common/html.js";
 import * as Messages from "../../../../common/messages.js";
 import * as t from "../../../../common/translation-util.js";
 import type {ServerConf} from "../../../../common/types.js";
-import {generateNodeFromHTML} from "../../components/base.js";
+import {generateNodeFromHtml} from "../../components/base.js";
 import {ipcRenderer} from "../../typed-ipc-renderer.js";
 import * as DomainUtil from "../../utils/domain-util.js";
 
@@ -16,7 +16,7 @@ interface ServerInfoFormProps {
 }
 
 export function initServerInfoForm(props: ServerInfoFormProps): void {
-  const $serverInfoForm = generateNodeFromHTML(html`
+  const $serverInfoForm = generateNodeFromHtml(html`
     <div class="settings-card">
       <div class="server-info-left">
         <img class="server-info-icon" src="${props.server.icon}" />

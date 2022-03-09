@@ -13,13 +13,13 @@ const logger = new Logger({
 
 let db: JsonDB;
 
-reloadDB();
+reloadDb();
 
 export function getUpdateItem(
   key: string,
   defaultValue: true | null = null,
 ): true | null {
-  reloadDB();
+  reloadDb();
   let value: unknown;
   try {
     value = db.getObject<unknown>(`/${key}`);
@@ -37,15 +37,15 @@ export function getUpdateItem(
 
 export function setUpdateItem(key: string, value: true | null): void {
   db.push(`/${key}`, value, true);
-  reloadDB();
+  reloadDb();
 }
 
 export function removeUpdateItem(key: string): void {
   db.delete(`/${key}`);
-  reloadDB();
+  reloadDb();
 }
 
-function reloadDB(): void {
+function reloadDb(): void {
   const linuxUpdateJsonPath = path.join(
     app.getPath("userData"),
     "/config/updates.json",

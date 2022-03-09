@@ -2,7 +2,7 @@ import {dialog} from "@electron/remote";
 
 import {html} from "../../../../common/html.js";
 import * as t from "../../../../common/translation-util.js";
-import {generateNodeFromHTML} from "../../components/base.js";
+import {generateNodeFromHtml} from "../../components/base.js";
 import {ipcRenderer} from "../../typed-ipc-renderer.js";
 import * as DomainUtil from "../../utils/domain-util.js";
 import * as LinkUtil from "../../utils/link-util.js";
@@ -13,7 +13,7 @@ interface NewServerFormProps {
 }
 
 export function initNewServerForm({$root, onChange}: NewServerFormProps): void {
-  const $newServerForm = generateNodeFromHTML(html`
+  const $newServerForm = generateNodeFromHtml(html`
     <div class="server-input-container">
       <div class="title">${t.__("Organization URL")}</div>
       <div class="add-server-info-row">

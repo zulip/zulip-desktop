@@ -21,7 +21,7 @@ const logger = new Logger({
 
 let db: JsonDB;
 
-reloadDB();
+reloadDb();
 
 export function getConfigItem<Key extends keyof Config>(
   key: Key,
@@ -75,7 +75,7 @@ export function removeConfigItem(key: string): void {
   db.save();
 }
 
-function reloadDB(): void {
+function reloadDb(): void {
   const settingsJsonPath = path.join(
     app.getPath("userData"),
     "/config/settings.json",

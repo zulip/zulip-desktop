@@ -19,13 +19,13 @@ export const setAutoLaunch = async (
 
   // `setLoginItemSettings` doesn't support linux
   if (process.platform === "linux") {
-    const ZulipAutoLauncher = new AutoLaunch({
+    const zulipAutoLauncher = new AutoLaunch({
       name: "Zulip",
       isHidden: false,
     });
     await (autoLaunchOption
-      ? ZulipAutoLauncher.enable()
-      : ZulipAutoLauncher.disable());
+      ? zulipAutoLauncher.enable()
+      : zulipAutoLauncher.disable());
   } else {
     app.setLoginItemSettings({
       openAtLogin: autoLaunchOption,

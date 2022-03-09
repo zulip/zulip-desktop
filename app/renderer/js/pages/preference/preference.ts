@@ -1,4 +1,4 @@
-import type {DNDSettings} from "../../../../common/dnd-util.js";
+import type {DndSettings} from "../../../../common/dnd-util.js";
 import {html} from "../../../../common/html.js";
 import type {NavItem} from "../../../../common/types.js";
 import {ipcRenderer} from "../../typed-ipc-renderer.js";
@@ -129,7 +129,7 @@ export class PreferenceView {
   private readonly handleToggleDnd = (
     _event: Event,
     _state: boolean,
-    newSettings: Partial<DNDSettings>,
+    newSettings: Partial<DndSettings>,
   ) => {
     this.handleToggle("show-notification-option", newSettings.showNotification);
     this.handleToggle("silent-option", newSettings.silent);

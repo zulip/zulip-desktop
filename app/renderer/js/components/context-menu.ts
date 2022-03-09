@@ -11,7 +11,7 @@ export const contextMenu = (
 ) => {
   const isText = props.selectionText !== "";
   const isLink = props.linkURL !== "";
-  const linkURL = isLink ? new URL(props.linkURL) : undefined;
+  const linkUrl = isLink ? new URL(props.linkURL) : undefined;
 
   const makeSuggestion = (suggestion: string) => ({
     label: suggestion,
@@ -76,7 +76,7 @@ export const contextMenu = (
     },
     {
       label:
-        linkURL?.protocol === "mailto:"
+        linkUrl?.protocol === "mailto:"
           ? t.__("Copy Email Address")
           : t.__("Copy Link"),
       visible: isLink,
@@ -84,7 +84,7 @@ export const contextMenu = (
         clipboard.write({
           bookmark: props.linkText,
           text:
-            linkURL?.protocol === "mailto:" ? linkURL.pathname : props.linkURL,
+            linkUrl?.protocol === "mailto:" ? linkUrl.pathname : props.linkURL,
         });
       },
     },

@@ -8,7 +8,7 @@ import * as Sentry from "@sentry/electron";
 import type {Config} from "../../common/config-util.js";
 import * as ConfigUtil from "../../common/config-util.js";
 import * as DNDUtil from "../../common/dnd-util.js";
-import type {DNDSettings} from "../../common/dnd-util.js";
+import type {DndSettings} from "../../common/dnd-util.js";
 import * as EnterpriseUtil from "../../common/enterprise-util.js";
 import Logger from "../../common/logger-util.js";
 import * as Messages from "../../common/messages.js";
@@ -123,7 +123,7 @@ export class ServerManagerView {
     await this.loadProxy();
     this.initDefaultSettings();
     this.initSidebar();
-    this.removeUAfromDisk();
+    this.removeUaFromDisk();
     if (EnterpriseUtil.hasConfigFile()) {
       await this.initPresetOrgs();
     }
@@ -231,7 +231,7 @@ export class ServerManagerView {
 
   // Remove the stale UA string from the disk if the app is not freshly
   // installed.  This should be removed in a further release.
-  removeUAfromDisk(): void {
+  removeUaFromDisk(): void {
     ConfigUtil.removeConfigItem("userAgent");
   }
 
@@ -401,7 +401,7 @@ export class ServerManagerView {
   }
 
   initActions(): void {
-    this.initDNDButton();
+    this.initDndButton();
     this.initServerActions();
     this.initLeftSidebarEvents();
   }
@@ -454,9 +454,9 @@ export class ServerManagerView {
     this.sidebarHoverEvent(this.$dndButton, this.$dndTooltip);
   }
 
-  initDNDButton(): void {
+  initDndButton(): void {
     const dnd = ConfigUtil.getConfigItem("dnd", false);
-    this.toggleDNDButton(dnd);
+    this.toggleDndButton(dnd);
   }
 
   getTabIndex(): number {
@@ -776,7 +776,7 @@ export class ServerManagerView {
   }
 
   // Toggles the dnd button icon.
-  toggleDNDButton(alert: boolean): void {
+  toggleDndButton(alert: boolean): void {
     this.$dndTooltip.textContent =
       (alert ? "Disable" : "Enable") + " Do Not Disturb";
     this.$dndButton.querySelector("i")!.textContent = alert
@@ -1029,9 +1029,9 @@ export class ServerManagerView {
       async (
         event: Event,
         state: boolean,
-        newSettings: Partial<DNDSettings>,
+        newSettings: Partial<DndSettings>,
       ) => {
-        this.toggleDNDButton(state);
+        this.toggleDndButton(state);
         ipcRenderer.send(
           "forward-message",
           "toggle-silent",

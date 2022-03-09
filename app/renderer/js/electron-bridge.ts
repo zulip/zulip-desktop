@@ -73,20 +73,20 @@ bridgeEvents.on("realm_name", (realmName: unknown) => {
     throw new TypeError("Expected string for realmName");
   }
 
-  const serverURL = location.origin;
-  ipcRenderer.send("realm-name-changed", serverURL, realmName);
+  const serverUrl = location.origin;
+  ipcRenderer.send("realm-name-changed", serverUrl, realmName);
 });
 
-bridgeEvents.on("realm_icon_url", (iconURL: unknown) => {
-  if (typeof iconURL !== "string") {
-    throw new TypeError("Expected string for iconURL");
+bridgeEvents.on("realm_icon_url", (iconUrl: unknown) => {
+  if (typeof iconUrl !== "string") {
+    throw new TypeError("Expected string for iconUrl");
   }
 
-  const serverURL = location.origin;
+  const serverUrl = location.origin;
   ipcRenderer.send(
     "realm-icon-changed",
-    serverURL,
-    iconURL.includes("http") ? iconURL : `${serverURL}${iconURL}`,
+    serverUrl,
+    iconUrl.includes("http") ? iconUrl : `${serverUrl}${iconUrl}`,
   );
 });
 

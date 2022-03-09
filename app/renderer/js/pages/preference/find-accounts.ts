@@ -1,6 +1,6 @@
 import {html} from "../../../../common/html.js";
 import * as t from "../../../../common/translation-util.js";
-import {generateNodeFromHTML} from "../../components/base.js";
+import {generateNodeFromHtml} from "../../components/base.js";
 import * as LinkUtil from "../../utils/link-util.js";
 
 interface FindAccountsProps {
@@ -20,7 +20,7 @@ async function findAccounts(url: string): Promise<void> {
 }
 
 export function initFindAccounts(props: FindAccountsProps): void {
-  const $findAccounts = generateNodeFromHTML(html`
+  const $findAccounts = generateNodeFromHtml(html`
     <div class="settings-card certificate-card">
       <div class="certificate-input">
         <div>${t.__("Organization URL")}</div>

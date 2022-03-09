@@ -1,8 +1,8 @@
-import type {HTML} from "../../../common/html.js";
+import type {Html} from "../../../common/html.js";
 import {html} from "../../../common/html.js";
 import {ipcRenderer} from "../typed-ipc-renderer.js";
 
-import {generateNodeFromHTML} from "./base.js";
+import {generateNodeFromHtml} from "./base.js";
 import type {TabProps} from "./tab.js";
 import Tab from "./tab.js";
 import type WebView from "./webview.js";
@@ -20,7 +20,7 @@ export default class ServerTab extends Tab {
     super(props);
 
     this.webview = webview;
-    this.$el = generateNodeFromHTML(this.templateHTML());
+    this.$el = generateNodeFromHtml(this.templateHtml());
     this.props.$root.append(this.$el);
     this.registerListeners();
     this.$badge = this.$el.querySelector(".server-tab-badge")!;
@@ -41,7 +41,7 @@ export default class ServerTab extends Tab {
     (await this.webview).$el.remove();
   }
 
-  templateHTML(): HTML {
+  templateHtml(): Html {
     return html`
       <div class="tab" data-tab-id="${this.props.tabIndex}">
         <div class="server-tooltip" style="display:none">

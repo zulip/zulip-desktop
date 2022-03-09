@@ -1,6 +1,6 @@
-import type {HTML} from "../../../common/html.js";
+import type {Html} from "../../../common/html.js";
 
-export function generateNodeFromHTML(html: HTML): Element {
+export function generateNodeFromHtml(html: Html): Element {
   const wrapper = document.createElement("div");
   wrapper.innerHTML = html.html;
 

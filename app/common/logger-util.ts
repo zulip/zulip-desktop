@@ -74,13 +74,13 @@ export default class Logger {
   async trimLog(file: string): Promise<void> {
     const data = await fs.promises.readFile(file, "utf8");
 
-    const MAX_LOG_FILE_LINES = 500;
+    const maxLogFileLines = 500;
     const logs = data.split(os.EOL);
     const logLength = logs.length - 1;
 
-    // Keep bottom MAX_LOG_FILE_LINES of each log instance
-    if (logLength > MAX_LOG_FILE_LINES) {
-      const trimmedLogs = logs.slice(logLength - MAX_LOG_FILE_LINES);
+    // Keep bottom maxLogFileLines of each log instance
+    if (logLength > maxLogFileLines) {
+      const trimmedLogs = logs.slice(logLength - maxLogFileLines);
       const toWrite = trimmedLogs.join(os.EOL);
       await fs.promises.writeFile(file, toWrite);
     }

@@ -1,4 +1,4 @@
-import type {DNDSettings} from "./dnd-util.js";
+import type {DndSettings} from "./dnd-util.js";
 import type {MenuProps, ServerConf} from "./types.js";
 
 export interface MainMessage {
@@ -69,7 +69,7 @@ export interface RendererMessage {
     autoHideMenubar: boolean,
     updateMenu: boolean,
   ) => void;
-  "toggle-dnd": (state: boolean, newSettings: Partial<DNDSettings>) => void;
+  "toggle-dnd": (state: boolean, newSettings: Partial<DndSettings>) => void;
   "toggle-sidebar": (show: boolean) => void;
   "toggle-silent": (state: boolean) => void;
   "toggle-tray": (state: boolean) => void;

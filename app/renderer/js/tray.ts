@@ -11,23 +11,23 @@ import {ipcRenderer} from "./typed-ipc-renderer.js";
 
 let tray: Electron.Tray | null = null;
 
-const ICON_DIR = "../../resources/tray";
+const iconDir = "../../resources/tray";
 
-const TRAY_SUFFIX = "tray";
+const traySuffix = "tray";
 
-const APP_ICON = path.join(__dirname, ICON_DIR, TRAY_SUFFIX);
+const appIcon = path.join(__dirname, iconDir, traySuffix);
 
 const iconPath = (): string => {
   if (process.platform === "linux") {
-    return APP_ICON + "linux.png";
+    return appIcon + "linux.png";
   }
 
   return (
-    APP_ICON + (process.platform === "win32" ? "win.ico" : "macOSTemplate.png")
+    appIcon + (process.platform === "win32" ? "win.ico" : "macOSTemplate.png")
   );
 };
 
-const winUnreadTrayIconPath = (): string => APP_ICON + "unread.ico";
+const winUnreadTrayIconPath = (): string => appIcon + "unread.ico";
 
 let unread = 0;
 
@@ -60,42 +60,42 @@ const config = {
 const renderCanvas = function (arg: number): HTMLCanvasElement {
   config.unreadCount = arg;
 
-  const SIZE = config.size * config.pixelRatio;
-  const PADDING = SIZE * 0.05;
-  const CENTER = SIZE / 2;
-  const HAS_COUNT = config.showUnreadCount && config.unreadCount;
+  const size = config.size * config.pixelRatio;
+  const padding = size * 0.05;
+  const center = size / 2;
+  const hasCount = config.showUnreadCount && config.unreadCount;
   const color = config.unreadCount ? config.unreadColor : config.readColor;
   const backgroundColor = config.unreadCount
     ? config.unreadBackgroundColor
     : config.readBackgroundColor;
 
   const canvas = document.createElement("canvas");
-  canvas.width = SIZE;
-  canvas.height = SIZE;
+  canvas.width = size;
+  canvas.height = size;
   const ctx = canvas.getContext("2d")!;
 
   // Circle
-  // If (!config.thick || config.thick && HAS_COUNT) {
+  // If (!config.thick || config.thick && hasCount) {
   ctx.beginPath();
-  ctx.arc(CENTER, CENTER, SIZE / 2 - PADDING, 0, 2 * Math.PI, false);
+  ctx.arc(center, center, size / 2 - padding, 0, 2 * Math.PI, false);
   ctx.fillStyle = backgroundColor;
   ctx.fill();
-  ctx.lineWidth = SIZE / (config.thick ? 10 : 20);
+  ctx.lineWidth = size / (config.thick ? 10 : 20);
   ctx.strokeStyle = backgroundColor;
   ctx.stroke();
   // Count or Icon
-  if (HAS_COUNT) {
+  if (hasCount) {
     ctx.fillStyle = color;
     ctx.textAlign = "center";
     if (config.unreadCount > 99) {
-      ctx.font = `${config.thick ? "bold " : ""}${SIZE * 0.4}px Helvetica`;
-      ctx.fillText("99+", CENTER, CENTER + SIZE * 0.15);
+      ctx.font = `${config.thick ? "bold " : ""}${size * 0.4}px Helvetica`;
+      ctx.fillText("99+", center, center + size * 0.15);
     } else if (config.unreadCount < 10) {
-      ctx.font = `${config.thick ? "bold " : ""}${SIZE * 0.5}px Helvetica`;
-      ctx.fillText(String(config.unreadCount), CENTER, CENTER + SIZE * 0.2);
+      ctx.font = `${config.thick ? "bold " : ""}${size * 0.5}px Helvetica`;
+      ctx.fillText(String(config.unreadCount), center, center + size * 0.2);
     } else {
-      ctx.font = `${config.thick ? "bold " : ""}${SIZE * 0.5}px Helvetica`;
-      ctx.fillText(String(config.unreadCount), CENTER, CENTER + SIZE * 0.15);
+      ctx.font = `${config.thick ? "bold " : ""}${size * 0.5}px Helvetica`;
+      ctx.fillText(String(config.unreadCount), center, center + size * 0.15);
     }
   }
 

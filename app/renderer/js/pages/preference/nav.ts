@@ -1,8 +1,8 @@
-import type {HTML} from "../../../../common/html.js";
+import type {Html} from "../../../../common/html.js";
 import {html} from "../../../../common/html.js";
 import * as t from "../../../../common/translation-util.js";
 import type {NavItem} from "../../../../common/types.js";
-import {generateNodeFromHTML} from "../../components/base.js";
+import {generateNodeFromHtml} from "../../components/base.js";
 
 interface PreferenceNavProps {
   $root: Element;
@@ -23,13 +23,13 @@ export default class PreferenceNav {
       "Shortcuts",
     ];
 
-    this.$el = generateNodeFromHTML(this.templateHTML());
+    this.$el = generateNodeFromHtml(this.templateHtml());
     this.props.$root.append(this.$el);
     this.registerListeners();
   }
 
-  templateHTML(): HTML {
-    const navItemsHTML = html``.join(
+  templateHtml(): Html {
+    const navItemsHtml = html``.join(
       this.navItems.map(
         (navItem) => html`
           <div class="nav" id="nav-${navItem}">${t.__(navItem)}</div>
@@ -40,7 +40,7 @@ export default class PreferenceNav {
     return html`
       <div>
         <div id="settings-header">${t.__("Settings")}</div>
-        <div id="nav-container">${navItemsHTML}</div>
+        <div id="nav-container">${navItemsHtml}</div>
       </div>
     `;
   }

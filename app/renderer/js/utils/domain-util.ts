@@ -27,7 +27,7 @@ const serverConfSchema = z.object({
 
 let db!: JsonDB;
 
-reloadDB();
+reloadDb();
 
 // Migrate from old schema
 try {
@@ -46,7 +46,7 @@ try {
 }
 
 export function getDomains(): ServerConf[] {
-  reloadDB();
+  reloadDb();
   try {
     return serverConfSchema.array().parse(db.getObject<unknown>("/domains"));
   } catch (error: unknown) {
@@ -56,12 +56,12 @@ export function getDomains(): ServerConf[] {
 }
 
 export function getDomain(index: number): ServerConf {
-  reloadDB();
+  reloadDb();
   return serverConfSchema.parse(db.getObject<unknown>(`/domains[${index}]`));
 }
 
 export function updateDomain(index: number, server: ServerConf): void {
-  reloadDB();
+  reloadDb();
   serverConfSchema.parse(server);
   db.push(`/domains[${index}]`, server, true);
 }
@@ -76,18 +76,18 @@ export async function addDomain(server: {
     server.icon = localIconUrl;
     serverConfSchema.parse(server);
     db.push("/domains[]", server, true);
-    reloadDB();
+    reloadDb();
   } else {
     server.icon = defaultIconUrl;
     serverConfSchema.parse(server);
     db.push("/domains[]", server, true);
-    reloadDB();
+    reloadDb();
   }
 }
 
 export function removeDomains(): void {
   db.delete("/domains");
-  reloadDB();
+  reloadDb();
 }
 
 export function removeDomain(index: number): boolean {
@@ -96,7 +96,7 @@ export function removeDomain(index: number): boolean {
   }
 
   db.delete(`/domains[${index}]`);
-  reloadDB();
+  reloadDb();
   return true;
 }
 
@@ -144,7 +144,7 @@ export async function updateSavedServer(
     if (!oldIcon || localIconUrl !== "../renderer/img/icon.png") {
       newServerConf.icon = localIconUrl;
       updateDomain(index, newServerConf);
-      reloadDB();
+      reloadDb();
     }
   } catch (error: unknown) {
     logger.log("Could not update server icon.");
@@ -153,7 +153,7 @@ export async function updateSavedServer(
   }
 }
 
-function reloadDB(): void {
+function reloadDb(): void {
   const domainJsonPath = path.join(
     app.getPath("userData"),
     "config/domain.json",

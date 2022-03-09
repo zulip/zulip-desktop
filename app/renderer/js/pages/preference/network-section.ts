@@ -55,7 +55,7 @@ export function initNetworkSection({$root}: NetworkSectionProps): void {
     </div>
   `.html;
 
-  const $proxyPAC: HTMLInputElement = $root.querySelector(
+  const $proxyPac: HTMLInputElement = $root.querySelector(
     "#proxy-pac-option .setting-input-value",
   )!;
   const $proxyRules: HTMLInputElement = $root.querySelector(
@@ -70,12 +70,12 @@ export function initNetworkSection({$root}: NetworkSectionProps): void {
   toggleManualProxySettings(ConfigUtil.getConfigItem("useManualProxy", false));
   updateProxyOption();
 
-  $proxyPAC.value = ConfigUtil.getConfigItem("proxyPAC", "");
+  $proxyPac.value = ConfigUtil.getConfigItem("proxyPAC", "");
   $proxyRules.value = ConfigUtil.getConfigItem("proxyRules", "");
   $proxyBypass.value = ConfigUtil.getConfigItem("proxyBypass", "");
 
   $proxySaveAction.addEventListener("click", () => {
-    ConfigUtil.setConfigItem("proxyPAC", $proxyPAC.value);
+    ConfigUtil.setConfigItem("proxyPAC", $proxyPac.value);
     ConfigUtil.setConfigItem("proxyRules", $proxyRules.value);
     ConfigUtil.setConfigItem("proxyBypass", $proxyBypass.value);
 

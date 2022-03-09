@@ -31,15 +31,15 @@ let badgeCount: number;
 let isQuitting = false;
 
 // Load this url in main window
-const mainURL = "file://" + path.join(__dirname, "../renderer", "main.html");
+const mainUrl = "file://" + path.join(__dirname, "../renderer", "main.html");
 
 const permissionCallbacks = new Map<number, (grant: boolean) => void>();
 let nextPermissionCallbackId = 0;
 
-const APP_ICON = path.join(__dirname, "../resources", "Icon");
+const appIcon = path.join(__dirname, "../resources", "Icon");
 
 const iconPath = (): string =>
-  APP_ICON + (process.platform === "win32" ? ".ico" : ".png");
+  appIcon + (process.platform === "win32" ? ".ico" : ".png");
 
 // Toggle the app window
 const toggleApp = (): void => {
@@ -80,7 +80,7 @@ function createMainWindow(): Electron.BrowserWindow {
     send(win.webContents, "focus");
   });
 
-  (async () => win.loadURL(mainURL))();
+  (async () => win.loadURL(mainUrl))();
 
   // Keep the app running in background on close event
   win.on("close", (event) => {
