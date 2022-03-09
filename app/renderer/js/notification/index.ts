@@ -35,7 +35,7 @@ export function newNotification(
   }
 
   return {
-    close: () => {
+    close() {
       notification.close();
     },
     title: notification.title,

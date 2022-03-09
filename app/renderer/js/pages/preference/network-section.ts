@@ -94,7 +94,7 @@ export function initNetworkSection({$root}: NetworkSectionProps): void {
     generateSettingOption({
       $element: $root.querySelector("#use-system-settings .setting-control")!,
       value: ConfigUtil.getConfigItem("useSystemProxy", false),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("useSystemProxy", false);
         const manualProxyValue = ConfigUtil.getConfigItem(
           "useManualProxy",
@@ -118,7 +118,7 @@ export function initNetworkSection({$root}: NetworkSectionProps): void {
     generateSettingOption({
       $element: $root.querySelector("#use-manual-settings .setting-control")!,
       value: ConfigUtil.getConfigItem("useManualProxy", false),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("useManualProxy", false);
         const systemProxyValue = ConfigUtil.getConfigItem(
           "useSystemProxy",

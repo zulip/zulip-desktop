@@ -601,12 +601,12 @@ export class ServerManagerView {
     await this.openFunctionalTab({
       name: "About",
       materialIcon: "sentiment_very_satisfied",
-      makeView: () => {
+      makeView() {
         aboutView = new AboutView();
         aboutView.$view.classList.add("functional-view");
         return aboutView.$view;
       },
-      destroyView: () => {
+      destroyView() {
         aboutView.destroy();
       },
     });
@@ -798,7 +798,7 @@ export class ServerManagerView {
       const template = [
         {
           label: "Disconnect organization",
-          click: async () => {
+          async click() {
             const {response} = await dialog.showMessageBox({
               type: "warning",
               buttons: ["YES", "NO"],
@@ -830,7 +830,7 @@ export class ServerManagerView {
         },
         {
           label: "Copy Zulip URL",
-          click: () => {
+          click() {
             clipboard.writeText(DomainUtil.getDomain(index).url);
           },
         },

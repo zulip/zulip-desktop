@@ -253,7 +253,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
     generateSettingOption({
       $element: $root.querySelector("#tray-option .setting-control")!,
       value: ConfigUtil.getConfigItem("trayIcon", true),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("trayIcon", true);
         ConfigUtil.setConfigItem("trayIcon", newValue);
         ipcRenderer.send("forward-message", "toggletray");
@@ -266,7 +266,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
     generateSettingOption({
       $element: $root.querySelector("#menubar-option .setting-control")!,
       value: ConfigUtil.getConfigItem("autoHideMenubar", false),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("autoHideMenubar", false);
         ConfigUtil.setConfigItem("autoHideMenubar", newValue);
         ipcRenderer.send("toggle-menubar", newValue);
@@ -279,7 +279,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
     generateSettingOption({
       $element: $root.querySelector("#badge-option .setting-control")!,
       value: ConfigUtil.getConfigItem("badgeOption", true),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("badgeOption", true);
         ConfigUtil.setConfigItem("badgeOption", newValue);
         ipcRenderer.send("toggle-badge-option", newValue);
@@ -292,7 +292,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
     generateSettingOption({
       $element: $root.querySelector("#dock-bounce-option .setting-control")!,
       value: ConfigUtil.getConfigItem("dockBouncing", true),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("dockBouncing", true);
         ConfigUtil.setConfigItem("dockBouncing", newValue);
         updateDockBouncing();
@@ -304,7 +304,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
     generateSettingOption({
       $element: $root.querySelector("#flash-taskbar-option .setting-control")!,
       value: ConfigUtil.getConfigItem("flashTaskbarOnMessage", true),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem(
           "flashTaskbarOnMessage",
           true,
@@ -320,7 +320,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
       $element: $root.querySelector("#autoupdate-option .setting-control")!,
       disabled: EnterpriseUtil.configItemExists("autoUpdate"),
       value: ConfigUtil.getConfigItem("autoUpdate", true),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("autoUpdate", true);
         ConfigUtil.setConfigItem("autoUpdate", newValue);
         if (!newValue) {
@@ -337,7 +337,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
     generateSettingOption({
       $element: $root.querySelector("#betaupdate-option .setting-control")!,
       value: ConfigUtil.getConfigItem("betaUpdate", false),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("betaUpdate", false);
         if (ConfigUtil.getConfigItem("autoUpdate", true)) {
           ConfigUtil.setConfigItem("betaUpdate", newValue);
@@ -351,7 +351,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
     generateSettingOption({
       $element: $root.querySelector("#silent-option .setting-control")!,
       value: ConfigUtil.getConfigItem("silent", false),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("silent", true);
         ConfigUtil.setConfigItem("silent", newValue);
         updateSilentOption();
@@ -370,7 +370,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
         "#show-notification-option .setting-control",
       )!,
       value: ConfigUtil.getConfigItem("showNotification", true),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("showNotification", true);
         ConfigUtil.setConfigItem("showNotification", newValue);
         showDesktopNotification();
@@ -382,7 +382,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
     generateSettingOption({
       $element: $root.querySelector("#sidebar-option .setting-control")!,
       value: ConfigUtil.getConfigItem("showSidebar", true),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("showSidebar", true);
         ConfigUtil.setConfigItem("showSidebar", newValue);
         ipcRenderer.send("forward-message", "toggle-sidebar", newValue);
@@ -395,7 +395,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
     generateSettingOption({
       $element: $root.querySelector("#startAtLogin-option .setting-control")!,
       value: ConfigUtil.getConfigItem("startAtLogin", false),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("startAtLogin", false);
         ConfigUtil.setConfigItem("startAtLogin", newValue);
         ipcRenderer.send("toggleAutoLauncher", newValue);
@@ -408,7 +408,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
     generateSettingOption({
       $element: $root.querySelector("#quitOnClose-option .setting-control")!,
       value: ConfigUtil.getConfigItem("quitOnClose", false),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("quitOnClose", false);
         ConfigUtil.setConfigItem("quitOnClose", newValue);
         updateQuitOnCloseOption();
@@ -422,7 +422,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
         "#enable-spellchecker-option .setting-control",
       )!,
       value: ConfigUtil.getConfigItem("enableSpellchecker", true),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("enableSpellchecker", true);
         ConfigUtil.setConfigItem("enableSpellchecker", newValue);
         ipcRenderer.send("configure-spell-checker");
@@ -444,7 +444,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
         "#enable-error-reporting .setting-control",
       )!,
       value: ConfigUtil.getConfigItem("errorReporting", true),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("errorReporting", true);
         ConfigUtil.setConfigItem("errorReporting", newValue);
         enableErrorReporting();
@@ -490,7 +490,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
     generateSettingOption({
       $element: $root.querySelector("#start-minimize-option .setting-control")!,
       value: ConfigUtil.getConfigItem("startMinimized", false),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("startMinimized", false);
         ConfigUtil.setConfigItem("startMinimized", newValue);
         minimizeOnStart();
@@ -553,7 +553,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
     generateSettingOption({
       $element: $root.querySelector("#prompt-download .setting-control")!,
       value: ConfigUtil.getConfigItem("promptDownload", false),
-      clickHandler: () => {
+      clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("promptDownload", false);
         ConfigUtil.setConfigItem("promptDownload", newValue);
         updatePromptDownloadOption();

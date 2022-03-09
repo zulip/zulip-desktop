@@ -35,7 +35,7 @@ const electron_bridge: ElectronBridge = {
   send_event: (eventName: string | symbol, ...args: unknown[]): boolean =>
     bridgeEvents.emit(eventName, ...args),
 
-  on_event: (eventName: string, listener: ListenerType): void => {
+  on_event(eventName: string, listener: ListenerType): void {
     bridgeEvents.on(eventName, listener);
   },
 
@@ -52,7 +52,7 @@ const electron_bridge: ElectronBridge = {
   get_send_notification_reply_message_supported: (): boolean =>
     notificationReplySupported,
 
-  set_send_notification_reply_message_supported: (value: boolean): void => {
+  set_send_notification_reply_message_supported(value: boolean): void {
     notificationReplySupported = value;
   },
 
