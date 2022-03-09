@@ -67,7 +67,6 @@ function createMainWindow(): Electron.BrowserWindow {
     minHeight: 400,
     webPreferences: {
       contextIsolation: true,
-      partition: "persist:webviewsession",
       preload: require.resolve("../renderer/js/main"),
       webviewTag: true,
       worldSafeExecuteJavaScript: true,
@@ -259,7 +258,7 @@ ${error}`,
     },
   );
 
-  page.session.setPermissionRequestHandler(
+  ses.setPermissionRequestHandler(
     (webContents, permission, callback, details) => {
       const {origin} = new URL(details.requestingUrl);
       const permissionCallbackId = nextPermissionCallbackId++;
