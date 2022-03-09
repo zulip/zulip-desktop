@@ -115,6 +115,7 @@ td:nth-child(odd) {
 
 /* We don't want to show this in nav item since we have the + button for adding an Organization */
 
+/* stylelint-disable-next-line selector-id-pattern */
 #nav-AddServer {
   display: none;
 }
