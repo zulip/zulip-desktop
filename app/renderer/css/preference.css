@@ -749,10 +749,12 @@ i.open-network-button {
   border-color: rgb(0 0 0 / 0%);
 }
 
+/* stylelint-disable-next-line selector-class-pattern */
 .tagify__input {
   min-width: 130px !important;
 }
 
+/* stylelint-disable-next-line selector-class-pattern */
 .tagify__input::before {
   top: 0;
   bottom: 0;
