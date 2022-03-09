@@ -19,7 +19,8 @@ export async function openBrowser(url: URL): Promise<void> {
     const file = path.join(dir, "redirect.html");
     fs.writeFileSync(
       file,
-      html`<!DOCTYPE html>
+      html`
+        <!DOCTYPE html>
         <html>
           <head>
             <meta charset="UTF-8" />
@@ -34,7 +35,8 @@ export async function openBrowser(url: URL): Promise<void> {
           <body>
             <p>Opening <a href="${url.href}">${url.href}</a>…</p>
           </body>
-        </html> `.html,
+        </html>
+      `.html,
     );
     await shell.openPath(file);
     setTimeout(() => {
