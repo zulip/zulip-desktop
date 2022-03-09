@@ -433,11 +433,11 @@ webview.focus {
 
 .popup .show {
   visibility: visible;
-  animation: cssAnimation 0s ease-in 5s forwards;
+  animation: full-screen-popup 0s ease-in 1s forwards;
   animation-fill-mode: forwards;
 }
 
-@keyframes cssAnimation {
+@keyframes full-screen-popup {
   from {
     opacity: 0;
   }
