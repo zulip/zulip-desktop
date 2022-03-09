@@ -3,10 +3,10 @@
   font-style: normal;
   font-weight: 400;
   src: local("Material Icons"), local("MaterialIcons-Regular"),
-    url(../fonts/MaterialIcons-Regular.ttf) format("truetype");
+    url("../fonts/MaterialIcons-Regular.ttf") format("truetype");
 }
 
 @font-face {
   font-family: Montserrat;
-  src: url(../fonts/Montserrat-Regular.ttf) format("truetype");
+  src: url("../fonts/Montserrat-Regular.ttf") format("truetype");
 }

@@ -290,7 +290,7 @@ body {
   content: "";
   position: absolute;
   z-index: 1;
-  background: rgb(255 255 255 / 100%) url(../img/ic_loading.gif) no-repeat;
+  background: rgb(255 255 255 / 100%) url("../img/ic_loading.gif") no-repeat;
   background-size: 60px 60px;
   background-position: center;
   width: 100%;
