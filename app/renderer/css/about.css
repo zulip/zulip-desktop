@@ -1,7 +1,7 @@
 :host {
   contain: strict;
   display: flow-root;
-  background: rgba(250, 250, 250, 1);
+  background: rgb(250 250 250 / 100%);
   font-family: menu, "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: subpixel-antialiased;
 }
@@ -12,7 +12,7 @@
 }
 
 #version {
-  color: rgba(68, 67, 67, 1);
+  color: rgb(68 67 67 / 100%);
   font-size: 1.3em;
   padding-top: 40px;
 }
@@ -26,7 +26,7 @@
 
 .about p {
   font-size: 20px;
-  color: rgba(0, 0, 0, 0.62);
+  color: rgb(0 0 0 / 62%);
 }
 
 .about img {
@@ -51,7 +51,7 @@
   position: absolute;
   width: 100%;
   left: 0;
-  color: rgba(68, 68, 68, 1);
+  color: rgb(68 68 68 / 100%);
 }
 
 .maintenance-info p {
@@ -61,7 +61,7 @@
 }
 
 p.detail a {
-  color: rgba(53, 95, 76, 1);
+  color: rgb(53 95 76 / 100%);
 }
 
 p.detail a:hover {

@@ -6,25 +6,25 @@
   font-family: menu, "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   font-size: 14px;
-  background: rgba(239, 239, 239, 1);
+  background: rgb(239 239 239 / 100%);
   letter-spacing: -0.08px;
   line-height: 18px;
-  color: rgba(139, 142, 143, 1);
+  color: rgb(139 142 143 / 100%);
 }
 
 kbd {
   display: inline-block;
-  border: 1px solid rgba(204, 204, 204, 1);
+  border: 1px solid rgb(204 204 204 / 100%);
   border-radius: 4px;
   font-size: 15px;
   font-family: Courier New, Courier, monospace;
   font-weight: bold;
   white-space: nowrap;
-  background-color: rgba(247, 247, 247, 1);
-  color: rgba(51, 51, 51, 1);
+  background-color: rgb(247 247 247 / 100%);
+  color: rgb(51 51 51 / 100%);
   margin: 0 0.1em;
   padding: 0.3em 0.8em;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 1);
+  text-shadow: 0 1px 0 rgb(255 255 255 / 100%);
   line-height: 1.4;
 }
 
@@ -32,7 +32,7 @@ table,
 th,
 td {
   border-collapse: collapse;
-  color: rgba(56, 52, 48, 1);
+  color: rgb(56 52 48 / 100%);
 }
 
 table {
@@ -85,7 +85,7 @@ td:nth-child(odd) {
   display: flex;
   flex-direction: column;
   font-size: 16px;
-  background: rgba(242, 242, 242, 1);
+  background: rgb(242 242 242 / 100%);
 }
 
 #nav-container {
@@ -94,18 +94,18 @@ td:nth-child(odd) {
 
 .nav {
   padding: 7px 0;
-  color: rgba(153, 153, 153, 1);
+  color: rgb(153 153 153 / 100%);
   cursor: pointer;
 }
 
 .nav.active {
-  color: rgba(78, 191, 172, 1);
+  color: rgb(78 191 172 / 100%);
   cursor: default;
   position: relative;
 }
 
 .nav.active::before {
-  background: rgba(70, 78, 90, 1);
+  background: rgb(70 78 90 / 100%);
   width: 3px;
   height: 18px;
   position: absolute;
@@ -121,7 +121,7 @@ td:nth-child(odd) {
 
 #settings-header {
   font-size: 22px;
-  color: rgba(34, 44, 49, 1);
+  color: rgb(34 44 49 / 100%);
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -141,11 +141,11 @@ td:nth-child(odd) {
 
 .title {
   font-weight: 500;
-  color: rgba(34, 44, 49, 1);
+  color: rgb(34 44 49 / 100%);
 }
 
 .page-title {
-  color: rgba(34, 44, 49, 1);
+  color: rgb(34 44 49 / 100%);
   font-size: 15px;
   font-weight: bold;
   padding: 4px 0 6px 0;
@@ -164,7 +164,7 @@ td:nth-child(odd) {
 .sub-title {
   padding: 4px 0 6px 0;
   font-weight: bold;
-  color: rgba(97, 97, 97, 1);
+  color: rgb(97 97 97 / 100%);
 }
 
 img.server-info-icon {
@@ -231,18 +231,18 @@ img.server-info-icon {
   font-size: 14px;
   border-radius: 4px;
   padding: 13px;
-  border: rgba(237, 237, 237, 1) 2px solid;
+  border: rgb(237 237 237 / 100%) 2px solid;
   outline-width: 0;
   background: transparent;
   max-width: 450px;
 }
 
 .setting-input-value:focus {
-  border: rgba(78, 191, 172, 1) 2px solid;
+  border: rgb(78 191 172 / 100%) 2px solid;
 }
 
 .invalid-input-value:focus {
-  border: rgba(239, 83, 80, 1) 2px solid;
+  border: rgb(239 83 80 / 100%) 2px solid;
 }
 
 .manual-proxy-block {
@@ -252,7 +252,7 @@ img.server-info-icon {
 .actions-container {
   display: flex;
   font-size: 14px;
-  color: rgba(35, 93, 58, 1);
+  color: rgb(35 93 58 / 100%);
   vertical-align: middle;
   margin: 10px 0;
   flex-wrap: wrap;
@@ -281,7 +281,7 @@ img.server-info-icon {
 }
 
 .action.disabled {
-  color: rgba(153, 153, 153, 1);
+  color: rgb(153 153 153 / 100%);
 }
 
 .action.disabled:hover {
@@ -293,13 +293,13 @@ img.server-info-icon {
   flex-wrap: wrap;
   padding: 12px 30px;
   margin: 10px 0 20px 0;
-  background: rgba(255, 255, 255, 1);
+  background: rgb(255 255 255 / 100%);
   width: 80%;
   transition: all 0.2s;
 }
 
 .settings-card:hover {
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 0 0 rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 0 0 rgb(0 0 0 / 12%);
 }
 
 .hidden {
@@ -308,11 +308,11 @@ img.server-info-icon {
 }
 
 .red {
-  color: rgb(240, 148, 148);
-  background: rgba(255, 255, 255, 1);
+  color: rgb(240 148 148);
+  background: rgb(255 255 255 / 100%);
   border-radius: 4px;
   display: inline-block;
-  border: 2px solid rgb(240, 148, 148);
+  border: 2px solid rgb(240 148 148);
   padding: 10px;
   width: 100px;
   cursor: pointer;
@@ -324,13 +324,13 @@ img.server-info-icon {
 }
 
 .red:hover {
-  background-color: rgb(240, 148, 148);
-  color: rgba(255, 255, 255, 1);
+  background-color: rgb(240 148 148);
+  color: rgb(255 255 255 / 100%);
 }
 
 .green {
-  color: rgba(255, 255, 255, 1);
-  background: rgba(78, 191, 172, 1);
+  color: rgb(255 255 255 / 100%);
+  background: rgb(78 191 172 / 100%);
   border-radius: 4px;
   display: inline-block;
   border: none;
@@ -345,8 +345,8 @@ img.server-info-icon {
 }
 
 .green:hover {
-  background-color: rgba(60, 159, 141, 1);
-  color: rgba(255, 255, 255, 1);
+  background-color: rgb(60 159 141 / 100%);
+  color: rgb(255 255 255 / 100%);
 }
 
 .w-150 {
@@ -358,9 +358,9 @@ img.server-info-icon {
 }
 
 .grey {
-  color: rgba(158, 158, 158, 1);
-  background: rgba(250, 250, 250, 1);
-  border: 1px solid rgba(158, 158, 158, 1);
+  color: rgb(158 158 158 / 100%);
+  background: rgb(250 250 250 / 100%);
+  border: 1px solid rgb(158 158 158 / 100%);
 }
 
 .setting-row {
@@ -400,7 +400,7 @@ i.open-tab-button {
 
 .selected-css-path,
 .download-folder-path {
-  background: rgba(238, 238, 238, 1);
+  background: rgb(238 238 238 / 100%);
   padding: 5px 10px;
   margin-right: 10px;
   display: flex;
@@ -449,7 +449,7 @@ i.open-tab-button {
 }
 
 .disallowed:hover {
-  background-color: rgba(241, 241, 241, 1);
+  background-color: rgb(241 241 241 / 100%);
   cursor: not-allowed;
 }
 
@@ -457,7 +457,7 @@ input.toggle-round + label {
   padding: 2px;
   width: 50px;
   height: 25px;
-  background-color: rgba(221, 221, 221, 1);
+  background-color: rgb(221 221 221 / 100%);
   border-radius: 25px;
 }
 
@@ -472,7 +472,7 @@ input.toggle-round + label::after {
 }
 
 input.toggle-round + label::before {
-  background-color: rgba(241, 241, 241, 1);
+  background-color: rgb(241 241 241 / 100%);
   border-radius: 25px;
   top: 0;
   right: 0;
@@ -483,12 +483,12 @@ input.toggle-round + label::before {
 input.toggle-round + label::after {
   width: 25px;
   height: 25px;
-  background-color: rgba(255, 255, 255, 1);
+  background-color: rgb(255 255 255 / 100%);
   border-radius: 100%;
 }
 
 input.toggle-round:checked + label::before {
-  background-color: rgba(78, 191, 172, 1);
+  background-color: rgb(78 191 172 / 100%);
   top: 0;
   right: 0;
   left: 0;
@@ -513,17 +513,21 @@ input.toggle-round:checked + label::after {
   height: 100%;
 
   /* background: rgba(61, 64, 67, 15); */
-  background: linear-gradient(35deg, rgba(0, 59, 82, 1), rgba(69, 181, 155, 1));
+  background: linear-gradient(
+    35deg,
+    rgb(0 59 82 / 100%),
+    rgb(69 181 155 / 100%)
+  );
   overflow: auto;
 }
 
 /* Modal Content */
 
 .modal-container {
-  background-color: rgba(244, 247, 248, 1);
+  background-color: rgb(244 247 248 / 100%);
   margin: auto;
   padding: 57px;
-  border: rgba(218, 225, 227, 1) 1px solid;
+  border: rgb(218 225 227 / 100%) 1px solid;
   width: 550px;
   height: 370px;
   border-radius: 4px;
@@ -537,7 +541,7 @@ input.toggle-round:checked + label::after {
 .divider {
   margin-bottom: 30px;
   margin-top: 30px;
-  color: rgba(125, 135, 138, 1);
+  color: rgb(125 135 138 / 100%);
 }
 
 .divider hr {
@@ -568,8 +572,8 @@ input.toggle-round:checked + label::after {
   margin: auto;
   align-items: center;
   text-align: center;
-  color: rgba(255, 255, 255, 1);
-  background: rgba(78, 191, 172, 1);
+  color: rgb(255 255 255 / 100%);
+  background: rgb(78 191 172 / 100%);
   border-color: none;
   border: none;
   width: 98%;
@@ -579,11 +583,11 @@ input.toggle-round:checked + label::after {
 }
 
 .server-center button:hover {
-  background: rgba(50, 149, 136, 1);
+  background: rgb(50 149 136 / 100%);
 }
 
 .server-center button:focus {
-  background: rgba(50, 149, 136, 1);
+  background: rgb(50 149 136 / 100%);
 }
 
 .certificates-card {
@@ -632,7 +636,7 @@ input.toggle-round:checked + label::after {
   padding-top: 15px;
   align-items: center;
   text-align: center;
-  color: rgb(78, 191, 172);
+  color: rgb(78 191 172);
   width: 98%;
   height: 46px;
   cursor: pointer;
@@ -738,11 +742,11 @@ i.open-network-button {
 .lang-menu {
   font-size: 13px;
   font-weight: bold;
-  background: rgba(78, 191, 172, 1);
+  background: rgb(78 191 172 / 100%);
   width: 100px;
   height: 38px;
-  color: rgba(255, 255, 255, 1);
-  border-color: rgba(0, 0, 0, 0);
+  color: rgb(255 255 255 / 100%);
+  border-color: rgb(0 0 0 / 0%);
 }
 
 .tagify__input {
