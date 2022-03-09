@@ -18,7 +18,7 @@ body {
 .toggle-sidebar {
   background: rgb(34 44 49 / 100%);
   width: 54px;
-  padding: 27px 0 20px 0;
+  padding: 27px 0 20px;
   justify-content: space-between;
   display: flex;
   flex-direction: column;

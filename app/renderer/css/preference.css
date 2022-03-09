@@ -149,12 +149,12 @@ td:nth-child(odd) {
   color: rgb(34 44 49 / 100%);
   font-size: 15px;
   font-weight: bold;
-  padding: 4px 0 6px 0;
+  padding: 4px 0 6px;
 }
 
 .add-server-info-row {
   display: flex;
-  margin: 8px 0 0 0;
+  margin: 8px 0 0;
 }
 
 .add-server-info-right {
@@ -163,7 +163,7 @@ td:nth-child(odd) {
 }
 
 .sub-title {
-  padding: 4px 0 6px 0;
+  padding: 4px 0 6px;
   font-weight: bold;
   color: rgb(97 97 97 / 100%);
 }
@@ -192,7 +192,7 @@ img.server-info-icon {
 
 .server-info-row {
   display: inline-block;
-  margin: 5px 0 0 0;
+  margin: 5px 0 0;
 }
 
 .server-info-left .server-info-row {
@@ -293,7 +293,7 @@ img.server-info-icon {
   display: flex;
   flex-wrap: wrap;
   padding: 12px 30px;
-  margin: 10px 0 20px 0;
+  margin: 10px 0 20px;
   background: rgb(255 255 255 / 100%);
   width: 80%;
   transition: all 0.2s;
@@ -418,7 +418,7 @@ i.open-tab-button {
 }
 
 #new-org-button {
-  margin: 30px 0 30px 0;
+  margin: 30px 0;
 }
 
 #create-organization-container {
