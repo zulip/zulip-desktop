@@ -71,6 +71,7 @@ export default class WebView {
           ? html``
           : html`preload="${props.preload}"`}
         partition="persist:webviewsession"
+        allowpopups
       >
       </webview>
     `;
