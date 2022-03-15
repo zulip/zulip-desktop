@@ -1,4 +1,5 @@
-import {app, dialog, session, shell} from "electron";
+import {shell} from "electron/common";
+import {app, dialog, session} from "electron/main";
 import util from "util";
 
 import log from "electron-log";

@@ -1,5 +1,5 @@
-import type {ClientRequest, IncomingMessage} from "electron";
-import {app, net} from "electron";
+import type {ClientRequest, IncomingMessage, Session} from "electron/main";
+import {app, net} from "electron/main";
 import fs from "fs";
 import path from "path";
 import stream from "stream";
@@ -57,7 +57,7 @@ const generateFilePath = (url: string): string => {
 
 export const _getServerSettings = async (
   domain: string,
-  session: Electron.Session,
+  session: Session,
 ): Promise<ServerConf> => {
   const response = await fetchResponse(
     net.request({
@@ -89,7 +89,7 @@ export const _getServerSettings = async (
 
 export const _saveServerIcon = async (
   url: string,
-  session: Electron.Session,
+  session: Session,
 ): Promise<string> => {
   try {
     const response = await fetchResponse(net.request({url, session}));
@@ -113,7 +113,7 @@ export const _saveServerIcon = async (
 
 export const _isOnline = async (
   url: string,
-  session: Electron.Session,
+  session: Session,
 ): Promise<boolean> => {
   try {
     const response = await fetchResponse(

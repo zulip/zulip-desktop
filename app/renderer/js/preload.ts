@@ -1,4 +1,4 @@
-import {contextBridge, webFrame} from "electron";
+import {contextBridge, webFrame} from "electron/renderer";
 import fs from "fs";
 
 import electron_bridge, {bridgeEvents} from "./electron-bridge";

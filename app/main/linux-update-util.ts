@@ -1,4 +1,4 @@
-import {app, dialog} from "electron";
+import {app, dialog} from "electron/main";
 import fs from "fs";
 import path from "path";
 

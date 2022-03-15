@@ -1,4 +1,4 @@
-import {clipboard} from "electron";
+import {clipboard} from "electron/common";
 import path from "path";
 
 import {Menu, app, dialog, session} from "@electron/remote";

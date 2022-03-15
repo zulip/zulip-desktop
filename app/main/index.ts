@@ -1,4 +1,5 @@
-import electron, {app, dialog, session} from "electron";
+import type {IpcMainEvent, SaveDialogOptions, WebContents} from "electron/main";
+import {BrowserWindow, app, dialog, powerMonitor, session} from "electron/main";
 import fs from "fs";
 import path from "path";
 
@@ -25,7 +26,7 @@ sentryInit();
 let mainWindowState: windowStateKeeper.State;
 
 // Prevent window being garbage collected
-let mainWindow: Electron.BrowserWindow;
+let mainWindow: BrowserWindow;
 let badgeCount: number;
 
 let isQuitting = false;
@@ -50,7 +51,7 @@ const toggleApp = (): void => {
   }
 };
 
-function createMainWindow(): Electron.BrowserWindow {
+function createMainWindow(): BrowserWindow {
   // Load the previous state with fallback to defaults
   mainWindowState = windowStateKeeper({
     defaultWidth: 1100,
@@ -58,7 +59,7 @@ function createMainWindow(): Electron.BrowserWindow {
     path: `${app.getPath("userData")}/config`,
   });
 
-  const win = new electron.BrowserWindow({
+  const win = new BrowserWindow({
     // This settings needs to be saved in config
     title: "Zulip",
     icon: iconPath(),
@@ -239,7 +240,7 @@ function createMainWindow(): Electron.BrowserWindow {
     "certificate-error",
     (
       event: Event,
-      webContents: Electron.WebContents,
+      webContents: WebContents,
       urlString: string,
       error: string,
     ) => {
@@ -275,7 +276,7 @@ ${error}`,
   );
 
   // Temporarily remove this event
-  // electron.powerMonitor.on('resume', () => {
+  // powerMonitor.on('resume', () => {
   // 	mainWindow.reload();
   // 	send(page, 'destroytray');
   // });
@@ -308,27 +309,21 @@ ${error}`,
     BadgeSettings.updateBadge(badgeCount, mainWindow);
   });
 
-  ipcMain.on(
-    "toggle-menubar",
-    (_event: Electron.IpcMainEvent, showMenubar: boolean) => {
-      mainWindow.autoHideMenuBar = showMenubar;
-      mainWindow.setMenuBarVisibility(!showMenubar);
-      send(page, "toggle-autohide-menubar", showMenubar, true);
-    },
-  );
+  ipcMain.on("toggle-menubar", (_event: IpcMainEvent, showMenubar: boolean) => {
+    mainWindow.autoHideMenuBar = showMenubar;
+    mainWindow.setMenuBarVisibility(!showMenubar);
+    send(page, "toggle-autohide-menubar", showMenubar, true);
+  });
 
-  ipcMain.on(
-    "update-badge",
-    (_event: Electron.IpcMainEvent, messageCount: number) => {
-      badgeCount = messageCount;
-      BadgeSettings.updateBadge(badgeCount, mainWindow);
-      send(page, "tray", messageCount);
-    },
-  );
+  ipcMain.on("update-badge", (_event: IpcMainEvent, messageCount: number) => {
+    badgeCount = messageCount;
+    BadgeSettings.updateBadge(badgeCount, mainWindow);
+    send(page, "tray", messageCount);
+  });
 
   ipcMain.on(
     "update-taskbar-icon",
-    (_event: Electron.IpcMainEvent, data: string, text: string) => {
+    (_event: IpcMainEvent, data: string, text: string) => {
       BadgeSettings.updateTaskbarIcon(data, text, mainWindow);
     },
   );
@@ -336,7 +331,7 @@ ${error}`,
   ipcMain.on(
     "forward-message",
     <Channel extends keyof RendererMessage>(
-      _event: Electron.IpcMainEvent,
+      _event: IpcMainEvent,
       listener: Channel,
       ...parameters: Parameters<RendererMessage[Channel]>
     ) => {
@@ -344,31 +339,28 @@ ${error}`,
     },
   );
 
-  ipcMain.on(
-    "update-menu",
-    (_event: Electron.IpcMainEvent, props: MenuProps) => {
-      AppMenu.setMenu(props);
-      if (props.activeTabIndex !== undefined) {
-        const activeTab = props.tabs[props.activeTabIndex];
-        mainWindow.setTitle(`Zulip - ${activeTab.name}`);
-      }
-    },
-  );
+  ipcMain.on("update-menu", (_event: IpcMainEvent, props: MenuProps) => {
+    AppMenu.setMenu(props);
+    if (props.activeTabIndex !== undefined) {
+      const activeTab = props.tabs[props.activeTabIndex];
+      mainWindow.setTitle(`Zulip - ${activeTab.name}`);
+    }
+  });
 
   ipcMain.on(
     "toggleAutoLauncher",
-    async (_event: Electron.IpcMainEvent, AutoLaunchValue: boolean) => {
+    async (_event: IpcMainEvent, AutoLaunchValue: boolean) => {
       await setAutoLaunch(AutoLaunchValue);
     },
   );
 
   ipcMain.on(
     "downloadFile",
-    (_event: Electron.IpcMainEvent, url: string, downloadPath: string) => {
+    (_event: IpcMainEvent, url: string, downloadPath: string) => {
       page.downloadURL(url);
       page.session.once("will-download", async (_event: Event, item) => {
         if (ConfigUtil.getConfigItem("promptDownload", false)) {
-          const showDialogOptions: electron.SaveDialogOptions = {
+          const showDialogOptions: SaveDialogOptions = {
             defaultPath: path.join(downloadPath, item.getFilename()),
           };
           item.setSaveDialogOptions(showDialogOptions);
@@ -443,26 +435,23 @@ ${error}`,
 
   ipcMain.on(
     "realm-name-changed",
-    (_event: Electron.IpcMainEvent, serverURL: string, realmName: string) => {
+    (_event: IpcMainEvent, serverURL: string, realmName: string) => {
       send(page, "update-realm-name", serverURL, realmName);
     },
   );
 
   ipcMain.on(
     "realm-icon-changed",
-    (_event: Electron.IpcMainEvent, serverURL: string, iconURL: string) => {
+    (_event: IpcMainEvent, serverURL: string, iconURL: string) => {
       send(page, "update-realm-icon", serverURL, iconURL);
     },
   );
 
-  ipcMain.on(
-    "save-last-tab",
-    (_event: Electron.IpcMainEvent, index: number) => {
-      ConfigUtil.setConfigItem("lastActiveTab", index);
-    },
-  );
+  ipcMain.on("save-last-tab", (_event: IpcMainEvent, index: number) => {
+    ConfigUtil.setConfigItem("lastActiveTab", index);
+  });
 
-  ipcMain.on("focus-this-webview", (event: Electron.IpcMainEvent) => {
+  ipcMain.on("focus-this-webview", (event: IpcMainEvent) => {
     send(page, "focus-webview-with-id", event.sender.id);
     mainWindow.show();
   });
@@ -472,8 +461,7 @@ ${error}`,
   setInterval(() => {
     // Set user idle if no activity in 1 second (idleThresholdSeconds)
     const idleThresholdSeconds = 1; // 1 second
-    const idleState =
-      electron.powerMonitor.getSystemIdleState(idleThresholdSeconds);
+    const idleState = powerMonitor.getSystemIdleState(idleThresholdSeconds);
     if (idleState === "active") {
       send(page, "set-active");
     } else {

@@ -1,3 +1,4 @@
+import type {WebContents} from "electron/main";
 import fs from "fs";
 import path from "path";
 
@@ -20,7 +21,7 @@ const shouldSilentWebview = ConfigUtil.getConfigItem("silent", false);
 
 interface WebViewProps {
   $root: Element;
-  rootWebContents: Electron.WebContents;
+  rootWebContents: WebContents;
   index: number;
   tabIndex: number;
   url: string;
@@ -119,7 +120,7 @@ export default class WebView {
     return new WebView(props, $element, webContentsId);
   }
 
-  getWebContents(): Electron.WebContents {
+  getWebContents(): WebContents {
     return remote.webContents.fromId(this.webContentsId);
   }
 

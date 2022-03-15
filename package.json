@@ -248,11 +248,21 @@
           "paths": [
             {
               "name": "electron",
+              "message": "Use electron/main, electron/renderer, or electron/common."
+            },
+            {
+              "name": "electron/main",
               "importNames": [
-                "ipcMain",
+                "ipcMain"
+              ],
+              "message": "Use typed-ipc-main."
+            },
+            {
+              "name": "electron/renderer",
+              "importNames": [
                 "ipcRenderer"
               ],
-              "message": "Use typed-ipc-main and typed-ipc-renderer."
+              "message": "Use typed-ipc-renderer."
             }
           ]
         }

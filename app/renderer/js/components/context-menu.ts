@@ -1,11 +1,15 @@
-import type {ContextMenuParams} from "electron";
+import type {WebContents} from "electron/main";
+import type {
+  ContextMenuParams,
+  MenuItemConstructorOptions,
+} from "electron/renderer";
 
 import {Menu, clipboard} from "@electron/remote";
 
 import * as t from "../../../common/translation-util";
 
 export const contextMenu = (
-  webContents: Electron.WebContents,
+  webContents: WebContents,
   event: Event,
   props: ContextMenuParams,
 ) => {
@@ -21,7 +25,7 @@ export const contextMenu = (
     },
   });
 
-  let menuTemplate: Electron.MenuItemConstructorOptions[] = [
+  let menuTemplate: MenuItemConstructorOptions[] = [
     {
       label: t.__("Add to Dictionary"),
       visible: props.isEditable && isText && props.misspelledWord.length > 0,
@@ -118,7 +122,7 @@ export const contextMenu = (
 
   if (props.misspelledWord) {
     if (props.dictionarySuggestions.length > 0) {
-      const suggestions: Electron.MenuItemConstructorOptions[] =
+      const suggestions: MenuItemConstructorOptions[] =
         props.dictionarySuggestions.map((suggestion: string) =>
           makeSuggestion(suggestion),
         );

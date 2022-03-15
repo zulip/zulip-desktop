@@ -1,4 +1,4 @@
-import {app} from "electron";
+import {app} from "electron/main";
 
 import AutoLaunch from "auto-launch";
 

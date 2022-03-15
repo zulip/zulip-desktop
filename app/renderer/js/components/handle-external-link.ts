@@ -1,3 +1,5 @@
+import type {HandlerDetails} from "electron/renderer";
+
 import {app, shell} from "@electron/remote";
 
 import * as ConfigUtil from "../../../common/config-util";
@@ -10,7 +12,7 @@ const dingSound = new Audio("../resources/sounds/ding.ogg");
 
 export default function handleExternalLink(
   this: WebView,
-  details: Electron.HandlerDetails,
+  details: HandlerDetails,
 ): void {
   const url = new URL(details.url);
   const downloadPath = ConfigUtil.getConfigItem(

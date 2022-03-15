@@ -1,13 +1,12 @@
-import electron, {app} from "electron";
+import {nativeImage} from "electron/common";
+import type {BrowserWindow} from "electron/main";
+import {app} from "electron/main";
 
 import * as ConfigUtil from "../common/config-util";
 
 import {send} from "./typed-ipc-main";
 
-function showBadgeCount(
-  messageCount: number,
-  mainWindow: electron.BrowserWindow,
-): void {
+function showBadgeCount(messageCount: number, mainWindow: BrowserWindow): void {
   if (process.platform === "win32") {
     updateOverlayIcon(messageCount, mainWindow);
   } else {
@@ -15,7 +14,7 @@ function showBadgeCount(
   }
 }
 
-function hideBadgeCount(mainWindow: electron.BrowserWindow): void {
+function hideBadgeCount(mainWindow: BrowserWindow): void {
   if (process.platform === "win32") {
     mainWindow.setOverlayIcon(null, "");
   } else {
@@ -25,7 +24,7 @@ function hideBadgeCount(mainWindow: electron.BrowserWindow): void {
 
 export function updateBadge(
   badgeCount: number,
-  mainWindow: electron.BrowserWindow,
+  mainWindow: BrowserWindow,
 ): void {
   if (ConfigUtil.getConfigItem("badgeOption", true)) {
     showBadgeCount(badgeCount, mainWindow);
@@ -36,7 +35,7 @@ export function updateBadge(
 
 function updateOverlayIcon(
   messageCount: number,
-  mainWindow: electron.BrowserWindow,
+  mainWindow: BrowserWindow,
 ): void {
   if (!mainWindow.isFocused()) {
     mainWindow.flashFrame(
@@ -54,8 +53,8 @@ function updateOverlayIcon(
 export function updateTaskbarIcon(
   data: string,
   text: string,
-  mainWindow: electron.BrowserWindow,
+  mainWindow: BrowserWindow,
 ): void {
-  const img = electron.nativeImage.createFromDataURL(data);
+  const img = nativeImage.createFromDataURL(data);
   mainWindow.setOverlayIcon(img, text);
 }

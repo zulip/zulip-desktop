@@ -1,4 +1,5 @@
-import type {NativeImage} from "electron";
+import type {NativeImage} from "electron/common";
+import type {Tray as ElectronTray} from "electron/main";
 import path from "path";
 
 import {BrowserWindow, Menu, Tray, nativeImage} from "@electron/remote";
@@ -9,7 +10,7 @@ import type {RendererMessage} from "../../common/typed-ipc";
 import type {ServerManagerView} from "./main";
 import {ipcRenderer} from "./typed-ipc-renderer";
 
-let tray: Electron.Tray | null = null;
+let tray: ElectronTray | null = null;
 
 const iconDir = "../../resources/tray";
 

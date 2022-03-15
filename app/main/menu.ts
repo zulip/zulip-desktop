@@ -1,4 +1,6 @@
-import {BrowserWindow, Menu, app, shell} from "electron";
+import {shell} from "electron/common";
+import type {MenuItemConstructorOptions} from "electron/main";
+import {BrowserWindow, Menu, app} from "electron/main";
 
 import AdmZip from "adm-zip";
 
@@ -13,9 +15,7 @@ import {send} from "./typed-ipc-main";
 
 const appName = app.name;
 
-function getHistorySubmenu(
-  enableMenu: boolean,
-): Electron.MenuItemConstructorOptions[] {
+function getHistorySubmenu(enableMenu: boolean): MenuItemConstructorOptions[] {
   return [
     {
       label: t.__("Back"),
@@ -41,7 +41,7 @@ function getHistorySubmenu(
   ];
 }
 
-function getToolsSubmenu(): Electron.MenuItemConstructorOptions[] {
+function getToolsSubmenu(): MenuItemConstructorOptions[] {
   return [
     {
       label: t.__("Check for Updates"),
@@ -107,7 +107,7 @@ function getToolsSubmenu(): Electron.MenuItemConstructorOptions[] {
   ];
 }
 
-function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
+function getViewSubmenu(): MenuItemConstructorOptions[] {
   return [
     {
       label: t.__("Reload"),
@@ -256,7 +256,7 @@ function getViewSubmenu(): Electron.MenuItemConstructorOptions[] {
   ];
 }
 
-function getHelpSubmenu(): Electron.MenuItemConstructorOptions[] {
+function getHelpSubmenu(): MenuItemConstructorOptions[] {
   return [
     {
       label: `${appName + " Desktop"} v${app.getVersion()}`,
@@ -290,8 +290,8 @@ function getHelpSubmenu(): Electron.MenuItemConstructorOptions[] {
 function getWindowSubmenu(
   tabs: TabData[],
   activeTabIndex?: number,
-): Electron.MenuItemConstructorOptions[] {
-  const initialSubmenu: Electron.MenuItemConstructorOptions[] = [
+): MenuItemConstructorOptions[] {
+  const initialSubmenu: MenuItemConstructorOptions[] = [
     {
       label: t.__("Minimize"),
       role: "minimize",
@@ -367,7 +367,7 @@ function getWindowSubmenu(
   return initialSubmenu;
 }
 
-function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
+function getDarwinTpl(props: MenuProps): MenuItemConstructorOptions[] {
   const {tabs, activeTabIndex, enableMenu = false} = props;
 
   return [
@@ -532,7 +532,7 @@ function getDarwinTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
   ];
 }
 
-function getOtherTpl(props: MenuProps): Electron.MenuItemConstructorOptions[] {
+function getOtherTpl(props: MenuProps): MenuItemConstructorOptions[] {
   const {tabs, activeTabIndex, enableMenu = false} = props;
   return [
     {

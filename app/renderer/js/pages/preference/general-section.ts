@@ -1,4 +1,4 @@
-import type {OpenDialogOptions} from "electron";
+import type {OpenDialogOptions} from "electron/renderer";
 import fs from "fs";
 import path from "path";
 

@@ -1,4 +1,5 @@
-import {Notification, app, net} from "electron";
+import type {Session} from "electron/main";
+import {Notification, app, net} from "electron/main";
 
 import getStream from "get-stream";
 import * as semver from "semver";
@@ -14,9 +15,7 @@ const logger = new Logger({
   file: "linux-update-util.log",
 });
 
-export async function linuxUpdateNotification(
-  session: Electron.Session,
-): Promise<void> {
+export async function linuxUpdateNotification(session: Session): Promise<void> {
   let url = "https://api.github.com/repos/zulip/zulip-desktop/releases";
   url = ConfigUtil.getConfigItem("betaUpdate", false) ? url : url + "/latest";
 
