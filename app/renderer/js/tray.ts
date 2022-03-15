@@ -1,8 +1,9 @@
 import type {NativeImage} from "electron/common";
+import {nativeImage} from "electron/common";
 import type {Tray as ElectronTray} from "electron/main";
 import path from "path";
 
-import {BrowserWindow, Menu, Tray, nativeImage} from "@electron/remote";
+import {BrowserWindow, Menu, Tray} from "@electron/remote";
 
 import * as ConfigUtil from "../../common/config-util";
 import type {RendererMessage} from "../../common/typed-ipc";

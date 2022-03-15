@@ -1,10 +1,11 @@
+import {clipboard} from "electron/common";
 import type {WebContents} from "electron/main";
 import type {
   ContextMenuParams,
   MenuItemConstructorOptions,
 } from "electron/renderer";
 
-import {Menu, clipboard} from "@electron/remote";
+import {Menu} from "@electron/remote";
 
 import * as t from "../../../common/translation-util";
 

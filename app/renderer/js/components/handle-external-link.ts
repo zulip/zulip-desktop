@@ -1,6 +1,7 @@
+import {shell} from "electron/common";
 import type {HandlerDetails} from "electron/renderer";
 
-import {app, shell} from "@electron/remote";
+import {app} from "@electron/remote";
 
 import * as ConfigUtil from "../../../common/config-util";
 import {ipcRenderer} from "../typed-ipc-renderer";
