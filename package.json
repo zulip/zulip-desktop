@@ -285,8 +285,7 @@
       ],
       "strict": "error",
       "unicorn/prefer-json-parse-buffer": "off",
-      "unicorn/prefer-module": "off",
-      "unicorn/prefer-node-protocol": "off"
+      "unicorn/prefer-module": "off"
     },
     "envs": [
       "node",

@@ -1,7 +1,7 @@
 import {shell} from "electron/common";
 import {app, dialog, session} from "electron/main";
-import process from "process";
-import util from "util";
+import process from "node:process";
+import util from "node:util";
 
 import log from "electron-log";
 import type {UpdateDownloadedEvent, UpdateInfo} from "electron-updater";

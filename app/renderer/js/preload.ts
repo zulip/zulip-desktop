@@ -1,5 +1,5 @@
 import {contextBridge, webFrame} from "electron/renderer";
-import fs from "fs";
+import fs from "node:fs";
 
 import electron_bridge, {bridgeEvents} from "./electron-bridge";
 import * as NetworkError from "./pages/network";

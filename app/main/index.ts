@@ -1,7 +1,7 @@
 import type {IpcMainEvent, WebContents} from "electron/main";
 import {BrowserWindow, app, dialog, powerMonitor, session} from "electron/main";
-import path from "path";
-import process from "process";
+import path from "node:path";
+import process from "node:process";
 
 import * as remoteMain from "@electron/remote/main";
 import windowStateKeeper from "electron-window-state";

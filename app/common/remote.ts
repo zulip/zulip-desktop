@@ -1,4 +1,4 @@
-import process from "process";
+import process from "node:process";
 
 export const {app, dialog} =
   process.type === "renderer"

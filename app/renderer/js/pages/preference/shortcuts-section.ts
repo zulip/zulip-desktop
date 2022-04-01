@@ -1,4 +1,4 @@
-import process from "process";
+import process from "node:process";
 
 import {html} from "../../../../common/html";
 import * as LinkUtil from "../../../../common/link-util";

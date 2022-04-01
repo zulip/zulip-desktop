@@ -4,7 +4,7 @@ import type {
   ContextMenuParams,
   MenuItemConstructorOptions,
 } from "electron/renderer";
-import process from "process";
+import process from "node:process";
 
 import {Menu} from "@electron/remote";
 

@@ -1,9 +1,9 @@
 import type {ClientRequest, IncomingMessage, Session} from "electron/main";
 import {app, net} from "electron/main";
-import fs from "fs";
-import path from "path";
-import stream from "stream";
-import util from "util";
+import fs from "node:fs";
+import path from "node:path";
+import stream from "node:stream";
+import util from "node:util";
 
 import * as Sentry from "@sentry/electron";
 import getStream from "get-stream";

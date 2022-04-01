@@ -1,4 +1,4 @@
-import {EventEmitter} from "events";
+import {EventEmitter} from "node:events";
 
 import type {ClipboardDecrypter} from "./clipboard-decrypter";
 import {ClipboardDecrypterImpl} from "./clipboard-decrypter";

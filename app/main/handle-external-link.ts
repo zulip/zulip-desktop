@@ -5,8 +5,8 @@ import type {
   WebContents,
 } from "electron/main";
 import {Notification, app} from "electron/main";
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 
 import * as ConfigUtil from "../common/config-util";
 import * as LinkUtil from "../common/link-util";

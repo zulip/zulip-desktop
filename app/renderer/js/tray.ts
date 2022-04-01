@@ -1,8 +1,8 @@
 import type {NativeImage} from "electron/common";
 import {nativeImage} from "electron/common";
 import type {Tray as ElectronTray} from "electron/main";
-import path from "path";
-import process from "process";
+import path from "node:path";
+import process from "node:process";
 
 import {BrowserWindow, Menu, Tray} from "@electron/remote";
 

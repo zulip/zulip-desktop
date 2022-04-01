@@ -1,6 +1,6 @@
 import {app, dialog} from "electron/main";
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 
 import {JsonDB} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors";

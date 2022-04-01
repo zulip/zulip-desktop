@@ -1,4 +1,4 @@
-import process from "process";
+import process from "node:process";
 
 import type {Html} from "../../../common/html";
 import {html} from "../../../common/html";

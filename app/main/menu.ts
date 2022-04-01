@@ -1,7 +1,7 @@
 import {shell} from "electron/common";
 import type {MenuItemConstructorOptions} from "electron/main";
 import {BrowserWindow, Menu, app} from "electron/main";
-import process from "process";
+import process from "node:process";
 
 import AdmZip from "adm-zip";
 

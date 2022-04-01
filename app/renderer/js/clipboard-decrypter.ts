@@ -1,6 +1,6 @@
-import {Buffer} from "buffer";
-import crypto from "crypto";
 import {clipboard} from "electron/common";
+import {Buffer} from "node:buffer";
+import crypto from "node:crypto";
 
 // This helper is exposed via electron_bridge for use in the social
 // login flow.

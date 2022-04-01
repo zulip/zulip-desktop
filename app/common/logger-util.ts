@@ -1,7 +1,7 @@
-import {Console} from "console"; // eslint-disable-line node/prefer-global/console
-import fs from "fs";
-import os from "os";
-import process from "process";
+import {Console} from "node:console";
+import fs from "node:fs";
+import os from "node:os";
+import process from "node:process";
 
 import {initSetUp} from "./default-util";
 import {app} from "./remote";

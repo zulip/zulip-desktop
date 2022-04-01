@@ -1,5 +1,5 @@
 import {app} from "electron/main";
-import process from "process";
+import process from "node:process";
 
 import AutoLaunch from "auto-launch";
 

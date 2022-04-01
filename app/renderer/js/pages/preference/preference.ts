@@ -1,4 +1,4 @@
-import process from "process";
+import process from "node:process";
 
 import type {DndSettings} from "../../../../common/dnd-util";
 import {html} from "../../../../common/html";
