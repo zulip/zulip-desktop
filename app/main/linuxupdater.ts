@@ -27,9 +27,11 @@ export async function linuxUpdateNotification(session: Session): Promise<void> {
     }
 
     const data: unknown = JSON.parse(await getStream(response));
+    /* eslint-disable @typescript-eslint/naming-convention */
     const latestVersion = ConfigUtil.getConfigItem("betaUpdate", false)
       ? z.array(z.object({tag_name: z.string()})).parse(data)[0].tag_name
       : z.object({tag_name: z.string()}).parse(data).tag_name;
+    /* eslint-enable @typescript-eslint/naming-convention */
 
     if (semver.gt(latestVersion, app.getVersion())) {
       const notified = LinuxUpdateUtil.getUpdateItem(latestVersion);

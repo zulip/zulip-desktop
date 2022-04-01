@@ -31,6 +31,7 @@ let lastActive = Date.now();
 
 export const bridgeEvents = new EventEmitter();
 
+/* eslint-disable @typescript-eslint/naming-convention */
 const electron_bridge: ElectronBridge = {
   send_event: (eventName: string | symbol, ...args: unknown[]): boolean =>
     bridgeEvents.emit(eventName, ...args),
@@ -59,6 +60,7 @@ const electron_bridge: ElectronBridge = {
   decrypt_clipboard: (version: number): ClipboardDecrypter =>
     new ClipboardDecrypterImpl(version),
 };
+/* eslint-enable @typescript-eslint/naming-convention */
 
 bridgeEvents.on("total_unread_count", (unreadCount: unknown) => {
   if (typeof unreadCount !== "number") {

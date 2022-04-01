@@ -1,6 +1,7 @@
 import type {OpenDialogOptions} from "electron/renderer";
 import fs from "fs";
 import path from "path";
+import process from "process";
 
 import * as remote from "@electron/remote";
 import {app, dialog, session} from "@electron/remote";

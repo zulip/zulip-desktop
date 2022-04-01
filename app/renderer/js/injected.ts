@@ -14,6 +14,7 @@ interface CompatElectronBridge extends ElectronBridge {
     raw_electron_bridge: ElectronBridge;
   };
 
+  /* eslint-disable @typescript-eslint/naming-convention */
   const electron_bridge: CompatElectronBridge = {
     ...zulipWindow.raw_electron_bridge,
 
@@ -33,6 +34,7 @@ interface CompatElectronBridge extends ElectronBridge {
       this.set_send_notification_reply_message_supported(value);
     },
   };
+  /* eslint-enable @typescript-eslint/naming-convention */
 
   zulipWindow.electron_bridge = electron_bridge;
 
@@ -68,26 +70,10 @@ interface CompatElectronBridge extends ElectronBridge {
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   const NativeNotification = Notification;
 
   class InjectedNotification extends EventTarget {
-    constructor(title: string, options: NotificationOptions = {}) {
-      super();
-      Object.assign(
-        this,
-        electron_bridge.new_notification(
-          title,
-          options,
-          (type: string, eventInit: EventInit) =>
-            this.dispatchEvent(new Event(type, eventInit)),
-        ),
-      );
-    }
-
-    static get maxActions(): number {
-      return NativeNotification.maxActions;
-    }
-
     static get permission(): NotificationPermission {
       return NativeNotification.permission;
     }
@@ -100,6 +86,19 @@ interface CompatElectronBridge extends ElectronBridge {
       }
 
       return NativeNotification.permission;
+    }
+
+    constructor(title: string, options: NotificationOptions = {}) {
+      super();
+      Object.assign(
+        this,
+        electron_bridge.new_notification(
+          title,
+          options,
+          (type: string, eventInit: EventInit) =>
+            this.dispatchEvent(new Event(type, eventInit)),
+        ),
+      );
     }
   }
 

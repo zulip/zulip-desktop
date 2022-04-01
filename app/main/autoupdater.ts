@@ -1,5 +1,6 @@
 import {shell} from "electron/common";
 import {app, dialog, session} from "electron/main";
+import process from "process";
 import util from "util";
 
 import log from "electron-log";

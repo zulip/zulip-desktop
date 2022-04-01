@@ -93,7 +93,7 @@ body {
   -webkit-font-smoothing: antialiased;
 
   /* Support for Safari and Chrome. */
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizelegibility;
 }
 
 #actions-container {

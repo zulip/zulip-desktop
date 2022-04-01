@@ -1,3 +1,5 @@
+import process from "process";
+
 import {html} from "../../../../common/html";
 import * as LinkUtil from "../../../../common/link-util";
 import * as t from "../../../../common/translation-util";

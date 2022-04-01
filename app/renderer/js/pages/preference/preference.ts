@@ -1,3 +1,5 @@
+import process from "process";
+
 import type {DndSettings} from "../../../../common/dnd-util";
 import {html} from "../../../../common/html";
 import type {NavItem} from "../../../../common/types";

@@ -1,6 +1,7 @@
 import type {WebContents} from "electron/main";
 import fs from "fs";
 import path from "path";
+import process from "process";
 
 import * as remote from "@electron/remote";
 import {app, dialog} from "@electron/remote";
@@ -34,34 +35,6 @@ interface WebViewProps {
 }
 
 export default class WebView {
-  props: WebViewProps;
-  zoomFactor: number;
-  badgeCount: number;
-  loading: boolean;
-  customCss: string | false | null;
-  $webviewsContainer: DOMTokenList;
-  $el: HTMLElement;
-  webContentsId: number;
-
-  private constructor(
-    props: WebViewProps,
-    $element: HTMLElement,
-    webContentsId: number,
-  ) {
-    this.props = props;
-    this.zoomFactor = 1;
-    this.loading = true;
-    this.badgeCount = 0;
-    this.customCss = ConfigUtil.getConfigItem("customCSS", null);
-    this.$webviewsContainer = document.querySelector(
-      "#webviews-container",
-    )!.classList;
-    this.$el = $element;
-    this.webContentsId = webContentsId;
-
-    this.registerListeners();
-  }
-
   static templateHtml(props: WebViewProps): Html {
     return html`
       <webview
@@ -117,6 +90,34 @@ export default class WebView {
     }
 
     return new WebView(props, $element, webContentsId);
+  }
+
+  props: WebViewProps;
+  zoomFactor: number;
+  badgeCount: number;
+  loading: boolean;
+  customCss: string | false | null;
+  $webviewsContainer: DOMTokenList;
+  $el: HTMLElement;
+  webContentsId: number;
+
+  private constructor(
+    props: WebViewProps,
+    $element: HTMLElement,
+    webContentsId: number,
+  ) {
+    this.props = props;
+    this.zoomFactor = 1;
+    this.loading = true;
+    this.badgeCount = 0;
+    this.customCss = ConfigUtil.getConfigItem("customCSS", null);
+    this.$webviewsContainer = document.querySelector(
+      "#webviews-container",
+    )!.classList;
+    this.$el = $element;
+    this.webContentsId = webContentsId;
+
+    this.registerListeners();
   }
 
   getWebContents(): WebContents {

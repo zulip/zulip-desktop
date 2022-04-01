@@ -1,5 +1,6 @@
 import {clipboard} from "electron/common";
 import path from "path";
+import process from "process";
 
 import {Menu, app, dialog, session} from "@electron/remote";
 import * as remote from "@electron/remote";
@@ -179,6 +180,7 @@ export class ServerManagerView {
       autoUpdate: true,
       betaUpdate: false,
       errorReporting: true,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       customCSS: false,
       silent: false,
       lastActiveTab: 0,

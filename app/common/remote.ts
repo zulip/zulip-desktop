@@ -1,3 +1,5 @@
+import process from "process";
+
 export const {app, dialog} =
   process.type === "renderer"
     ? // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires

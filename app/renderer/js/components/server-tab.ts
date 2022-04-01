@@ -1,3 +1,5 @@
+import process from "process";
+
 import type {Html} from "../../../common/html";
 import {html} from "../../../common/html";
 import {ipcRenderer} from "../typed-ipc-renderer";

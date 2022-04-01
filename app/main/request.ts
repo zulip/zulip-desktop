@@ -44,6 +44,7 @@ const generateFilePath = (url: string): string => {
   let {length} = url;
 
   while (length) {
+    // eslint-disable-next-line no-bitwise, unicorn/prefer-code-point
     hash = (hash * 33) ^ url.charCodeAt(--length);
   }
 
@@ -52,6 +53,7 @@ const generateFilePath = (url: string): string => {
     fs.mkdirSync(dir);
   }
 
+  // eslint-disable-next-line no-bitwise
   return `${dir}/${hash >>> 0}${extension}`;
 };
 
@@ -70,6 +72,7 @@ export const _getServerSettings = async (
   }
 
   const data: unknown = JSON.parse(await getStream(response));
+  /* eslint-disable @typescript-eslint/naming-convention */
   const {realm_name, realm_uri, realm_icon} = z
     .object({
       realm_name: z.string(),
@@ -77,6 +80,7 @@ export const _getServerSettings = async (
       realm_icon: z.string(),
     })
     .parse(data);
+  /* eslint-enable @typescript-eslint/naming-convention */
 
   return {
     // Some Zulip Servers use absolute URL for server icon whereas others use relative URL

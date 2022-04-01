@@ -1,4 +1,5 @@
 import {app} from "electron/main";
+import process from "process";
 
 import AutoLaunch from "auto-launch";
 

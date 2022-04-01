@@ -1,5 +1,6 @@
 "use strict";
 const path = require("path");
+const process = require("process");
 
 const {_electron} = require("playwright-core");
 const rimraf = require("rimraf");

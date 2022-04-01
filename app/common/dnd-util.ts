@@ -1,3 +1,5 @@
+import process from "process";
+
 import type * as z from "zod";
 
 import type {dndSettingsSchemata} from "./config-schemata";

@@ -1,6 +1,7 @@
 import type {IpcMainEvent, WebContents} from "electron/main";
 import {BrowserWindow, app, dialog, powerMonitor, session} from "electron/main";
 import path from "path";
+import process from "process";
 
 import * as remoteMain from "@electron/remote/main";
 import windowStateKeeper from "electron-window-state";
@@ -18,6 +19,7 @@ import {sentryInit} from "./sentry";
 import {setAutoLaunch} from "./startup";
 import {ipcMain, send} from "./typed-ipc-main";
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const {GDK_BACKEND} = process.env;
 
 // Initialize sentry for main process
