@@ -15,7 +15,6 @@ import * as SystemUtil from "../utils/system-util";
 
 import {generateNodeFromHtml} from "./base";
 import {contextMenu} from "./context-menu";
-import handleExternalLink from "./handle-external-link";
 
 const shouldSilentWebview = ConfigUtil.getConfigItem("silent", false);
 
@@ -126,11 +125,6 @@ export default class WebView {
 
   registerListeners(): void {
     const webContents = this.getWebContents();
-
-    webContents.setWindowOpenHandler((details) => {
-      handleExternalLink.call(this, details);
-      return {action: "deny"};
-    });
 
     if (shouldSilentWebview) {
       webContents.setAudioMuted(true);

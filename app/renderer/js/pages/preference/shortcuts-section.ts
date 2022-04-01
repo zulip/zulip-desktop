@@ -1,6 +1,6 @@
 import {html} from "../../../../common/html";
+import * as LinkUtil from "../../../../common/link-util";
 import * as t from "../../../../common/translation-util";
-import * as LinkUtil from "../../utils/link-util";
 
 interface ShortcutsSectionProps {
   $root: Element;

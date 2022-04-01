@@ -1,6 +1,5 @@
-import type {IpcMainEvent, SaveDialogOptions, WebContents} from "electron/main";
+import type {IpcMainEvent, WebContents} from "electron/main";
 import {BrowserWindow, app, dialog, powerMonitor, session} from "electron/main";
-import fs from "fs";
 import path from "path";
 
 import * as remoteMain from "@electron/remote/main";
@@ -12,6 +11,7 @@ import type {MenuProps} from "../common/types";
 
 import {appUpdater} from "./autoupdater";
 import * as BadgeSettings from "./badge-settings";
+import handleExternalLink from "./handle-external-link";
 import * as AppMenu from "./menu";
 import {_getServerSettings, _isOnline, _saveServerIcon} from "./request";
 import {sentryInit} from "./sentry";
@@ -170,6 +170,13 @@ function createMainWindow(): BrowserWindow {
   // This event is only available on macOS. Triggers when you click on the dock icon.
   app.on("activate", () => {
     mainWindow.show();
+  });
+
+  app.on("web-contents-created", (_event: Event, contents: WebContents) => {
+    contents.setWindowOpenHandler((details) => {
+      handleExternalLink(contents, details, page);
+      return {action: "deny"};
+    });
   });
 
   const ses = session.fromPartition("persist:webviewsession");
@@ -351,85 +358,6 @@ ${error}`,
     "toggleAutoLauncher",
     async (_event: IpcMainEvent, AutoLaunchValue: boolean) => {
       await setAutoLaunch(AutoLaunchValue);
-    },
-  );
-
-  ipcMain.on(
-    "downloadFile",
-    (_event: IpcMainEvent, url: string, downloadPath: string) => {
-      page.downloadURL(url);
-      page.session.once("will-download", async (_event: Event, item) => {
-        if (ConfigUtil.getConfigItem("promptDownload", false)) {
-          const showDialogOptions: SaveDialogOptions = {
-            defaultPath: path.join(downloadPath, item.getFilename()),
-          };
-          item.setSaveDialogOptions(showDialogOptions);
-        } else {
-          const getTimeStamp = (): number => {
-            const date = new Date();
-            return date.getTime();
-          };
-
-          const formatFile = (filePath: string): string => {
-            const fileExtension = path.extname(filePath);
-            const baseName = path.basename(filePath, fileExtension);
-            return `${baseName}-${getTimeStamp()}${fileExtension}`;
-          };
-
-          const filePath = path.join(downloadPath, item.getFilename());
-
-          // Update the name and path of the file if it already exists
-          const updatedFilePath = path.join(downloadPath, formatFile(filePath));
-          const setFilePath: string = fs.existsSync(filePath)
-            ? updatedFilePath
-            : filePath;
-          item.setSavePath(setFilePath);
-        }
-
-        const updatedListener = (_event: Event, state: string): void => {
-          switch (state) {
-            case "interrupted": {
-              // Can interrupted to due to network error, cancel download then
-              console.log(
-                "Download interrupted, cancelling and fallback to dialog download.",
-              );
-              item.cancel();
-              break;
-            }
-
-            case "progressing": {
-              if (item.isPaused()) {
-                item.cancel();
-              }
-
-              // This event can also be used to show progress in percentage in future.
-              break;
-            }
-
-            default: {
-              console.info("Unknown updated state of download item");
-            }
-          }
-        };
-
-        item.on("updated", updatedListener);
-        item.once("done", (_event: Event, state) => {
-          if (state === "completed") {
-            send(
-              page,
-              "downloadFileCompleted",
-              item.getSavePath(),
-              path.basename(item.getSavePath()),
-            );
-          } else {
-            console.log("Download failed state:", state);
-            send(page, "downloadFileFailed", state);
-          }
-
-          // To stop item for listening to updated events of this file
-          item.removeListener("updated", updatedListener);
-        });
-      });
     },
   );
 

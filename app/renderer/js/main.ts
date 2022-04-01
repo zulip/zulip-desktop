@@ -10,6 +10,7 @@ import * as ConfigUtil from "../../common/config-util";
 import * as DNDUtil from "../../common/dnd-util";
 import type {DndSettings} from "../../common/dnd-util";
 import * as EnterpriseUtil from "../../common/enterprise-util";
+import * as LinkUtil from "../../common/link-util";
 import Logger from "../../common/logger-util";
 import * as Messages from "../../common/messages";
 import type {NavItem, ServerConf, TabData} from "../../common/types";
@@ -22,7 +23,6 @@ import {PreferenceView} from "./pages/preference/preference";
 import {initializeTray} from "./tray";
 import {ipcRenderer} from "./typed-ipc-renderer";
 import * as DomainUtil from "./utils/domain-util";
-import * as LinkUtil from "./utils/link-util";
 import ReconnectUtil from "./utils/reconnect-util";
 
 Sentry.init({});
@@ -47,6 +47,8 @@ const rendererDirectory = path.resolve(__dirname, "..");
 type ServerOrFunctionalTab = ServerTab | FunctionalTab;
 
 const rootWebContents = remote.getCurrentWebContents();
+
+const dingSound = new Audio("../resources/sounds/ding.ogg");
 
 export class ServerManagerView {
   $addServerButton: HTMLButtonElement;
@@ -1176,6 +1178,10 @@ export class ServerManagerView {
 
     ipcRenderer.on("open-network-settings", async () => {
       await this.openSettings("Network");
+    });
+
+    ipcRenderer.on("play-ding-sound", async () => {
+      await dingSound.play();
     });
   }
 }

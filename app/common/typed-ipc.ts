@@ -4,7 +4,6 @@ import type {MenuProps, ServerConf} from "./types";
 export interface MainMessage {
   "clear-app-settings": () => void;
   "configure-spell-checker": () => void;
-  downloadFile: (url: string, downloadPath: string) => void;
   "fetch-user-agent": () => string;
   "focus-app": () => void;
   "focus-this-webview": () => void;
@@ -35,8 +34,6 @@ export interface RendererMessage {
   back: () => void;
   "copy-zulip-url": () => void;
   destroytray: () => void;
-  downloadFileCompleted: (filePath: string, fileName: string) => void;
-  downloadFileFailed: (state: string) => void;
   "enter-fullscreen": () => void;
   focus: () => void;
   "focus-webview-with-id": (webviewId: number) => void;
@@ -55,6 +52,7 @@ export interface RendererMessage {
     options: {webContentsId: number | null; origin: string; permission: string},
     rendererCallbackId: number,
   ) => void;
+  "play-ding-sound": () => void;
   "reload-current-viewer": () => void;
   "reload-proxy": (showAlert: boolean) => void;
   "reload-viewer": () => void;
