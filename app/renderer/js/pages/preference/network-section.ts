@@ -83,11 +83,7 @@ export function initNetworkSection({$root}: NetworkSectionProps): void {
   });
 
   function toggleManualProxySettings(option: boolean): void {
-    if (option) {
-      $manualProxyBlock.classList.remove("hidden");
-    } else {
-      $manualProxyBlock.classList.add("hidden");
-    }
+    $manualProxyBlock.classList.toggle("hidden", !option);
   }
 
   function updateProxyOption(): void {

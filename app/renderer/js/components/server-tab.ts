@@ -59,13 +59,8 @@ export default class ServerTab extends Tab {
   }
 
   updateBadge(count: number): void {
-    if (count > 0) {
-      const formattedCount = count > 999 ? "1K+" : count.toString();
-      this.$badge.textContent = formattedCount;
-      this.$badge.classList.add("active");
-    } else {
-      this.$badge.classList.remove("active");
-    }
+    this.$badge.textContent = count > 999 ? "1K+" : count.toString();
+    this.$badge.classList.toggle("active", count > 0);
   }
 
   generateShortcutText(): string {

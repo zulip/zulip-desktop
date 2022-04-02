@@ -699,13 +699,8 @@ export class ServerManagerView {
   }
 
   showLoading(loading: boolean): void {
-    if (!loading) {
-      this.$reloadButton.removeAttribute("style");
-      this.$loadingIndicator.style.display = "none";
-    } else if (loading) {
-      this.$reloadButton.style.display = "none";
-      this.$loadingIndicator.removeAttribute("style");
-    }
+    this.$reloadButton.classList.toggle("hidden", loading);
+    this.$loadingIndicator.classList.toggle("hidden", !loading);
   }
 
   async destroyTab(name: string, index: number): Promise<void> {
@@ -772,11 +767,7 @@ export class ServerManagerView {
   }
 
   toggleSidebar(show: boolean): void {
-    if (show) {
-      this.$sidebar.classList.remove("sidebar-hide");
-    } else {
-      this.$sidebar.classList.add("sidebar-hide");
-    }
+    this.$sidebar.classList.toggle("sidebar-hide", !show);
   }
 
   // Toggles the dnd button icon.

@@ -58,10 +58,9 @@ export function initFindAccounts(props: FindAccountsProps): void {
   });
 
   $serverUrlField.addEventListener("input", () => {
-    if ($serverUrlField.value) {
-      $serverUrlField.classList.remove("invalid-input-value");
-    } else {
-      $serverUrlField.classList.add("invalid-input-value");
-    }
+    $serverUrlField.classList.toggle(
+      "invalid-input-value",
+      $serverUrlField.value === "",
+    );
   });
 }

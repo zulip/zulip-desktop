@@ -206,11 +206,7 @@ export default class WebView {
     }
 
     // To show or hide the loading indicator in the the active tab
-    if (this.loading) {
-      this.$webviewsContainer.remove("loaded");
-    } else {
-      this.$webviewsContainer.add("loaded");
-    }
+    this.$webviewsContainer.toggle("loaded", !this.loading);
 
     this.$el.classList.add("active");
     this.focus();
@@ -293,11 +289,7 @@ export default class WebView {
     const $backButton = document.querySelector(
       "#actions-container #back-action",
     )!;
-    if (this.getWebContents().canGoBack()) {
-      $backButton.classList.remove("disable");
-    } else {
-      $backButton.classList.add("disable");
-    }
+    $backButton.classList.toggle("disable", !this.getWebContents().canGoBack());
   }
 
   forward(): void {
