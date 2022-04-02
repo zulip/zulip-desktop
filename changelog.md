@@ -2,6 +2,21 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.9.0 --2022-04-01
+
+**Fixes**:
+
+- Fixed unread count display when viewing a topic with a parenthesized number.
+- Fixed parsing of system proxy settings.
+
+**Enhancements**:
+
+- Removed fade-in animation on page load.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 18.0.1.
+
 ### v5.8.1 --2021-07-29
 
 **Fixes**:
