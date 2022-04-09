@@ -2,6 +2,12 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.9.1 --2022-04-08
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 18.0.3.
+
 ### v5.9.0 --2022-04-01
 
 **Fixes**:
