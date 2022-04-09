@@ -6,7 +6,7 @@ import {getConfigItem} from "../common/config-util";
 
 export const sentryInit = (): void => {
   Sentry.init({
-    dsn: "https://628dc2f2864243a08ead72e63f94c7b1@sentry.io/204668",
+    dsn: "https://628dc2f2864243a08ead72e63f94c7b1@o48127.ingest.sentry.io/204668",
 
     // Don't report errors in development or if disabled by the user.
     beforeSend: (event) =>
