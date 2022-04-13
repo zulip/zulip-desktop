@@ -5,12 +5,8 @@ import * as path from "node:path";
 import {defineConfig} from "vite";
 import electron from "vite-plugin-electron";
 
-let resolveInjected: () => void;
 let resolvePreload: () => void;
 let resolveRenderer: () => void;
-const whenInjected = new Promise<void>((resolve) => {
-  resolveInjected = resolve;
-});
 const whenPreload = new Promise<void>((resolve) => {
   resolvePreload = resolve;
 });
@@ -26,7 +22,6 @@ export default defineConfig({
           index: "app/main",
         },
         async onstart({startup}) {
-          await whenInjected;
           await whenPreload;
           await whenRenderer;
           await startup();
@@ -46,19 +41,6 @@ export default defineConfig({
           },
           ssr: {
             noExternal: true,
-          },
-        },
-      },
-      {
-        entry: {
-          injected: "app/renderer/js/injected.ts",
-        },
-        onstart() {
-          resolveInjected();
-        },
-        vite: {
-          build: {
-            sourcemap: "inline",
           },
         },
       },
