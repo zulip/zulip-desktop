@@ -1,10 +1,10 @@
-import {contextBridge, webFrame} from "electron/renderer";
+import {contextBridge} from "electron/renderer";
 
 import electron_bridge, {bridgeEvents} from "./electron-bridge.js";
 import * as NetworkError from "./pages/network.js";
 import {ipcRenderer} from "./typed-ipc-renderer.js";
 
-contextBridge.exposeInMainWorld("raw_electron_bridge", electron_bridge);
+contextBridge.exposeInMainWorld("electron_bridge", electron_bridge);
 
 ipcRenderer.on("logout", () => {
   if (bridgeEvents.emit("logout")) {
@@ -73,6 +73,3 @@ window.addEventListener("load", () => {
   const $settingsButton = document.querySelector("#settings")!;
   NetworkError.init($reconnectButton, $settingsButton);
 });
-
-(async () =>
-  webFrame.executeJavaScript(ipcRenderer.sendSync("get-injected-js")))();

@@ -7,7 +7,6 @@ export type MainMessage = {
   "fetch-user-agent": () => string;
   "focus-app": () => void;
   "focus-this-webview": () => void;
-  "get-injected-js": () => string;
   "new-clipboard-key": () => {key: Uint8Array; sig: Uint8Array};
   "permission-callback": (permissionCallbackId: number, grant: boolean) => void;
   "quit-app": () => void;

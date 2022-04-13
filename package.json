@@ -303,7 +303,6 @@
       },
       {
         "files": [
-          "app/renderer/js/injected.ts",
           "scripts/notarize.js",
           "tests/**/*.js"
         ],
