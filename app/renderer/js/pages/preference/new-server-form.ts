@@ -17,11 +17,16 @@ export function initNewServerForm({$root, onChange}: NewServerFormProps): void {
     <div class="server-input-container">
       <div class="title">${t.__("Organization URL")}</div>
       <div class="add-server-info-row">
-        <input
-          class="setting-input-value"
-          autofocus
-          placeholder="your-organization.zulipchat.com or zulip.your-organization.com"
-        />
+        <label class="setting-input-value">
+          <input
+            class="setting-input-add-server"
+            autofocus
+            placeholder="your-organization.zulipchat.com"
+            style="width: 34ch"
+          />
+          <span class="add-server-domain"></span>
+          <span class="server-url-size-calc"></span>
+        </label>
       </div>
       <div class="server-center">
         <button id="connect">${t.__("Connect")}</button>
@@ -53,8 +58,15 @@ export function initNewServerForm({$root, onChange}: NewServerFormProps): void {
   $root.textContent = "";
   $root.append($newServerForm);
   const $newServerUrl: HTMLInputElement = $newServerForm.querySelector(
-    "input.setting-input-value",
+    "input.setting-input-add-server",
   )!;
+  const $serverDomain: HTMLSpanElement = $newServerForm.querySelector(
+    "span.add-server-domain",
+  )!;
+  const $urlSizeCalc: HTMLSpanElement = $newServerForm.querySelector(
+    "span.server-url-size-calc",
+  )!;
+  const urlValidationPattern = /^[a-zA-Z\d-]*$/;
 
   async function submitFormHandler(): Promise<void> {
     $saveServerButton.textContent = "Connecting...";
@@ -98,6 +110,15 @@ export function initNewServerForm({$root, onChange}: NewServerFormProps): void {
     if (event.key === "Enter") {
       await submitFormHandler();
     }
+  });
+  $newServerUrl.addEventListener("input", async () => {
+    const url = $newServerUrl.value;
+    $urlSizeCalc.textContent = url;
+    $newServerUrl.style.width = `${$urlSizeCalc.offsetWidth}px`;
+
+    $serverDomain.textContent = urlValidationPattern.test(url)
+      ? ".zulipchat.com"
+      : "";
   });
 
   // Open create new org link in default browser
