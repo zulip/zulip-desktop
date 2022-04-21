@@ -2,6 +2,12 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.9.2 --2022-04-20
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 18.1.0. This fixes an upstream Electron bug that crashed the application when accessibility tools such as screen readers and grammar assistants are in use.
+
 ### v5.9.1 --2022-04-08
 
 **Dependencies**:
