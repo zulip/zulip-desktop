@@ -10,7 +10,7 @@ import * as ConfigUtil from "../common/config-util";
 import type {RendererMessage} from "../common/typed-ipc";
 import type {MenuProps} from "../common/types";
 
-import {appUpdater} from "./autoupdater";
+import {appUpdater, shouldQuitForUpdate} from "./autoupdater";
 import * as BadgeSettings from "./badge-settings";
 import handleExternalLink from "./handle-external-link";
 import * as AppMenu from "./menu";
@@ -91,7 +91,7 @@ function createMainWindow(): BrowserWindow {
       app.quit();
     }
 
-    if (!isQuitting) {
+    if (!isQuitting && !shouldQuitForUpdate()) {
       event.preventDefault();
 
       if (process.platform === "darwin") {

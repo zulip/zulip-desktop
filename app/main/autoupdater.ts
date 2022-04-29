@@ -1,7 +1,6 @@
 import {shell} from "electron/common";
 import {app, dialog, session} from "electron/main";
 import process from "node:process";
-import util from "node:util";
 
 import log from "electron-log";
 import type {UpdateDownloadedEvent, UpdateInfo} from "electron-updater";
@@ -11,7 +10,11 @@ import * as ConfigUtil from "../common/config-util";
 
 import {linuxUpdateNotification} from "./linuxupdater"; // Required only in case of linux
 
-const sleep = util.promisify(setTimeout);
+let quitting = false;
+
+export function shouldQuitForUpdate(): boolean {
+  return quitting;
+}
 
 export async function appUpdater(updateFromMenu = false): Promise<void> {
   // Don't initiate auto-updates in development
@@ -104,10 +107,8 @@ Current Version: ${app.getVersion()}`,
       detail: "It will be installed the next time you restart the application",
     });
     if (response === 0) {
-      await sleep(1000);
+      quitting = true;
       autoUpdater.quitAndInstall();
-      // Force app to quit. This is just a workaround, ideally autoUpdater.quitAndInstall() should relaunch the app.
-      app.quit();
     }
   });
   // Init for updates
