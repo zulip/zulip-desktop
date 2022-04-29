@@ -1,7 +1,7 @@
 {
   "name": "zulip",
   "productName": "Zulip",
-  "version": "5.9.2",
+  "version": "5.9.3",
   "main": "./app/main",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",

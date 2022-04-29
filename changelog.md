@@ -2,6 +2,17 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.9.3 --2022-04-28
+
+**Fixes**:
+
+- Fixed a bug in the automatic updater that would sometimes close the application instead of updating it.
+  (As with most updater fixes, this fix will take effect when updating _from_ 5.9.3. If you're having trouble updating _to_ 5.9.3, a workaround is to click **Install Later** rather than **Install and Relaunch**, then **Quit** from the menu bar and re-open the application manually.)
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 18.2.0.
+
 ### v5.9.2 --2022-04-20
 
 **Dependencies**:
