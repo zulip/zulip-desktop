@@ -111,6 +111,7 @@ export function initNewServerForm({$root, onChange}: NewServerFormProps): void {
     }
   });
   $newServerUrl.addEventListener("input", async () => {
+    $newServerUrl.value = $newServerUrl.value.trim();
     const url = $newServerUrl.value;
     $urlSizeCalc.textContent = url;
     $newServerUrl.style.width = `${$urlSizeCalc.offsetWidth}px`;
