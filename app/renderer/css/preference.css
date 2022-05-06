@@ -258,13 +258,16 @@ label.setting-input-value:focus-within {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
-  color: inherit;
+  color: rgb(34 44 49 / 100%);
   background: inherit;
 }
 
 .setting-input-add-server {
   width: 34ch;
-  color: rgb(34 44 49 / 100%);
+}
+
+.setting-input-add-server:focus + .add-server-domain {
+  color: inherit;
 }
 
 .server-url-size-calc {
