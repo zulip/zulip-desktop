@@ -263,6 +263,7 @@ label.setting-input-value:focus-within {
 }
 
 .setting-input-add-server {
+  width: 34ch;
   color: rgb(34 44 49 / 100%);
 }
 

@@ -22,7 +22,6 @@ export function initNewServerForm({$root, onChange}: NewServerFormProps): void {
             class="setting-input-add-server"
             autofocus
             placeholder="your-organization.zulipchat.com"
-            style="width: 34ch"
           />
           <span class="add-server-domain"></span>
           <span class="server-url-size-calc"></span>
