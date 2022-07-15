@@ -53,20 +53,20 @@
 
 - First download our signing key to make sure the deb you download is correct:
 
-```
-sudo apt-key adv --keyserver pool.sks-keyservers.net --recv 69AD12704E71A4803DCA3A682424BE5AE9BD10D9
+```bash
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 69AD12704E71A4803DCA3A682424BE5AE9BD10D9
 ```
 
 - Add the repo to your apt source list :
 
-```
-echo "deb https://dl.bintray.com/zulip/debian/ beta main" |
+```bash
+echo "deb https://download.zulip.com/desktop/apt stable main" |
   sudo tee -a /etc/apt/sources.list.d/zulip.list
 ```
 
 - Now install the client :
 
-```
+```bash
 sudo apt-get update
 sudo apt-get install zulip
 ```
