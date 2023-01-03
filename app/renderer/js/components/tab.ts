@@ -15,12 +15,9 @@ export interface TabProps {
 }
 
 export default abstract class Tab {
-  props: TabProps;
   abstract $el: Element;
 
-  constructor(props: TabProps) {
-    this.props = props;
-  }
+  constructor(readonly props: TabProps) {}
 
   registerListeners(): void {
     this.$el.addEventListener("click", this.props.onClick);

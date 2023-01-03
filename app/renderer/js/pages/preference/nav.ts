@@ -10,11 +10,9 @@ interface PreferenceNavProps {
 }
 
 export default class PreferenceNav {
-  props: PreferenceNavProps;
   navItems: NavItem[];
   $el: Element;
-  constructor(props: PreferenceNavProps) {
-    this.props = props;
+  constructor(private readonly props: PreferenceNavProps) {
     this.navItems = [
       "General",
       "Network",

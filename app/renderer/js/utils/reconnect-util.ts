@@ -10,13 +10,11 @@ const logger = new Logger({
 });
 
 export default class ReconnectUtil {
-  webview: WebView;
   url: string;
   alreadyReloaded: boolean;
   fibonacciBackoff: backoff.Backoff;
 
   constructor(webview: WebView) {
-    this.webview = webview;
     this.url = webview.props.url;
     this.alreadyReloaded = false;
     this.fibonacciBackoff = backoff.fibonacci({

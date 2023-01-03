@@ -92,7 +92,6 @@ export default class WebView {
     return new WebView(props, $element, webContentsId);
   }
 
-  props: WebViewProps;
   zoomFactor: number;
   badgeCount: number;
   loading: boolean;
@@ -102,11 +101,10 @@ export default class WebView {
   webContentsId: number;
 
   private constructor(
-    props: WebViewProps,
+    readonly props: WebViewProps,
     $element: HTMLElement,
     webContentsId: number,
   ) {
-    this.props = props;
     this.zoomFactor = 1;
     this.loading = true;
     this.badgeCount = 0;
