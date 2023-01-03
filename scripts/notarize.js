@@ -1,6 +1,6 @@
 "use strict";
-const path = require("path");
-const process = require("process");
+const path = require("node:path");
+const process = require("node:process");
 
 const dotenv = require("dotenv");
 const {notarize} = require("electron-notarize");
