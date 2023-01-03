@@ -616,7 +616,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
       const availableLanguages = session.fromPartition(
         "persist:webviewsession",
       ).availableSpellCheckerLanguages;
-      let languagePairs: Map<string, string> = new Map();
+      let languagePairs = new Map<string, string>();
       for (const l of availableLanguages) {
         if (ISO6391.validate(l)) {
           languagePairs.set(ISO6391.getName(l), l);
