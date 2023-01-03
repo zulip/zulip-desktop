@@ -8,12 +8,12 @@ import {generateNodeFromHtml} from "../../components/base";
 import {ipcRenderer} from "../../typed-ipc-renderer";
 import * as DomainUtil from "../../utils/domain-util";
 
-interface ServerInfoFormProps {
+type ServerInfoFormProps = {
   $root: Element;
   server: ServerConf;
   index: number;
   onChange: () => void;
-}
+};
 
 export function initServerInfoForm(props: ServerInfoFormProps): void {
   const $serverInfoForm = generateNodeFromHtml(html`

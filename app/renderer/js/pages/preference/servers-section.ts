@@ -4,9 +4,9 @@ import * as t from "../../../../common/translation-util";
 import {reloadApp} from "./base-section";
 import {initNewServerForm} from "./new-server-form";
 
-interface ServersSectionProps {
+type ServersSectionProps = {
   $root: Element;
-}
+};
 
 export function initServersSection({$root}: ServersSectionProps): void {
   $root.innerHTML = html`

@@ -5,9 +5,9 @@ import {generateNodeFromHtml} from "./base";
 import type {TabProps} from "./tab";
 import Tab from "./tab";
 
-export interface FunctionalTabProps extends TabProps {
+export type FunctionalTabProps = {
   $view: Element;
-}
+} & TabProps;
 
 export default class FunctionalTab extends Tab {
   $view: Element;

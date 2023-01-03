@@ -3,12 +3,12 @@ import {html} from "../../../../common/html";
 import {generateNodeFromHtml} from "../../components/base";
 import {ipcRenderer} from "../../typed-ipc-renderer";
 
-interface BaseSectionProps {
+type BaseSectionProps = {
   $element: HTMLElement;
   disabled?: boolean;
   value: boolean;
   clickHandler: () => void;
-}
+};
 
 export function generateSettingOption(props: BaseSectionProps): void {
   const {$element, disabled, value, clickHandler} = props;

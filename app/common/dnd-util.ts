@@ -13,10 +13,10 @@ export type DndSettings = {
 
 type SettingName = keyof DndSettings;
 
-interface Toggle {
+type Toggle = {
   dnd: boolean;
   newSettings: Partial<DndSettings>;
-}
+};
 
 export function toggle(): Toggle {
   const dnd = !ConfigUtil.getConfigItem("dnd", false);

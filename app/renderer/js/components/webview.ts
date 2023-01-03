@@ -19,7 +19,7 @@ import {contextMenu} from "./context-menu";
 
 const shouldSilentWebview = ConfigUtil.getConfigItem("silent", false);
 
-interface WebViewProps {
+type WebViewProps = {
   $root: Element;
   rootWebContents: WebContents;
   index: number;
@@ -32,7 +32,7 @@ interface WebViewProps {
   preload?: string;
   onTitleChange: () => void;
   hasPermission?: (origin: string, permission: string) => boolean;
-}
+};
 
 export default class WebView {
   static templateHtml(props: WebViewProps): Html {

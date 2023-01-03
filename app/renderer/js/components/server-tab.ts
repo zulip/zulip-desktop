@@ -9,9 +9,9 @@ import type {TabProps} from "./tab";
 import Tab from "./tab";
 import type WebView from "./webview";
 
-export interface ServerTabProps extends TabProps {
+export type ServerTabProps = {
   webview: Promise<WebView>;
-}
+} & TabProps;
 
 export default class ServerTab extends Tab {
   webview: Promise<WebView>;

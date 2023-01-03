@@ -1,6 +1,6 @@
 import type {TabRole} from "../../../common/types";
 
-export interface TabProps {
+export type TabProps = {
   role: TabRole;
   icon?: string;
   name: string;
@@ -12,7 +12,7 @@ export interface TabProps {
   onHoverOut?: () => void;
   materialIcon?: string;
   onDestroy?: () => void;
-}
+};
 
 export default abstract class Tab {
   abstract $el: Element;

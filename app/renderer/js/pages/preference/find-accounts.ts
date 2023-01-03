@@ -3,9 +3,9 @@ import * as LinkUtil from "../../../../common/link-util";
 import * as t from "../../../../common/translation-util";
 import {generateNodeFromHtml} from "../../components/base";
 
-interface FindAccountsProps {
+type FindAccountsProps = {
   $root: Element;
-}
+};
 
 async function findAccounts(url: string): Promise<void> {
   if (!url) {

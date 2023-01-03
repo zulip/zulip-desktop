@@ -4,9 +4,9 @@ import {html} from "../../../../common/html";
 import * as LinkUtil from "../../../../common/link-util";
 import * as t from "../../../../common/translation-util";
 
-interface ShortcutsSectionProps {
+type ShortcutsSectionProps = {
   $root: Element;
-}
+};
 
 // eslint-disable-next-line complexity
 export function initShortcutsSection({$root}: ShortcutsSectionProps): void {

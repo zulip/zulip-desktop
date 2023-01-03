@@ -2,11 +2,11 @@
 
 type ElectronBridge = import("./electron-bridge").ElectronBridge;
 
-interface CompatElectronBridge extends ElectronBridge {
+type CompatElectronBridge = {
   readonly idle_on_system: boolean;
   readonly last_active_on_system: number;
   send_notification_reply_message_supported: boolean;
-}
+} & ElectronBridge;
 
 (() => {
   const zulipWindow = window as typeof window & {

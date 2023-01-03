@@ -7,9 +7,9 @@ import {reloadApp} from "./base-section";
 import {initFindAccounts} from "./find-accounts";
 import {initServerInfoForm} from "./server-info-form";
 
-interface ConnectedOrgSectionProps {
+type ConnectedOrgSectionProps = {
   $root: Element;
-}
+};
 
 export function initConnectedOrgSection({
   $root,

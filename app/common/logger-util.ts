@@ -6,9 +6,9 @@ import process from "node:process";
 import {initSetUp} from "./default-util";
 import {app} from "./remote";
 
-interface LoggerOptions {
+type LoggerOptions = {
   file?: string;
-}
+};
 
 initSetUp();
 

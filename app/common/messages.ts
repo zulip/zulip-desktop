@@ -1,7 +1,7 @@
-interface DialogBoxError {
+type DialogBoxError = {
   title: string;
   content: string;
-}
+};
 
 export function invalidZulipServerError(domain: string): string {
   return `${domain} does not appear to be a valid Zulip server. Make sure that

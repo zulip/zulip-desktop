@@ -16,11 +16,11 @@ import crypto from "node:crypto";
 // don’t leak anything from the user’s clipboard other than the token
 // intended for us.
 
-export interface ClipboardDecrypter {
+export type ClipboardDecrypter = {
   version: number;
   key: Uint8Array;
   pasted: Promise<string>;
-}
+};
 
 export class ClipboardDecrypterImpl implements ClipboardDecrypter {
   version: number;

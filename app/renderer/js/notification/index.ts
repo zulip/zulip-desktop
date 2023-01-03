@@ -1,6 +1,6 @@
 import {ipcRenderer} from "../typed-ipc-renderer";
 
-export interface NotificationData {
+export type NotificationData = {
   close: () => void;
   title: string;
   dir: NotificationDirection;
@@ -9,7 +9,7 @@ export interface NotificationData {
   tag: string;
   icon: string;
   data: unknown;
-}
+};
 
 export function newNotification(
   title: string,

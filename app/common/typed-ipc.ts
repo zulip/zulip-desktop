@@ -1,7 +1,7 @@
 import type {DndSettings} from "./dnd-util";
 import type {MenuProps, ServerConf} from "./types";
 
-export interface MainMessage {
+export type MainMessage = {
   "clear-app-settings": () => void;
   "configure-spell-checker": () => void;
   "fetch-user-agent": () => string;
@@ -22,15 +22,15 @@ export interface MainMessage {
   "update-badge": (messageCount: number) => void;
   "update-menu": (props: MenuProps) => void;
   "update-taskbar-icon": (data: string, text: string) => void;
-}
+};
 
-export interface MainCall {
+export type MainCall = {
   "get-server-settings": (domain: string) => ServerConf;
   "is-online": (url: string) => boolean;
   "save-server-icon": (iconURL: string) => string;
-}
+};
 
-export interface RendererMessage {
+export type RendererMessage = {
   back: () => void;
   "copy-zulip-url": () => void;
   destroytray: () => void;
@@ -79,4 +79,4 @@ export interface RendererMessage {
   zoomActualSize: () => void;
   zoomIn: () => void;
   zoomOut: () => void;
-}
+};

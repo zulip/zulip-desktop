@@ -20,9 +20,9 @@ import {generateSelectHtml, generateSettingOption} from "./base-section";
 
 const currentBrowserWindow = remote.getCurrentWindow();
 
-interface GeneralSectionProps {
+type GeneralSectionProps = {
   $root: Element;
-}
+};
 
 export function initGeneralSection({$root}: GeneralSectionProps): void {
   $root.innerHTML = html`

@@ -4,10 +4,10 @@ import * as t from "../../../../common/translation-util";
 import type {NavItem} from "../../../../common/types";
 import {generateNodeFromHtml} from "../../components/base";
 
-interface PreferenceNavProps {
+type PreferenceNavProps = {
   $root: Element;
   onItemSelected: (navItem: NavItem) => void;
-}
+};
 
 export default class PreferenceNav {
   navItems: NavItem[];

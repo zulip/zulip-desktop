@@ -8,7 +8,7 @@ import {ipcRenderer} from "./typed-ipc-renderer";
 
 type ListenerType = (...args: any[]) => void;
 
-export interface ElectronBridge {
+export type ElectronBridge = {
   send_event: (eventName: string | symbol, ...args: unknown[]) => boolean;
   on_event: (eventName: string, listener: ListenerType) => void;
   new_notification: (
@@ -21,7 +21,7 @@ export interface ElectronBridge {
   get_send_notification_reply_message_supported: () => boolean;
   set_send_notification_reply_message_supported: (value: boolean) => void;
   decrypt_clipboard: (version: number) => ClipboardDecrypter;
-}
+};
 
 let notificationReplySupported = false;
 // Indicates if the user is idle or not

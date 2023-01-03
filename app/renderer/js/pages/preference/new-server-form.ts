@@ -7,10 +7,10 @@ import {generateNodeFromHtml} from "../../components/base";
 import {ipcRenderer} from "../../typed-ipc-renderer";
 import * as DomainUtil from "../../utils/domain-util";
 
-interface NewServerFormProps {
+type NewServerFormProps = {
   $root: Element;
   onChange: () => void;
-}
+};
 
 export function initNewServerForm({$root, onChange}: NewServerFormProps): void {
   const $newServerForm = generateNodeFromHtml(html`

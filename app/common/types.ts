@@ -1,8 +1,8 @@
-export interface MenuProps {
+export type MenuProps = {
   tabs: TabData[];
   activeTabIndex?: number;
   enableMenu?: boolean;
-}
+};
 
 export type NavItem =
   | "General"
@@ -11,16 +11,16 @@ export type NavItem =
   | "Organizations"
   | "Shortcuts";
 
-export interface ServerConf {
+export type ServerConf = {
   url: string;
   alias: string;
   icon: string;
-}
+};
 
 export type TabRole = "server" | "function";
 
-export interface TabData {
+export type TabData = {
   role: TabRole;
   name: string;
   index: number;
-}
+};

@@ -5,9 +5,9 @@ import {ipcRenderer} from "../../typed-ipc-renderer";
 
 import {generateSettingOption} from "./base-section";
 
-interface NetworkSectionProps {
+type NetworkSectionProps = {
   $root: Element;
-}
+};
 
 export function initNetworkSection({$root}: NetworkSectionProps): void {
   $root.innerHTML = html`
