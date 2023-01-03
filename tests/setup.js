@@ -34,9 +34,8 @@ function getAppDataDir() {
       base = path.join(process.env.HOME, "Library", "Application Support");
       break;
     case "linux":
-      base = process.env.XDG_CONFIG_HOME
-        ? process.env.XDG_CONFIG_HOME
-        : path.join(process.env.HOME, ".config");
+      base =
+        process.env.XDG_CONFIG_HOME ?? path.join(process.env.HOME, ".config");
       break;
     case "win32":
       base = process.env.APPDATA;
