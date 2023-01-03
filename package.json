@@ -18,7 +18,7 @@
     "url": "https://github.com/zulip/zulip-desktop/issues"
   },
   "engines": {
-    "node": ">=12.10.0"
+    "node": ">=16.13.2"
   },
   "scripts": {
     "start": "tsc && electron .",
