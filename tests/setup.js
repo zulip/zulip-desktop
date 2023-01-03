@@ -30,18 +30,25 @@ function getAppDataDir() {
   let base;
 
   switch (process.platform) {
-    case "darwin":
+    case "darwin": {
       base = path.join(process.env.HOME, "Library", "Application Support");
       break;
-    case "linux":
+    }
+
+    case "linux": {
       base =
         process.env.XDG_CONFIG_HOME ?? path.join(process.env.HOME, ".config");
       break;
-    case "win32":
+    }
+
+    case "win32": {
       base = process.env.APPDATA;
       break;
-    default:
+    }
+
+    default: {
       throw new Error("Could not detect app data dir base.");
+    }
   }
 
   console.log("Detected App Data Dir base:", base);

@@ -36,14 +36,21 @@ let unread = 0;
 
 const trayIconSize = (): number => {
   switch (process.platform) {
-    case "darwin":
+    case "darwin": {
       return 20;
-    case "win32":
+    }
+
+    case "win32": {
       return 100;
-    case "linux":
+    }
+
+    case "linux": {
       return 100;
-    default:
+    }
+
+    default: {
       return 80;
+    }
   }
 };
 

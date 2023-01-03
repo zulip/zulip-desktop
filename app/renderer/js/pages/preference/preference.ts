@@ -63,29 +63,33 @@ export class PreferenceView {
     this.navItem = navItem;
     this.nav.select(navItem);
     switch (navItem) {
-      case "AddServer":
+      case "AddServer": {
         initServersSection({
           $root: this.$settingsContainer,
         });
         break;
+      }
 
-      case "General":
+      case "General": {
         initGeneralSection({
           $root: this.$settingsContainer,
         });
         break;
+      }
 
-      case "Organizations":
+      case "Organizations": {
         initConnectedOrgSection({
           $root: this.$settingsContainer,
         });
         break;
+      }
 
-      case "Network":
+      case "Network": {
         initNetworkSection({
           $root: this.$settingsContainer,
         });
         break;
+      }
 
       case "Shortcuts": {
         initShortcutsSection({
@@ -94,8 +98,9 @@ export class PreferenceView {
         break;
       }
 
-      default:
+      default: {
         ((n: never) => n)(navItem);
+      }
     }
 
     window.location.hash = `#${navItem}`;
