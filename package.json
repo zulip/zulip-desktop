@@ -175,7 +175,6 @@
     "electron": "^18.0.1",
     "electron-builder": "^23.0.3",
     "electron-notarize": "^1.0.0",
-    "eslint-import-resolver-typescript": "^2.4.0",
     "htmlhint": "^1.1.2",
     "medium": "^1.2.0",
     "playwright-core": "^1.19.1",
@@ -199,15 +198,6 @@
     "rules": {
       "@typescript-eslint/no-dynamic-delete": "off",
       "arrow-body-style": "error",
-      "import/extensions": [
-        "error",
-        "always",
-        {
-          "pattern": {
-            "ts": "never"
-          }
-        }
-      ],
       "import/no-restricted-paths": [
         "error",
         {
@@ -312,9 +302,6 @@
             }
           ],
           "unicorn/no-await-expression-member": "off"
-        },
-        "settings": {
-          "import/resolver": "typescript"
         }
       },
       {

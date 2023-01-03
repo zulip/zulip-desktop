@@ -3,7 +3,7 @@ import process from "node:process";
 
 import AutoLaunch from "auto-launch";
 
-import * as ConfigUtil from "../common/config-util";
+import * as ConfigUtil from "../common/config-util.js";
 
 export const setAutoLaunch = async (
   AutoLaunchValue: boolean,

@@ -1,8 +1,8 @@
 import process from "node:process";
 
-import {html} from "../../../../common/html";
-import * as LinkUtil from "../../../../common/link-util";
-import * as t from "../../../../common/translation-util";
+import {html} from "../../../../common/html.js";
+import * as LinkUtil from "../../../../common/link-util.js";
+import * as t from "../../../../common/translation-util.js";
 
 type ShortcutsSectionProps = {
   $root: Element;

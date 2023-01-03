@@ -7,7 +7,7 @@ import type {
   MainCall,
   MainMessage,
   RendererMessage,
-} from "../../common/typed-ipc";
+} from "../../common/typed-ipc.js";
 
 type RendererListener<Channel extends keyof RendererMessage> =
   RendererMessage[Channel] extends (...args: infer Args) => void

@@ -4,8 +4,8 @@ import process from "node:process";
 
 import * as z from "zod";
 
-import {enterpriseConfigSchemata} from "./config-schemata";
-import Logger from "./logger-util";
+import {enterpriseConfigSchemata} from "./config-schemata.js";
+import Logger from "./logger-util.js";
 
 type EnterpriseConfig = {
   [Key in keyof typeof enterpriseConfigSchemata]: z.output<

@@ -6,9 +6,9 @@ import log from "electron-log";
 import type {UpdateDownloadedEvent, UpdateInfo} from "electron-updater";
 import {autoUpdater} from "electron-updater";
 
-import * as ConfigUtil from "../common/config-util";
+import * as ConfigUtil from "../common/config-util.js";
 
-import {linuxUpdateNotification} from "./linuxupdater"; // Required only in case of linux
+import {linuxUpdateNotification} from "./linuxupdater.js"; // Required only in case of linux
 
 let quitting = false;
 

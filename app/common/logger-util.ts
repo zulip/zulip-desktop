@@ -3,8 +3,8 @@ import fs from "node:fs";
 import os from "node:os";
 import process from "node:process";
 
-import {initSetUp} from "./default-util";
-import {app} from "./remote";
+import {initSetUp} from "./default-util.js";
+import {app} from "./remote.js";
 
 type LoggerOptions = {
   file?: string;

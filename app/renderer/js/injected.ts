@@ -1,6 +1,6 @@
 "use strict";
 
-type ElectronBridge = import("./electron-bridge").ElectronBridge;
+type ElectronBridge = import("./electron-bridge.js").ElectronBridge;
 
 type CompatElectronBridge = {
   readonly idle_on_system: boolean;

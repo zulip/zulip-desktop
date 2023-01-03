@@ -2,7 +2,7 @@ import {app} from "electron/main";
 
 import * as Sentry from "@sentry/electron";
 
-import {getConfigItem} from "../common/config-util";
+import {getConfigItem} from "../common/config-util.js";
 
 export const sentryInit = (): void => {
   Sentry.init({

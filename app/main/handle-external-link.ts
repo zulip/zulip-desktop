@@ -8,10 +8,10 @@ import {Notification, app} from "electron/main";
 import fs from "node:fs";
 import path from "node:path";
 
-import * as ConfigUtil from "../common/config-util";
-import * as LinkUtil from "../common/link-util";
+import * as ConfigUtil from "../common/config-util.js";
+import * as LinkUtil from "../common/link-util.js";
 
-import {send} from "./typed-ipc-main";
+import {send} from "./typed-ipc-main.js";
 
 function isUploadsUrl(server: string, url: URL): boolean {
   return url.origin === server && url.pathname.startsWith("/user_uploads/");

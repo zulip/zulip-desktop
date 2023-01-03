@@ -6,25 +6,25 @@ import {Menu, app, dialog, session} from "@electron/remote";
 import * as remote from "@electron/remote";
 import * as Sentry from "@sentry/electron";
 
-import type {Config} from "../../common/config-util";
-import * as ConfigUtil from "../../common/config-util";
-import * as DNDUtil from "../../common/dnd-util";
-import type {DndSettings} from "../../common/dnd-util";
-import * as EnterpriseUtil from "../../common/enterprise-util";
-import * as LinkUtil from "../../common/link-util";
-import Logger from "../../common/logger-util";
-import * as Messages from "../../common/messages";
-import type {NavItem, ServerConf, TabData} from "../../common/types";
+import type {Config} from "../../common/config-util.js";
+import * as ConfigUtil from "../../common/config-util.js";
+import * as DNDUtil from "../../common/dnd-util.js";
+import type {DndSettings} from "../../common/dnd-util.js";
+import * as EnterpriseUtil from "../../common/enterprise-util.js";
+import * as LinkUtil from "../../common/link-util.js";
+import Logger from "../../common/logger-util.js";
+import * as Messages from "../../common/messages.js";
+import type {NavItem, ServerConf, TabData} from "../../common/types.js";
 
-import FunctionalTab from "./components/functional-tab";
-import ServerTab from "./components/server-tab";
-import WebView from "./components/webview";
-import {AboutView} from "./pages/about";
-import {PreferenceView} from "./pages/preference/preference";
-import {initializeTray} from "./tray";
-import {ipcRenderer} from "./typed-ipc-renderer";
-import * as DomainUtil from "./utils/domain-util";
-import ReconnectUtil from "./utils/reconnect-util";
+import FunctionalTab from "./components/functional-tab.js";
+import ServerTab from "./components/server-tab.js";
+import WebView from "./components/webview.js";
+import {AboutView} from "./pages/about.js";
+import {PreferenceView} from "./pages/preference/preference.js";
+import {initializeTray} from "./tray.js";
+import {ipcRenderer} from "./typed-ipc-renderer.js";
+import * as DomainUtil from "./utils/domain-util.js";
+import ReconnectUtil from "./utils/reconnect-util.js";
 
 Sentry.init({});
 

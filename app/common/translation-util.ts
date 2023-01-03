@@ -2,7 +2,7 @@ import path from "node:path";
 
 import i18n from "i18n";
 
-import * as ConfigUtil from "./config-util";
+import * as ConfigUtil from "./config-util.js";
 
 i18n.configure({
   directory: path.join(__dirname, "../translations/"),

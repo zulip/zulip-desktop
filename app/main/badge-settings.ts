@@ -3,9 +3,9 @@ import type {BrowserWindow} from "electron/main";
 import {app} from "electron/main";
 import process from "node:process";
 
-import * as ConfigUtil from "../common/config-util";
+import * as ConfigUtil from "../common/config-util.js";
 
-import {send} from "./typed-ipc-main";
+import {send} from "./typed-ipc-main.js";
 
 function showBadgeCount(messageCount: number, mainWindow: BrowserWindow): void {
   if (process.platform === "win32") {

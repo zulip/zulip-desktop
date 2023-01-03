@@ -1,4 +1,4 @@
-import {ipcRenderer} from "../typed-ipc-renderer";
+import {ipcRenderer} from "../typed-ipc-renderer.js";
 
 export const connectivityError: string[] = [
   "ERR_INTERNET_DISCONNECTED",
