@@ -243,5 +243,3 @@ export function initializeTray(serverManagerView: ServerManagerView) {
     createTray();
   }
 }
-
-export {};
