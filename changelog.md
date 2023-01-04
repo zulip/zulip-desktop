@@ -2,6 +2,17 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.9.4 --2023-01-04
+
+**Fixes**:
+
+- The `com.apple.quarantine` extended attribute is now correctly set for downloaded files on macOS.
+- The external link handler ignores invalid URLs.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 22.0.0.
+
 ### v5.9.3 --2022-04-28
 
 **Fixes**:
