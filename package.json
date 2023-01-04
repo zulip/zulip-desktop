@@ -177,7 +177,7 @@
     "electron-notarize": "^1.0.0",
     "htmlhint": "^1.1.2",
     "medium": "^1.2.0",
-    "playwright-core": "^1.19.1",
+    "playwright-core": "^1.29.1",
     "pre-commit": "^1.2.2",
     "prettier": "^2.3.2",
     "rimraf": "^3.0.2",
