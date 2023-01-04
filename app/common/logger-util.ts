@@ -1,4 +1,4 @@
-import {Console} from "node:console";
+import {Console} from "node:console"; // eslint-disable-line n/prefer-global/console
 import fs from "node:fs";
 import os from "node:os";
 import process from "node:process";
