@@ -73,6 +73,7 @@ function createMainWindow(): BrowserWindow {
     minHeight: 400,
     webPreferences: {
       preload: require.resolve("../renderer/js/main"),
+      sandbox: false,
       webviewTag: true,
     },
     show: false,
