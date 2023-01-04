@@ -105,7 +105,13 @@ export default function handleExternalLink(
   details: HandlerDetails,
   mainContents: WebContents,
 ): void {
-  const url = new URL(details.url);
+  let url: URL;
+  try {
+    url = new URL(details.url);
+  } catch {
+    return;
+  }
+
   const downloadPath = ConfigUtil.getConfigItem(
     "downloadsPath",
     `${app.getPath("downloads")}`,
