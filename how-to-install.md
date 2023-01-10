@@ -7,7 +7,7 @@
 
 [lr]: https://github.com/zulip/zulip-desktop/releases
 
-## OS X
+## macOS
 
 **DMG or zip**:
 
@@ -17,7 +17,7 @@
 
 **Using brew**:
 
-1. Run `brew cask install zulip` in your terminal
+1. Run `brew install --cask zulip` in your terminal
 2. The app will be installed in your `Applications`
 3. Done! The app will update automatically (you can also use `brew update && brew upgrade zulip`)
 
