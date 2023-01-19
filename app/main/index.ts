@@ -7,6 +7,7 @@ import * as remoteMain from "@electron/remote/main";
 import windowStateKeeper from "electron-window-state";
 
 import * as ConfigUtil from "../common/config-util.js";
+import {bundlePath, bundleUrl, publicPath} from "../common/paths.js";
 import type {RendererMessage} from "../common/typed-ipc.js";
 import type {MenuProps} from "../common/types.js";
 
@@ -35,13 +36,13 @@ let badgeCount: number;
 
 let isQuitting = false;
 
-// Load this url in main window
-const mainUrl = "file://" + path.join(__dirname, "../renderer", "main.html");
+// Load this file in main window
+const mainUrl = new URL("app/renderer/main.html", bundleUrl).href;
 
 const permissionCallbacks = new Map<number, (grant: boolean) => void>();
 let nextPermissionCallbackId = 0;
 
-const appIcon = path.join(__dirname, "../../public/resources", "Icon");
+const appIcon = path.join(publicPath, "resources/Icon");
 
 const iconPath = (): string =>
   appIcon + (process.platform === "win32" ? ".ico" : ".png");
@@ -74,7 +75,7 @@ function createMainWindow(): BrowserWindow {
     minWidth: 500,
     minHeight: 400,
     webPreferences: {
-      preload: require.resolve("../renderer/js/main"),
+      preload: path.join(bundlePath, "renderer.js"),
       sandbox: false,
       webviewTag: true,
     },

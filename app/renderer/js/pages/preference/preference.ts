@@ -1,7 +1,7 @@
 import process from "node:process";
 
 import type {DndSettings} from "../../../../common/dnd-util.js";
-import {html} from "../../../../common/html.js";
+import {bundleUrl} from "../../../../common/paths.js";
 import type {NavItem} from "../../../../common/types.js";
 import {ipcRenderer} from "../../typed-ipc-renderer.js";
 
@@ -14,7 +14,11 @@ import {initShortcutsSection} from "./shortcuts-section.js";
 
 export class PreferenceView {
   static async create(): Promise<PreferenceView> {
-    return new PreferenceView();
+    return new PreferenceView(
+      await (
+        await fetch(new URL("app/renderer/preference.html", bundleUrl))
+      ).text(),
+    );
   }
 
   readonly $view: HTMLElement;
@@ -23,28 +27,10 @@ export class PreferenceView {
   private readonly nav: Nav;
   private navItem: NavItem = "General";
 
-  private constructor() {
+  private constructor(templateHtml: string) {
     this.$view = document.createElement("div");
     this.$shadow = this.$view.attachShadow({mode: "open"});
-    this.$shadow.innerHTML = html`
-      <link
-        rel="stylesheet"
-        href="${require.resolve("../../../css/fonts.css")}"
-      />
-      <link
-        rel="stylesheet"
-        href="${require.resolve("../../../css/preference.css")}"
-      />
-      <link
-        rel="stylesheet"
-        href="${require.resolve("@yaireo/tagify/dist/tagify.css")}"
-      />
-      <!-- Initially hidden to prevent FOUC -->
-      <div id="content" hidden>
-        <div id="sidebar"></div>
-        <div id="settings-container"></div>
-      </div>
-    `.html;
+    this.$shadow.innerHTML = templateHtml;
 
     const $sidebarContainer = this.$shadow.querySelector("#sidebar")!;
     this.$settingsContainer = this.$shadow.querySelector(

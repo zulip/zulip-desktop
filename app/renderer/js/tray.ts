@@ -7,6 +7,7 @@ import process from "node:process";
 import {BrowserWindow, Menu, Tray} from "@electron/remote";
 
 import * as ConfigUtil from "../../common/config-util.js";
+import {publicPath} from "../../common/paths.js";
 import type {RendererMessage} from "../../common/typed-ipc.js";
 
 import type {ServerManagerView} from "./main.js";
@@ -14,11 +15,7 @@ import {ipcRenderer} from "./typed-ipc-renderer.js";
 
 let tray: ElectronTray | null = null;
 
-const iconDir = "../../../public/resources/tray";
-
-const traySuffix = "tray";
-
-const appIcon = path.join(__dirname, iconDir, traySuffix);
+const appIcon = path.join(publicPath, "resources/tray/tray");
 
 const iconPath = (): string => {
   if (process.platform === "linux") {

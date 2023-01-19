@@ -1,5 +1,5 @@
 {
   "version": "5.9.3",
   "productName": "ZulipTest",
-  "main": "../app/main/index.js"
+  "main": "../dist-electron"
 }

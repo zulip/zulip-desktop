@@ -3,9 +3,10 @@ import path from "node:path";
 import i18n from "i18n";
 
 import * as ConfigUtil from "./config-util.js";
+import {publicPath} from "./paths.js";
 
 i18n.configure({
-  directory: path.join(__dirname, "../../public/translations/"),
+  directory: path.join(publicPath, "translations/"),
   updateFiles: false,
 });
 

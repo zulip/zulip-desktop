@@ -1,0 +1,101 @@
+import * as path from "node:path";
+
+import {defineConfig} from "vite";
+import electron from "vite-plugin-electron";
+
+let resolveInjected: () => void;
+let resolvePreload: () => void;
+let resolveRenderer: () => void;
+const whenInjected = new Promise<void>((resolve) => {
+  resolveInjected = resolve;
+});
+const whenPreload = new Promise<void>((resolve) => {
+  resolvePreload = resolve;
+});
+const whenRenderer = new Promise<void>((resolve) => {
+  resolveRenderer = resolve;
+});
+
+export default defineConfig({
+  plugins: [
+    electron([
+      {
+        entry: {
+          index: "app/main",
+        },
+        async onstart({startup}) {
+          await whenInjected;
+          await whenPreload;
+          await whenRenderer;
+          await startup();
+        },
+        vite: {
+          build: {
+            sourcemap: true,
+            rollupOptions: {
+              external: ["electron", /^electron\//, "fs-xattr"],
+            },
+            ssr: true,
+          },
+        },
+      },
+      {
+        entry: {
+          injected: "app/renderer/js/injected.ts",
+        },
+        onstart() {
+          resolveInjected();
+        },
+        vite: {
+          build: {
+            sourcemap: "inline",
+          },
+        },
+      },
+      {
+        entry: {
+          preload: "app/renderer/js/preload.ts",
+        },
+        onstart() {
+          resolvePreload();
+        },
+        vite: {
+          build: {
+            sourcemap: "inline",
+            rollupOptions: {
+              external: ["electron", /^electron\//],
+            },
+          },
+        },
+      },
+      {
+        entry: {
+          renderer: "app/renderer/js/main.ts",
+        },
+        onstart() {
+          resolveRenderer();
+        },
+        vite: {
+          build: {
+            sourcemap: true,
+            rollupOptions: {
+              external: ["electron", /^electron\//, "@yaireo/tagify"],
+            },
+          },
+        },
+      },
+    ]),
+  ],
+  build: {
+    outDir: "dist-electron",
+    sourcemap: true,
+    rollupOptions: {
+      input: {
+        renderer: path.join(__dirname, "app/renderer/main.html"),
+        network: path.join(__dirname, "app/renderer/network.html"),
+        about: path.join(__dirname, "app/renderer/about.html"),
+        preference: path.join(__dirname, "app/renderer/preference.html"),
+      },
+    },
+  },
+});
