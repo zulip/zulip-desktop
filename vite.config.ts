@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
 import * as path from "node:path";
 
 import {defineConfig} from "vite";
@@ -36,6 +38,11 @@ export default defineConfig({
               external: ["electron", /^electron\//, "fs-xattr"],
             },
             ssr: true,
+          },
+          resolve: {
+            alias: {
+              "zulip:remote": "electron/main",
+            },
           },
         },
       },
@@ -80,6 +87,11 @@ export default defineConfig({
             sourcemap: true,
             rollupOptions: {
               external: ["electron", /^electron\//, "@yaireo/tagify"],
+            },
+          },
+          resolve: {
+            alias: {
+              "zulip:remote": "@electron/remote",
             },
           },
         },
