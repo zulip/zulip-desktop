@@ -1,6 +1,6 @@
 import fs from "node:fs";
 
-import {app} from "./remote.js";
+import {app} from "zulip:remote";
 
 let setupCompleted = false;
 
