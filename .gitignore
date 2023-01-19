@@ -8,7 +8,8 @@
 .transifexrc
 
 # Compiled binary build directory
-dist/
+/dist/
+/dist-electron/
 
 #snap generated files
 snap/parts
@@ -39,6 +40,3 @@ config.gypi
 # tests/package.json
 
 .python-version
-
-# Ignore all the typescript compiled files
-app/**/*.js

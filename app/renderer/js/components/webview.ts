@@ -1,6 +1,5 @@
 import type {WebContents} from "electron/main";
 import fs from "node:fs";
-import path from "node:path";
 import process from "node:process";
 
 import * as remote from "@electron/remote";
@@ -11,6 +10,7 @@ import type {Html} from "../../../common/html.js";
 import {html} from "../../../common/html.js";
 import type {RendererMessage} from "../../../common/typed-ipc.js";
 import type {TabRole} from "../../../common/types.js";
+import preloadCss from "../../css/preload.css?raw"; // eslint-disable-line n/file-extension-in-import
 import {ipcRenderer} from "../typed-ipc-renderer.js";
 import * as SystemUtil from "../utils/system-util.js";
 
@@ -210,10 +210,7 @@ export default class WebView {
     this.focus();
     this.props.onTitleChange();
     // Injecting preload css in webview to override some css rules
-    (async () =>
-      this.getWebContents().insertCSS(
-        fs.readFileSync(path.join(__dirname, "/../../css/preload.css"), "utf8"),
-      ))();
+    (async () => this.getWebContents().insertCSS(preloadCss))();
 
     // Get customCSS again from config util to avoid warning user again
     const customCss = ConfigUtil.getConfigItem("customCSS", null);

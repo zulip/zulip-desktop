@@ -2,6 +2,7 @@ import {clipboard} from "electron/common";
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
+import url from "node:url";
 
 import {Menu, app, dialog, session} from "@electron/remote";
 import * as remote from "@electron/remote";
@@ -15,6 +16,7 @@ import * as EnterpriseUtil from "../../common/enterprise-util.js";
 import * as LinkUtil from "../../common/link-util.js";
 import Logger from "../../common/logger-util.js";
 import * as Messages from "../../common/messages.js";
+import {bundlePath, bundleUrl} from "../../common/paths.js";
 import type {NavItem, ServerConf, TabData} from "../../common/types.js";
 
 import FunctionalTab from "./components/functional-tab.js";
@@ -45,12 +47,13 @@ const logger = new Logger({
   file: "errors.log",
 });
 
-const rendererDirectory = path.resolve(__dirname, "..");
 type ServerOrFunctionalTab = ServerTab | FunctionalTab;
 
 const rootWebContents = remote.getCurrentWebContents();
 
-const dingSound = new Audio("../../public/resources/sounds/ding.ogg");
+const dingSound = new Audio(
+  new URL("resources/sounds/ding.ogg", bundleUrl).href,
+);
 
 export class ServerManagerView {
   $addServerButton: HTMLButtonElement;
@@ -401,7 +404,7 @@ export class ServerManagerView {
             await this.openNetworkTroubleshooting(index);
           },
           onTitleChange: this.updateBadge.bind(this),
-          preload: "js/preload.js",
+          preload: url.pathToFileURL(path.join(bundlePath, "preload.js")).href,
         }),
       }),
     );
@@ -628,7 +631,7 @@ export class ServerManagerView {
     reconnectUtil.pollInternetAndReload();
     await webview
       .getWebContents()
-      .loadURL(`file://${rendererDirectory}/network.html`);
+      .loadURL(new URL("app/renderer/network.html", bundleUrl).href);
   }
 
   async activateLastTab(index: number): Promise<void> {
