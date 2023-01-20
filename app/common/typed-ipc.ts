@@ -7,6 +7,7 @@ export type MainMessage = {
   "fetch-user-agent": () => string;
   "focus-app": () => void;
   "focus-this-webview": () => void;
+  "get-injected-js": () => string;
   "permission-callback": (permissionCallbackId: number, grant: boolean) => void;
   "quit-app": () => void;
   "realm-icon-changed": (serverURL: string, iconURL: string) => void;
