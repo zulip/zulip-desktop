@@ -1,8 +1,4 @@
 import {contextBridge, webFrame} from "electron/renderer";
-import fs from "node:fs";
-import path from "node:path";
-
-import {bundlePath} from "../../common/paths.js";
 
 import electron_bridge, {bridgeEvents} from "./electron-bridge.js";
 import * as NetworkError from "./pages/network.js";
@@ -79,6 +75,4 @@ window.addEventListener("load", () => {
 });
 
 (async () =>
-  webFrame.executeJavaScript(
-    fs.readFileSync(path.join(bundlePath, "injected.js"), "utf8"),
-  ))();
+  webFrame.executeJavaScript(ipcRenderer.sendSync("get-injected-js")))();
