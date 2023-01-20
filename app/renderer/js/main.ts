@@ -191,7 +191,7 @@ export class ServerManagerView {
       },
       downloadsPath: `${app.getPath("downloads")}`,
       quitOnClose: false,
-      promptDownload: false,
+      promptDownload: true,
     };
 
     // Platform specific settings

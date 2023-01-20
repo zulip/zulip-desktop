@@ -1,5 +1,6 @@
 import {shell} from "electron/common";
 import type {
+  BrowserWindow,
   HandlerDetails,
   SaveDialogOptions,
   WebContents,
@@ -104,6 +105,7 @@ export default function handleExternalLink(
   contents: WebContents,
   details: HandlerDetails,
   mainContents: WebContents,
+  win: BrowserWindow,
 ): void {
   let url: URL;
   try {
@@ -118,22 +120,37 @@ export default function handleExternalLink(
   );
 
   if (isUploadsUrl(new URL(contents.getURL()).origin, url)) {
+    let currProgress = 0;
+    let interval = 0.5;
+    const progressInterval = setInterval(() => {
+      win.setProgressBar(currProgress);
+      if (currProgress < 1) {
+        currProgress += interval;
+        interval /= 2;
+      }
+    }, 1000);
     downloadFile({
       contents,
       url: url.href,
       downloadPath,
       async completed(filePath: string, fileName: string) {
+        win.setProgressBar(1);
+        clearInterval(progressInterval);
         const downloadNotification = new Notification({
           title: "Download Complete",
           body: `Click to show ${fileName} in folder`,
           silent: true, // We'll play our own sound - ding.ogg
         });
+        shell.showItemInFolder(filePath);
         downloadNotification.on("click", () => {
           // Reveal file in download folder
           shell.showItemInFolder(filePath);
         });
         downloadNotification.show();
-
+        setTimeout(() => {
+          downloadNotification.close();
+          win.setProgressBar(-1);
+        }, 3000);
         // Play sound to indicate download complete
         if (!ConfigUtil.getConfigItem("silent", false)) {
           send(mainContents, "play-ding-sound");

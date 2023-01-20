@@ -179,7 +179,7 @@ function createMainWindow(): BrowserWindow {
 
   app.on("web-contents-created", (_event: Event, contents: WebContents) => {
     contents.setWindowOpenHandler((details) => {
-      handleExternalLink(contents, details, page);
+      handleExternalLink(contents, details, page, mainWindow);
       return {action: "deny"};
     });
   });
