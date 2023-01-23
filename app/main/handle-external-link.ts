@@ -21,12 +21,14 @@ function isUploadsUrl(server: string, url: URL): boolean {
 function downloadFile({
   contents,
   url,
+  win,
   downloadPath,
   completed,
   failed,
 }: {
   contents: WebContents;
   url: string;
+  win: BrowserWindow;
   downloadPath: string;
   completed(filePath: string, fileName: string): Promise<void>;
   failed(state: string): void;
@@ -60,6 +62,12 @@ function downloadFile({
       item.setSavePath(setFilePath);
     }
 
+    let currProgress = 0;
+    let interval = 0.5;
+    const progressInterval = setInterval(() => {
+      win.setProgressBar(currProgress);
+    }, 1000);
+
     const updatedListener = (_event: Event, state: string): void => {
       switch (state) {
         case "interrupted": {
@@ -68,15 +76,22 @@ function downloadFile({
             "Download interrupted, cancelling and fallback to dialog download.",
           );
           item.cancel();
+          win.setProgressBar(-1);
           break;
         }
 
         case "progressing": {
           if (item.isPaused()) {
             item.cancel();
+            win.setProgressBar(-1);
+            break;
           }
 
-          // This event can also be used to show progress in percentage in future.
+          if (currProgress < 1) {
+            interval /= 2;
+          }
+
+          currProgress += interval;
           break;
         }
 
@@ -90,11 +105,16 @@ function downloadFile({
     item.once("done", async (_event: Event, state) => {
       if (state === "completed") {
         await completed(item.getSavePath(), path.basename(item.getSavePath()));
+        win.setProgressBar(1);
       } else {
+        win.setProgressBar(-1);
+        clearInterval(progressInterval);
         console.log("Download failed state:", state);
+
         failed(state);
       }
 
+      clearInterval(progressInterval);
       // To stop item for listening to updated events of this file
       item.removeListener("updated", updatedListener);
     });
@@ -120,22 +140,12 @@ export default function handleExternalLink(
   );
 
   if (isUploadsUrl(new URL(contents.getURL()).origin, url)) {
-    let currProgress = 0;
-    let interval = 0.5;
-    const progressInterval = setInterval(() => {
-      win.setProgressBar(currProgress);
-      if (currProgress < 1) {
-        currProgress += interval;
-        interval /= 2;
-      }
-    }, 1000);
     downloadFile({
       contents,
       url: url.href,
+      win,
       downloadPath,
       async completed(filePath: string, fileName: string) {
-        win.setProgressBar(1);
-        clearInterval(progressInterval);
         const downloadNotification = new Notification({
           title: "Download Complete",
           body: `Click to show ${fileName} in folder`,
