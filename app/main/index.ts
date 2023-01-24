@@ -1,5 +1,8 @@
+import {clipboard} from "electron/common";
 import type {IpcMainEvent, WebContents} from "electron/main";
 import {BrowserWindow, app, dialog, powerMonitor, session} from "electron/main";
+import {Buffer} from "node:buffer";
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
@@ -208,6 +211,42 @@ function createMainWindow(): BrowserWindow {
       path.join(bundlePath, "injected.js"),
       "utf8",
     );
+  });
+
+  const clipboardSigKey = crypto.randomBytes(32);
+
+  ipcMain.on("new-clipboard-key", (event) => {
+    const key = crypto.randomBytes(32);
+    const hmac = crypto.createHmac("sha256", clipboardSigKey);
+    hmac.update(key);
+    event.returnValue = {key, sig: hmac.digest()};
+  });
+
+  ipcMain.handle("poll-clipboard", (event, key, sig) => {
+    // Check that the key was generated here.
+    const hmac = crypto.createHmac("sha256", clipboardSigKey);
+    hmac.update(key);
+    if (!crypto.timingSafeEqual(sig, hmac.digest())) return;
+
+    try {
+      // Check that the data on the clipboard was encrypted to the key.
+      const data = Buffer.from(clipboard.readText(), "hex");
+      const iv = data.slice(0, 12);
+      const ciphertext = data.slice(12, -16);
+      const authTag = data.slice(-16);
+      const decipher = crypto.createDecipheriv("aes-256-gcm", key, iv, {
+        authTagLength: 16,
+      });
+      decipher.setAuthTag(authTag);
+      return (
+        decipher.update(ciphertext, undefined, "utf8") + decipher.final("utf8")
+      );
+    } catch {
+      // If the parsing or decryption failed in any way,
+      // the correct token hasn’t been copied yet; try
+      // again next time.
+      return undefined;
+    }
   });
 
   AppMenu.setMenu({
