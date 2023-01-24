@@ -14,7 +14,7 @@ import {ipcRenderer} from "./typed-ipc-renderer.js";
 
 let tray: ElectronTray | null = null;
 
-const iconDir = "../../resources/tray";
+const iconDir = "../../../public/resources/tray";
 
 const traySuffix = "tray";
 
