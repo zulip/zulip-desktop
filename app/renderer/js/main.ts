@@ -1,4 +1,5 @@
 import {clipboard} from "electron/common";
+import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
@@ -362,7 +363,10 @@ export class ServerManagerView {
     this.tabs.push(
       new ServerTab({
         role: "server",
-        icon: server.icon,
+        icon: `data:application/octet-stream;base64,${fs.readFileSync(
+          server.icon,
+          "base64",
+        )}`,
         name: server.alias,
         $root: this.$tabsContainer,
         onClick: this.activateLastTab.bind(this, index),
