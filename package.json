@@ -47,7 +47,8 @@
       "**/*.node"
     ],
     "files": [
-      "app/**/*"
+      "app/**/*",
+      "public/**/*"
     ],
     "copyright": "©2020 Kandra Labs, Inc.",
     "mac": {
@@ -203,8 +204,7 @@
               "target": "./app/common",
               "from": "./app",
               "except": [
-                "./common",
-                "./translations"
+                "./common"
               ]
             },
             {
@@ -212,8 +212,7 @@
               "from": "./app",
               "except": [
                 "./common",
-                "./main",
-                "./translations"
+                "./main"
               ]
             },
             {
@@ -221,8 +220,7 @@
               "from": "./app",
               "except": [
                 "./common",
-                "./renderer",
-                "./translations"
+                "./renderer"
               ]
             }
           ]
