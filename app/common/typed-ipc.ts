@@ -8,6 +8,7 @@ export type MainMessage = {
   "focus-app": () => void;
   "focus-this-webview": () => void;
   "get-injected-js": () => string;
+  "new-clipboard-key": () => {key: Uint8Array; sig: Uint8Array};
   "permission-callback": (permissionCallbackId: number, grant: boolean) => void;
   "quit-app": () => void;
   "realm-icon-changed": (serverURL: string, iconURL: string) => void;
@@ -28,6 +29,7 @@ export type MainMessage = {
 export type MainCall = {
   "get-server-settings": (domain: string) => ServerConf;
   "is-online": (url: string) => boolean;
+  "poll-clipboard": (key: Uint8Array, sig: Uint8Array) => string | undefined;
   "save-server-icon": (iconURL: string) => string;
 };
 

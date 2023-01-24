@@ -1,6 +1,4 @@
-import {clipboard} from "electron/common";
-import {Buffer} from "node:buffer";
-import crypto from "node:crypto";
+import {ipcRenderer} from "./typed-ipc-renderer.js";
 
 // This helper is exposed via electron_bridge for use in the social
 // login flow.
@@ -30,7 +28,8 @@ export class ClipboardDecrypterImpl implements ClipboardDecrypter {
   constructor(_: number) {
     // At this time, the only version is 1.
     this.version = 1;
-    this.key = crypto.randomBytes(32);
+    const {key, sig} = ipcRenderer.sendSync("new-clipboard-key");
+    this.key = key;
     this.pasted = new Promise((resolve) => {
       let interval: NodeJS.Timeout | null = null;
       const startPolling = () => {
@@ -38,7 +37,7 @@ export class ClipboardDecrypterImpl implements ClipboardDecrypter {
           interval = setInterval(poll, 1000);
         }
 
-        poll();
+        void poll();
       };
 
       const stopPolling = () => {
@@ -48,30 +47,9 @@ export class ClipboardDecrypterImpl implements ClipboardDecrypter {
         }
       };
 
-      const poll = () => {
-        let plaintext;
-
-        try {
-          const data = Buffer.from(clipboard.readText(), "hex");
-          const iv = data.slice(0, 12);
-          const ciphertext = data.slice(12, -16);
-          const authTag = data.slice(-16);
-          const decipher = crypto.createDecipheriv(
-            "aes-256-gcm",
-            this.key,
-            iv,
-            {authTagLength: 16},
-          );
-          decipher.setAuthTag(authTag);
-          plaintext =
-            decipher.update(ciphertext, undefined, "utf8") +
-            decipher.final("utf8");
-        } catch {
-          // If the parsing or decryption failed in any way,
-          // the correct token hasn’t been copied yet; try
-          // again next time.
-          return;
-        }
+      const poll = async () => {
+        const plaintext = await ipcRenderer.invoke("poll-clipboard", key, sig);
+        if (plaintext === undefined) return;
 
         window.removeEventListener("focus", startPolling);
         window.removeEventListener("blur", stopPolling);
