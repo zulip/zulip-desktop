@@ -229,9 +229,7 @@ export default class WebView {
       }
 
       (async () =>
-        this.getWebContents().insertCSS(
-          fs.readFileSync(path.resolve(__dirname, customCss), "utf8"),
-        ))();
+        this.getWebContents().insertCSS(fs.readFileSync(customCss, "utf8")))();
     }
   }
 
