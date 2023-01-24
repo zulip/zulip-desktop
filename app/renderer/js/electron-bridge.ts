@@ -1,4 +1,4 @@
-import {EventEmitter} from "node:events";
+import {EventEmitter} from "events"; // eslint-disable-line unicorn/prefer-node-protocol
 
 import type {ClipboardDecrypter} from "./clipboard-decrypter.js";
 import {ClipboardDecrypterImpl} from "./clipboard-decrypter.js";
