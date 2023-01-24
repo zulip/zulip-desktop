@@ -35,6 +35,7 @@ function downloadFile({
 }) {
   contents.downloadURL(url);
   contents.session.once("will-download", async (_event: Event, item) => {
+    const totalFileSize = item.getTotalBytes();
     if (ConfigUtil.getConfigItem("promptDownload", false)) {
       const showDialogOptions: SaveDialogOptions = {
         defaultPath: path.join(downloadPath, item.getFilename()),
@@ -63,9 +64,8 @@ function downloadFile({
     }
 
     let currProgress = 0;
-    let interval = 0.5;
     const progressInterval = setInterval(() => {
-      win.setProgressBar(currProgress);
+      win.setProgressBar(currProgress / totalFileSize);
     }, 1000);
 
     const updatedListener = (_event: Event, state: string): void => {
@@ -87,11 +87,7 @@ function downloadFile({
             break;
           }
 
-          if (currProgress < 1) {
-            interval /= 2;
-          }
-
-          currProgress += interval;
+          currProgress = item.getReceivedBytes();
           break;
         }
 
