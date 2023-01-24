@@ -38,7 +38,7 @@ You'll want Transifex's CLI client, `tx`.
 
 Run `tx push -s`.
 
-This uploads from `app/translations/en.json` to the
+This uploads from `public/translations/en.json` to the
 set of strings Transifex shows for contributors to translate.
 (See `.tx/config` for how that's configured.)
 
@@ -46,7 +46,7 @@ set of strings Transifex shows for contributors to translate.
 
 Run `tools/tx-pull`.
 
-This writes to files `app/translations/<lang>.json`.
+This writes to files `public/translations/<lang>.json`.
 (See `.tx/config` for how that's configured.)
 
 Then look at the following sections to see if further updates are
@@ -59,7 +59,7 @@ language. This happens when we've opened up a new language for people
 to contribute translations into in the Zulip project on Transifex,
 which we do when someone expresses interest in contributing them.
 
-The locales for supported languages are stored in `app/translations/supported-locales.json`
+The locales for supported languages are stored in `public/translations/supported-locales.json`
 
 So, when a new language is added, update the `supported-locales` module.
 
