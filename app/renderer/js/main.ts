@@ -50,7 +50,7 @@ type ServerOrFunctionalTab = ServerTab | FunctionalTab;
 
 const rootWebContents = remote.getCurrentWebContents();
 
-const dingSound = new Audio("../resources/sounds/ding.ogg");
+const dingSound = new Audio("../../public/resources/sounds/ding.ogg");
 
 export class ServerManagerView {
   $addServerButton: HTMLButtonElement;

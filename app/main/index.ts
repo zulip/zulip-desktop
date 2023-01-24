@@ -41,7 +41,7 @@ const mainUrl = "file://" + path.join(__dirname, "../renderer", "main.html");
 const permissionCallbacks = new Map<number, (grant: boolean) => void>();
 let nextPermissionCallbackId = 0;
 
-const appIcon = path.join(__dirname, "../resources", "Icon");
+const appIcon = path.join(__dirname, "../../public/resources", "Icon");
 
 const iconPath = (): string =>
   appIcon + (process.platform === "win32" ? ".ico" : ".png");
