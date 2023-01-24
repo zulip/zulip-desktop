@@ -42,7 +42,7 @@ export default class WebView {
         src="${props.url}"
         ${props.preload === undefined
           ? html``
-          : html`preload="${props.preload}" webpreferences="sandbox=no"`}
+          : html`preload="${props.preload}"`}
         partition="persist:webviewsession"
         allowpopups
       >
