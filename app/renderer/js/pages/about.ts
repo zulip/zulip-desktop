@@ -3,9 +3,13 @@ import {app} from "@electron/remote";
 import {html} from "../../../common/html.js";
 
 export class AboutView {
+  static async create(): Promise<AboutView> {
+    return new AboutView();
+  }
+
   readonly $view: HTMLElement;
 
-  constructor() {
+  private constructor() {
     this.$view = document.createElement("div");
     const $shadow = this.$view.attachShadow({mode: "open"});
     $shadow.innerHTML = html`

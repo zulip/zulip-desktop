@@ -13,13 +13,17 @@ import {initServersSection} from "./servers-section.js";
 import {initShortcutsSection} from "./shortcuts-section.js";
 
 export class PreferenceView {
+  static async create(): Promise<PreferenceView> {
+    return new PreferenceView();
+  }
+
   readonly $view: HTMLElement;
   private readonly $shadow: ShadowRoot;
   private readonly $settingsContainer: Element;
   private readonly nav: Nav;
   private navItem: NavItem = "General";
 
-  constructor() {
+  private constructor() {
     this.$view = document.createElement("div");
     this.$shadow = this.$view.attachShadow({mode: "open"});
     this.$shadow.innerHTML = html`
