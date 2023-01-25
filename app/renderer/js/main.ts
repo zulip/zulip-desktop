@@ -547,7 +547,7 @@ export class ServerManagerView {
   async openFunctionalTab(tabProps: {
     name: string;
     materialIcon: string;
-    makeView: () => Element;
+    makeView: () => Promise<Element>;
     destroyView: () => void;
   }): Promise<void> {
     if (this.functionalTabs.has(tabProps.name)) {
@@ -559,7 +559,7 @@ export class ServerManagerView {
     this.functionalTabs.set(tabProps.name, index);
 
     const tabIndex = this.getTabIndex();
-    const $view = tabProps.makeView();
+    const $view = await tabProps.makeView();
     this.$webviewsContainer.append($view);
 
     this.tabs.push(
@@ -590,8 +590,8 @@ export class ServerManagerView {
     await this.openFunctionalTab({
       name: "Settings",
       materialIcon: "settings",
-      makeView: () => {
-        this.preferenceView = new PreferenceView();
+      makeView: async () => {
+        this.preferenceView = await PreferenceView.create();
         this.preferenceView.$view.classList.add("functional-view");
         return this.preferenceView.$view;
       },
@@ -609,8 +609,8 @@ export class ServerManagerView {
     await this.openFunctionalTab({
       name: "About",
       materialIcon: "sentiment_very_satisfied",
-      makeView() {
-        aboutView = new AboutView();
+      async makeView() {
+        aboutView = await AboutView.create();
         aboutView.$view.classList.add("functional-view");
         return aboutView.$view;
       },
