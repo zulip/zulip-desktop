@@ -12,7 +12,7 @@ import * as EnterpriseUtil from "./enterprise-util.js";
 import Logger from "./logger-util.js";
 
 export type Config = {
-  [Key in keyof typeof configSchemata]: z.output<typeof configSchemata[Key]>;
+  [Key in keyof typeof configSchemata]: z.output<(typeof configSchemata)[Key]>;
 };
 
 const logger = new Logger({
@@ -26,7 +26,7 @@ reloadDb();
 export function getConfigItem<Key extends keyof Config>(
   key: Key,
   defaultValue: Config[Key],
-): z.output<typeof configSchemata[Key]> {
+): z.output<(typeof configSchemata)[Key]> {
   try {
     db.reload();
   } catch (error: unknown) {

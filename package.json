@@ -144,6 +144,7 @@
     "gatemaker": "^1.0.0"
   },
   "devDependencies": {
+    "@electron/notarize": "^1.2.3",
     "@electron/remote": "^2.0.8",
     "@sentry/electron": "^4.1.2",
     "@types/adm-zip": "^0.5.0",
@@ -161,10 +162,9 @@
     "electron": "^22.0.0",
     "electron-builder": "^23.0.3",
     "electron-log": "^4.3.5",
-    "electron-notarize": "^1.0.0",
     "electron-updater": "^5.0.1",
     "electron-window-state": "^5.0.3",
-    "escape-goat": "^3.0.0",
+    "escape-goat": "^4.0.0",
     "get-stream": "^6.0.1",
     "htmlhint": "^1.1.2",
     "i18n": "^0.15.1",
@@ -174,7 +174,7 @@
     "playwright-core": "^1.30.0-alpha-jan-3-2023",
     "pre-commit": "^1.2.2",
     "prettier": "^2.3.2",
-    "rimraf": "^3.0.2",
+    "rimraf": "^4.1.2",
     "semver": "^7.3.5",
     "stylelint": "^14.5.3",
     "stylelint-config-prettier": "^9.0.3",

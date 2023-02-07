@@ -9,7 +9,7 @@ import Logger from "./logger-util.js";
 
 type EnterpriseConfig = {
   [Key in keyof typeof enterpriseConfigSchemata]: z.output<
-    typeof enterpriseConfigSchemata[Key]
+    (typeof enterpriseConfigSchemata)[Key]
   >;
 };
 

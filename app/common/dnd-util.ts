@@ -7,7 +7,7 @@ import * as ConfigUtil from "./config-util.js";
 
 export type DndSettings = {
   [Key in keyof typeof dndSettingsSchemata]: z.output<
-    typeof dndSettingsSchemata[Key]
+    (typeof dndSettingsSchemata)[Key]
   >;
 };
 

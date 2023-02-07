@@ -2,8 +2,8 @@
 const path = require("node:path");
 const process = require("node:process");
 
+const {notarize} = require("@electron/notarize");
 const dotenv = require("dotenv");
-const {notarize} = require("electron-notarize");
 
 dotenv.config({path: path.join(__dirname, "/../.env")});
 
