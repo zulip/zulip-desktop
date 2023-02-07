@@ -2,6 +2,20 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.9.5 --2023-02-06
+
+**Fixes**:
+
+- Fixed a hang on startup when an organization cannot be connected at startup.
+
+**Enhancements**:
+
+- Enabled Chromium sandboxing in remote renderer processes for improved security hardening.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 22.2.0.
+
 ### v5.9.4 --2023-01-04
 
 **Fixes**:
