@@ -56,11 +56,9 @@ export default class WebView {
     ) as HTMLElement;
     props.$root.append($element);
 
-    // Wait for did-navigate rather than did-attach to work around
-    // https://github.com/electron/electron/issues/31918
     await new Promise<void>((resolve) => {
       $element.addEventListener(
-        "did-navigate",
+        "did-attach",
         () => {
           resolve();
         },
