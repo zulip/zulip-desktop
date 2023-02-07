@@ -44,6 +44,9 @@ export default defineConfig({
               "zulip:remote": "electron/main",
             },
           },
+          ssr: {
+            noExternal: true,
+          },
         },
       },
       {
@@ -86,7 +89,7 @@ export default defineConfig({
           build: {
             sourcemap: true,
             rollupOptions: {
-              external: ["electron", /^electron\//, "@yaireo/tagify"],
+              external: ["electron", /^electron\//],
             },
           },
           resolve: {
