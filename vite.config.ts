@@ -35,7 +35,7 @@ export default defineConfig({
           build: {
             sourcemap: true,
             rollupOptions: {
-              external: ["electron", /^electron\//, "fs-xattr"],
+              external: ["electron", /^electron\//, /^gatemaker\//],
             },
             ssr: true,
           },

@@ -140,8 +140,8 @@
     "Desktop app",
     "InstantMessaging"
   ],
-  "optionalDependencies": {
-    "fs-xattr": "^0.3.1"
+  "dependencies": {
+    "gatemaker": "^1.0.0"
   },
   "devDependencies": {
     "@electron/remote": "^2.0.8",
@@ -165,7 +165,6 @@
     "electron-updater": "^5.0.1",
     "electron-window-state": "^5.0.3",
     "escape-goat": "^3.0.0",
-    "gatemaker": "^1.0.0",
     "get-stream": "^6.0.1",
     "htmlhint": "^1.1.2",
     "i18n": "^0.15.1",
