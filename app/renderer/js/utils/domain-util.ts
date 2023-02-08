@@ -1,12 +1,9 @@
-import fs from "node:fs";
-import path from "node:path";
-
-import {app, dialog} from "@electron/remote";
 import * as Sentry from "@sentry/electron";
-import {JsonDB} from "node-json-db";
+import type {JsonDB} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors";
 import * as z from "zod";
 
+import {getDomainDb} from "../../../common/domain-util.js";
 import * as EnterpriseUtil from "../../../common/enterprise-util.js";
 import Logger from "../../../common/logger-util.js";
 import * as Messages from "../../../common/messages.js";
@@ -153,29 +150,8 @@ export async function updateSavedServer(
   }
 }
 
-function reloadDb(): void {
-  const domainJsonPath = path.join(
-    app.getPath("userData"),
-    "config/domain.json",
-  );
-  try {
-    const file = fs.readFileSync(domainJsonPath, "utf8");
-    JSON.parse(file);
-  } catch (error: unknown) {
-    if (fs.existsSync(domainJsonPath)) {
-      fs.unlinkSync(domainJsonPath);
-      dialog.showErrorBox(
-        "Error saving new organization",
-        "There seems to be error while saving new organization, " +
-          "you may have to re-add your previous organizations back.",
-      );
-      logger.error("Error while JSON parsing domain.json: ");
-      logger.error(error);
-      Sentry.captureException(error);
-    }
-  }
-
-  db = new JsonDB(domainJsonPath, true, true);
+function reloadDb() {
+  db = getDomainDb();
 }
 
 export function formatUrl(domain: string): string {

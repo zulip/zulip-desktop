@@ -11,6 +11,7 @@ import * as remoteMain from "@electron/remote/main";
 import windowStateKeeper from "electron-window-state";
 
 import * as ConfigUtil from "../common/config-util.js";
+import {getDomainDb} from "../common/domain-util.js";
 import {bundlePath, bundleUrl, publicPath} from "../common/paths.js";
 import type {RendererMessage} from "../common/typed-ipc.js";
 import type {MenuProps} from "../common/types.js";
@@ -305,12 +306,21 @@ function createMainWindow(): BrowserWindow {
       error: string,
     ) => {
       const url = new URL(urlString);
-      dialog.showErrorBox(
-        "Certificate error",
-        `The server presented an invalid certificate for ${url.origin}:
+      const serverHostnames: string[] = getDomainDb()
+        .getObject<Array<Record<"url", string>>>("/domains")
+        .map((domain) => new URL(domain.url))
+        .map((url: URL) => url.hostname);
+
+      // Only show the dialog error if the certificate was invalid
+      // for a request from one of the server domains
+      if (serverHostnames.includes(url.hostname)) {
+        dialog.showErrorBox(
+          "Certificate error",
+          `The server presented an invalid certificate for ${url.origin}:
 
 ${error}`,
-      );
+        );
+      }
     },
   );
 
