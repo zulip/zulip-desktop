@@ -3,7 +3,7 @@ import {Notification, app, net} from "electron/main";
 
 import getStream from "get-stream";
 import * as semver from "semver";
-import * as z from "zod";
+import {z} from "zod";
 
 import * as ConfigUtil from "../common/config-util.js";
 import Logger from "../common/logger-util.js";

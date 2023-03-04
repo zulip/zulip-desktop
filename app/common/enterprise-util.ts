@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
-import * as z from "zod";
+import {z} from "zod";
 
 import {enterpriseConfigSchemata} from "./config-schemata.js";
 import Logger from "./logger-util.js";

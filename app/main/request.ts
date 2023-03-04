@@ -7,7 +7,7 @@ import util from "node:util";
 
 import * as Sentry from "@sentry/electron";
 import getStream from "get-stream";
-import * as z from "zod";
+import {z} from "zod";
 
 import Logger from "../common/logger-util.js";
 import * as Messages from "../common/messages.js";

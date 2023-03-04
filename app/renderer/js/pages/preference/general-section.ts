@@ -7,7 +7,7 @@ import * as remote from "@electron/remote";
 import {app, dialog, session} from "@electron/remote";
 import Tagify from "@yaireo/tagify";
 import ISO6391 from "iso-639-1";
-import * as z from "zod";
+import {z} from "zod";
 
 import supportedLocales from "../../../../../public/translations/supported-locales.json";
 import * as ConfigUtil from "../../../../common/config-util.js";

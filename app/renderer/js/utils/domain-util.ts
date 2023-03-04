@@ -5,7 +5,7 @@ import {app, dialog} from "@electron/remote";
 import * as Sentry from "@sentry/electron";
 import {JsonDB} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors";
-import * as z from "zod";
+import {z} from "zod";
 
 import * as EnterpriseUtil from "../../../common/enterprise-util.js";
 import Logger from "../../../common/logger-util.js";

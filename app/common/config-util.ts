@@ -4,7 +4,7 @@ import path from "node:path";
 import * as Sentry from "@sentry/electron";
 import {JsonDB} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors";
-import type * as z from "zod";
+import type {z} from "zod";
 import {app, dialog} from "zulip:remote";
 
 import {configSchemata} from "./config-schemata.js";
