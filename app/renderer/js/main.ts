@@ -1072,13 +1072,18 @@ export class ServerManagerView {
         await Promise.all(
           DomainUtil.getDomains().map(async (domain, index) => {
             if (domain.url.includes(serverURL)) {
-              const localIconUrl: string = await DomainUtil.saveServerIcon(
-                iconURL,
+              const localIconUrl: string = path.resolve(
+                await DomainUtil.saveServerIcon(iconURL),
               );
               const serverImgsSelector = ".tab .server-icons";
               const serverImgs: NodeListOf<HTMLImageElement> =
                 document.querySelectorAll(serverImgsSelector);
-              serverImgs[index].src = localIconUrl;
+              serverImgs[
+                index
+              ].src = `data:application/octet-stream;base64,${fs.readFileSync(
+                localIconUrl,
+                "base64",
+              )}`;
               domain.icon = localIconUrl;
               DomainUtil.updateDomain(index, domain);
             }
