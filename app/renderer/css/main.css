@@ -357,6 +357,9 @@ webview.focus {
   top: 7px;
   right: 68px;
 }
+span#add-server-tooltip {
+  margin-left: 4px;
+}
 
 #add-server-tooltip,
 .server-tooltip {
