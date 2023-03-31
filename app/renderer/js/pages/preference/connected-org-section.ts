@@ -4,6 +4,7 @@ import {ipcRenderer} from "../../typed-ipc-renderer.js";
 import * as DomainUtil from "../../utils/domain-util.js";
 
 import {reloadApp} from "./base-section.js";
+import {exitSettings, reloadApp} from "./base-section";
 import {initFindAccounts} from "./find-accounts.js";
 import {initServerInfoForm} from "./server-info-form.js";
 
@@ -15,10 +16,11 @@ export function initConnectedOrgSection({
   $root,
 }: ConnectedOrgSectionProps): void {
   $root.textContent = "";
-
+  
   const servers = DomainUtil.getDomains();
   $root.innerHTML = html`
     <div class="settings-pane" id="server-settings-pane">
+      <span class="exit-sign">×</span>
       <div class="page-title">${t.__("Connected organizations")}</div>
       <div class="title" id="existing-servers">
         ${t.__("All the connected orgnizations will appear here.")}
@@ -33,6 +35,7 @@ export function initConnectedOrgSection({
       <div id="find-accounts-container"></div>
     </div>
   `.html;
+  exitSettings();
 
   const $serverInfoContainer = $root.querySelector("#server-info-container")!;
   const $existingServers = $root.querySelector("#existing-servers")!;

@@ -14,7 +14,12 @@ import * as ConfigUtil from "../../../../common/config-util.js";
 import * as EnterpriseUtil from "../../../../common/enterprise-util.js";
 import {html} from "../../../../common/html.js";
 import * as t from "../../../../common/translation-util.js";
-import {ipcRenderer} from "../../typed-ipc-renderer.js";
+import {
+  exitSettings,
+  generateSelectHTML,
+  generateSettingOption,
+} from "./base-section";
+
 
 import {generateSelectHtml, generateSettingOption} from "./base-section.js";
 
@@ -26,7 +31,8 @@ type GeneralSectionProps = {
 
 export function initGeneralSection({$root}: GeneralSectionProps): void {
   $root.innerHTML = html`
-    <div class="settings-pane">
+    <div class="settings-pane">4
+      <span class="exit-sign">×</span>
       <div class="title">${t.__("Appearance")}</div>
       <div id="appearance-option-settings" class="settings-card">
         <div class="setting-row" id="tray-option">
@@ -211,7 +217,8 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
       </div>
     </div>
   `.html;
-
+  
+  exitSettings();
   updateTrayOption();
   updateBadgeOption();
   updateSilentOption();

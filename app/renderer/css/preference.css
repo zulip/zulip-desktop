@@ -71,6 +71,16 @@ td:nth-child(odd) {
   /* Support for Safari and Chrome. */
   text-rendering: optimizelegibility;
 }
+.exit-sign {
+  float: right;
+  position: relative;
+  top: 1px;
+  margin-left: 3px;
+  font-size: 2rem;
+  line-height: 1;
+  font-weight: 600;
+  cursor: pointer;
+}
 
 #content {
   display: flex !important;

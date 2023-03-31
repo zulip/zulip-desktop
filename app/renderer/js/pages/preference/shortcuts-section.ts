@@ -2,6 +2,8 @@ import process from "node:process";
 
 import {html} from "../../../../common/html.js";
 import * as LinkUtil from "../../../../common/link-util.js";
+
+import {exitSettings} from "./base-section";
 import * as t from "../../../../common/translation-util.js";
 
 type ShortcutsSectionProps = {
@@ -14,6 +16,7 @@ export function initShortcutsSection({$root}: ShortcutsSectionProps): void {
 
   $root.innerHTML = html`
     <div class="settings-pane">
+      <span class="exit-sign">×</span>
       <div class="settings-card tip">
         <p>
           <b><i class="material-icons md-14">settings</i>${t.__("Tip")}: </b
@@ -223,7 +226,7 @@ export function initShortcutsSection({$root}: ShortcutsSectionProps): void {
       </div>
     </div>
   `.html;
-
+  exitSettings();
   const link = "https://zulip.com/help/keyboard-shortcuts";
   const externalCreateNewOrgElement =
     $root.querySelector("#open-hotkeys-link")!;
