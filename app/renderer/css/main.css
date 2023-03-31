@@ -147,7 +147,7 @@ body {
 
 .tab {
   position: relative;
-  margin: 2px 0;
+  margin: 2px 2px 0 0;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -184,7 +184,7 @@ body {
   font-weight: 600;
   font-size: 22px;
   border: 2px solid rgb(34 44 49 / 100%);
-  margin-left: 17%;
+  margin-left: 37%;
   width: 35px;
   border-radius: 4px;
 }
@@ -361,7 +361,7 @@ webview.focus {
 .server-tooltip {
   font-family: arial, sans-serif;
   background: rgb(34 44 49 / 100%);
-  left: 56px;
+  left: 60px;
   padding: 10px 20px;
   position: fixed;
   margin-top: 11px;
@@ -371,6 +371,9 @@ webview.focus {
   text-align: center;
   width: max-content;
   font-size: 14px;
+}
+span#add-server-tooltip {
+  margin-left: 4px;
 }
 
 #add-server-tooltip::after,
