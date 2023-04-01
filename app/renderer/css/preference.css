@@ -749,7 +749,9 @@ i.open-network-button {
   color: rgb(255 255 255 / 100%);
   border-color: rgb(0 0 0 / 0%);
 }
-
+option {
+    font-size: 20px;
+}
 /* stylelint-disable-next-line selector-class-pattern */
 .tagify__input {
   min-width: 130px !important;
