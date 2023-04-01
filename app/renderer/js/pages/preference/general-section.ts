@@ -5,9 +5,7 @@ import process from "node:process";
 
 import * as remote from "@electron/remote";
 import {app, dialog, session} from "@electron/remote";
-import Tagify from "@yaireo/tagify";
 import ISO6391 from "iso-639-1";
-import {z} from "zod";
 
 import supportedLocales from "../../../../../public/translations/supported-locales.json";
 import * as ConfigUtil from "../../../../common/config-util.js";
@@ -133,13 +131,29 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
           <div class="setting-control"></div>
         </div>
         <div
-          class="setting-row"
-          id="spellcheck-langs"
+          class=""
+          style="width:100%; margin:6px; padding:-5px;"
+          id="spellcheck-langs-container"
           style="display:${process.platform === "darwin" ? "none" : ""}"
-        ></div>
+        >
+          <div
+            class=""
+            id="spellcheck-langs"
+            style="display:flex; align-items:center; justify-content:space-between; width:100%;"
+          >
+            <div class="setting-description" style="margin-top:-20px">
+              ${t.__("Spellchecker Languages")}
+            </div>
+            <div id="spellcheck-lang-div" class="spellcheck-lang-div"></div>
+          </div>
+          <div
+            class="setting-row note"
+            id="spellcheck-lang-list"
+            style="margin-top:-10px"
+          ></div>
+        </div>
         <div class="setting-row" id="note"></div>
       </div>
-
       <div class="title">${t.__("Advanced")}</div>
       <div class="settings-card">
         <div class="setting-row" id="enable-error-reporting">
@@ -148,14 +162,12 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
           </div>
           <div class="setting-control"></div>
         </div>
-
         <div class="setting-row" id="app-language">
           <div class="setting-description">
             ${t.__("App language (requires restart)")}
           </div>
           <div id="lang-div" class="lang-div"></div>
         </div>
-
         <div class="setting-row" id="add-custom-css">
           <div class="setting-description">${t.__("Add custom CSS")}</div>
           <button class="custom-css-button green">${t.__("Upload")}</button>
@@ -428,11 +440,12 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
         ConfigUtil.setConfigItem("enableSpellchecker", newValue);
         ipcRenderer.send("configure-spell-checker");
         enableSpellchecker();
-        const spellcheckerLanguageInput: HTMLElement =
-          $root.querySelector("#spellcheck-langs")!;
+        const spellcheckerLanguageDiv: HTMLElement = $root.querySelector(
+          "#spellcheck-langs-container",
+        )!;
         const spellcheckerNote: HTMLElement = $root.querySelector("#note")!;
-        spellcheckerLanguageInput.style.display =
-          spellcheckerLanguageInput.style.display === "none" ? "" : "none";
+        spellcheckerLanguageDiv.style.display =
+          spellcheckerLanguageDiv.style.display === "none" ? "" : "none";
         spellcheckerNote.style.display =
           spellcheckerNote.style.display === "none" ? "" : "none";
       },
@@ -470,7 +483,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
   }
 
   function setLocale(): void {
-    const langDiv: HTMLSelectElement = $root.querySelector(".lang-div")!;
+    const langDiv: HTMLSelectElement = $root.querySelector("#lang-div")!;
     const langListHtml = generateSelectHtml(supportedLocales, "lang-menu");
     langDiv.innerHTML += langListHtml.html;
     // `langMenu` is the select-option dropdown menu formed after executing the previous command
@@ -591,6 +604,29 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
     });
   }
 
+  // Filters out old selections, leaving the 3 most recent selected languages
+  function selectedLanguages(
+    value: string,
+    spellcheckerLanguages: string[],
+  ): string[] {
+    const languageSet = new Set(spellcheckerLanguages);
+    languageSet.add(value);
+    if (languageSet.size <= 3) {
+      return [...languageSet];
+    }
+
+    const trimmedSpellcheckerLanguages = [...languageSet].slice(
+      languageSet.size - 3,
+    );
+    return trimmedSpellcheckerLanguages;
+  }
+
+  function mapIsoToLanguage(languagePairs: Record<string, string>): string[] {
+    const langsIso =
+      ConfigUtil.getConfigItem("spellcheckerLanguages", []) ?? [];
+    return langsIso.map((iso) => languagePairs[iso]);
+  }
+
   function initSpellChecker(): void {
     // The elctron API is a no-op on macOS and macOS default spellchecker is used.
     if (process.platform === "darwin") {
@@ -607,84 +643,80 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
       note.append(
         t.__("You can select a maximum of 3 languages for spellchecking."),
       );
-      const spellDiv: HTMLElement = $root.querySelector("#spellcheck-langs")!;
-      spellDiv.innerHTML += html`
-        <div class="setting-description">${t.__("Spellchecker Languages")}</div>
-        <input name="spellcheck" placeholder="Enter Languages" />
-      `.html;
 
       const availableLanguages = session.fromPartition(
         "persist:webviewsession",
       ).availableSpellCheckerLanguages;
-      let languagePairs = new Map<string, string>();
+      const languagePairs: Record<string, string> = {};
       for (const l of availableLanguages) {
         if (ISO6391.validate(l)) {
-          languagePairs.set(ISO6391.getName(l), l);
+          languagePairs[l] = ISO6391.getName(l);
         }
       }
 
       // Manually set names for languages not available in ISO6391
-      languagePairs.set("English (AU)", "en-AU");
-      languagePairs.set("English (CA)", "en-CA");
-      languagePairs.set("English (GB)", "en-GB");
-      languagePairs.set("English (US)", "en-US");
-      languagePairs.set("Spanish (Latin America)", "es-419");
-      languagePairs.set("Spanish (Argentina)", "es-AR");
-      languagePairs.set("Spanish (Mexico)", "es-MX");
-      languagePairs.set("Spanish (US)", "es-US");
-      languagePairs.set("Portuguese (Brazil)", "pt-BR");
-      languagePairs.set("Portuguese (Portugal)", "pt-PT");
-      languagePairs.set("Serbo-Croatian", "sh");
+      languagePairs["en-AU"] = "English (AU)";
+      languagePairs["en-CA"] = "English (CA)";
+      languagePairs["en-GB"] = "English (GB)";
+      languagePairs["en-US"] = "English (US)";
+      languagePairs["es-419"] = "Spanish (Latin America)";
+      languagePairs["es-AR"] = "Spanish (Argentina)";
+      languagePairs["es-MX"] = "Spanish (Mexico)";
+      languagePairs["es-US"] = "Spanish (US)";
+      languagePairs["pt-BR"] = "Portuguese (Brazil)";
+      languagePairs["pt-PT"] = "Portuguese (Portugal)";
+      languagePairs.sh = "Serbo-Croatian";
 
-      languagePairs = new Map(
-        [...languagePairs].sort((a, b) => (a[0] < b[0] ? -1 : 1)),
-      );
-
-      const tagField: HTMLInputElement = $root.querySelector(
-        "input[name=spellcheck]",
+      const spellCheckerLangDiv: HTMLSelectElement = $root.querySelector(
+        "#spellcheck-lang-div",
       )!;
-      const tagify = new Tagify(tagField, {
-        whitelist: [...languagePairs.keys()],
-        enforceWhitelist: true,
-        maxTags: 3,
-        dropdown: {
-          enabled: 0,
-          maxItems: Number.POSITIVE_INFINITY,
-          closeOnSelect: false,
-          highlightFirst: true,
-        },
-      });
-
-      const configuredLanguages: string[] = (
-        ConfigUtil.getConfigItem("spellcheckerLanguages", null) ?? []
-      ).map(
-        (code: string) =>
-          [...languagePairs].find((pair) => pair[1] === code)![0],
+      const spellCheckerLangListHtml = generateSelectHtml(
+        languagePairs,
+        "lang-menu",
+        "spellchecker-lang-menu",
       );
-      tagify.addTags(configuredLanguages);
+      spellCheckerLangDiv.innerHTML += spellCheckerLangListHtml.html;
+      // `spellcheckerlangMenu` is the select-option dropdown menu formed after executing the previous command
+      const spellcheckerlangMenu: HTMLSelectElement = $root.querySelector(
+        "#spellchecker-lang-menu",
+      )!;
 
-      tagField.addEventListener("change", () => {
-        if (tagField.value.length === 0) {
-          ConfigUtil.setConfigItem("spellcheckerLanguages", []);
-          ipcRenderer.send("configure-spell-checker");
-        } else {
-          const data: unknown = JSON.parse(tagField.value);
-          const spellLangs: string[] = z
-            .array(z.object({value: z.string()}))
-            .parse(data)
-            .map((elt) => languagePairs.get(elt.value)!);
-          ConfigUtil.setConfigItem("spellcheckerLanguages", spellLangs);
-          ipcRenderer.send("configure-spell-checker");
-        }
+      // The next three lines set the selected language visible on the dropdown button
+      let spellcheckerLanguages =
+        ConfigUtil.getConfigItem("spellcheckerLanguages", null) ?? [];
+      spellcheckerLanguages = spellcheckerLanguages.filter((language) =>
+        spellcheckerlangMenu.options.namedItem(language),
+      );
+
+      for (const language of spellcheckerLanguages) {
+        spellcheckerlangMenu.options.namedItem(language)!.selected = true;
+      }
+
+      const spellcheckerLangList: HTMLElement = $root.querySelector(
+        "#spellcheck-lang-list",
+      )!;
+
+      spellcheckerLangList.textContent =
+        mapIsoToLanguage(languagePairs).join(", ");
+
+      spellcheckerlangMenu.addEventListener("change", () => {
+        ConfigUtil.setConfigItem(
+          "spellcheckerLanguages",
+          selectedLanguages(spellcheckerlangMenu.value, spellcheckerLanguages),
+        );
+        ipcRenderer.send("configure-spell-checker");
+        spellcheckerLangList.textContent =
+          mapIsoToLanguage(languagePairs).join(", ");
       });
     }
 
     // Do not display the spellchecker input and note if it is disabled
     if (!ConfigUtil.getConfigItem("enableSpellchecker", true)) {
-      const spellcheckerLanguageInput: HTMLElement =
-        $root.querySelector("#spellcheck-langs")!;
+      const spellcheckerLanguageDiv: HTMLElement = $root.querySelector(
+        "#spellcheck-langs-container",
+      )!;
       const spellcheckerNote: HTMLElement = $root.querySelector("#note")!;
-      spellcheckerLanguageInput.style.display = "none";
+      spellcheckerLanguageDiv.style.display = "none";
       spellcheckerNote.style.display = "none";
     }
   }
