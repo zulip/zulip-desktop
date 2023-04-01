@@ -960,6 +960,17 @@ export class ServerManagerView {
     );
 
     ipcRenderer.on("open-settings", async () => {
+
+    if (numberServers === 1) {
+      const value = ConfigUtil.getConfigItem("showSidebar");
+      if (!value) {
+        const newValue = !value;
+        this.toggleSidebar(newValue);
+        this.updateGeneralSettings("toggle-sidebar-setting", newValue);
+        ConfigUtil.setConfigItem("showSidebar", newValue);
+      }
+    }
+
       await this.openSettings();
     });
 
