@@ -24,6 +24,7 @@ export const configSchemata = {
   lastActiveTab: z.number(),
   promptDownload: z.boolean(),
   proxyBypass: z.string(),
+  protocolLaunchers: z.object(),
   // eslint-disable-next-line @typescript-eslint/naming-convention
   proxyPAC: z.string(),
   proxyRules: z.string(),

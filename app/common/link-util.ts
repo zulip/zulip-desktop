@@ -1,13 +1,22 @@
-import {shell} from "electron/common";
+import { shell } from "electron/common";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import * as ConfigUtil from "./config-util.js";
 
-import {html} from "./html.js";
+import { html } from "./html.js";
+
+/* Fetches the current protocolLaunchers from settings.json */
+const protocolLaunchers = ConfigUtil.getConfigItem("protocolLaunchers", {});
 
 export async function openBrowser(url: URL): Promise<void> {
   if (["http:", "https:", "mailto:"].includes(url.protocol)) {
     await shell.openExternal(url.href);
+  } else if (protocolLaunchers.includes(url.protocol)) {
+    // custom protocol launchers
+    let executable = protocolLaunchers[url.protocol];
+    let command = url.pathname.replace(/^\/+/g, "") + url.search + url.hash;
+    await shell.openExternal(executable + " " + command);
   } else {
     // For security, indirect links to non-whitelisted protocols
     // through a real web browser via a local HTML file.
