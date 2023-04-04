@@ -10,6 +10,11 @@
   letter-spacing: -0.08px;
   line-height: 18px;
   color: rgb(139 142 143 / 100%);
+
+  /* Copied from https://github.com/yairEO/tagify/blob/v4.17.7/src/tagify.scss#L4-L8 */
+  --tagify-dd-color-primary: rgb(53 149 246);
+  --tagify-dd-bg-color: rgb(255 255 255);
+  --tagify-dd-item-pad: 0.3em 0.5em;
 }
 
 kbd {
@@ -759,4 +764,10 @@ i.open-network-button {
 .tagify__input::before {
   top: 0;
   bottom: 0;
+}
+
+.settings-tagify-dropdown {
+  position: relative;
+  z-index: 9999;
+  height: 0;
 }

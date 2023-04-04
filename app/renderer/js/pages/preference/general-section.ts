@@ -610,7 +610,9 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
       const spellDiv: HTMLElement = $root.querySelector("#spellcheck-langs")!;
       spellDiv.innerHTML += html`
         <div class="setting-description">${t.__("Spellchecker Languages")}</div>
-        <input name="spellcheck" placeholder="Enter Languages" />
+        <div id="spellcheck-langs-value">
+          <input name="spellcheck" placeholder="Enter Languages" />
+        </div>
       `.html;
 
       const availableLanguages = session.fromPartition(
@@ -652,7 +654,19 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
           maxItems: Number.POSITIVE_INFINITY,
           closeOnSelect: false,
           highlightFirst: true,
+          position: "manual",
+          classname: "settings-tagify-dropdown",
         },
+      });
+      tagify.DOM.input.addEventListener("focus", () => {
+        tagify.dropdown.show();
+        $root
+          .querySelector("#spellcheck-langs-value")!
+          .append(tagify.DOM.dropdown);
+      });
+      tagify.DOM.input.addEventListener("blur", () => {
+        tagify.dropdown.hide(true);
+        tagify.DOM.dropdown.remove();
       });
 
       const configuredLanguages: string[] = (
