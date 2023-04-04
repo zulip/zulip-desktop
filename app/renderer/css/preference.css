@@ -658,7 +658,7 @@ i.open-network-button {
 }
 
 /* responsive grid */
-@media (min-width: 500px) and (max-width: 720px) {
+@media (width >= 500px) and (width <= 720px) {
   #new-server-container {
     padding-left: 0;
     width: 60vw;
@@ -670,7 +670,7 @@ i.open-network-button {
   }
 }
 
-@media (max-width: 500px) {
+@media (width <= 500px) {
   #new-server-container {
     padding-left: 0;
     width: 54%;
@@ -681,7 +681,7 @@ i.open-network-button {
   }
 }
 
-@media (max-width: 650px) {
+@media (width <= 650px) {
   .selected-css-path,
   .download-folder-path {
     margin-right: 15px;
@@ -696,7 +696,7 @@ i.open-network-button {
   }
 }
 
-@media (max-width: 720px) {
+@media (width <= 720px) {
   .modal-container {
     width: 60vw;
     padding: 40px;
@@ -719,7 +719,7 @@ i.open-network-button {
   }
 }
 
-@media (max-width: 600px) {
+@media (width <= 600px) {
   .divider {
     margin-left: 4%;
   }
@@ -731,7 +731,7 @@ i.open-network-button {
   }
 }
 
-@media (max-width: 900px) {
+@media (width <= 900px) {
   .settings-card {
     flex-direction: column;
     align-items: center;
