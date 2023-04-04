@@ -482,10 +482,7 @@ input.toggle-round + label::after {
 input.toggle-round + label::before {
   background-color: rgb(241 241 241 / 100%);
   border-radius: 25px;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
+  inset: 0;
 }
 
 input.toggle-round + label::after {
@@ -497,10 +494,7 @@ input.toggle-round + label::after {
 
 input.toggle-round:checked + label::before {
   background-color: rgb(78 191 172 / 100%);
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
+  inset: 0;
 }
 
 input.toggle-round:checked + label::after {
