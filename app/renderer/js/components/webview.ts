@@ -32,12 +32,22 @@ type WebViewProps = {
   preload?: string;
   onTitleChange: () => void;
   hasPermission?: (origin: string, permission: string) => boolean;
+  unsupportedMessage?: string;
 };
 
 export default class WebView {
   static templateHtml(props: WebViewProps): Html {
     return html`
       <div class="webview-pane">
+        <div
+          class="webview-unsupported"
+          ${props.unsupportedMessage === undefined ? html`hidden` : html``}
+        >
+          <span class="webview-unsupported-message"
+            >${props.unsupportedMessage ?? ""}</span
+          >
+          <span class="webview-unsupported-dismiss">×</span>
+        </div>
         <webview
           data-tab-id="${props.tabIndex}"
           src="${props.url}"
@@ -98,6 +108,10 @@ export default class WebView {
   private zoomFactor = 1;
   private customCss: string | false | null;
   private readonly $webviewsContainer: DOMTokenList;
+  private readonly $unsupported: HTMLElement;
+  private readonly $unsupportedMessage: HTMLElement;
+  private readonly $unsupportedDismiss: HTMLElement;
+  private unsupportedDismissed = false;
 
   private constructor(
     readonly props: WebViewProps,
@@ -109,6 +123,13 @@ export default class WebView {
     this.$webviewsContainer = document.querySelector(
       "#webviews-container",
     )!.classList;
+    this.$unsupported = $pane.querySelector(".webview-unsupported")!;
+    this.$unsupportedMessage = $pane.querySelector(
+      ".webview-unsupported-message",
+    )!;
+    this.$unsupportedDismiss = $pane.querySelector(
+      ".webview-unsupported-dismiss",
+    )!;
 
     this.registerListeners();
   }
@@ -195,6 +216,12 @@ export default class WebView {
     this.getWebContents().reload();
   }
 
+  setUnsupportedMessage(unsupportedMessage: string | undefined) {
+    this.$unsupported.hidden =
+      unsupportedMessage === undefined || this.unsupportedDismissed;
+    this.$unsupportedMessage.textContent = unsupportedMessage ?? "";
+  }
+
   send<Channel extends keyof RendererMessage>(
     channel: Channel,
     ...args: Parameters<RendererMessage[Channel]>
@@ -265,6 +292,11 @@ export default class WebView {
 
     this.$webview.addEventListener("did-stop-loading", () => {
       this.props.switchLoading(false, this.props.url);
+    });
+
+    this.$unsupportedDismiss.addEventListener("click", () => {
+      this.unsupportedDismissed = true;
+      this.$unsupported.hidden = true;
     });
   }
 
