@@ -2,13 +2,15 @@ import {shell} from "electron/common";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import * as ConfigUtil from "./config-util.js";
+
 import {html} from "./html.js";
+
+import * as ConfigUtil from "./config-util.js";
 
 /* Fetches the current protocolLaunchers from settings.json */
 const protocolLaunchers = ConfigUtil.getConfigItem(
-  "protocolLaunchers", 
-  new Map<string, string>()
+  "protocolLaunchers",
+  new Map<string, string>(),
 );
 
 export async function openBrowser(url: URL): Promise<void> {
