@@ -303,7 +303,7 @@ body {
   visibility: hidden;
 }
 
-webview,
+.webview-pane,
 .functional-view {
   position: absolute;
   width: 100%;
@@ -312,7 +312,16 @@ webview,
   visibility: hidden;
 }
 
-webview.active,
+.webview-pane {
+  display: flex;
+  flex-direction: column;
+}
+
+.webview-pane > webview {
+  flex: 1;
+}
+
+.webview-pane.active,
 .functional-view.active {
   z-index: 1;
   visibility: visible;

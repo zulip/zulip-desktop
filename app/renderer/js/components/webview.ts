@@ -37,25 +37,28 @@ type WebViewProps = {
 export default class WebView {
   static templateHtml(props: WebViewProps): Html {
     return html`
-      <webview
-        data-tab-id="${props.tabIndex}"
-        src="${props.url}"
-        ${props.preload === undefined
-          ? html``
-          : html`preload="${props.preload}"`}
-        partition="persist:webviewsession"
-        allowpopups
-      >
-      </webview>
+      <div class="webview-pane">
+        <webview
+          data-tab-id="${props.tabIndex}"
+          src="${props.url}"
+          ${props.preload === undefined
+            ? html``
+            : html`preload="${props.preload}"`}
+          partition="persist:webviewsession"
+          allowpopups
+        >
+        </webview>
+      </div>
     `;
   }
 
   static async create(props: WebViewProps): Promise<WebView> {
-    const $webview = generateNodeFromHtml(
+    const $pane = generateNodeFromHtml(
       WebView.templateHtml(props),
     ) as HTMLElement;
-    props.$root.append($webview);
+    props.$root.append($pane);
 
+    const $webview: HTMLElement = $pane.querySelector(":scope > webview")!;
     await new Promise<void>((resolve) => {
       $webview.addEventListener(
         "did-attach",
@@ -87,7 +90,7 @@ export default class WebView {
       throw new TypeError("Failed to get WebContents ID");
     }
 
-    return new WebView(props, $webview, webContentsId);
+    return new WebView(props, $pane, $webview, webContentsId);
   }
 
   badgeCount = 0;
@@ -98,6 +101,7 @@ export default class WebView {
 
   private constructor(
     readonly props: WebViewProps,
+    private readonly $pane: HTMLElement,
     private readonly $webview: HTMLElement,
     readonly webContentsId: number,
   ) {
@@ -110,7 +114,7 @@ export default class WebView {
   }
 
   destroy(): void {
-    this.$webview.remove();
+    this.$pane.remove();
   }
 
   getWebContents(): WebContents {
@@ -128,7 +132,7 @@ export default class WebView {
   }
 
   hide(): void {
-    this.$webview.classList.remove("active");
+    this.$pane.classList.remove("active");
   }
 
   load(): void {
@@ -278,7 +282,7 @@ export default class WebView {
     // To show or hide the loading indicator in the active tab
     this.$webviewsContainer.toggle("loaded", !this.loading);
 
-    this.$webview.classList.add("active");
+    this.$pane.classList.add("active");
     this.focus();
     this.props.onTitleChange();
     // Injecting preload css in webview to override some css rules
