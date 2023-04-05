@@ -3,9 +3,8 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-import {html} from "./html.js";
-
 import * as ConfigUtil from "./config-util.js";
+import {html} from "./html.js";
 
 /* Fetches the current protocolLaunchers from settings.json */
 const protocolLaunchers = ConfigUtil.getConfigItem(
