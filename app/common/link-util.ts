@@ -7,14 +7,14 @@ import * as ConfigUtil from "./config-util.js";
 import { html } from "./html.js";
 
 /* Fetches the current protocolLaunchers from settings.json */
-const protocolLaunchers = ConfigUtil.getConfigItem("protocolLaunchers", {});
+const protocolLaunchers = ConfigUtil.getConfigItem("protocolLaunchers", new Map<string, string>());
 
 export async function openBrowser(url: URL): Promise<void> {
   if (["http:", "https:", "mailto:"].includes(url.protocol)) {
     await shell.openExternal(url.href);
-  } else if (protocolLaunchers.includes(url.protocol)) {
-    // custom protocol launchers
-    let executable = protocolLaunchers[url.protocol];
+  } else if (protocolLaunchers.has(url.protocol)) {
+    // custom protocol launchers based on a protocol-executable map
+    let executable = protocolLaunchers.get(url.protocol);
     let command = url.pathname.replace(/^\/+/g, "") + url.search + url.hash;
     await shell.openExternal(executable + " " + command);
   } else {
