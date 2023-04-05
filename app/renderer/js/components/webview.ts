@@ -51,13 +51,13 @@ export default class WebView {
   }
 
   static async create(props: WebViewProps): Promise<WebView> {
-    const $element = generateNodeFromHtml(
+    const $webview = generateNodeFromHtml(
       WebView.templateHtml(props),
     ) as HTMLElement;
-    props.$root.append($element);
+    props.$root.append($webview);
 
     await new Promise<void>((resolve) => {
-      $element.addEventListener(
+      $webview.addEventListener(
         "did-attach",
         () => {
           resolve();
@@ -87,37 +87,30 @@ export default class WebView {
       throw new TypeError("Failed to get WebContents ID");
     }
 
-    return new WebView(props, $element, webContentsId);
+    return new WebView(props, $webview, webContentsId);
   }
 
-  zoomFactor: number;
-  badgeCount: number;
-  loading: boolean;
-  customCss: string | false | null;
-  $webviewsContainer: DOMTokenList;
-  $el: HTMLElement;
-  webContentsId: number;
+  badgeCount = 0;
+  loading = true;
+  private zoomFactor = 1;
+  private customCss: string | false | null;
+  private readonly $webviewsContainer: DOMTokenList;
 
   private constructor(
     readonly props: WebViewProps,
-    $element: HTMLElement,
-    webContentsId: number,
+    private readonly $webview: HTMLElement,
+    readonly webContentsId: number,
   ) {
-    this.zoomFactor = 1;
-    this.loading = true;
-    this.badgeCount = 0;
     this.customCss = ConfigUtil.getConfigItem("customCSS", null);
     this.$webviewsContainer = document.querySelector(
       "#webviews-container",
     )!.classList;
-    this.$el = $element;
-    this.webContentsId = webContentsId;
 
     this.registerListeners();
   }
 
   destroy(): void {
-    this.$el.remove();
+    this.$webview.remove();
   }
 
   getWebContents(): WebContents {
@@ -136,11 +129,11 @@ export default class WebView {
       this.props.onTitleChange();
     });
 
-    this.$el.addEventListener("did-navigate-in-page", () => {
+    this.$webview.addEventListener("did-navigate-in-page", () => {
       this.canGoBackButton();
     });
 
-    this.$el.addEventListener("did-navigate", () => {
+    this.$webview.addEventListener("did-navigate", () => {
       this.canGoBackButton();
     });
 
@@ -164,7 +157,7 @@ export default class WebView {
       contextMenu(webContents, event, menuParameters);
     });
 
-    this.$el.addEventListener("dom-ready", () => {
+    this.$webview.addEventListener("dom-ready", () => {
       this.loading = false;
       this.props.switchLoading(false, this.props.url);
       this.show();
@@ -181,11 +174,11 @@ export default class WebView {
       }
     });
 
-    this.$el.addEventListener("did-start-loading", () => {
+    this.$webview.addEventListener("did-start-loading", () => {
       this.props.switchLoading(true, this.props.url);
     });
 
-    this.$el.addEventListener("did-stop-loading", () => {
+    this.$webview.addEventListener("did-stop-loading", () => {
       this.props.switchLoading(false, this.props.url);
     });
   }
@@ -208,7 +201,7 @@ export default class WebView {
     // To show or hide the loading indicator in the active tab
     this.$webviewsContainer.toggle("loaded", !this.loading);
 
-    this.$el.classList.add("active");
+    this.$webview.classList.add("active");
     this.focus();
     this.props.onTitleChange();
     // Injecting preload css in webview to override some css rules
@@ -233,13 +226,13 @@ export default class WebView {
   }
 
   focus(): void {
-    this.$el.focus();
+    this.$webview.focus();
     // Work around https://github.com/electron/electron/issues/31918
-    this.$el.shadowRoot?.querySelector("iframe")?.focus();
+    this.$webview.shadowRoot?.querySelector("iframe")?.focus();
   }
 
   hide(): void {
-    this.$el.classList.remove("active");
+    this.$webview.classList.remove("active");
   }
 
   load(): void {
