@@ -10,6 +10,7 @@ import {z} from "zod";
 import * as EnterpriseUtil from "../../../common/enterprise-util.js";
 import Logger from "../../../common/logger-util.js";
 import * as Messages from "../../../common/messages.js";
+import * as t from "../../../common/translation-util.js";
 import type {ServerConf} from "../../../common/types.js";
 import {ipcRenderer} from "../typed-ipc-renderer.js";
 
@@ -22,9 +23,11 @@ const logger = new Logger({
 export const defaultIconSentinel = "../renderer/img/icon.png";
 
 const serverConfSchema = z.object({
-  url: z.string(),
+  url: z.string().url(),
   alias: z.string(),
   icon: z.string(),
+  zulipVersion: z.string().default("unknown"),
+  zulipFeatureLevel: z.number().default(0),
 });
 
 let db!: JsonDB;
@@ -197,4 +200,16 @@ export function formatUrl(domain: string): string {
   }
 
   return `https://${domain}`;
+}
+
+export function getUnsupportedMessage(server: ServerConf): string | undefined {
+  if (server.zulipFeatureLevel < 65 /* Zulip Server 4.0 */) {
+    const realm = new URL(server.url).hostname;
+    return t.__(
+      "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.",
+      {server: realm, version: server.zulipVersion},
+    );
+  }
+
+  return undefined;
 }

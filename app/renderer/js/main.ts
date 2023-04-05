@@ -342,6 +342,9 @@ export class ServerManagerView {
           const serverConf = await DomainUtil.updateSavedServer(server.url, i);
           tab.setName(serverConf.alias);
           tab.setIcon(iconAsUrl(serverConf.icon));
+          (await tab.webview).setUnsupportedMessage(
+            DomainUtil.getUnsupportedMessage(serverConf),
+          );
         })();
       }
 
@@ -417,6 +420,7 @@ export class ServerManagerView {
         },
         onTitleChange: this.updateBadge.bind(this),
         preload: url.pathToFileURL(path.join(bundlePath, "preload.js")).href,
+        unsupportedMessage: DomainUtil.getUnsupportedMessage(server),
       }),
     });
     this.tabs.push(tab);

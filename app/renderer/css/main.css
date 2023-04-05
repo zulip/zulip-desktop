@@ -331,6 +331,30 @@ webview.focus {
   outline: 0 solid transparent;
 }
 
+.webview-unsupported {
+  background: rgb(254 243 199);
+  border: 1px solid rgb(253 230 138);
+  color: rgb(69 26 3);
+  font-family: system-ui;
+  font-size: 14px;
+  display: flex;
+}
+
+.webview-unsupported[hidden] {
+  display: none;
+}
+
+.webview-unsupported-message {
+  padding: 0.3em;
+  flex: 1;
+  text-align: center;
+}
+
+.webview-unsupported-dismiss {
+  padding: 0.3em;
+  cursor: pointer;
+}
+
 /* Tooltip styling */
 
 #loading-tooltip,
