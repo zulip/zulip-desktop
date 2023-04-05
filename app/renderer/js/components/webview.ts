@@ -116,6 +116,10 @@ export default class WebView {
     this.registerListeners();
   }
 
+  destroy(): void {
+    this.$el.remove();
+  }
+
   getWebContents(): WebContents {
     return remote.webContents.fromId(this.webContentsId);
   }
