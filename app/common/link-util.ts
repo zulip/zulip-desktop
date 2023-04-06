@@ -7,19 +7,15 @@ import * as ConfigUtil from "./config-util.js";
 import {html} from "./html.js";
 
 /* Fetches the current protocolLaunchers from settings.json */
-const protocolLaunchers = ConfigUtil.getConfigItem(
-  "protocolLaunchers",
-  new Map<string, string>(),
-);
+const whitelistedProtocols = ConfigUtil.getConfigItem("whitelistedProtocols", [
+  "http:",
+  "https:",
+  "mailto:",
+]);
 
 export async function openBrowser(url: URL): Promise<void> {
-  if (["http:", "https:", "mailto:"].includes(url.protocol)) {
+  if (whitelistedProtocols.includes(url.protocol)) {
     await shell.openExternal(url.href);
-  } else if (protocolLaunchers.has(url.protocol)) {
-    // Custom protocol launchers based on a protocol-executable map
-    const executable = protocolLaunchers.get(url.protocol);
-    const command = url.pathname.replace(/^\/+/g, "") + url.search + url.hash;
-    await shell.openExternal(String(executable) + " " + String(command));
   } else {
     // For security, indirect links to non-whitelisted protocols
     // through a real web browser via a local HTML file.
