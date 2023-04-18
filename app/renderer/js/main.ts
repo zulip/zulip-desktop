@@ -385,7 +385,9 @@ export class ServerManagerView {
           url: server.url,
           role: "server",
           hasPermission: (origin: string, permission: string) =>
-            origin === server.url && permission === "notifications",
+            origin === server.url &&
+            permission === "notifications" &&
+            ConfigUtil.getConfigItem("showNotification", true),
           isActive: () => index === this.activeTabIndex,
           switchLoading: async (loading: boolean, url: string) => {
             if (loading) {
