@@ -270,7 +270,6 @@
         }
       ],
       "strict": "error",
-      "unicorn/prefer-json-parse-buffer": "off",
       "unicorn/prefer-module": "off",
       "unicorn/prefer-top-level-await": "off"
     },
