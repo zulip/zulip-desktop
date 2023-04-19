@@ -10,7 +10,7 @@ Zulip-Desktop app is built on top of [Electron](http://electron.atom.io/). If yo
 
 ## Community
 
-- The whole Zulip documentation, such as setting up a development environment, setting up with the Zulip webapp project, and testing, can be read [here](https://zulip.readthedocs.io).
+- The whole Zulip documentation, such as setting up a development environment, setting up with the Zulip web app project, and testing, can be read [here](https://zulip.readthedocs.io).
 
 - If you have any questions regarding zulip-desktop, open an [issue](https://github.com/zulip/zulip-desktop/issues/new/) or ask it on [chat.zulip.org](https://chat.zulip.org/#narrow/stream/16-desktop).
 

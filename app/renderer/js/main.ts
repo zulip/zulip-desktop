@@ -1126,7 +1126,7 @@ export class ServerManagerView {
     ipcRenderer.on(
       "render-taskbar-icon",
       (event: Event, messageCount: number) => {
-        // Create a canvas from unread messagecounts
+        // Create a canvas from unread message counts
         function createOverlayIcon(messageCount: number): HTMLCanvasElement {
           const canvas = document.createElement("canvas");
           canvas.height = 128;

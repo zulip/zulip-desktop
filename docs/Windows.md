@@ -5,13 +5,13 @@
 - [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - [Node.js](https://nodejs.org) >= v6.9.0
 - [python](https://www.python.org/downloads/release/python-2713/) (v2.7.x recommended)
-- [node-gyp](https://github.com/nodejs/node-gyp#installation) (installed via powershell)
+- [node-gyp](https://github.com/nodejs/node-gyp#installation) (installed via PowerShell)
 
 ## System specific dependencies
 
 - use only 32bit or 64bit for all of the installers, do not mix architectures
 - install using default settings
-- open Windows Powershell as Admin
+- open Windows PowerShell as Admin
 
 ```powershell
 C:\Windows\system32> npm install --global --production windows-build-tools

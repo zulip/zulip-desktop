@@ -49,7 +49,7 @@ If [NPM](https://www.npmjs.com/get-npm) and [node-gyp](https://github.com/nodejs
 
 [node-windows]: https://nodejs.org/en/download/package-manager/#windows
 
-- Also, install install Windows-Build-Tools to compile native node modules by using
+- Also, install Windows-Build-Tools to compile native node modules by using
   ```sh
   $ npm install --global windows-build-tools
   ```
