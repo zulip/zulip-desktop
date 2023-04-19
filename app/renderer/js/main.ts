@@ -363,13 +363,20 @@ export class ServerManagerView {
 
   initServer(server: ServerConf, index: number): void {
     const tabIndex = this.getTabIndex();
+    let icon;
+    try {
+      icon = `data:application/octet-stream;base64,${fs.readFileSync(
+        server.icon,
+        "base64",
+      )}`;
+    } catch {
+      icon = "data:,";
+    }
+
     this.tabs.push(
       new ServerTab({
         role: "server",
-        icon: `data:application/octet-stream;base64,${fs.readFileSync(
-          server.icon,
-          "base64",
-        )}`,
+        icon,
         name: server.alias,
         $root: this.$tabsContainer,
         onClick: this.activateLastTab.bind(this, index),
@@ -385,7 +392,9 @@ export class ServerManagerView {
           url: server.url,
           role: "server",
           hasPermission: (origin: string, permission: string) =>
-            origin === server.url && permission === "notifications",
+            origin === server.url &&
+            permission === "notifications" &&
+            ConfigUtil.getConfigItem("showNotification", true),
           isActive: () => index === this.activeTabIndex,
           switchLoading: async (loading: boolean, url: string) => {
             if (loading) {
