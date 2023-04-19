@@ -30,7 +30,7 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
 
   let updateAvailable = false;
 
-  // Log whats happening
+  // Log what's happening
   log.transports.file.fileName = "updates.log";
   log.transports.file.level = "info";
   autoUpdater.logger = log;

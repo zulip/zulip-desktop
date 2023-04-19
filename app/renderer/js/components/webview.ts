@@ -201,7 +201,7 @@ export default class WebView {
       return;
     }
 
-    // To show or hide the loading indicator in the the active tab
+    // To show or hide the loading indicator in the active tab
     this.$webviewsContainer.toggle("loaded", !this.loading);
 
     this.$el.classList.add("active");

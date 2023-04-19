@@ -34,7 +34,7 @@ ipcRenderer.on("show-keyboard-shortcuts", () => {
   if (node.textContent!.trim().toLowerCase() === "keyboard shortcuts (?)") {
     node.click();
   } else {
-    // Atleast click the dropdown
+    // At least click the dropdown
     const dropdown: HTMLElement = document.querySelector(".dropdown-toggle")!;
     dropdown.click();
   }

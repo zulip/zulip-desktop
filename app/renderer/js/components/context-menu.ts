@@ -137,7 +137,7 @@ export const contextMenu = (
     }
   }
   // Hide the invisible separators on Linux and Windows
-  // Electron has a bug which ignores visible: false parameter for separator menuitems. So we remove them here.
+  // Electron has a bug which ignores visible: false parameter for separator menu items. So we remove them here.
   // https://github.com/electron/electron/issues/5869
   // https://github.com/electron/electron/issues/6906
 
