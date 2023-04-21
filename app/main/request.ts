@@ -30,8 +30,6 @@ const pipeline = util.promisify(stream.pipeline);
 
 /* Request: domain-util */
 
-const defaultIconUrl = "../renderer/img/icon.png";
-
 const logger = new Logger({
   file: "domain-util.log",
 });
@@ -94,12 +92,12 @@ export const _getServerSettings = async (
 export const _saveServerIcon = async (
   url: string,
   session: Session,
-): Promise<string> => {
+): Promise<string | null> => {
   try {
     const response = await fetchResponse(net.request({url, session}));
     if (response.statusCode !== 200) {
       logger.log("Could not get server icon.");
-      return defaultIconUrl;
+      return null;
     }
 
     const filePath = generateFilePath(url);
@@ -109,7 +107,7 @@ export const _saveServerIcon = async (
     logger.log("Could not get server icon.");
     logger.log(error);
     Sentry.captureException(error);
-    return defaultIconUrl;
+    return null;
   }
 };
 

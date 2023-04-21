@@ -30,7 +30,7 @@ export type MainCall = {
   "get-server-settings": (domain: string) => ServerConf;
   "is-online": (url: string) => boolean;
   "poll-clipboard": (key: Uint8Array, sig: Uint8Array) => string | undefined;
-  "save-server-icon": (iconURL: string) => string;
+  "save-server-icon": (iconURL: string) => string | null;
 };
 
 export type RendererMessage = {
