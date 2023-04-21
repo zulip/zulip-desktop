@@ -18,6 +18,7 @@ import Logger from "../../common/logger-util.js";
 import * as Messages from "../../common/messages.js";
 import {bundlePath, bundleUrl} from "../../common/paths.js";
 import type {NavItem, ServerConf, TabData} from "../../common/types.js";
+import defaultIcon from "../img/icon.png";
 
 import FunctionalTab from "./components/functional-tab.js";
 import ServerTab from "./components/server-tab.js";
@@ -54,6 +55,19 @@ const rootWebContents = remote.getCurrentWebContents();
 const dingSound = new Audio(
   new URL("resources/sounds/ding.ogg", bundleUrl).href,
 );
+
+function iconAsUrl(iconPath: string): string {
+  if (iconPath === DomainUtil.defaultIconSentinel) return defaultIcon;
+
+  try {
+    return `data:application/octet-stream;base64,${fs.readFileSync(
+      iconPath,
+      "base64",
+    )}`;
+  } catch {
+    return defaultIcon;
+  }
+}
 
 export class ServerManagerView {
   $addServerButton: HTMLButtonElement;
@@ -363,20 +377,11 @@ export class ServerManagerView {
 
   initServer(server: ServerConf, index: number): void {
     const tabIndex = this.getTabIndex();
-    let icon;
-    try {
-      icon = `data:application/octet-stream;base64,${fs.readFileSync(
-        server.icon,
-        "base64",
-      )}`;
-    } catch {
-      icon = "data:,";
-    }
 
     this.tabs.push(
       new ServerTab({
         role: "server",
-        icon,
+        icon: iconAsUrl(server.icon),
         name: server.alias,
         $root: this.$tabsContainer,
         onClick: this.activateLastTab.bind(this, index),
@@ -431,7 +436,7 @@ export class ServerManagerView {
       document.querySelectorAll(".server-icons");
     for (const [index, $serverImg] of $serverImgs.entries()) {
       this.addContextMenu($serverImg, index);
-      if ($serverImg.src.includes("img/icon.png")) {
+      if ($serverImg.src === defaultIcon) {
         this.displayInitialCharLogo($serverImg, index);
       }
 
@@ -505,7 +510,7 @@ export class ServerManagerView {
     const realmName = $webview.getAttribute("name");
 
     if (realmName === null) {
-      $img.src = "/img/icon.png";
+      $img.src = defaultIcon;
       return;
     }
 
@@ -1081,14 +1086,12 @@ export class ServerManagerView {
         await Promise.all(
           DomainUtil.getDomains().map(async (domain, index) => {
             if (domain.url.includes(serverURL)) {
-              const localIconUrl: string = await DomainUtil.saveServerIcon(
-                iconURL,
-              );
+              const localIconPath = await DomainUtil.saveServerIcon(iconURL);
               const serverImgsSelector = ".tab .server-icons";
               const serverImgs: NodeListOf<HTMLImageElement> =
                 document.querySelectorAll(serverImgsSelector);
-              serverImgs[index].src = localIconUrl;
-              domain.icon = localIconUrl;
+              serverImgs[index].src = iconAsUrl(localIconPath);
+              domain.icon = localIconPath;
               DomainUtil.updateDomain(index, domain);
             }
           }),

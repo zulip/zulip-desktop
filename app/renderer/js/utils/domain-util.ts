@@ -17,7 +17,9 @@ const logger = new Logger({
   file: "domain-util.log",
 });
 
-const defaultIconUrl = "../renderer/img/icon.png";
+// For historical reasons, we store this string in domain.json to denote a
+// missing icon; it does not change with the actual icon location.
+export const defaultIconSentinel = "../renderer/img/icon.png";
 
 const serverConfSchema = z.object({
   url: z.string(),
@@ -78,7 +80,7 @@ export async function addDomain(server: {
     db.push("/domains[]", server, true);
     reloadDb();
   } else {
-    server.icon = defaultIconUrl;
+    server.icon = defaultIconSentinel;
     serverConfSchema.parse(server);
     db.push("/domains[]", server, true);
     reloadDb();
@@ -129,7 +131,10 @@ async function getServerSettings(domain: string): Promise<ServerConf> {
 }
 
 export async function saveServerIcon(iconURL: string): Promise<string> {
-  return ipcRenderer.invoke("save-server-icon", iconURL);
+  return (
+    (await ipcRenderer.invoke("save-server-icon", iconURL)) ??
+    defaultIconSentinel
+  );
 }
 
 export async function updateSavedServer(
@@ -141,7 +146,7 @@ export async function updateSavedServer(
   try {
     const newServerConf = await checkDomain(url, true);
     const localIconUrl = await saveServerIcon(newServerConf.icon);
-    if (!oldIcon || localIconUrl !== "../renderer/img/icon.png") {
+    if (!oldIcon || localIconUrl !== defaultIconSentinel) {
       newServerConf.icon = localIconUrl;
       updateDomain(index, newServerConf);
       reloadDb();
