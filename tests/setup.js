@@ -17,7 +17,7 @@ module.exports = {
 // Returns a promise that resolves to an Electron Application once the app has loaded.
 function createApp() {
   return _electron.launch({
-    args: [path.join(__dirname)], // Ensure this dir has a package.json file with a 'main' entry piont
+    args: [path.join(__dirname)], // Ensure this dir has a package.json file with a 'main' entry point
   });
 }
 

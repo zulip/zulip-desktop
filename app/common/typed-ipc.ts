@@ -30,7 +30,7 @@ export type MainCall = {
   "get-server-settings": (domain: string) => ServerConf;
   "is-online": (url: string) => boolean;
   "poll-clipboard": (key: Uint8Array, sig: Uint8Array) => string | undefined;
-  "save-server-icon": (iconURL: string) => string;
+  "save-server-icon": (iconURL: string) => string | null;
 };
 
 export type RendererMessage = {
@@ -77,7 +77,7 @@ export type RendererMessage = {
   toggletray: () => void;
   tray: (arg: number) => void;
   "update-realm-icon": (serverURL: string, iconURL: string) => void;
-  "update-realm-name": (serveRURL: string, realmName: string) => void;
+  "update-realm-name": (serverURL: string, realmName: string) => void;
   "webview-reload": () => void;
   zoomActualSize: () => void;
   zoomIn: () => void;

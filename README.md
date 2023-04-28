@@ -24,9 +24,9 @@ Please see the [installation guide](https://zulip.com/help/desktop-app-install-g
 
 # Reporting issues
 
-This desktop client shares most of its code with the Zulip webapp.
+This desktop client shares most of its code with the Zulip web app.
 Issues in an individual organization's Zulip window should be reported
-in the [Zulip server and webapp
+in the [Zulip server and web app
 project](https://github.com/zulip/zulip/issues/new). Other
 issues in the desktop app and its settings should be reported [in this
 project](https://github.com/zulip/zulip-desktop/issues/new).

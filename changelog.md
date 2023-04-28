@@ -193,10 +193,10 @@ All notable changes to the Zulip desktop app are documented in this file.
 **New features**:
 
 - Add a cancel button in the report-issue modal.
-- macOS: Use electron API to get dark tray icon instead of the green icon for the light theme.
+- macOS: Use Electron API to get dark tray icon instead of the green icon for the light theme.
 - Remove 'Reset App Data' option. Factory Reset option has been moved to Settings → General.
 - Support pkg installer on macOS.
-- Use electron 8 built-in spellchecker. Linux and Windows users can now choose upto three spellchecker languages from Settings → General. On macOS, default spellchecker is used.
+- Use Electron 8 built-in spellchecker. Linux and Windows users can now choose up to three spellchecker languages from Settings → General. On macOS, default spellchecker is used.
 - Setup Transifex for better synchronization of translations. The application now supports 41 languages instead of 21.
 
 **Dependencies**:
@@ -304,7 +304,7 @@ All notable changes to the Zulip desktop app are documented in this file.
 - Document enterprise configuration features.
 - Update the Electron tutorial guide.
 - Explicitly address where to report bugs in `README.md`.
-- Fix typo in the link to server/webapp repository in `README.md`.
+- Fix typo in the link to server/web app repository in `README.md`.
 - Add documentation for translation.
 
 ### v4.0.0 --2019-08-08
@@ -355,7 +355,7 @@ All notable changes to the Zulip desktop app are documented in this file.
 **Development**:
 
 - Migrate codebase to TypeScript.
-- Set the indent_size in `.editconfig` to 4.
+- Set the indent_size in `.editorconfig` to 4.
 - Use `.env` file for reading Sentry DSN.
 
 **Documentation**:
@@ -424,7 +424,7 @@ All notable changes to the Zulip desktop app are documented in this file.
 - Fix typo in network error message.
 - Fix context menu not working on adding new org.
 - Fix reply from notification.
-- Fix shorcut section horizontal alignment.
+- Fix shortcut section horizontal alignment.
 - Fix broken link in docs.
 - Fix grammatical errors.
 - Fix typo error in issue template.
@@ -463,7 +463,7 @@ All notable changes to the Zulip desktop app are documented in this file.
 - Auto hide menubar on Windows/Linux. Add a setting option for the same.
 - Improve design of setting page.
 - Toggle app on clicking the tray icon (Linux).
-- Update sidebar realm name when it's changed in webapp.
+- Update sidebar realm name when it's changed in web app.
 - left-sidebar: Add initial character of realm name instead of default icon.
 
 **Fixes**:
@@ -500,7 +500,7 @@ All notable changes to the Zulip desktop app are documented in this file.
 
 **Fixes**:
 
-- Fix youtube video not playing in lightbox.
+- Fix YouTube video not playing in lightbox.
 - Fix realm name not escaped properly.
 
 <hr>
@@ -510,7 +510,7 @@ All notable changes to the Zulip desktop app are documented in this file.
 **New features**:
 
 - Add a setting option to show downloaded file in file manager.
-- Added electron bridge to communicate with webapp in real time.
+- Added Electron bridge to communicate with web app in real time.
 
 **Fixes**:
 
@@ -623,7 +623,7 @@ electron-updater - `v2.21.8`
 
 - Add an option to download the file attachments instead of opening it in the browser
 
-- Open image link in webapp lightbox
+- Open image link in web app lightbox
 
 - Add scrollbar for list of organizations on overflow
 
@@ -1102,7 +1102,7 @@ Minor improvements
 
 - Using two package.json structure
 
-- Node integration disabled in main window due to jquery error
+- Node integration disabled in main window due to jQuery error
 
 - Now using electron-builder for packaging instead of electron-packager
 

@@ -592,7 +592,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
   }
 
   function initSpellChecker(): void {
-    // The elctron API is a no-op on macOS and macOS default spellchecker is used.
+    // The Electron API is a no-op on macOS and macOS default spellchecker is used.
     if (process.platform === "darwin") {
       const note: HTMLElement = $root.querySelector("#note")!;
       note.append(t.__("On macOS, the OS spellchecker is used."));
