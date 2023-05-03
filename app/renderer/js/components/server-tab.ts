@@ -16,6 +16,8 @@ export type ServerTabProps = {
 export default class ServerTab extends Tab {
   webview: Promise<WebView>;
   $el: Element;
+  $name: Element;
+  $icon: HTMLImageElement;
   $badge: Element;
 
   constructor({webview, ...props}: ServerTabProps) {
@@ -25,6 +27,8 @@ export default class ServerTab extends Tab {
     this.$el = generateNodeFromHtml(this.templateHtml());
     this.props.$root.append(this.$el);
     this.registerListeners();
+    this.$name = this.$el.querySelector(".server-tooltip")!;
+    this.$icon = this.$el.querySelector(".server-icons")!;
     this.$badge = this.$el.querySelector(".server-tab-badge")!;
   }
 
@@ -56,6 +60,16 @@ export default class ServerTab extends Tab {
         <div class="server-tab-shortcut">${this.generateShortcutText()}</div>
       </div>
     `;
+  }
+
+  setName(name: string): void {
+    this.props.name = name;
+    this.$name.textContent = name;
+  }
+
+  setIcon(icon: string): void {
+    this.props.icon = icon;
+    this.$icon.src = icon;
   }
 
   updateBadge(count: number): void {
