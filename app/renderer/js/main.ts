@@ -1060,14 +1060,9 @@ export class ServerManagerView {
       "update-realm-name",
       (event: Event, serverURL: string, realmName: string) => {
         for (const [index, domain] of DomainUtil.getDomains().entries()) {
-          if (domain.url.includes(serverURL)) {
-            const serverTooltipSelector = ".tab .server-tooltip";
-            const serverTooltips = document.querySelectorAll(
-              serverTooltipSelector,
-            );
-            serverTooltips[index].textContent = realmName;
-            this.tabs[index].props.name = realmName;
-
+          if (domain.url === serverURL) {
+            const tab = this.tabs[index];
+            if (tab instanceof ServerTab) tab.setName(realmName);
             domain.alias = realmName;
             DomainUtil.updateDomain(index, domain);
             // Update the realm name also on the Window menu
@@ -1085,12 +1080,11 @@ export class ServerManagerView {
       async (event: Event, serverURL: string, iconURL: string) => {
         await Promise.all(
           DomainUtil.getDomains().map(async (domain, index) => {
-            if (domain.url.includes(serverURL)) {
+            if (domain.url === serverURL) {
               const localIconPath = await DomainUtil.saveServerIcon(iconURL);
-              const serverImgsSelector = ".tab .server-icons";
-              const serverImgs: NodeListOf<HTMLImageElement> =
-                document.querySelectorAll(serverImgsSelector);
-              serverImgs[index].src = iconAsUrl(localIconPath);
+              const tab = this.tabs[index];
+              if (tab instanceof ServerTab)
+                tab.setIcon(iconAsUrl(localIconPath));
               domain.icon = localIconPath;
               DomainUtil.updateDomain(index, domain);
             }
