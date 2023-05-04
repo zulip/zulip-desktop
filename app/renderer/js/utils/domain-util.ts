@@ -140,9 +140,10 @@ export async function saveServerIcon(iconURL: string): Promise<string> {
 export async function updateSavedServer(
   url: string,
   index: number,
-): Promise<void> {
+): Promise<ServerConf> {
   // Does not promise successful update
-  const oldIcon = getDomain(index).icon;
+  const serverConf = getDomain(index);
+  const oldIcon = serverConf.icon;
   try {
     const newServerConf = await checkDomain(url, true);
     const localIconUrl = await saveServerIcon(newServerConf.icon);
@@ -151,10 +152,13 @@ export async function updateSavedServer(
       updateDomain(index, newServerConf);
       reloadDb();
     }
+
+    return newServerConf;
   } catch (error: unknown) {
     logger.log("Could not update server icon.");
     logger.log(error);
     Sentry.captureException(error);
+    return serverConf;
   }
 }
 
