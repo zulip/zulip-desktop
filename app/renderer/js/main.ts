@@ -337,7 +337,12 @@ export class ServerManagerView {
     const servers = DomainUtil.getDomains();
     if (servers.length > 0) {
       for (const [i, server] of servers.entries()) {
-        this.initServer(server, i);
+        const tab = this.initServer(server, i);
+        (async () => {
+          const serverConf = await DomainUtil.updateSavedServer(server.url, i);
+          tab.setName(serverConf.alias);
+          tab.setIcon(iconAsUrl(serverConf.icon));
+        })();
       }
 
       // Open last active tab
@@ -346,11 +351,7 @@ export class ServerManagerView {
         lastActiveTab = 0;
       }
 
-      // `checkDomain()` and `webview.load()` for lastActiveTab before the others
-      await DomainUtil.updateSavedServer(
-        servers[lastActiveTab].url,
-        lastActiveTab,
-      );
+      // `webview.load()` for lastActiveTab before the others
       await this.activateTab(lastActiveTab);
       await Promise.all(
         servers.map(async (server, i) => {
@@ -360,7 +361,6 @@ export class ServerManagerView {
             return;
           }
 
-          await DomainUtil.updateSavedServer(server.url, i);
           const tab = this.tabs[i];
           if (tab instanceof ServerTab) (await tab.webview).load();
         }),
@@ -375,54 +375,53 @@ export class ServerManagerView {
     }
   }
 
-  initServer(server: ServerConf, index: number): void {
+  initServer(server: ServerConf, index: number): ServerTab {
     const tabIndex = this.getTabIndex();
-
-    this.tabs.push(
-      new ServerTab({
-        role: "server",
-        icon: iconAsUrl(server.icon),
-        name: server.alias,
-        $root: this.$tabsContainer,
-        onClick: this.activateLastTab.bind(this, index),
+    const tab = new ServerTab({
+      role: "server",
+      icon: iconAsUrl(server.icon),
+      name: server.alias,
+      $root: this.$tabsContainer,
+      onClick: this.activateLastTab.bind(this, index),
+      index,
+      tabIndex,
+      onHover: this.onHover.bind(this, index),
+      onHoverOut: this.onHoverOut.bind(this, index),
+      webview: WebView.create({
+        $root: this.$webviewsContainer,
+        rootWebContents,
         index,
         tabIndex,
-        onHover: this.onHover.bind(this, index),
-        onHoverOut: this.onHoverOut.bind(this, index),
-        webview: WebView.create({
-          $root: this.$webviewsContainer,
-          rootWebContents,
-          index,
-          tabIndex,
-          url: server.url,
-          role: "server",
-          hasPermission: (origin: string, permission: string) =>
-            origin === server.url &&
-            permission === "notifications" &&
-            ConfigUtil.getConfigItem("showNotification", true),
-          isActive: () => index === this.activeTabIndex,
-          switchLoading: async (loading: boolean, url: string) => {
-            if (loading) {
-              this.loading.add(url);
-            } else {
-              this.loading.delete(url);
-            }
+        url: server.url,
+        role: "server",
+        hasPermission: (origin: string, permission: string) =>
+          origin === server.url &&
+          permission === "notifications" &&
+          ConfigUtil.getConfigItem("showNotification", true),
+        isActive: () => index === this.activeTabIndex,
+        switchLoading: async (loading: boolean, url: string) => {
+          if (loading) {
+            this.loading.add(url);
+          } else {
+            this.loading.delete(url);
+          }
 
-            const tab = this.tabs[this.activeTabIndex];
-            this.showLoading(
-              tab instanceof ServerTab &&
-                this.loading.has((await tab.webview).props.url),
-            );
-          },
-          onNetworkError: async (index: number) => {
-            await this.openNetworkTroubleshooting(index);
-          },
-          onTitleChange: this.updateBadge.bind(this),
-          preload: url.pathToFileURL(path.join(bundlePath, "preload.js")).href,
-        }),
+          const tab = this.tabs[this.activeTabIndex];
+          this.showLoading(
+            tab instanceof ServerTab &&
+              this.loading.has((await tab.webview).props.url),
+          );
+        },
+        onNetworkError: async (index: number) => {
+          await this.openNetworkTroubleshooting(index);
+        },
+        onTitleChange: this.updateBadge.bind(this),
+        preload: url.pathToFileURL(path.join(bundlePath, "preload.js")).href,
       }),
-    );
+    });
+    this.tabs.push(tab);
     this.loading.add(server.url);
+    return tab;
   }
 
   initActions(): void {
