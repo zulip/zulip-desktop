@@ -21,7 +21,7 @@ export function initConnectedOrgSection({
     <div class="settings-pane" id="server-settings-pane">
       <div class="page-title">${t.__("Connected organizations")}</div>
       <div class="title" id="existing-servers">
-        ${t.__("All the connected orgnizations will appear here.")}
+        ${t.__("All the connected organizations will appear here.")}
       </div>
       <div id="server-info-container"></div>
       <div id="new-org-button">
@@ -42,7 +42,9 @@ export function initConnectedOrgSection({
     "#find-accounts-container",
   )!;
 
-  const noServerText = t.__("All the connected orgnizations will appear here");
+  const noServerText = t.__(
+    "All the connected organizations will appear here.",
+  );
   // Show noServerText if no servers are there otherwise hide it
   $existingServers.textContent = servers.length === 0 ? noServerText : "";
 
