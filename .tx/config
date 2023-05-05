@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[zulip.desktopjson]
+[o:zulip:p:zulip:r:desktopjson]
 file_filter = public/translations/<lang>.json
 minimum_perc = 0
 source_file = public/translations/en.json
