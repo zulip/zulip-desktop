@@ -19,6 +19,7 @@
 	"Back": "Zpět",
 	"Bounce dock on new private message": "Poskakování ikony v docku po obdržení nové soukromé zprávy",
 	"Change": "Změnit",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Změnit jazyk v Nastavení systému → Klávesnice → Text → Kontrola pravopisu.",
 	"Check for Updates": "Zkontrolovat aktualizace",
 	"Close": "Zavřít",
 	"Connect": "Připojit se",
@@ -54,6 +55,7 @@
 	"Hard Reload": "Tvrdé znovunahrání",
 	"Help": "Nápověda",
 	"Help Center": "Centrum nápovědy",
+	"Hide": "Skrýt",
 	"Hide Others": "Skrýt jiné",
 	"Hide Zulip": "Hide Zulip",
 	"History": "Historie",
@@ -68,6 +70,7 @@
 	"Network": "Síť",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "NEBO",
+	"On macOS, the OS spellchecker is used.": "Na macOS se používá kontrola pravopisu OS.",
 	"Organization URL": "Adresa organizace",
 	"Organizations": "Organizace",
 	"Paste": "Vložit",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "Uložit",
 	"Select All": "Vybrat vše",
+	"Services": "Služby",
 	"Settings": "Nastavení",
 	"Shortcuts": "Zkratky",
 	"Show app icon in system tray": "Zobrazovat ikonu programu v oznamovací oblasti panelu",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "Přepnout ikonu v oznamovací oblasti panelu",
 	"Tools": "Nástroje",
 	"Undo": "Zpět",
+	"Unhide": "Zobrazit",
 	"Upload": "Nahrát",
 	"Use system proxy settings (requires restart)": "Použít systémová nastavení proxy (vyžaduje opětovné spuštění programu)",
 	"View": "Zobrazení",
@@ -117,5 +122,6 @@
 	"Zoom In": "Přiblížit",
 	"Zoom Out": "Oddálit",
 	"keyboard shortcuts": "klávesové zkratky",
-	"script": "skript"
+	"script": "skript",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

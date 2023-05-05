@@ -19,6 +19,7 @@
 	"Back": "返回",
 	"Bounce dock on new private message": "Bounce dock on 新的私人訊息",
 	"Change": "修改",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "變更語言：System Preferences → Keyboard → Text → Spelling.",
 	"Check for Updates": "檢查更新",
 	"Close": "關閉",
 	"Connect": "連結",
@@ -54,6 +55,7 @@
 	"Hard Reload": "強制重新載入",
 	"Help": "幫助",
 	"Help Center": "幫助中心",
+	"Hide": "隱藏",
 	"Hide Others": "隱藏其他",
 	"Hide Zulip": "Hide Zulip",
 	"History": "歷史",
@@ -68,6 +70,7 @@
 	"Network": "網路",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "或",
+	"On macOS, the OS spellchecker is used.": "在 macOS 下使用作業系統的拼字檢查",
 	"Organization URL": "組織網址",
 	"Organizations": "組織",
 	"Paste": "貼上",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "儲存",
 	"Select All": "選擇全部",
+	"Services": "服務",
 	"Settings": "設定",
 	"Shortcuts": "快捷鍵",
 	"Show app icon in system tray": "顯示應用程式圖示在系統夾",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "切換夾圖示",
 	"Tools": "工具",
 	"Undo": "復原",
+	"Unhide": "取消隱藏",
 	"Upload": "上傳",
 	"Use system proxy settings (requires restart)": "使用系統 proxy 設定（需要重新啟動）",
 	"View": "檢視",
@@ -117,5 +122,6 @@
 	"Zoom In": "放大",
 	"Zoom Out": "縮小",
 	"keyboard shortcuts": "鍵盤快捷鍵",
-	"script": "script"
+	"script": "script",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

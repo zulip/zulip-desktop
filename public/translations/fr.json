@@ -19,6 +19,7 @@
 	"Back": "Précédent",
 	"Bounce dock on new private message": "Animer l'horloge à la réception d'un nouveau message privé",
 	"Change": "Changer",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Modifier la langue à partir des Préférences Système → Clavier → Text → Orthographe.",
 	"Check for Updates": "Vérifier les mises à jour",
 	"Close": "Fermer",
 	"Connect": "Connecter",
@@ -54,6 +55,7 @@
 	"Hard Reload": "Forcer un rechargement",
 	"Help": "Aide",
 	"Help Center": "Centre d'aide",
+	"Hide": "Masquer",
 	"Hide Others": "Masquer les autres",
 	"Hide Zulip": "Hide Zulip",
 	"History": "Historique",
@@ -68,6 +70,7 @@
 	"Network": "Réseau",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "OU",
+	"On macOS, the OS spellchecker is used.": "On macOS, the OS spellchecker is used.",
 	"Organization URL": "URL de l'organisation",
 	"Organizations": "Organisations",
 	"Paste": "Coller",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "Sauvegarder",
 	"Select All": "Sélectionner tout",
+	"Services": "Services",
 	"Settings": "Paramètres",
 	"Shortcuts": "Raccourcis",
 	"Show app icon in system tray": "Afficher l'icone de l'application dans la barre d'état",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "Activer l'icone dans la barre d'état",
 	"Tools": "Outils",
 	"Undo": "Annuler",
+	"Unhide": "Démasquer",
 	"Upload": "Envoyer",
 	"Use system proxy settings (requires restart)": "Utiliser les paramètres de proxy du système (exige un redémarrage)",
 	"View": "Affichage",
@@ -117,5 +122,6 @@
 	"Zoom In": "Zoom avant",
 	"Zoom Out": "Zoom arrière",
 	"keyboard shortcuts": "Raccourcis clavier",
-	"script": "scénario"
+	"script": "scénario",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

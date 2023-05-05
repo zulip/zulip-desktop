@@ -19,6 +19,7 @@
 	"Back": "Geri",
 	"Bounce dock on new private message": "Yeni özel iletilerde simgeyi hareket ettir",
 	"Change": "Değiştir",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Sistem Seçenekleri → Klavye → Metin → Kelime Denetimi üzerinden dili değiştirin.",
 	"Check for Updates": "Güncellemeleri Kontrol Et",
 	"Close": "Kapat",
 	"Connect": "Bağlan",
@@ -54,6 +55,7 @@
 	"Hard Reload": "Zor Yeniden Yükleme",
 	"Help": "Yardım",
 	"Help Center": "Yardım Merkezi",
+	"Hide": "Gizle",
 	"Hide Others": "Diğerlerini Gizle",
 	"Hide Zulip": "Hide Zulip",
 	"History": "Tarihçe",
@@ -68,6 +70,7 @@
 	"Network": "Ağ",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "OR",
+	"On macOS, the OS spellchecker is used.": "macOS için, İşletim Sistemi kelime denetimi kullanılır.",
 	"Organization URL": "Organizasyon URL'si",
 	"Organizations": "Organizasyonlar",
 	"Paste": "Yapıştır",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "Kaydet",
 	"Select All": "Hepsini Seç",
+	"Services": "Servisler",
 	"Settings": "Ayarlar",
 	"Shortcuts": "Kestirmeler",
 	"Show app icon in system tray": "Sistem çubuğunda uygulama ikonunu göster",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "Sistem İkonunu Aç",
 	"Tools": "Araçlar",
 	"Undo": "Geri Al",
+	"Unhide": "Göster",
 	"Upload": "Gönder",
 	"Use system proxy settings (requires restart)": "Sistem proxy ayarlarını kullan (yeniden başlatma gerekli)",
 	"View": "Göster",
@@ -117,5 +122,6 @@
 	"Zoom In": "Büyüt",
 	"Zoom Out": "Küçült",
 	"keyboard shortcuts": "klavye kısa yolları",
-	"script": "script"
+	"script": "script",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

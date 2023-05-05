@@ -19,6 +19,7 @@
 	"Back": "عقب",
 	"Bounce dock on new private message": "Bounce dock on new private message",
 	"Change": "تغییر دادن",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Change the language from System Preferences → Keyboard → Text → Spelling.",
 	"Check for Updates": "بررسی برای به‌روز‌رسانی",
 	"Close": "بستن",
 	"Connect": "اتصال",
@@ -54,6 +55,7 @@
 	"Hard Reload": "Hard Reload",
 	"Help": "کمک",
 	"Help Center": "مرکز کمک",
+	"Hide": "Hide",
 	"Hide Others": "Hide Others",
 	"Hide Zulip": "Hide Zulip",
 	"History": "تاریخچه ",
@@ -68,6 +70,7 @@
 	"Network": "Network",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "یا",
+	"On macOS, the OS spellchecker is used.": "On macOS, the OS spellchecker is used.",
 	"Organization URL": "URL سازمان",
 	"Organizations": "Organizations",
 	"Paste": "Paste",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "ذخیره",
 	"Select All": "Select All",
+	"Services": "Services",
 	"Settings": "تنظیمات",
 	"Shortcuts": "Shortcuts",
 	"Show app icon in system tray": "Show app icon in system tray",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "Toggle Tray Icon",
 	"Tools": "Tools",
 	"Undo": "Undo",
+	"Unhide": "Unhide",
 	"Upload": "Upload",
 	"Use system proxy settings (requires restart)": "Use system proxy settings (requires restart)",
 	"View": "View",
@@ -117,5 +122,6 @@
 	"Zoom In": "Zoom In",
 	"Zoom Out": "Zoom Out",
 	"keyboard shortcuts": "keyboard shortcuts",
-	"script": "script"
+	"script": "script",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

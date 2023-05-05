@@ -19,6 +19,7 @@
 	"Back": "மீண்டும்",
 	"Bounce dock on new private message": "புதிய தனிப்பட்ட செய்தியில் கப்பல்துறை பவுன்ஸ்",
 	"Change": "மாற்றம்",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Change the language from System Preferences → Keyboard → Text → Spelling.",
 	"Check for Updates": "புதுப்பிப்புகளைச் சரிபார்க்கவும்",
 	"Close": "நெருக்கமான",
 	"Connect": "இணைக்கவும்",
@@ -54,6 +55,7 @@
 	"Hard Reload": "கடின மறுஏற்றம்",
 	"Help": "உதவி",
 	"Help Center": "உதவி மையம்",
+	"Hide": "Hide",
 	"Hide Others": "Hide Others",
 	"Hide Zulip": "Hide Zulip",
 	"History": "வரலாறு",
@@ -68,6 +70,7 @@
 	"Network": "வலைப்பின்னல்",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "அல்லது",
+	"On macOS, the OS spellchecker is used.": "On macOS, the OS spellchecker is used.",
 	"Organization URL": "அமைப்பு URL",
 	"Organizations": "அமைப்புக்கள்",
 	"Paste": "ஒட்டு",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "சேமி",
 	"Select All": "அனைத்தையும் தெரிவுசெய்",
+	"Services": "Services",
 	"Settings": "அமைப்புகள்",
 	"Shortcuts": "குறுக்குவழிகள்",
 	"Show app icon in system tray": "கணினி தட்டில் பயன்பாட்டு ஐகானைக் காட்டு",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "தட்டு ஐகானை மாற்று",
 	"Tools": "கருவிகள்",
 	"Undo": "செயல்தவிர்",
+	"Unhide": "Unhide",
 	"Upload": "பதிவேற்றம்",
 	"Use system proxy settings (requires restart)": "கணினி ப்ராக்ஸி அமைப்புகளைப் பயன்படுத்தவும் (மறுதொடக்கம் தேவை)",
 	"View": "காண்க",
@@ -117,5 +122,6 @@
 	"Zoom In": "பெரிதாக்க",
 	"Zoom Out": "பெரிதாக்கு",
 	"keyboard shortcuts": "விசைப்பலகை குறுக்குவழிகள்",
-	"script": "ஸ்கிரிப்ட்"
+	"script": "ஸ்கிரிப்ட்",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

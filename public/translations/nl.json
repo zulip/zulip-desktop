@@ -19,6 +19,7 @@
 	"Back": "Terug",
 	"Bounce dock on new private message": "Bounce dock op nieuw privébericht",
 	"Change": "Verandering",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Change the language from System Preferences → Keyboard → Text → Spelling.",
 	"Check for Updates": "Controleer op updates",
 	"Close": "Dichtbij",
 	"Connect": "Aansluiten",
@@ -54,6 +55,7 @@
 	"Hard Reload": "Harde herladen",
 	"Help": "Helpen",
 	"Help Center": "Helpcentrum",
+	"Hide": "Hide",
 	"Hide Others": "Hide Others",
 	"Hide Zulip": "Hide Zulip",
 	"History": "Geschiedenis",
@@ -68,6 +70,7 @@
 	"Network": "Netwerk",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "OF",
+	"On macOS, the OS spellchecker is used.": "On macOS, the OS spellchecker is used.",
 	"Organization URL": "Organisatie-URL",
 	"Organizations": "organisaties",
 	"Paste": "Pasta",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "Opslaan",
 	"Select All": "Selecteer alles",
+	"Services": "Services",
 	"Settings": "instellingen",
 	"Shortcuts": "shortcuts",
 	"Show app icon in system tray": "App-pictogram weergeven in systeemvak",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "Pictogram Lade wisselen",
 	"Tools": "Hulpmiddelen",
 	"Undo": "ongedaan maken",
+	"Unhide": "Unhide",
 	"Upload": "Uploaden",
 	"Use system proxy settings (requires restart)": "Systeem proxy-instellingen gebruiken (opnieuw opstarten vereist)",
 	"View": "Uitzicht",
@@ -117,5 +122,6 @@
 	"Zoom In": "In zoomen",
 	"Zoom Out": "Uitzoomen",
 	"keyboard shortcuts": "Toetsenbord sneltoetsen",
-	"script": "script"
+	"script": "script",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

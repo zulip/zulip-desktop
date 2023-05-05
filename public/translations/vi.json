@@ -19,6 +19,7 @@
 	"Back": "Quay lại",
 	"Bounce dock on new private message": "Trả lại dock trên tin nhắn riêng tư mới",
 	"Change": "Biến đổi",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Change the language from System Preferences → Keyboard → Text → Spelling.",
 	"Check for Updates": "Kiểm tra cập nhật",
 	"Close": "Đóng",
 	"Connect": "Liên kết",
@@ -54,6 +55,7 @@
 	"Hard Reload": "Tải lại cứng",
 	"Help": "Cứu giúp",
 	"Help Center": "Trung tâm trợ giúp",
+	"Hide": "Hide",
 	"Hide Others": "Ẩn những người khác",
 	"Hide Zulip": "Hide Zulip",
 	"History": "Lịch sử",
@@ -68,6 +70,7 @@
 	"Network": "Mạng",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "HOẶC",
+	"On macOS, the OS spellchecker is used.": "On macOS, the OS spellchecker is used.",
 	"Organization URL": "URL tổ chức",
 	"Organizations": "Các tổ chức",
 	"Paste": "Dán",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "Tiết kiệm",
 	"Select All": "Chọn tất cả",
+	"Services": "Services",
 	"Settings": "Cài đặt",
 	"Shortcuts": "Các phím tắt",
 	"Show app icon in system tray": "Hiển thị biểu tượng ứng dụng trong khay hệ thống",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "Chuyển đổi biểu tượng khay",
 	"Tools": "Công cụ",
 	"Undo": "Hoàn tác",
+	"Unhide": "Unhide",
 	"Upload": "Tải lên",
 	"Use system proxy settings (requires restart)": "Sử dụng cài đặt proxy hệ thống (yêu cầu khởi động lại)",
 	"View": "Lượt xem",
@@ -117,5 +122,6 @@
 	"Zoom In": "Phóng to",
 	"Zoom Out": "Thu nhỏ",
 	"keyboard shortcuts": "các phím tắt bàn phím",
-	"script": "script"
+	"script": "script",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }
