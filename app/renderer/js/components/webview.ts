@@ -139,7 +139,7 @@ export default class WebView {
   }
 
   getWebContents(): WebContents {
-    return remote.webContents.fromId(this.webContentsId);
+    return remote.webContents.fromId(this.webContentsId)!;
   }
 
   showNotificationSettings(): void {
