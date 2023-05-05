@@ -1,5 +1,4 @@
 import {clipboard} from "electron/common";
-import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import url from "node:url";
@@ -55,19 +54,6 @@ const rootWebContents = remote.getCurrentWebContents();
 const dingSound = new Audio(
   new URL("resources/sounds/ding.ogg", bundleUrl).href,
 );
-
-function iconAsUrl(iconPath: string): string {
-  if (iconPath === DomainUtil.defaultIconSentinel) return defaultIcon;
-
-  try {
-    return `data:application/octet-stream;base64,${fs.readFileSync(
-      iconPath,
-      "base64",
-    )}`;
-  } catch {
-    return defaultIcon;
-  }
-}
 
 export class ServerManagerView {
   $addServerButton: HTMLButtonElement;
@@ -341,7 +327,7 @@ export class ServerManagerView {
         (async () => {
           const serverConf = await DomainUtil.updateSavedServer(server.url, i);
           tab.setName(serverConf.alias);
-          tab.setIcon(iconAsUrl(serverConf.icon));
+          tab.setIcon(DomainUtil.iconAsUrl(serverConf.icon));
           (await tab.webview).setUnsupportedMessage(
             DomainUtil.getUnsupportedMessage(serverConf),
           );
@@ -382,7 +368,7 @@ export class ServerManagerView {
     const tabIndex = this.getTabIndex();
     const tab = new ServerTab({
       role: "server",
-      icon: iconAsUrl(server.icon),
+      icon: DomainUtil.iconAsUrl(server.icon),
       name: server.alias,
       $root: this.$tabsContainer,
       onClick: this.activateLastTab.bind(this, index),
@@ -1087,7 +1073,7 @@ export class ServerManagerView {
               const localIconPath = await DomainUtil.saveServerIcon(iconURL);
               const tab = this.tabs[index];
               if (tab instanceof ServerTab)
-                tab.setIcon(iconAsUrl(localIconPath));
+                tab.setIcon(DomainUtil.iconAsUrl(localIconPath));
               domain.icon = localIconPath;
               DomainUtil.updateDomain(index, domain);
             }

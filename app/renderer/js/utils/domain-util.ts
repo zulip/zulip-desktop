@@ -12,6 +12,7 @@ import Logger from "../../../common/logger-util.js";
 import * as Messages from "../../../common/messages.js";
 import * as t from "../../../common/translation-util.js";
 import type {ServerConf} from "../../../common/types.js";
+import defaultIcon from "../../img/icon.png";
 import {ipcRenderer} from "../typed-ipc-renderer.js";
 
 const logger = new Logger({
@@ -212,4 +213,17 @@ export function getUnsupportedMessage(server: ServerConf): string | undefined {
   }
 
   return undefined;
+}
+
+export function iconAsUrl(iconPath: string): string {
+  if (iconPath === defaultIconSentinel) return defaultIcon;
+
+  try {
+    return `data:application/octet-stream;base64,${fs.readFileSync(
+      iconPath,
+      "base64",
+    )}`;
+  } catch {
+    return defaultIcon;
+  }
 }
