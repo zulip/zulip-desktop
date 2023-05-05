@@ -19,7 +19,10 @@ export function initServerInfoForm(props: ServerInfoFormProps): void {
   const $serverInfoForm = generateNodeFromHtml(html`
     <div class="settings-card">
       <div class="server-info-left">
-        <img class="server-info-icon" src="${props.server.icon}" />
+        <img
+          class="server-info-icon"
+          src="${DomainUtil.iconAsUrl(props.server.icon)}"
+        />
         <div class="server-info-row">
           <span class="server-info-alias">${props.server.alias}</span>
           <i class="material-icons open-tab-button">open_in_new</i>
