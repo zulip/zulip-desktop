@@ -2,6 +2,23 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.10.0 --2023-05-05
+
+**Removed features**:
+
+- Removed support for Windows 8.1 and earlier, which reached end-of-life earlier this year and are [no longer supported](https://www.electronjs.org/blog/windows-7-to-8-1-deprecation-notice) by Electron.
+- Removed support for Zulip Server 3.x and earlier, which have been obsolete for more than 18 months, in accordance with our [release lifecycle](https://zulip.readthedocs.io/en/latest/overview/release-lifecycle.html). A notice will now be displayed when connecting to a server with an unsupported version.
+
+**Fixes**:
+
+- Fixed display of the dropdown for the spellchecker languages setting.
+- Fixed various bugs related to displaying and updating organization icons.
+- Fixed settings to disable visual display of notifications.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 24.2.0.
+
 ### v5.9.5 --2023-02-06
 
 **Fixes**:
