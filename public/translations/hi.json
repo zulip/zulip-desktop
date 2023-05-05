@@ -19,6 +19,7 @@
 	"Back": "वापस",
 	"Bounce dock on new private message": "नए निजी संदेश पर बाउंस डॉक",
 	"Change": "परिवर्तन",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Change the language from System Preferences → Keyboard → Text → Spelling.",
 	"Check for Updates": "अद्यतन के लिए जाँच",
 	"Close": "बंद करे",
 	"Connect": "जुडिये",
@@ -54,6 +55,7 @@
 	"Hard Reload": "हार्ड रीलोड",
 	"Help": "मदद",
 	"Help Center": "सहायता केंद्र",
+	"Hide": "छिपाना",
 	"Hide Others": "Hide Others",
 	"Hide Zulip": "Hide Zulip",
 	"History": "इतिहास",
@@ -68,6 +70,7 @@
 	"Network": "नेटवर्क",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "या",
+	"On macOS, the OS spellchecker is used.": "On macOS, the OS spellchecker is used.",
 	"Organization URL": "संगठन का URL",
 	"Organizations": "संगठन",
 	"Paste": "चिपकाएं",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "बचाना / सहेजें",
 	"Select All": "सभी का चयन करे",
+	"Services": "Services",
 	"Settings": "सेटिंग्स",
 	"Shortcuts": "शॉर्टकट",
 	"Show app icon in system tray": "सिस्टम ट्रे में ऐप आइकन दिखाएं",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "टॉगल ट्रे आइकन",
 	"Tools": "उपकरण",
 	"Undo": "पूर्ववत करें",
+	"Unhide": "प्रकट करें",
 	"Upload": "अपलोड",
 	"Use system proxy settings (requires restart)": "सिस्टम प्रॉक्सी सेटिंग्स का उपयोग करें (पुनः आरंभ करने की आवश्यकता है)",
 	"View": "राय",
@@ -117,5 +122,6 @@
 	"Zoom In": "ज़ूम इन",
 	"Zoom Out": "ज़ूम आउट",
 	"keyboard shortcuts": "कुंजीपटल अल्प मार्ग",
-	"script": "लिपि"
+	"script": "लिपि",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

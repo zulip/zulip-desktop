@@ -19,6 +19,7 @@
 	"Back": "обратно",
 	"Bounce dock on new private message": "Прескочи док в новото лично съобщение",
 	"Change": "промяна",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Change the language from System Preferences → Keyboard → Text → Spelling.",
 	"Check for Updates": "Провери за обновления",
 	"Close": "Близо",
 	"Connect": "Свържете",
@@ -54,6 +55,7 @@
 	"Hard Reload": "Hard Reload",
 	"Help": "Помогне",
 	"Help Center": "Помощен център",
+	"Hide": "Hide",
 	"Hide Others": "Hide Others",
 	"Hide Zulip": "Hide Zulip",
 	"History": "история",
@@ -68,6 +70,7 @@
 	"Network": "мрежа",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "ИЛИ",
+	"On macOS, the OS spellchecker is used.": "On macOS, the OS spellchecker is used.",
 	"Organization URL": "URL адрес на организацията",
 	"Organizations": "организации",
 	"Paste": "паста",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "Запази",
 	"Select All": "Избери всички",
+	"Services": "Services",
 	"Settings": "Настройки",
 	"Shortcuts": "Shortcuts",
 	"Show app icon in system tray": "Показване на иконата на приложението в системната област",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "Превключете иконата на тава",
 	"Tools": "Инструменти",
 	"Undo": "премахвам",
+	"Unhide": "Unhide",
 	"Upload": "Качи",
 	"Use system proxy settings (requires restart)": "Използване на системните прокси настройки (изисква рестартиране)",
 	"View": "изглед",
@@ -117,5 +122,6 @@
 	"Zoom In": "Увеличавам",
 	"Zoom Out": "Отдалечавам",
 	"keyboard shortcuts": "комбинация от клавиши",
-	"script": "писменост"
+	"script": "писменост",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

@@ -19,6 +19,7 @@
 	"Back": "戻る",
 	"Bounce dock on new private message": "新しいプライベートメッセージがあると Dock アイコンが跳ねる",
 	"Change": "変更",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Change the language from System Preferences → Keyboard → Text → Spelling.",
 	"Check for Updates": "アップデートを確認",
 	"Close": "閉じる",
 	"Connect": "接続",
@@ -54,6 +55,7 @@
 	"Hard Reload": "ハードリロード",
 	"Help": "ヘルプ",
 	"Help Center": "ヘルプセンター",
+	"Hide": "非表示",
 	"Hide Others": "Hide Others",
 	"Hide Zulip": "Hide Zulip",
 	"History": "履歴",
@@ -68,6 +70,7 @@
 	"Network": "ネットワーク",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "または",
+	"On macOS, the OS spellchecker is used.": "macOSでは、OSのスペルチェックが使用されます。",
 	"Organization URL": "組織のURL",
 	"Organizations": "組織",
 	"Paste": "貼り付け",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "保存",
 	"Select All": "すべて選択",
+	"Services": "サービス",
 	"Settings": "設定",
 	"Shortcuts": "ショートカット",
 	"Show app icon in system tray": "システムトレイにアプリアイコンを表示する",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "トレイアイコンの切り替え",
 	"Tools": "ツール",
 	"Undo": "元に戻す",
+	"Unhide": "表示",
 	"Upload": "アップロード",
 	"Use system proxy settings (requires restart)": "システムのプロキシ設定を使用する (再起動が必要です)",
 	"View": "表示",
@@ -117,5 +122,6 @@
 	"Zoom In": "拡大",
 	"Zoom Out": "縮小",
 	"keyboard shortcuts": "キーボードショートカット",
-	"script": "スクリプト"
+	"script": "スクリプト",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

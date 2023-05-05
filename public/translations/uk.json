@@ -19,6 +19,7 @@
 	"Back": "Назад",
 	"Bounce dock on new private message": "Bounce dock on new private message",
 	"Change": "Змінити",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Change the language from System Preferences → Keyboard → Text → Spelling.",
 	"Check for Updates": "Перевірити наявність оновлень",
 	"Close": "Закрити",
 	"Connect": "Під'єднати",
@@ -54,6 +55,7 @@
 	"Hard Reload": "Жорстке перезавантаження",
 	"Help": "Довідка",
 	"Help Center": "Центр довідки",
+	"Hide": "Hide",
 	"Hide Others": "Hide Others",
 	"Hide Zulip": "Hide Zulip",
 	"History": "Історія",
@@ -68,6 +70,7 @@
 	"Network": "Мережа",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "АБО",
+	"On macOS, the OS spellchecker is used.": "On macOS, the OS spellchecker is used.",
 	"Organization URL": "URL-адреса організації",
 	"Organizations": "Організації",
 	"Paste": "Вставити",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "Зберегти",
 	"Select All": "Вибрати все",
+	"Services": "Services",
 	"Settings": "Налаштування",
 	"Shortcuts": "Клавіатурні скорочення",
 	"Show app icon in system tray": "Показувати значок програми в системному треї",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "Перемкнути значок в треї",
 	"Tools": "Інструменти",
 	"Undo": "Назад",
+	"Unhide": "Unhide",
 	"Upload": "Завантажити",
 	"Use system proxy settings (requires restart)": "Використовувати системні налаштування проксі (потрібен перезапуск)",
 	"View": "Вигляд",
@@ -117,5 +122,6 @@
 	"Zoom In": "Збільшити",
 	"Zoom Out": "Зменшити",
 	"keyboard shortcuts": "клавіатурні скорочення",
-	"script": "скрипт"
+	"script": "скрипт",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

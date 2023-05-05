@@ -19,6 +19,7 @@
 	"Back": "Zurück",
 	"Bounce dock on new private message": "Im Dock hüpfen, wenn neue private Nachrichten eingehen",
 	"Change": "Ändern",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Ändere die Spracheinstellung über Systemeinstellungen → Tastatur → Text → Rechtschreibung.",
 	"Check for Updates": "Auf Updates prüfen",
 	"Close": "Schließen",
 	"Connect": "Verbinden",
@@ -54,6 +55,7 @@
 	"Hard Reload": "Komplett neu laden",
 	"Help": "Hilfe",
 	"Help Center": "Hilfe-Zentrum",
+	"Hide": "Verbergen",
 	"Hide Others": "Andere verbergen",
 	"Hide Zulip": "Hide Zulip",
 	"History": "Verlauf",
@@ -68,6 +70,7 @@
 	"Network": "Netzwerk",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "ODER",
+	"On macOS, the OS spellchecker is used.": "In macOS wird die OS Rechtschreibprüfung verwendet.",
 	"Organization URL": "URL der Organisation",
 	"Organizations": "Organisationen",
 	"Paste": "Einfügen",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "Speichern",
 	"Select All": "Alles auswählen",
+	"Services": "Dienste",
 	"Settings": "Einstellungen",
 	"Shortcuts": "Kurzbefehle",
 	"Show app icon in system tray": "App-Icon in Systemleiste anzeigen",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "Tray-Icon umschalten",
 	"Tools": "Extras",
 	"Undo": "Rückgängig",
+	"Unhide": "Nicht mehr verbergen",
 	"Upload": "Hochladen",
 	"Use system proxy settings (requires restart)": "Systemweite Proxy-Einstellungen verwenden (erfordert Neustart)",
 	"View": "Ansicht",
@@ -117,5 +122,6 @@
 	"Zoom In": "Vergrößern",
 	"Zoom Out": "Verkleinern",
 	"keyboard shortcuts": "Tastenkürzel",
-	"script": "Skript"
+	"script": "Skript",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

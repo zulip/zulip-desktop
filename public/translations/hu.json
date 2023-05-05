@@ -19,6 +19,7 @@
 	"Back": "Vissza",
 	"Bounce dock on new private message": "Ugráló dokk ikon új privát üzenet esetén",
 	"Change": "Változtatás",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "A nyelv a Rendszerbeállítások → Billentyűzet → Szöveg → Helyesírás pontban változtatható meg.",
 	"Check for Updates": "Frissítések keresése",
 	"Close": "Bezár",
 	"Connect": "Kapcsolódás",
@@ -54,6 +55,7 @@
 	"Hard Reload": "Teljes újratöltés",
 	"Help": "Súgó",
 	"Help Center": "Súgóközpont",
+	"Hide": "Elrejtés",
 	"Hide Others": "A többi elrejtése",
 	"Hide Zulip": "Hide Zulip",
 	"History": "Előzmények",
@@ -68,6 +70,7 @@
 	"Network": "Hálózat",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "VAGY",
+	"On macOS, the OS spellchecker is used.": "MacOS rendszereken az operációs rendszer helyesírásellenőrzőjét használjuk.",
 	"Organization URL": "Szervezet URL-je",
 	"Organizations": "Szervezetek",
 	"Paste": "Beillesztése",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "Mentés",
 	"Select All": "Mindet kijelöl",
+	"Services": "Szolgáltatások",
 	"Settings": "Beállítások",
 	"Shortcuts": "Gyorsbillentyűk",
 	"Show app icon in system tray": "Ikon megjelenítése a tálcán",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "Tálca ikon bekapcsolása",
 	"Tools": "Eszközök",
 	"Undo": "Visszavonás",
+	"Unhide": "Felfedés",
 	"Upload": "Feltöltés",
 	"Use system proxy settings (requires restart)": "A rendszer proxybeállításainak használata (újraindítást igényel)",
 	"View": "Nézet",
@@ -117,5 +122,6 @@
 	"Zoom In": "Nagyítása",
 	"Zoom Out": "Kicsinyítés",
 	"keyboard shortcuts": "gyorsbillentyűk",
-	"script": "parancsfájl"
+	"script": "parancsfájl",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

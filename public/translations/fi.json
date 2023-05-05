@@ -19,6 +19,7 @@
 	"Back": "Takaisin",
 	"Bounce dock on new private message": "Bounce dock on new private message",
 	"Change": "Muuta",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Change the language from System Preferences → Keyboard → Text → Spelling.",
 	"Check for Updates": "Tarkista päivitykset",
 	"Close": "Sulje",
 	"Connect": "Yhdistä",
@@ -54,6 +55,7 @@
 	"Hard Reload": "Täysi uudelleenlataus",
 	"Help": "Ohje",
 	"Help Center": "Tukikeskus",
+	"Hide": "Piilota",
 	"Hide Others": "Piilota muut",
 	"Hide Zulip": "Hide Zulip",
 	"History": "Historia",
@@ -68,6 +70,7 @@
 	"Network": "Verkko",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "TAI",
+	"On macOS, the OS spellchecker is used.": "On macOS, the OS spellchecker is used.",
 	"Organization URL": "Organisaation URL",
 	"Organizations": "Organisaatiot",
 	"Paste": "Liitä",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "Tallenna",
 	"Select All": "Valitse kaikki",
+	"Services": "Services",
 	"Settings": "Asetukset",
 	"Shortcuts": "Oikopolut",
 	"Show app icon in system tray": "Näytä sovellus ilmoituspaneelissa",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "Vaihda Tray-kuvaketta",
 	"Tools": "Työkalut",
 	"Undo": "Peru",
+	"Unhide": "Näytä",
 	"Upload": "Lähetä tiedosto",
 	"Use system proxy settings (requires restart)": "Käytä järjestelmän välityspalvelimen asetuksia (uudelleenkäynnistys tarvitaan)",
 	"View": "Näytä",
@@ -117,5 +122,6 @@
 	"Zoom In": "Lähennä",
 	"Zoom Out": "Loitonna",
 	"keyboard shortcuts": "Pikanäppäimet",
-	"script": "script"
+	"script": "script",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

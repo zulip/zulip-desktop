@@ -19,6 +19,7 @@
 	"Back": "后退",
 	"Bounce dock on new private message": "收到新私信时弹出Dock",
 	"Change": "更改",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "从 \"系统偏好设置 → 键盘 → 文本 → 拼写\"  更改语言。",
 	"Check for Updates": "检查更新...",
 	"Close": "关闭",
 	"Connect": "连接",
@@ -54,6 +55,7 @@
 	"Hard Reload": "强制重新加载",
 	"Help": "帮助",
 	"Help Center": "帮助中心",
+	"Hide": "隐藏",
 	"Hide Others": "隐藏其他",
 	"Hide Zulip": "Hide Zulip",
 	"History": "历史消息",
@@ -68,6 +70,7 @@
 	"Network": "网络",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "或",
+	"On macOS, the OS spellchecker is used.": "在 macOS 上，使用操作系统的拼写检查器。",
 	"Organization URL": "组织网址",
 	"Organizations": "组织",
 	"Paste": "粘贴",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "保存",
 	"Select All": "全选",
+	"Services": "服务",
 	"Settings": "设置",
 	"Shortcuts": "快捷键",
 	"Show app icon in system tray": "在系统托盘中显示应用图标",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "切换托盘图标",
 	"Tools": "工具",
 	"Undo": "撤销",
+	"Unhide": "取消隐藏",
 	"Upload": "上传",
 	"Use system proxy settings (requires restart)": "使用系统代理设置（需要重启）",
 	"View": "视图",
@@ -117,5 +122,6 @@
 	"Zoom In": "放大",
 	"Zoom Out": "缩小",
 	"keyboard shortcuts": "快捷键",
-	"script": "脚本"
+	"script": "脚本",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

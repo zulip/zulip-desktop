@@ -19,6 +19,7 @@
 	"Back": "Назад",
 	"Bounce dock on new private message": "Одскочите у нову приватну поруку",
 	"Change": "Цханге",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Промените језик кроз Системска подешавања → Тастатура → Текст → Правопис.",
 	"Check for Updates": "Провери ажурирања",
 	"Close": "Затвори",
 	"Connect": "Повежи",
@@ -54,6 +55,7 @@
 	"Hard Reload": "Поновно покретање",
 	"Help": "Помоћ",
 	"Help Center": "Центар за помоћ",
+	"Hide": "Сакриј",
 	"Hide Others": "Сакриј остале",
 	"Hide Zulip": "Hide Zulip",
 	"History": "Историја",
@@ -68,6 +70,7 @@
 	"Network": "Мрежа",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "ИЛИ",
+	"On macOS, the OS spellchecker is used.": "На мекинтошу, користи се системска провера правописа.",
 	"Organization URL": "Адреса организације",
 	"Organizations": "Организације",
 	"Paste": "Налепите",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "Сачувај",
 	"Select All": "Изабери све",
+	"Services": "Сервиси",
 	"Settings": "Подешавања",
 	"Shortcuts": "Пречице",
 	"Show app icon in system tray": "Покажи икону апликације у системској палети",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "Приказ иконе у системској палети",
 	"Tools": "Алати",
 	"Undo": "Поништи",
+	"Unhide": "Откриј",
 	"Upload": "Отпреми",
 	"Use system proxy settings (requires restart)": "Користи поставке проксија из система (потребно је поновно покретање)",
 	"View": "Приказ",
@@ -117,5 +122,6 @@
 	"Zoom In": "Увеличај",
 	"Zoom Out": "Умањи",
 	"keyboard shortcuts": "пречице на тастатури",
-	"script": "скрипта"
+	"script": "скрипта",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

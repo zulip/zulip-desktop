@@ -19,6 +19,7 @@
 	"Back": "Wstecz",
 	"Bounce dock on new private message": "Dok odbijania na nowej prywatnej wiadomości",
 	"Change": "Zmiana",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Change the language from System Preferences → Keyboard → Text → Spelling.",
 	"Check for Updates": "Sprawdź aktualizacje",
 	"Close": "Zamknij",
 	"Connect": "Połączyć",
@@ -54,6 +55,7 @@
 	"Hard Reload": "Twarde przeładowanie",
 	"Help": "Pomoc",
 	"Help Center": "Centrum pomocy",
+	"Hide": "Hide",
 	"Hide Others": "Hide Others",
 	"Hide Zulip": "Hide Zulip",
 	"History": "Historia",
@@ -68,6 +70,7 @@
 	"Network": "Sieć",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "LUB",
+	"On macOS, the OS spellchecker is used.": "On macOS, the OS spellchecker is used.",
 	"Organization URL": "Adres URL organizacji",
 	"Organizations": "Organizacje",
 	"Paste": "Wklej",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "Zapisz",
 	"Select All": "Zaznacz wszystko",
+	"Services": "Services",
 	"Settings": "Ustawienia",
 	"Shortcuts": "Skróty",
 	"Show app icon in system tray": "Pokaż ikonę aplikacji w zasobniku systemowym",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "Przełącz ikonę tacy",
 	"Tools": "Narzędzia",
 	"Undo": "Cofnij",
+	"Unhide": "Unhide",
 	"Upload": "Przekazać plik",
 	"Use system proxy settings (requires restart)": "Użyj ustawień systemowych proxy (wymaga restartu aplikacji)",
 	"View": "Widok",
@@ -117,5 +122,6 @@
 	"Zoom In": "Powiększ",
 	"Zoom Out": "Pomniejsz",
 	"keyboard shortcuts": "Skróty klawiszowe",
-	"script": "skrypt"
+	"script": "skrypt",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

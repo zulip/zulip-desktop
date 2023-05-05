@@ -19,6 +19,7 @@
 	"Back": "Indietro",
 	"Bounce dock on new private message": "Lampeggia icona sula barra alla ricezione di un nuovo messaggio privato",
 	"Change": "Modifica",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Cambia la lingua in Preferenze di Sistema → Tastiera → Testo → Ortografia.",
 	"Check for Updates": "Controlla aggiornamenti",
 	"Close": "Chiudi",
 	"Connect": "Connetti",
@@ -54,6 +55,7 @@
 	"Hard Reload": "Forza Ricarica",
 	"Help": "Aiuto",
 	"Help Center": "Centro di aiuto",
+	"Hide": "Nascondi",
 	"Hide Others": "Nascondi gli altri",
 	"Hide Zulip": "Hide Zulip",
 	"History": "Storico",
@@ -68,6 +70,7 @@
 	"Network": "Rete",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "O",
+	"On macOS, the OS spellchecker is used.": "Su macOS, è usato il correttore ortografico di sistema.",
 	"Organization URL": "URL dell'organizzazione",
 	"Organizations": "Organizzazioni",
 	"Paste": "Incolla",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "Salva",
 	"Select All": "Seleziona Tutto",
+	"Services": "Servizi",
 	"Settings": "Impostazioni",
 	"Shortcuts": "Scorciatoie",
 	"Show app icon in system tray": "Mostra icona applicazione nella barra di sistema",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "Abilita/Disabilita Icona nella Tray Bar",
 	"Tools": "Strumenti",
 	"Undo": "Annulla",
+	"Unhide": "Mostra",
 	"Upload": "Carica",
 	"Use system proxy settings (requires restart)": "Usa impostazioni proxy di sistema (richiede riavvio)",
 	"View": "Visualizza",
@@ -117,5 +122,6 @@
 	"Zoom In": "Ingrandisci",
 	"Zoom Out": "Riduci",
 	"keyboard shortcuts": "scorciatoie tastiera",
-	"script": "script"
+	"script": "script",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

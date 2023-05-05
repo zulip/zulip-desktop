@@ -19,6 +19,7 @@
 	"Back": "തിരികെ",
 	"Bounce dock on new private message": "പുതിയ സ്വകാര്യ സന്ദേശത്തിൽ ഡോക്ക് ബൗൺസ് ചെയ്യുക",
 	"Change": "മാറ്റുക",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Change the language from System Preferences → Keyboard → Text → Spelling.",
 	"Check for Updates": "അപ്‌ഡേറ്റുകൾക്കായി പരിശോധിക്കുക",
 	"Close": "അടയ്‌ക്കുക",
 	"Connect": "ബന്ധിപ്പിക്കുക",
@@ -54,6 +55,7 @@
 	"Hard Reload": "ഹാർഡ് റീലോഡ്",
 	"Help": "സഹായിക്കൂ",
 	"Help Center": "സഹായകേന്ദ്രം",
+	"Hide": "Hide",
 	"Hide Others": "Hide Others",
 	"Hide Zulip": "Hide Zulip",
 	"History": "ചരിത്രം",
@@ -68,6 +70,7 @@
 	"Network": "നെറ്റ്‌വർക്ക്",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "അഥവാ",
+	"On macOS, the OS spellchecker is used.": "On macOS, the OS spellchecker is used.",
 	"Organization URL": "ഓർ‌ഗനൈസേഷൻ‌ URL",
 	"Organizations": "ഓർഗനൈസേഷനുകൾ",
 	"Paste": "പേസ്റ്റ്",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "രക്ഷിക്കും",
 	"Select All": "എല്ലാം തിരഞ്ഞെടുക്കുക",
+	"Services": "Services",
 	"Settings": "ക്രമീകരണങ്ങൾ",
 	"Shortcuts": "കുറുക്കുവഴികൾ",
 	"Show app icon in system tray": "സിസ്റ്റം ട്രേയിൽ അപ്ലിക്കേഷൻ ഐക്കൺ കാണിക്കുക",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "ട്രേ ഐക്കൺ ടോഗിൾ ചെയ്യുക",
 	"Tools": "ഉപകരണങ്ങൾ",
 	"Undo": "പഴയപടിയാക്കുക",
+	"Unhide": "Unhide",
 	"Upload": "അപ്‌ലോഡുചെയ്യുക",
 	"Use system proxy settings (requires restart)": "സിസ്റ്റം പ്രോക്സി ക്രമീകരണങ്ങൾ ഉപയോഗിക്കുക (പുനരാരംഭിക്കേണ്ടതുണ്ട്)",
 	"View": "കാണുക",
@@ -117,5 +122,6 @@
 	"Zoom In": "വലുതാക്കുക",
 	"Zoom Out": "സൂം .ട്ട് ചെയ്യുക",
 	"keyboard shortcuts": "കീബോർഡ് കുറുക്കുവഴികൾ",
-	"script": "സ്ക്രിപ്റ്റ്"
+	"script": "സ്ക്രിപ്റ്റ്",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

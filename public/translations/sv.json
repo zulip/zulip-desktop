@@ -19,6 +19,7 @@
 	"Back": "Tillbaka",
 	"Bounce dock on new private message": "Animera dock för nytt privat meddelande",
 	"Change": "Ändra",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Change the language from System Preferences → Keyboard → Text → Spelling.",
 	"Check for Updates": "Leta efter uppdateringar",
 	"Close": "Stäng",
 	"Connect": "Anslut",
@@ -54,6 +55,7 @@
 	"Hard Reload": "Hård omstart",
 	"Help": "Hjälp",
 	"Help Center": "Hjälpcenter",
+	"Hide": "Hide",
 	"Hide Others": "Hide Others",
 	"Hide Zulip": "Hide Zulip",
 	"History": "Historia",
@@ -68,6 +70,7 @@
 	"Network": "Nätverk",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "ELLER",
+	"On macOS, the OS spellchecker is used.": "On macOS, the OS spellchecker is used.",
 	"Organization URL": "Organisations-URL",
 	"Organizations": "Organisationer",
 	"Paste": "Klistra in",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "Spara",
 	"Select All": "Markera alla",
+	"Services": "Services",
 	"Settings": "Inställningar",
 	"Shortcuts": "Genvägar",
 	"Show app icon in system tray": "Visa app-ikonen i systemfältet",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "Växla Fältikon",
 	"Tools": "Verktyg",
 	"Undo": "Ångra",
+	"Unhide": "Unhide",
 	"Upload": "Ladda upp",
 	"Use system proxy settings (requires restart)": "Använd systemets proxy-inställningar (omstart krävs)",
 	"View": "Vy",
@@ -117,5 +122,6 @@
 	"Zoom In": "Zooma in",
 	"Zoom Out": "Zooma Ut",
 	"keyboard shortcuts": "Tangentbordsgenvägar",
-	"script": "skript"
+	"script": "skript",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

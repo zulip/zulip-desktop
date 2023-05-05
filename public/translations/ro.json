@@ -19,6 +19,7 @@
 	"Back": "Inapoi",
 	"Bounce dock on new private message": "Sări dock-ul la un mesaj privat nou",
 	"Change": "Schimbă",
+	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Schimbă limba din Preferințe Sistem  → Tastatruă → Text → Ortografie.",
 	"Check for Updates": "Verifică pentru actualizări",
 	"Close": "Închide",
 	"Connect": "Conectează",
@@ -54,6 +55,7 @@
 	"Hard Reload": "Reîncărcare forțată",
 	"Help": "Ajutor",
 	"Help Center": "Centru de ajutor",
+	"Hide": "Ascunde",
 	"Hide Others": "Ascunde pe ceilalți",
 	"Hide Zulip": "Hide Zulip",
 	"History": "Istorie",
@@ -68,6 +70,7 @@
 	"Network": "Rețea",
 	"Network and Proxy Settings": "Network and Proxy Settings",
 	"OR": "SAU",
+	"On macOS, the OS spellchecker is used.": "Pe macOS, este folosita verificarea ortografică OS. ",
 	"Organization URL": "URL-ul organizației",
 	"Organizations": "Organizații",
 	"Paste": "Lipește",
@@ -86,6 +89,7 @@
 	"Reset the application, thus deleting all the connected organizations and accounts.": "Reset the application, thus deleting all the connected organizations and accounts.",
 	"Save": "Salvează",
 	"Select All": "Selectează Tot",
+	"Services": "Servicii",
 	"Settings": "Setări",
 	"Shortcuts": "Scurtături",
 	"Show app icon in system tray": "Arată iconița aplicației în zona de notificare",
@@ -106,6 +110,7 @@
 	"Toggle Tray Icon": "Comută Iconița din Tray",
 	"Tools": "Unelte",
 	"Undo": "Anulează",
+	"Unhide": "Arată",
 	"Upload": "Urcă",
 	"Use system proxy settings (requires restart)": "Folosește setările proxy de sistem (necesită restart)",
 	"View": "Vedere",
@@ -117,5 +122,6 @@
 	"Zoom In": "Marește",
 	"Zoom Out": "Micșorează",
 	"keyboard shortcuts": "scurtături tastatură",
-	"script": "script"
+	"script": "script",
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }
