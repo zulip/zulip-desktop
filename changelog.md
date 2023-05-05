@@ -660,7 +660,7 @@ electron-updater - `v2.21.8`
 
 - Some users wanted to change the look of the Zulip. Now you have the power. Feel free to add your own CSS using the all-new setting option **Add Custom CSS**
 
-- Added i18n locale helper script. Internalization is coming in the next release
+- Added i18n locale helper script. Internationalization is coming in the next release
 
 - Added **What's new** in `help` submenu so that you can see all the latest changes in the app
 
