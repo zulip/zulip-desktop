@@ -163,6 +163,7 @@ body {
   width: 35px;
   vertical-align: top;
   border-radius: 4px;
+  image-rendering: -webkit-optimize-contrast;
 }
 
 .tab .server-tab {
@@ -291,7 +292,7 @@ body {
   position: absolute;
   z-index: 1;
   background: rgb(255 255 255 / 100%) url("../img/ic_loading.gif") no-repeat;
-  background-size: 60px 60px;
+  background-size: 80px 80px;
   background-position: center;
   width: 100%;
   height: 100%;
@@ -389,12 +390,15 @@ webview.focus {
   top: 7px;
   right: 68px;
 }
+span#add-server-tooltip {
+  margin-left: 4px;
+}
 
 #add-server-tooltip,
 .server-tooltip {
   font-family: arial, sans-serif;
   background: rgb(34 44 49 / 100%);
-  left: 56px;
+  left: 60px;
   padding: 10px 20px;
   position: fixed;
   margin-top: 11px;
