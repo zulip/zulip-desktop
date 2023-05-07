@@ -15,6 +15,8 @@ export type ServerConf = {
   url: string;
   alias: string;
   icon: string;
+  zulipVersion: string;
+  zulipFeatureLevel: number;
 };
 
 export type TabRole = "server" | "function";

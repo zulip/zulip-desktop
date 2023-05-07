@@ -303,7 +303,7 @@ body {
   visibility: hidden;
 }
 
-webview,
+.webview-pane,
 .functional-view {
   position: absolute;
   width: 100%;
@@ -312,7 +312,16 @@ webview,
   visibility: hidden;
 }
 
-webview.active,
+.webview-pane {
+  display: flex;
+  flex-direction: column;
+}
+
+.webview-pane > webview {
+  flex: 1;
+}
+
+.webview-pane.active,
 .functional-view.active {
   z-index: 1;
   visibility: visible;
@@ -320,6 +329,30 @@ webview.active,
 
 webview.focus {
   outline: 0 solid transparent;
+}
+
+.webview-unsupported {
+  background: rgb(254 243 199);
+  border: 1px solid rgb(253 230 138);
+  color: rgb(69 26 3);
+  font-family: system-ui;
+  font-size: 14px;
+  display: flex;
+}
+
+.webview-unsupported[hidden] {
+  display: none;
+}
+
+.webview-unsupported-message {
+  padding: 0.3em;
+  flex: 1;
+  text-align: center;
+}
+
+.webview-unsupported-dismiss {
+  padding: 0.3em;
+  cursor: pointer;
 }
 
 /* Tooltip styling */

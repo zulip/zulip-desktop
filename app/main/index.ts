@@ -3,7 +3,6 @@ import type {IpcMainEvent, WebContents} from "electron/main";
 import {BrowserWindow, app, dialog, powerMonitor, session} from "electron/main";
 import {Buffer} from "node:buffer";
 import crypto from "node:crypto";
-import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
@@ -205,13 +204,6 @@ function createMainWindow(): BrowserWindow {
 
   configureSpellChecker();
   ipcMain.on("configure-spell-checker", configureSpellChecker);
-
-  ipcMain.on("get-injected-js", (event) => {
-    event.returnValue = fs.readFileSync(
-      path.join(bundlePath, "injected.js"),
-      "utf8",
-    );
-  });
 
   const clipboardSigKey = crypto.randomBytes(32);
 

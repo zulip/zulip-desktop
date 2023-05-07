@@ -11,9 +11,6 @@ i18n.configure({
 });
 
 /* Fetches the current appLocale from settings.json */
-const appLocale = ConfigUtil.getConfigItem("appLanguage", "en");
+i18n.setLocale(ConfigUtil.getConfigItem("appLanguage", "en") ?? "en");
 
-/* If no locale present in the json, en is set default */
-export function __(phrase: string): string {
-  return i18n.__({phrase, locale: appLocale ?? "en"});
-}
+export {__} from "i18n";

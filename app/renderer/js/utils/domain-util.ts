@@ -10,7 +10,9 @@ import {z} from "zod";
 import * as EnterpriseUtil from "../../../common/enterprise-util.js";
 import Logger from "../../../common/logger-util.js";
 import * as Messages from "../../../common/messages.js";
+import * as t from "../../../common/translation-util.js";
 import type {ServerConf} from "../../../common/types.js";
+import defaultIcon from "../../img/icon.png";
 import {ipcRenderer} from "../typed-ipc-renderer.js";
 
 const logger = new Logger({
@@ -22,9 +24,11 @@ const logger = new Logger({
 export const defaultIconSentinel = "../renderer/img/icon.png";
 
 const serverConfSchema = z.object({
-  url: z.string(),
+  url: z.string().url(),
   alias: z.string(),
   icon: z.string(),
+  zulipVersion: z.string().default("unknown"),
+  zulipFeatureLevel: z.number().default(0),
 });
 
 let db!: JsonDB;
@@ -140,9 +144,10 @@ export async function saveServerIcon(iconURL: string): Promise<string> {
 export async function updateSavedServer(
   url: string,
   index: number,
-): Promise<void> {
+): Promise<ServerConf> {
   // Does not promise successful update
-  const oldIcon = getDomain(index).icon;
+  const serverConf = getDomain(index);
+  const oldIcon = serverConf.icon;
   try {
     const newServerConf = await checkDomain(url, true);
     const localIconUrl = await saveServerIcon(newServerConf.icon);
@@ -151,10 +156,13 @@ export async function updateSavedServer(
       updateDomain(index, newServerConf);
       reloadDb();
     }
+
+    return newServerConf;
   } catch (error: unknown) {
     logger.log("Could not update server icon.");
     logger.log(error);
     Sentry.captureException(error);
+    return serverConf;
   }
 }
 
@@ -193,4 +201,29 @@ export function formatUrl(domain: string): string {
   }
 
   return `https://${domain}`;
+}
+
+export function getUnsupportedMessage(server: ServerConf): string | undefined {
+  if (server.zulipFeatureLevel < 65 /* Zulip Server 4.0 */) {
+    const realm = new URL(server.url).hostname;
+    return t.__(
+      "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.",
+      {server: realm, version: server.zulipVersion},
+    );
+  }
+
+  return undefined;
+}
+
+export function iconAsUrl(iconPath: string): string {
+  if (iconPath === defaultIconSentinel) return defaultIcon;
+
+  try {
+    return `data:application/octet-stream;base64,${fs.readFileSync(
+      iconPath,
+      "base64",
+    )}`;
+  } catch {
+    return defaultIcon;
+  }
 }

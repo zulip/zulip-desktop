@@ -8,6 +8,7 @@ import {ipcRenderer} from "./typed-ipc-renderer.js";
 
 type ListenerType = (...args: any[]) => void;
 
+/* eslint-disable @typescript-eslint/naming-convention */
 export type ElectronBridge = {
   send_event: (eventName: string | symbol, ...args: unknown[]) => boolean;
   on_event: (eventName: string, listener: ListenerType) => void;
@@ -22,6 +23,7 @@ export type ElectronBridge = {
   set_send_notification_reply_message_supported: (value: boolean) => void;
   decrypt_clipboard: (version: number) => ClipboardDecrypter;
 };
+/* eslint-enable @typescript-eslint/naming-convention */
 
 let notificationReplySupported = false;
 // Indicates if the user is idle or not

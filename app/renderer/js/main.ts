@@ -1,5 +1,4 @@
 import {clipboard} from "electron/common";
-import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import url from "node:url";
@@ -55,19 +54,6 @@ const rootWebContents = remote.getCurrentWebContents();
 const dingSound = new Audio(
   new URL("resources/sounds/ding.ogg", bundleUrl).href,
 );
-
-function iconAsUrl(iconPath: string): string {
-  if (iconPath === DomainUtil.defaultIconSentinel) return defaultIcon;
-
-  try {
-    return `data:application/octet-stream;base64,${fs.readFileSync(
-      iconPath,
-      "base64",
-    )}`;
-  } catch {
-    return defaultIcon;
-  }
-}
 
 export class ServerManagerView {
   $addServerButton: HTMLButtonElement;
@@ -337,7 +323,15 @@ export class ServerManagerView {
     const servers = DomainUtil.getDomains();
     if (servers.length > 0) {
       for (const [i, server] of servers.entries()) {
-        this.initServer(server, i);
+        const tab = this.initServer(server, i);
+        (async () => {
+          const serverConf = await DomainUtil.updateSavedServer(server.url, i);
+          tab.setName(serverConf.alias);
+          tab.setIcon(DomainUtil.iconAsUrl(serverConf.icon));
+          (await tab.webview).setUnsupportedMessage(
+            DomainUtil.getUnsupportedMessage(serverConf),
+          );
+        })();
       }
 
       // Open last active tab
@@ -346,11 +340,7 @@ export class ServerManagerView {
         lastActiveTab = 0;
       }
 
-      // `checkDomain()` and `webview.load()` for lastActiveTab before the others
-      await DomainUtil.updateSavedServer(
-        servers[lastActiveTab].url,
-        lastActiveTab,
-      );
+      // `webview.load()` for lastActiveTab before the others
       await this.activateTab(lastActiveTab);
       await Promise.all(
         servers.map(async (server, i) => {
@@ -360,7 +350,6 @@ export class ServerManagerView {
             return;
           }
 
-          await DomainUtil.updateSavedServer(server.url, i);
           const tab = this.tabs[i];
           if (tab instanceof ServerTab) (await tab.webview).load();
         }),
@@ -375,54 +364,54 @@ export class ServerManagerView {
     }
   }
 
-  initServer(server: ServerConf, index: number): void {
+  initServer(server: ServerConf, index: number): ServerTab {
     const tabIndex = this.getTabIndex();
-
-    this.tabs.push(
-      new ServerTab({
-        role: "server",
-        icon: iconAsUrl(server.icon),
-        name: server.alias,
-        $root: this.$tabsContainer,
-        onClick: this.activateLastTab.bind(this, index),
+    const tab = new ServerTab({
+      role: "server",
+      icon: DomainUtil.iconAsUrl(server.icon),
+      name: server.alias,
+      $root: this.$tabsContainer,
+      onClick: this.activateLastTab.bind(this, index),
+      index,
+      tabIndex,
+      onHover: this.onHover.bind(this, index),
+      onHoverOut: this.onHoverOut.bind(this, index),
+      webview: WebView.create({
+        $root: this.$webviewsContainer,
+        rootWebContents,
         index,
         tabIndex,
-        onHover: this.onHover.bind(this, index),
-        onHoverOut: this.onHoverOut.bind(this, index),
-        webview: WebView.create({
-          $root: this.$webviewsContainer,
-          rootWebContents,
-          index,
-          tabIndex,
-          url: server.url,
-          role: "server",
-          hasPermission: (origin: string, permission: string) =>
-            origin === server.url &&
-            permission === "notifications" &&
-            ConfigUtil.getConfigItem("showNotification", true),
-          isActive: () => index === this.activeTabIndex,
-          switchLoading: async (loading: boolean, url: string) => {
-            if (loading) {
-              this.loading.add(url);
-            } else {
-              this.loading.delete(url);
-            }
+        url: server.url,
+        role: "server",
+        hasPermission: (origin: string, permission: string) =>
+          origin === server.url &&
+          permission === "notifications" &&
+          ConfigUtil.getConfigItem("showNotification", true),
+        isActive: () => index === this.activeTabIndex,
+        switchLoading: async (loading: boolean, url: string) => {
+          if (loading) {
+            this.loading.add(url);
+          } else {
+            this.loading.delete(url);
+          }
 
-            const tab = this.tabs[this.activeTabIndex];
-            this.showLoading(
-              tab instanceof ServerTab &&
-                this.loading.has((await tab.webview).props.url),
-            );
-          },
-          onNetworkError: async (index: number) => {
-            await this.openNetworkTroubleshooting(index);
-          },
-          onTitleChange: this.updateBadge.bind(this),
-          preload: url.pathToFileURL(path.join(bundlePath, "preload.js")).href,
-        }),
+          const tab = this.tabs[this.activeTabIndex];
+          this.showLoading(
+            tab instanceof ServerTab &&
+              this.loading.has((await tab.webview).props.url),
+          );
+        },
+        onNetworkError: async (index: number) => {
+          await this.openNetworkTroubleshooting(index);
+        },
+        onTitleChange: this.updateBadge.bind(this),
+        preload: url.pathToFileURL(path.join(bundlePath, "preload.js")).href,
+        unsupportedMessage: DomainUtil.getUnsupportedMessage(server),
       }),
-    );
+    });
+    this.tabs.push(tab);
     this.loading.add(server.url);
+    return tab;
   }
 
   initActions(): void {
@@ -1060,14 +1049,9 @@ export class ServerManagerView {
       "update-realm-name",
       (event: Event, serverURL: string, realmName: string) => {
         for (const [index, domain] of DomainUtil.getDomains().entries()) {
-          if (domain.url.includes(serverURL)) {
-            const serverTooltipSelector = ".tab .server-tooltip";
-            const serverTooltips = document.querySelectorAll(
-              serverTooltipSelector,
-            );
-            serverTooltips[index].textContent = realmName;
-            this.tabs[index].props.name = realmName;
-
+          if (domain.url === serverURL) {
+            const tab = this.tabs[index];
+            if (tab instanceof ServerTab) tab.setName(realmName);
             domain.alias = realmName;
             DomainUtil.updateDomain(index, domain);
             // Update the realm name also on the Window menu
@@ -1085,12 +1069,11 @@ export class ServerManagerView {
       async (event: Event, serverURL: string, iconURL: string) => {
         await Promise.all(
           DomainUtil.getDomains().map(async (domain, index) => {
-            if (domain.url.includes(serverURL)) {
+            if (domain.url === serverURL) {
               const localIconPath = await DomainUtil.saveServerIcon(iconURL);
-              const serverImgsSelector = ".tab .server-icons";
-              const serverImgs: NodeListOf<HTMLImageElement> =
-                document.querySelectorAll(serverImgsSelector);
-              serverImgs[index].src = iconAsUrl(localIconPath);
+              const tab = this.tabs[index];
+              if (tab instanceof ServerTab)
+                tab.setIcon(DomainUtil.iconAsUrl(localIconPath));
               domain.icon = localIconPath;
               DomainUtil.updateDomain(index, domain);
             }
