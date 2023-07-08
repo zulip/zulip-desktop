@@ -1,4 +1,5 @@
 import {clipboard} from "electron/common";
+import type {Event} from "electron/main";
 import path from "node:path";
 import process from "node:process";
 import url from "node:url";

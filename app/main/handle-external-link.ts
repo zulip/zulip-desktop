@@ -1,5 +1,6 @@
 import {shell} from "electron/common";
 import type {
+  Event,
   HandlerDetails,
   SaveDialogOptions,
   WebContents,

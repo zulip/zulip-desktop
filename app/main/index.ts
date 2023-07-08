@@ -1,5 +1,5 @@
 import {clipboard} from "electron/common";
-import type {IpcMainEvent, WebContents} from "electron/main";
+import type {Event, IpcMainEvent, WebContents} from "electron/main";
 import {BrowserWindow, app, dialog, powerMonitor, session} from "electron/main";
 import {Buffer} from "node:buffer";
 import crypto from "node:crypto";

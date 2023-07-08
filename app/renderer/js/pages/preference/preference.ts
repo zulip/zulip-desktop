@@ -1,3 +1,4 @@
+import type {Event} from "electron/common";
 import process from "node:process";
 
 import type {DndSettings} from "../../../../common/dnd-util.js";
