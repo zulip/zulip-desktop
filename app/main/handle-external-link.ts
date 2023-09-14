@@ -1,5 +1,6 @@
 import {shell} from "electron/common";
 import type {
+  BrowserWindow,
   HandlerDetails,
   SaveDialogOptions,
   WebContents,
@@ -20,18 +21,21 @@ function isUploadsUrl(server: string, url: URL): boolean {
 function downloadFile({
   contents,
   url,
+  win,
   downloadPath,
   completed,
   failed,
 }: {
   contents: WebContents;
   url: string;
+  win: BrowserWindow;
   downloadPath: string;
   completed(filePath: string, fileName: string): Promise<void>;
   failed(state: string): void;
 }) {
   contents.downloadURL(url);
   contents.session.once("will-download", async (_event: Event, item) => {
+    const totalFileSize = item.getTotalBytes();
     if (ConfigUtil.getConfigItem("promptDownload", false)) {
       const showDialogOptions: SaveDialogOptions = {
         defaultPath: path.join(downloadPath, item.getFilename()),
@@ -59,6 +63,11 @@ function downloadFile({
       item.setSavePath(setFilePath);
     }
 
+    let currProgress = 0;
+    const progressInterval = setInterval(() => {
+      win.setProgressBar(currProgress / totalFileSize);
+    }, 1000);
+
     const updatedListener = (_event: Event, state: string): void => {
       switch (state) {
         case "interrupted": {
@@ -67,15 +76,18 @@ function downloadFile({
             "Download interrupted, cancelling and fallback to dialog download.",
           );
           item.cancel();
+          win.setProgressBar(-1);
           break;
         }
 
         case "progressing": {
           if (item.isPaused()) {
             item.cancel();
+            win.setProgressBar(-1);
+            break;
           }
 
-          // This event can also be used to show progress in percentage in future.
+          currProgress = item.getReceivedBytes();
           break;
         }
 
@@ -89,11 +101,16 @@ function downloadFile({
     item.once("done", async (_event: Event, state) => {
       if (state === "completed") {
         await completed(item.getSavePath(), path.basename(item.getSavePath()));
+        win.setProgressBar(1);
       } else {
+        win.setProgressBar(-1);
+        clearInterval(progressInterval);
         console.log("Download failed state:", state);
+
         failed(state);
       }
 
+      clearInterval(progressInterval);
       // To stop item for listening to updated events of this file
       item.removeListener("updated", updatedListener);
     });
@@ -104,6 +121,7 @@ export default function handleExternalLink(
   contents: WebContents,
   details: HandlerDetails,
   mainContents: WebContents,
+  win: BrowserWindow,
 ): void {
   let url: URL;
   try {
@@ -121,6 +139,7 @@ export default function handleExternalLink(
     downloadFile({
       contents,
       url: url.href,
+      win,
       downloadPath,
       async completed(filePath: string, fileName: string) {
         const downloadNotification = new Notification({
@@ -128,12 +147,16 @@ export default function handleExternalLink(
           body: `Click to show ${fileName} in folder`,
           silent: true, // We'll play our own sound - ding.ogg
         });
+        shell.showItemInFolder(filePath);
         downloadNotification.on("click", () => {
           // Reveal file in download folder
           shell.showItemInFolder(filePath);
         });
         downloadNotification.show();
-
+        setTimeout(() => {
+          downloadNotification.close();
+          win.setProgressBar(-1);
+        }, 3000);
         // Play sound to indicate download complete
         if (!ConfigUtil.getConfigItem("silent", false)) {
           send(mainContents, "play-ding-sound");
