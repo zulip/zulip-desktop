@@ -973,10 +973,7 @@ export class ServerManagerView {
       await LinkUtil.openBrowser(new URL("https://zulip.com/help/"));
     });
 
-    ipcRenderer.on(
-      "reload-viewer",
-      this.reloadView.bind(this, this.tabs[this.activeTabIndex].props.index),
-    );
+    ipcRenderer.on("reload-viewer", this.reloadView.bind(this));
 
     ipcRenderer.on("reload-current-viewer", this.reloadCurrentView.bind(this));
 
