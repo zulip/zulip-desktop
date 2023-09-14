@@ -1,3 +1,4 @@
+import type {IpcRendererEvent} from "electron/renderer";
 import process from "node:process";
 
 import type {DndSettings} from "../../../../common/dnd-util.js";
@@ -115,16 +116,22 @@ export class PreferenceView {
     }
   }
 
-  private readonly handleToggleSidebar = (_event: Event, state: boolean) => {
+  private readonly handleToggleSidebar = (
+    _event: IpcRendererEvent,
+    state: boolean,
+  ) => {
     this.handleToggle("sidebar-option", state);
   };
 
-  private readonly handleToggleMenubar = (_event: Event, state: boolean) => {
+  private readonly handleToggleMenubar = (
+    _event: IpcRendererEvent,
+    state: boolean,
+  ) => {
     this.handleToggle("menubar-option", state);
   };
 
   private readonly handleToggleDnd = (
-    _event: Event,
+    _event: IpcRendererEvent,
     _state: boolean,
     newSettings: Partial<DndSettings>,
   ) => {

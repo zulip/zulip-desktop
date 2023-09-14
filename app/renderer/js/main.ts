@@ -924,7 +924,7 @@ export class ServerManagerView {
     ipcRenderer.on(
       "permission-request",
       async (
-        event: Event,
+        event,
         {
           webContentsId,
           origin,
@@ -981,7 +981,7 @@ export class ServerManagerView {
       ipcRenderer.send("reload-full-app");
     });
 
-    ipcRenderer.on("switch-server-tab", async (event: Event, index: number) => {
+    ipcRenderer.on("switch-server-tab", async (event, index: number) => {
       await this.activateLastTab(index);
     });
 
@@ -989,7 +989,7 @@ export class ServerManagerView {
       await this.openSettings("AddServer");
     });
 
-    ipcRenderer.on("reload-proxy", async (event: Event, showAlert: boolean) => {
+    ipcRenderer.on("reload-proxy", async (event, showAlert: boolean) => {
       await this.loadProxy();
       if (showAlert) {
         await dialog.showMessageBox({
@@ -1000,12 +1000,12 @@ export class ServerManagerView {
       }
     });
 
-    ipcRenderer.on("toggle-sidebar", async (event: Event, show: boolean) => {
+    ipcRenderer.on("toggle-sidebar", async (event, show: boolean) => {
       // Toggle the left sidebar
       this.toggleSidebar(show);
     });
 
-    ipcRenderer.on("toggle-silent", async (event: Event, state: boolean) =>
+    ipcRenderer.on("toggle-silent", async (event, state: boolean) =>
       Promise.all(
         this.tabs.map(async (tab) => {
           if (tab instanceof ServerTab)
@@ -1016,7 +1016,7 @@ export class ServerManagerView {
 
     ipcRenderer.on(
       "toggle-autohide-menubar",
-      async (event: Event, autoHideMenubar: boolean, updateMenu: boolean) => {
+      async (event, autoHideMenubar: boolean, updateMenu: boolean) => {
         if (updateMenu) {
           ipcRenderer.send("update-menu", {
             tabs: this.tabsForIpc,
@@ -1028,11 +1028,7 @@ export class ServerManagerView {
 
     ipcRenderer.on(
       "toggle-dnd",
-      async (
-        event: Event,
-        state: boolean,
-        newSettings: Partial<DndSettings>,
-      ) => {
+      async (event, state: boolean, newSettings: Partial<DndSettings>) => {
         this.toggleDndButton(state);
         ipcRenderer.send(
           "forward-message",
@@ -1044,7 +1040,7 @@ export class ServerManagerView {
 
     ipcRenderer.on(
       "update-realm-name",
-      (event: Event, serverURL: string, realmName: string) => {
+      (event, serverURL: string, realmName: string) => {
         for (const [index, domain] of DomainUtil.getDomains().entries()) {
           if (domain.url === serverURL) {
             const tab = this.tabs[index];
@@ -1063,7 +1059,7 @@ export class ServerManagerView {
 
     ipcRenderer.on(
       "update-realm-icon",
-      async (event: Event, serverURL: string, iconURL: string) => {
+      async (event, serverURL: string, iconURL: string) => {
         await Promise.all(
           DomainUtil.getDomains().map(async (domain, index) => {
             if (domain.url === serverURL) {
@@ -1088,61 +1084,56 @@ export class ServerManagerView {
       this.$fullscreenPopup.classList.remove("show");
     });
 
-    ipcRenderer.on(
-      "focus-webview-with-id",
-      async (event: Event, webviewId: number) =>
-        Promise.all(
-          this.tabs.map(async (tab) => {
-            if (
-              tab instanceof ServerTab &&
-              (await tab.webview).webContentsId === webviewId
-            ) {
-              const concurrentTab: HTMLButtonElement = document.querySelector(
-                `div[data-tab-id="${CSS.escape(`${tab.props.tabIndex}`)}"]`,
-              )!;
-              concurrentTab.click();
-            }
-          }),
-        ),
+    ipcRenderer.on("focus-webview-with-id", async (event, webviewId: number) =>
+      Promise.all(
+        this.tabs.map(async (tab) => {
+          if (
+            tab instanceof ServerTab &&
+            (await tab.webview).webContentsId === webviewId
+          ) {
+            const concurrentTab: HTMLButtonElement = document.querySelector(
+              `div[data-tab-id="${CSS.escape(`${tab.props.tabIndex}`)}"]`,
+            )!;
+            concurrentTab.click();
+          }
+        }),
+      ),
     );
 
-    ipcRenderer.on(
-      "render-taskbar-icon",
-      (event: Event, messageCount: number) => {
-        // Create a canvas from unread message counts
-        function createOverlayIcon(messageCount: number): HTMLCanvasElement {
-          const canvas = document.createElement("canvas");
-          canvas.height = 128;
-          canvas.width = 128;
-          canvas.style.letterSpacing = "-5px";
-          const ctx = canvas.getContext("2d")!;
-          ctx.fillStyle = "#f42020";
-          ctx.beginPath();
-          ctx.ellipse(64, 64, 64, 64, 0, 0, 2 * Math.PI);
-          ctx.fill();
-          ctx.textAlign = "center";
-          ctx.fillStyle = "white";
-          if (messageCount > 99) {
-            ctx.font = "65px Helvetica";
-            ctx.fillText("99+", 64, 85);
-          } else if (messageCount < 10) {
-            ctx.font = "90px Helvetica";
-            ctx.fillText(String(Math.min(99, messageCount)), 64, 96);
-          } else {
-            ctx.font = "85px Helvetica";
-            ctx.fillText(String(Math.min(99, messageCount)), 64, 90);
-          }
-
-          return canvas;
+    ipcRenderer.on("render-taskbar-icon", (event, messageCount: number) => {
+      // Create a canvas from unread message counts
+      function createOverlayIcon(messageCount: number): HTMLCanvasElement {
+        const canvas = document.createElement("canvas");
+        canvas.height = 128;
+        canvas.width = 128;
+        canvas.style.letterSpacing = "-5px";
+        const ctx = canvas.getContext("2d")!;
+        ctx.fillStyle = "#f42020";
+        ctx.beginPath();
+        ctx.ellipse(64, 64, 64, 64, 0, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.textAlign = "center";
+        ctx.fillStyle = "white";
+        if (messageCount > 99) {
+          ctx.font = "65px Helvetica";
+          ctx.fillText("99+", 64, 85);
+        } else if (messageCount < 10) {
+          ctx.font = "90px Helvetica";
+          ctx.fillText(String(Math.min(99, messageCount)), 64, 96);
+        } else {
+          ctx.font = "85px Helvetica";
+          ctx.fillText(String(Math.min(99, messageCount)), 64, 90);
         }
 
-        ipcRenderer.send(
-          "update-taskbar-icon",
-          createOverlayIcon(messageCount).toDataURL(),
-          String(messageCount),
-        );
-      },
-    );
+        return canvas;
+      }
+
+      ipcRenderer.send(
+        "update-taskbar-icon",
+        createOverlayIcon(messageCount).toDataURL(),
+        String(messageCount),
+      );
+    });
 
     ipcRenderer.on("copy-zulip-url", async () => {
       clipboard.writeText(await this.getCurrentActiveServer());

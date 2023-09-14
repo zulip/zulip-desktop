@@ -1,3 +1,4 @@
+import type {Event} from "electron/common";
 import {clipboard} from "electron/common";
 import type {IpcMainEvent, WebContents} from "electron/main";
 import {BrowserWindow, app, dialog, powerMonitor, session} from "electron/main";
@@ -170,7 +171,7 @@ function createMainWindow(): BrowserWindow {
 
   ipcMain.on(
     "permission-callback",
-    (event: Event, permissionCallbackId: number, grant: boolean) => {
+    (event, permissionCallbackId: number, grant: boolean) => {
       permissionCallbacks.get(permissionCallbackId)?.(grant);
       permissionCallbacks.delete(permissionCallbackId);
     },
@@ -181,7 +182,7 @@ function createMainWindow(): BrowserWindow {
     mainWindow.show();
   });
 
-  app.on("web-contents-created", (_event: Event, contents: WebContents) => {
+  app.on("web-contents-created", (_event, contents: WebContents) => {
     contents.setWindowOpenHandler((details) => {
       handleExternalLink(contents, details, page);
       return {action: "deny"};
@@ -361,24 +362,21 @@ ${error}`,
     BadgeSettings.updateBadge(badgeCount, mainWindow);
   });
 
-  ipcMain.on("toggle-menubar", (_event: IpcMainEvent, showMenubar: boolean) => {
+  ipcMain.on("toggle-menubar", (_event, showMenubar: boolean) => {
     mainWindow.autoHideMenuBar = showMenubar;
     mainWindow.setMenuBarVisibility(!showMenubar);
     send(page, "toggle-autohide-menubar", showMenubar, true);
   });
 
-  ipcMain.on("update-badge", (_event: IpcMainEvent, messageCount: number) => {
+  ipcMain.on("update-badge", (_event, messageCount: number) => {
     badgeCount = messageCount;
     BadgeSettings.updateBadge(badgeCount, mainWindow);
     send(page, "tray", messageCount);
   });
 
-  ipcMain.on(
-    "update-taskbar-icon",
-    (_event: IpcMainEvent, data: string, text: string) => {
-      BadgeSettings.updateTaskbarIcon(data, text, mainWindow);
-    },
-  );
+  ipcMain.on("update-taskbar-icon", (_event, data: string, text: string) => {
+    BadgeSettings.updateTaskbarIcon(data, text, mainWindow);
+  });
 
   ipcMain.on(
     "forward-message",
@@ -391,7 +389,7 @@ ${error}`,
     },
   );
 
-  ipcMain.on("update-menu", (_event: IpcMainEvent, props: MenuProps) => {
+  ipcMain.on("update-menu", (_event, props: MenuProps) => {
     AppMenu.setMenu(props);
     if (props.activeTabIndex !== undefined) {
       const activeTab = props.tabs[props.activeTabIndex];
@@ -399,32 +397,29 @@ ${error}`,
     }
   });
 
-  ipcMain.on(
-    "toggleAutoLauncher",
-    async (_event: IpcMainEvent, AutoLaunchValue: boolean) => {
-      await setAutoLaunch(AutoLaunchValue);
-    },
-  );
+  ipcMain.on("toggleAutoLauncher", async (_event, AutoLaunchValue: boolean) => {
+    await setAutoLaunch(AutoLaunchValue);
+  });
 
   ipcMain.on(
     "realm-name-changed",
-    (_event: IpcMainEvent, serverURL: string, realmName: string) => {
+    (_event, serverURL: string, realmName: string) => {
       send(page, "update-realm-name", serverURL, realmName);
     },
   );
 
   ipcMain.on(
     "realm-icon-changed",
-    (_event: IpcMainEvent, serverURL: string, iconURL: string) => {
+    (_event, serverURL: string, iconURL: string) => {
       send(page, "update-realm-icon", serverURL, iconURL);
     },
   );
 
-  ipcMain.on("save-last-tab", (_event: IpcMainEvent, index: number) => {
+  ipcMain.on("save-last-tab", (_event, index: number) => {
     ConfigUtil.setConfigItem("lastActiveTab", index);
   });
 
-  ipcMain.on("focus-this-webview", (event: IpcMainEvent) => {
+  ipcMain.on("focus-this-webview", (event) => {
     send(page, "focus-webview-with-id", event.sender.id);
     mainWindow.show();
   });

@@ -1,3 +1,4 @@
+import type {Event} from "electron/common";
 import {shell} from "electron/common";
 import type {
   HandlerDetails,
@@ -31,7 +32,7 @@ function downloadFile({
   failed(state: string): void;
 }) {
   contents.downloadURL(url);
-  contents.session.once("will-download", async (_event: Event, item) => {
+  contents.session.once("will-download", async (_event, item) => {
     if (ConfigUtil.getConfigItem("promptDownload", false)) {
       const showDialogOptions: SaveDialogOptions = {
         defaultPath: path.join(downloadPath, item.getFilename()),
@@ -86,7 +87,7 @@ function downloadFile({
     };
 
     item.on("updated", updatedListener);
-    item.once("done", async (_event: Event, state) => {
+    item.once("done", async (_event, state) => {
       if (state === "completed") {
         await completed(item.getSavePath(), path.basename(item.getSavePath()));
       } else {
