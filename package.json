@@ -159,7 +159,7 @@
     "adm-zip": "^0.5.5",
     "auto-launch": "^5.0.5",
     "backoff": "^2.5.0",
-    "electron": "^26.2.1",
+    "electron": "^25.8.1",
     "electron-builder": "^24.6.4",
     "electron-log": "^4.3.5",
     "electron-updater": "^6.1.4",
