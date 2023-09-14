@@ -1,7 +1,6 @@
 import type {Session} from "electron/main";
-import {Notification, app, net} from "electron/main";
+import {Notification, app} from "electron/main";
 
-import getStream from "get-stream";
 import * as semver from "semver";
 import {z} from "zod";
 
@@ -9,7 +8,6 @@ import * as ConfigUtil from "../common/config-util.js";
 import Logger from "../common/logger-util.js";
 
 import * as LinuxUpdateUtil from "./linux-update-util.js";
-import {fetchResponse} from "./request.js";
 
 const logger = new Logger({
   file: "linux-update-util.log",
@@ -20,13 +18,13 @@ export async function linuxUpdateNotification(session: Session): Promise<void> {
   url = ConfigUtil.getConfigItem("betaUpdate", false) ? url : url + "/latest";
 
   try {
-    const response = await fetchResponse(net.request({url, session}));
-    if (response.statusCode !== 200) {
-      logger.log("Linux update response status: ", response.statusCode);
+    const response = await session.fetch(url);
+    if (!response.ok) {
+      logger.log("Linux update response status: ", response.status);
       return;
     }
 
-    const data: unknown = JSON.parse(await getStream(response));
+    const data: unknown = await response.json();
     /* eslint-disable @typescript-eslint/naming-convention */
     const latestVersion = ConfigUtil.getConfigItem("betaUpdate", false)
       ? z.array(z.object({tag_name: z.string()})).parse(data)[0].tag_name
