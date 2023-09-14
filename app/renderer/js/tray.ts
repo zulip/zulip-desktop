@@ -176,7 +176,7 @@ const createTray = function (): void {
 };
 
 export function initializeTray(serverManagerView: ServerManagerView) {
-  ipcRenderer.on("destroytray", (_event: Event) => {
+  ipcRenderer.on("destroytray", () => {
     if (!tray) {
       return;
     }
@@ -189,7 +189,7 @@ export function initializeTray(serverManagerView: ServerManagerView) {
     }
   });
 
-  ipcRenderer.on("tray", (_event: Event, arg: number): void => {
+  ipcRenderer.on("tray", (_event, arg: number): void => {
     if (!tray) {
       return;
     }
