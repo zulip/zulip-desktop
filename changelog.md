@@ -2,6 +2,12 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.10.2 --2023-09-14
+
+**Dependencies**:
+
+- Downgraded Electron to 25.8.1 to avoid a renderer process crash on Linux.
+
 ### v5.10.1 --2023-09-13
 
 **Dependencies**:
