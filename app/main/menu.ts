@@ -66,7 +66,7 @@ function getToolsSubmenu(): MenuItemConstructorOptions[] {
       click() {
         const zip = new AdmZip();
         const date = new Date();
-        const dateString = date.toLocaleDateString().replace(/\//g, "-");
+        const dateString = date.toLocaleDateString().replaceAll("/", "-");
 
         // Create a zip file of all the logs and config data
         zip.addLocalFolder(`${app.getPath("appData")}/${appName}/Logs`);
