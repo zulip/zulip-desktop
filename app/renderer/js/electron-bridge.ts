@@ -31,7 +31,7 @@ let idle = false;
 // Indicates the time at which user was last active
 let lastActive = Date.now();
 
-export const bridgeEvents = new EventEmitter();
+export const bridgeEvents = new EventEmitter(); // eslint-disable-line unicorn/prefer-event-target
 
 /* eslint-disable @typescript-eslint/naming-convention */
 const electron_bridge: ElectronBridge = {
