@@ -460,9 +460,8 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
       filters: [{name: "CSS file", extensions: ["css"]}],
     };
 
-    const {filePaths, canceled} = await dialog.showOpenDialog(
-      showDialogOptions,
-    );
+    const {filePaths, canceled} =
+      await dialog.showOpenDialog(showDialogOptions);
     if (!canceled) {
       ConfigUtil.setConfigItem("customCSS", filePaths[0]);
       ipcRenderer.send("forward-message", "hard-reload");
@@ -529,9 +528,8 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
       properties: ["openDirectory"],
     };
 
-    const {filePaths, canceled} = await dialog.showOpenDialog(
-      showDialogOptions,
-    );
+    const {filePaths, canceled} =
+      await dialog.showOpenDialog(showDialogOptions);
     if (!canceled) {
       ConfigUtil.setConfigItem("downloadsPath", filePaths[0]);
       const downloadFolderPath: HTMLElement = $root.querySelector(

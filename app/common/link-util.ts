@@ -16,7 +16,7 @@ export async function openBrowser(url: URL): Promise<void> {
     fs.writeFileSync(
       file,
       html`
-        <!DOCTYPE html>
+        <!doctype html>
         <html>
           <head>
             <meta charset="UTF-8" />
