@@ -173,7 +173,7 @@
     "node-json-db": "^1.3.0",
     "playwright-core": "^1.30.0-alpha-jan-3-2023",
     "pre-commit": "^1.2.2",
-    "prettier": "^2.3.2",
+    "prettier": "^3.0.3",
     "rimraf": "^5.0.0",
     "semver": "^7.3.5",
     "stylelint": "^15.6.1",
@@ -182,7 +182,7 @@
     "typescript": "^5.0.4",
     "vite": "^4.1.1",
     "vite-plugin-electron": "^0.11.1",
-    "xo": "^0.54.2",
+    "xo": "^0.56.0",
     "zod": "^3.5.1"
   },
   "prettier": {

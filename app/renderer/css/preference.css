@@ -307,7 +307,9 @@ img.server-info-icon {
 }
 
 .settings-card:hover {
-  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 0 0 rgb(0 0 0 / 12%);
+  box-shadow:
+    0 2px 5px 0 rgb(0 0 0 / 16%),
+    0 2px 0 0 rgb(0 0 0 / 12%);
 }
 
 .hidden {
