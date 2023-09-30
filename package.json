@@ -143,7 +143,7 @@
     "InstantMessaging"
   ],
   "dependencies": {
-    "gatemaker": "^1.0.0"
+    "gatemaker": "https://github.com/andersk/gatemaker/archive/d31890ae1cb293faabcb1e4e465c673458f6eed2.tar.gz"
   },
   "devDependencies": {
     "@electron/remote": "^2.0.8",
