@@ -2,6 +2,16 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.10.3 --2023-09-30
+
+**Fixes**:
+
+- Fixed an error in the third-party `gatemaker` library that broke the display of notifications for completed downloads.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 25.8.4.
+
 ### v5.10.2 --2023-09-14
 
 **Dependencies**:
