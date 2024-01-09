@@ -1,7 +1,14 @@
 import type {Event} from "electron/common";
 import {clipboard} from "electron/common";
 import type {IpcMainEvent, WebContents} from "electron/main";
-import {BrowserWindow, app, dialog, powerMonitor, session} from "electron/main";
+import {
+  BrowserWindow,
+  app,
+  dialog,
+  powerMonitor,
+  session,
+  webContents,
+} from "electron/main";
 import {Buffer} from "node:buffer";
 import crypto from "node:crypto";
 import path from "node:path";
@@ -386,6 +393,21 @@ ${error}`,
       ...parameters: Parameters<RendererMessage[Channel]>
     ) => {
       send(page, listener, ...parameters);
+    },
+  );
+
+  ipcMain.on(
+    "forward-to",
+    <Channel extends keyof RendererMessage>(
+      _event: IpcMainEvent,
+      webContentsId: number,
+      listener: Channel,
+      ...parameters: Parameters<RendererMessage[Channel]>
+    ) => {
+      const contents = webContents.fromId(webContentsId);
+      if (contents !== undefined) {
+        send(contents, listener, ...parameters);
+      }
     },
   );
 
