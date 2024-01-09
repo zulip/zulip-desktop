@@ -156,12 +156,12 @@ export class ServerManagerView {
       ConfigUtil.getConfigItem("useSystemProxy", false)
         ? {mode: "system"}
         : ConfigUtil.getConfigItem("useManualProxy", false)
-        ? {
-            pacScript: ConfigUtil.getConfigItem("proxyPAC", ""),
-            proxyRules: ConfigUtil.getConfigItem("proxyRules", ""),
-            proxyBypassRules: ConfigUtil.getConfigItem("proxyBypass", ""),
-          }
-        : {mode: "direct"},
+          ? {
+              pacScript: ConfigUtil.getConfigItem("proxyPAC", ""),
+              proxyRules: ConfigUtil.getConfigItem("proxyRules", ""),
+              proxyBypassRules: ConfigUtil.getConfigItem("proxyBypass", ""),
+            }
+          : {mode: "direct"},
     );
   }
 
