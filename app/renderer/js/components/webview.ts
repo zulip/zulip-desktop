@@ -226,7 +226,7 @@ export default class WebView {
     channel: Channel,
     ...args: Parameters<RendererMessage[Channel]>
   ): void {
-    ipcRenderer.sendTo(this.webContentsId, channel, ...args);
+    ipcRenderer.send("forward-to", this.webContentsId, channel, ...args);
   }
 
   private registerListeners(): void {

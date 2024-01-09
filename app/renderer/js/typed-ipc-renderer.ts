@@ -37,6 +37,12 @@ export const ipcRenderer: {
     rendererChannel: Channel,
     ...args: Parameters<RendererMessage[Channel]>
   ): void;
+  send<Channel extends keyof RendererMessage>(
+    channel: "forward-to",
+    webContentsId: number,
+    rendererChannel: Channel,
+    ...args: Parameters<RendererMessage[Channel]>
+  ): void;
   send<Channel extends keyof MainMessage>(
     channel: Channel,
     ...args: Parameters<MainMessage[Channel]>
@@ -55,11 +61,6 @@ export const ipcRenderer: {
       ? Message
       : never,
     transfer?: MessagePort[],
-  ): void;
-  sendTo<Channel extends keyof RendererMessage>(
-    webContentsId: number,
-    channel: Channel,
-    ...args: Parameters<RendererMessage[Channel]>
   ): void;
   sendToHost<Channel extends keyof RendererMessage>(
     channel: Channel,

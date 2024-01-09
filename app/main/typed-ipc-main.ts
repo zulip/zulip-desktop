@@ -33,6 +33,15 @@ export const ipcMain: {
       ...args: Parameters<RendererMessage[Channel]>
     ) => void,
   ): void;
+  on(
+    channel: "forward-to",
+    listener: <Channel extends keyof RendererMessage>(
+      event: IpcMainEvent,
+      webContentsId: number,
+      channel: Channel,
+      ...args: Parameters<RendererMessage[Channel]>
+    ) => void,
+  ): void;
   on<Channel extends keyof MainMessage>(
     channel: Channel,
     listener: MainListener<Channel>,

@@ -356,7 +356,8 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
         const newValue = !ConfigUtil.getConfigItem("silent", true);
         ConfigUtil.setConfigItem("silent", newValue);
         updateSilentOption();
-        ipcRenderer.sendTo(
+        ipcRenderer.send(
+          "forward-to",
           currentBrowserWindow.webContents.id,
           "toggle-silent",
           newValue,

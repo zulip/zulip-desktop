@@ -138,7 +138,7 @@ function sendAction<Channel extends keyof RendererMessage>(
     win.restore();
   }
 
-  ipcRenderer.sendTo(win.webContents.id, channel, ...args);
+  ipcRenderer.send("forward-to", win.webContents.id, channel, ...args);
 }
 
 const createTray = function (): void {
