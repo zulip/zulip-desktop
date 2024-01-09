@@ -5,26 +5,12 @@ import * as path from "node:path";
 import {defineConfig} from "vite";
 import electron from "vite-plugin-electron";
 
-let resolvePreload: () => void;
-let resolveRenderer: () => void;
-const whenPreload = new Promise<void>((resolve) => {
-  resolvePreload = resolve;
-});
-const whenRenderer = new Promise<void>((resolve) => {
-  resolveRenderer = resolve;
-});
-
 export default defineConfig({
   plugins: [
     electron([
       {
         entry: {
           index: "app/main",
-        },
-        async onstart({startup}) {
-          await whenPreload;
-          await whenRenderer;
-          await startup();
         },
         vite: {
           build: {
@@ -48,9 +34,6 @@ export default defineConfig({
         entry: {
           preload: "app/renderer/js/preload.ts",
         },
-        onstart() {
-          resolvePreload();
-        },
         vite: {
           build: {
             sourcemap: "inline",
@@ -63,9 +46,6 @@ export default defineConfig({
       {
         entry: {
           renderer: "app/renderer/js/main.ts",
-        },
-        onstart() {
-          resolveRenderer();
         },
         vite: {
           build: {

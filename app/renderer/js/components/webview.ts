@@ -10,7 +10,7 @@ import type {Html} from "../../../common/html.js";
 import {html} from "../../../common/html.js";
 import type {RendererMessage} from "../../../common/typed-ipc.js";
 import type {TabRole} from "../../../common/types.js";
-import preloadCss from "../../css/preload.css?raw"; // eslint-disable-line n/file-extension-in-import
+import preloadCss from "../../css/preload.css?raw";
 import {ipcRenderer} from "../typed-ipc-renderer.js";
 import * as SystemUtil from "../utils/system-util.js";
 
