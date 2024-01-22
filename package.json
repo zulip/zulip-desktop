@@ -261,6 +261,10 @@
                 "ipcRenderer"
               ],
               "message": "Use typed-ipc-renderer."
+            },
+            {
+              "name": "electron-log",
+              "message": "Use electron-log/main or electron-log/renderer."
             }
           ]
         }
