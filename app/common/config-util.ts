@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import * as Sentry from "@sentry/electron";
+import * as Sentry from "@sentry/core";
 import {JsonDB} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors";
 import type {z} from "zod";

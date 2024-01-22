@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import {app, dialog} from "@electron/remote";
-import * as Sentry from "@sentry/electron";
+import * as Sentry from "@sentry/electron/renderer";
 import {JsonDB} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors";
 import {z} from "zod";

@@ -6,7 +6,7 @@ import {Readable} from "node:stream";
 import {pipeline} from "node:stream/promises";
 import type {ReadableStream} from "node:stream/web";
 
-import * as Sentry from "@sentry/electron";
+import * as Sentry from "@sentry/electron/main";
 import {z} from "zod";
 
 import Logger from "../common/logger-util.js";
