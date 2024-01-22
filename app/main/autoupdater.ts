@@ -31,9 +31,10 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
   let updateAvailable = false;
 
   // Log what's happening
-  log.transports.file.fileName = "updates.log";
-  log.transports.file.level = "info";
-  autoUpdater.logger = log;
+  const updateLogger = log.create({logId: "updates"});
+  updateLogger.transports.file.fileName = "updates.log";
+  updateLogger.transports.file.level = "info";
+  autoUpdater.logger = updateLogger;
 
   // Handle auto updates for beta/pre releases
   const isBetaUpdate = ConfigUtil.getConfigItem("betaUpdate", false);
