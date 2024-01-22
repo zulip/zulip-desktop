@@ -2,7 +2,7 @@ import {shell} from "electron/common";
 import {app, dialog, session} from "electron/main";
 import process from "node:process";
 
-import log from "electron-log";
+import log from "electron-log/main";
 import type {UpdateDownloadedEvent, UpdateInfo} from "electron-updater";
 import {autoUpdater} from "electron-updater";
 
