@@ -5,7 +5,7 @@ import url from "node:url";
 
 import {Menu, app, dialog, session} from "@electron/remote";
 import * as remote from "@electron/remote";
-import * as Sentry from "@sentry/electron";
+import * as Sentry from "@sentry/electron/renderer";
 
 import type {Config} from "../../common/config-util.js";
 import * as ConfigUtil from "../../common/config-util.js";
