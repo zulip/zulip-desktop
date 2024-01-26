@@ -2,6 +2,16 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.10.5 --2024-01-25
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 28.2.0.
+
+**Enhancements**:
+
+- Improved security hardening by setting a Content-Security-Policy for the app UI.
+
 ### v5.10.4 --2024-01-09
 
 **Dependencies**:
