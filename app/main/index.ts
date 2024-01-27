@@ -110,7 +110,14 @@ function createMainWindow(): BrowserWindow {
       event.preventDefault();
 
       if (process.platform === "darwin") {
-        app.hide();
+        if (win.isFullScreen()) {
+          win.setFullScreen(false);
+          win.once("leave-full-screen", () => {
+            app.hide();
+          });
+        } else {
+          app.hide();
+        }
       } else {
         win.hide();
       }
