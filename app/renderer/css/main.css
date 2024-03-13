@@ -419,6 +419,10 @@ webview.focus {
   left: -5px;
 }
 
+.sortable-chosen .server-tooltip {
+  display: none;
+}
+
 #collapse-button {
   bottom: 30px;
   left: 20px;

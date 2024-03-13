@@ -143,7 +143,9 @@
     "InstantMessaging"
   ],
   "dependencies": {
-    "gatemaker": "https://github.com/andersk/gatemaker/archive/d31890ae1cb293faabcb1e4e465c673458f6eed2.tar.gz"
+    "@types/sortablejs": "^1.15.8",
+    "gatemaker": "https://github.com/andersk/gatemaker/archive/d31890ae1cb293faabcb1e4e465c673458f6eed2.tar.gz",
+    "sortablejs": "^1.15.2"
   },
   "devDependencies": {
     "@electron/remote": "^2.0.8",

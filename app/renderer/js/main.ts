@@ -6,6 +6,7 @@ import url from "node:url";
 import {Menu, app, dialog, session} from "@electron/remote";
 import * as remote from "@electron/remote";
 import * as Sentry from "@sentry/electron/renderer";
+import SortableJS from "sortablejs";
 
 import type {Config} from "../../common/config-util.js";
 import * as ConfigUtil from "../../common/config-util.js";
@@ -57,7 +58,7 @@ const dingSound = new Audio(
 
 export class ServerManagerView {
   $addServerButton: HTMLButtonElement;
-  $tabsContainer: Element;
+  $tabsContainer: HTMLElement;
   $reloadButton: HTMLButtonElement;
   $loadingIndicator: HTMLButtonElement;
   $settingsButton: HTMLButtonElement;
@@ -81,6 +82,7 @@ export class ServerManagerView {
   tabIndex: number;
   presetOrgs: string[];
   preferenceView?: PreferenceView;
+  sortableSidebar: SortableJS | null;
   constructor() {
     this.$addServerButton = document.querySelector("#add-tab")!;
     this.$tabsContainer = document.querySelector("#tabs-container")!;
@@ -123,6 +125,7 @@ export class ServerManagerView {
     this.presetOrgs = [];
     this.functionalTabs = new Map();
     this.tabIndex = 0;
+    this.sortableSidebar = null;
   }
 
   async init(): Promise<void> {
@@ -235,6 +238,20 @@ export class ServerManagerView {
   initSidebar(): void {
     const showSidebar = ConfigUtil.getConfigItem("showSidebar", true);
     this.toggleSidebar(showSidebar);
+    this.sortableSidebar = new SortableJS(this.$tabsContainer, {
+      animation: 150,
+      onEnd: (event: SortableJS.SortableEvent) => {
+        // Update the domain order in the database
+        DomainUtil.updateDomainOrder(event.oldIndex ?? 0, event.newIndex ?? 0);
+
+        // Update the current active tab index
+        this.activeTabIndex = event.newIndex ?? 0;
+        ConfigUtil.setConfigItem("lastActiveTab", event.newIndex ?? 0);
+
+        // Reload the app to give the tabs their new indexes
+        ipcRenderer.send("reload-full-app");
+      },
+    });
   }
 
   // Remove the stale UA string from the disk if the app is not freshly
