@@ -294,6 +294,11 @@ export default class WebView {
       this.unsupportedDismissed = true;
       this.$unsupported.hidden = true;
     });
+
+    webContents.on("zoom-changed", (event, zoomDirection) => {
+      if (zoomDirection === "in") this.zoomIn();
+      else if (zoomDirection === "out") this.zoomOut();
+    });
   }
 
   private getBadgeCount(title: string): number {
