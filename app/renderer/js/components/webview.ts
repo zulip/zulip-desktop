@@ -105,7 +105,6 @@ export default class WebView {
 
   badgeCount = 0;
   loading = true;
-  private zoomFactor = 1;
   private customCss: string | false | null;
   private readonly $webviewsContainer: DOMTokenList;
   private readonly $unsupported: HTMLElement;
@@ -161,18 +160,15 @@ export default class WebView {
   }
 
   zoomIn(): void {
-    this.zoomFactor += 0.1;
-    this.getWebContents().setZoomFactor(this.zoomFactor);
+    this.getWebContents().zoomLevel += 0.5;
   }
 
   zoomOut(): void {
-    this.zoomFactor -= 0.1;
-    this.getWebContents().setZoomFactor(this.zoomFactor);
+    this.getWebContents().zoomLevel -= 0.5;
   }
 
   zoomActualSize(): void {
-    this.zoomFactor = 1;
-    this.getWebContents().setZoomFactor(this.zoomFactor);
+    this.getWebContents().zoomLevel = 0;
   }
 
   logOut(): void {
