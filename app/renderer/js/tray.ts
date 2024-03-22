@@ -18,16 +18,37 @@ let tray: ElectronTray | null = null;
 const appIcon = path.join(publicPath, "resources/tray/tray");
 
 const iconPath = (): string => {
-  if (process.platform === "linux") {
-    return appIcon + "linux.png";
-  }
+  switch (process.platform) {
+    case "darwin": {
+      return appIcon + "macOSTemplate.png";
+    }
 
-  return (
-    appIcon + (process.platform === "win32" ? "win.ico" : "macOSTemplate.png")
-  );
+    case "win32": {
+      return appIcon + "win.ico";
+    }
+
+    default: {
+      return appIcon + "linux.png";
+    }
+  }
 };
 
-const winUnreadTrayIconPath = (): string => appIcon + "unread.ico";
+const unreadTrayIconPath = (): string => {
+  switch (process.platform) {
+    case "darwin": {
+      return appIcon + "macOSUnreadTemplate.png";
+    }
+
+    case "win32": {
+      return appIcon + "unread.ico";
+    }
+
+    default: {
+      // Note this isn't used - see renderNativeImage()
+      return appIcon + "linux.png";
+    }
+  }
+};
 
 let unread = 0;
 
@@ -115,8 +136,8 @@ const renderCanvas = function (arg: number): HTMLCanvasElement {
  * @return the native image
  */
 const renderNativeImage = function (arg: number): NativeImage {
-  if (process.platform === "win32") {
-    return nativeImage.createFromPath(winUnreadTrayIconPath());
+  if (process.platform === "win32" || process.platform === "darwin") {
+    return nativeImage.createFromPath(unreadTrayIconPath());
   }
 
   const canvas = renderCanvas(arg);
@@ -194,18 +215,15 @@ export function initializeTray(serverManagerView: ServerManagerView) {
       return;
     }
 
-    // We don't want to create tray from unread messages on macOS since it already has dock badges.
-    if (process.platform === "linux" || process.platform === "win32") {
-      if (arg === 0) {
-        unread = arg;
-        tray.setImage(iconPath());
-        tray.setToolTip("No unread messages");
-      } else {
-        unread = arg;
-        const image = renderNativeImage(arg);
-        tray.setImage(image);
-        tray.setToolTip(`${arg} unread messages`);
-      }
+    // Update tray icon based on unread count
+    unread = arg;
+    if (unread === 0) {
+      tray.setImage(iconPath());
+      tray.setToolTip("No unread messages");
+    } else {
+      const image = renderNativeImage(arg);
+      tray.setImage(image);
+      tray.setToolTip(`${arg} unread messages`);
     }
   });
 
