@@ -88,10 +88,6 @@ export class PreferenceView {
         });
         break;
       }
-
-      default: {
-        ((n: never) => n)(navigationItem);
-      }
     }
 
     window.location.hash = `#${navigationItem}`;

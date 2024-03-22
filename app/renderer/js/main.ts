@@ -730,7 +730,7 @@ export class ServerManagerView {
 
     await tab.destroy();
 
-    delete this.tabs[index];
+    delete this.tabs[index]; // eslint-disable-line @typescript-eslint/no-array-delete
     this.functionalTabs.delete(name);
 
     // Issue #188: If the functional tab was not focused, do not activate another tab.

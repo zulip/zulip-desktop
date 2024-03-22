@@ -8,6 +8,6 @@
     "resolveJsonModule": true,
     "strict": true,
     "noImplicitOverride": true,
-    "types": ["vite/client"],
-  },
+    "types": ["vite/client"]
+  }
 }
