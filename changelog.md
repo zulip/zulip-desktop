@@ -2,6 +2,21 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.11.0 --2024-03-22
+
+**Fixes**:
+
+- Removed the popup dialog for certificate errors when loading subresources such as images.
+- Allowed hiding the window from full screen mode on macOS.
+
+**Enhancements**:
+
+- Enabled zooming with Ctrl+mouse wheel on Linux and Windows.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 29.1.5.
+
 ### v5.10.5 --2024-01-25
 
 **Dependencies**:
