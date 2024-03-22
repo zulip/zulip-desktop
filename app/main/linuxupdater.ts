@@ -1,5 +1,4 @@
-import type {Session} from "electron/main";
-import {Notification, app} from "electron/main";
+import {Notification, type Session, app} from "electron/main";
 
 import * as semver from "semver";
 import {z} from "zod";

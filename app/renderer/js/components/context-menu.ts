@@ -1,5 +1,4 @@
-import type {Event} from "electron/common";
-import {clipboard} from "electron/common";
+import {type Event, clipboard} from "electron/common";
 import type {WebContents} from "electron/main";
 import type {
   ContextMenuParams,

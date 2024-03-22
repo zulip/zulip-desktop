@@ -6,8 +6,7 @@ import * as remote from "@electron/remote";
 import {app, dialog} from "@electron/remote";
 
 import * as ConfigUtil from "../../../common/config-util.js";
-import type {Html} from "../../../common/html.js";
-import {html} from "../../../common/html.js";
+import {type Html, html} from "../../../common/html.js";
 import type {RendererMessage} from "../../../common/typed-ipc.js";
 import type {TabRole} from "../../../common/types.js";
 import preloadCss from "../../css/preload.css?raw";

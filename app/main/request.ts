@@ -1,5 +1,4 @@
-import type {Session} from "electron/main";
-import {app} from "electron/main";
+import {type Session, app} from "electron/main";
 import fs from "node:fs";
 import path from "node:path";
 import {Readable} from "node:stream";

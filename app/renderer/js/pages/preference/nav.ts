@@ -1,5 +1,4 @@
-import type {Html} from "../../../../common/html.js";
-import {html} from "../../../../common/html.js";
+import {type Html, html} from "../../../../common/html.js";
 import * as t from "../../../../common/translation-util.js";
 import type {NavItem} from "../../../../common/types.js";
 import {generateNodeFromHtml} from "../../components/base.js";

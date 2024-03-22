@@ -1,11 +1,11 @@
-import type {Event} from "electron/common";
-import {shell} from "electron/common";
-import type {
-  HandlerDetails,
-  SaveDialogOptions,
-  WebContents,
+import {type Event, shell} from "electron/common";
+import {
+  type HandlerDetails,
+  Notification,
+  type SaveDialogOptions,
+  type WebContents,
+  app,
 } from "electron/main";
-import {Notification, app} from "electron/main";
 import fs from "node:fs";
 import path from "node:path";
 
