@@ -63,8 +63,8 @@ const config = {
   thick: process.platform === "win32",
 };
 
-const renderCanvas = function (arg: number): HTMLCanvasElement {
-  config.unreadCount = arg;
+const renderCanvas = function (argument: number): HTMLCanvasElement {
+  config.unreadCount = argument;
 
   const size = config.size * config.pixelRatio;
   const padding = size * 0.05;
@@ -78,30 +78,34 @@ const renderCanvas = function (arg: number): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
-  const ctx = canvas.getContext("2d")!;
+  const context = canvas.getContext("2d")!;
 
   // Circle
   // If (!config.thick || config.thick && hasCount) {
-  ctx.beginPath();
-  ctx.arc(center, center, size / 2 - padding, 0, 2 * Math.PI, false);
-  ctx.fillStyle = backgroundColor;
-  ctx.fill();
-  ctx.lineWidth = size / (config.thick ? 10 : 20);
-  ctx.strokeStyle = backgroundColor;
-  ctx.stroke();
+  context.beginPath();
+  context.arc(center, center, size / 2 - padding, 0, 2 * Math.PI, false);
+  context.fillStyle = backgroundColor;
+  context.fill();
+  context.lineWidth = size / (config.thick ? 10 : 20);
+  context.strokeStyle = backgroundColor;
+  context.stroke();
   // Count or Icon
   if (hasCount) {
-    ctx.fillStyle = color;
-    ctx.textAlign = "center";
+    context.fillStyle = color;
+    context.textAlign = "center";
     if (config.unreadCount > 99) {
-      ctx.font = `${config.thick ? "bold " : ""}${size * 0.4}px Helvetica`;
-      ctx.fillText("99+", center, center + size * 0.15);
+      context.font = `${config.thick ? "bold " : ""}${size * 0.4}px Helvetica`;
+      context.fillText("99+", center, center + size * 0.15);
     } else if (config.unreadCount < 10) {
-      ctx.font = `${config.thick ? "bold " : ""}${size * 0.5}px Helvetica`;
-      ctx.fillText(String(config.unreadCount), center, center + size * 0.2);
+      context.font = `${config.thick ? "bold " : ""}${size * 0.5}px Helvetica`;
+      context.fillText(String(config.unreadCount), center, center + size * 0.2);
     } else {
-      ctx.font = `${config.thick ? "bold " : ""}${size * 0.5}px Helvetica`;
-      ctx.fillText(String(config.unreadCount), center, center + size * 0.15);
+      context.font = `${config.thick ? "bold " : ""}${size * 0.5}px Helvetica`;
+      context.fillText(
+        String(config.unreadCount),
+        center,
+        center + size * 0.15,
+      );
     }
   }
 
@@ -113,12 +117,12 @@ const renderCanvas = function (arg: number): HTMLCanvasElement {
  * @param arg: Unread count
  * @return the native image
  */
-const renderNativeImage = function (arg: number): NativeImage {
+const renderNativeImage = function (argument: number): NativeImage {
   if (process.platform === "win32") {
     return nativeImage.createFromPath(winUnreadTrayIconPath());
   }
 
-  const canvas = renderCanvas(arg);
+  const canvas = renderCanvas(argument);
   const pngData = nativeImage
     .createFromDataURL(canvas.toDataURL("image/png"))
     .toPNG();
@@ -129,7 +133,7 @@ const renderNativeImage = function (arg: number): NativeImage {
 
 function sendAction<Channel extends keyof RendererMessage>(
   channel: Channel,
-  ...args: Parameters<RendererMessage[Channel]>
+  ...arguments_: Parameters<RendererMessage[Channel]>
 ): void {
   const win = BrowserWindow.getAllWindows()[0];
 
@@ -137,7 +141,7 @@ function sendAction<Channel extends keyof RendererMessage>(
     win.restore();
   }
 
-  ipcRenderer.send("forward-to", win.webContents.id, channel, ...args);
+  ipcRenderer.send("forward-to", win.webContents.id, channel, ...arguments_);
 }
 
 const createTray = function (): void {
@@ -188,22 +192,22 @@ export function initializeTray(serverManagerView: ServerManagerView) {
     }
   });
 
-  ipcRenderer.on("tray", (_event, arg: number): void => {
+  ipcRenderer.on("tray", (_event, argument: number): void => {
     if (!tray) {
       return;
     }
 
     // We don't want to create tray from unread messages on macOS since it already has dock badges.
     if (process.platform === "linux" || process.platform === "win32") {
-      if (arg === 0) {
-        unread = arg;
+      if (argument === 0) {
+        unread = argument;
         tray.setImage(iconPath());
         tray.setToolTip("No unread messages");
       } else {
-        unread = arg;
-        const image = renderNativeImage(arg);
+        unread = argument;
+        const image = renderNativeImage(argument);
         tray.setImage(image);
-        tray.setToolTip(`${arg} unread messages`);
+        tray.setToolTip(`${argument} unread messages`);
       }
     }
   });

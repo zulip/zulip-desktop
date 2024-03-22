@@ -1,6 +1,6 @@
 import type {TabRole} from "../../../common/types.js";
 
-export type TabProps = {
+export type TabProperties = {
   role: TabRole;
   icon?: string;
   name: string;
@@ -17,17 +17,17 @@ export type TabProps = {
 export default abstract class Tab {
   abstract $el: Element;
 
-  constructor(readonly props: TabProps) {}
+  constructor(readonly properties: TabProperties) {}
 
   registerListeners(): void {
-    this.$el.addEventListener("click", this.props.onClick);
+    this.$el.addEventListener("click", this.properties.onClick);
 
-    if (this.props.onHover !== undefined) {
-      this.$el.addEventListener("mouseover", this.props.onHover);
+    if (this.properties.onHover !== undefined) {
+      this.$el.addEventListener("mouseover", this.properties.onHover);
     }
 
-    if (this.props.onHoverOut !== undefined) {
-      this.$el.addEventListener("mouseout", this.props.onHoverOut);
+    if (this.properties.onHoverOut !== undefined) {
+      this.$el.addEventListener("mouseout", this.properties.onHoverOut);
     }
   }
 

@@ -16,7 +16,11 @@ import * as LinkUtil from "../../common/link-util.js";
 import Logger from "../../common/logger-util.js";
 import * as Messages from "../../common/messages.js";
 import {bundlePath, bundleUrl} from "../../common/paths.js";
-import type {NavItem, ServerConf, TabData} from "../../common/types.js";
+import type {
+  NavigationItem,
+  ServerConfig,
+  TabData,
+} from "../../common/types.js";
 import defaultIcon from "../img/icon.png";
 
 import FunctionalTab from "./components/functional-tab.js";
@@ -248,8 +252,8 @@ export class ServerManagerView {
     // promise of addition resolves in both cases, but we consider it rejected
     // if the resolved value is false
     try {
-      const serverConf = await DomainUtil.checkDomain(domain);
-      await DomainUtil.addDomain(serverConf);
+      const serverConfig = await DomainUtil.checkDomain(domain);
+      await DomainUtil.addDomain(serverConfig);
       return true;
     } catch (error: unknown) {
       logger.error(error);
@@ -325,11 +329,14 @@ export class ServerManagerView {
       for (const [i, server] of servers.entries()) {
         const tab = this.initServer(server, i);
         (async () => {
-          const serverConf = await DomainUtil.updateSavedServer(server.url, i);
-          tab.setName(serverConf.alias);
-          tab.setIcon(DomainUtil.iconAsUrl(serverConf.icon));
+          const serverConfig = await DomainUtil.updateSavedServer(
+            server.url,
+            i,
+          );
+          tab.setName(serverConfig.alias);
+          tab.setIcon(DomainUtil.iconAsUrl(serverConfig.icon));
           (await tab.webview).setUnsupportedMessage(
-            DomainUtil.getUnsupportedMessage(serverConf),
+            DomainUtil.getUnsupportedMessage(serverConfig),
           );
         })();
       }
@@ -364,7 +371,7 @@ export class ServerManagerView {
     }
   }
 
-  initServer(server: ServerConf, index: number): ServerTab {
+  initServer(server: ServerConfig, index: number): ServerTab {
     const tabIndex = this.getTabIndex();
     const tab = new ServerTab({
       role: "server",
@@ -398,7 +405,7 @@ export class ServerManagerView {
           const tab = this.tabs[this.activeTabIndex];
           this.showLoading(
             tab instanceof ServerTab &&
-              this.loading.has((await tab.webview).props.url),
+              this.loading.has((await tab.webview).properties.url),
           );
         },
         onNetworkError: async (index: number) => {
@@ -481,7 +488,7 @@ export class ServerManagerView {
 
   async getCurrentActiveServer(): Promise<string> {
     const tab = this.tabs[this.activeTabIndex];
-    return tab instanceof ServerTab ? (await tab.webview).props.url : "";
+    return tab instanceof ServerTab ? (await tab.webview).properties.url : "";
   }
 
   displayInitialCharLogo($img: HTMLImageElement, index: number): void {
@@ -550,36 +557,36 @@ export class ServerManagerView {
     this.$serverIconTooltip[index].style.display = "none";
   }
 
-  async openFunctionalTab(tabProps: {
+  async openFunctionalTab(tabProperties: {
     name: string;
     materialIcon: string;
     makeView: () => Promise<Element>;
     destroyView: () => void;
   }): Promise<void> {
-    if (this.functionalTabs.has(tabProps.name)) {
-      await this.activateTab(this.functionalTabs.get(tabProps.name)!);
+    if (this.functionalTabs.has(tabProperties.name)) {
+      await this.activateTab(this.functionalTabs.get(tabProperties.name)!);
       return;
     }
 
     const index = this.tabs.length;
-    this.functionalTabs.set(tabProps.name, index);
+    this.functionalTabs.set(tabProperties.name, index);
 
     const tabIndex = this.getTabIndex();
-    const $view = await tabProps.makeView();
+    const $view = await tabProperties.makeView();
     this.$webviewsContainer.append($view);
 
     this.tabs.push(
       new FunctionalTab({
         role: "function",
-        materialIcon: tabProps.materialIcon,
-        name: tabProps.name,
+        materialIcon: tabProperties.materialIcon,
+        name: tabProperties.name,
         $root: this.$tabsContainer,
         index,
         tabIndex,
         onClick: this.activateTab.bind(this, index),
         onDestroy: async () => {
-          await this.destroyTab(tabProps.name, index);
-          tabProps.destroyView();
+          await this.destroyTab(tabProperties.name, index);
+          tabProperties.destroyView();
         },
         $view,
       }),
@@ -589,10 +596,12 @@ export class ServerManagerView {
     // closed when the functional tab DOM is ready, handled in webview.js
     this.$webviewsContainer.classList.remove("loaded");
 
-    await this.activateTab(this.functionalTabs.get(tabProps.name)!);
+    await this.activateTab(this.functionalTabs.get(tabProperties.name)!);
   }
 
-  async openSettings(nav: NavItem = "General"): Promise<void> {
+  async openSettings(
+    navigationItem: NavigationItem = "General",
+  ): Promise<void> {
     await this.openFunctionalTab({
       name: "Settings",
       materialIcon: "settings",
@@ -607,7 +616,7 @@ export class ServerManagerView {
       },
     });
     this.$settingsButton.classList.add("active");
-    this.preferenceView!.handleNavigation(nav);
+    this.preferenceView!.handleNavigation(navigationItem);
   }
 
   async openAbout(): Promise<void> {
@@ -646,13 +655,13 @@ export class ServerManagerView {
 
   // Returns this.tabs in an way that does
   // not crash app when this.tabs is passed into
-  // ipcRenderer. Something about webview, and props.webview
+  // ipcRenderer. Something about webview, and properties.webview
   // properties in ServerTab causes the app to crash.
   get tabsForIpc(): TabData[] {
     return this.tabs.map((tab) => ({
-      role: tab.props.role,
-      name: tab.props.name,
-      index: tab.props.index,
+      role: tab.properties.role,
+      name: tab.properties.name,
+      index: tab.properties.index,
     }));
   }
 
@@ -670,8 +679,8 @@ export class ServerManagerView {
       if (hideOldTab) {
         // If old tab is functional tab Settings, remove focus from the settings icon at sidebar bottom
         if (
-          this.tabs[this.activeTabIndex].props.role === "function" &&
-          this.tabs[this.activeTabIndex].props.name === "Settings"
+          this.tabs[this.activeTabIndex].properties.role === "function" &&
+          this.tabs[this.activeTabIndex].properties.name === "Settings"
         ) {
           this.$settingsButton.classList.remove("active");
         }
@@ -695,7 +704,7 @@ export class ServerManagerView {
 
     this.showLoading(
       tab instanceof ServerTab &&
-        this.loading.has((await tab.webview).props.url),
+        this.loading.has((await tab.webview).properties.url),
     );
 
     ipcRenderer.send("update-menu", {
@@ -704,7 +713,7 @@ export class ServerManagerView {
       tabs: this.tabsForIpc,
       activeTabIndex: this.activeTabIndex,
       // Following flag controls whether a menu item should be enabled or not
-      enableMenu: tab.props.role === "server",
+      enableMenu: tab.properties.role === "server",
     });
   }
 
@@ -746,7 +755,7 @@ export class ServerManagerView {
 
   async reloadView(): Promise<void> {
     // Save and remember the index of last active tab so that we can use it later
-    const lastActiveTab = this.tabs[this.activeTabIndex].props.index;
+    const lastActiveTab = this.tabs[this.activeTabIndex].properties.index;
     ConfigUtil.setConfigItem("lastActiveTab", lastActiveTab);
 
     // Destroy the current view and re-initiate it
@@ -946,7 +955,7 @@ export class ServerManagerView {
                     const webview = await tab.webview;
                     return (
                       webview.webContentsId === webContentsId &&
-                      webview.props.hasPermission?.(origin, permission)
+                      webview.properties.hasPermission?.(origin, permission)
                     );
                   }),
                 )
@@ -1092,7 +1101,7 @@ export class ServerManagerView {
             (await tab.webview).webContentsId === webviewId
           ) {
             const concurrentTab: HTMLButtonElement = document.querySelector(
-              `div[data-tab-id="${CSS.escape(`${tab.props.tabIndex}`)}"]`,
+              `div[data-tab-id="${CSS.escape(`${tab.properties.tabIndex}`)}"]`,
             )!;
             concurrentTab.click();
           }
@@ -1107,22 +1116,22 @@ export class ServerManagerView {
         canvas.height = 128;
         canvas.width = 128;
         canvas.style.letterSpacing = "-5px";
-        const ctx = canvas.getContext("2d")!;
-        ctx.fillStyle = "#f42020";
-        ctx.beginPath();
-        ctx.ellipse(64, 64, 64, 64, 0, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.textAlign = "center";
-        ctx.fillStyle = "white";
+        const context = canvas.getContext("2d")!;
+        context.fillStyle = "#f42020";
+        context.beginPath();
+        context.ellipse(64, 64, 64, 64, 0, 0, 2 * Math.PI);
+        context.fill();
+        context.textAlign = "center";
+        context.fillStyle = "white";
         if (messageCount > 99) {
-          ctx.font = "65px Helvetica";
-          ctx.fillText("99+", 64, 85);
+          context.font = "65px Helvetica";
+          context.fillText("99+", 64, 85);
         } else if (messageCount < 10) {
-          ctx.font = "90px Helvetica";
-          ctx.fillText(String(Math.min(99, messageCount)), 64, 96);
+          context.font = "90px Helvetica";
+          context.fillText(String(Math.min(99, messageCount)), 64, 96);
         } else {
-          ctx.font = "85px Helvetica";
-          ctx.fillText(String(Math.min(99, messageCount)), 64, 90);
+          context.font = "85px Helvetica";
+          context.fillText(String(Math.min(99, messageCount)), 64, 90);
         }
 
         return canvas;

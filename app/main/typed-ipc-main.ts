@@ -12,14 +12,20 @@ import type {
 } from "../common/typed-ipc.js";
 
 type MainListener<Channel extends keyof MainMessage> =
-  MainMessage[Channel] extends (...args: infer Args) => infer Return
-    ? (event: IpcMainEvent & {returnValue: Return}, ...args: Args) => void
+  MainMessage[Channel] extends (...arguments_: infer Arguments) => infer Return
+    ? (
+        event: IpcMainEvent & {returnValue: Return},
+        ...arguments_: Arguments
+      ) => void
     : never;
 
 type MainHandler<Channel extends keyof MainCall> = MainCall[Channel] extends (
-  ...args: infer Args
+  ...arguments_: infer Arguments
 ) => infer Return
-  ? (event: IpcMainInvokeEvent, ...args: Args) => Return | Promise<Return>
+  ? (
+      event: IpcMainInvokeEvent,
+      ...arguments_: Arguments
+    ) => Return | Promise<Return>
   : never;
 
 export const ipcMain: {
@@ -28,7 +34,7 @@ export const ipcMain: {
     listener: <Channel extends keyof RendererMessage>(
       event: IpcMainEvent,
       channel: Channel,
-      ...args: Parameters<RendererMessage[Channel]>
+      ...arguments_: Parameters<RendererMessage[Channel]>
     ) => void,
   ): void;
   on(
@@ -37,7 +43,7 @@ export const ipcMain: {
       event: IpcMainEvent,
       webContentsId: number,
       channel: Channel,
-      ...args: Parameters<RendererMessage[Channel]>
+      ...arguments_: Parameters<RendererMessage[Channel]>
     ) => void,
   ): void;
   on<Channel extends keyof MainMessage>(
@@ -67,16 +73,16 @@ export const ipcMain: {
 export function send<Channel extends keyof RendererMessage>(
   contents: WebContents,
   channel: Channel,
-  ...args: Parameters<RendererMessage[Channel]>
+  ...arguments_: Parameters<RendererMessage[Channel]>
 ): void {
-  contents.send(channel, ...args);
+  contents.send(channel, ...arguments_);
 }
 
 export function sendToFrame<Channel extends keyof RendererMessage>(
   contents: WebContents,
   frameId: number | [number, number],
   channel: Channel,
-  ...args: Parameters<RendererMessage[Channel]>
+  ...arguments_: Parameters<RendererMessage[Channel]>
 ): void {
-  contents.sendToFrame(frameId, channel, ...args);
+  contents.sendToFrame(frameId, channel, ...arguments_);
 }

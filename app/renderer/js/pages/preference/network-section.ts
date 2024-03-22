@@ -5,11 +5,11 @@ import {ipcRenderer} from "../../typed-ipc-renderer.js";
 
 import {generateSettingOption} from "./base-section.js";
 
-type NetworkSectionProps = {
+type NetworkSectionProperties = {
   $root: Element;
 };
 
-export function initNetworkSection({$root}: NetworkSectionProps): void {
+export function initNetworkSection({$root}: NetworkSectionProperties): void {
   $root.innerHTML = html`
     <div class="settings-pane">
       <div class="title">${t.__("Proxy")}</div>

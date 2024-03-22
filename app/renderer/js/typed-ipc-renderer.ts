@@ -10,8 +10,8 @@ import type {
 } from "../../common/typed-ipc.js";
 
 type RendererListener<Channel extends keyof RendererMessage> =
-  RendererMessage[Channel] extends (...args: infer Args) => void
-    ? (event: IpcRendererEvent, ...args: Args) => void
+  RendererMessage[Channel] extends (...arguments_: infer Arguments) => void
+    ? (event: IpcRendererEvent, ...arguments_: Arguments) => void
     : never;
 
 export const ipcRenderer: {
@@ -35,25 +35,25 @@ export const ipcRenderer: {
   send<Channel extends keyof RendererMessage>(
     channel: "forward-message",
     rendererChannel: Channel,
-    ...args: Parameters<RendererMessage[Channel]>
+    ...arguments_: Parameters<RendererMessage[Channel]>
   ): void;
   send<Channel extends keyof RendererMessage>(
     channel: "forward-to",
     webContentsId: number,
     rendererChannel: Channel,
-    ...args: Parameters<RendererMessage[Channel]>
+    ...arguments_: Parameters<RendererMessage[Channel]>
   ): void;
   send<Channel extends keyof MainMessage>(
     channel: Channel,
-    ...args: Parameters<MainMessage[Channel]>
+    ...arguments_: Parameters<MainMessage[Channel]>
   ): void;
   invoke<Channel extends keyof MainCall>(
     channel: Channel,
-    ...args: Parameters<MainCall[Channel]>
+    ...arguments_: Parameters<MainCall[Channel]>
   ): Promise<ReturnType<MainCall[Channel]>>;
   sendSync<Channel extends keyof MainMessage>(
     channel: Channel,
-    ...args: Parameters<MainMessage[Channel]>
+    ...arguments_: Parameters<MainMessage[Channel]>
   ): ReturnType<MainMessage[Channel]>;
   postMessage<Channel extends keyof MainMessage>(
     channel: Channel,
@@ -64,6 +64,6 @@ export const ipcRenderer: {
   ): void;
   sendToHost<Channel extends keyof RendererMessage>(
     channel: Channel,
-    ...args: Parameters<RendererMessage[Channel]>
+    ...arguments_: Parameters<RendererMessage[Channel]>
   ): void;
 } = untypedIpcRenderer;

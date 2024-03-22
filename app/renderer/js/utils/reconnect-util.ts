@@ -15,7 +15,7 @@ export default class ReconnectUtil {
   fibonacciBackoff: backoff.Backoff;
 
   constructor(webview: WebView) {
-    this.url = webview.props.url;
+    this.url = webview.properties.url;
     this.alreadyReloaded = false;
     this.fibonacciBackoff = backoff.fibonacci({
       initialDelay: 5000,

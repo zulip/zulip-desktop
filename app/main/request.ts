@@ -10,7 +10,7 @@ import {z} from "zod";
 
 import Logger from "../common/logger-util.js";
 import * as Messages from "../common/messages.js";
-import type {ServerConf} from "../common/types.js";
+import type {ServerConfig} from "../common/types.js";
 
 /* Request: domain-util */
 
@@ -19,7 +19,7 @@ const logger = new Logger({
 });
 
 const generateFilePath = (url: string): string => {
-  const dir = `${app.getPath("userData")}/server-icons`;
+  const directory = `${app.getPath("userData")}/server-icons`;
   const extension = path.extname(url).split("?")[0];
 
   let hash = 5381;
@@ -31,18 +31,18 @@ const generateFilePath = (url: string): string => {
   }
 
   // Create 'server-icons' directory if not existed
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
+  if (!fs.existsSync(directory)) {
+    fs.mkdirSync(directory);
   }
 
   // eslint-disable-next-line no-bitwise
-  return `${dir}/${hash >>> 0}${extension}`;
+  return `${directory}/${hash >>> 0}${extension}`;
 };
 
 export const _getServerSettings = async (
   domain: string,
   session: Session,
-): Promise<ServerConf> => {
+): Promise<ServerConfig> => {
   const response = await session.fetch(domain + "/api/v1/server_settings");
   if (!response.ok) {
     throw new Error(Messages.invalidZulipServerError(domain));

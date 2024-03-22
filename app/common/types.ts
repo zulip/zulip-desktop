@@ -1,17 +1,17 @@
-export type MenuProps = {
+export type MenuProperties = {
   tabs: TabData[];
   activeTabIndex?: number;
   enableMenu?: boolean;
 };
 
-export type NavItem =
+export type NavigationItem =
   | "General"
   | "Network"
   | "AddServer"
   | "Organizations"
   | "Shortcuts";
 
-export type ServerConf = {
+export type ServerConfig = {
   url: string;
   alias: string;
   icon: string;

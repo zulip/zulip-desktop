@@ -3,35 +3,35 @@ import {dialog} from "@electron/remote";
 import {html} from "../../../../common/html.js";
 import * as Messages from "../../../../common/messages.js";
 import * as t from "../../../../common/translation-util.js";
-import type {ServerConf} from "../../../../common/types.js";
+import type {ServerConfig} from "../../../../common/types.js";
 import {generateNodeFromHtml} from "../../components/base.js";
 import {ipcRenderer} from "../../typed-ipc-renderer.js";
 import * as DomainUtil from "../../utils/domain-util.js";
 
-type ServerInfoFormProps = {
+type ServerInfoFormProperties = {
   $root: Element;
-  server: ServerConf;
+  server: ServerConfig;
   index: number;
   onChange: () => void;
 };
 
-export function initServerInfoForm(props: ServerInfoFormProps): void {
+export function initServerInfoForm(properties: ServerInfoFormProperties): void {
   const $serverInfoForm = generateNodeFromHtml(html`
     <div class="settings-card">
       <div class="server-info-left">
         <img
           class="server-info-icon"
-          src="${DomainUtil.iconAsUrl(props.server.icon)}"
+          src="${DomainUtil.iconAsUrl(properties.server.icon)}"
         />
         <div class="server-info-row">
-          <span class="server-info-alias">${props.server.alias}</span>
+          <span class="server-info-alias">${properties.server.alias}</span>
           <i class="material-icons open-tab-button">open_in_new</i>
         </div>
       </div>
       <div class="server-info-right">
         <div class="server-info-row server-url">
-          <span class="server-url-info" title="${props.server.url}"
-            >${props.server.url}</span
+          <span class="server-url-info" title="${properties.server.url}"
+            >${properties.server.url}</span
           >
         </div>
         <div class="server-info-row">
@@ -48,7 +48,7 @@ export function initServerInfoForm(props: ServerInfoFormProps): void {
     ".server-delete-action",
   )!;
   const $openServerButton = $serverInfoForm.querySelector(".open-tab-button")!;
-  props.$root.append($serverInfoForm);
+  properties.$root.append($serverInfoForm);
 
   $deleteServerButton.addEventListener("click", async () => {
     const {response} = await dialog.showMessageBox({
@@ -58,11 +58,11 @@ export function initServerInfoForm(props: ServerInfoFormProps): void {
       message: t.__("Are you sure you want to disconnect this organization?"),
     });
     if (response === 0) {
-      if (DomainUtil.removeDomain(props.index)) {
+      if (DomainUtil.removeDomain(properties.index)) {
         ipcRenderer.send("reload-full-app");
       } else {
         const {title, content} = Messages.orgRemovalError(
-          DomainUtil.getDomain(props.index).url,
+          DomainUtil.getDomain(properties.index).url,
         );
         dialog.showErrorBox(title, content);
       }
@@ -70,14 +70,14 @@ export function initServerInfoForm(props: ServerInfoFormProps): void {
   });
 
   $openServerButton.addEventListener("click", () => {
-    ipcRenderer.send("forward-message", "switch-server-tab", props.index);
+    ipcRenderer.send("forward-message", "switch-server-tab", properties.index);
   });
 
   $serverInfoAlias.addEventListener("click", () => {
-    ipcRenderer.send("forward-message", "switch-server-tab", props.index);
+    ipcRenderer.send("forward-message", "switch-server-tab", properties.index);
   });
 
   $serverIcon.addEventListener("click", () => {
-    ipcRenderer.send("forward-message", "switch-server-tab", props.index);
+    ipcRenderer.send("forward-message", "switch-server-tab", properties.index);
   });
 }

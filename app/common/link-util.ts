@@ -19,8 +19,8 @@ export async function openBrowser(url: URL): Promise<void> {
   } else {
     // For security, indirect links to non-whitelisted protocols
     // through a real web browser via a local HTML file.
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "zulip-redirect-"));
-    const file = path.join(dir, "redirect.html");
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), "zulip-redirect-"));
+    const file = path.join(directory, "redirect.html");
     fs.writeFileSync(
       file,
       html`
@@ -45,7 +45,7 @@ export async function openBrowser(url: URL): Promise<void> {
     await shell.openPath(file);
     setTimeout(() => {
       fs.unlinkSync(file);
-      fs.rmdirSync(dir);
+      fs.rmdirSync(directory);
     }, 15_000);
   }
 }

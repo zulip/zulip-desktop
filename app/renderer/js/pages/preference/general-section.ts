@@ -20,11 +20,11 @@ import {generateSelectHtml, generateSettingOption} from "./base-section.js";
 
 const currentBrowserWindow = remote.getCurrentWindow();
 
-type GeneralSectionProps = {
+type GeneralSectionProperties = {
   $root: Element;
 };
 
-export function initGeneralSection({$root}: GeneralSectionProps): void {
+export function initGeneralSection({$root}: GeneralSectionProperties): void {
   $root.innerHTML = html`
     <div class="settings-pane">
       <div class="title">${t.__("Appearance")}</div>
