@@ -1,4 +1,3 @@
-import type {Event} from "electron/common";
 import {clipboard} from "electron/common";
 import type {IpcMainEvent, WebContents} from "electron/main";
 import {
@@ -306,18 +305,24 @@ function createMainWindow(): BrowserWindow {
   app.on(
     "certificate-error",
     (
-      event: Event,
-      webContents: WebContents,
-      urlString: string,
-      error: string,
+      event,
+      webContents,
+      urlString,
+      error,
+      certificate,
+      callback,
+      isMainFrame,
+      // eslint-disable-next-line max-params
     ) => {
-      const url = new URL(urlString);
-      dialog.showErrorBox(
-        "Certificate error",
-        `The server presented an invalid certificate for ${url.origin}:
+      if (isMainFrame) {
+        const url = new URL(urlString);
+        dialog.showErrorBox(
+          "Certificate error",
+          `The server presented an invalid certificate for ${url.origin}:
 
 ${error}`,
-      );
+        );
+      }
     },
   );
 
