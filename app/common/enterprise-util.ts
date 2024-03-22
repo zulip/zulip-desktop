@@ -20,9 +20,9 @@ const logger = new Logger({
 let enterpriseSettings: Partial<EnterpriseConfig>;
 let configFile: boolean;
 
-reloadDb();
+reloadDatabase();
 
-function reloadDb(): void {
+function reloadDatabase(): void {
   let enterpriseFile = "/etc/zulip-desktop-config/global_config.json";
   if (process.platform === "win32") {
     enterpriseFile =
@@ -56,7 +56,7 @@ export function getConfigItem<Key extends keyof EnterpriseConfig>(
   key: Key,
   defaultValue: EnterpriseConfig[Key],
 ): EnterpriseConfig[Key] {
-  reloadDb();
+  reloadDatabase();
   if (!configFile) {
     return defaultValue;
   }
@@ -66,7 +66,7 @@ export function getConfigItem<Key extends keyof EnterpriseConfig>(
 }
 
 export function configItemExists(key: keyof EnterpriseConfig): boolean {
-  reloadDb();
+  reloadDatabase();
   if (!configFile) {
     return false;
   }

@@ -7,12 +7,15 @@ import {generateNodeFromHtml} from "../../components/base.js";
 import {ipcRenderer} from "../../typed-ipc-renderer.js";
 import * as DomainUtil from "../../utils/domain-util.js";
 
-type NewServerFormProps = {
+type NewServerFormProperties = {
   $root: Element;
   onChange: () => void;
 };
 
-export function initNewServerForm({$root, onChange}: NewServerFormProps): void {
+export function initNewServerForm({
+  $root,
+  onChange,
+}: NewServerFormProperties): void {
   const $newServerForm = generateNodeFromHtml(html`
     <div class="server-input-container">
       <div class="title">${t.__("Organization URL")}</div>
@@ -58,9 +61,9 @@ export function initNewServerForm({$root, onChange}: NewServerFormProps): void {
 
   async function submitFormHandler(): Promise<void> {
     $saveServerButton.textContent = "Connecting...";
-    let serverConf;
+    let serverConfig;
     try {
-      serverConf = await DomainUtil.checkDomain($newServerUrl.value.trim());
+      serverConfig = await DomainUtil.checkDomain($newServerUrl.value.trim());
     } catch (error: unknown) {
       $saveServerButton.textContent = "Connect";
       await dialog.showMessageBox({
@@ -74,7 +77,7 @@ export function initNewServerForm({$root, onChange}: NewServerFormProps): void {
       return;
     }
 
-    await DomainUtil.addDomain(serverConf);
+    await DomainUtil.addDomain(serverConfig);
     onChange();
   }
 

@@ -1,5 +1,5 @@
 import type {DndSettings} from "./dnd-util.js";
-import type {MenuProps, ServerConf} from "./types.js";
+import type {MenuProperties, ServerConfig} from "./types.js";
 
 export type MainMessage = {
   "clear-app-settings": () => void;
@@ -21,12 +21,12 @@ export type MainMessage = {
   toggleAutoLauncher: (AutoLaunchValue: boolean) => void;
   "unread-count": (unreadCount: number) => void;
   "update-badge": (messageCount: number) => void;
-  "update-menu": (props: MenuProps) => void;
+  "update-menu": (properties: MenuProperties) => void;
   "update-taskbar-icon": (data: string, text: string) => void;
 };
 
 export type MainCall = {
-  "get-server-settings": (domain: string) => ServerConf;
+  "get-server-settings": (domain: string) => ServerConfig;
   "is-online": (url: string) => boolean;
   "poll-clipboard": (key: Uint8Array, sig: Uint8Array) => string | undefined;
   "save-server-icon": (iconURL: string) => string | null;
@@ -74,7 +74,7 @@ export type RendererMessage = {
   "toggle-silent": (state: boolean) => void;
   "toggle-tray": (state: boolean) => void;
   toggletray: () => void;
-  tray: (arg: number) => void;
+  tray: (argument: number) => void;
   "update-realm-icon": (serverURL: string, iconURL: string) => void;
   "update-realm-name": (serverURL: string, realmName: string) => void;
   "webview-reload": () => void;

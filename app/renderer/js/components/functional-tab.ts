@@ -1,24 +1,24 @@
 import {type Html, html} from "../../../common/html.js";
 
 import {generateNodeFromHtml} from "./base.js";
-import Tab, {type TabProps} from "./tab.js";
+import Tab, {type TabProperties} from "./tab.js";
 
-export type FunctionalTabProps = {
+export type FunctionalTabProperties = {
   $view: Element;
-} & TabProps;
+} & TabProperties;
 
 export default class FunctionalTab extends Tab {
   $view: Element;
   $el: Element;
   $closeButton?: Element;
 
-  constructor({$view, ...props}: FunctionalTabProps) {
-    super(props);
+  constructor({$view, ...properties}: FunctionalTabProperties) {
+    super(properties);
 
     this.$view = $view;
     this.$el = generateNodeFromHtml(this.templateHtml());
-    if (this.props.name !== "Settings") {
-      this.props.$root.append(this.$el);
+    if (this.properties.name !== "Settings") {
+      this.properties.$root.append(this.$el);
       this.$closeButton = this.$el.querySelector(".server-tab-badge")!;
       this.registerListeners();
     }
@@ -41,12 +41,12 @@ export default class FunctionalTab extends Tab {
 
   templateHtml(): Html {
     return html`
-      <div class="tab functional-tab" data-tab-id="${this.props.tabIndex}">
+      <div class="tab functional-tab" data-tab-id="${this.properties.tabIndex}">
         <div class="server-tab-badge close-button">
           <i class="material-icons">close</i>
         </div>
         <div class="server-tab">
-          <i class="material-icons">${this.props.materialIcon}</i>
+          <i class="material-icons">${this.properties.materialIcon}</i>
         </div>
       </div>
     `;
@@ -64,7 +64,7 @@ export default class FunctionalTab extends Tab {
     });
 
     this.$closeButton?.addEventListener("click", (event) => {
-      this.props.onDestroy?.();
+      this.properties.onDestroy?.();
       event.stopPropagation();
     });
   }

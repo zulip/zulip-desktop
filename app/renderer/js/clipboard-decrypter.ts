@@ -20,7 +20,7 @@ export type ClipboardDecrypter = {
   pasted: Promise<string>;
 };
 
-export class ClipboardDecrypterImpl implements ClipboardDecrypter {
+export class ClipboardDecrypterImplementation implements ClipboardDecrypter {
   version: number;
   key: Uint8Array;
   pasted: Promise<string>;

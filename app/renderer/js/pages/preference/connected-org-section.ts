@@ -7,13 +7,13 @@ import {reloadApp} from "./base-section.js";
 import {initFindAccounts} from "./find-accounts.js";
 import {initServerInfoForm} from "./server-info-form.js";
 
-type ConnectedOrgSectionProps = {
+type ConnectedOrgSectionProperties = {
   $root: Element;
 };
 
 export function initConnectedOrgSection({
   $root,
-}: ConnectedOrgSectionProps): void {
+}: ConnectedOrgSectionProperties): void {
   $root.textContent = "";
 
   const servers = DomainUtil.getDomains();

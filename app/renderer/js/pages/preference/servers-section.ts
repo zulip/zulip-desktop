@@ -4,11 +4,11 @@ import * as t from "../../../../common/translation-util.js";
 import {reloadApp} from "./base-section.js";
 import {initNewServerForm} from "./new-server-form.js";
 
-type ServersSectionProps = {
+type ServersSectionProperties = {
   $root: Element;
 };
 
-export function initServersSection({$root}: ServersSectionProps): void {
+export function initServersSection({$root}: ServersSectionProperties): void {
   $root.innerHTML = html`
     <div class="add-server-modal">
       <div class="modal-container">

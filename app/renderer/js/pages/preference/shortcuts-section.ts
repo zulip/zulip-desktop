@@ -4,12 +4,14 @@ import {html} from "../../../../common/html.js";
 import * as LinkUtil from "../../../../common/link-util.js";
 import * as t from "../../../../common/translation-util.js";
 
-type ShortcutsSectionProps = {
+type ShortcutsSectionProperties = {
   $root: Element;
 };
 
 // eslint-disable-next-line complexity
-export function initShortcutsSection({$root}: ShortcutsSectionProps): void {
+export function initShortcutsSection({
+  $root,
+}: ShortcutsSectionProperties): void {
   const cmdOrCtrl = process.platform === "darwin" ? "⌘" : "Ctrl";
 
   $root.innerHTML = html`

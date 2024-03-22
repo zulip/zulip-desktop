@@ -20,7 +20,7 @@ import windowStateKeeper from "electron-window-state";
 import * as ConfigUtil from "../common/config-util.js";
 import {bundlePath, bundleUrl, publicPath} from "../common/paths.js";
 import type {RendererMessage} from "../common/typed-ipc.js";
-import type {MenuProps} from "../common/types.js";
+import type {MenuProperties} from "../common/types.js";
 
 import {appUpdater, shouldQuitForUpdate} from "./autoupdater.js";
 import * as BadgeSettings from "./badge-settings.js";
@@ -424,10 +424,10 @@ ${error}`,
     },
   );
 
-  ipcMain.on("update-menu", (_event, props: MenuProps) => {
-    AppMenu.setMenu(props);
-    if (props.activeTabIndex !== undefined) {
-      const activeTab = props.tabs[props.activeTabIndex];
+  ipcMain.on("update-menu", (_event, properties: MenuProperties) => {
+    AppMenu.setMenu(properties);
+    if (properties.activeTabIndex !== undefined) {
+      const activeTab = properties.tabs[properties.activeTabIndex];
       mainWindow.setTitle(`Zulip - ${activeTab.name}`);
     }
   });
