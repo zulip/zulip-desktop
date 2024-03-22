@@ -29,8 +29,7 @@ export function generateOptionHtml(
   disabled?: boolean,
 ): Html {
   const labelHtml = disabled
-    ? // eslint-disable-next-line unicorn/template-indent
-      html`<label
+    ? html`<label
         class="disallowed"
         title="Setting locked by system administrator."
       ></label>`
