@@ -1,5 +1,4 @@
-import type {Html} from "../../../../common/html.js";
-import {html} from "../../../../common/html.js";
+import {type Html, html} from "../../../../common/html.js";
 import {generateNodeFromHtml} from "../../components/base.js";
 import {ipcRenderer} from "../../typed-ipc-renderer.js";
 

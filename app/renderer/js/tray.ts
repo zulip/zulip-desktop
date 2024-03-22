@@ -1,5 +1,4 @@
-import type {NativeImage} from "electron/common";
-import {nativeImage} from "electron/common";
+import {type NativeImage, nativeImage} from "electron/common";
 import type {Tray as ElectronTray} from "electron/main";
 import path from "node:path";
 import process from "node:process";

@@ -1,9 +1,7 @@
-import type {
-  IpcMainEvent,
-  IpcMainInvokeEvent,
-  WebContents,
-} from "electron/main";
 import {
+  type IpcMainEvent,
+  type IpcMainInvokeEvent,
+  type WebContents,
   ipcMain as untypedIpcMain, // eslint-disable-line no-restricted-imports
 } from "electron/main";
 

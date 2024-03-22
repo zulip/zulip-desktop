@@ -1,5 +1,5 @@
-import type {IpcRendererEvent} from "electron/renderer";
 import {
+  type IpcRendererEvent,
   ipcRenderer as untypedIpcRenderer, // eslint-disable-line no-restricted-imports
 } from "electron/renderer";
 

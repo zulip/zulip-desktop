@@ -1,6 +1,5 @@
 import {nativeImage} from "electron/common";
-import type {BrowserWindow} from "electron/main";
-import {app} from "electron/main";
+import {type BrowserWindow, app} from "electron/main";
 import process from "node:process";
 
 import * as ConfigUtil from "../common/config-util.js";

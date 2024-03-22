@@ -1,7 +1,8 @@
 import {clipboard} from "electron/common";
-import type {IpcMainEvent, WebContents} from "electron/main";
 import {
   BrowserWindow,
+  type IpcMainEvent,
+  type WebContents,
   app,
   dialog,
   powerMonitor,
