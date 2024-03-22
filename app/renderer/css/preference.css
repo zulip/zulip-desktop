@@ -245,12 +245,41 @@ img.server-info-icon {
   max-width: 450px;
 }
 
-.setting-input-value:focus {
+.setting-input-value:focus,
+label.setting-input-value:focus-within {
   border: rgb(78 191 172 / 100%) 2px solid;
 }
 
 .invalid-input-value:focus {
   border: rgb(239 83 80 / 100%) 2px solid;
+}
+
+.setting-input-add-server,
+.add-server-domain,
+.server-url-size-calc {
+  outline: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  float: left;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: rgb(34 44 49 / 100%);
+  background: inherit;
+}
+
+.setting-input-add-server {
+  width: 34ch;
+}
+
+.setting-input-add-server:focus + .add-server-domain {
+  color: inherit;
+}
+
+.server-url-size-calc {
+  visibility: hidden;
+  height: 0;
 }
 
 .manual-proxy-block {
