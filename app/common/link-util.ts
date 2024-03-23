@@ -3,10 +3,18 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
+import * as ConfigUtil from "./config-util.js";
 import {html} from "./html.js";
 
+/* Fetches the current protocolLaunchers from settings.json */
+const whitelistedProtocols = ConfigUtil.getConfigItem("whitelistedProtocols", [
+  "http:",
+  "https:",
+  "mailto:",
+]);
+
 export async function openBrowser(url: URL): Promise<void> {
-  if (["http:", "https:", "mailto:"].includes(url.protocol)) {
+  if (whitelistedProtocols.includes(url.protocol)) {
     await shell.openExternal(url.href);
   } else {
     // For security, indirect links to non-whitelisted protocols
