@@ -82,7 +82,7 @@ export class ServerManagerView {
   tabIndex: number;
   presetOrgs: string[];
   preferenceView?: PreferenceView;
-  sortableSidebar: SortableJS | null;
+  sortableSidebar?: SortableJS;
   constructor() {
     this.$addServerButton = document.querySelector("#add-tab")!;
     this.$tabsContainer = document.querySelector("#tabs-container")!;
@@ -125,7 +125,6 @@ export class ServerManagerView {
     this.presetOrgs = [];
     this.functionalTabs = new Map();
     this.tabIndex = 0;
-    this.sortableSidebar = null;
   }
 
   async init(): Promise<void> {
@@ -242,14 +241,23 @@ export class ServerManagerView {
       animation: 150,
       onEnd: (event: SortableJS.SortableEvent) => {
         // Update the domain order in the database
-        DomainUtil.updateDomainOrder(event.oldIndex ?? 0, event.newIndex ?? 0);
+        if (
+          event.oldIndex !== null &&
+          event.newIndex !== null &&
+          event.oldIndex !== event.newIndex
+        ) {
+          DomainUtil.updateDomainOrder(
+            event.oldIndex ?? 0,
+            event.newIndex ?? 0,
+          );
 
-        // Update the current active tab index
-        this.activeTabIndex = event.newIndex ?? 0;
-        ConfigUtil.setConfigItem("lastActiveTab", event.newIndex ?? 0);
+          // Update the current active tab index
+          this.activeTabIndex = event.newIndex ?? 0;
+          ConfigUtil.setConfigItem("lastActiveTab", event.newIndex ?? 0);
 
-        // Reload the app to give the tabs their new indexes
-        ipcRenderer.send("reload-full-app");
+          // Reload the app to give the tabs their new indexes
+          ipcRenderer.send("reload-full-app");
+        }
       },
     });
   }
