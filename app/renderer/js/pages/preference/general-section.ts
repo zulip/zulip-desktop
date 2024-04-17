@@ -132,6 +132,11 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
           </div>
           <div class="setting-control"></div>
         </div>
+        <div class="setting-row" id="one-zoom-option">
+          <div class="setting-description">
+            ${t.__("Use one zoom for all server tabs")}</div>
+          <div class="setting-control"></div>
+        </div>
         <div
           class="setting-row"
           id="spellcheck-langs"
@@ -213,6 +218,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
   `.html;
 
   updateTrayOption();
+  useOneZoom();
   updateBadgeOption();
   updateSilentOption();
   autoUpdateOption();
@@ -261,6 +267,19 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         updateTrayOption();
       },
     });
+  }
+
+  function useOneZoom(): void {
+    generateSettingOption({
+      $element: $root.querySelector("#one-zoom-option .setting-control")!,
+      value: ConfigUtil.getConfigItem("useOneZoom", false),
+      clickHandler() {
+        const newValue = !ConfigUtil.getConfigItem("useOneZoom", false);
+        ConfigUtil.setConfigItem("useOneZoom", newValue);
+        useOneZoom();
+      },
+    })
+    return;
   }
 
   function updateMenubarOption(): void {

@@ -176,6 +176,7 @@ export class ServerManagerView {
     // Default settings which should be respected
     const settingOptions: Partial<Config> = {
       autoHideMenubar: false,
+      useOneZoom: true,
       trayIcon: true,
       useManualProxy: false,
       useSystemProxy: false,

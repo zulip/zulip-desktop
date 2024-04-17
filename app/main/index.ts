@@ -31,6 +31,8 @@ import {sentryInit} from "./sentry.js";
 import {setAutoLaunch} from "./startup.js";
 import {ipcMain, send} from "./typed-ipc-main.js";
 
+
+
 import "gatemaker/electron-setup"; // eslint-disable-line import/no-unassigned-import
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -154,7 +156,6 @@ function createMainWindow(): BrowserWindow {
     app.quit();
     return;
   }
-
   await app.whenReady();
 
   if (process.env.GDK_BACKEND !== GDK_BACKEND) {
@@ -259,6 +260,7 @@ function createMainWindow(): BrowserWindow {
   AppMenu.setMenu({
     tabs: [],
   });
+
   mainWindow = createMainWindow();
 
   // Auto-hide menu bar on Windows + Linux
@@ -277,6 +279,13 @@ function createMainWindow(): BrowserWindow {
       mainWindow.show();
     }
   });
+
+  ipcMain.on('zoom-other-tabs', (event, zoomLevel) => {
+      BrowserWindow.getAllWindows().forEach((window) => {
+          window.webContents.setZoomLevel(zoomLevel);
+      });
+  });
+
 
   ipcMain.on("fetch-user-agent", (event) => {
     event.returnValue = session

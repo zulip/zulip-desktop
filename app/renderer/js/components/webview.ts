@@ -1,6 +1,7 @@
 import type {WebContents} from "electron/main";
 import fs from "node:fs";
 import process from "node:process";
+//import { ipcRenderer } from 'electron';
 
 import * as remote from "@electron/remote";
 import {app, dialog} from "@electron/remote";
@@ -158,16 +159,28 @@ export default class WebView {
     this.show();
   }
 
+  private syncZooms(): void {
+    // Sync zoom level with other tabs if useOneZoom is enabled
+    const useOneZoom = ConfigUtil.getConfigItem("useOneZoom", true);
+    if(useOneZoom) {
+      const zoomLevel = this.getWebContents().zoomLevel;
+      ipcRenderer.send('zoom-other-tabs', zoomLevel);
+    }
+  }
+
   zoomIn(): void {
     this.getWebContents().zoomLevel += 0.5;
+    this.syncZooms();
   }
 
   zoomOut(): void {
     this.getWebContents().zoomLevel -= 0.5;
+    this.syncZooms();
   }
 
   zoomActualSize(): void {
     this.getWebContents().zoomLevel = 0;
+    this.syncZooms();
   }
 
   logOut(): void {
