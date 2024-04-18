@@ -126,15 +126,16 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
           </div>
           <div class="setting-control"></div>
         </div>
+        <div class="setting-row" id="one-zoom-option">
+          <div class="setting-description">
+            ${t.__("Use one zoom for all server tabs")}
+          </div>
+          <div class="setting-control"></div>
+        </div>
         <div class="setting-row" id="enable-spellchecker-option">
           <div class="setting-description">
             ${t.__("Enable spellchecker (requires restart)")}
           </div>
-          <div class="setting-control"></div>
-        </div>
-        <div class="setting-row" id="one-zoom-option">
-          <div class="setting-description">
-            ${t.__("Use one zoom for all server tabs")}</div>
           <div class="setting-control"></div>
         </div>
         <div
@@ -277,9 +278,11 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         const newValue = !ConfigUtil.getConfigItem("useOneZoom", false);
         ConfigUtil.setConfigItem("useOneZoom", newValue);
         useOneZoom();
+        if (newValue) {
+          ipcRenderer.send("zoom-other-tabs", 1);
+        }
       },
-    })
-    return;
+    });
   }
 
   function updateMenubarOption(): void {

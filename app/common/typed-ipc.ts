@@ -5,7 +5,6 @@ export type MainMessage = {
   "clear-app-settings": () => void;
   "configure-spell-checker": () => void;
   "fetch-user-agent": () => string;
-  'zoom-other-tabs': (zoomLevel: number) => void;
   "focus-app": () => void;
   "focus-this-webview": () => void;
   "new-clipboard-key": () => {key: Uint8Array; sig: Uint8Array};
@@ -19,12 +18,12 @@ export type MainMessage = {
   "toggle-app": () => void;
   "toggle-badge-option": (newValue: boolean) => void;
   "toggle-menubar": (showMenubar: boolean) => void;
-  "toggle-one-zoom": (newValue: boolean) => void;
   toggleAutoLauncher: (AutoLaunchValue: boolean) => void;
   "unread-count": (unreadCount: number) => void;
   "update-badge": (messageCount: number) => void;
   "update-menu": (properties: MenuProperties) => void;
   "update-taskbar-icon": (data: string, text: string) => void;
+  "zoom-other-tabs": (zoomLevel: number) => void;
 };
 
 export type MainCall = {
