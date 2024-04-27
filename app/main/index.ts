@@ -259,6 +259,7 @@ function createMainWindow(): BrowserWindow {
   AppMenu.setMenu({
     tabs: [],
   });
+
   mainWindow = createMainWindow();
 
   // Auto-hide menu bar on Windows + Linux

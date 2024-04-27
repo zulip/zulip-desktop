@@ -158,6 +158,14 @@ export default class WebView {
     this.show();
   }
 
+  getZoomFactor(): number {
+    return this.getWebContents().getZoomFactor();
+  }
+
+  setZoomFactor(value: number): void {
+    this.getWebContents().setZoomFactor(value);
+  }
+
   zoomIn(): void {
     this.getWebContents().zoomLevel += 0.5;
   }

@@ -15,6 +15,7 @@ export type MainMessage = {
   "reload-full-app": () => void;
   "save-last-tab": (index: number) => void;
   "switch-server-tab": (index: number) => void;
+  "sync-zooms": () => void;
   "toggle-app": () => void;
   "toggle-badge-option": (newValue: boolean) => void;
   "toggle-menubar": (showMenubar: boolean) => void;
@@ -64,6 +65,7 @@ export type RendererMessage = {
   "show-keyboard-shortcuts": () => void;
   "show-notification-settings": () => void;
   "switch-server-tab": (index: number) => void;
+  "sync-zooms": () => void;
   "tab-devtools": () => void;
   "toggle-autohide-menubar": (
     autoHideMenubar: boolean,
