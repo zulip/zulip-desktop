@@ -158,19 +158,24 @@ export default class WebView {
     this.show();
   }
 
+  getZoomFactor(): number {
+    return this.getWebContents().getZoomFactor();
+  }
+
+  setZoomFactor(value: number): void {
+    this.getWebContents().setZoomFactor(value);
+  }
+
   zoomIn(): void {
     this.getWebContents().zoomLevel += 0.5;
-    this.syncZooms();
   }
 
   zoomOut(): void {
     this.getWebContents().zoomLevel -= 0.5;
-    this.syncZooms();
   }
 
   zoomActualSize(): void {
     this.getWebContents().zoomLevel = 0;
-    this.syncZooms();
   }
 
   logOut(): void {
@@ -225,15 +230,6 @@ export default class WebView {
     ...arguments_: Parameters<RendererMessage[Channel]>
   ): void {
     ipcRenderer.send("forward-to", this.webContentsId, channel, ...arguments_);
-  }
-
-  private syncZooms(): void {
-    // Sync zoom level with other tabs if useOneZoom is enabled
-    const useOneZoom = ConfigUtil.getConfigItem("useOneZoom", true);
-    if (useOneZoom) {
-      const zoomLevel = this.getWebContents().getZoomLevel();
-      ipcRenderer.send("zoom-other-tabs", zoomLevel);
-    }
   }
 
   private registerListeners(): void {

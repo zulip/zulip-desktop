@@ -128,7 +128,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         </div>
         <div class="setting-row" id="one-zoom-option">
           <div class="setting-description">
-            ${t.__("Use one zoom for all server tabs")}
+            ${t.__("Use one zoom for all organization tabs")}
           </div>
           <div class="setting-control"></div>
         </div>
@@ -279,7 +279,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         ConfigUtil.setConfigItem("useOneZoom", newValue);
         useOneZoom();
         if (newValue) {
-          ipcRenderer.send("zoom-other-tabs", 1);
+          ipcRenderer.send("sync-zooms");
         }
       },
     });

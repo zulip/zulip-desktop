@@ -154,7 +154,7 @@ function createMainWindow(): BrowserWindow {
     app.quit();
     return;
   }
-  
+
   await app.whenReady();
 
   if (process.env.GDK_BACKEND !== GDK_BACKEND) {
@@ -276,13 +276,6 @@ function createMainWindow(): BrowserWindow {
       mainWindow.hide();
     } else {
       mainWindow.show();
-    }
-  });
-
-  ipcMain.on("zoom-other-tabs", (event, zoomLevel) => {
-    const windows = BrowserWindow.getAllWindows();
-    for (const window of windows) {
-      window.webContents.setZoomLevel(zoomLevel);
     }
   });
 

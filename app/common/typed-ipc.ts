@@ -15,6 +15,7 @@ export type MainMessage = {
   "reload-full-app": () => void;
   "save-last-tab": (index: number) => void;
   "switch-server-tab": (index: number) => void;
+  "sync-zooms": () => void;
   "toggle-app": () => void;
   "toggle-badge-option": (newValue: boolean) => void;
   "toggle-menubar": (showMenubar: boolean) => void;
@@ -23,7 +24,6 @@ export type MainMessage = {
   "update-badge": (messageCount: number) => void;
   "update-menu": (properties: MenuProperties) => void;
   "update-taskbar-icon": (data: string, text: string) => void;
-  "zoom-other-tabs": (zoomLevel: number) => void;
 };
 
 export type MainCall = {
@@ -65,6 +65,7 @@ export type RendererMessage = {
   "show-keyboard-shortcuts": () => void;
   "show-notification-settings": () => void;
   "switch-server-tab": (index: number) => void;
+  "sync-zooms": () => void;
   "tab-devtools": () => void;
   "toggle-autohide-menubar": (
     autoHideMenubar: boolean,
