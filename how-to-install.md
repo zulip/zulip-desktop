@@ -60,7 +60,7 @@ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 69AD12704E71A4803DCA3A6
 - Add the repo to your apt source list :
 
 ```bash
-echo "deb https://download.zulip.com/desktop/apt stable main" |
+echo "deb [arch=amd64] https://download.zulip.com/desktop/apt stable main" |
   sudo tee -a /etc/apt/sources.list.d/zulip.list
 ```
 
