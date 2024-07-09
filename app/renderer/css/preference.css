@@ -101,9 +101,8 @@ td:nth-child(odd) {
 
 .nav {
   padding: 7px 0;
-  color: rgb(0, 0, 0);
+  color: rgb(0 0 0 / 100%);
   cursor: pointer;
-  
 }
 
 .nav.active {
@@ -467,7 +466,6 @@ i.open-tab-button {
 .setting-description {
   color: rgb(34 34 34 / 100%);
 }
-.nav-container{}
 
 input.toggle-round + label {
   padding: 2px;
