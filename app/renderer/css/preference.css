@@ -101,8 +101,9 @@ td:nth-child(odd) {
 
 .nav {
   padding: 7px 0;
-  color: rgb(153 153 153 / 100%);
+  color: rgb(0, 0, 0);
   cursor: pointer;
+  
 }
 
 .nav.active {
@@ -459,9 +460,14 @@ i.open-tab-button {
 }
 
 .disallowed:hover {
-  background-color:rgb(136 136 136 / 100%);
+  background-color: rgb(136 136 136 / 100%);
   cursor: not-allowed;
 }
+
+.setting-description {
+  color: rgb(34 34 34 / 100%);
+}
+.nav-container{}
 
 input.toggle-round + label {
   padding: 2px;
