@@ -176,6 +176,7 @@ export class ServerManagerView {
     // Default settings which should be respected
     const settingOptions: Partial<Config> = {
       autoHideMenubar: false,
+      useOneZoom: true,
       trayIcon: true,
       useManualProxy: false,
       useSystemProxy: false,
@@ -886,18 +887,21 @@ export class ServerManagerView {
         "zoomIn",
         (webview) => {
           webview.zoomIn();
+          this.syncZooms(webview.getZoomFactor());
         },
       ],
       [
         "zoomOut",
         (webview) => {
           webview.zoomOut();
+          this.syncZooms(webview.getZoomFactor());
         },
       ],
       [
         "zoomActualSize",
         (webview) => {
           webview.zoomActualSize();
+          this.syncZooms(webview.getZoomFactor());
         },
       ],
       [
@@ -1084,6 +1088,10 @@ export class ServerManagerView {
       },
     );
 
+    ipcRenderer.on("sync-zooms", () => {
+      this.syncZooms();
+    });
+
     ipcRenderer.on("enter-fullscreen", () => {
       this.$fullscreenPopup.classList.add("show");
       this.$fullscreenPopup.classList.remove("hidden");
@@ -1175,6 +1183,23 @@ export class ServerManagerView {
     ipcRenderer.on("play-ding-sound", async () => {
       await dingSound.play();
     });
+  }
+
+  private syncZooms(value = 1): void {
+    const shouldUseOneZoom = ConfigUtil.getConfigItem("useOneZoom", true);
+    if (shouldUseOneZoom) {
+      for (const tab of this.tabs) {
+        if (tab instanceof ServerTab) {
+          tab.webview
+            .then((webv) => {
+              webv.setZoomFactor(value);
+            })
+            .catch((error) => {
+              console.error("Error syncing zoom factors:", error);
+            });
+        }
+      }
+    }
   }
 }
 
