@@ -174,7 +174,6 @@
     "playwright-core": "^1.41.0-alpha-jan-9-2024",
     "pre-commit": "^1.2.2",
     "prettier": "^3.0.3",
-    "rimraf": "^5.0.0",
     "semver": "^7.3.5",
     "stylelint": "^16.1.0",
     "stylelint-config-standard": "^36.0.0",
