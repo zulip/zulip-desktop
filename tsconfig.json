@@ -5,6 +5,12 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "esModuleInterop": true,
+    "paths": {
+      // https://github.com/getsentry/sentry-electron/issues/957
+      "@sentry/node/build/types/integrations/anr/common": [
+        "./node_modules/@sentry/node/build/types/integrations/anr/common"
+      ]
+    },
     "resolveJsonModule": true,
     "strict": true,
     "noImplicitOverride": true,
