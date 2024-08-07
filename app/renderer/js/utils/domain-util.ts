@@ -76,6 +76,26 @@ export function updateDomain(index: number, server: ServerConfig): void {
   database.push(`/domains[${index}]`, server, true);
 }
 
+export function updateDomainOrder(oldIndex: number, newIndex: number): void {
+  const domains = getDomains();
+
+  if (
+    !(
+      oldIndex < 0 ||
+      oldIndex >= domains.length ||
+      newIndex < 0 ||
+      newIndex >= domains.length
+    )
+  ) {
+    const [movedDomain] = domains.splice(oldIndex, 1);
+    domains.splice(newIndex, 0, movedDomain);
+
+    for (const [index, domain] of domains.entries()) {
+      updateDomain(index, domain);
+    }
+  }
+}
+
 export async function addDomain(server: {
   url: string;
   alias: string;

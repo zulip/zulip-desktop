@@ -45,7 +45,7 @@ body {
 #view-controls-container {
   height: calc(100% - 208px);
   scrollbar-gutter: stable both-edges;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 #view-controls-container::-webkit-scrollbar {
@@ -417,6 +417,10 @@ webview.focus {
   position: absolute;
   top: 10px;
   left: -5px;
+}
+
+.sortable-chosen .server-tooltip {
+  display: none;
 }
 
 #collapse-button {
