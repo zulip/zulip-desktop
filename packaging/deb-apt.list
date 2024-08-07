@@ -1,1 +1,1 @@
-deb https://download.zulip.com/desktop/apt stable main
+deb [arch=amd64] https://download.zulip.com/desktop/apt stable main
