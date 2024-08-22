@@ -123,5 +123,5 @@
 	"Zoom Out": "Zoom arrière",
 	"keyboard shortcuts": "Raccourcis clavier",
 	"script": "scénario",
-	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} fonctionne sur une version de Zulip Server qui n'est plus à jour.\n{{{version}}} Il se peut qu'il ne fonctionne pas entièrement dans cette application."
 }

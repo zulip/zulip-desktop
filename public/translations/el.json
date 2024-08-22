@@ -123,5 +123,5 @@
 	"Zoom Out": "Ζουμ μακρύτερα",
 	"keyboard shortcuts": "συντομεύσεις πληκτρολογίου",
 	"script": "script",
-	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} τρέχει μία παρωχημένη έκδοση του Zulip Server {{{version}}}. Ενδεχομένως να μη λειτουργεί πλήρως σε αυτή την εφαρμογή."
 }
