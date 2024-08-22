@@ -6,7 +6,6 @@ import process from "node:process";
 import * as remote from "@electron/remote";
 import {app, dialog, session} from "@electron/remote";
 import Tagify from "@yaireo/tagify";
-import ISO6391 from "iso-639-1";
 import {z} from "zod";
 
 import supportedLocales from "../../../../../public/translations/supported-locales.json";
@@ -619,23 +618,20 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
       ).availableSpellCheckerLanguages;
       let languagePairs = new Map<string, string>();
       for (const l of availableLanguages) {
-        if (ISO6391.validate(l)) {
-          languagePairs.set(ISO6391.getName(l), l);
-        }
+        const locale = new Intl.Locale(l.replaceAll("_", "-"));
+        let displayName = new Intl.DisplayNames([locale], {
+          type: "language",
+        }).of(locale.language);
+        if (displayName === undefined) continue;
+        displayName = displayName.replace(/^./u, (firstChar) =>
+          firstChar.toLocaleUpperCase(locale),
+        );
+        if (locale.script !== undefined)
+          displayName += ` (${new Intl.DisplayNames([locale], {type: "script"}).of(locale.script)})`;
+        if (locale.region !== undefined)
+          displayName += ` (${new Intl.DisplayNames([locale], {type: "region"}).of(locale.region)})`;
+        languagePairs.set(displayName, l);
       }
-
-      // Manually set names for languages not available in ISO6391
-      languagePairs.set("English (AU)", "en-AU");
-      languagePairs.set("English (CA)", "en-CA");
-      languagePairs.set("English (GB)", "en-GB");
-      languagePairs.set("English (US)", "en-US");
-      languagePairs.set("Spanish (Latin America)", "es-419");
-      languagePairs.set("Spanish (Argentina)", "es-AR");
-      languagePairs.set("Spanish (Mexico)", "es-MX");
-      languagePairs.set("Spanish (US)", "es-US");
-      languagePairs.set("Portuguese (Brazil)", "pt-BR");
-      languagePairs.set("Portuguese (Portugal)", "pt-PT");
-      languagePairs.set("Serbo-Croatian", "sh");
 
       languagePairs = new Map(
         [...languagePairs].sort((a, b) => (a[0] < b[0] ? -1 : 1)),
