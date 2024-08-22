@@ -308,7 +308,6 @@
       },
       {
         "files": [
-          "scripts/notarize.js",
           "tests/**/*.js"
         ],
         "parserOptions": {
