@@ -18,7 +18,7 @@
     "url": "https://github.com/zulip/zulip-desktop/issues"
   },
   "engines": {
-    "node": ">=16.13.2"
+    "node": ">=18"
   },
   "scripts": {
     "start": "vite",
@@ -147,23 +147,24 @@
   },
   "devDependencies": {
     "@electron/remote": "^2.0.8",
-    "@sentry/core": "^7.94.1",
-    "@sentry/electron": "^4.1.2",
+    "@sentry/core": "^8.26.0",
+    "@sentry/electron": "^5.3.0",
     "@types/adm-zip": "^0.5.0",
     "@types/auto-launch": "^5.0.2",
     "@types/backoff": "^2.5.2",
     "@types/i18n": "^0.13.1",
     "@types/node": "^20.11.30",
     "@types/requestidlecallback": "^0.3.4",
+    "@types/semver": "^7.5.8",
     "@types/yaireo__tagify": "^4.3.2",
     "@yaireo/tagify": "^4.5.0",
     "adm-zip": "^0.5.5",
     "auto-launch": "^5.0.5",
     "backoff": "^2.5.0",
-    "electron": "^29.1.5",
+    "electron": "^32.0.1",
     "electron-builder": "^24.6.4",
     "electron-log": "^5.0.3",
-    "electron-updater": "^6.1.4",
+    "electron-updater": "^6.3.4",
     "electron-window-state": "^5.0.3",
     "escape-goat": "^4.0.0",
     "htmlhint": "^1.1.2",
@@ -180,7 +181,7 @@
     "typescript": "^5.0.4",
     "vite": "^5.0.11",
     "vite-plugin-electron": "^0.28.0",
-    "xo": "^0.58.0",
+    "xo": "^0.59.3",
     "zod": "^3.5.1"
   },
   "prettier": {
