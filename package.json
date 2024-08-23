@@ -120,7 +120,11 @@
         }
       ],
       "icon": "build/icon.ico",
-      "publisherName": "Kandra Labs, Inc."
+      "publisherName": "Kandra Labs, Inc.",
+      "sign": "./scripts/win-sign.js",
+      "signingHashAlgorithms": [
+        "sha256"
+      ]
     },
     "msi": {
       "artifactName": "${productName}-${version}-${arch}.${ext}"
@@ -308,6 +312,7 @@
       },
       {
         "files": [
+          "scripts/win-sign.js",
           "tests/**/*.js"
         ],
         "parserOptions": {
