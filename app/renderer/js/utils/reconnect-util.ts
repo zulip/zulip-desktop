@@ -13,13 +13,18 @@ export default class ReconnectUtil {
   url: string;
   alreadyReloaded: boolean;
   fibonacciBackoff: backoff.Backoff;
+  webview: WebView;
 
   constructor(webview: WebView) {
     this.url = webview.properties.url;
     this.alreadyReloaded = false;
+    this.webview = webview;
+
+    // Improve backoff settings with jitter
     this.fibonacciBackoff = backoff.fibonacci({
       initialDelay: 5000,
       maxDelay: 300_000,
+      randomisationFactor: 0.3, // Add jitter
     });
   }
 
@@ -38,13 +43,14 @@ export default class ReconnectUtil {
     });
   }
 
-  async _checkAndReload(): Promise<boolean> {
+  private async _checkAndReload(): Promise<boolean> {
     if (this.alreadyReloaded) {
       return true;
     }
 
     if (await this.isOnline()) {
-      ipcRenderer.send("forward-message", "reload-viewer");
+      // Reload the webview without forcing navigation
+      await this._reloadWebviewInBackground();
       logger.log("You're back online.");
       return true;
     }
@@ -52,6 +58,19 @@ export default class ReconnectUtil {
     logger.log(
       "There is no internet connection, try checking network cables, modem and router.",
     );
+    this._updateErrorMessage();
+    return false;
+  }
+
+  private async _reloadWebviewInBackground(): Promise<void> {
+    try {
+      this.webview.reload();
+    } catch (error) {
+      logger.error("Failed to reload webview:", error);
+    }
+  }
+
+  private _updateErrorMessage(): void {
     const errorMessageHolder = document.querySelector("#description");
     if (errorMessageHolder) {
       errorMessageHolder.innerHTML = html`
@@ -59,7 +78,5 @@ export default class ReconnectUtil {
         <div>Verify that it works and then click try again.</div>
       `.html;
     }
-
-    return false;
   }
 }
