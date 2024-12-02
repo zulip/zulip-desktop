@@ -20,9 +20,11 @@ export type ServerConfig = {
 };
 
 export type TabRole = "server" | "function";
+export type TabPage = "Settings" | "About";
 
 export type TabData = {
   role: TabRole;
-  name: string;
+  page?: TabPage;
+  label: string;
   index: number;
 };

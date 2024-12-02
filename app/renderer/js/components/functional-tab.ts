@@ -1,10 +1,12 @@
 import {type Html, html} from "../../../common/html.js";
+import type {TabPage} from "../../../common/types.js";
 
 import {generateNodeFromHtml} from "./base.js";
 import Tab, {type TabProperties} from "./tab.js";
 
 export type FunctionalTabProperties = {
   $view: Element;
+  page: TabPage;
 } & TabProperties;
 
 export default class FunctionalTab extends Tab {
@@ -17,7 +19,7 @@ export default class FunctionalTab extends Tab {
 
     this.$view = $view;
     this.$el = generateNodeFromHtml(this.templateHtml());
-    if (this.properties.name !== "Settings") {
+    if (properties.page !== "Settings") {
       this.properties.$root.append(this.$el);
       this.$closeButton = this.$el.querySelector(".server-tab-badge")!;
       this.registerListeners();

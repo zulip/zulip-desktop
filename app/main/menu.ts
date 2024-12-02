@@ -318,12 +318,12 @@ function getWindowSubmenu(
       if (tab === undefined) continue;
 
       // Do not add functional tab settings to list of windows in menu bar
-      if (tab.role === "function" && tab.name === "Settings") {
+      if (tab.role === "function" && tab.page === "Settings") {
         continue;
       }
 
       initialSubmenu.push({
-        label: tab.name,
+        label: tab.label,
         accelerator:
           tab.role === "function" ? "" : `${shortcutKey} + ${tab.index + 1}`,
         checked: tab.index === activeTabIndex,

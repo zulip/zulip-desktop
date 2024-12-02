@@ -1,9 +1,10 @@
-import type {TabRole} from "../../../common/types.js";
+import type {TabPage, TabRole} from "../../../common/types.js";
 
 export type TabProperties = {
   role: TabRole;
+  page?: TabPage;
   icon?: string;
-  name: string;
+  label: string;
   $root: Element;
   onClick: () => void;
   index: number;
