@@ -290,12 +290,9 @@ export class ServerManagerView {
         // ask them before reloading the app
         const {response} = await dialog.showMessageBox({
           type: "question",
-          buttons: ["Yes", "Later"],
+          buttons: [t.__("Yes"), t.__("Later")],
           defaultId: 0,
-          message:
-            "New server" +
-            (domainsAdded.length > 1 ? "s" : "") +
-            " added. Reload app now?",
+          message: t.__("New servers added. Reload app now?"),
         });
         if (response === 0) {
           ipcRenderer.send("reload-full-app");
@@ -823,9 +820,11 @@ export class ServerManagerView {
           async click() {
             const {response} = await dialog.showMessageBox({
               type: "warning",
-              buttons: ["YES", "NO"],
+              buttons: [t.__("Yes"), t.__("No")],
               defaultId: 0,
-              message: "Are you sure you want to disconnect this organization?",
+              message: t.__(
+                "Are you sure you want to disconnect this organization?",
+              ),
             });
             if (response === 0) {
               if (DomainUtil.removeDomain(index)) {
@@ -1010,8 +1009,8 @@ export class ServerManagerView {
       await this.loadProxy();
       if (showAlert) {
         await dialog.showMessageBox({
-          message: "Proxy settings saved!",
-          buttons: ["OK"],
+          message: t.__("Proxy settings saved."),
+          buttons: [t.__("OK")],
         });
         ipcRenderer.send("reload-full-app");
       }

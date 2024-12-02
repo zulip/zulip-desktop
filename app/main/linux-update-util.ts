@@ -6,6 +6,7 @@ import {JsonDB} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors";
 
 import Logger from "../common/logger-util.js";
+import * as t from "../common/translation-util.js";
 
 const logger = new Logger({
   file: "linux-update-util.log",
@@ -57,8 +58,8 @@ function reloadDatabase(): void {
     if (fs.existsSync(linuxUpdateJsonPath)) {
       fs.unlinkSync(linuxUpdateJsonPath);
       dialog.showErrorBox(
-        "Error saving update notifications.",
-        "We encountered an error while saving the update notifications.",
+        t.__("Error saving update notifications"),
+        t.__("We encountered an error while saving the update notifications."),
       );
       logger.error("Error while JSON parsing updates.json: ");
       logger.error(error);
