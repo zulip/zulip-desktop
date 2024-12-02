@@ -12,10 +12,12 @@ import * as ConfigUtil from "../../common/config-util.js";
 import * as DNDUtil from "../../common/dnd-util.js";
 import type {DndSettings} from "../../common/dnd-util.js";
 import * as EnterpriseUtil from "../../common/enterprise-util.js";
+import {html} from "../../common/html.js";
 import * as LinkUtil from "../../common/link-util.js";
 import Logger from "../../common/logger-util.js";
 import * as Messages from "../../common/messages.js";
 import {bundlePath, bundleUrl} from "../../common/paths.js";
+import * as t from "../../common/translation-util.js";
 import type {
   NavigationItem,
   ServerConfig,
@@ -607,7 +609,7 @@ export class ServerManagerView {
   ): Promise<void> {
     await this.openFunctionalTab({
       page: "Settings",
-      label: "Settings",
+      label: t.__("Settings"),
       materialIcon: "settings",
       makeView: async () => {
         this.preferenceView = await PreferenceView.create();
@@ -627,7 +629,7 @@ export class ServerManagerView {
     let aboutView: AboutView;
     await this.openFunctionalTab({
       page: "About",
-      label: "About",
+      label: t.__("About"),
       materialIcon: "sentiment_very_satisfied",
       async makeView() {
         aboutView = await AboutView.create();
@@ -817,7 +819,7 @@ export class ServerManagerView {
       event.preventDefault();
       const template = [
         {
-          label: "Disconnect organization",
+          label: t.__("Disconnect organization"),
           async click() {
             const {response} = await dialog.showMessageBox({
               type: "warning",
@@ -838,7 +840,7 @@ export class ServerManagerView {
           },
         },
         {
-          label: "Notification settings",
+          label: t.__("Notification settings"),
           enabled: await this.isLoggedIn(index),
           click: async () => {
             // Switch to tab whose icon was right-clicked
@@ -849,7 +851,7 @@ export class ServerManagerView {
           },
         },
         {
-          label: "Copy Zulip URL",
+          label: t.__("Copy Zulip URL"),
           click() {
             clipboard.writeText(DomainUtil.getDomain(index).url);
           },
@@ -1185,6 +1187,62 @@ export class ServerManagerView {
 }
 
 window.addEventListener("load", async () => {
+  document.body.innerHTML = html`
+    <div id="content">
+      <div class="popup">
+        <span class="popuptext hidden" id="fullscreen-popup"></span>
+      </div>
+      <div id="sidebar" class="toggle-sidebar">
+        <div id="view-controls-container">
+          <div id="tabs-container"></div>
+          <div id="add-tab" class="tab functional-tab">
+            <div class="server-tab" id="add-action">
+              <i class="material-icons">add</i>
+            </div>
+            <span id="add-server-tooltip" style="display: none"
+              >${t.__("Add Organization")}</span
+            >
+          </div>
+        </div>
+        <div id="actions-container">
+          <div class="action-button" id="dnd-action">
+            <i class="material-icons md-48">notifications</i>
+            <span id="dnd-tooltip" style="display: none"
+              >${t.__("Do Not Disturb")}</span
+            >
+          </div>
+          <div class="action-button hidden" id="reload-action">
+            <i class="material-icons md-48">refresh</i>
+            <span id="reload-tooltip" style="display: none"
+              >${t.__("Reload")}</span
+            >
+          </div>
+          <div class="action-button disable" id="loading-action">
+            <i class="refresh material-icons md-48">loop</i>
+            <span id="loading-tooltip" style="display: none"
+              >${t.__("Loading")}</span
+            >
+          </div>
+          <div class="action-button disable" id="back-action">
+            <i class="material-icons md-48">arrow_back</i>
+            <span id="back-tooltip" style="display: none"
+              >${t.__("Go Back")}</span
+            >
+          </div>
+          <div class="action-button" id="settings-action">
+            <i class="material-icons md-48">settings</i>
+            <span id="setting-tooltip" style="display: none"
+              >${t.__("Settings")}</span
+            >
+          </div>
+        </div>
+      </div>
+      <div id="main-container">
+        <div id="webviews-container"></div>
+      </div>
+    </div>
+  `.html;
+
   const serverManagerView = new ServerManagerView();
   await serverManagerView.init();
 });
