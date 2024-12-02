@@ -20,6 +20,7 @@ import type {
   NavigationItem,
   ServerConfig,
   TabData,
+  TabPage,
 } from "../../common/types.js";
 import defaultIcon from "../img/icon.png";
 
@@ -81,7 +82,7 @@ export class ServerManagerView {
   loading: Set<string>;
   activeTabIndex: number;
   tabs: ServerOrFunctionalTab[];
-  functionalTabs: Map<string, number>;
+  functionalTabs: Map<TabPage, number>;
   tabIndex: number;
   presetOrgs: string[];
   preferenceView?: PreferenceView;
@@ -333,7 +334,7 @@ export class ServerManagerView {
             server.url,
             i,
           );
-          tab.setName(serverConfig.alias);
+          tab.setLabel(serverConfig.alias);
           tab.setIcon(DomainUtil.iconAsUrl(serverConfig.icon));
           (await tab.webview).setUnsupportedMessage(
             DomainUtil.getUnsupportedMessage(serverConfig),
@@ -376,7 +377,7 @@ export class ServerManagerView {
     const tab = new ServerTab({
       role: "server",
       icon: DomainUtil.iconAsUrl(server.icon),
-      name: server.alias,
+      label: server.alias,
       $root: this.$tabsContainer,
       onClick: this.activateLastTab.bind(this, index),
       index,
@@ -558,18 +559,19 @@ export class ServerManagerView {
   }
 
   async openFunctionalTab(tabProperties: {
-    name: string;
+    label: string;
+    page: TabPage;
     materialIcon: string;
     makeView: () => Promise<Element>;
     destroyView: () => void;
   }): Promise<void> {
-    if (this.functionalTabs.has(tabProperties.name)) {
-      await this.activateTab(this.functionalTabs.get(tabProperties.name)!);
+    if (this.functionalTabs.has(tabProperties.page)) {
+      await this.activateTab(this.functionalTabs.get(tabProperties.page)!);
       return;
     }
 
     const index = this.tabs.length;
-    this.functionalTabs.set(tabProperties.name, index);
+    this.functionalTabs.set(tabProperties.page, index);
 
     const tabIndex = this.getTabIndex();
     const $view = await tabProperties.makeView();
@@ -579,13 +581,14 @@ export class ServerManagerView {
       new FunctionalTab({
         role: "function",
         materialIcon: tabProperties.materialIcon,
-        name: tabProperties.name,
+        label: tabProperties.label,
+        page: tabProperties.page,
         $root: this.$tabsContainer,
         index,
         tabIndex,
         onClick: this.activateTab.bind(this, index),
         onDestroy: async () => {
-          await this.destroyTab(tabProperties.name, index);
+          await this.destroyFunctionalTab(tabProperties.page, index);
           tabProperties.destroyView();
         },
         $view,
@@ -596,14 +599,15 @@ export class ServerManagerView {
     // closed when the functional tab DOM is ready, handled in webview.js
     this.$webviewsContainer.classList.remove("loaded");
 
-    await this.activateTab(this.functionalTabs.get(tabProperties.name)!);
+    await this.activateTab(this.functionalTabs.get(tabProperties.page)!);
   }
 
   async openSettings(
     navigationItem: NavigationItem = "General",
   ): Promise<void> {
     await this.openFunctionalTab({
-      name: "Settings",
+      page: "Settings",
+      label: "Settings",
       materialIcon: "settings",
       makeView: async () => {
         this.preferenceView = await PreferenceView.create();
@@ -622,7 +626,8 @@ export class ServerManagerView {
   async openAbout(): Promise<void> {
     let aboutView: AboutView;
     await this.openFunctionalTab({
-      name: "About",
+      page: "About",
+      label: "About",
       materialIcon: "sentiment_very_satisfied",
       async makeView() {
         aboutView = await AboutView.create();
@@ -660,7 +665,8 @@ export class ServerManagerView {
   get tabsForIpc(): TabData[] {
     return this.tabs.map((tab) => ({
       role: tab.properties.role,
-      name: tab.properties.name,
+      page: tab.properties.page,
+      label: tab.properties.label,
       index: tab.properties.index,
     }));
   }
@@ -680,7 +686,7 @@ export class ServerManagerView {
         // If old tab is functional tab Settings, remove focus from the settings icon at sidebar bottom
         if (
           this.tabs[this.activeTabIndex].properties.role === "function" &&
-          this.tabs[this.activeTabIndex].properties.name === "Settings"
+          this.tabs[this.activeTabIndex].properties.page === "Settings"
         ) {
           this.$settingsButton.classList.remove("active");
         }
@@ -722,7 +728,7 @@ export class ServerManagerView {
     this.$loadingIndicator.classList.toggle("hidden", !loading);
   }
 
-  async destroyTab(name: string, index: number): Promise<void> {
+  async destroyFunctionalTab(page: TabPage, index: number): Promise<void> {
     const tab = this.tabs[index];
     if (tab instanceof ServerTab && (await tab.webview).loading) {
       return;
@@ -731,7 +737,7 @@ export class ServerManagerView {
     await tab.destroy();
 
     delete this.tabs[index]; // eslint-disable-line @typescript-eslint/no-array-delete
-    this.functionalTabs.delete(name);
+    this.functionalTabs.delete(page);
 
     // Issue #188: If the functional tab was not focused, do not activate another tab.
     if (this.activeTabIndex === index) {
@@ -1053,7 +1059,7 @@ export class ServerManagerView {
         for (const [index, domain] of DomainUtil.getDomains().entries()) {
           if (domain.url === serverURL) {
             const tab = this.tabs[index];
-            if (tab instanceof ServerTab) tab.setName(realmName);
+            if (tab instanceof ServerTab) tab.setLabel(realmName);
             domain.alias = realmName;
             DomainUtil.updateDomain(index, domain);
             // Update the realm name also on the Window menu
