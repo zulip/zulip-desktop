@@ -19,6 +19,7 @@ import windowStateKeeper from "electron-window-state";
 
 import * as ConfigUtil from "../common/config-util.js";
 import {bundlePath, bundleUrl, publicPath} from "../common/paths.js";
+import * as t from "../common/translation-util.js";
 import type {RendererMessage} from "../common/typed-ipc.js";
 import type {MenuProperties} from "../common/types.js";
 
@@ -318,10 +319,11 @@ function createMainWindow(): BrowserWindow {
       if (isMainFrame) {
         const url = new URL(urlString);
         dialog.showErrorBox(
-          "Certificate error",
-          `The server presented an invalid certificate for ${url.origin}:
-
-${error}`,
+          t.__("Certificate error"),
+          t.__(
+            "The server presented an invalid certificate for {{{origin}}}:\n\n{{{error}}}",
+            {origin: url.origin, error},
+          ),
         );
       }
     },

@@ -71,8 +71,8 @@ export function initNewServerForm({
         message:
           error instanceof Error
             ? `${error.name}: ${error.message}`
-            : "Unknown error",
-        buttons: ["OK"],
+            : t.__("Unknown error"),
+        buttons: [t.__("OK")],
       });
       return;
     }

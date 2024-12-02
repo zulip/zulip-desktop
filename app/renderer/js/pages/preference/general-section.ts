@@ -455,9 +455,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   async function customCssDialog(): Promise<void> {
     const showDialogOptions: OpenDialogOptions = {
-      title: "Select file",
+      title: t.__("Select file"),
       properties: ["openFile"],
-      filters: [{name: "CSS file", extensions: ["css"]}],
+      filters: [{name: t.__("CSS file"), extensions: ["css"]}],
     };
 
     const {filePaths, canceled} =
@@ -524,7 +524,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   async function downloadFolderDialog(): Promise<void> {
     const showDialogOptions: OpenDialogOptions = {
-      title: "Select Download Location",
+      title: t.__("Select Download Location"),
       properties: ["openDirectory"],
     };
 
@@ -567,9 +567,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
     const {response} = await dialog.showMessageBox({
       type: "warning",
-      buttons: ["YES", "NO"],
+      buttons: [t.__("Yes"), t.__("No")],
       defaultId: 0,
-      message: "Are you sure?",
+      message: t.__("Are you sure?"),
       detail: clearAppDataMessage,
     });
     if (response === 0) {

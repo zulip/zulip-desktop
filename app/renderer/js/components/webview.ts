@@ -7,6 +7,7 @@ import {app, dialog} from "@electron/remote";
 
 import * as ConfigUtil from "../../../common/config-util.js";
 import {type Html, html} from "../../../common/html.js";
+import * as t from "../../../common/translation-util.js";
 import type {RendererMessage} from "../../../common/typed-ipc.js";
 import type {TabRole} from "../../../common/types.js";
 import preloadCss from "../../css/preload.css?raw";
@@ -328,8 +329,8 @@ export default class WebView {
         this.customCss = null;
         ConfigUtil.setConfigItem("customCSS", null);
 
-        const errorMessage = "The custom css previously set is deleted!";
-        dialog.showErrorBox("custom css file deleted!", errorMessage);
+        const errorMessage = t.__("The custom CSS previously set is deleted.");
+        dialog.showErrorBox(t.__("Custom CSS file deleted"), errorMessage);
         return;
       }
 

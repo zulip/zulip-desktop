@@ -10,6 +10,7 @@ import {
 } from "electron-updater";
 
 import * as ConfigUtil from "../common/config-util.js";
+import * as t from "../common/translation-util.js";
 
 import {linuxUpdateNotification} from "./linuxupdater.js"; // Required only in case of linux
 
@@ -58,9 +59,13 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
       }
 
       await dialog.showMessageBox({
-        message: `A new version ${info.version}, of Zulip Desktop is available`,
-        detail:
+        message: t.__(
+          "A new version {{{version}}} of Zulip Desktop is available.",
+          {version: info.version},
+        ),
+        detail: t.__(
           "The update will be downloaded in the background. You will be notified when it is ready to be installed.",
+        ),
       });
     }
   });
@@ -72,8 +77,11 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
       autoUpdater.removeAllListeners();
 
       await dialog.showMessageBox({
-        message: "No updates available",
-        detail: `You are running the latest version of Zulip Desktop.\nVersion: ${app.getVersion()}`,
+        message: t.__("No updates available."),
+        detail: t.__(
+          "You are running the latest version of Zulip Desktop.\nVersion: {{{version}}}",
+          {version: app.getVersion()},
+        ),
       });
     }
   });
@@ -85,20 +93,20 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
       autoUpdater.removeAllListeners();
 
       const messageText = updateAvailable
-        ? "Unable to download the updates"
-        : "Unable to check for updates";
+        ? t.__("Unable to download the update.")
+        : t.__("Unable to check for updates.");
+      const link = "https://zulip.com/apps/";
       const {response} = await dialog.showMessageBox({
         type: "error",
-        buttons: ["Manual Download", "Cancel"],
+        buttons: [t.__("Manual Download"), t.__("Cancel")],
         message: messageText,
-        detail: `Error: ${error.message}
-
-The latest version of Zulip Desktop is available at -
-https://zulip.com/apps/.
-Current Version: ${app.getVersion()}`,
+        detail: t.__(
+          "Error: {{{error}}}\n\nThe latest version of Zulip Desktop is available at:\n{{{link}}}\nCurrent version: {{{version}}}",
+          {error: error.message, link, version: app.getVersion()},
+        ),
       });
       if (response === 0) {
-        await shell.openExternal("https://zulip.com/apps/");
+        await shell.openExternal(link);
       }
     }
   });
@@ -108,10 +116,14 @@ Current Version: ${app.getVersion()}`,
     // Ask user to update the app
     const {response} = await dialog.showMessageBox({
       type: "question",
-      buttons: ["Install and Relaunch", "Install Later"],
+      buttons: [t.__("Install and Relaunch"), t.__("Install Later")],
       defaultId: 0,
-      message: `A new update ${event.version} has been downloaded`,
-      detail: "It will be installed the next time you restart the application",
+      message: t.__("A new update {{{version}}} has been downloaded.", {
+        version: event.version,
+      }),
+      detail: t.__(
+        "It will be installed the next time you restart the application.",
+      ),
     });
     if (response === 0) {
       quitting = true;
