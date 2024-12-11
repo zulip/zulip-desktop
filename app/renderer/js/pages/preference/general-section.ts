@@ -56,7 +56,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         </div>
         <div class="setting-row" id="badge-option">
           <div class="setting-description">
-            ${t.__("Show app unread badge")}
+            ${t.__("Show unread count badge on app icon")}
           </div>
           <div class="setting-control"></div>
         </div>
