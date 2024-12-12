@@ -75,7 +75,6 @@
 	"Organizations": "Organizasyonlar",
 	"Paste": "Yapıştır",
 	"Paste and Match Style": "Yapıştır ve Stili Koru",
-	"Proxy": "Proxy",
 	"Proxy bypass rules": "Proxy atlatma kuralları",
 	"Proxy rules": "Proxy kuralları",
 	"Quit": "Çık",
@@ -122,6 +121,5 @@
 	"Zoom In": "Büyüt",
 	"Zoom Out": "Küçült",
 	"keyboard shortcuts": "klavye kısa yolları",
-	"script": "script",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} eski Zulip versionu kullanıyor {{{version}}}. Bu uygulamada kullanılamayabilir."
 }

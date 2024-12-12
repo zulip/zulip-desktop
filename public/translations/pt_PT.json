@@ -75,7 +75,6 @@
 	"Organizations": "Organizações",
 	"Paste": "Colar",
 	"Paste and Match Style": "Colar com formatação de destino",
-	"Proxy": "Proxy",
 	"Proxy bypass rules": "Regras de bypass de proxy",
 	"Proxy rules": "Regras de proxy",
 	"Quit": "Sair",
@@ -122,6 +121,5 @@
 	"Zoom In": "Ampliar",
 	"Zoom Out": "Reduzir",
 	"keyboard shortcuts": "atalhos de teclado",
-	"script": "script",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} está a correr uma versão desatualizada do servidor Zulip {{{version}}}. Poderá não funcionar corretamante com esta aplicação."
 }

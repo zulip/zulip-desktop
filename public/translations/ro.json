@@ -4,7 +4,6 @@
 	"Add Organization": "Adaugă Organizație",
 	"Add a Zulip organization": "Adaugă o organizație Zulip",
 	"Add custom CSS": "Adaugă un CSS personalizat",
-	"AddServer": "AddServer",
 	"Advanced": "Avansat",
 	"All the connected organizations will appear here.": "Toate organizațiile conectate vor apărea aici.",
 	"Always start minimized": "Pornește întotdeauna micșorat",
@@ -50,7 +49,6 @@
 	"Flash taskbar on new message": "Semnalizează cu bara de activități la un mesaj nou",
 	"Forward": "Inainte",
 	"Functionality": "Funcționalitate",
-	"General": "General",
 	"Get beta updates": "Obține actualizări beta",
 	"Hard Reload": "Reîncărcare forțată",
 	"Help": "Ajutor",
@@ -75,7 +73,6 @@
 	"Organizations": "Organizații",
 	"Paste": "Lipește",
 	"Paste and Match Style": "Lipește și potrivește stilul",
-	"Proxy": "Proxy",
 	"Proxy bypass rules": "Reguli de ocolire proxy",
 	"Proxy rules": "Reguli proxy",
 	"Quit": "Renunță",
@@ -122,6 +119,5 @@
 	"Zoom In": "Marește",
 	"Zoom Out": "Micșorează",
 	"keyboard shortcuts": "scurtături tastatură",
-	"script": "script",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} rulează o versiune învechită a serverului Zulip {{{version}}}. S-ar putea să nu funcționeze în întregime în această aplicație."
 }

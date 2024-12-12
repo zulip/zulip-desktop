@@ -122,6 +122,5 @@
 	"Zoom In": "بزرگنمایی",
 	"Zoom Out": "کوچک نمایی",
 	"keyboard shortcuts": "میانبرهای صفحه کلید",
-	"script": "script",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} نسخه {{{version}}} سرور زولیپ قدیمی را اجرا می‌کند. ممکن است به طور کامل در این برنامه کار نکند."
 }

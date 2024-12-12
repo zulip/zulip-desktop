@@ -75,7 +75,6 @@
 	"Organizations": "組織",
 	"Paste": "貼上",
 	"Paste and Match Style": "貼上並套用樣式",
-	"Proxy": "Proxy",
 	"Proxy bypass rules": "Proxy 白名單規則",
 	"Proxy rules": "Proxy 規則",
 	"Quit": "退出",
@@ -122,6 +121,5 @@
 	"Zoom In": "放大",
 	"Zoom Out": "縮小",
 	"keyboard shortcuts": "鍵盤快捷鍵",
-	"script": "script",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} Zulip 伺服器版本過時 {{{version}}}. 服務可能無法正常運作"
 }
