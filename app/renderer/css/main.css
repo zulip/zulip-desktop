@@ -44,6 +44,7 @@ body {
 
 #view-controls-container {
   height: calc(100% - 208px);
+  scrollbar-gutter: stable both-edges;
   overflow-y: hidden;
 }
 
@@ -52,16 +53,15 @@ body {
 }
 
 #view-controls-container::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+  background-color: rgb(0 0 0 / 30%);
 }
 
 #view-controls-container::-webkit-scrollbar-thumb {
   background-color: rgb(169 169 169 / 100%);
-  outline: 1px solid rgb(169 169 169 / 100%);
 }
 
 #view-controls-container:hover {
-  overflow-y: overlay;
+  overflow-y: scroll;
 }
 
 /*******************
@@ -290,7 +290,9 @@ body {
   content: "";
   position: absolute;
   z-index: 1;
-  background: rgb(255 255 255 / 100%) url("../img/ic_loading.gif") no-repeat;
+
+  /* Spinner is released under loading.io free License: https://loading.io/license/#free-license */
+  background: rgb(255 255 255 / 100%) url("../img/ic_loading.svg") no-repeat;
   background-size: 60px 60px;
   background-position: center;
   width: 100%;

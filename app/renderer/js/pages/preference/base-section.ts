@@ -1,17 +1,16 @@
-import type {Html} from "../../../../common/html.js";
-import {html} from "../../../../common/html.js";
+import {type Html, html} from "../../../../common/html.js";
 import {generateNodeFromHtml} from "../../components/base.js";
 import {ipcRenderer} from "../../typed-ipc-renderer.js";
 
-type BaseSectionProps = {
+type BaseSectionProperties = {
   $element: HTMLElement;
   disabled?: boolean;
   value: boolean;
   clickHandler: () => void;
 };
 
-export function generateSettingOption(props: BaseSectionProps): void {
-  const {$element, disabled, value, clickHandler} = props;
+export function generateSettingOption(properties: BaseSectionProperties): void {
+  const {$element, disabled, value, clickHandler} = properties;
 
   $element.textContent = "";
 
@@ -30,8 +29,7 @@ export function generateOptionHtml(
   disabled?: boolean,
 ): Html {
   const labelHtml = disabled
-    ? // eslint-disable-next-line unicorn/template-indent
-      html`<label
+    ? html`<label
         class="disallowed"
         title="Setting locked by system administrator."
       ></label>`

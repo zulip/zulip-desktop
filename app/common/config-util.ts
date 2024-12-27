@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import * as Sentry from "@sentry/electron";
+import * as Sentry from "@sentry/core";
 import {JsonDB} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors";
 import type {z} from "zod";
@@ -19,23 +19,23 @@ const logger = new Logger({
   file: "config-util.log",
 });
 
-let db: JsonDB;
+let database: JsonDB;
 
-reloadDb();
+reloadDatabase();
 
 export function getConfigItem<Key extends keyof Config>(
   key: Key,
   defaultValue: Config[Key],
 ): z.output<(typeof configSchemata)[Key]> {
   try {
-    db.reload();
+    database.reload();
   } catch (error: unknown) {
     logger.error("Error while reloading settings.json: ");
     logger.error(error);
   }
 
   try {
-    return configSchemata[key].parse(db.getObject<unknown>(`/${key}`));
+    return configSchemata[key].parse(database.getObject<unknown>(`/${key}`));
   } catch (error: unknown) {
     if (!(error instanceof DataError)) throw error;
     setConfigItem(key, defaultValue);
@@ -46,13 +46,13 @@ export function getConfigItem<Key extends keyof Config>(
 // This function returns whether a key exists in the configuration file (settings.json)
 export function isConfigItemExists(key: string): boolean {
   try {
-    db.reload();
+    database.reload();
   } catch (error: unknown) {
     logger.error("Error while reloading settings.json: ");
     logger.error(error);
   }
 
-  return db.exists(`/${key}`);
+  return database.exists(`/${key}`);
 }
 
 export function setConfigItem<Key extends keyof Config>(
@@ -66,16 +66,16 @@ export function setConfigItem<Key extends keyof Config>(
   }
 
   configSchemata[key].parse(value);
-  db.push(`/${key}`, value, true);
-  db.save();
+  database.push(`/${key}`, value, true);
+  database.save();
 }
 
 export function removeConfigItem(key: string): void {
-  db.delete(`/${key}`);
-  db.save();
+  database.delete(`/${key}`);
+  database.save();
 }
 
-function reloadDb(): void {
+function reloadDatabase(): void {
   const settingsJsonPath = path.join(
     app.getPath("userData"),
     "/config/settings.json",
@@ -96,5 +96,5 @@ function reloadDb(): void {
     }
   }
 
-  db = new JsonDB(settingsJsonPath, true, true);
+  database = new JsonDB(settingsJsonPath, true, true);
 }

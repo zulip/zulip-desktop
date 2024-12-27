@@ -1,16 +1,16 @@
 "use strict";
+const fs = require("node:fs");
 const path = require("node:path");
 const process = require("node:process");
 
 const {_electron} = require("playwright-core");
-const rimraf = require("rimraf");
 
 const testsPkg = require("./package.json");
 
 module.exports = {
   createApp,
   endTest,
-  resetTestDataDir,
+  resetTestDataDir: resetTestDataDirectory,
 };
 
 // Runs Zulip Desktop.
@@ -26,7 +26,7 @@ async function endTest(app) {
   await app.close();
 }
 
-function getAppDataDir() {
+function getAppDataDirectory() {
   let base;
 
   switch (process.platform) {
@@ -56,7 +56,7 @@ function getAppDataDir() {
 }
 
 // Resets the test directory, containing domain.json, window-state.json, etc
-function resetTestDataDir() {
-  const appDataDir = getAppDataDir();
-  rimraf.sync(appDataDir);
+function resetTestDataDirectory() {
+  const appDataDirectory = getAppDataDirectory();
+  fs.rmSync(appDataDirectory, {force: true, recursive: true});
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: rgba(0, 0, 0, 0) none repeat scroll 0% 0%; display: block; shape-rendering: auto; animation-play-state: running; animation-delay: 0s;" width="150px" height="150px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+<circle cx="50" cy="50" fill="none" stroke="#759ed4" stroke-width="10" r="42" stroke-dasharray="197.92033717615698 67.97344572538566" style="animation-play-state: running; animation-delay: 0s;">
+  <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1" style="animation-play-state: running; animation-delay: 0s;"></animateTransform>
+</circle>
+<!-- Created with loading.io (https://loading.io/spinner/rolling/-bar-circle-curve-round-rotate) -->
+<!-- "The Rolling spinner is released under loading.io free License." (https://loading.io/license/#free-license) -->
+</svg>

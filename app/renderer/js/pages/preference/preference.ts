@@ -1,8 +1,9 @@
+import type {IpcRendererEvent} from "electron/renderer";
 import process from "node:process";
 
 import type {DndSettings} from "../../../../common/dnd-util.js";
 import {bundleUrl} from "../../../../common/paths.js";
-import type {NavItem} from "../../../../common/types.js";
+import type {NavigationItem} from "../../../../common/types.js";
 import {ipcRenderer} from "../../typed-ipc-renderer.js";
 
 import {initConnectedOrgSection} from "./connected-org-section.js";
@@ -25,7 +26,7 @@ export class PreferenceView {
   private readonly $shadow: ShadowRoot;
   private readonly $settingsContainer: Element;
   private readonly nav: Nav;
-  private navItem: NavItem = "General";
+  private navigationItem: NavigationItem = "General";
 
   private constructor(templateHtml: string) {
     this.$view = document.createElement("div");
@@ -46,13 +47,13 @@ export class PreferenceView {
     ipcRenderer.on("toggle-autohide-menubar", this.handleToggleMenubar);
     ipcRenderer.on("toggle-dnd", this.handleToggleDnd);
 
-    this.handleNavigation(this.navItem);
+    this.handleNavigation(this.navigationItem);
   }
 
-  handleNavigation = (navItem: NavItem): void => {
-    this.navItem = navItem;
-    this.nav.select(navItem);
-    switch (navItem) {
+  handleNavigation = (navigationItem: NavigationItem): void => {
+    this.navigationItem = navigationItem;
+    this.nav.select(navigationItem);
+    switch (navigationItem) {
       case "AddServer": {
         initServersSection({
           $root: this.$settingsContainer,
@@ -87,13 +88,9 @@ export class PreferenceView {
         });
         break;
       }
-
-      default: {
-        ((n: never) => n)(navItem);
-      }
     }
 
-    window.location.hash = `#${navItem}`;
+    window.location.hash = `#${navigationItem}`;
   };
 
   handleToggleTray(state: boolean) {
@@ -115,16 +112,22 @@ export class PreferenceView {
     }
   }
 
-  private readonly handleToggleSidebar = (_event: Event, state: boolean) => {
+  private readonly handleToggleSidebar = (
+    _event: IpcRendererEvent,
+    state: boolean,
+  ) => {
     this.handleToggle("sidebar-option", state);
   };
 
-  private readonly handleToggleMenubar = (_event: Event, state: boolean) => {
+  private readonly handleToggleMenubar = (
+    _event: IpcRendererEvent,
+    state: boolean,
+  ) => {
     this.handleToggle("menubar-option", state);
   };
 
   private readonly handleToggleDnd = (
-    _event: Event,
+    _event: IpcRendererEvent,
     _state: boolean,
     newSettings: Partial<DndSettings>,
   ) => {

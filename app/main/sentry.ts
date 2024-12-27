@@ -1,6 +1,6 @@
 import {app} from "electron/main";
 
-import * as Sentry from "@sentry/electron/main"; // eslint-disable-line n/file-extension-in-import
+import * as Sentry from "@sentry/electron/main";
 
 import {getConfigItem} from "../common/config-util.js";
 

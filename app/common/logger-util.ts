@@ -13,7 +13,7 @@ type LoggerOptions = {
 
 initSetUp();
 
-const logDir = `${app.getPath("userData")}/Logs`;
+const logDirectory = `${app.getPath("userData")}/Logs`;
 
 type Level = "log" | "debug" | "info" | "warn" | "error";
 
@@ -23,7 +23,7 @@ export default class Logger {
   constructor(options: LoggerOptions = {}) {
     let {file = "console.log"} = options;
 
-    file = `${logDir}/${file}`;
+    file = `${logDirectory}/${file}`;
 
     // Trim log according to type of process
     if (process.type === "renderer") {
@@ -38,31 +38,31 @@ export default class Logger {
     this.nodeConsole = nodeConsole;
   }
 
-  _log(type: Level, ...args: unknown[]): void {
-    args.unshift(this.getTimestamp() + " |\t");
-    args.unshift(type.toUpperCase() + " |");
-    this.nodeConsole[type](...args);
-    console[type](...args);
+  _log(type: Level, ...arguments_: unknown[]): void {
+    arguments_.unshift(this.getTimestamp() + " |\t");
+    arguments_.unshift(type.toUpperCase() + " |");
+    this.nodeConsole[type](...arguments_);
+    console[type](...arguments_);
   }
 
-  log(...args: unknown[]): void {
-    this._log("log", ...args);
+  log(...arguments_: unknown[]): void {
+    this._log("log", ...arguments_);
   }
 
-  debug(...args: unknown[]): void {
-    this._log("debug", ...args);
+  debug(...arguments_: unknown[]): void {
+    this._log("debug", ...arguments_);
   }
 
-  info(...args: unknown[]): void {
-    this._log("info", ...args);
+  info(...arguments_: unknown[]): void {
+    this._log("info", ...arguments_);
   }
 
-  warn(...args: unknown[]): void {
-    this._log("warn", ...args);
+  warn(...arguments_: unknown[]): void {
+    this._log("warn", ...arguments_);
   }
 
-  error(...args: unknown[]): void {
-    this._log("error", ...args);
+  error(...arguments_: unknown[]): void {
+    this._log("error", ...arguments_);
   }
 
   getTimestamp(): string {

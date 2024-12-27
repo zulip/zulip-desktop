@@ -1,6 +1,14 @@
 import {clipboard} from "electron/common";
-import type {IpcMainEvent, WebContents} from "electron/main";
-import {BrowserWindow, app, dialog, powerMonitor, session} from "electron/main";
+import {
+  BrowserWindow,
+  type IpcMainEvent,
+  type WebContents,
+  app,
+  dialog,
+  powerMonitor,
+  session,
+  webContents,
+} from "electron/main";
 import {Buffer} from "node:buffer";
 import crypto from "node:crypto";
 import path from "node:path";
@@ -11,8 +19,9 @@ import windowStateKeeper from "electron-window-state";
 
 import * as ConfigUtil from "../common/config-util.js";
 import {bundlePath, bundleUrl, publicPath} from "../common/paths.js";
+import * as t from "../common/translation-util.js";
 import type {RendererMessage} from "../common/typed-ipc.js";
-import type {MenuProps} from "../common/types.js";
+import type {MenuProperties} from "../common/types.js";
 
 import {appUpdater, shouldQuitForUpdate} from "./autoupdater.js";
 import * as BadgeSettings from "./badge-settings.js";
@@ -102,7 +111,14 @@ function createMainWindow(): BrowserWindow {
       event.preventDefault();
 
       if (process.platform === "darwin") {
-        app.hide();
+        if (win.isFullScreen()) {
+          win.setFullScreen(false);
+          win.once("leave-full-screen", () => {
+            app.hide();
+          });
+        } else {
+          app.hide();
+        }
       } else {
         win.hide();
       }
@@ -170,7 +186,7 @@ function createMainWindow(): BrowserWindow {
 
   ipcMain.on(
     "permission-callback",
-    (event: Event, permissionCallbackId: number, grant: boolean) => {
+    (event, permissionCallbackId: number, grant: boolean) => {
       permissionCallbacks.get(permissionCallbackId)?.(grant);
       permissionCallbacks.delete(permissionCallbackId);
     },
@@ -181,7 +197,7 @@ function createMainWindow(): BrowserWindow {
     mainWindow.show();
   });
 
-  app.on("web-contents-created", (_event: Event, contents: WebContents) => {
+  app.on("web-contents-created", (_event, contents: WebContents) => {
     contents.setWindowOpenHandler((details) => {
       handleExternalLink(contents, details, page);
       return {action: "deny"};
@@ -291,18 +307,25 @@ function createMainWindow(): BrowserWindow {
   app.on(
     "certificate-error",
     (
-      event: Event,
-      webContents: WebContents,
-      urlString: string,
-      error: string,
+      event,
+      webContents,
+      urlString,
+      error,
+      certificate,
+      callback,
+      isMainFrame,
+      // eslint-disable-next-line max-params
     ) => {
-      const url = new URL(urlString);
-      dialog.showErrorBox(
-        "Certificate error",
-        `The server presented an invalid certificate for ${url.origin}:
-
-${error}`,
-      );
+      if (isMainFrame) {
+        const url = new URL(urlString);
+        dialog.showErrorBox(
+          t.__("Certificate error"),
+          t.__(
+            "The server presented an invalid certificate for {{{origin}}}:\n\n{{{error}}}",
+            {origin: url.origin, error},
+          ),
+        );
+      }
     },
   );
 
@@ -361,24 +384,21 @@ ${error}`,
     BadgeSettings.updateBadge(badgeCount, mainWindow);
   });
 
-  ipcMain.on("toggle-menubar", (_event: IpcMainEvent, showMenubar: boolean) => {
+  ipcMain.on("toggle-menubar", (_event, showMenubar: boolean) => {
     mainWindow.autoHideMenuBar = showMenubar;
     mainWindow.setMenuBarVisibility(!showMenubar);
     send(page, "toggle-autohide-menubar", showMenubar, true);
   });
 
-  ipcMain.on("update-badge", (_event: IpcMainEvent, messageCount: number) => {
+  ipcMain.on("update-badge", (_event, messageCount: number) => {
     badgeCount = messageCount;
     BadgeSettings.updateBadge(badgeCount, mainWindow);
     send(page, "tray", messageCount);
   });
 
-  ipcMain.on(
-    "update-taskbar-icon",
-    (_event: IpcMainEvent, data: string, text: string) => {
-      BadgeSettings.updateTaskbarIcon(data, text, mainWindow);
-    },
-  );
+  ipcMain.on("update-taskbar-icon", (_event, data: string, text: string) => {
+    BadgeSettings.updateTaskbarIcon(data, text, mainWindow);
+  });
 
   ipcMain.on(
     "forward-message",
@@ -391,40 +411,52 @@ ${error}`,
     },
   );
 
-  ipcMain.on("update-menu", (_event: IpcMainEvent, props: MenuProps) => {
-    AppMenu.setMenu(props);
-    if (props.activeTabIndex !== undefined) {
-      const activeTab = props.tabs[props.activeTabIndex];
-      mainWindow.setTitle(`Zulip - ${activeTab.name}`);
-    }
-  });
-
   ipcMain.on(
-    "toggleAutoLauncher",
-    async (_event: IpcMainEvent, AutoLaunchValue: boolean) => {
-      await setAutoLaunch(AutoLaunchValue);
+    "forward-to",
+    <Channel extends keyof RendererMessage>(
+      _event: IpcMainEvent,
+      webContentsId: number,
+      listener: Channel,
+      ...parameters: Parameters<RendererMessage[Channel]>
+    ) => {
+      const contents = webContents.fromId(webContentsId);
+      if (contents !== undefined) {
+        send(contents, listener, ...parameters);
+      }
     },
   );
 
+  ipcMain.on("update-menu", (_event, properties: MenuProperties) => {
+    AppMenu.setMenu(properties);
+    if (properties.activeTabIndex !== undefined) {
+      const activeTab = properties.tabs[properties.activeTabIndex];
+      mainWindow.setTitle(`Zulip - ${activeTab.label}`);
+    }
+  });
+
+  ipcMain.on("toggleAutoLauncher", async (_event, AutoLaunchValue: boolean) => {
+    await setAutoLaunch(AutoLaunchValue);
+  });
+
   ipcMain.on(
     "realm-name-changed",
-    (_event: IpcMainEvent, serverURL: string, realmName: string) => {
+    (_event, serverURL: string, realmName: string) => {
       send(page, "update-realm-name", serverURL, realmName);
     },
   );
 
   ipcMain.on(
     "realm-icon-changed",
-    (_event: IpcMainEvent, serverURL: string, iconURL: string) => {
+    (_event, serverURL: string, iconURL: string) => {
       send(page, "update-realm-icon", serverURL, iconURL);
     },
   );
 
-  ipcMain.on("save-last-tab", (_event: IpcMainEvent, index: number) => {
+  ipcMain.on("save-last-tab", (_event, index: number) => {
     ConfigUtil.setConfigItem("lastActiveTab", index);
   });
 
-  ipcMain.on("focus-this-webview", (event: IpcMainEvent) => {
+  ipcMain.on("focus-this-webview", (event) => {
     send(page, "focus-webview-with-id", event.sender.id);
     mainWindow.show();
   });

@@ -1,4 +1,4 @@
-import {clipboard} from "electron/common";
+import {type Event, clipboard} from "electron/common";
 import type {WebContents} from "electron/main";
 import type {
   ContextMenuParams,
@@ -13,11 +13,11 @@ import * as t from "../../../common/translation-util.js";
 export const contextMenu = (
   webContents: WebContents,
   event: Event,
-  props: ContextMenuParams,
+  properties: ContextMenuParams,
 ) => {
-  const isText = props.selectionText !== "";
-  const isLink = props.linkURL !== "";
-  const linkUrl = isLink ? new URL(props.linkURL) : undefined;
+  const isText = properties.selectionText !== "";
+  const isLink = properties.linkURL !== "";
+  const linkUrl = isLink ? new URL(properties.linkURL) : undefined;
 
   const makeSuggestion = (suggestion: string) => ({
     label: suggestion,
@@ -30,19 +30,21 @@ export const contextMenu = (
   let menuTemplate: MenuItemConstructorOptions[] = [
     {
       label: t.__("Add to Dictionary"),
-      visible: props.isEditable && isText && props.misspelledWord.length > 0,
+      visible:
+        properties.isEditable && isText && properties.misspelledWord.length > 0,
       click(_item) {
         webContents.session.addWordToSpellCheckerDictionary(
-          props.misspelledWord,
+          properties.misspelledWord,
         );
       },
     },
     {
       type: "separator",
-      visible: props.isEditable && isText && props.misspelledWord.length > 0,
+      visible:
+        properties.isEditable && isText && properties.misspelledWord.length > 0,
     },
     {
-      label: `${t.__("Look Up")} "${props.selectionText}"`,
+      label: `${t.__("Look Up")} "${properties.selectionText}"`,
       visible: process.platform === "darwin" && isText,
       click(_item) {
         webContents.showDefinitionForSelection();
@@ -55,7 +57,7 @@ export const contextMenu = (
     {
       label: t.__("Cut"),
       visible: isText,
-      enabled: props.isEditable,
+      enabled: properties.isEditable,
       accelerator: "CommandOrControl+X",
       click(_item) {
         webContents.cut();
@@ -64,7 +66,7 @@ export const contextMenu = (
     {
       label: t.__("Copy"),
       accelerator: "CommandOrControl+C",
-      enabled: props.editFlags.canCopy,
+      enabled: properties.editFlags.canCopy,
       click(_item) {
         webContents.copy();
       },
@@ -72,7 +74,7 @@ export const contextMenu = (
     {
       label: t.__("Paste"), // Bug: Paste replaces text
       accelerator: "CommandOrControl+V",
-      enabled: props.isEditable,
+      enabled: properties.isEditable,
       click() {
         webContents.paste();
       },
@@ -88,32 +90,34 @@ export const contextMenu = (
       visible: isLink,
       click(_item) {
         clipboard.write({
-          bookmark: props.linkText,
+          bookmark: properties.linkText,
           text:
-            linkUrl?.protocol === "mailto:" ? linkUrl.pathname : props.linkURL,
+            linkUrl?.protocol === "mailto:"
+              ? linkUrl.pathname
+              : properties.linkURL,
         });
       },
     },
     {
       label: t.__("Copy Image"),
-      visible: props.mediaType === "image",
+      visible: properties.mediaType === "image",
       click(_item) {
-        webContents.copyImageAt(props.x, props.y);
+        webContents.copyImageAt(properties.x, properties.y);
       },
     },
     {
       label: t.__("Copy Image URL"),
-      visible: props.mediaType === "image",
+      visible: properties.mediaType === "image",
       click(_item) {
         clipboard.write({
-          bookmark: props.srcURL,
-          text: props.srcURL,
+          bookmark: properties.srcURL,
+          text: properties.srcURL,
         });
       },
     },
     {
       type: "separator",
-      visible: isLink || props.mediaType === "image",
+      visible: isLink || properties.mediaType === "image",
     },
     {
       label: t.__("Services"),
@@ -122,10 +126,10 @@ export const contextMenu = (
     },
   ];
 
-  if (props.misspelledWord) {
-    if (props.dictionarySuggestions.length > 0) {
+  if (properties.misspelledWord) {
+    if (properties.dictionarySuggestions.length > 0) {
       const suggestions: MenuItemConstructorOptions[] =
-        props.dictionarySuggestions.map((suggestion: string) =>
+        properties.dictionarySuggestions.map((suggestion: string) =>
           makeSuggestion(suggestion),
         );
       menuTemplate = [...suggestions, ...menuTemplate];

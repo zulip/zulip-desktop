@@ -1,16 +1,17 @@
-import {EventEmitter} from "events"; // eslint-disable-line unicorn/prefer-node-protocol
+import {EventEmitter} from "node:events";
 
-import type {ClipboardDecrypter} from "./clipboard-decrypter.js";
-import {ClipboardDecrypterImpl} from "./clipboard-decrypter.js";
-import type {NotificationData} from "./notification/index.js";
-import {newNotification} from "./notification/index.js";
+import {
+  type ClipboardDecrypter,
+  ClipboardDecrypterImplementation,
+} from "./clipboard-decrypter.js";
+import {type NotificationData, newNotification} from "./notification/index.js";
 import {ipcRenderer} from "./typed-ipc-renderer.js";
 
-type ListenerType = (...args: any[]) => void;
+type ListenerType = (...arguments_: any[]) => void;
 
 /* eslint-disable @typescript-eslint/naming-convention */
 export type ElectronBridge = {
-  send_event: (eventName: string | symbol, ...args: unknown[]) => boolean;
+  send_event: (eventName: string | symbol, ...arguments_: unknown[]) => boolean;
   on_event: (eventName: string, listener: ListenerType) => void;
   new_notification: (
     title: string,
@@ -31,12 +32,12 @@ let idle = false;
 // Indicates the time at which user was last active
 let lastActive = Date.now();
 
-export const bridgeEvents = new EventEmitter();
+export const bridgeEvents = new EventEmitter(); // eslint-disable-line unicorn/prefer-event-target
 
 /* eslint-disable @typescript-eslint/naming-convention */
 const electron_bridge: ElectronBridge = {
-  send_event: (eventName: string | symbol, ...args: unknown[]): boolean =>
-    bridgeEvents.emit(eventName, ...args),
+  send_event: (eventName: string | symbol, ...arguments_: unknown[]): boolean =>
+    bridgeEvents.emit(eventName, ...arguments_),
 
   on_event(eventName: string, listener: ListenerType): void {
     bridgeEvents.on(eventName, listener);
@@ -60,7 +61,7 @@ const electron_bridge: ElectronBridge = {
   },
 
   decrypt_clipboard: (version: number): ClipboardDecrypter =>
-    new ClipboardDecrypterImpl(version),
+    new ClipboardDecrypterImplementation(version),
 };
 /* eslint-enable @typescript-eslint/naming-convention */
 

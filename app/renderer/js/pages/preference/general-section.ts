@@ -6,7 +6,6 @@ import process from "node:process";
 import * as remote from "@electron/remote";
 import {app, dialog, session} from "@electron/remote";
 import Tagify from "@yaireo/tagify";
-import ISO6391 from "iso-639-1";
 import {z} from "zod";
 
 import supportedLocales from "../../../../../public/translations/supported-locales.json";
@@ -20,11 +19,11 @@ import {generateSelectHtml, generateSettingOption} from "./base-section.js";
 
 const currentBrowserWindow = remote.getCurrentWindow();
 
-type GeneralSectionProps = {
+type GeneralSectionProperties = {
   $root: Element;
 };
 
-export function initGeneralSection({$root}: GeneralSectionProps): void {
+export function initGeneralSection({$root}: GeneralSectionProperties): void {
   $root.innerHTML = html`
     <div class="settings-pane">
       <div class="title">${t.__("Appearance")}</div>
@@ -57,7 +56,7 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
         </div>
         <div class="setting-row" id="badge-option">
           <div class="setting-description">
-            ${t.__("Show app unread badge")}
+            ${t.__("Show unread count badge on app icon")}
           </div>
           <div class="setting-control"></div>
         </div>
@@ -356,7 +355,8 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
         const newValue = !ConfigUtil.getConfigItem("silent", true);
         ConfigUtil.setConfigItem("silent", newValue);
         updateSilentOption();
-        ipcRenderer.sendTo(
+        ipcRenderer.send(
+          "forward-to",
           currentBrowserWindow.webContents.id,
           "toggle-silent",
           newValue,
@@ -455,14 +455,13 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
 
   async function customCssDialog(): Promise<void> {
     const showDialogOptions: OpenDialogOptions = {
-      title: "Select file",
+      title: t.__("Select file"),
       properties: ["openFile"],
-      filters: [{name: "CSS file", extensions: ["css"]}],
+      filters: [{name: t.__("CSS file"), extensions: ["css"]}],
     };
 
-    const {filePaths, canceled} = await dialog.showOpenDialog(
-      showDialogOptions,
-    );
+    const {filePaths, canceled} =
+      await dialog.showOpenDialog(showDialogOptions);
     if (!canceled) {
       ConfigUtil.setConfigItem("customCSS", filePaths[0]);
       ipcRenderer.send("forward-message", "hard-reload");
@@ -525,13 +524,12 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
 
   async function downloadFolderDialog(): Promise<void> {
     const showDialogOptions: OpenDialogOptions = {
-      title: "Select Download Location",
+      title: t.__("Select Download Location"),
       properties: ["openDirectory"],
     };
 
-    const {filePaths, canceled} = await dialog.showOpenDialog(
-      showDialogOptions,
-    );
+    const {filePaths, canceled} =
+      await dialog.showOpenDialog(showDialogOptions);
     if (!canceled) {
       ConfigUtil.setConfigItem("downloadsPath", filePaths[0]);
       const downloadFolderPath: HTMLElement = $root.querySelector(
@@ -569,9 +567,9 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
 
     const {response} = await dialog.showMessageBox({
       type: "warning",
-      buttons: ["YES", "NO"],
+      buttons: [t.__("Yes"), t.__("No")],
       defaultId: 0,
-      message: "Are you sure?",
+      message: t.__("Are you sure?"),
       detail: clearAppDataMessage,
     });
     if (response === 0) {
@@ -620,26 +618,23 @@ export function initGeneralSection({$root}: GeneralSectionProps): void {
       ).availableSpellCheckerLanguages;
       let languagePairs = new Map<string, string>();
       for (const l of availableLanguages) {
-        if (ISO6391.validate(l)) {
-          languagePairs.set(ISO6391.getName(l), l);
-        }
+        const locale = new Intl.Locale(l.replaceAll("_", "-"));
+        let displayName = new Intl.DisplayNames([locale], {
+          type: "language",
+        }).of(locale.language);
+        if (displayName === undefined) continue;
+        displayName = displayName.replace(/^./u, (firstChar) =>
+          firstChar.toLocaleUpperCase(locale),
+        );
+        if (locale.script !== undefined)
+          displayName += ` (${new Intl.DisplayNames([locale], {type: "script"}).of(locale.script)})`;
+        if (locale.region !== undefined)
+          displayName += ` (${new Intl.DisplayNames([locale], {type: "region"}).of(locale.region)})`;
+        languagePairs.set(displayName, l);
       }
 
-      // Manually set names for languages not available in ISO6391
-      languagePairs.set("English (AU)", "en-AU");
-      languagePairs.set("English (CA)", "en-CA");
-      languagePairs.set("English (GB)", "en-GB");
-      languagePairs.set("English (US)", "en-US");
-      languagePairs.set("Spanish (Latin America)", "es-419");
-      languagePairs.set("Spanish (Argentina)", "es-AR");
-      languagePairs.set("Spanish (Mexico)", "es-MX");
-      languagePairs.set("Spanish (US)", "es-US");
-      languagePairs.set("Portuguese (Brazil)", "pt-BR");
-      languagePairs.set("Portuguese (Portugal)", "pt-PT");
-      languagePairs.set("Serbo-Croatian", "sh");
-
       languagePairs = new Map(
-        [...languagePairs].sort((a, b) => (a[0] < b[0] ? -1 : 1)),
+        [...languagePairs].sort((a, b) => a[0].localeCompare(b[1])),
       );
 
       const tagField: HTMLInputElement = $root.querySelector(

@@ -1,32 +1,16 @@
-import type {ClientRequest, IncomingMessage, Session} from "electron/main";
-import {app, net} from "electron/main";
+import {type Session, app} from "electron/main";
 import fs from "node:fs";
 import path from "node:path";
-import stream from "node:stream";
-import util from "node:util";
+import {Readable} from "node:stream";
+import {pipeline} from "node:stream/promises";
+import type {ReadableStream} from "node:stream/web";
 
-import * as Sentry from "@sentry/electron";
-import getStream from "get-stream";
+import * as Sentry from "@sentry/electron/main";
 import {z} from "zod";
 
 import Logger from "../common/logger-util.js";
 import * as Messages from "../common/messages.js";
-import type {ServerConf} from "../common/types.js";
-
-export async function fetchResponse(
-  request: ClientRequest,
-): Promise<IncomingMessage> {
-  return new Promise((resolve, reject) => {
-    request.on("response", resolve);
-    request.on("abort", () => {
-      reject(new Error("Request aborted"));
-    });
-    request.on("error", reject);
-    request.end();
-  });
-}
-
-const pipeline = util.promisify(stream.pipeline);
+import type {ServerConfig} from "../common/types.js";
 
 /* Request: domain-util */
 
@@ -35,7 +19,7 @@ const logger = new Logger({
 });
 
 const generateFilePath = (url: string): string => {
-  const dir = `${app.getPath("userData")}/server-icons`;
+  const directory = `${app.getPath("userData")}/server-icons`;
   const extension = path.extname(url).split("?")[0];
 
   let hash = 5381;
@@ -47,29 +31,24 @@ const generateFilePath = (url: string): string => {
   }
 
   // Create 'server-icons' directory if not existed
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
+  if (!fs.existsSync(directory)) {
+    fs.mkdirSync(directory);
   }
 
   // eslint-disable-next-line no-bitwise
-  return `${dir}/${hash >>> 0}${extension}`;
+  return `${directory}/${hash >>> 0}${extension}`;
 };
 
 export const _getServerSettings = async (
   domain: string,
   session: Session,
-): Promise<ServerConf> => {
-  const response = await fetchResponse(
-    net.request({
-      url: domain + "/api/v1/server_settings",
-      session,
-    }),
-  );
-  if (response.statusCode !== 200) {
+): Promise<ServerConfig> => {
+  const response = await session.fetch(domain + "/api/v1/server_settings");
+  if (!response.ok) {
     throw new Error(Messages.invalidZulipServerError(domain));
   }
 
-  const data: unknown = JSON.parse(await getStream(response));
+  const data: unknown = await response.json();
   /* eslint-disable @typescript-eslint/naming-convention */
   const {
     realm_name,
@@ -104,14 +83,17 @@ export const _saveServerIcon = async (
   session: Session,
 ): Promise<string | null> => {
   try {
-    const response = await fetchResponse(net.request({url, session}));
-    if (response.statusCode !== 200) {
+    const response = await session.fetch(url);
+    if (!response.ok) {
       logger.log("Could not get server icon.");
       return null;
     }
 
     const filePath = generateFilePath(url);
-    await pipeline(response, fs.createWriteStream(filePath));
+    await pipeline(
+      Readable.fromWeb(response.body as ReadableStream<Uint8Array>),
+      fs.createWriteStream(filePath),
+    );
     return filePath;
   } catch (error: unknown) {
     logger.log("Could not get server icon.");
@@ -128,16 +110,10 @@ export const _isOnline = async (
   session: Session,
 ): Promise<boolean> => {
   try {
-    const response = await fetchResponse(
-      net.request({
-        method: "HEAD",
-        url: `${url}/api/v1/server_settings`,
-        session,
-      }),
-    );
-    const isValidResponse =
-      response.statusCode >= 200 && response.statusCode < 400;
-    return isValidResponse;
+    const response = await session.fetch(`${url}/api/v1/server_settings`, {
+      method: "HEAD",
+    });
+    return response.ok;
   } catch (error: unknown) {
     logger.log(error);
     return false;

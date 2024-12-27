@@ -1,74 +1,74 @@
-import type {Html} from "../../../../common/html.js";
-import {html} from "../../../../common/html.js";
+import {type Html, html} from "../../../../common/html.js";
 import * as t from "../../../../common/translation-util.js";
-import type {NavItem} from "../../../../common/types.js";
+import type {NavigationItem} from "../../../../common/types.js";
 import {generateNodeFromHtml} from "../../components/base.js";
 
-type PreferenceNavProps = {
+type PreferenceNavigationProperties = {
   $root: Element;
-  onItemSelected: (navItem: NavItem) => void;
+  onItemSelected: (navigationItem: NavigationItem) => void;
 };
 
-export default class PreferenceNav {
-  navItems: NavItem[];
+export default class PreferenceNavigation {
+  navigationItems: Array<{navigationItem: NavigationItem; label: string}>;
   $el: Element;
-  constructor(private readonly props: PreferenceNavProps) {
-    this.navItems = [
-      "General",
-      "Network",
-      "AddServer",
-      "Organizations",
-      "Shortcuts",
+  constructor(private readonly properties: PreferenceNavigationProperties) {
+    this.navigationItems = [
+      {navigationItem: "General", label: t.__("General")},
+      {navigationItem: "Network", label: t.__("Network")},
+      {navigationItem: "AddServer", label: t.__("Add Organization")},
+      {navigationItem: "Organizations", label: t.__("Organizations")},
+      {navigationItem: "Shortcuts", label: t.__("Shortcuts")},
     ];
 
     this.$el = generateNodeFromHtml(this.templateHtml());
-    this.props.$root.append(this.$el);
+    this.properties.$root.append(this.$el);
     this.registerListeners();
   }
 
   templateHtml(): Html {
-    const navItemsHtml = html``.join(
-      this.navItems.map(
-        (navItem) => html`
-          <div class="nav" id="nav-${navItem}">${t.__(navItem)}</div>
-        `,
+    const navigationItemsHtml = html``.join(
+      this.navigationItems.map(
+        ({navigationItem, label}) =>
+          html`<div class="nav" id="nav-${navigationItem}">${label}</div>`,
       ),
     );
 
     return html`
       <div>
         <div id="settings-header">${t.__("Settings")}</div>
-        <div id="nav-container">${navItemsHtml}</div>
+        <div id="nav-container">${navigationItemsHtml}</div>
       </div>
     `;
   }
 
   registerListeners(): void {
-    for (const navItem of this.navItems) {
-      const $item = this.$el.querySelector(`#nav-${CSS.escape(navItem)}`)!;
+    for (const {navigationItem} of this.navigationItems) {
+      const $item = this.$el.querySelector(
+        `#nav-${CSS.escape(navigationItem)}`,
+      )!;
       $item.addEventListener("click", () => {
-        this.props.onItemSelected(navItem);
+        this.properties.onItemSelected(navigationItem);
       });
     }
   }
 
-  select(navItemToSelect: NavItem): void {
-    for (const navItem of this.navItems) {
-      if (navItem === navItemToSelect) {
-        this.activate(navItem);
+  select(navigationItemToSelect: NavigationItem): void {
+    for (const {navigationItem} of this.navigationItems) {
+      if (navigationItem === navigationItemToSelect) {
+        this.activate(navigationItem);
       } else {
-        this.deactivate(navItem);
+        this.deactivate(navigationItem);
       }
     }
   }
 
-  activate(navItem: NavItem): void {
-    const $item = this.$el.querySelector(`#nav-${CSS.escape(navItem)}`)!;
+  activate(navigationItem: NavigationItem): void {
+    const $item = this.$el.querySelector(`#nav-${CSS.escape(navigationItem)}`)!;
     $item.classList.add("active");
   }
 
-  deactivate(navItem: NavItem): void {
-    const $item = this.$el.querySelector(`#nav-${CSS.escape(navItem)}`)!;
+  deactivate(navigationItem: NavigationItem): void {
+    const $item = this.$el.querySelector(`#nav-${CSS.escape(navigationItem)}`)!;
     $item.classList.remove("active");
   }
 }

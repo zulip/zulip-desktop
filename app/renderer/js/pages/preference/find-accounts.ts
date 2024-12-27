@@ -3,7 +3,7 @@ import * as LinkUtil from "../../../../common/link-util.js";
 import * as t from "../../../../common/translation-util.js";
 import {generateNodeFromHtml} from "../../components/base.js";
 
-type FindAccountsProps = {
+type FindAccountsProperties = {
   $root: Element;
 };
 
@@ -19,7 +19,7 @@ async function findAccounts(url: string): Promise<void> {
   await LinkUtil.openBrowser(new URL("/accounts/find", url));
 }
 
-export function initFindAccounts(props: FindAccountsProps): void {
+export function initFindAccounts(properties: FindAccountsProperties): void {
   const $findAccounts = generateNodeFromHtml(html`
     <div class="settings-card certificate-card">
       <div class="certificate-input">
@@ -33,7 +33,7 @@ export function initFindAccounts(props: FindAccountsProps): void {
       </div>
     </div>
   `);
-  props.$root.append($findAccounts);
+  properties.$root.append($findAccounts);
   const $findAccountsButton = $findAccounts.querySelector(
     "#find-accounts-button",
   )!;

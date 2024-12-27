@@ -6,11 +6,11 @@ import * as remote from "@electron/remote";
 import {app, dialog} from "@electron/remote";
 
 import * as ConfigUtil from "../../../common/config-util.js";
-import type {Html} from "../../../common/html.js";
-import {html} from "../../../common/html.js";
+import {type Html, html} from "../../../common/html.js";
+import * as t from "../../../common/translation-util.js";
 import type {RendererMessage} from "../../../common/typed-ipc.js";
 import type {TabRole} from "../../../common/types.js";
-import preloadCss from "../../css/preload.css?raw"; // eslint-disable-line n/file-extension-in-import
+import preloadCss from "../../css/preload.css?raw";
 import {ipcRenderer} from "../typed-ipc-renderer.js";
 import * as SystemUtil from "../utils/system-util.js";
 
@@ -19,7 +19,7 @@ import {contextMenu} from "./context-menu.js";
 
 const shouldSilentWebview = ConfigUtil.getConfigItem("silent", false);
 
-type WebViewProps = {
+type WebViewProperties = {
   $root: Element;
   rootWebContents: WebContents;
   index: number;
@@ -36,24 +36,24 @@ type WebViewProps = {
 };
 
 export default class WebView {
-  static templateHtml(props: WebViewProps): Html {
+  static templateHtml(properties: WebViewProperties): Html {
     return html`
       <div class="webview-pane">
         <div
           class="webview-unsupported"
-          ${props.unsupportedMessage === undefined ? html`hidden` : html``}
+          ${properties.unsupportedMessage === undefined ? html`hidden` : html``}
         >
           <span class="webview-unsupported-message"
-            >${props.unsupportedMessage ?? ""}</span
+            >${properties.unsupportedMessage ?? ""}</span
           >
           <span class="webview-unsupported-dismiss">×</span>
         </div>
         <webview
-          data-tab-id="${props.tabIndex}"
-          src="${props.url}"
-          ${props.preload === undefined
+          data-tab-id="${properties.tabIndex}"
+          src="${properties.url}"
+          ${properties.preload === undefined
             ? html``
-            : html`preload="${props.preload}"`}
+            : html`preload="${properties.preload}"`}
           partition="persist:webviewsession"
           allowpopups
         >
@@ -62,11 +62,11 @@ export default class WebView {
     `;
   }
 
-  static async create(props: WebViewProps): Promise<WebView> {
+  static async create(properties: WebViewProperties): Promise<WebView> {
     const $pane = generateNodeFromHtml(
-      WebView.templateHtml(props),
+      WebView.templateHtml(properties),
     ) as HTMLElement;
-    props.$root.append($pane);
+    properties.$root.append($pane);
 
     const $webview: HTMLElement = $pane.querySelector(":scope > webview")!;
     await new Promise<void>((resolve) => {
@@ -90,22 +90,21 @@ export default class WebView {
     }
 
     const selector = `webview[data-tab-id="${CSS.escape(
-      `${props.tabIndex}`,
+      `${properties.tabIndex}`,
     )}"]`;
     const webContentsId: unknown =
-      await props.rootWebContents.executeJavaScript(
+      await properties.rootWebContents.executeJavaScript(
         `(${getWebContentsIdFunction.toString()})(${JSON.stringify(selector)})`,
       );
     if (typeof webContentsId !== "number") {
       throw new TypeError("Failed to get WebContents ID");
     }
 
-    return new WebView(props, $pane, $webview, webContentsId);
+    return new WebView(properties, $pane, $webview, webContentsId);
   }
 
   badgeCount = 0;
   loading = true;
-  private zoomFactor = 1;
   private customCss: string | false | null;
   private readonly $webviewsContainer: DOMTokenList;
   private readonly $unsupported: HTMLElement;
@@ -114,7 +113,7 @@ export default class WebView {
   private unsupportedDismissed = false;
 
   private constructor(
-    readonly props: WebViewProps,
+    readonly properties: WebViewProperties,
     private readonly $pane: HTMLElement,
     private readonly $webview: HTMLElement,
     readonly webContentsId: number,
@@ -161,18 +160,15 @@ export default class WebView {
   }
 
   zoomIn(): void {
-    this.zoomFactor += 0.1;
-    this.getWebContents().setZoomFactor(this.zoomFactor);
+    this.getWebContents().zoomLevel += 0.5;
   }
 
   zoomOut(): void {
-    this.zoomFactor -= 0.1;
-    this.getWebContents().setZoomFactor(this.zoomFactor);
+    this.getWebContents().zoomLevel -= 0.5;
   }
 
   zoomActualSize(): void {
-    this.zoomFactor = 1;
-    this.getWebContents().setZoomFactor(this.zoomFactor);
+    this.getWebContents().zoomLevel = 0;
   }
 
   logOut(): void {
@@ -212,7 +208,7 @@ export default class WebView {
     // Shows the loading indicator till the webview is reloaded
     this.$webviewsContainer.remove("loaded");
     this.loading = true;
-    this.props.switchLoading(true, this.props.url);
+    this.properties.switchLoading(true, this.properties.url);
     this.getWebContents().reload();
   }
 
@@ -224,9 +220,9 @@ export default class WebView {
 
   send<Channel extends keyof RendererMessage>(
     channel: Channel,
-    ...args: Parameters<RendererMessage[Channel]>
+    ...arguments_: Parameters<RendererMessage[Channel]>
   ): void {
-    ipcRenderer.sendTo(this.webContentsId, channel, ...args);
+    ipcRenderer.send("forward-to", this.webContentsId, channel, ...arguments_);
   }
 
   private registerListeners(): void {
@@ -238,7 +234,7 @@ export default class WebView {
 
     webContents.on("page-title-updated", (_event, title) => {
       this.badgeCount = this.getBadgeCount(title);
-      this.props.onTitleChange();
+      this.properties.onTitleChange();
     });
 
     this.$webview.addEventListener("did-navigate-in-page", () => {
@@ -271,7 +267,7 @@ export default class WebView {
 
     this.$webview.addEventListener("dom-ready", () => {
       this.loading = false;
-      this.props.switchLoading(false, this.props.url);
+      this.properties.switchLoading(false, this.properties.url);
       this.show();
     });
 
@@ -280,23 +276,28 @@ export default class WebView {
         SystemUtil.connectivityError.includes(errorDescription);
       if (hasConnectivityError) {
         console.error("error", errorDescription);
-        if (!this.props.url.includes("network.html")) {
-          this.props.onNetworkError(this.props.index);
+        if (!this.properties.url.includes("network.html")) {
+          this.properties.onNetworkError(this.properties.index);
         }
       }
     });
 
     this.$webview.addEventListener("did-start-loading", () => {
-      this.props.switchLoading(true, this.props.url);
+      this.properties.switchLoading(true, this.properties.url);
     });
 
     this.$webview.addEventListener("did-stop-loading", () => {
-      this.props.switchLoading(false, this.props.url);
+      this.properties.switchLoading(false, this.properties.url);
     });
 
     this.$unsupportedDismiss.addEventListener("click", () => {
       this.unsupportedDismissed = true;
       this.$unsupported.hidden = true;
+    });
+
+    webContents.on("zoom-changed", (event, zoomDirection) => {
+      if (zoomDirection === "in") this.zoomIn();
+      else if (zoomDirection === "out") this.zoomOut();
     });
   }
 
@@ -307,7 +308,7 @@ export default class WebView {
 
   private show(): void {
     // Do not show WebView if another tab was selected and this tab should be in background.
-    if (!this.props.isActive()) {
+    if (!this.properties.isActive()) {
       return;
     }
 
@@ -316,7 +317,7 @@ export default class WebView {
 
     this.$pane.classList.add("active");
     this.focus();
-    this.props.onTitleChange();
+    this.properties.onTitleChange();
     // Injecting preload css in webview to override some css rules
     (async () => this.getWebContents().insertCSS(preloadCss))();
 
@@ -328,8 +329,8 @@ export default class WebView {
         this.customCss = null;
         ConfigUtil.setConfigItem("customCSS", null);
 
-        const errorMessage = "The custom css previously set is deleted!";
-        dialog.showErrorBox("custom css file deleted!", errorMessage);
+        const errorMessage = t.__("The custom CSS previously set is deleted.");
+        dialog.showErrorBox(t.__("Custom CSS file deleted"), errorMessage);
         return;
       }
 

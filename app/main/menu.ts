@@ -1,6 +1,10 @@
 import {shell} from "electron/common";
-import type {MenuItemConstructorOptions} from "electron/main";
-import {BrowserWindow, Menu, app} from "electron/main";
+import {
+  BrowserWindow,
+  Menu,
+  type MenuItemConstructorOptions,
+  app,
+} from "electron/main";
 import process from "node:process";
 
 import AdmZip from "adm-zip";
@@ -9,7 +13,7 @@ import * as ConfigUtil from "../common/config-util.js";
 import * as DNDUtil from "../common/dnd-util.js";
 import * as t from "../common/translation-util.js";
 import type {RendererMessage} from "../common/typed-ipc.js";
-import type {MenuProps, TabData} from "../common/types.js";
+import type {MenuProperties, TabData} from "../common/types.js";
 
 import {appUpdater} from "./autoupdater.js";
 import {send} from "./typed-ipc-main.js";
@@ -66,7 +70,7 @@ function getToolsSubmenu(): MenuItemConstructorOptions[] {
       click() {
         const zip = new AdmZip();
         const date = new Date();
-        const dateString = date.toLocaleDateString().replace(/\//g, "-");
+        const dateString = date.toLocaleDateString().replaceAll("/", "-");
 
         // Create a zip file of all the logs and config data
         zip.addLocalFolder(`${app.getPath("appData")}/${appName}/Logs`);
@@ -314,12 +318,12 @@ function getWindowSubmenu(
       if (tab === undefined) continue;
 
       // Do not add functional tab settings to list of windows in menu bar
-      if (tab.role === "function" && tab.name === "Settings") {
+      if (tab.role === "function" && tab.page === "Settings") {
         continue;
       }
 
       initialSubmenu.push({
-        label: tab.name,
+        label: tab.label,
         accelerator:
           tab.role === "function" ? "" : `${shortcutKey} + ${tab.index + 1}`,
         checked: tab.index === activeTabIndex,
@@ -368,8 +372,10 @@ function getWindowSubmenu(
   return initialSubmenu;
 }
 
-function getDarwinTpl(props: MenuProps): MenuItemConstructorOptions[] {
-  const {tabs, activeTabIndex, enableMenu = false} = props;
+function getDarwinTpl(
+  properties: MenuProperties,
+): MenuItemConstructorOptions[] {
+  const {tabs, activeTabIndex, enableMenu = false} = properties;
 
   return [
     {
@@ -533,8 +539,8 @@ function getDarwinTpl(props: MenuProps): MenuItemConstructorOptions[] {
   ];
 }
 
-function getOtherTpl(props: MenuProps): MenuItemConstructorOptions[] {
-  const {tabs, activeTabIndex, enableMenu = false} = props;
+function getOtherTpl(properties: MenuProperties): MenuItemConstructorOptions[] {
+  const {tabs, activeTabIndex, enableMenu = false} = properties;
   return [
     {
       label: t.__("File"),
@@ -683,7 +689,7 @@ function getOtherTpl(props: MenuProps): MenuItemConstructorOptions[] {
 
 function sendAction<Channel extends keyof RendererMessage>(
   channel: Channel,
-  ...args: Parameters<RendererMessage[Channel]>
+  ...arguments_: Parameters<RendererMessage[Channel]>
 ): void {
   const win = BrowserWindow.getAllWindows()[0];
 
@@ -691,7 +697,7 @@ function sendAction<Channel extends keyof RendererMessage>(
     win.restore();
   }
 
-  send(win.webContents, channel, ...args);
+  send(win.webContents, channel, ...arguments_);
 }
 
 async function checkForUpdate(): Promise<void> {
@@ -714,9 +720,11 @@ function getPreviousServer(tabs: TabData[], activeTabIndex: number): number {
   return activeTabIndex;
 }
 
-export function setMenu(props: MenuProps): void {
+export function setMenu(properties: MenuProperties): void {
   const tpl =
-    process.platform === "darwin" ? getDarwinTpl(props) : getOtherTpl(props);
+    process.platform === "darwin"
+      ? getDarwinTpl(properties)
+      : getOtherTpl(properties);
   const menu = Menu.buildFromTemplate(tpl);
   Menu.setApplicationMenu(menu);
 }

@@ -1,26 +1,26 @@
-import type {Html} from "../../../common/html.js";
-import {html} from "../../../common/html.js";
+import {type Html, html} from "../../../common/html.js";
+import type {TabPage} from "../../../common/types.js";
 
 import {generateNodeFromHtml} from "./base.js";
-import type {TabProps} from "./tab.js";
-import Tab from "./tab.js";
+import Tab, {type TabProperties} from "./tab.js";
 
-export type FunctionalTabProps = {
+export type FunctionalTabProperties = {
   $view: Element;
-} & TabProps;
+  page: TabPage;
+} & TabProperties;
 
 export default class FunctionalTab extends Tab {
   $view: Element;
   $el: Element;
   $closeButton?: Element;
 
-  constructor({$view, ...props}: FunctionalTabProps) {
-    super(props);
+  constructor({$view, ...properties}: FunctionalTabProperties) {
+    super(properties);
 
     this.$view = $view;
     this.$el = generateNodeFromHtml(this.templateHtml());
-    if (this.props.name !== "Settings") {
-      this.props.$root.append(this.$el);
+    if (properties.page !== "Settings") {
+      this.properties.$root.append(this.$el);
       this.$closeButton = this.$el.querySelector(".server-tab-badge")!;
       this.registerListeners();
     }
@@ -43,12 +43,12 @@ export default class FunctionalTab extends Tab {
 
   templateHtml(): Html {
     return html`
-      <div class="tab functional-tab" data-tab-id="${this.props.tabIndex}">
+      <div class="tab functional-tab" data-tab-id="${this.properties.tabIndex}">
         <div class="server-tab-badge close-button">
           <i class="material-icons">close</i>
         </div>
         <div class="server-tab">
-          <i class="material-icons">${this.props.materialIcon}</i>
+          <i class="material-icons">${this.properties.materialIcon}</i>
         </div>
       </div>
     `;
@@ -65,8 +65,8 @@ export default class FunctionalTab extends Tab {
       this.$closeButton?.classList.remove("active");
     });
 
-    this.$closeButton?.addEventListener("click", (event: Event) => {
-      this.props.onDestroy?.();
+    this.$closeButton?.addEventListener("click", (event) => {
+      this.properties.onDestroy?.();
       event.stopPropagation();
     });
   }

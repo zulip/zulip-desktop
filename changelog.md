@@ -2,6 +2,69 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.11.1 --2024-08-23
+
+**Enhancements**:
+
+- Updated translations.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 32.0.1.
+
+### v5.11.0 --2024-03-22
+
+**Fixes**:
+
+- Removed the popup dialog for certificate errors when loading subresources such as images.
+- Allowed hiding the window from full screen mode on macOS.
+
+**Enhancements**:
+
+- Enabled zooming with Ctrl+mouse wheel on Linux and Windows.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 29.1.5.
+
+### v5.10.5 --2024-01-25
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 28.2.0.
+
+**Enhancements**:
+
+- Improved security hardening by setting a Content-Security-Policy for the app UI.
+
+### v5.10.4 --2024-01-09
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 28.1.1.
+
+### v5.10.3 --2023-09-30
+
+**Fixes**:
+
+- Fixed an error in the third-party `gatemaker` library that broke the display of notifications for completed downloads.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 25.8.4.
+
+### v5.10.2 --2023-09-14
+
+**Dependencies**:
+
+- Downgraded Electron to 25.8.1 to avoid a renderer process crash on Linux.
+
+### v5.10.1 --2023-09-13
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 26.2.1.
+
 ### v5.10.0 --2023-05-05
 
 **Removed features**:

@@ -307,7 +307,9 @@ img.server-info-icon {
 }
 
 .settings-card:hover {
-  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 16%), 0 2px 0 0 rgb(0 0 0 / 12%);
+  box-shadow:
+    0 2px 5px 0 rgb(0 0 0 / 16%),
+    0 2px 0 0 rgb(0 0 0 / 12%);
 }
 
 .hidden {
@@ -576,7 +578,6 @@ input.toggle-round:checked + label::after {
   text-align: center;
   color: rgb(255 255 255 / 100%);
   background: rgb(78 191 172 / 100%);
-  border-color: none;
   border: none;
   width: 98%;
   height: 46px;
