@@ -11,6 +11,8 @@ const whitelistedProtocols = ConfigUtil.getConfigItem("whitelistedProtocols", [
   "http:",
   "https:",
   "mailto:",
+  "tel:",
+  "sip:",
 ]);
 
 export async function openBrowser(url: URL): Promise<void> {
