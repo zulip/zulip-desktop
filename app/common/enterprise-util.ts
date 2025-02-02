@@ -1,3 +1,4 @@
+import {dialog} from "electron/main";
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
@@ -6,6 +7,7 @@ import {z} from "zod";
 
 import {enterpriseConfigSchemata} from "./config-schemata.js";
 import Logger from "./logger-util.js";
+import * as Messages from "./messages.js";
 
 type EnterpriseConfig = {
   [Key in keyof typeof enterpriseConfigSchemata]: z.output<
@@ -40,6 +42,8 @@ function reloadDatabase(): void {
         .partial()
         .parse(data);
     } catch (error: unknown) {
+      const {title, content} = Messages.enterpriseInvalidJson(enterpriseFile);
+      dialog.showErrorBox(title, content);
       logger.log("Error while JSON parsing global_config.json: ");
       logger.log(error);
     }
