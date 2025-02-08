@@ -1,4 +1,4 @@
-import {clipboard} from "electron/common";
+import {clipboard, shell} from "electron/common";
 import {
   BrowserWindow,
   type IpcMainEvent,
@@ -157,6 +157,8 @@ function createMainWindow(): BrowserWindow {
   }
 
   await app.whenReady();
+  // Register custom protocol handler
+  app.setAsDefaultProtocolClient("zulip");
 
   if (process.env.GDK_BACKEND !== GDK_BACKEND) {
     console.warn(
@@ -174,13 +176,18 @@ function createMainWindow(): BrowserWindow {
 
   remoteMain.initialize();
 
-  app.on("second-instance", () => {
+  app.on("second-instance", (event, commandLine) => {
     if (mainWindow) {
       if (mainWindow.isMinimized()) {
         mainWindow.restore();
       }
 
       mainWindow.show();
+    }
+    // Handle deep link when opened from protocol
+    const url = commandLine.find((argument) => argument.startsWith("zulip://"));
+    if (url) {
+      mainWindow.webContents.send("open-url", url);
     }
   });
 
@@ -195,6 +202,24 @@ function createMainWindow(): BrowserWindow {
   // This event is only available on macOS. Triggers when you click on the dock icon.
   app.on("activate", () => {
     mainWindow.show();
+  });
+  // Handle deep linking when app is already running (macOS)
+  app.on("open-url", async (event, url) => {
+    event.preventDefault();
+
+    const response = await dialog.showMessageBox({
+      type: "question",
+      buttons: ["Open in App", "Open in Browser"],
+      defaultId: 0,
+      message: `Do you want to open this link in the desktop app or browser?`,
+      detail: url,
+    });
+
+    if (response.response === 0) {
+      mainWindow.webContents.send("open-url", url);
+    } else {
+      await shell.openExternal(url); // Open in browser
+    }
   });
 
   app.on("web-contents-created", (_event, contents: WebContents) => {
