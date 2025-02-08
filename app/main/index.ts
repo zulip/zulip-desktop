@@ -37,7 +37,7 @@ import "gatemaker/electron-setup"; // eslint-disable-line import/no-unassigned-i
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const {GDK_BACKEND} = process.env;
 
-// Initialize sentry for main process
+// Initialize sentry for a main process
 sentryInit();
 
 let mainWindowState: windowStateKeeper.State;
