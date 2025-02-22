@@ -17,7 +17,7 @@ export type ElectronBridge = {
     title: string,
     options: NotificationOptions,
     dispatch: (type: string, eventInit: EventInit) => boolean,
-  ) => NotificationData;
+  ) => NotificationData | null;
   get_idle_on_system: () => boolean;
   get_last_active_on_system: () => number;
   get_send_notification_reply_message_supported: () => boolean;
@@ -47,7 +47,7 @@ const electron_bridge: ElectronBridge = {
     title: string,
     options: NotificationOptions,
     dispatch: (type: string, eventInit: EventInit) => boolean,
-  ): NotificationData => newNotification(title, options, dispatch),
+  ): NotificationData | null => newNotification(title, options, dispatch),
 
   get_idle_on_system: (): boolean => idle,
 

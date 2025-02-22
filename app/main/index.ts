@@ -185,6 +185,7 @@ function createMainWindow(): BrowserWindow {
       mainWindow.show();
     }
     // Handle deep link when opened from protocol
+
     const url = commandLine.find((argument) => argument.startsWith("zulip://"));
     if (url) {
       mainWindow.webContents.send("open-url", url);
