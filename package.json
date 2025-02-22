@@ -41,6 +41,14 @@
   "build": {
     "appId": "org.zulip.zulip-electron",
     "asar": true,
+    "protocols": [
+      {
+        "name": "Zulip",
+        "schemes": [
+          "zulip"
+        ]
+      }
+    ],
     "asarUnpack": [
       "**/*.node"
     ],
