@@ -94,7 +94,7 @@ function getToolsSubmenu(): MenuItemConstructorOptions[] {
       accelerator:
         process.platform === "darwin" ? "Alt+Command+I" : "Ctrl+Shift+I",
       click(_item, focusedWindow) {
-        if (focusedWindow) {
+        if (focusedWindow instanceof BrowserWindow) {
           focusedWindow.webContents.openDevTools({mode: "undocked"});
         }
       },
@@ -222,7 +222,7 @@ function getViewSubmenu(): MenuItemConstructorOptions[] {
     {
       label: t.__("Toggle Tray Icon"),
       click(_item, focusedWindow) {
-        if (focusedWindow) {
+        if (focusedWindow instanceof BrowserWindow) {
           send(focusedWindow.webContents, "toggletray");
         }
       },
@@ -231,7 +231,7 @@ function getViewSubmenu(): MenuItemConstructorOptions[] {
       label: t.__("Toggle Sidebar"),
       accelerator: "CommandOrControl+Shift+S",
       click(_item, focusedWindow) {
-        if (focusedWindow) {
+        if (focusedWindow instanceof BrowserWindow) {
           const newValue = !ConfigUtil.getConfigItem("showSidebar", true);
           send(focusedWindow.webContents, "toggle-sidebar", newValue);
           ConfigUtil.setConfigItem("showSidebar", newValue);
@@ -243,7 +243,7 @@ function getViewSubmenu(): MenuItemConstructorOptions[] {
       checked: ConfigUtil.getConfigItem("autoHideMenubar", false),
       visible: process.platform !== "darwin",
       click(_item, focusedWindow) {
-        if (focusedWindow) {
+        if (focusedWindow instanceof BrowserWindow) {
           const newValue = !ConfigUtil.getConfigItem("autoHideMenubar", false);
           focusedWindow.autoHideMenuBar = newValue;
           focusedWindow.setMenuBarVisibility(!newValue);
