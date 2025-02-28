@@ -184,8 +184,8 @@ export default class WebView {
   }
 
   back(): void {
-    if (this.getWebContents().canGoBack()) {
-      this.getWebContents().goBack();
+    if (this.getWebContents().navigationHistory.canGoBack()) {
+      this.getWebContents().navigationHistory.goBack();
       this.focus();
     }
   }
@@ -194,12 +194,15 @@ export default class WebView {
     const $backButton = document.querySelector(
       "#actions-container #back-action",
     )!;
-    $backButton.classList.toggle("disable", !this.getWebContents().canGoBack());
+    $backButton.classList.toggle(
+      "disable",
+      !this.getWebContents().navigationHistory.canGoBack(),
+    );
   }
 
   forward(): void {
-    if (this.getWebContents().canGoForward()) {
-      this.getWebContents().goForward();
+    if (this.getWebContents().navigationHistory.canGoForward()) {
+      this.getWebContents().navigationHistory.goForward();
     }
   }
 
