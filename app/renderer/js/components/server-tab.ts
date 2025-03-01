@@ -14,7 +14,7 @@ export type ServerTabProperties = {
 export default class ServerTab extends Tab {
   webview: Promise<WebView>;
   $el: Element;
-  $name: Element;
+  $name: HTMLElement;
   $icon: HTMLImageElement;
   $badge: Element;
 
@@ -28,6 +28,20 @@ export default class ServerTab extends Tab {
     this.$name = this.$el.querySelector(".server-tooltip")!;
     this.$icon = this.$el.querySelector(".server-icons")!;
     this.$badge = this.$el.querySelector(".server-tab-badge")!;
+
+    // Ensuring tooltip is initially hidden
+    this.$name.style.display = "none";
+
+    // Hover event listeners
+    this.$el.addEventListener("mouseover", () => {
+      this.$name.removeAttribute("style");
+      const {top} = this.$el.getBoundingClientRect();
+      this.$name.style.top = `${top}px`;
+    });
+    
+    this.$el.addEventListener("mouseout", () => {
+      this.$name.style.display = "none";
+    });
   }
 
   override async activate(): Promise<void> {

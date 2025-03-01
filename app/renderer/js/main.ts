@@ -102,23 +102,21 @@ export class ServerManagerView {
     this.$dndButton = $actionsContainer.querySelector("#dnd-action")!;
 
     this.$addServerTooltip = document.querySelector("#add-server-tooltip")!;
-    this.$reloadTooltip = $actionsContainer.querySelector("#reload-tooltip")!;
-    this.$loadingTooltip = $actionsContainer.querySelector("#loading-tooltip")!;
-    this.$settingsTooltip =
-      $actionsContainer.querySelector("#setting-tooltip")!;
+    this.$reloadTooltip = document.querySelector("#reload-tooltip")!;
+    this.$loadingTooltip = document.querySelector("#loading-tooltip")!;
+    this.$settingsTooltip = document.querySelector("#settings-tooltip")!;
 
     // TODO: This should have been querySelector but the problem is that
-    // querySelector doesn't return elements not present in dom whereas somehow
-    // getElementsByClassName does. To fix this we need to call this after this.initTabs
+    // querySelector doesn't return elements not present in DOM, whereas somehow
+    // getElementsByClassName does. To fix this, we need to call this after this.initTabs
     // is called in this.init.
     // eslint-disable-next-line unicorn/prefer-query-selector
     this.$serverIconTooltip = document.getElementsByClassName(
       "server-tooltip",
     ) as HTMLCollectionOf<HTMLElement>;
-    this.$backTooltip = $actionsContainer.querySelector("#back-tooltip")!;
-    this.$dndTooltip = $actionsContainer.querySelector("#dnd-tooltip")!;
-
-    this.$sidebar = document.querySelector("#sidebar")!;
+    this.$backTooltip = document.querySelector("#back-tooltip")!;
+    this.$dndTooltip = document.querySelector("#dnd-tooltip")!;
+      this.$sidebar = document.querySelector("#sidebar")!;
 
     this.$fullscreenPopup = document.querySelector("#fullscreen-popup")!;
     this.$fullscreenEscapeKey = process.platform === "darwin" ? "^⌘F" : "F11";
@@ -473,7 +471,6 @@ export class ServerManagerView {
     this.sidebarHoverEvent(this.$reloadButton, this.$reloadTooltip);
     this.sidebarHoverEvent(this.$backButton, this.$backTooltip);
     this.sidebarHoverEvent(this.$dndButton, this.$dndTooltip);
-  }
 
   initDndButton(): void {
     const dnd = ConfigUtil.getConfigItem("dnd", false);
@@ -526,33 +523,31 @@ export class ServerManagerView {
     addServer = false,
   ): void {
     SidebarButton.addEventListener("mouseover", () => {
-      SidebarTooltip.removeAttribute("style");
-      // To handle position of add server tooltip due to scrolling of list of organizations
-      // This could not be handled using CSS, hence the top of the tooltip is made same
-      // as that of its parent element.
-      // This needs to handled only for the add server tooltip and not others.
+      SidebarTooltip.style.display = "block"; // Ensure tooltip is visible
+      SidebarTooltip.removeAttribute("style"); 
+  
+      // Handle tooltip position for "Add Server" tooltip
       if (addServer) {
-        const {top} = SidebarButton.getBoundingClientRect();
+        const { top } = SidebarButton.getBoundingClientRect();
         SidebarTooltip.style.top = `${top}px`;
       }
     });
+  
     SidebarButton.addEventListener("mouseout", () => {
       SidebarTooltip.style.display = "none";
     });
   }
-
+  
   onHover(index: number): void {
-    // `this.$serverIconTooltip[index].textContent` already has realm name, so we are just
-    // removing the style.
+    // Ensure tooltip is visible and remove inline styles affecting its visibility
+    this.$serverIconTooltip[index].style.display = "block"; 
     this.$serverIconTooltip[index].removeAttribute("style");
-    // To handle position of servers' tooltip due to scrolling of list of organizations
-    // This could not be handled using CSS, hence the top of the tooltip is made same
-    // as that of its parent element.
-    const {top} =
-      this.$serverIconTooltip[index].parentElement!.getBoundingClientRect();
+  
+    // Fix tooltip position for server tooltips
+    const { top } = this.$serverIconTooltip[index].parentElement!.getBoundingClientRect();
     this.$serverIconTooltip[index].style.top = `${top}px`;
   }
-
+  
   onHoverOut(index: number): void {
     this.$serverIconTooltip[index].style.display = "none";
   }
