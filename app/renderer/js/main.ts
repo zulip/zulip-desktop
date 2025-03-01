@@ -472,41 +472,52 @@ export class ServerManagerView {
     this.sidebarHoverEvent(this.$backButton, this.$backTooltip);
     this.sidebarHoverEvent(this.$dndButton, this.$dndTooltip);
 
-  initDndButton(): void {
-    const dnd = ConfigUtil.getConfigItem("dnd", false);
-    this.toggleDndButton(dnd);
+    initDndButton(): void {
+      const dnd = ConfigUtil.getConfigItem("dnd", false);
+      this.toggleDndButton(dnd);
   }
-
+  
   getTabIndex(): number {
-    const currentIndex = this.tabIndex;
-    this.tabIndex++;
-    return currentIndex;
+      const currentIndex = this.tabIndex;
+      this.tabIndex++;
+      return currentIndex;
   }
-
+  
   async getCurrentActiveServer(): Promise<string> {
-    const tab = this.tabs[this.activeTabIndex];
-    return tab instanceof ServerTab ? (await tab.webview).properties.url : "";
+      const tab = this.tabs[this.activeTabIndex];
+  
+      if (tab instanceof ServerTab) {
+          const webview = await tab.webview;
+          return webview?.properties?.url ?? "";
+      }
+  
+      return "";
   }
-
+  
   displayInitialCharLogo($img: HTMLImageElement, index: number): void {
-    // The index parameter is needed because webview[data-tab-id] can
-    // increment beyond the size of the sidebar org array and throw an
-    // error
-
-    const $altIcon = document.createElement("div");
-    const $parent = $img.parentElement!;
-    const $container = $parent.parentElement!;
-    const webviewId = $container.dataset.tabId!;
-    const $webview = document.querySelector(
-      `webview[data-tab-id="${CSS.escape(webviewId)}"]`,
-    )!;
-    const realmName = $webview.getAttribute("name");
-
-    if (realmName === null) {
-      $img.src = defaultIcon;
-      return;
-    }
-
+      // The index parameter is needed because webview[data-tab-id] can
+      // increment beyond the size of the sidebar org array and throw an error
+  
+      const $altIcon = document.createElement("div");
+      const $parent = $img.parentElement;
+      if (!$parent) return;
+  
+      const $container = $parent.parentElement;
+      if (!$container) return;
+  
+      const webviewId = $container.dataset.tabId;
+      if (!webviewId) return;
+  
+      const $webview = document.querySelector(
+          `webview[data-tab-id="${CSS.escape(webviewId)}"]`
+      );
+  
+      if (!$webview) return;
+  
+      const realmName = $webview.getAttribute("name");
+      $img.src = realmName ?? defaultIcon;
+  }
+  
     $altIcon.textContent = realmName.charAt(0) || "Z";
     $altIcon.classList.add("server-icon");
     $altIcon.classList.add("alt-icon");
