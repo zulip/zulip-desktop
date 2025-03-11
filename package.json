@@ -50,6 +50,7 @@
     "copyright": "©2020 Kandra Labs, Inc.",
     "mac": {
       "category": "public.app-category.productivity",
+      "icon": "build/icon-macos.png",
       "target": [
         {
           "target": "default",
@@ -74,7 +75,7 @@
     },
     "linux": {
       "category": "Chat;GNOME;GTK;Network;InstantMessaging",
-      "icon": "build/icon.icns",
+      "icon": "build/zulip.png",
       "description": "Zulip Desktop Client for Linux",
       "target": [
         "deb",
