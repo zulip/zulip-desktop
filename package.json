@@ -68,10 +68,7 @@
         }
       ],
       "darkModeSupport": true,
-      "artifactName": "${productName}-${version}-${arch}.${ext}",
-      "notarize": {
-        "teamId": "66KHCWMEYB"
-      }
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "linux": {
       "category": "Chat;GNOME;GTK;Network;InstantMessaging",
