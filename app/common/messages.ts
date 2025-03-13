@@ -36,3 +36,12 @@ export function orgRemovalError(url: string): DialogBoxError {
     content: "Please contact your system administrator.",
   };
 }
+
+export function enterpriseInvalidJson(
+  pathToConfigFile: string,
+): DialogBoxError {
+  return {
+    title: "Invalid JSON",
+    content: `Correct the invalid JSON format in global_config.json.\nIt can be found in:\n${pathToConfigFile}`,
+  };
+}
