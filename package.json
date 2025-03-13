@@ -121,11 +121,16 @@
         }
       ],
       "icon": "build/icon.ico",
-      "publisherName": "Kandra Labs, Inc.",
-      "sign": "./scripts/win-sign.js",
-      "signingHashAlgorithms": [
-        "sha256"
-      ]
+      "signtoolOptions": {
+        "publisherName": "Kandra Labs, Inc."
+      },
+      "azureSignOptions": {
+        "endpoint": "https://eus.codesigning.azure.net/",
+        "codeSigningAccountName": "kandralabs",
+        "certificateProfileName": "kandralabs",
+        "timestampRfc3161": "http://timestamp.acs.microsoft.com",
+        "timestampDigest": "SHA256"
+      }
     },
     "msi": {
       "artifactName": "${productName}-${version}-${arch}.${ext}"
