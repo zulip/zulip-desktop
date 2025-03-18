@@ -397,6 +397,7 @@ webview.focus {
   font-family: arial, sans-serif;
   background: rgb(34 44 49 / 100%);
   left: 56px;
+  margin-left: 4px;
   padding: 10px 20px;
   position: fixed;
   margin-top: 11px;
