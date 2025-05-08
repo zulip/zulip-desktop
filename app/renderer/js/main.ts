@@ -1210,6 +1210,15 @@ window.addEventListener("load", async () => {
               >${t.__("Do Not Disturb")}</span
             >
           </div>
+          <div id="dnd-dropdown" class="dnd-dropdown hidden">
+            <div class="dnd-dropdown-item" data-minutes="30">30 minutes</div>
+            <div class="dnd-dropdown-item" data-minutes="60">1 hour</div>
+            <div class="dnd-dropdown-item" data-minutes="180">3 hours</div>
+            <div class="dnd-dropdown-item" data-minutes="720">12 hours</div>
+            <div class="dnd-dropdown-item" data-minutes="forever">
+              Until I resume
+            </div>
+          </div>
           <div class="action-button hidden" id="reload-action">
             <i class="material-icons md-48">refresh</i>
             <span id="reload-tooltip" style="display: none"
