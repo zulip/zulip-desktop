@@ -8,6 +8,7 @@ export const dndSettingsSchemata = {
 
 export const configSchemata = {
   ...dndSettingsSchemata,
+  dndExpiration: z.number().nullable().default(null),
   appLanguage: z.string().nullable(),
   autoHideMenubar: z.boolean(),
   autoUpdate: z.boolean(),

@@ -70,6 +70,23 @@ const toggleApp = (): void => {
   }
 };
 
+function checkDndExpirationOnStartup(page: WebContents): void {
+  const expiration = ConfigUtil.getConfigItem("dndExpiration", null);
+
+  if (expiration && Date.now() > expiration) {
+    const revert = DNDUtil.toggle();
+    send(page, "toggle-dnd", revert.dnd, revert.newSettings);
+    ConfigUtil.removeConfigItem("dndExpiration");
+  } else if (expiration) {
+    const timeLeft = expiration - Date.now();
+    dndRevertTimeout = setTimeout(() => {
+      const revert = DNDUtil.toggle();
+      send(page, "toggle-dnd", revert.dnd, revert.newSettings);
+      ConfigUtil.removeConfigItem("dndExpiration");
+    }, timeLeft);
+  }
+}
+
 function createMainWindow(): BrowserWindow {
   // Load the previous state with fallback to defaults
   mainWindowState = windowStateKeeper({
@@ -272,7 +289,7 @@ function createMainWindow(): BrowserWindow {
   }
 
   const page = mainWindow.webContents;
-
+  checkDndExpirationOnStartup(page);
   page.on("dom-ready", () => {
     if (ConfigUtil.getConfigItem("startMinimized", false)) {
       mainWindow.hide();
@@ -417,16 +434,21 @@ function createMainWindow(): BrowserWindow {
         if (result.dnd && duration && !Number.isNaN(duration)) {
           if (dndRevertTimeout) clearTimeout(dndRevertTimeout);
 
+          const expirationTime = Date.now() + duration * 60 * 1000;
+          ConfigUtil.setConfigItem("dndExpiration", expirationTime);
+
           dndRevertTimeout = setTimeout(
             () => {
               const revert = DNDUtil.toggle();
               send(_event.sender, "toggle-dnd", revert.dnd, revert.newSettings);
+              ConfigUtil.removeConfigItem("dndExpiration");
             },
             duration * 60 * 1000,
           );
         } else if (dndRevertTimeout) {
           clearTimeout(dndRevertTimeout);
           dndRevertTimeout = null;
+          ConfigUtil.removeConfigItem("dndExpiration");
         }
 
         return;
