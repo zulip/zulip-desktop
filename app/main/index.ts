@@ -18,6 +18,7 @@ import * as remoteMain from "@electron/remote/main";
 import windowStateKeeper from "electron-window-state";
 
 import * as ConfigUtil from "../common/config-util.js";
+import * as DNDUtil from "../common/dnd-util.js";
 import {bundlePath, bundleUrl, publicPath} from "../common/paths.js";
 import * as t from "../common/translation-util.js";
 import type {RendererMessage} from "../common/typed-ipc.js";
@@ -48,6 +49,7 @@ let badgeCount: number;
 
 let isQuitting = false;
 
+let dndRevertTimeout: NodeJS.Timeout | null = null;
 // Load this file in main window
 const mainUrl = new URL("app/renderer/main.html", bundleUrl).href;
 
@@ -407,6 +409,29 @@ function createMainWindow(): BrowserWindow {
       listener: Channel,
       ...parameters: Parameters<RendererMessage[Channel]>
     ) => {
+      if (listener === "toggle-dnd-request") {
+        const [duration] = parameters as [number?];
+        const result = DNDUtil.toggle();
+        send(_event.sender, "toggle-dnd", result.dnd, result.newSettings);
+
+        if (result.dnd && duration && !Number.isNaN(duration)) {
+          if (dndRevertTimeout) clearTimeout(dndRevertTimeout);
+
+          dndRevertTimeout = setTimeout(
+            () => {
+              const revert = DNDUtil.toggle();
+              send(_event.sender, "toggle-dnd", revert.dnd, revert.newSettings);
+            },
+            duration * 60 * 1000,
+          );
+        } else if (dndRevertTimeout) {
+          clearTimeout(dndRevertTimeout);
+          dndRevertTimeout = null;
+        }
+
+        return;
+      }
+
       send(page, listener, ...parameters);
     },
   );
