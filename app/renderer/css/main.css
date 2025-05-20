@@ -163,6 +163,8 @@ body {
   width: 35px;
   vertical-align: top;
   border-radius: 4px;
+  /* stylelint-disable-next-line value-no-vendor-prefix */
+  image-rendering: -webkit-optimize-contrast;
 }
 
 .tab .server-tab {
