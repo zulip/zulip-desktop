@@ -16,7 +16,7 @@
 
 ## - All the installer i.e.
 
-- Linux (.deb, AppImage)
+- Linux (.deb, .rpm, AppImage)
 - Mac - (.dmg)
 - Windows - (web installer for 32/64bit)
 
