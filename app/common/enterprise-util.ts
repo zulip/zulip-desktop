@@ -3,6 +3,7 @@ import path from "node:path";
 import process from "node:process";
 
 import {z} from "zod";
+import {dialog} from "zulip:remote";
 
 import {enterpriseConfigSchemata} from "./config-schemata.js";
 import Logger from "./logger-util.js";
@@ -40,6 +41,10 @@ function reloadDatabase(): void {
         .partial()
         .parse(data);
     } catch (error: unknown) {
+      dialog.showErrorBox(
+        "Error loading global_config",
+        "We encountered an error while reading global_config.json, please make sure the file contains valid JSON.",
+      );
       logger.log("Error while JSON parsing global_config.json: ");
       logger.log(error);
     }
