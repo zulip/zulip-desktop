@@ -1,3 +1,4 @@
+import {app} from "electron/main";
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
@@ -47,6 +48,11 @@ function reloadDatabase(): void {
       );
       logger.log("Error while JSON parsing global_config.json: ");
       logger.log(error);
+      // This function is called multiple times throughout the
+      // codebase, making the above dialog.showErrorBox appear
+      // multiple times and then leading to a non-working app.
+      // It might be better to quit the app instead.
+      app.quit();
     }
   } else {
     configFile = false;
