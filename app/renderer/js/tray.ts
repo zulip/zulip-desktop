@@ -178,6 +178,30 @@ const createTray = function (): void {
   }
 };
 
+const shouldShowTrayIcon = function (): boolean {
+  return (
+    process.platform === "darwin" ||
+    process.platform === "win32" ||
+    process.platform === "linux"
+  );
+};
+
+const displayTrayIcon = function (tray: ElectronTray): void {
+  if (process.platform === "darwin") {
+    tray.setImage(iconPath());
+    const showTrayBadgeCount = ConfigUtil.getConfigItem(
+      "trayBadgeCount",
+      false,
+    );
+    tray.setTitle(showTrayBadgeCount && unread > 0 ? unread.toString() : "");
+  } else {
+    const image = renderNativeImage(unread);
+    tray.setImage(image);
+  }
+
+  tray.setToolTip(`${unread} unread messages`);
+};
+
 export function initializeTray(serverManagerView: ServerManagerView) {
   ipcRenderer.on("destroytray", () => {
     if (!tray) {
@@ -197,17 +221,15 @@ export function initializeTray(serverManagerView: ServerManagerView) {
       return;
     }
 
-    // We don't want to create tray from unread messages on macOS since it already has dock badges.
-    if (process.platform === "linux" || process.platform === "win32") {
+    if (shouldShowTrayIcon()) {
       if (argument === 0) {
         unread = argument;
         tray.setImage(iconPath());
+        tray.setTitle("");
         tray.setToolTip("No unread messages");
       } else {
         unread = argument;
-        const image = renderNativeImage(argument);
-        tray.setImage(image);
-        tray.setToolTip(`${argument} unread messages`);
+        displayTrayIcon(tray);
       }
     }
   });
@@ -225,10 +247,8 @@ export function initializeTray(serverManagerView: ServerManagerView) {
     } else {
       state = true;
       createTray();
-      if (process.platform === "linux" || process.platform === "win32") {
-        const image = renderNativeImage(unread);
-        tray!.setImage(image);
-        tray!.setToolTip(`${unread} unread messages`);
+      if (shouldShowTrayIcon()) {
+        displayTrayIcon(tray!);
       }
 
       ConfigUtil.setConfigItem("trayIcon", true);
@@ -238,6 +258,12 @@ export function initializeTray(serverManagerView: ServerManagerView) {
   }
 
   ipcRenderer.on("toggletray", toggleTray);
+
+  ipcRenderer.on("toggle-tray-badge-count", () => {
+    if (tray && shouldShowTrayIcon()) {
+      displayTrayIcon(tray);
+    }
+  });
 
   if (ConfigUtil.getConfigItem("trayIcon", true)) {
     createTray();
