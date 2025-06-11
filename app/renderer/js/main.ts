@@ -798,9 +798,14 @@ export class ServerManagerView {
   toggleDndButton(alert: boolean): void {
     this.$dndTooltip.textContent =
       (alert ? "Disable" : "Enable") + " Do Not Disturb";
-    this.$dndButton.querySelector("i")!.textContent = alert
-      ? "notifications_off"
-      : "notifications";
+    const $dndIcon = this.$dndButton.querySelector("i")!;
+    $dndIcon.textContent = alert ? "notifications_off" : "notifications";
+
+    if (alert) {
+      $dndIcon.classList.add("dnd-on");
+    } else {
+      $dndIcon.classList.remove("dnd-on");
+    }
   }
 
   async isLoggedIn(tabIndex: number): Promise<boolean> {
