@@ -41,4 +41,5 @@ export const configSchemata = {
 export const enterpriseConfigSchemata = {
   ...configSchemata,
   presetOrganizations: z.string().array(),
+  allowNtlmCredentialsForDomains: z.string().array(),
 };
