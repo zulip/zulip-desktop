@@ -102,7 +102,6 @@ td:nth-child(odd) {
 .nav {
   padding: 7px 0;
   color: rgb(0 0 0 / 100%);
-=======
   color: rgb(70 78 90 / 100%);
   cursor: pointer;
 }
