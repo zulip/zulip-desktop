@@ -9,15 +9,15 @@ type PreferenceNavigationProperties = {
 };
 
 export default class PreferenceNavigation {
-  navigationItems: NavigationItem[];
+  navigationItems: Array<{navigationItem: NavigationItem; label: string}>;
   $el: Element;
   constructor(private readonly properties: PreferenceNavigationProperties) {
     this.navigationItems = [
-      "General",
-      "Network",
-      "AddServer",
-      "Organizations",
-      "Shortcuts",
+      {navigationItem: "General", label: t.__("General")},
+      {navigationItem: "Network", label: t.__("Network")},
+      {navigationItem: "AddServer", label: t.__("Add Organization")},
+      {navigationItem: "Organizations", label: t.__("Organizations")},
+      {navigationItem: "Shortcuts", label: t.__("Shortcuts")},
     ];
 
     this.$el = generateNodeFromHtml(this.templateHtml());
@@ -28,11 +28,8 @@ export default class PreferenceNavigation {
   templateHtml(): Html {
     const navigationItemsHtml = html``.join(
       this.navigationItems.map(
-        (navigationItem) => html`
-          <div class="nav" id="nav-${navigationItem}">
-            ${t.__(navigationItem)}
-          </div>
-        `,
+        ({navigationItem, label}) =>
+          html`<div class="nav" id="nav-${navigationItem}">${label}</div>`,
       ),
     );
 
@@ -45,7 +42,7 @@ export default class PreferenceNavigation {
   }
 
   registerListeners(): void {
-    for (const navigationItem of this.navigationItems) {
+    for (const {navigationItem} of this.navigationItems) {
       const $item = this.$el.querySelector(
         `#nav-${CSS.escape(navigationItem)}`,
       )!;
@@ -56,7 +53,7 @@ export default class PreferenceNavigation {
   }
 
   select(navigationItemToSelect: NavigationItem): void {
-    for (const navigationItem of this.navigationItems) {
+    for (const {navigationItem} of this.navigationItems) {
       if (navigationItem === navigationItemToSelect) {
         this.activate(navigationItem);
       } else {

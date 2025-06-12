@@ -90,7 +90,7 @@ export class PreferenceView {
       }
     }
 
-    window.location.hash = `#${navigationItem}`;
+    location.hash = `#${navigationItem}`;
   };
 
   handleToggleTray(state: boolean) {

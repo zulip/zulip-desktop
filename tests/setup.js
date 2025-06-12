@@ -1,9 +1,9 @@
 "use strict";
+const fs = require("node:fs");
 const path = require("node:path");
 const process = require("node:process");
 
 const {_electron} = require("playwright-core");
-const rimraf = require("rimraf");
 
 const testsPkg = require("./package.json");
 
@@ -58,5 +58,5 @@ function getAppDataDirectory() {
 // Resets the test directory, containing domain.json, window-state.json, etc
 function resetTestDataDirectory() {
   const appDataDirectory = getAppDataDirectory();
-  rimraf.sync(appDataDirectory);
+  fs.rmSync(appDataDirectory, {force: true, recursive: true});
 }

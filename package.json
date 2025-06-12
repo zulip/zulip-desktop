@@ -1,7 +1,7 @@
 {
   "name": "zulip",
   "productName": "Zulip",
-  "version": "5.11.0",
+  "version": "5.12.0",
   "main": "./dist-electron",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
@@ -18,7 +18,7 @@
     "url": "https://github.com/zulip/zulip-desktop/issues"
   },
   "engines": {
-    "node": ">=16.13.2"
+    "node": ">=18"
   },
   "scripts": {
     "start": "vite",
@@ -50,6 +50,7 @@
     "copyright": "©2020 Kandra Labs, Inc.",
     "mac": {
       "category": "public.app-category.productivity",
+      "icon": "build/icon-macos.png",
       "target": [
         {
           "target": "default",
@@ -67,14 +68,11 @@
         }
       ],
       "darkModeSupport": true,
-      "artifactName": "${productName}-${version}-${arch}.${ext}",
-      "notarize": {
-        "teamId": "66KHCWMEYB"
-      }
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "linux": {
       "category": "Chat;GNOME;GTK;Network;InstantMessaging",
-      "icon": "build/icon.icns",
+      "icon": "build/zulip.png",
       "description": "Zulip Desktop Client for Linux",
       "target": [
         "deb",
@@ -120,7 +118,16 @@
         }
       ],
       "icon": "build/icon.ico",
-      "publisherName": "Kandra Labs, Inc."
+      "signtoolOptions": {
+        "publisherName": "Kandra Labs, Inc."
+      },
+      "azureSignOptions": {
+        "endpoint": "https://eus.codesigning.azure.net/",
+        "codeSigningAccountName": "kandralabs",
+        "certificateProfileName": "kandralabs",
+        "timestampRfc3161": "http://timestamp.acs.microsoft.com",
+        "timestampDigest": "SHA256"
+      }
     },
     "msi": {
       "artifactName": "${productName}-${version}-${arch}.${ext}"
@@ -147,42 +154,42 @@
   },
   "devDependencies": {
     "@electron/remote": "^2.0.8",
-    "@sentry/core": "^7.94.1",
-    "@sentry/electron": "^4.1.2",
+    "@sentry/core": "^9.5.0",
+    "@sentry/electron": "^6.1.0",
     "@types/adm-zip": "^0.5.0",
     "@types/auto-launch": "^5.0.2",
     "@types/backoff": "^2.5.2",
     "@types/i18n": "^0.13.1",
-    "@types/node": "^20.11.30",
+    "@types/node": "^22.13.10",
     "@types/requestidlecallback": "^0.3.4",
+    "@types/semver": "^7.5.8",
     "@types/yaireo__tagify": "^4.3.2",
     "@yaireo/tagify": "^4.5.0",
     "adm-zip": "^0.5.5",
     "auto-launch": "^5.0.5",
     "backoff": "^2.5.0",
-    "electron": "^29.1.5",
-    "electron-builder": "^24.6.4",
+    "electron": "^35.0.1",
+    "electron-builder": "^25.1.8",
     "electron-log": "^5.0.3",
-    "electron-updater": "^6.1.4",
+    "electron-updater": "^6.3.4",
     "electron-window-state": "^5.0.3",
     "escape-goat": "^4.0.0",
     "htmlhint": "^1.1.2",
     "i18n": "^0.15.1",
-    "iso-639-1": "^3.1.0",
+    "i18next-scanner": "^4.6.0",
     "medium": "^1.2.0",
     "node-json-db": "^1.3.0",
     "playwright-core": "^1.41.0-alpha-jan-9-2024",
     "pre-commit": "^1.2.2",
     "prettier": "^3.0.3",
-    "rimraf": "^5.0.0",
     "semver": "^7.3.5",
     "stylelint": "^16.1.0",
-    "stylelint-config-standard": "^36.0.0",
+    "stylelint-config-standard": "^37.0.0",
     "tape": "^5.2.2",
     "typescript": "^5.0.4",
     "vite": "^5.0.11",
     "vite-plugin-electron": "^0.28.0",
-    "xo": "^0.58.0",
+    "xo": "^0.60.0",
     "zod": "^3.5.1"
   },
   "prettier": {
@@ -309,7 +316,8 @@
       },
       {
         "files": [
-          "scripts/notarize.js",
+          "i18next-scanner.config.js",
+          "scripts/win-sign.js",
           "tests/**/*.js"
         ],
         "parserOptions": {

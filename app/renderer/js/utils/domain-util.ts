@@ -182,9 +182,10 @@ function reloadDatabase(): void {
     if (fs.existsSync(domainJsonPath)) {
       fs.unlinkSync(domainJsonPath);
       dialog.showErrorBox(
-        "Error saving new organization",
-        "There seems to be error while saving new organization, " +
-          "you may have to re-add your previous organizations back.",
+        t.__("Error saving new organization"),
+        t.__(
+          "There was an error while saving the new organization. You may have to add your previous organizations again.",
+        ),
       );
       logger.error("Error while JSON parsing domain.json: ");
       logger.error(error);

@@ -49,7 +49,7 @@ export default class ServerTab extends Tab {
     return html`
       <div class="tab" data-tab-id="${this.properties.tabIndex}">
         <div class="server-tooltip" style="display:none">
-          ${this.properties.name}
+          ${this.properties.label}
         </div>
         <div class="server-tab-badge"></div>
         <div class="server-tab">
@@ -60,9 +60,9 @@ export default class ServerTab extends Tab {
     `;
   }
 
-  setName(name: string): void {
-    this.properties.name = name;
-    this.$name.textContent = name;
+  setLabel(label: string): void {
+    this.properties.label = label;
+    this.$name.textContent = label;
   }
 
   setIcon(icon: string): void {

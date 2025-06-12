@@ -2,6 +2,32 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.12.0 --2025-03-13
+
+**Enhancements**:
+
+- Updated the icon in macOS with a native appearance.
+- Marked untranslated strings for translation.
+- Updated translations.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 35.0.1.
+
+**Removed features**:
+
+- Removed support for macOS 10.15 and earlier, which reached end-of-life in 2022 and is [no longer supported](https://www.electronjs.org/blog/electron-33-0#removed-macos-1015-support) by Electron.
+
+### v5.11.1 --2024-08-23
+
+**Enhancements**:
+
+- Updated translations.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 32.0.1.
+
 ### v5.11.0 --2024-03-22
 
 **Fixes**:

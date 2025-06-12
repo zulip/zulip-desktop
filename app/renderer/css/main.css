@@ -114,12 +114,20 @@ body {
 }
 
 .action-button i {
-  color: rgb(108 133 146 / 100%);
+  color: hsl(200.53deg 14.96% 49.8%);
   font-size: 28px;
 }
 
 .action-button:hover i {
-  color: rgb(152 169 179 / 100%);
+  color: hsl(202.22deg 15.08% 64.9%);
+}
+
+.action-button > .dnd-on {
+  color: hsl(200.53deg 14.96% 85%);
+}
+
+.action-button:hover > .dnd-on {
+  color: hsl(202.22deg 15.08% 95%);
 }
 
 .action-button.active {

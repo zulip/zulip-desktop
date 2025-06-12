@@ -11,7 +11,7 @@
   background: rgb(239 239 239 / 100%);
   letter-spacing: -0.08px;
   line-height: 18px;
-  color: rgb(139 142 143 / 100%);
+  color: rgb(34 44 49 / 100%);
 
   /* Copied from https://github.com/yairEO/tagify/blob/v4.17.7/src/tagify.scss#L4-L8 */
   --tagify-dd-color-primary: rgb(53 149 246);
@@ -102,6 +102,8 @@ td:nth-child(odd) {
 .nav {
   padding: 7px 0;
   color: rgb(0 0 0 / 100%);
+=======
+  color: rgb(70 78 90 / 100%);
   cursor: pointer;
 }
 
@@ -582,7 +584,6 @@ input.toggle-round:checked + label::after {
   text-align: center;
   color: rgb(255 255 255 / 100%);
   background: rgb(78 191 172 / 100%);
-  border-color: none;
   border: none;
   width: 98%;
   height: 46px;

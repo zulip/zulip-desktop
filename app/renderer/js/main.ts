@@ -12,14 +12,17 @@ import * as ConfigUtil from "../../common/config-util.js";
 import * as DNDUtil from "../../common/dnd-util.js";
 import type {DndSettings} from "../../common/dnd-util.js";
 import * as EnterpriseUtil from "../../common/enterprise-util.js";
+import {html} from "../../common/html.js";
 import * as LinkUtil from "../../common/link-util.js";
 import Logger from "../../common/logger-util.js";
 import * as Messages from "../../common/messages.js";
 import {bundlePath, bundleUrl} from "../../common/paths.js";
+import * as t from "../../common/translation-util.js";
 import type {
   NavigationItem,
   ServerConfig,
   TabData,
+  TabPage,
 } from "../../common/types.js";
 import defaultIcon from "../img/icon.png";
 
@@ -81,7 +84,7 @@ export class ServerManagerView {
   loading: Set<string>;
   activeTabIndex: number;
   tabs: ServerOrFunctionalTab[];
-  functionalTabs: Map<string, number>;
+  functionalTabs: Map<TabPage, number>;
   tabIndex: number;
   presetOrgs: string[];
   preferenceView?: PreferenceView;
@@ -287,12 +290,9 @@ export class ServerManagerView {
         // ask them before reloading the app
         const {response} = await dialog.showMessageBox({
           type: "question",
-          buttons: ["Yes", "Later"],
+          buttons: [t.__("Yes"), t.__("Later")],
           defaultId: 0,
-          message:
-            "New server" +
-            (domainsAdded.length > 1 ? "s" : "") +
-            " added. Reload app now?",
+          message: t.__("New servers added. Reload app now?"),
         });
         if (response === 0) {
           ipcRenderer.send("reload-full-app");
@@ -333,7 +333,7 @@ export class ServerManagerView {
             server.url,
             i,
           );
-          tab.setName(serverConfig.alias);
+          tab.setLabel(serverConfig.alias);
           tab.setIcon(DomainUtil.iconAsUrl(serverConfig.icon));
           (await tab.webview).setUnsupportedMessage(
             DomainUtil.getUnsupportedMessage(serverConfig),
@@ -376,7 +376,7 @@ export class ServerManagerView {
     const tab = new ServerTab({
       role: "server",
       icon: DomainUtil.iconAsUrl(server.icon),
-      name: server.alias,
+      label: server.alias,
       $root: this.$tabsContainer,
       onClick: this.activateLastTab.bind(this, index),
       index,
@@ -558,18 +558,19 @@ export class ServerManagerView {
   }
 
   async openFunctionalTab(tabProperties: {
-    name: string;
+    label: string;
+    page: TabPage;
     materialIcon: string;
     makeView: () => Promise<Element>;
     destroyView: () => void;
   }): Promise<void> {
-    if (this.functionalTabs.has(tabProperties.name)) {
-      await this.activateTab(this.functionalTabs.get(tabProperties.name)!);
+    if (this.functionalTabs.has(tabProperties.page)) {
+      await this.activateTab(this.functionalTabs.get(tabProperties.page)!);
       return;
     }
 
     const index = this.tabs.length;
-    this.functionalTabs.set(tabProperties.name, index);
+    this.functionalTabs.set(tabProperties.page, index);
 
     const tabIndex = this.getTabIndex();
     const $view = await tabProperties.makeView();
@@ -579,13 +580,14 @@ export class ServerManagerView {
       new FunctionalTab({
         role: "function",
         materialIcon: tabProperties.materialIcon,
-        name: tabProperties.name,
+        label: tabProperties.label,
+        page: tabProperties.page,
         $root: this.$tabsContainer,
         index,
         tabIndex,
         onClick: this.activateTab.bind(this, index),
         onDestroy: async () => {
-          await this.destroyTab(tabProperties.name, index);
+          await this.destroyFunctionalTab(tabProperties.page, index);
           tabProperties.destroyView();
         },
         $view,
@@ -596,14 +598,15 @@ export class ServerManagerView {
     // closed when the functional tab DOM is ready, handled in webview.js
     this.$webviewsContainer.classList.remove("loaded");
 
-    await this.activateTab(this.functionalTabs.get(tabProperties.name)!);
+    await this.activateTab(this.functionalTabs.get(tabProperties.page)!);
   }
 
   async openSettings(
     navigationItem: NavigationItem = "General",
   ): Promise<void> {
     await this.openFunctionalTab({
-      name: "Settings",
+      page: "Settings",
+      label: t.__("Settings"),
       materialIcon: "settings",
       makeView: async () => {
         this.preferenceView = await PreferenceView.create();
@@ -622,7 +625,8 @@ export class ServerManagerView {
   async openAbout(): Promise<void> {
     let aboutView: AboutView;
     await this.openFunctionalTab({
-      name: "About",
+      page: "About",
+      label: t.__("About"),
       materialIcon: "sentiment_very_satisfied",
       async makeView() {
         aboutView = await AboutView.create();
@@ -660,7 +664,8 @@ export class ServerManagerView {
   get tabsForIpc(): TabData[] {
     return this.tabs.map((tab) => ({
       role: tab.properties.role,
-      name: tab.properties.name,
+      page: tab.properties.page,
+      label: tab.properties.label,
       index: tab.properties.index,
     }));
   }
@@ -680,7 +685,7 @@ export class ServerManagerView {
         // If old tab is functional tab Settings, remove focus from the settings icon at sidebar bottom
         if (
           this.tabs[this.activeTabIndex].properties.role === "function" &&
-          this.tabs[this.activeTabIndex].properties.name === "Settings"
+          this.tabs[this.activeTabIndex].properties.page === "Settings"
         ) {
           this.$settingsButton.classList.remove("active");
         }
@@ -722,7 +727,7 @@ export class ServerManagerView {
     this.$loadingIndicator.classList.toggle("hidden", !loading);
   }
 
-  async destroyTab(name: string, index: number): Promise<void> {
+  async destroyFunctionalTab(page: TabPage, index: number): Promise<void> {
     const tab = this.tabs[index];
     if (tab instanceof ServerTab && (await tab.webview).loading) {
       return;
@@ -731,7 +736,7 @@ export class ServerManagerView {
     await tab.destroy();
 
     delete this.tabs[index]; // eslint-disable-line @typescript-eslint/no-array-delete
-    this.functionalTabs.delete(name);
+    this.functionalTabs.delete(page);
 
     // Issue #188: If the functional tab was not focused, do not activate another tab.
     if (this.activeTabIndex === index) {
@@ -793,9 +798,14 @@ export class ServerManagerView {
   toggleDndButton(alert: boolean): void {
     this.$dndTooltip.textContent =
       (alert ? "Disable" : "Enable") + " Do Not Disturb";
-    this.$dndButton.querySelector("i")!.textContent = alert
-      ? "notifications_off"
-      : "notifications";
+    const $dndIcon = this.$dndButton.querySelector("i")!;
+    $dndIcon.textContent = alert ? "notifications_off" : "notifications";
+
+    if (alert) {
+      $dndIcon.classList.add("dnd-on");
+    } else {
+      $dndIcon.classList.remove("dnd-on");
+    }
   }
 
   async isLoggedIn(tabIndex: number): Promise<boolean> {
@@ -811,13 +821,15 @@ export class ServerManagerView {
       event.preventDefault();
       const template = [
         {
-          label: "Disconnect organization",
+          label: t.__("Disconnect organization"),
           async click() {
             const {response} = await dialog.showMessageBox({
               type: "warning",
-              buttons: ["YES", "NO"],
+              buttons: [t.__("Yes"), t.__("No")],
               defaultId: 0,
-              message: "Are you sure you want to disconnect this organization?",
+              message: t.__(
+                "Are you sure you want to disconnect this organization?",
+              ),
             });
             if (response === 0) {
               if (DomainUtil.removeDomain(index)) {
@@ -832,7 +844,7 @@ export class ServerManagerView {
           },
         },
         {
-          label: "Notification settings",
+          label: t.__("Notification settings"),
           enabled: await this.isLoggedIn(index),
           click: async () => {
             // Switch to tab whose icon was right-clicked
@@ -843,7 +855,7 @@ export class ServerManagerView {
           },
         },
         {
-          label: "Copy Zulip URL",
+          label: t.__("Copy Zulip URL"),
           click() {
             clipboard.writeText(DomainUtil.getDomain(index).url);
           },
@@ -1002,8 +1014,8 @@ export class ServerManagerView {
       await this.loadProxy();
       if (showAlert) {
         await dialog.showMessageBox({
-          message: "Proxy settings saved!",
-          buttons: ["OK"],
+          message: t.__("Proxy settings saved."),
+          buttons: [t.__("OK")],
         });
         ipcRenderer.send("reload-full-app");
       }
@@ -1053,7 +1065,7 @@ export class ServerManagerView {
         for (const [index, domain] of DomainUtil.getDomains().entries()) {
           if (domain.url === serverURL) {
             const tab = this.tabs[index];
-            if (tab instanceof ServerTab) tab.setName(realmName);
+            if (tab instanceof ServerTab) tab.setLabel(realmName);
             domain.alias = realmName;
             DomainUtil.updateDomain(index, domain);
             // Update the realm name also on the Window menu
@@ -1179,6 +1191,62 @@ export class ServerManagerView {
 }
 
 window.addEventListener("load", async () => {
+  document.body.innerHTML = html`
+    <div id="content">
+      <div class="popup">
+        <span class="popuptext hidden" id="fullscreen-popup"></span>
+      </div>
+      <div id="sidebar" class="toggle-sidebar">
+        <div id="view-controls-container">
+          <div id="tabs-container"></div>
+          <div id="add-tab" class="tab functional-tab">
+            <div class="server-tab" id="add-action">
+              <i class="material-icons">add</i>
+            </div>
+            <span id="add-server-tooltip" style="display: none"
+              >${t.__("Add Organization")}</span
+            >
+          </div>
+        </div>
+        <div id="actions-container">
+          <div class="action-button" id="dnd-action">
+            <i class="material-icons md-48">notifications</i>
+            <span id="dnd-tooltip" style="display: none"
+              >${t.__("Do Not Disturb")}</span
+            >
+          </div>
+          <div class="action-button hidden" id="reload-action">
+            <i class="material-icons md-48">refresh</i>
+            <span id="reload-tooltip" style="display: none"
+              >${t.__("Reload")}</span
+            >
+          </div>
+          <div class="action-button disable" id="loading-action">
+            <i class="refresh material-icons md-48">loop</i>
+            <span id="loading-tooltip" style="display: none"
+              >${t.__("Loading")}</span
+            >
+          </div>
+          <div class="action-button disable" id="back-action">
+            <i class="material-icons md-48">arrow_back</i>
+            <span id="back-tooltip" style="display: none"
+              >${t.__("Go Back")}</span
+            >
+          </div>
+          <div class="action-button" id="settings-action">
+            <i class="material-icons md-48">settings</i>
+            <span id="setting-tooltip" style="display: none"
+              >${t.__("Settings")}</span
+            >
+          </div>
+        </div>
+      </div>
+      <div id="main-container">
+        <div id="webviews-container"></div>
+      </div>
+    </div>
+  `.html;
+
   const serverManagerView = new ServerManagerView();
   await serverManagerView.init();
 });

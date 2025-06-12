@@ -53,7 +53,7 @@ export function initServerInfoForm(properties: ServerInfoFormProperties): void {
   $deleteServerButton.addEventListener("click", async () => {
     const {response} = await dialog.showMessageBox({
       type: "warning",
-      buttons: [t.__("YES"), t.__("NO")],
+      buttons: [t.__("Yes"), t.__("No")],
       defaultId: 0,
       message: t.__("Are you sure you want to disconnect this organization?"),
     });
