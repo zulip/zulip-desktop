@@ -239,9 +239,9 @@ function createMainWindow(): BrowserWindow {
     try {
       // Check that the data on the clipboard was encrypted to the key.
       const data = Buffer.from(clipboard.readText(), "hex");
-      const iv = data.slice(0, 12);
-      const ciphertext = data.slice(12, -16);
-      const authTag = data.slice(-16);
+      const iv = data.subarray(0, 12);
+      const ciphertext = data.subarray(12, -16);
+      const authTag = data.subarray(-16);
       const decipher = crypto.createDecipheriv("aes-256-gcm", key, iv, {
         authTagLength: 16,
       });
