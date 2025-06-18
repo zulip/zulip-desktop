@@ -6,6 +6,8 @@ import process from "node:process";
 import {z} from "zod";
 import {dialog} from "zulip:remote";
 
+import {ipcRenderer} from "../renderer/js/typed-ipc-renderer.js";
+
 import {enterpriseConfigSchemata} from "./config-schemata.js";
 import Logger from "./logger-util.js";
 
@@ -52,7 +54,11 @@ function reloadDatabase(): void {
       // codebase, making the above dialog.showErrorBox appear
       // multiple times and then leading to a non-working app.
       // It might be better to quit the app instead.
-      app.quit();
+      if (process.type === "renderer") {
+        ipcRenderer.send("quit-app");
+      } else {
+        app.quit();
+      }
     }
   } else {
     configFile = false;
