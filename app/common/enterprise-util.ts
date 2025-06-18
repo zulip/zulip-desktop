@@ -26,8 +26,7 @@ reloadDatabase();
 function reloadDatabase(): void {
   let enterpriseFile = "/etc/zulip-desktop-config/global_config.json";
   if (process.platform === "win32") {
-    enterpriseFile =
-      "C:\\Program Files\\Zulip-Desktop-Config\\global_config.json";
+    enterpriseFile = String.raw`C:\Program Files\Zulip-Desktop-Config\global_config.json`;
   }
 
   enterpriseFile = path.resolve(enterpriseFile);
