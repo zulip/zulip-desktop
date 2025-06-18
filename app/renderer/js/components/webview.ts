@@ -1,6 +1,5 @@
 import type {WebContents} from "electron/main";
 import fs from "node:fs";
-import process from "node:process";
 
 import * as remote from "@electron/remote";
 import {app, dialog} from "@electron/remote";
@@ -251,10 +250,7 @@ export default class WebView {
     webContents.on("page-favicon-updated", (_event, favicons) => {
       // This returns a string of favicons URL. If there is a PM counts in unread messages then the URL would be like
       // https://chat.zulip.org/static/images/favicon/favicon-pms.png
-      if (
-        favicons[0].indexOf("favicon-pms") > 0 &&
-        process.platform === "darwin"
-      ) {
+      if (favicons[0].indexOf("favicon-pms") > 0 && app.dock !== undefined) {
         // This api is only supported on macOS
         app.dock.setBadge("●");
         // Bounce the dock
