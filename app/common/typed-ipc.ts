@@ -69,7 +69,12 @@ export type RendererMessage = {
     autoHideMenubar: boolean,
     updateMenu: boolean,
   ) => void;
-  "toggle-dnd": (state: boolean, newSettings: Partial<DndSettings>) => void;
+  "toggle-dnd-request": (duration?: number) => void;
+  "toggle-dnd": (
+    state: boolean,
+    newSettings: Partial<DndSettings>,
+    duration?: number,
+  ) => void;
   "toggle-sidebar": (show: boolean) => void;
   "toggle-silent": (state: boolean) => void;
   "toggle-tray": (state: boolean) => void;

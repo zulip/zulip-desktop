@@ -386,6 +386,31 @@ webview.focus {
   font-size: 14px;
 }
 
+.dnd-dropdown {
+  position: absolute;
+  left: 60px;
+  background-color: rgb(32 33 36 / 100%); /* closer to Zulip's sidebars */
+  border: 1px solid rgb(60 60 60 / 100%);
+  border-radius: 8px;
+  color: rgb(240 240 240 / 100%);
+  z-index: 1000;
+  padding: 4px 0;
+  font-size: 13px;
+  font-family: arial, sans-serif;
+  min-width: 150px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 40%);
+}
+
+.dnd-dropdown-item {
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.dnd-dropdown-item:hover {
+  background-color: rgb(60 60 60 / 100%);
+}
+
 #loading-tooltip::after,
 #dnd-tooltip::after,
 #back-tooltip::after,
