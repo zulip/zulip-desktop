@@ -18,6 +18,7 @@ import * as remoteMain from "@electron/remote/main";
 import windowStateKeeper from "electron-window-state";
 
 import * as ConfigUtil from "../common/config-util.js";
+import * as EnterpriseUtil from "../common/enterprise-util.js";
 import {bundlePath, bundleUrl, publicPath} from "../common/paths.js";
 import * as t from "../common/translation-util.js";
 import type {RendererMessage} from "../common/typed-ipc.js";
@@ -206,6 +207,14 @@ function createMainWindow(): BrowserWindow {
 
   const ses = session.fromPartition("persist:webviewsession");
   ses.setUserAgent(`ZulipElectron/${app.getVersion()} ${ses.getUserAgent()}`);
+
+  const allowNtlmCredentialsForDomains = EnterpriseUtil.getConfigItem(
+    "allowNtlmCredentialsForDomains",
+    [],
+  );
+  for (const domain of allowNtlmCredentialsForDomains) {
+    ses.allowNTLMCredentialsForDomains(domain);
+  }
 
   function configureSpellChecker() {
     const enable = ConfigUtil.getConfigItem("enableSpellchecker", true);
