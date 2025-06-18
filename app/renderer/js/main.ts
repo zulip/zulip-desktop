@@ -511,8 +511,7 @@ export class ServerManagerView {
     }
 
     $altIcon.textContent = realmName.charAt(0) || "Z";
-    $altIcon.classList.add("server-icon");
-    $altIcon.classList.add("alt-icon");
+    $altIcon.classList.add("server-icon", "alt-icon");
 
     $img.remove();
     $parent.append($altIcon);
