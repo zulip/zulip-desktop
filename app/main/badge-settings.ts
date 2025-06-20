@@ -2,9 +2,9 @@ import {nativeImage} from "electron/common";
 import {type BrowserWindow, app} from "electron/main";
 import process from "node:process";
 
-import * as ConfigUtil from "../common/config-util.js";
+import * as ConfigUtil from "../common/config-util.ts";
 
-import {send} from "./typed-ipc-main.js";
+import {send} from "./typed-ipc-main.ts";
 
 function showBadgeCount(messageCount: number, mainWindow: BrowserWindow): void {
   if (process.platform === "win32") {

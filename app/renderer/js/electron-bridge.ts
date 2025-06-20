@@ -3,9 +3,9 @@ import {EventEmitter} from "node:events";
 import {
   type ClipboardDecrypter,
   ClipboardDecrypterImplementation,
-} from "./clipboard-decrypter.js";
-import {type NotificationData, newNotification} from "./notification/index.js";
-import {ipcRenderer} from "./typed-ipc-renderer.js";
+} from "./clipboard-decrypter.ts";
+import {type NotificationData, newNotification} from "./notification/index.ts";
+import {ipcRenderer} from "./typed-ipc-renderer.ts";
 
 type ListenerType = (...arguments_: any[]) => void;
 

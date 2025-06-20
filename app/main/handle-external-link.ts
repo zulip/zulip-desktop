@@ -9,10 +9,10 @@ import {
 import fs from "node:fs";
 import path from "node:path";
 
-import * as ConfigUtil from "../common/config-util.js";
-import * as LinkUtil from "../common/link-util.js";
+import * as ConfigUtil from "../common/config-util.ts";
+import * as LinkUtil from "../common/link-util.ts";
 
-import {send} from "./typed-ipc-main.js";
+import {send} from "./typed-ipc-main.ts";
 
 function isUploadsUrl(server: string, url: URL): boolean {
   return url.origin === server && url.pathname.startsWith("/user_uploads/");

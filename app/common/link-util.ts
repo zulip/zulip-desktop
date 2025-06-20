@@ -3,7 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-import {html} from "./html.js";
+import {html} from "./html.ts";
 
 export async function openBrowser(url: URL): Promise<void> {
   if (["http:", "https:", "mailto:"].includes(url.protocol)) {

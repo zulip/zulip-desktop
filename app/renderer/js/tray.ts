@@ -5,12 +5,12 @@ import process from "node:process";
 
 import {BrowserWindow, Menu, Tray} from "@electron/remote";
 
-import * as ConfigUtil from "../../common/config-util.js";
-import {publicPath} from "../../common/paths.js";
-import type {RendererMessage} from "../../common/typed-ipc.js";
+import * as ConfigUtil from "../../common/config-util.ts";
+import {publicPath} from "../../common/paths.ts";
+import type {RendererMessage} from "../../common/typed-ipc.ts";
 
-import type {ServerManagerView} from "./main.js";
-import {ipcRenderer} from "./typed-ipc-renderer.js";
+import type {ServerManagerView} from "./main.ts";
+import {ipcRenderer} from "./typed-ipc-renderer.ts";
 
 let tray: ElectronTray | null = null;
 

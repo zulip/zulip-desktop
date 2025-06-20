@@ -1,8 +1,8 @@
 import {contextBridge} from "electron/renderer";
 
-import electron_bridge, {bridgeEvents} from "./electron-bridge.js";
-import * as NetworkError from "./pages/network.js";
-import {ipcRenderer} from "./typed-ipc-renderer.js";
+import electron_bridge, {bridgeEvents} from "./electron-bridge.ts";
+import * as NetworkError from "./pages/network.ts";
+import {ipcRenderer} from "./typed-ipc-renderer.ts";
 
 contextBridge.exposeInMainWorld("electron_bridge", electron_bridge);
 

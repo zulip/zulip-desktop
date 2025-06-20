@@ -1,4 +1,4 @@
-import {ipcRenderer} from "./typed-ipc-renderer.js";
+import {ipcRenderer} from "./typed-ipc-renderer.ts";
 
 // This helper is exposed via electron_bridge for use in the social
 // login flow.

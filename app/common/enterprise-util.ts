@@ -5,8 +5,8 @@ import process from "node:process";
 import {z} from "zod";
 import {dialog} from "zulip:remote";
 
-import {enterpriseConfigSchemata} from "./config-schemata.js";
-import Logger from "./logger-util.js";
+import {enterpriseConfigSchemata} from "./config-schemata.ts";
+import Logger from "./logger-util.ts";
 
 type EnterpriseConfig = {
   [Key in keyof typeof enterpriseConfigSchemata]: z.output<

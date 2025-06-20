@@ -9,13 +9,13 @@ import Tagify from "@yaireo/tagify";
 import {z} from "zod";
 
 import supportedLocales from "../../../../../public/translations/supported-locales.json";
-import * as ConfigUtil from "../../../../common/config-util.js";
-import * as EnterpriseUtil from "../../../../common/enterprise-util.js";
-import {html} from "../../../../common/html.js";
-import * as t from "../../../../common/translation-util.js";
-import {ipcRenderer} from "../../typed-ipc-renderer.js";
+import * as ConfigUtil from "../../../../common/config-util.ts";
+import * as EnterpriseUtil from "../../../../common/enterprise-util.ts";
+import {html} from "../../../../common/html.ts";
+import * as t from "../../../../common/translation-util.ts";
+import {ipcRenderer} from "../../typed-ipc-renderer.ts";
 
-import {generateSelectHtml, generateSettingOption} from "./base-section.js";
+import {generateSelectHtml, generateSettingOption} from "./base-section.ts";
 
 const currentBrowserWindow = remote.getCurrentWindow();
 

@@ -8,9 +8,9 @@ import type {ReadableStream} from "node:stream/web";
 import * as Sentry from "@sentry/electron/main";
 import {z} from "zod";
 
-import Logger from "../common/logger-util.js";
-import * as Messages from "../common/messages.js";
-import type {ServerConfig} from "../common/types.js";
+import Logger from "../common/logger-util.ts";
+import * as Messages from "../common/messages.ts";
+import type {ServerConfig} from "../common/types.ts";
 
 /* Request: domain-util */
 

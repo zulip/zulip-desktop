@@ -9,14 +9,14 @@ import process from "node:process";
 
 import AdmZip from "adm-zip";
 
-import * as ConfigUtil from "../common/config-util.js";
-import * as DNDUtil from "../common/dnd-util.js";
-import * as t from "../common/translation-util.js";
-import type {RendererMessage} from "../common/typed-ipc.js";
-import type {MenuProperties, TabData} from "../common/types.js";
+import * as ConfigUtil from "../common/config-util.ts";
+import * as DNDUtil from "../common/dnd-util.ts";
+import * as t from "../common/translation-util.ts";
+import type {RendererMessage} from "../common/typed-ipc.ts";
+import type {MenuProperties, TabData} from "../common/types.ts";
 
-import {appUpdater} from "./autoupdater.js";
-import {send} from "./typed-ipc-main.js";
+import {appUpdater} from "./autoupdater.ts";
+import {send} from "./typed-ipc-main.ts";
 
 const appName = app.name;
 

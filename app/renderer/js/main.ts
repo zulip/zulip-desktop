@@ -7,17 +7,17 @@ import {Menu, app, dialog, session} from "@electron/remote";
 import * as remote from "@electron/remote";
 import * as Sentry from "@sentry/electron/renderer";
 
-import type {Config} from "../../common/config-util.js";
-import * as ConfigUtil from "../../common/config-util.js";
-import * as DNDUtil from "../../common/dnd-util.js";
-import type {DndSettings} from "../../common/dnd-util.js";
-import * as EnterpriseUtil from "../../common/enterprise-util.js";
-import {html} from "../../common/html.js";
-import * as LinkUtil from "../../common/link-util.js";
-import Logger from "../../common/logger-util.js";
-import * as Messages from "../../common/messages.js";
-import {bundlePath, bundleUrl} from "../../common/paths.js";
-import * as t from "../../common/translation-util.js";
+import type {Config} from "../../common/config-util.ts";
+import * as ConfigUtil from "../../common/config-util.ts";
+import * as DNDUtil from "../../common/dnd-util.ts";
+import type {DndSettings} from "../../common/dnd-util.ts";
+import * as EnterpriseUtil from "../../common/enterprise-util.ts";
+import {html} from "../../common/html.ts";
+import * as LinkUtil from "../../common/link-util.ts";
+import Logger from "../../common/logger-util.ts";
+import * as Messages from "../../common/messages.ts";
+import {bundlePath, bundleUrl} from "../../common/paths.ts";
+import * as t from "../../common/translation-util.ts";
 import type {
   NavigationItem,
   ServerConfig,
@@ -26,15 +26,15 @@ import type {
 } from "../../common/types.js";
 import defaultIcon from "../img/icon.png";
 
-import FunctionalTab from "./components/functional-tab.js";
-import ServerTab from "./components/server-tab.js";
-import WebView from "./components/webview.js";
-import {AboutView} from "./pages/about.js";
-import {PreferenceView} from "./pages/preference/preference.js";
-import {initializeTray} from "./tray.js";
-import {ipcRenderer} from "./typed-ipc-renderer.js";
-import * as DomainUtil from "./utils/domain-util.js";
-import ReconnectUtil from "./utils/reconnect-util.js";
+import FunctionalTab from "./components/functional-tab.ts";
+import ServerTab from "./components/server-tab.ts";
+import WebView from "./components/webview.ts";
+import {AboutView} from "./pages/about.ts";
+import {PreferenceView} from "./pages/preference/preference.ts";
+import {initializeTray} from "./tray.ts";
+import {ipcRenderer} from "./typed-ipc-renderer.ts";
+import * as DomainUtil from "./utils/domain-util.ts";
+import ReconnectUtil from "./utils/reconnect-util.ts";
 
 Sentry.init({});
 

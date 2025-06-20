@@ -1,11 +1,11 @@
 import process from "node:process";
 
-import {type Html, html} from "../../../common/html.js";
-import {ipcRenderer} from "../typed-ipc-renderer.js";
+import {type Html, html} from "../../../common/html.ts";
+import {ipcRenderer} from "../typed-ipc-renderer.ts";
 
-import {generateNodeFromHtml} from "./base.js";
-import Tab, {type TabProperties} from "./tab.js";
-import type WebView from "./webview.js";
+import {generateNodeFromHtml} from "./base.ts";
+import Tab, {type TabProperties} from "./tab.ts";
+import type WebView from "./webview.ts";
 
 export type ServerTabProperties = {
   webview: Promise<WebView>;

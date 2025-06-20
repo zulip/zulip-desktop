@@ -5,7 +5,7 @@ import process from "node:process";
 
 import {app} from "zulip:remote";
 
-import {initSetUp} from "./default-util.js";
+import {initSetUp} from "./default-util.ts";
 
 type LoggerOptions = {
   file?: string;

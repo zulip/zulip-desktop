@@ -1,17 +1,17 @@
 import type {IpcRendererEvent} from "electron/renderer";
 import process from "node:process";
 
-import type {DndSettings} from "../../../../common/dnd-util.js";
-import {bundleUrl} from "../../../../common/paths.js";
-import type {NavigationItem} from "../../../../common/types.js";
-import {ipcRenderer} from "../../typed-ipc-renderer.js";
+import type {DndSettings} from "../../../../common/dnd-util.ts";
+import {bundleUrl} from "../../../../common/paths.ts";
+import type {NavigationItem} from "../../../../common/types.ts";
+import {ipcRenderer} from "../../typed-ipc-renderer.ts";
 
-import {initConnectedOrgSection} from "./connected-org-section.js";
-import {initGeneralSection} from "./general-section.js";
-import Nav from "./nav.js";
-import {initNetworkSection} from "./network-section.js";
-import {initServersSection} from "./servers-section.js";
-import {initShortcutsSection} from "./shortcuts-section.js";
+import {initConnectedOrgSection} from "./connected-org-section.ts";
+import {initGeneralSection} from "./general-section.ts";
+import Nav from "./nav.ts";
+import {initNetworkSection} from "./network-section.ts";
+import {initServersSection} from "./servers-section.ts";
+import {initShortcutsSection} from "./shortcuts-section.ts";
 
 export class PreferenceView {
   static async create(): Promise<PreferenceView> {

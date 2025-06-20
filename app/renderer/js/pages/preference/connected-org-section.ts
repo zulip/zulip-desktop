@@ -1,11 +1,11 @@
-import {html} from "../../../../common/html.js";
-import * as t from "../../../../common/translation-util.js";
-import {ipcRenderer} from "../../typed-ipc-renderer.js";
-import * as DomainUtil from "../../utils/domain-util.js";
+import {html} from "../../../../common/html.ts";
+import * as t from "../../../../common/translation-util.ts";
+import {ipcRenderer} from "../../typed-ipc-renderer.ts";
+import * as DomainUtil from "../../utils/domain-util.ts";
 
-import {reloadApp} from "./base-section.js";
-import {initFindAccounts} from "./find-accounts.js";
-import {initServerInfoForm} from "./server-info-form.js";
+import {reloadApp} from "./base-section.ts";
+import {initFindAccounts} from "./find-accounts.ts";
+import {initServerInfoForm} from "./server-info-form.ts";
 
 type ConnectedOrgSectionProperties = {
   $root: Element;

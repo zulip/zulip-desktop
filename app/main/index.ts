@@ -17,20 +17,20 @@ import process from "node:process";
 import * as remoteMain from "@electron/remote/main";
 import windowStateKeeper from "electron-window-state";
 
-import * as ConfigUtil from "../common/config-util.js";
-import {bundlePath, bundleUrl, publicPath} from "../common/paths.js";
-import * as t from "../common/translation-util.js";
-import type {RendererMessage} from "../common/typed-ipc.js";
-import type {MenuProperties} from "../common/types.js";
+import * as ConfigUtil from "../common/config-util.ts";
+import {bundlePath, bundleUrl, publicPath} from "../common/paths.ts";
+import * as t from "../common/translation-util.ts";
+import type {RendererMessage} from "../common/typed-ipc.ts";
+import type {MenuProperties} from "../common/types.ts";
 
-import {appUpdater, shouldQuitForUpdate} from "./autoupdater.js";
-import * as BadgeSettings from "./badge-settings.js";
-import handleExternalLink from "./handle-external-link.js";
-import * as AppMenu from "./menu.js";
-import {_getServerSettings, _isOnline, _saveServerIcon} from "./request.js";
-import {sentryInit} from "./sentry.js";
-import {setAutoLaunch} from "./startup.js";
-import {ipcMain, send} from "./typed-ipc-main.js";
+import {appUpdater, shouldQuitForUpdate} from "./autoupdater.ts";
+import * as BadgeSettings from "./badge-settings.ts";
+import handleExternalLink from "./handle-external-link.ts";
+import * as AppMenu from "./menu.ts";
+import {_getServerSettings, _isOnline, _saveServerIcon} from "./request.ts";
+import {sentryInit} from "./sentry.ts";
+import {setAutoLaunch} from "./startup.ts";
+import {ipcMain, send} from "./typed-ipc-main.ts";
 
 import "gatemaker/electron-setup"; // eslint-disable-line import/no-unassigned-import
 

@@ -5,17 +5,17 @@ import process from "node:process";
 import * as remote from "@electron/remote";
 import {app, dialog} from "@electron/remote";
 
-import * as ConfigUtil from "../../../common/config-util.js";
-import {type Html, html} from "../../../common/html.js";
-import * as t from "../../../common/translation-util.js";
-import type {RendererMessage} from "../../../common/typed-ipc.js";
-import type {TabRole} from "../../../common/types.js";
+import * as ConfigUtil from "../../../common/config-util.ts";
+import {type Html, html} from "../../../common/html.ts";
+import * as t from "../../../common/translation-util.ts";
+import type {RendererMessage} from "../../../common/typed-ipc.ts";
+import type {TabRole} from "../../../common/types.ts";
 import preloadCss from "../../css/preload.css?raw";
-import {ipcRenderer} from "../typed-ipc-renderer.js";
-import * as SystemUtil from "../utils/system-util.js";
+import {ipcRenderer} from "../typed-ipc-renderer.ts";
+import * as SystemUtil from "../utils/system-util.ts";
 
-import {generateNodeFromHtml} from "./base.js";
-import {contextMenu} from "./context-menu.js";
+import {generateNodeFromHtml} from "./base.ts";
+import {contextMenu} from "./context-menu.ts";
 
 const shouldSilentWebview = ConfigUtil.getConfigItem("silent", false);
 

@@ -1,6 +1,6 @@
-import {type Html, html} from "../../../../common/html.js";
-import {generateNodeFromHtml} from "../../components/base.js";
-import {ipcRenderer} from "../../typed-ipc-renderer.js";
+import {type Html, html} from "../../../../common/html.ts";
+import {generateNodeFromHtml} from "../../components/base.ts";
+import {ipcRenderer} from "../../typed-ipc-renderer.ts";
 
 type BaseSectionProperties = {
   $element: HTMLElement;
