@@ -5,6 +5,10 @@ module.exports = {
   rules: {
     "@typescript-eslint/no-dynamic-delete": "off",
     "arrow-body-style": "error",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {includeTypes: true, packageDir: __dirname},
+    ],
     "import/no-restricted-paths": [
       "error",
       {
