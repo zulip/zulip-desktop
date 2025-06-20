@@ -2,6 +2,11 @@
 
 module.exports = {
   prettier: true,
+  settings: {
+    n: {
+      typescriptExtensionMap: [],
+    },
+  },
   rules: {
     "@typescript-eslint/no-dynamic-delete": "off",
     "arrow-body-style": "error",
