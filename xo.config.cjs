@@ -1,5 +1,36 @@
 "use strict";
 
+const restrictedMainImports = [
+  {
+    name: "@sentry/electron/main",
+    message: "Cannot use main-only APIs here.",
+  },
+  {
+    name: "electron/main",
+    message: "Cannot use main-only APIs here.",
+    allowTypeImports: true, // https://github.com/zulip/zulip-desktop/issues/915
+  },
+  {
+    name: "electron-log/main",
+    message: "Cannot use main-only APIs here.",
+  },
+];
+
+const restrictedRendererImports = [
+  {
+    name: "@sentry/electron/renderer",
+    message: "Cannot use renderer-only APIs here.",
+  },
+  {
+    name: "electron/renderer",
+    message: "Cannot use renderer-only APIs here.",
+  },
+  {
+    name: "electron-log/renderer",
+    message: "Cannot use renderer-only APIs here.",
+  },
+];
+
 module.exports = {
   prettier: true,
   settings: {
@@ -111,6 +142,33 @@ module.exports = {
       files: ["**/*.d.ts"],
       rules: {
         "import/unambiguous": "off",
+      },
+    },
+    {
+      files: ["app/common/**"],
+      rules: {
+        "@typescript-eslint/no-restricted-imports": [
+          "error",
+          {paths: [...restrictedMainImports, ...restrictedRendererImports]},
+        ],
+      },
+    },
+    {
+      files: ["app/main/**"],
+      rules: {
+        "@typescript-eslint/no-restricted-imports": [
+          "error",
+          {paths: restrictedRendererImports},
+        ],
+      },
+    },
+    {
+      files: ["app/renderer/**"],
+      rules: {
+        "@typescript-eslint/no-restricted-imports": [
+          "error",
+          {paths: restrictedMainImports},
+        ],
       },
     },
   ],
