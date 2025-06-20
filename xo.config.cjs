@@ -3,6 +3,7 @@
 module.exports = {
   prettier: true,
   settings: {
+    "import/resolver": "typescript",
     n: {
       typescriptExtensionMap: [],
     },
