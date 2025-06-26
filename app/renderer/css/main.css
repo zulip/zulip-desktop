@@ -404,7 +404,7 @@ webview.focus {
 .server-tooltip {
   font-family: arial, sans-serif;
   background: rgb(34 44 49 / 100%);
-  left: 56px;
+  margin-left: 48px;
   padding: 10px 20px;
   position: fixed;
   margin-top: 11px;
@@ -424,7 +424,7 @@ webview.focus {
   border-right: 8px solid rgb(34 44 49 / 100%);
   position: absolute;
   top: 10px;
-  left: -5px;
+  left: -6px;
 }
 
 #collapse-button {
