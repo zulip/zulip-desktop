@@ -404,7 +404,7 @@ webview.focus {
 .server-tooltip {
   font-family: arial, sans-serif;
   background: rgb(34 44 49 / 100%);
-  margin-left: 48px;
+  left: calc(54px + 6px); /* Sidebar width + spacing */
   padding: 10px 20px;
   position: fixed;
   margin-top: 11px;
