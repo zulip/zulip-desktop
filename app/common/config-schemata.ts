@@ -36,6 +36,7 @@ export const configSchemata = {
   useManualProxy: z.boolean(),
   useProxy: z.boolean(),
   useSystemProxy: z.boolean(),
+  whitelistedProtocols: z.string().array(),
 };
 
 export const enterpriseConfigSchemata = {
