@@ -3,7 +3,8 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-import {html} from "./html.ts";
+import {Html, html} from "./html.ts";
+import * as t from "./translation-util.ts";
 
 export async function openBrowser(url: URL): Promise<void> {
   if (["http:", "https:", "mailto:"].includes(url.protocol)) {
@@ -21,7 +22,7 @@ export async function openBrowser(url: URL): Promise<void> {
           <head>
             <meta charset="UTF-8" />
             <meta http-equiv="Refresh" content="0; url=${url.href}" />
-            <title>Redirecting</title>
+            <title>${t.__("Redirecting")}</title>
             <style>
               html {
                 font-family: menu, "Helvetica Neue", sans-serif;
@@ -29,7 +30,13 @@ export async function openBrowser(url: URL): Promise<void> {
             </style>
           </head>
           <body>
-            <p>Opening <a href="${url.href}">${url.href}</a>…</p>
+            <p>
+              ${new Html({
+                html: t.__("Opening {{{link}}}…", {
+                  link: html`<a href="${url.href}">${url.href}</a>`.html,
+                }),
+              })}
+            </p>
           </body>
         </html>
       `.html,

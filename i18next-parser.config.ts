@@ -8,7 +8,7 @@ const config: UserConfig = {
   input: ["app/**/*.ts"],
   keySeparator: false,
   lexers: {
-    ts: [{lexer: "JavascriptLexer", functions: ["t.__"]}],
+    ts: [{lexer: "JavascriptLexer", functions: ["t.__", "t.__mf"]}],
   },
   locales: ["en"],
   namespaceSeparator: false,

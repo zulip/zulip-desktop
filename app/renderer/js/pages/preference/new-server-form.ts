@@ -23,7 +23,9 @@ export function initNewServerForm({
         <input
           class="setting-input-value"
           autofocus
-          placeholder="your-organization.zulipchat.com or zulip.your-organization.com"
+          placeholder="${t.__(
+            "your-organization.zulipchat.com or zulip.your-organization.com",
+          )}"
         />
       </div>
       <div class="server-center">
@@ -60,12 +62,12 @@ export function initNewServerForm({
   )!;
 
   async function submitFormHandler(): Promise<void> {
-    $saveServerButton.textContent = "Connecting...";
+    $saveServerButton.textContent = t.__("Connecting…");
     let serverConfig;
     try {
       serverConfig = await DomainUtil.checkDomain($newServerUrl.value.trim());
     } catch (error: unknown) {
-      $saveServerButton.textContent = "Connect";
+      $saveServerButton.textContent = t.__("Connect");
       await dialog.showMessageBox({
         type: "error",
         message:
