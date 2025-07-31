@@ -11,6 +11,7 @@ import path from "node:path";
 
 import * as ConfigUtil from "../common/config-util.ts";
 import * as LinkUtil from "../common/link-util.ts";
+import * as t from "../common/translation-util.ts";
 
 import {send} from "./typed-ipc-main.ts";
 
@@ -125,8 +126,8 @@ export default function handleExternalLink(
       downloadPath,
       async completed(filePath: string, fileName: string) {
         const downloadNotification = new Notification({
-          title: "Download Complete",
-          body: `Click to show ${fileName} in folder`,
+          title: t.__("Download Complete"),
+          body: t.__("Click to show {{{fileName}}} in folder", {fileName}),
           silent: true, // We'll play our own sound - ding.ogg
         });
         downloadNotification.on("click", () => {
@@ -149,8 +150,8 @@ export default function handleExternalLink(
         if (state !== "cancelled") {
           if (ConfigUtil.getConfigItem("promptDownload", false)) {
             new Notification({
-              title: "Download Complete",
-              body: "Download failed",
+              title: t.__("Download Complete"),
+              body: t.__("Download failed"),
             }).show();
           } else {
             contents.downloadURL(url.href);

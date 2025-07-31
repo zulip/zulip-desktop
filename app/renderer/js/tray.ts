@@ -7,6 +7,7 @@ import {BrowserWindow, Menu, Tray} from "@electron/remote";
 
 import * as ConfigUtil from "../../common/config-util.ts";
 import {publicPath} from "../../common/paths.ts";
+import * as t from "../../common/translation-util.ts";
 import type {RendererMessage} from "../../common/typed-ipc.ts";
 
 import type {ServerManagerView} from "./main.ts";
@@ -147,13 +148,13 @@ function sendAction<Channel extends keyof RendererMessage>(
 const createTray = function (): void {
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: "Zulip",
+      label: t.__("Zulip"),
       click() {
         ipcRenderer.send("focus-app");
       },
     },
     {
-      label: "Settings",
+      label: t.__("Settings"),
       click() {
         ipcRenderer.send("focus-app");
         sendAction("open-settings");
@@ -163,7 +164,7 @@ const createTray = function (): void {
       type: "separator",
     },
     {
-      label: "Quit",
+      label: t.__("Quit"),
       click() {
         ipcRenderer.send("quit-app");
       },
@@ -202,12 +203,17 @@ export function initializeTray(serverManagerView: ServerManagerView) {
       if (argument === 0) {
         unread = argument;
         tray.setImage(iconPath());
-        tray.setToolTip("No unread messages");
+        tray.setToolTip(t.__("No unread messages"));
       } else {
         unread = argument;
         const image = renderNativeImage(argument);
         tray.setImage(image);
-        tray.setToolTip(`${argument} unread messages`);
+        tray.setToolTip(
+          t.__mf(
+            "{number, plural, one {# unread message} other {# unread messages}}",
+            {number: `${argument}`},
+          ),
+        );
       }
     }
   });

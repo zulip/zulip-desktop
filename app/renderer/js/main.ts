@@ -80,7 +80,6 @@ export class ServerManagerView {
   $dndTooltip: HTMLElement;
   $sidebar: Element;
   $fullscreenPopup: Element;
-  $fullscreenEscapeKey: string;
   loading: Set<string>;
   activeTabIndex: number;
   tabs: ServerOrFunctionalTab[];
@@ -121,8 +120,10 @@ export class ServerManagerView {
     this.$sidebar = document.querySelector("#sidebar")!;
 
     this.$fullscreenPopup = document.querySelector("#fullscreen-popup")!;
-    this.$fullscreenEscapeKey = process.platform === "darwin" ? "^⌘F" : "F11";
-    this.$fullscreenPopup.textContent = `Press ${this.$fullscreenEscapeKey} to exit full screen`;
+    this.$fullscreenPopup.textContent = t.__(
+      "Press {{{exitKey}}} to exit full screen",
+      {exitKey: process.platform === "darwin" ? "^⌘F" : "F11"},
+    );
 
     this.loading = new Set();
     this.activeTabIndex = -1;
@@ -261,7 +262,10 @@ export class ServerManagerView {
     } catch (error: unknown) {
       logger.error(error);
       logger.error(
-        `Could not add ${domain}. Please contact your system administrator.`,
+        t.__(
+          "Could not add {{{domain}}}. Please contact your system administrator.",
+          {domain},
+        ),
       );
       return false;
     }
@@ -311,10 +315,7 @@ export class ServerManagerView {
         failedDomains.push(org);
       }
 
-      const {title, content} = Messages.enterpriseOrgError(
-        domainsAdded.length,
-        failedDomains,
-      );
+      const {title, content} = Messages.enterpriseOrgError(failedDomains);
       dialog.showErrorBox(title, content);
       if (DomainUtil.getDomains().length === 0) {
         // No orgs present, stop showing loading gif
@@ -795,8 +796,9 @@ export class ServerManagerView {
 
   // Toggles the dnd button icon.
   toggleDndButton(alert: boolean): void {
-    this.$dndTooltip.textContent =
-      (alert ? "Disable" : "Enable") + " Do Not Disturb";
+    this.$dndTooltip.textContent = alert
+      ? t.__("Disable Do Not Disturb")
+      : t.__("Enable Do Not Disturb");
     const $dndIcon = this.$dndButton.querySelector("i")!;
     $dndIcon.textContent = alert ? "notifications_off" : "notifications";
 

@@ -28,7 +28,7 @@ export function initNetworkSection({$root}: NetworkSectionProperties): void {
         </div>
         <div class="manual-proxy-block">
           <div class="setting-row" id="proxy-pac-option">
-            <span class="setting-input-key">PAC ${t.__("script")}</span>
+            <span class="setting-input-key">${t.__("PAC script")}</span>
             <input
               class="setting-input-value"
               placeholder="e.g. foobar.com/pacfile.js"

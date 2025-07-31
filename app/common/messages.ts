@@ -1,3 +1,5 @@
+import * as t from "./translation-util.ts";
+
 type DialogBoxError = {
   title: string;
   content: string;
@@ -13,26 +15,24 @@ export function invalidZulipServerError(domain: string): string {
  https://zulip.readthedocs.io/en/stable/production/ssl-certificates.html`;
 }
 
-export function enterpriseOrgError(
-  length: number,
-  domains: string[],
-): DialogBoxError {
+export function enterpriseOrgError(domains: string[]): DialogBoxError {
   let domainList = "";
   for (const domain of domains) {
     domainList += `• ${domain}\n`;
   }
 
   return {
-    title: `Could not add the following ${
-      length === 1 ? "organization" : "organizations"
-    }`,
-    content: `${domainList}\nPlease contact your system administrator.`,
+    title: t.__mf(
+      "{number, plural, one {Could not add # organization} other {Could not add # organizations}}",
+      {number: domains.length},
+    ),
+    content: `${domainList}\n${t.__("Please contact your system administrator.")}`,
   };
 }
 
 export function orgRemovalError(url: string): DialogBoxError {
   return {
-    title: `Removing ${url} is a restricted operation.`,
-    content: "Please contact your system administrator.",
+    title: t.__("Removing {{{url}}} is a restricted operation.", {url}),
+    content: t.__("Please contact your system administrator."),
   };
 }
