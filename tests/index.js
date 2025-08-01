@@ -1,12 +1,11 @@
-"use strict";
-const {chan, put, take} = require("medium");
-const test = require("tape");
+import {chan, put, take} from "medium";
+import test from "tape";
 
-const setup = require("./setup.js");
+import * as setup from "./setup.js";
 
 test("app runs", async (t) => {
   t.timeoutAfter(10e3);
-  setup.resetTestDataDir();
+  setup.resetTestDataDirectory();
   const app = await setup.createApp();
   try {
     const windows = chan();

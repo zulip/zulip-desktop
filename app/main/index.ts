@@ -32,7 +32,7 @@ import {sentryInit} from "./sentry.ts";
 import {setAutoLaunch} from "./startup.ts";
 import {ipcMain, send} from "./typed-ipc-main.ts";
 
-import "gatemaker/electron-setup"; // eslint-disable-line import/no-unassigned-import
+import "gatemaker/electron-setup.js"; // eslint-disable-line import/no-unassigned-import
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const {GDK_BACKEND} = process.env;
@@ -87,7 +87,7 @@ function createMainWindow(): BrowserWindow {
     minWidth: 500,
     minHeight: 400,
     webPreferences: {
-      preload: path.join(bundlePath, "renderer.js"),
+      preload: path.join(bundlePath, "renderer.cjs"),
       sandbox: false,
       webviewTag: true,
     },

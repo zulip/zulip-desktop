@@ -412,7 +412,7 @@ export class ServerManagerView {
           await this.openNetworkTroubleshooting(index);
         },
         onTitleChange: this.updateBadge.bind(this),
-        preload: url.pathToFileURL(path.join(bundlePath, "preload.js")).href,
+        preload: url.pathToFileURL(path.join(bundlePath, "preload.cjs")).href,
         unsupportedMessage: DomainUtil.getUnsupportedMessage(server),
       }),
     });

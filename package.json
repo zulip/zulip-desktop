@@ -2,7 +2,7 @@
   "name": "zulip",
   "productName": "Zulip",
   "version": "5.12.0",
-  "main": "./dist-electron",
+  "main": "./dist-electron/index.cjs",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
   "copyright": "Kandra Labs, Inc.",
@@ -17,6 +17,7 @@
   "bugs": {
     "url": "https://github.com/zulip/zulip-desktop/issues"
   },
+  "type": "module",
   "engines": {
     "node": ">=18"
   },

@@ -128,12 +128,7 @@ module.exports = {
       },
     },
     {
-      files: [
-        "**.cjs",
-        "i18next-parser.config.js",
-        "scripts/win-sign.js",
-        "tests/**/*.js",
-      ],
+      files: ["**.cjs"],
       parserOptions: {
         sourceType: "script",
       },

@@ -1,28 +1,23 @@
-"use strict";
-const fs = require("node:fs");
-const path = require("node:path");
-const process = require("node:process");
+import fs from "node:fs";
+import path from "node:path";
+import process from "node:process";
 
-const {_electron} = require("playwright-core");
+import {_electron} from "playwright-core";
 
-const testsPkg = require("./package.json");
-
-module.exports = {
-  createApp,
-  endTest,
-  resetTestDataDir: resetTestDataDirectory,
-};
+const testsPackage = JSON.parse(
+  fs.readFileSync(new URL("package.json", import.meta.url), "utf8"),
+);
 
 // Runs Zulip Desktop.
 // Returns a promise that resolves to an Electron Application once the app has loaded.
-function createApp() {
+export function createApp() {
   return _electron.launch({
-    args: [path.join(__dirname)], // Ensure this dir has a package.json file with a 'main' entry point
+    args: [import.meta.dirname], // Ensure this dir has a package.json file with a 'main' entry point
   });
 }
 
 // Quit the app, end the test
-async function endTest(app) {
+export async function endTest(app) {
   await app.close();
 }
 
@@ -52,11 +47,11 @@ function getAppDataDirectory() {
   }
 
   console.log("Detected App Data Dir base:", base);
-  return path.join(base, testsPkg.productName);
+  return path.join(base, testsPackage.productName);
 }
 
 // Resets the test directory, containing domain.json, window-state.json, etc
-function resetTestDataDirectory() {
+export function resetTestDataDirectory() {
   const appDataDirectory = getAppDataDirectory();
   fs.rmSync(appDataDirectory, {force: true, recursive: true});
 }

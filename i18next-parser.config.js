@@ -1,6 +1,4 @@
-"use strict";
-
-module.exports = {
+const config = {
   createOldCatalogs: false,
   defaultValue: (locale, namespace, key, value) =>
     locale === "en" ? key : value,
@@ -15,3 +13,4 @@ module.exports = {
   output: "public/translations/$LOCALE.json",
   sort: (a, b) => (a < b ? -1 : a > b ? 1 : 0),
 };
+export default config;

@@ -1,14 +1,13 @@
-"use strict";
-const {chan, put, take} = require("medium");
-const test = require("tape");
+import {chan, put, take} from "medium";
+import test from "tape";
 
-const setup = require("./setup.js");
+import * as setup from "./setup.js";
 
 // Create new org link should open in the default browser [WIP]
 
 test("new-org-link", async (t) => {
   t.timeoutAfter(50e3);
-  setup.resetTestDataDir();
+  setup.resetTestDataDirectory();
   const app = await setup.createApp();
   try {
     const windows = chan();

@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import * as path from "node:path";
-
 import {defineConfig} from "vite";
 import electron from "vite-plugin-electron";
 
@@ -9,14 +7,20 @@ export default defineConfig({
   plugins: [
     electron([
       {
-        entry: {
-          index: "app/main",
-        },
         vite: {
           build: {
+            lib: {
+              entry: {
+                index: "app/main",
+              },
+              formats: ["cjs"],
+            },
             sourcemap: true,
             rollupOptions: {
               external: ["electron", /^electron\//, /^gatemaker\//],
+              output: {
+                entryFileNames: "[name].cjs",
+              },
             },
             ssr: true,
           },
@@ -31,27 +35,39 @@ export default defineConfig({
         },
       },
       {
-        entry: {
-          preload: "app/renderer/js/preload.ts",
-        },
         vite: {
           build: {
+            lib: {
+              entry: {
+                preload: "app/renderer/js/preload.ts",
+              },
+              formats: ["cjs"],
+            },
             sourcemap: "inline",
             rollupOptions: {
               external: ["electron", /^electron\//],
+              output: {
+                entryFileNames: "[name].cjs",
+              },
             },
           },
         },
       },
       {
-        entry: {
-          renderer: "app/renderer/js/main.ts",
-        },
         vite: {
           build: {
+            lib: {
+              entry: {
+                renderer: "app/renderer/js/main.ts",
+              },
+              formats: ["cjs"],
+            },
             sourcemap: true,
             rollupOptions: {
               external: ["electron", /^electron\//],
+              output: {
+                entryFileNames: "[name].cjs",
+              },
             },
           },
           resolve: {
@@ -68,10 +84,10 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       input: {
-        renderer: path.join(__dirname, "app/renderer/main.html"),
-        network: path.join(__dirname, "app/renderer/network.html"),
-        about: path.join(__dirname, "app/renderer/about.html"),
-        preference: path.join(__dirname, "app/renderer/preference.html"),
+        renderer: "app/renderer/main.html",
+        network: "app/renderer/network.html",
+        about: "app/renderer/about.html",
+        preference: "app/renderer/preference.html",
       },
     },
   },
