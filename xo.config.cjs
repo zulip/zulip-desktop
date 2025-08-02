@@ -130,7 +130,7 @@ module.exports = {
     {
       files: [
         "**.cjs",
-        "i18next-scanner.config.js",
+        "i18next-parser.config.js",
         "scripts/win-sign.js",
         "tests/**/*.js",
       ],
