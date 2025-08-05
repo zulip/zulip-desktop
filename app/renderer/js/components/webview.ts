@@ -142,6 +142,7 @@ export default class WebView {
 
   showNotificationSettings(): void {
     this.send("show-notification-settings");
+    this.focus();
   }
 
   focus(): void {
@@ -176,6 +177,7 @@ export default class WebView {
 
   showKeyboardShortcuts(): void {
     this.send("show-keyboard-shortcuts");
+    this.focus();
   }
 
   openDevTools(): void {
