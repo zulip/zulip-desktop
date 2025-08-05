@@ -32,7 +32,7 @@ import {sentryInit} from "./sentry.ts";
 import {setAutoLaunch} from "./startup.ts";
 import {ipcMain, send} from "./typed-ipc-main.ts";
 
-import "gatemaker/electron-setup.js"; // eslint-disable-line import/no-unassigned-import
+import "gatemaker/electron-setup.js"; // eslint-disable-line import-x/no-unassigned-import
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const {GDK_BACKEND} = process.env;
