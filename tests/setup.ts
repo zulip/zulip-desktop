@@ -10,7 +10,10 @@ const testsPackage = z
   .object({productName: z.string()})
   .parse(
     JSON.parse(
-      fs.readFileSync(new URL("package.json", import.meta.url), "utf8"),
+      fs.readFileSync(
+        new URL("zulip-test/package.json", import.meta.url),
+        "utf8",
+      ),
     ),
   );
 
@@ -18,7 +21,7 @@ const testsPackage = z
 // Returns a promise that resolves to an Electron Application once the app has loaded.
 export async function createApp(): Promise<ElectronApplication> {
   return _electron.launch({
-    args: [import.meta.dirname], // Ensure this dir has a package.json file with a 'main' entry point
+    args: [path.join(import.meta.dirname, "zulip-test")], // Ensure this dir has a package.json file with a 'main' entry point
   });
 }
 

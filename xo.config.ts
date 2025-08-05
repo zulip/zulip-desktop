@@ -164,11 +164,5 @@ const xoConfig: FlatXoConfig = [
       ],
     },
   },
-  {
-    files: ["tests/**"],
-    rules: {
-      "n/no-extraneous-import": "off", // https://github.com/eslint-community/eslint-plugin-n/issues/209
-    },
-  },
 ];
 export default xoConfig;
