@@ -101,6 +101,7 @@ td:nth-child(odd) {
 
 .nav {
   padding: 7px 0;
+  color: rgb(0 0 0 / 100%);
   color: rgb(70 78 90 / 100%);
   cursor: pointer;
 }
@@ -459,15 +460,19 @@ i.open-tab-button {
 }
 
 .disallowed:hover {
-  background-color: rgb(241 241 241 / 100%);
+  background-color: rgb(136 136 136 / 100%);
   cursor: not-allowed;
+}
+
+.setting-description {
+  color: rgb(34 34 34 / 100%);
 }
 
 input.toggle-round + label {
   padding: 2px;
   width: 50px;
   height: 25px;
-  background-color: rgb(221 221 221 / 100%);
+  background-color: rgb(136 136 136 / 100%);
   border-radius: 25px;
 }
 
@@ -482,7 +487,7 @@ input.toggle-round + label::after {
 }
 
 input.toggle-round + label::before {
-  background-color: rgb(241 241 241 / 100%);
+  background-color: rgb(136 136 136 / 100%);
   border-radius: 25px;
   inset: 0;
 }
