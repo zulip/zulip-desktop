@@ -1,4 +1,4 @@
-import {chan, put, take} from "medium";
+import Fifo from "p-fifo";
 import test from "tape";
 
 import * as setup from "./setup.js";
@@ -8,11 +8,11 @@ test("app runs", async (t) => {
   setup.resetTestDataDirectory();
   const app = await setup.createApp();
   try {
-    const windows = chan();
-    for (const win of app.windows()) put(windows, win);
-    app.on("window", (win) => put(windows, win));
+    const windows = new Fifo();
+    for (const win of app.windows()) windows.push(win);
+    app.on("window", (win) => windows.push(win));
 
-    const mainWindow = await take(windows);
+    const mainWindow = await windows.shift();
     t.equal(await mainWindow.title(), "Zulip");
 
     await mainWindow.waitForSelector("#connect");
