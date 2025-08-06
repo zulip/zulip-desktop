@@ -3,7 +3,7 @@ import path from "node:path";
 
 import * as Sentry from "@sentry/core";
 import {JsonDB} from "node-json-db";
-import {DataError} from "node-json-db/dist/lib/Errors";
+import {DataError} from "node-json-db/dist/lib/Errors.js";
 import type {z} from "zod";
 import {app, dialog} from "zulip:remote";
 
