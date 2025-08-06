@@ -8,12 +8,24 @@ body {
   user-select: none;
 }
 
+img {
+  max-width: 100%;
+  width: 380px;
+  height: auto;
+  vertical-align: middle;
+  resize: both;
+}
+
 #content {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  justify-content: center;
   font-family: "Trebuchet MS", Helvetica, sans-serif;
-  margin: 100px 200px;
+  margin: 100px 50px;
   text-align: center;
+}
+
+#network-error-texts {
+  color: rgb(32 45 58 / 100%);
 }
 
 #title {
@@ -33,6 +45,12 @@ body {
   text-align: left;
   font-size: 16px;
   list-style-position: inside;
+  padding: 20px;
+}
+
+#buttons {
+  display: flex;
+  justify-content: start;
 }
 
 #reconnect {
@@ -40,7 +58,7 @@ body {
 }
 
 #settings {
-  margin-left: 116px;
+  margin-left: 16px;
 }
 
 .button {
