@@ -1,8 +1,10 @@
-const config = {
+import type {UserConfig} from "i18next-parser";
+
+const config: UserConfig = {
   createOldCatalogs: false,
   defaultValue: (locale, namespace, key, value) =>
-    locale === "en" ? key : value,
-  indentation: "\t",
+    locale === "en" ? key! : value!,
+  indentation: "\t" as unknown as number,
   input: ["app/**/*.ts"],
   keySeparator: false,
   lexers: {
