@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Debug NODE_OPTIONS
+        run: echo "NODE_OPTIONS=$NODE_OPTIONS"
+
       - name: Install dependencies
         run: npm ci
       - name: Run tests
