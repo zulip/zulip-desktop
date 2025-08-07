@@ -1,6 +1,7 @@
-import {type Html, html} from "../../../../common/html.js";
-import {generateNodeFromHtml} from "../../components/base.js";
-import {ipcRenderer} from "../../typed-ipc-renderer.js";
+import {type Html, html} from "../../../../common/html.ts";
+import * as t from "../../../../common/translation-util.ts";
+import {generateNodeFromHtml} from "../../components/base.ts";
+import {ipcRenderer} from "../../typed-ipc-renderer.ts";
 
 type BaseSectionProperties = {
   $element: HTMLElement;
@@ -31,7 +32,7 @@ export function generateOptionHtml(
   const labelHtml = disabled
     ? html`<label
         class="disallowed"
-        title="Setting locked by system administrator."
+        title="${t.__("Setting locked by system administrator.")}"
       ></label>`
     : html`<label></label>`;
   if (settingOption) {

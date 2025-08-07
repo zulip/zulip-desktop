@@ -1,4 +1,4 @@
-import type {Html} from "../../../common/html.js";
+import type {Html} from "../../../common/html.ts";
 
 export function generateNodeFromHtml(html: Html): Element {
   const wrapper = document.createElement("div");

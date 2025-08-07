@@ -1,5 +1,5 @@
-import type {DndSettings} from "./dnd-util.js";
-import type {MenuProperties, ServerConfig} from "./types.js";
+import type {DndSettings} from "./dnd-util.ts";
+import type {MenuProperties, ServerConfig} from "./types.ts";
 
 export type MainMessage = {
   "clear-app-settings": () => void;

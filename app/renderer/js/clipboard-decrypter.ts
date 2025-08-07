@@ -1,4 +1,4 @@
-import {ipcRenderer} from "./typed-ipc-renderer.js";
+import {ipcRenderer} from "./typed-ipc-renderer.ts";
 
 // This helper is exposed via electron_bridge for use in the social
 // login flow.
@@ -33,10 +33,7 @@ export class ClipboardDecrypterImplementation implements ClipboardDecrypter {
     this.pasted = new Promise((resolve) => {
       let interval: NodeJS.Timeout | null = null;
       const startPolling = () => {
-        if (interval === null) {
-          interval = setInterval(poll, 1000);
-        }
-
+        interval ??= setInterval(poll, 1000);
         void poll();
       };
 

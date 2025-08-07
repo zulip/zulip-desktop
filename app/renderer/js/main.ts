@@ -7,17 +7,17 @@ import {Menu, app, dialog, session} from "@electron/remote";
 import * as remote from "@electron/remote";
 import * as Sentry from "@sentry/electron/renderer";
 
-import type {Config} from "../../common/config-util.js";
-import * as ConfigUtil from "../../common/config-util.js";
-import * as DNDUtil from "../../common/dnd-util.js";
-import type {DndSettings} from "../../common/dnd-util.js";
-import * as EnterpriseUtil from "../../common/enterprise-util.js";
-import {html} from "../../common/html.js";
-import * as LinkUtil from "../../common/link-util.js";
-import Logger from "../../common/logger-util.js";
-import * as Messages from "../../common/messages.js";
-import {bundlePath, bundleUrl} from "../../common/paths.js";
-import * as t from "../../common/translation-util.js";
+import type {Config} from "../../common/config-util.ts";
+import * as ConfigUtil from "../../common/config-util.ts";
+import * as DNDUtil from "../../common/dnd-util.ts";
+import type {DndSettings} from "../../common/dnd-util.ts";
+import * as EnterpriseUtil from "../../common/enterprise-util.ts";
+import {html} from "../../common/html.ts";
+import * as LinkUtil from "../../common/link-util.ts";
+import Logger from "../../common/logger-util.ts";
+import * as Messages from "../../common/messages.ts";
+import {bundlePath, bundleUrl} from "../../common/paths.ts";
+import * as t from "../../common/translation-util.ts";
 import type {
   NavigationItem,
   ServerConfig,
@@ -26,15 +26,15 @@ import type {
 } from "../../common/types.js";
 import defaultIcon from "../img/icon.png";
 
-import FunctionalTab from "./components/functional-tab.js";
-import ServerTab from "./components/server-tab.js";
-import WebView from "./components/webview.js";
-import {AboutView} from "./pages/about.js";
-import {PreferenceView} from "./pages/preference/preference.js";
-import {initializeTray} from "./tray.js";
-import {ipcRenderer} from "./typed-ipc-renderer.js";
-import * as DomainUtil from "./utils/domain-util.js";
-import ReconnectUtil from "./utils/reconnect-util.js";
+import FunctionalTab from "./components/functional-tab.ts";
+import ServerTab from "./components/server-tab.ts";
+import WebView from "./components/webview.ts";
+import {AboutView} from "./pages/about.ts";
+import {PreferenceView} from "./pages/preference/preference.ts";
+import {initializeTray} from "./tray.ts";
+import {ipcRenderer} from "./typed-ipc-renderer.ts";
+import * as DomainUtil from "./utils/domain-util.ts";
+import ReconnectUtil from "./utils/reconnect-util.ts";
 
 Sentry.init({});
 
@@ -80,7 +80,6 @@ export class ServerManagerView {
   $dndTooltip: HTMLElement;
   $sidebar: Element;
   $fullscreenPopup: Element;
-  $fullscreenEscapeKey: string;
   loading: Set<string>;
   activeTabIndex: number;
   tabs: ServerOrFunctionalTab[];
@@ -121,8 +120,10 @@ export class ServerManagerView {
     this.$sidebar = document.querySelector("#sidebar")!;
 
     this.$fullscreenPopup = document.querySelector("#fullscreen-popup")!;
-    this.$fullscreenEscapeKey = process.platform === "darwin" ? "^⌘F" : "F11";
-    this.$fullscreenPopup.textContent = `Press ${this.$fullscreenEscapeKey} to exit full screen`;
+    this.$fullscreenPopup.textContent = t.__(
+      "Press {{{exitKey}}} to exit full screen",
+      {exitKey: process.platform === "darwin" ? "^⌘F" : "F11"},
+    );
 
     this.loading = new Set();
     this.activeTabIndex = -1;
@@ -261,7 +262,10 @@ export class ServerManagerView {
     } catch (error: unknown) {
       logger.error(error);
       logger.error(
-        `Could not add ${domain}. Please contact your system administrator.`,
+        t.__(
+          "Could not add {{{domain}}}. Please contact your system administrator.",
+          {domain},
+        ),
       );
       return false;
     }
@@ -311,10 +315,7 @@ export class ServerManagerView {
         failedDomains.push(org);
       }
 
-      const {title, content} = Messages.enterpriseOrgError(
-        domainsAdded.length,
-        failedDomains,
-      );
+      const {title, content} = Messages.enterpriseOrgError(failedDomains);
       dialog.showErrorBox(title, content);
       if (DomainUtil.getDomains().length === 0) {
         // No orgs present, stop showing loading gif
@@ -412,7 +413,7 @@ export class ServerManagerView {
           await this.openNetworkTroubleshooting(index);
         },
         onTitleChange: this.updateBadge.bind(this),
-        preload: url.pathToFileURL(path.join(bundlePath, "preload.js")).href,
+        preload: url.pathToFileURL(path.join(bundlePath, "preload.cjs")).href,
         unsupportedMessage: DomainUtil.getUnsupportedMessage(server),
       }),
     });
@@ -511,8 +512,7 @@ export class ServerManagerView {
     }
 
     $altIcon.textContent = realmName.charAt(0) || "Z";
-    $altIcon.classList.add("server-icon");
-    $altIcon.classList.add("alt-icon");
+    $altIcon.classList.add("server-icon", "alt-icon");
 
     $img.remove();
     $parent.append($altIcon);
@@ -796,8 +796,9 @@ export class ServerManagerView {
 
   // Toggles the dnd button icon.
   toggleDndButton(alert: boolean): void {
-    this.$dndTooltip.textContent =
-      (alert ? "Disable" : "Enable") + " Do Not Disturb";
+    this.$dndTooltip.textContent = alert
+      ? t.__("Disable Do Not Disturb")
+      : t.__("Enable Do Not Disturb");
     const $dndIcon = this.$dndButton.querySelector("i")!;
     $dndIcon.textContent = alert ? "notifications_off" : "notifications";
 

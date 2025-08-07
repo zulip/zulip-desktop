@@ -1,5 +1,0 @@
-{
-  "version": "5.9.3",
-  "productName": "ZulipTest",
-  "main": "../dist-electron"
-}

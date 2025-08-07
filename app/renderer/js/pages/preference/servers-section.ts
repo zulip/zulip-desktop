@@ -1,8 +1,8 @@
-import {html} from "../../../../common/html.js";
-import * as t from "../../../../common/translation-util.js";
+import {html} from "../../../../common/html.ts";
+import * as t from "../../../../common/translation-util.ts";
 
-import {reloadApp} from "./base-section.js";
-import {initNewServerForm} from "./new-server-form.js";
+import {reloadApp} from "./base-section.ts";
+import {initNewServerForm} from "./new-server-form.ts";
 
 type ServersSectionProperties = {
   $root: Element;

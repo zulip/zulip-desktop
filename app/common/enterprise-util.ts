@@ -3,9 +3,10 @@ import path from "node:path";
 import process from "node:process";
 
 import {z} from "zod";
+import {dialog} from "zulip:remote";
 
-import {enterpriseConfigSchemata} from "./config-schemata.js";
-import Logger from "./logger-util.js";
+import {enterpriseConfigSchemata} from "./config-schemata.ts";
+import Logger from "./logger-util.ts";
 
 type EnterpriseConfig = {
   [Key in keyof typeof enterpriseConfigSchemata]: z.output<
@@ -25,8 +26,7 @@ reloadDatabase();
 function reloadDatabase(): void {
   let enterpriseFile = "/etc/zulip-desktop-config/global_config.json";
   if (process.platform === "win32") {
-    enterpriseFile =
-      "C:\\Program Files\\Zulip-Desktop-Config\\global_config.json";
+    enterpriseFile = String.raw`C:\Program Files\Zulip-Desktop-Config\global_config.json`;
   }
 
   enterpriseFile = path.resolve(enterpriseFile);
@@ -40,6 +40,10 @@ function reloadDatabase(): void {
         .partial()
         .parse(data);
     } catch (error: unknown) {
+      dialog.showErrorBox(
+        "Error loading global_config",
+        "We encountered an error while reading global_config.json, please make sure the file contains valid JSON.",
+      );
       logger.log("Error while JSON parsing global_config.json: ");
       logger.log(error);
     }

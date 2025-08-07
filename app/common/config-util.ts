@@ -3,13 +3,13 @@ import path from "node:path";
 
 import * as Sentry from "@sentry/core";
 import {JsonDB} from "node-json-db";
-import {DataError} from "node-json-db/dist/lib/Errors";
+import {DataError} from "node-json-db/dist/lib/Errors.js";
 import type {z} from "zod";
 import {app, dialog} from "zulip:remote";
 
-import {configSchemata} from "./config-schemata.js";
-import * as EnterpriseUtil from "./enterprise-util.js";
-import Logger from "./logger-util.js";
+import {configSchemata} from "./config-schemata.ts";
+import * as EnterpriseUtil from "./enterprise-util.ts";
+import Logger from "./logger-util.ts";
 
 export type Config = {
   [Key in keyof typeof configSchemata]: z.output<(typeof configSchemata)[Key]>;

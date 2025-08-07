@@ -3,10 +3,10 @@ import fs from "node:fs";
 import path from "node:path";
 
 import {JsonDB} from "node-json-db";
-import {DataError} from "node-json-db/dist/lib/Errors";
+import {DataError} from "node-json-db/dist/lib/Errors.js";
 
-import Logger from "../common/logger-util.js";
-import * as t from "../common/translation-util.js";
+import Logger from "../common/logger-util.ts";
+import * as t from "../common/translation-util.ts";
 
 const logger = new Logger({
   file: "linux-update-util.log",

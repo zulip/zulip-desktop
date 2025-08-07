@@ -4,16 +4,16 @@ import path from "node:path";
 import {app, dialog} from "@electron/remote";
 import * as Sentry from "@sentry/electron/renderer";
 import {JsonDB} from "node-json-db";
-import {DataError} from "node-json-db/dist/lib/Errors";
+import {DataError} from "node-json-db/dist/lib/Errors.js";
 import {z} from "zod";
 
-import * as EnterpriseUtil from "../../../common/enterprise-util.js";
-import Logger from "../../../common/logger-util.js";
-import * as Messages from "../../../common/messages.js";
-import * as t from "../../../common/translation-util.js";
-import type {ServerConfig} from "../../../common/types.js";
+import * as EnterpriseUtil from "../../../common/enterprise-util.ts";
+import Logger from "../../../common/logger-util.ts";
+import * as Messages from "../../../common/messages.ts";
+import * as t from "../../../common/translation-util.ts";
+import type {ServerConfig} from "../../../common/types.ts";
 import defaultIcon from "../../img/icon.png";
-import {ipcRenderer} from "../typed-ipc-renderer.js";
+import {ipcRenderer} from "../typed-ipc-renderer.ts";
 
 const logger = new Logger({
   file: "domain-util.log",

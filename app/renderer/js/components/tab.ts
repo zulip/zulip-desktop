@@ -1,4 +1,4 @@
-import type {TabPage, TabRole} from "../../../common/types.js";
+import type {TabPage, TabRole} from "../../../common/types.ts";
 
 export type TabProperties = {
   role: TabRole;

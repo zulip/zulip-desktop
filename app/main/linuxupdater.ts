@@ -3,10 +3,11 @@ import {Notification, type Session, app} from "electron/main";
 import * as semver from "semver";
 import {z} from "zod";
 
-import * as ConfigUtil from "../common/config-util.js";
-import Logger from "../common/logger-util.js";
+import * as ConfigUtil from "../common/config-util.ts";
+import Logger from "../common/logger-util.ts";
+import * as t from "../common/translation-util.ts";
 
-import * as LinuxUpdateUtil from "./linux-update-util.js";
+import * as LinuxUpdateUtil from "./linux-update-util.ts";
 
 const logger = new Logger({
   file: "linux-update-util.log",
@@ -34,8 +35,11 @@ export async function linuxUpdateNotification(session: Session): Promise<void> {
       const notified = LinuxUpdateUtil.getUpdateItem(latestVersion);
       if (notified === null) {
         new Notification({
-          title: "Zulip Update",
-          body: `A new version ${latestVersion} is available. Please update using your package manager.`,
+          title: t.__("Zulip Update"),
+          body: t.__(
+            "A new version {{{version}}} is available. Please update using your package manager.",
+            {version: latestVersion},
+          ),
         }).show();
         LinuxUpdateUtil.setUpdateItem(latestVersion, true);
       }

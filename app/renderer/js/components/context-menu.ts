@@ -8,7 +8,7 @@ import process from "node:process";
 
 import {Menu} from "@electron/remote";
 
-import * as t from "../../../common/translation-util.js";
+import * as t from "../../../common/translation-util.ts";
 
 export const contextMenu = (
   webContents: WebContents,

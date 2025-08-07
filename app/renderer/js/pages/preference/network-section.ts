@@ -1,9 +1,9 @@
-import * as ConfigUtil from "../../../../common/config-util.js";
-import {html} from "../../../../common/html.js";
-import * as t from "../../../../common/translation-util.js";
-import {ipcRenderer} from "../../typed-ipc-renderer.js";
+import * as ConfigUtil from "../../../../common/config-util.ts";
+import {html} from "../../../../common/html.ts";
+import * as t from "../../../../common/translation-util.ts";
+import {ipcRenderer} from "../../typed-ipc-renderer.ts";
 
-import {generateSettingOption} from "./base-section.js";
+import {generateSettingOption} from "./base-section.ts";
 
 type NetworkSectionProperties = {
   $root: Element;
@@ -28,7 +28,7 @@ export function initNetworkSection({$root}: NetworkSectionProperties): void {
         </div>
         <div class="manual-proxy-block">
           <div class="setting-row" id="proxy-pac-option">
-            <span class="setting-input-key">PAC ${t.__("script")}</span>
+            <span class="setting-input-key">${t.__("PAC script")}</span>
             <input
               class="setting-input-value"
               placeholder="e.g. foobar.com/pacfile.js"

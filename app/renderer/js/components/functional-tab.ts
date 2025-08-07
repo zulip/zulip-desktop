@@ -1,8 +1,8 @@
-import {type Html, html} from "../../../common/html.js";
-import type {TabPage} from "../../../common/types.js";
+import {type Html, html} from "../../../common/html.ts";
+import type {TabPage} from "../../../common/types.ts";
 
-import {generateNodeFromHtml} from "./base.js";
-import Tab, {type TabProperties} from "./tab.js";
+import {generateNodeFromHtml} from "./base.ts";
+import Tab, {type TabProperties} from "./tab.ts";
 
 export type FunctionalTabProperties = {
   $view: Element;

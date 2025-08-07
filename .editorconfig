@@ -6,6 +6,6 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 
-[{*.css,*.html,*.js,*.json,*.ts}]
+[{*.cjs,*.css,*.html,*.js,*.json,*.ts}]
 indent_style = space
 indent_size = 2

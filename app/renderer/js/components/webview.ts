@@ -1,21 +1,20 @@
 import type {WebContents} from "electron/main";
 import fs from "node:fs";
-import process from "node:process";
 
 import * as remote from "@electron/remote";
 import {app, dialog} from "@electron/remote";
 
-import * as ConfigUtil from "../../../common/config-util.js";
-import {type Html, html} from "../../../common/html.js";
-import * as t from "../../../common/translation-util.js";
-import type {RendererMessage} from "../../../common/typed-ipc.js";
-import type {TabRole} from "../../../common/types.js";
+import * as ConfigUtil from "../../../common/config-util.ts";
+import {type Html, html} from "../../../common/html.ts";
+import * as t from "../../../common/translation-util.ts";
+import type {RendererMessage} from "../../../common/typed-ipc.ts";
+import type {TabRole} from "../../../common/types.ts";
 import preloadCss from "../../css/preload.css?raw";
-import {ipcRenderer} from "../typed-ipc-renderer.js";
-import * as SystemUtil from "../utils/system-util.js";
+import {ipcRenderer} from "../typed-ipc-renderer.ts";
+import * as SystemUtil from "../utils/system-util.ts";
 
-import {generateNodeFromHtml} from "./base.js";
-import {contextMenu} from "./context-menu.js";
+import {generateNodeFromHtml} from "./base.ts";
+import {contextMenu} from "./context-menu.ts";
 
 const shouldSilentWebview = ConfigUtil.getConfigItem("silent", false);
 
@@ -143,6 +142,7 @@ export default class WebView {
 
   showNotificationSettings(): void {
     this.send("show-notification-settings");
+    this.focus();
   }
 
   focus(): void {
@@ -177,6 +177,7 @@ export default class WebView {
 
   showKeyboardShortcuts(): void {
     this.send("show-keyboard-shortcuts");
+    this.focus();
   }
 
   openDevTools(): void {
@@ -251,10 +252,7 @@ export default class WebView {
     webContents.on("page-favicon-updated", (_event, favicons) => {
       // This returns a string of favicons URL. If there is a PM counts in unread messages then the URL would be like
       // https://chat.zulip.org/static/images/favicon/favicon-pms.png
-      if (
-        favicons[0].indexOf("favicon-pms") > 0 &&
-        process.platform === "darwin"
-      ) {
+      if (favicons[0].indexOf("favicon-pms") > 0 && app.dock !== undefined) {
         // This api is only supported on macOS
         app.dock.setBadge("●");
         // Bounce the dock

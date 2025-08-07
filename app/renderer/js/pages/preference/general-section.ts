@@ -9,13 +9,13 @@ import Tagify from "@yaireo/tagify";
 import {z} from "zod";
 
 import supportedLocales from "../../../../../public/translations/supported-locales.json";
-import * as ConfigUtil from "../../../../common/config-util.js";
-import * as EnterpriseUtil from "../../../../common/enterprise-util.js";
-import {html} from "../../../../common/html.js";
-import * as t from "../../../../common/translation-util.js";
-import {ipcRenderer} from "../../typed-ipc-renderer.js";
+import * as ConfigUtil from "../../../../common/config-util.ts";
+import * as EnterpriseUtil from "../../../../common/enterprise-util.ts";
+import {html} from "../../../../common/html.ts";
+import * as t from "../../../../common/translation-util.ts";
+import {ipcRenderer} from "../../typed-ipc-renderer.ts";
 
-import {generateSelectHtml, generateSettingOption} from "./base-section.js";
+import {generateSelectHtml, generateSettingOption} from "./base-section.ts";
 
 const currentBrowserWindow = remote.getCurrentWindow();
 
@@ -591,8 +591,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
   }
 
   async function factoryResetSettings(): Promise<void> {
-    const clearAppDataMessage =
-      "When the application restarts, it will be as if you have just downloaded Zulip app.";
+    const clearAppDataMessage = t.__(
+      "When the application restarts, it will be as if you have just downloaded the Zulip app.",
+    );
     const getAppPath = path.join(app.getPath("appData"), app.name);
 
     const {response} = await dialog.showMessageBox({
@@ -639,7 +640,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
       spellDiv.innerHTML += html`
         <div class="setting-description">${t.__("Spellchecker Languages")}</div>
         <div id="spellcheck-langs-value">
-          <input name="spellcheck" placeholder="Enter Languages" />
+          <input name="spellcheck" placeholder="${t.__("Enter Languages")}" />
         </div>
       `.html;
 

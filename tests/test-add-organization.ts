@@ -1,19 +1,19 @@
-"use strict";
-const {chan, put, take} = require("medium");
-const test = require("tape");
+import Fifo from "p-fifo";
+import type {Page} from "playwright-core";
+import test from "tape";
 
-const setup = require("./setup.js");
+import * as setup from "./setup.ts";
 
 test("add-organization", async (t) => {
   t.timeoutAfter(50e3);
-  setup.resetTestDataDir();
+  setup.resetTestDataDirectory();
   const app = await setup.createApp();
   try {
-    const windows = chan();
-    for (const win of app.windows()) put(windows, win);
-    app.on("window", (win) => put(windows, win));
+    const windows = new Fifo<Page>();
+    for (const win of app.windows()) void windows.push(win);
+    app.on("window", async (win) => windows.push(win));
 
-    const mainWindow = await take(windows);
+    const mainWindow = await windows.shift();
     t.equal(await mainWindow.title(), "Zulip");
 
     await mainWindow.fill(
@@ -22,7 +22,7 @@ test("add-organization", async (t) => {
     );
     await mainWindow.click("#connect");
 
-    const orgWebview = await take(windows);
+    const orgWebview = await windows.shift();
     await orgWebview.waitForSelector("#id_username");
   } finally {
     await setup.endTest(app);

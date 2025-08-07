@@ -4,6 +4,7 @@
     "target": "esnext",
     "module": "esnext",
     "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "paths": {
       // https://github.com/getsentry/sentry-electron/issues/957

@@ -1,4 +1,4 @@
-import {ipcRenderer} from "../typed-ipc-renderer.js";
+import {ipcRenderer} from "../typed-ipc-renderer.ts";
 
 export function init(
   $reconnectButton: Element,

@@ -1,9 +1,10 @@
 import * as backoff from "backoff";
 
-import {html} from "../../../common/html.js";
-import Logger from "../../../common/logger-util.js";
-import type WebView from "../components/webview.js";
-import {ipcRenderer} from "../typed-ipc-renderer.js";
+import {html} from "../../../common/html.ts";
+import Logger from "../../../common/logger-util.ts";
+import * as t from "../../../common/translation-util.ts";
+import type WebView from "../components/webview.ts";
+import {ipcRenderer} from "../typed-ipc-renderer.ts";
 
 const logger = new Logger({
   file: "domain-util.log",
@@ -55,8 +56,10 @@ export default class ReconnectUtil {
     const errorMessageHolder = document.querySelector("#description");
     if (errorMessageHolder) {
       errorMessageHolder.innerHTML = html`
-        <div>Your internet connection doesn't seem to work properly!</div>
-        <div>Verify that it works and then click try again.</div>
+        <div>
+          ${t.__("Your internet connection doesn't seem to work properly!")}
+        </div>
+        <div>${t.__("Verify that it works and then click Reconnect.")}</div>
       `.html;
     }
 

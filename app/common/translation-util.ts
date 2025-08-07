@@ -2,8 +2,8 @@ import path from "node:path";
 
 import i18n from "i18n";
 
-import * as ConfigUtil from "./config-util.js";
-import {publicPath} from "./paths.js";
+import * as ConfigUtil from "./config-util.ts";
+import {publicPath} from "./paths.ts";
 
 i18n.configure({
   directory: path.join(publicPath, "translations/"),
@@ -13,4 +13,4 @@ i18n.configure({
 /* Fetches the current appLocale from settings.json */
 i18n.setLocale(ConfigUtil.getConfigItem("appLanguage", "en") ?? "en");
 
-export {__} from "i18n";
+export {__, __mf} from "i18n";
