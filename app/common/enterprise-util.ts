@@ -46,6 +46,7 @@ function reloadDatabase(): void {
       );
       logger.log("Error while JSON parsing global_config.json: ");
       logger.log(error);
+      enterpriseSettings = {}; // Handled the JSON parse error
     }
   } else {
     configFile = false;
