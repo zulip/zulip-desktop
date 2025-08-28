@@ -11,3 +11,6 @@ update-desktop-database /usr/share/applications || true
 
 # Clean up configuration for old Bintray repository
 rm -f /etc/apt/zulip.list
+
+# Clean up legacy APT configuration
+rm -f /etc/apt/sources.list.d/zulip-desktop.list /etc/apt/trusted.gpg.d/zulip-desktop.asc

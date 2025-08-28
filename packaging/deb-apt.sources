@@ -1,0 +1,5 @@
+Types: deb
+URIs: https://download.zulip.com/desktop/apt/
+Suites: stable
+Components: main
+Signed-By: /usr/share/keyrings/zulip-desktop.asc

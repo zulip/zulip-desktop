@@ -89,8 +89,8 @@
       "synopsis": "Zulip Desktop App",
       "afterInstall": "./packaging/deb-after-install.sh",
       "fpm": [
-        "./packaging/deb-apt.list=/etc/apt/sources.list.d/zulip-desktop.list",
-        "./packaging/deb-apt.asc=/etc/apt/trusted.gpg.d/zulip-desktop.asc",
+        "./packaging/deb-apt.sources=/etc/apt/sources.list.d/zulip-desktop.sources",
+        "./packaging/deb-apt.asc=/usr/share/keyrings/zulip-desktop.asc",
         "./packaging/deb-release-upgrades.cfg=/etc/update-manager/release-upgrades.d/zulip-desktop.cfg"
       ]
     },
