@@ -41,32 +41,10 @@
 1. Download [Zulip-x.x.x-amd64.deb][lr]
 2. Double click and install, or run `dpkg -i Zulip-x.x.x-amd64.deb` in the terminal
 3. Start the app with your app launcher or by running `zulip` in a terminal
-4. Done! The app will NOT update automatically, but you can still check for updates
+4. Done! You can update the app [using APT](https://documentation.ubuntu.com/server/how-to/software/package-management/#upgrading-packages).
 
 **Other distros (Fedora, CentOS, Arch Linux etc)** :
 
 1. Download Zulip-x.x.x-x86_64.AppImage[LR]
 2. Make it executable using chmod a+x Zulip-x.x.x-x86_64.AppImage
 3. Start the app with your app launcher
-
-**You can also use `apt-get` (recommended)**:
-
-- First download our signing key to make sure the deb you download is correct:
-
-```bash
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 69AD12704E71A4803DCA3A682424BE5AE9BD10D9
-```
-
-- Add the repo to your apt source list :
-
-```bash
-echo "deb https://download.zulip.com/desktop/apt stable main" |
-  sudo tee -a /etc/apt/sources.list.d/zulip.list
-```
-
-- Now install the client :
-
-```bash
-sudo apt-get update
-sudo apt-get install zulip
-```
