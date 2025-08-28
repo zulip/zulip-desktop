@@ -119,13 +119,11 @@
         }
       ],
       "icon": "build/icon.ico",
-      "signtoolOptions": {
-        "publisherName": "Kandra Labs, Inc."
-      },
       "azureSignOptions": {
         "endpoint": "https://eus.codesigning.azure.net/",
         "codeSigningAccountName": "kandralabs",
         "certificateProfileName": "kandralabs",
+        "publisherName": "Kandra Labs, Inc.",
         "timestampRfc3161": "http://timestamp.acs.microsoft.com",
         "timestampDigest": "SHA256"
       }
