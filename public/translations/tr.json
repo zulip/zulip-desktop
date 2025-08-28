@@ -138,6 +138,5 @@
 	"Zoom In": "Büyüt",
 	"Zoom Out": "Küçült",
 	"keyboard shortcuts": "klavye kısa yolları",
-	"script": "script",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} eski Zulip versionu kullanıyor {{{version}}}. Bu uygulamada kullanılamayabilir."
 }

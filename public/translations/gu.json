@@ -120,6 +120,5 @@
 	"Zoom In": "ઝૂમ ઇન",
 	"Zoom Out": "ઝૂમ આઉટ",
 	"keyboard shortcuts": "કીબોર્ડ શોર્ટકટ્સ",
-	"script": "લિપિ",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} એ જુલિપ સર્વર આવૃત્તિ {{{version}}} ચલાવે છે. તે આ એપમાં પૂર્ણ રીતે કામ કરી શકતી નથી."
 }

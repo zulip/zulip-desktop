@@ -6,7 +6,7 @@
 	"Add custom CSS": "Ychwanegwch CSS wedi'i ddylunio'n benodol",
 	"Add to Dictionary": "Ychwanegu at y Geiriadur",
 	"Advanced": "Uwch",
-	"All the connected organizations will appear here.": "Bydd yr holl sefydliadau cysylltiedig yn ymddangos yma",
+	"All the connected organizations will appear here.": "Bydd yr holl sefydliadau cysylltiedig yn ymddangos yma.",
 	"Always start minimized": "Dechreuwch gyn lleied â phosibl bob amser",
 	"App Updates": "Diweddariadau Ap",
 	"App language (requires restart)": "Iaith ap (angen ailgychwyn)",
@@ -63,7 +63,7 @@
 	"Hide Others": "Cuddio Eraill",
 	"Hide Zulip": "Cuddiwch Zulip",
 	"History": "Hanes",
-	"History Shortcuts": "Hanes Llwybrau Byr ",
+	"History Shortcuts": "Hanes Llwybrau Byr",
 	"Keyboard Shortcuts": "Llwybrau Byr Bysellfwrdd",
 	"Log Out": "Allgofnodi",
 	"Log Out of Organization": "Allgofnodi Sefydliad",
@@ -81,7 +81,7 @@
 	"Organization URL": "URL y sefydliad",
 	"Organizations": "Sefydliadau",
 	"Paste": "Gludo",
-	"Paste and Match Style": "Arddull Gludo a Paru ",
+	"Paste and Match Style": "Arddull Gludo a Paru",
 	"Proxy": "Dirprwy",
 	"Proxy bypass rules": "Rheolau ffordd osgoi dirprwy",
 	"Proxy rules": "Rheolau dirprwy",
@@ -128,6 +128,5 @@
 	"Zoom In": "Chwyddo Mewn",
 	"Zoom Out": "Chwyddo allan",
 	"keyboard shortcuts": "llwybrau byr bysellfwrdd",
-	"script": "sgript",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "Mae {{{server}}} yn rhedeg fersiwn Zulip Server {{{version}}} sydd wedi dyddio. Efallai na fydd yn gweithio'n llawn yn yr app hon."
 }

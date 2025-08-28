@@ -98,7 +98,7 @@
 	"New servers added. Reload app now?": "Přidány nové servery. Nahrát nyní aplikaci znovu?",
 	"No": "Ne",
 	"No Suggestion Found": "Nenalezen žádný návrh",
-	"No updates available.": "Žádné dostupné aktualizace",
+	"No updates available.": "Žádné dostupné aktualizace.",
 	"Notification settings": "Nastavení oznámení",
 	"OK": "OK",
 	"OR": "NEBO",
@@ -166,6 +166,5 @@
 	"Zoom In": "Přiblížit",
 	"Zoom Out": "Oddálit",
 	"keyboard shortcuts": "klávesové zkratky",
-	"script": "skript",
-	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} používá zastaralou verzi serveru Zulip {{{verze}}}. V této aplikaci nemusí plně pracovat."
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} používá zastaralou verzi serveru Zulip {{{version}}}. V této aplikaci nemusí plně pracovat."
 }

@@ -1,6 +1,6 @@
 {
-	"A new update {{{version}}} has been downloaded.": "S'ha descarregat una nova actualització {{{version}}}",
-	"A new version {{{version}}} of Zulip Desktop is available.": "Hi ha disponible una nova versió de Zulip Escriptori {{{version}}}",
+	"A new update {{{version}}} has been downloaded.": "S'ha descarregat una nova actualització {{{version}}}.",
+	"A new version {{{version}}} of Zulip Desktop is available.": "Hi ha disponible una nova versió de Zulip Escriptori {{{version}}}.",
 	"About": "Sobre",
 	"About Zulip": "Quant a Zulip",
 	"Actual Size": "Mida actual",
@@ -118,7 +118,7 @@
 	"Toggle Sidebar": "Toggle Sidebar",
 	"Toggle Tray Icon": "Toggle Tray Icon",
 	"Tools": "Tools",
-	"Unable to check for updates.": "No ha estat possible comprovar les actualitzacions",
+	"Unable to check for updates.": "No ha estat possible comprovar les actualitzacions.",
 	"Unable to download the update.": "No ha estat possible descarregar l'actualització.",
 	"Undo": "Undo",
 	"Unhide": "Unhide",
@@ -133,6 +133,5 @@
 	"You can select a maximum of 3 languages for spellchecking.": "You can select a maximum of 3 languages for spellchecking.",
 	"Zoom In": "Zoom In",
 	"Zoom Out": "Zoom Out",
-	"keyboard shortcuts": "keyboard shortcuts",
-	"script": "script"
+	"keyboard shortcuts": "keyboard shortcuts"
 }

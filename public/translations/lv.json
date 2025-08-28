@@ -8,7 +8,7 @@
 	"Add custom CSS": "Pievienot pielāgotu CSS",
 	"Add to Dictionary": "Pievienot vārdnīcai",
 	"Advanced": "Papildus",
-	"All the connected organizations will appear here.": "Šeit tiks parādītas visas organizācijas, kurām esmu pievienojies",
+	"All the connected organizations will appear here.": "Šeit tiks parādītas visas organizācijas, kurām esmu pievienojies.",
 	"Always start minimized": "Vienmēr palaist samazinātu",
 	"App Updates": "Programmas atjauninājumi",
 	"App language (requires restart)": "Programmas valoda (nepieciešama restartēšana)",
@@ -157,6 +157,5 @@
 	"Zoom In": "Pietuvināt",
 	"Zoom Out": "Attālināt",
 	"keyboard shortcuts": "īsinājumtaustiņus",
-	"script": "skripts",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} serveris izmanto novecojušu Zulip Server {{{version}}} versiju. Tas varētu pilnībā nedarboties šajā programmā."
 }

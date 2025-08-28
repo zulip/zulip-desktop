@@ -129,6 +129,5 @@
 	"Zoom In": "Увеличај",
 	"Zoom Out": "Умањи",
 	"keyboard shortcuts": "пречице на тастатури",
-	"script": "скрипта",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} покреће застарелу Зулип сервер верзију{{{version}}}. Можда неће у потпуности радити са овом апликацијом."
 }

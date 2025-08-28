@@ -51,7 +51,7 @@
 	"File": "Файл",
 	"Find accounts": "Знайсці ўліковыя запісы",
 	"Find accounts by email": "Знайсці ўліковыя запісы паводле email",
-	"Flash taskbar on new message": "Успыхваць на панэлі заданняў пры новым асабістым паведамленні ",
+	"Flash taskbar on new message": "Успыхваць на панэлі заданняў пры новым асабістым паведамленні",
 	"Forward": "Пераадрасаваць",
 	"Functionality": "Функцыянальнасць",
 	"General": "Агульныя",
@@ -123,6 +123,5 @@
 	"Zoom In": "Павялічыць",
 	"Zoom Out": "Паменшыць",
 	"keyboard shortcuts": "спалучэнні клавішаў",
-	"script": "скрыпт",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "На {{{server}}} працуе састарэлая версія сервера Zulip {{{version}}}. У гэтай праграме ён можа працаваць часткова."
 }

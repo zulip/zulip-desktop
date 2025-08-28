@@ -128,6 +128,5 @@
 	"Zoom In": "Ampliar",
 	"Zoom Out": "Reduzir",
 	"keyboard shortcuts": "atalhos de teclado",
-	"script": "script",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} está a correr uma versão desatualizada do servidor Zulip {{{version}}}. Poderá não funcionar corretamente com esta aplicação."
 }

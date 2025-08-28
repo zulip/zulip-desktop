@@ -129,6 +129,5 @@
 	"Zoom In": "In zoomen",
 	"Zoom Out": "Uitzoomen",
 	"keyboard shortcuts": "Toetsenbord sneltoetsen",
-	"script": "script",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} gebruikt een oude versie {{{version}}} van Zulip Server. Het kan zijn dat deze applicatie niet goed zal werken met deze server."
 }

@@ -166,6 +166,5 @@
 	"Zoom In": "Zoom In",
 	"Zoom Out": "Zoom Out",
 	"keyboard shortcuts": "keyboard shortcuts",
-	"script": "script",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app."
 }

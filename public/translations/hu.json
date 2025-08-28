@@ -100,7 +100,7 @@
 	"Start app at login": "Indítsa el az alkalmazást bejelentkezéskor",
 	"Switch to Next Organization": "Váltás a következő szervezetre",
 	"Switch to Previous Organization": "Váltás az előző szervezetre",
-	"These desktop app shortcuts extend the Zulip webapp's": "Az alábbi asztali gyorsbillentyűk kiegészítik a Zulip webapp gyorsbillentyűket.",
+	"These desktop app shortcuts extend the Zulip webapp's": "Az alábbi asztali gyorsbillentyűk kiegészítik a Zulip webapp gyorsbillentyűket",
 	"Tip": "Tipp",
 	"Toggle DevTools for Active Tab": "DevTools bekapcsolása az aktív fülön",
 	"Toggle DevTools for Zulip App": "DevTools bekapcsolása a Zulip App számára",
@@ -121,6 +121,5 @@
 	"You can select a maximum of 3 languages for spellchecking.": "Maximum 3 nyelv választható ki helyesírásellenőrzéshez.",
 	"Zoom In": "Nagyítása",
 	"Zoom Out": "Kicsinyítés",
-	"keyboard shortcuts": "gyorsbillentyűk",
-	"script": "parancsfájl"
+	"keyboard shortcuts": "gyorsbillentyűk"
 }

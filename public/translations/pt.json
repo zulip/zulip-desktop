@@ -1,6 +1,6 @@
 {
 	"A new update {{{version}}} has been downloaded.": "Uma nova atualização {{{version}}} foi baixada.",
-	"A new version {{{version}}} of Zulip Desktop is available.": "Uma nova versão {{{version}}}  do Zulip Desktop está disponivél. ",
+	"A new version {{{version}}} of Zulip Desktop is available.": "Uma nova versão {{{version}}} do Zulip Desktop está disponivél.",
 	"About": "Sobre",
 	"About Zulip": "Sobre o Zulip",
 	"Actual Size": "Tamanho atual",
@@ -12,7 +12,7 @@
 	"All the connected organizations will appear here.": "Todas as organizações conectadas aparecerão aqui.",
 	"Always start minimized": "Iniciar sempre minimizado",
 	"App Updates": "Atualizações de aplicativos",
-	"App language (requires restart)": "Idioma do Aplicativo  (Requer reinicialização)",
+	"App language (requires restart)": "Idioma do Aplicativo (Requer reinicialização)",
 	"Appearance": "Aparência",
 	"Application Shortcuts": "Atalhos do Aplicativo",
 	"Are you sure you want to disconnect this organization?": "Tem certeza de que deseja desconectar essa organização?",
@@ -138,7 +138,7 @@
 	"The custom CSS previously set is deleted.": "O CSS personalizado defindo anteriormente foi apagado.",
 	"The server presented an invalid certificate for {{{origin}}}:\n\n{{{error}}}": "O servidor apresentou um certificado inválido para {{{origin}}}:\n\n{{{error}}}",
 	"The update will be downloaded in the background. You will be notified when it is ready to be installed.": "A atualização será baixada em segundo plano. Você será notificado quando estiver pronta para ser instalada.",
-	"There was an error while saving the new organization. You may have to add your previous organizations again.": "Ocorreu um erro enquanto salvava nova organização. Você pode tentar adicionar para sua organização anterior novamente. ",
+	"There was an error while saving the new organization. You may have to add your previous organizations again.": "Ocorreu um erro enquanto salvava nova organização. Você pode tentar adicionar para sua organização anterior novamente.",
 	"These desktop app shortcuts extend the Zulip webapp's": "Esses atalhos para aplicativos de desktop estendem o aplicativo da web do Zulip",
 	"Tip": "Gorjeta",
 	"Toggle DevTools for Active Tab": "Alternar DevTools para a guia ativa",
@@ -166,6 +166,5 @@
 	"Zoom In": "Mais Zoom",
 	"Zoom Out": "Reduzir o zoom",
 	"keyboard shortcuts": "atalhos do teclado",
-	"script": "roteiro",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} está executando a versão {{{version}}} do Servidor Zulip, que está desatualizada. Talvez não funcione corretamente nesta aplicação."
 }

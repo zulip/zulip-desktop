@@ -1,5 +1,5 @@
 {
-	"A new update {{{version}}} has been downloaded.": "Une nouvelle mise à jour {{{version}}} a été téléchargée",
+	"A new update {{{version}}} has been downloaded.": "Une nouvelle mise à jour {{{version}}} a été téléchargée.",
 	"A new version {{{version}}} of Zulip Desktop is available.": "Une nouvelle version {{{version}}} de Zulip Desktop est disponible.",
 	"About": "À propos",
 	"About Zulip": "À propos de Zulip",
@@ -15,7 +15,7 @@
 	"App language (requires restart)": "Langue de l'application (nécessite redémarrage)",
 	"Appearance": "Apparence",
 	"Application Shortcuts": "Raccourcis de l'application",
-	"Are you sure you want to disconnect this organization?": "Êtes-vous certain de vouloir déconnecter cette organisation?",
+	"Are you sure you want to disconnect this organization?": "Êtes-vous certain de vouloir déconnecter cette organisation ?",
 	"Are you sure?": "Êtes-vous sûr ?",
 	"Ask where to save files before downloading": "Demander où sauvegarder les fichiers avant de télécharger",
 	"Auto hide Menu bar": "Cacher automatiquement la barre de menu",
@@ -59,7 +59,7 @@
 	"Enter Full Screen": "Accéder au plein écran",
 	"Error saving new organization": "Erreur de sauvegarde Nouvelle Société",
 	"Error saving update notifications": "Erreur de mise à jour des notifications",
-	"Error: {{{error}}}\n\nThe latest version of Zulip Desktop is available at:\n{{{link}}}\nCurrent version: {{{version}}}": "Erreur: {{{error}}}\n\nLa dernière version de Zulip bureau est disponible à :\n{{{link}}}\nVersion actuelle : {{{version}}}",
+	"Error: {{{error}}}\n\nThe latest version of Zulip Desktop is available at:\n{{{link}}}\nCurrent version: {{{version}}}": "Erreur : {{{error}}}\n\nLa dernière version de Zulip bureau est disponible à :\n{{{link}}}\nVersion actuelle : {{{version}}}",
 	"Factory Reset": "Réinitialiser aux paramètres par défaut",
 	"Factory Reset Data": "Factory Reset Data",
 	"File": "Fichier",
@@ -151,6 +151,5 @@
 	"Zoom In": "Zoom avant",
 	"Zoom Out": "Zoom arrière",
 	"keyboard shortcuts": "Raccourcis clavier",
-	"script": "scénario",
-	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} fonctionne sur une version de Zulip Server qui n'est plus à jour.\n{{{version}}} Il se peut qu'il ne fonctionne pas entièrement dans cette application."
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} fonctionne sur une version de Zulip Server, {{{version}}}, qui n'est plus à jour. Il se peut qu'il ne fonctionne pas entièrement dans cette application."
 }

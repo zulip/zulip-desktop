@@ -124,6 +124,5 @@
 	"Zoom In": "Zoom In",
 	"Zoom Out": "Zoom Out",
 	"keyboard shortcuts": "keyboard shortcuts",
-	"script": "script",
-	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} يقوم بتشغيل نسخة قديمة من خادم زوليب {{{version}}}. قد لا يعمل بشكل كامل مع هذا التطبيق "
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} يقوم بتشغيل نسخة قديمة من خادم زوليب {{{version}}}. قد لا يعمل بشكل كامل مع هذا التطبيق"
 }

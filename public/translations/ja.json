@@ -1,4 +1,5 @@
 {
+	"A new update {{{version}}} has been downloaded.": "新しいアップデート {{{version}}} がダウンロードされました。",
 	"About": "Zulipについて",
 	"About Zulip": "Zulip について",
 	"Actual Size": "サイズを元に戻す",
@@ -109,7 +110,7 @@
 	"Start app at login": "ログイン時にアプリを起動する",
 	"Switch to Next Organization": "次の組織に切り替える",
 	"Switch to Previous Organization": "前の組織に切り替える",
-	"These desktop app shortcuts extend the Zulip webapp's": "これらのデスクトップアプリのショートカットは Zulip Web アプリケーションのショートカットを拡張します。",
+	"These desktop app shortcuts extend the Zulip webapp's": "これらのデスクトップアプリのショートカットは Zulip Web アプリケーションのショートカットを拡張します",
 	"Tip": "ヒント",
 	"Toggle DevTools for Active Tab": "アクティブなタブの DevTools を切り替え",
 	"Toggle DevTools for Zulip App": "Zulip App の DevTools を切り替え",
@@ -130,6 +131,5 @@
 	"You can select a maximum of 3 languages for spellchecking.": "最大で3つの言語のスペルチェックを選択できます。",
 	"Zoom In": "拡大",
 	"Zoom Out": "縮小",
-	"keyboard shortcuts": "キーボードショートカット",
-	"script": "スクリプト"
+	"keyboard shortcuts": "キーボードショートカット"
 }

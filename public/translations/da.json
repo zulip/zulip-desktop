@@ -6,13 +6,13 @@
 	"Add custom CSS": "Tilføj egen CSS",
 	"Add to Dictionary": "Add to Dictionary",
 	"Advanced": "Avanceret",
-	"All the connected organizations will appear here.": "Alle forbundne organisationer vil blive vist her",
+	"All the connected organizations will appear here.": "Alle forbundne organisationer vil blive vist her.",
 	"Always start minimized": "Start altid minimeret",
 	"App Updates": "App-opdateringer",
 	"App language (requires restart)": "App language (requires restart)",
 	"Appearance": "Udseende",
 	"Application Shortcuts": "Genveje",
-	"Are you sure you want to disconnect this organization?": "Er du sikker på du vil frakoble denne organisation? ",
+	"Are you sure you want to disconnect this organization?": "Er du sikker på du vil frakoble denne organisation?",
 	"Ask where to save files before downloading": "Ask where to save files before downloading",
 	"Auto hide Menu bar": "Skjul menu automatisk",
 	"Auto hide menu bar (Press Alt key to display)": "Skjul menu automatisk (tryk på Alt-tasten for at vise)",
@@ -127,6 +127,5 @@
 	"Zoom In": "Zoom In",
 	"Zoom Out": "Zoom Out",
 	"keyboard shortcuts": "keyboard shortcuts",
-	"script": "script",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} kører en ældre version {{{version}}}. Den virker måske ikke fuld ud med denne app."
 }
