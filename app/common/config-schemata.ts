@@ -37,6 +37,7 @@ export const configSchemata = {
   useProxy: z.boolean(),
   useSystemProxy: z.boolean(),
 };
+export type ConfigSchemata = typeof configSchemata;
 
 export const enterpriseConfigSchemata = {
   ...configSchemata,

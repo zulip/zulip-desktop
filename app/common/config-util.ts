@@ -7,12 +7,12 @@ import {DataError} from "node-json-db/dist/lib/Errors.js";
 import type {z} from "zod";
 import {app, dialog} from "zulip:remote";
 
-import {configSchemata} from "./config-schemata.ts";
+import {type ConfigSchemata, configSchemata} from "./config-schemata.ts";
 import * as EnterpriseUtil from "./enterprise-util.ts";
 import Logger from "./logger-util.ts";
 
 export type Config = {
-  [Key in keyof typeof configSchemata]: z.output<(typeof configSchemata)[Key]>;
+  [Key in keyof ConfigSchemata]: z.output<ConfigSchemata[Key]>;
 };
 
 const logger = new Logger({
@@ -26,7 +26,7 @@ reloadDatabase();
 export function getConfigItem<Key extends keyof Config>(
   key: Key,
   defaultValue: Config[Key],
-): z.output<(typeof configSchemata)[Key]> {
+): z.output<ConfigSchemata[Key]> {
   try {
     database.reload();
   } catch (error: unknown) {
@@ -35,7 +35,13 @@ export function getConfigItem<Key extends keyof Config>(
   }
 
   try {
-    return configSchemata[key].parse(database.getObject<unknown>(`/${key}`));
+    const typedSchemata: {
+      [Key in keyof Config]: z.ZodType<
+        z.output<ConfigSchemata[Key]>,
+        z.input<ConfigSchemata[Key]>
+      >;
+    } = configSchemata; // https://github.com/colinhacks/zod/issues/5154
+    return typedSchemata[key].parse(database.getObject<unknown>(`/${key}`));
   } catch (error: unknown) {
     if (!(error instanceof DataError)) throw error;
     setConfigItem(key, defaultValue);

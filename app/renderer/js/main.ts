@@ -1,3 +1,5 @@
+import "./zod-config.ts"; // eslint-disable-line import-x/no-unassigned-import
+
 import {clipboard} from "electron/common";
 import path from "node:path";
 import process from "node:process";

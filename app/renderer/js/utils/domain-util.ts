@@ -24,7 +24,7 @@ const logger = new Logger({
 export const defaultIconSentinel = "../renderer/img/icon.png";
 
 const serverConfigSchema = z.object({
-  url: z.string().url(),
+  url: z.url(),
   alias: z.string(),
   icon: z.string(),
   zulipVersion: z.string().default("unknown"),

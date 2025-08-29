@@ -59,7 +59,7 @@ export const _getServerSettings = async (
   } = z
     .object({
       realm_name: z.string(),
-      realm_uri: z.string().url(),
+      realm_uri: z.url(),
       realm_icon: z.string(),
       zulip_version: z.string().default("unknown"),
       zulip_feature_level: z.number().default(0),
