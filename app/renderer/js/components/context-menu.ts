@@ -6,7 +6,7 @@ import type {
 } from "electron/renderer";
 import process from "node:process";
 
-import {Menu} from "@electron/remote";
+import {BrowserWindow, Menu} from "@electron/remote";
 
 import * as t from "../../../common/translation-util.ts";
 
@@ -115,15 +115,6 @@ export const contextMenu = (
         });
       },
     },
-    {
-      type: "separator",
-      visible: isLink || properties.mediaType === "image",
-    },
-    {
-      label: t.__("Services"),
-      visible: process.platform === "darwin",
-      role: "services",
-    },
   ];
 
   if (properties.misspelledWord) {
@@ -149,5 +140,11 @@ export const contextMenu = (
     (menuItem) => menuItem.visible ?? true,
   );
   const menu = Menu.buildFromTemplate(filteredMenuTemplate);
-  menu.popup();
+  menu.popup({
+    window: BrowserWindow.fromWebContents(webContents) ?? undefined,
+    frame: properties.frame ?? undefined,
+    x: properties.x,
+    y: properties.y,
+    sourceType: properties.menuSourceType,
+  });
 };
