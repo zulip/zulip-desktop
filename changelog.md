@@ -2,6 +2,18 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.12.1 --2025-08-29
+
+**Enhancements**:
+
+- Enabled macOS Writing Tools in the context menu.
+- Marked untranslated strings for translation.
+- Updated translations.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 37.4.0.
+
 ### v5.12.0 --2025-03-13
 
 **Enhancements**:
