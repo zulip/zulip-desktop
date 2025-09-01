@@ -1,7 +1,7 @@
 {
 	"A new update {{{version}}} has been downloaded.": "Έχει ληφθεί μια νέα ενημέρωση {{{version}}}.",
 	"A new version {{{version}}} is available. Please update using your package manager.": "Μια νέα έκδοση {{{version}}} είναι διαθέσιμη. Παρακαλούμε ενημερώστε χρησιμοποιώντας τον διαχειριστή πακέτων.",
-	"A new version {{{version}}} of Zulip Desktop is available.": "Μια νέα έκδοση {{{version}} του Zulip Desktop είναι διαθέσιμη.",
+	"A new version {{{version}}} of Zulip Desktop is available.": "Μια νέα έκδοση {{{version}}} του Zulip Desktop είναι διαθέσιμη.",
 	"About": "Περί",
 	"About Zulip": "Περί Zulip",
 	"Actual Size": "Πραγματικό μέγεθος",
@@ -30,7 +30,7 @@
 	"Change": "Αλλαγή",
 	"Change the language from System Preferences → Keyboard → Text → Spelling.": "Αλλάξτε τη γλώσσα από τις Προτιμήσεις Συστήματος → Πληκτρολόγιο → Κείμενο → Γραφή.",
 	"Check for Updates": "Έλεγχος για Ενημερώσεις",
-	"Click to show {{{fileName}}} in folder": "Κάνετε κλικ για την εμφάνιση του {{{fileName}} στο φάκελο",
+	"Click to show {{{fileName}}} in folder": "Κάνετε κλικ για την εμφάνιση του {{{fileName}}} στο φάκελο",
 	"Close": "Κλείσιμο",
 	"Connect": "Σύνδεση",
 	"Connect to another organization": "Σύνδεση με διαφορετικό οργανισμό",
