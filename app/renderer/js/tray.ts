@@ -53,7 +53,7 @@ const trayIconSize = (): number => {
 
 //  Default config for Icon we might make it OS specific if needed like the size
 const config = {
-  pixelRatio: window.devicePixelRatio,
+  pixelRatio: 1,
   unreadCount: 0,
   showUnreadCount: true,
   unreadColor: "#000000",
