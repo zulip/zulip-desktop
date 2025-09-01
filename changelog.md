@@ -2,6 +2,12 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.12.2 --2025-09-01
+
+**Fixes**:
+
+- Corrected broken translations in Chinese (simplified), Finnish, German, Greek, and Tamil that crashed the app.
+
 ### v5.12.1 --2025-08-29
 
 **Enhancements**:
