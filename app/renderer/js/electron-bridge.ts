@@ -1,4 +1,4 @@
-import {EventEmitter} from "node:events";
+import * as z from "zod";
 
 import {
   type ClipboardDecrypter,
@@ -7,11 +7,11 @@ import {
 import {type NotificationData, newNotification} from "./notification/index.ts";
 import {ipcRenderer} from "./typed-ipc-renderer.ts";
 
-type ListenerType = (...arguments_: any[]) => void;
+type ListenerType = (...arguments_: unknown[]) => void;
 
 /* eslint-disable @typescript-eslint/naming-convention */
 export type ElectronBridge = {
-  send_event: (eventName: string | symbol, ...arguments_: unknown[]) => boolean;
+  send_event: (eventName: string, ...arguments_: unknown[]) => boolean;
   on_event: (eventName: string, listener: ListenerType) => void;
   new_notification: (
     title: string,
@@ -32,15 +32,26 @@ let idle = false;
 // Indicates the time at which user was last active
 let lastActive = Date.now();
 
-export const bridgeEvents = new EventEmitter(); // eslint-disable-line unicorn/prefer-event-target
+export const bridgeEvents = new EventTarget();
+
+export class BridgeEvent extends Event {
+  constructor(
+    type: string,
+    public readonly arguments_: unknown[] = [],
+  ) {
+    super(type);
+  }
+}
 
 /* eslint-disable @typescript-eslint/naming-convention */
 const electron_bridge: ElectronBridge = {
-  send_event: (eventName: string | symbol, ...arguments_: unknown[]): boolean =>
-    bridgeEvents.emit(eventName, ...arguments_),
+  send_event: (eventName: string, ...arguments_: unknown[]): boolean =>
+    bridgeEvents.dispatchEvent(new BridgeEvent(eventName, arguments_)),
 
   on_event(eventName: string, listener: ListenerType): void {
-    bridgeEvents.on(eventName, listener);
+    bridgeEvents.addEventListener(eventName, (event) => {
+      listener(...z.instanceof(BridgeEvent).parse(event).arguments_);
+    });
   },
 
   new_notification: (
@@ -65,28 +76,25 @@ const electron_bridge: ElectronBridge = {
 };
 /* eslint-enable @typescript-eslint/naming-convention */
 
-bridgeEvents.on("total_unread_count", (unreadCount: unknown) => {
-  if (typeof unreadCount !== "number") {
-    throw new TypeError("Expected string for unreadCount");
-  }
-
+bridgeEvents.addEventListener("total_unread_count", (event) => {
+  const [unreadCount] = z
+    .tuple([z.number()])
+    .parse(z.instanceof(BridgeEvent).parse(event).arguments_);
   ipcRenderer.send("unread-count", unreadCount);
 });
 
-bridgeEvents.on("realm_name", (realmName: unknown) => {
-  if (typeof realmName !== "string") {
-    throw new TypeError("Expected string for realmName");
-  }
-
+bridgeEvents.addEventListener("realm_name", (event) => {
+  const [realmName] = z
+    .tuple([z.string()])
+    .parse(z.instanceof(BridgeEvent).parse(event).arguments_);
   const serverUrl = location.origin;
   ipcRenderer.send("realm-name-changed", serverUrl, realmName);
 });
 
-bridgeEvents.on("realm_icon_url", (iconUrl: unknown) => {
-  if (typeof iconUrl !== "string") {
-    throw new TypeError("Expected string for iconUrl");
-  }
-
+bridgeEvents.addEventListener("realm_icon_url", (event) => {
+  const [iconUrl] = z
+    .tuple([z.string()])
+    .parse(z.instanceof(BridgeEvent).parse(event).arguments_);
   const serverUrl = location.origin;
   ipcRenderer.send(
     "realm-icon-changed",
