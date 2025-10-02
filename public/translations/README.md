@@ -14,7 +14,7 @@ Within that Weblate project, if you'd like to focus on Zulip Desktop, look
 at the **Desktop** component. The other components are for the Zulip web/mobile
 app, where translations are also very welcome.
 
-(\*) One file is an exception: `en.json` is maintained by `i18next-parser` as a
+(\*) One file is an exception: `en.json` is maintained by `i18next-cli extract` as a
 list of (English) messages in the source code, and is used by Weblate as
 a list of strings to be translated. It doesn't contain any
 translations.
