@@ -375,7 +375,8 @@ function getWindowSubmenu(
 function getDarwinTpl(
   properties: MenuProperties,
 ): MenuItemConstructorOptions[] {
-  const {tabs, activeTabIndex, enableMenu = false} = properties;
+  const {tabs, activeTab, enableMenu = false} = properties;
+  const activeTabIndex = activeTab ? activeTab.index : -1;
 
   return [
     {
@@ -540,7 +541,8 @@ function getDarwinTpl(
 }
 
 function getOtherTpl(properties: MenuProperties): MenuItemConstructorOptions[] {
-  const {tabs, activeTabIndex, enableMenu = false} = properties;
+  const {tabs, activeTab, enableMenu = false} = properties;
+  const activeTabIndex = activeTab ? activeTab.index : -1;
   return [
     {
       label: t.__("File"),

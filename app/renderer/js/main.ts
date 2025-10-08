@@ -659,17 +659,20 @@ export class ServerManagerView {
     ipcRenderer.send("save-last-tab", index);
   }
 
-  // Returns this.tabs in an way that does
-  // not crash app when this.tabs is passed into
-  // ipcRenderer. Something about webview, and properties.webview
+  // Returns tab in an way that does not crash app when it is passed
+  // into ipcRenderer. Something about webview, and properties.webview
   // properties in ServerTab causes the app to crash.
-  get tabsForIpc(): TabData[] {
-    return this.tabs.map((tab) => ({
+  tabForIpc(tab: ServerOrFunctionalTab): TabData {
+    return {
       role: tab.properties.role,
       page: tab.properties.page,
       label: tab.properties.label,
       index: tab.properties.index,
-    }));
+    };
+  }
+
+  get tabsForIpc(): TabData[] {
+    return this.tabs.map((tab) => this.tabForIpc(tab));
   }
 
   async activateTab(index: number, hideOldTab = true): Promise<void> {
@@ -719,7 +722,7 @@ export class ServerManagerView {
       // JSON stringify this.tabs to avoid a crash
       // util.inspect is being used to handle circular references
       tabs: this.tabsForIpc,
-      activeTabIndex: this.getActiveTabIndex(),
+      activeTab: this.tabForIpc(this.activeTab),
       // Following flag controls whether a menu item should be enabled or not
       enableMenu: tab.properties.role === "server",
     });
@@ -1054,7 +1057,9 @@ export class ServerManagerView {
         if (updateMenu) {
           ipcRenderer.send("update-menu", {
             tabs: this.tabsForIpc,
-            activeTabIndex: this.getActiveTabIndex(),
+            activeTab: this.activeTab
+              ? this.tabForIpc(this.activeTab)
+              : undefined,
           });
         }
       },
@@ -1084,7 +1089,9 @@ export class ServerManagerView {
             // Update the realm name also on the Window menu
             ipcRenderer.send("update-menu", {
               tabs: this.tabsForIpc,
-              activeTabIndex: this.getActiveTabIndex(),
+              activeTab: this.activeTab
+                ? this.tabForIpc(this.activeTab)
+                : undefined,
             });
           }
         }
@@ -1200,14 +1207,6 @@ export class ServerManagerView {
     ipcRenderer.on("play-ding-sound", async () => {
       await dingSound.play();
     });
-  }
-
-  private getActiveTabIndex(): number {
-    if (this.activeTab === undefined) {
-      return -1;
-    }
-
-    return this.tabs.indexOf(this.activeTab);
   }
 }
 
