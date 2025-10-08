@@ -1,6 +1,6 @@
 export type MenuProperties = {
   tabs: TabData[];
-  activeTabIndex?: number;
+  activeTab?: TabData;
   enableMenu?: boolean;
 };
 
