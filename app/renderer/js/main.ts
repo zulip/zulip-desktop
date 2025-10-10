@@ -86,7 +86,7 @@ export class ServerManagerView {
   activeTabIndex: number;
   tabs: ServerOrFunctionalTab[];
   functionalTabs: Map<TabPage, number>;
-  tabIndex: number;
+  tabId: number;
   presetOrgs: string[];
   preferenceView?: PreferenceView;
   constructor() {
@@ -132,7 +132,7 @@ export class ServerManagerView {
     this.tabs = [];
     this.presetOrgs = [];
     this.functionalTabs = new Map();
-    this.tabIndex = 0;
+    this.tabId = 0;
   }
 
   async init(): Promise<void> {
@@ -375,22 +375,22 @@ export class ServerManagerView {
   }
 
   initServer(server: ServerConfig, index: number): ServerTab {
-    const tabIndex = this.getTabIndex();
-    const tab = new ServerTab({
+    const tabId = this.gettabId();
+    const tab: ServerTab = new ServerTab({
       role: "server",
       icon: DomainUtil.iconAsUrl(server.icon),
       label: server.alias,
       $root: this.$tabsContainer,
       onClick: this.activateLastTab.bind(this, index),
       index,
-      tabIndex,
+      tabId,
       onHover: this.onHover.bind(this, index),
       onHoverOut: this.onHoverOut.bind(this, index),
       webview: WebView.create({
         $root: this.$webviewsContainer,
         rootWebContents,
         index,
-        tabIndex,
+        tabId,
         url: server.url,
         role: "server",
         hasPermission: (origin: string, permission: string) =>
@@ -483,9 +483,9 @@ export class ServerManagerView {
     this.toggleDndButton(dnd);
   }
 
-  getTabIndex(): number {
-    const currentIndex = this.tabIndex;
-    this.tabIndex++;
+  gettabId(): number {
+    const currentIndex = this.tabId;
+    this.tabId++;
     return currentIndex;
   }
 
@@ -574,7 +574,7 @@ export class ServerManagerView {
     const index = this.tabs.length;
     this.functionalTabs.set(tabProperties.page, index);
 
-    const tabIndex = this.getTabIndex();
+    const tabId = this.gettabId();
     const $view = await tabProperties.makeView();
     this.$webviewsContainer.append($view);
 
@@ -586,7 +586,7 @@ export class ServerManagerView {
         page: tabProperties.page,
         $root: this.$tabsContainer,
         index,
-        tabIndex,
+        tabId,
         onClick: this.activateTab.bind(this, index),
         onDestroy: async () => {
           await this.destroyFunctionalTab(tabProperties.page, index);
@@ -811,8 +811,8 @@ export class ServerManagerView {
     }
   }
 
-  async isLoggedIn(tabIndex: number): Promise<boolean> {
-    const tab = this.tabs[tabIndex];
+  async isLoggedIn(tabId: number): Promise<boolean> {
+    const tab = this.tabs[tabId];
     if (!(tab instanceof ServerTab)) return false;
     const webview = await tab.webview;
     const url = webview.getWebContents().getURL();
@@ -1116,7 +1116,7 @@ export class ServerManagerView {
             (await tab.webview).webContentsId === webviewId
           ) {
             const concurrentTab: HTMLButtonElement = document.querySelector(
-              `div[data-tab-id="${CSS.escape(`${tab.properties.tabIndex}`)}"]`,
+              `div[data-tab-id="${CSS.escape(`${tab.properties.tabId}`)}"]`,
             )!;
             concurrentTab.click();
           }

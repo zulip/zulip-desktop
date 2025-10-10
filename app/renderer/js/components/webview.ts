@@ -22,7 +22,7 @@ type WebViewProperties = {
   $root: Element;
   rootWebContents: WebContents;
   index: number;
-  tabIndex: number;
+  tabId: number;
   url: string;
   role: TabRole;
   isActive: () => boolean;
@@ -48,7 +48,7 @@ export default class WebView {
           <span class="webview-unsupported-dismiss">×</span>
         </div>
         <webview
-          data-tab-id="${properties.tabIndex}"
+          data-tab-id="${properties.tabId}"
           src="${properties.url}"
           ${properties.preload === undefined
             ? html``
@@ -89,7 +89,7 @@ export default class WebView {
     }
 
     const selector = `webview[data-tab-id="${CSS.escape(
-      `${properties.tabIndex}`,
+      `${properties.tabId}`,
     )}"]`;
     const webContentsId: unknown =
       await properties.rootWebContents.executeJavaScript(

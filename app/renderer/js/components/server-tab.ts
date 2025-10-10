@@ -47,7 +47,7 @@ export default class ServerTab extends Tab {
 
   templateHtml(): Html {
     return html`
-      <div class="tab" data-tab-id="${this.properties.tabIndex}">
+      <div class="tab" data-tab-id="${this.properties.tabId}">
         <div class="server-tooltip" style="display:none">
           ${this.properties.label}
         </div>
