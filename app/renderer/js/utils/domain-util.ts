@@ -84,15 +84,13 @@ export async function addDomain(server: {
   if (server.icon) {
     const localIconUrl = await saveServerIcon(server.icon);
     server.icon = localIconUrl;
-    serverConfigSchema.parse(server);
-    database.push("/domains[]", server, true);
-    reloadDatabase();
   } else {
     server.icon = defaultIconSentinel;
-    serverConfigSchema.parse(server);
-    database.push("/domains[]", server, true);
-    reloadDatabase();
   }
+
+  serverConfigSchema.parse(server);
+  database.push("/domains[]", server, true);
+  reloadDatabase();
 }
 
 export function removeDomains(): void {
