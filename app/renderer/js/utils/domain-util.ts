@@ -1,3 +1,5 @@
+import assert from "node:assert";
+import {randomBytes} from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -11,7 +13,7 @@ import * as EnterpriseUtil from "../../../common/enterprise-util.ts";
 import Logger from "../../../common/logger-util.ts";
 import * as Messages from "../../../common/messages.ts";
 import * as t from "../../../common/translation-util.ts";
-import type {ServerConfig} from "../../../common/types.ts";
+import type {ServerConfig, ServerSettings} from "../../../common/types.ts";
 import defaultIcon from "../../img/icon.png";
 import {ipcRenderer} from "../typed-ipc-renderer.ts";
 
@@ -19,17 +21,34 @@ const logger = new Logger({
   file: "domain-util.log",
 });
 
+export function generateDomainId(): string {
+  return randomBytes(5).toString("hex");
+}
+
 // For historical reasons, we store this string in domain.json to denote a
 // missing icon; it does not change with the actual icon location.
 export const defaultIconSentinel = "../renderer/img/icon.png";
 
-const serverConfigSchema = z.object({
+const storedServerSchema = z.object({
+  id: z.string().optional(),
   url: z.url(),
   alias: z.string(),
   icon: z.string(),
   zulipVersion: z.string().default("unknown"),
   zulipFeatureLevel: z.number().default(0),
 });
+
+const serverConfigSchema = storedServerSchema.extend({
+  id: z.string(),
+});
+
+function addServerId(server: z.infer<typeof storedServerSchema>): ServerConfig {
+  assert.ok(server.id === undefined);
+  return serverConfigSchema.parse({
+    ...server,
+    id: generateDomainId(),
+  });
+}
 
 let database!: JsonDB;
 
@@ -88,8 +107,8 @@ export async function addDomain(server: {
     server.icon = defaultIconSentinel;
   }
 
-  serverConfigSchema.parse(server);
-  database.push("/domains[]", server, true);
+  const serverWithId = addServerId(storedServerSchema.parse(server));
+  database.push("/domains[]", serverWithId, true);
   reloadDatabase();
 }
 
@@ -117,7 +136,7 @@ export function duplicateDomain(domain: string): boolean {
 export async function checkDomain(
   domain: string,
   silent = false,
-): Promise<ServerConfig> {
+): Promise<ServerSettings> {
   if (!silent && duplicateDomain(domain)) {
     // Do not check duplicate in silent mode
     throw new Error("This server has been added.");
@@ -126,13 +145,13 @@ export async function checkDomain(
   domain = formatUrl(domain);
 
   try {
-    return await getServerSettings(domain);
+    return storedServerSchema.parse(await getServerSettings(domain));
   } catch {
     throw new Error(Messages.invalidZulipServerError(domain));
   }
 }
 
-async function getServerSettings(domain: string): Promise<ServerConfig> {
+async function getServerSettings(domain: string): Promise<ServerSettings> {
   return ipcRenderer.invoke("get-server-settings", domain);
 }
 
@@ -151,7 +170,11 @@ export async function updateSavedServer(
   const serverConfig = getDomain(index);
   const oldIcon = serverConfig.icon;
   try {
-    const newServerConfig = await checkDomain(url, true);
+    const newServerSetting = await checkDomain(url, true);
+    const newServerConfig: ServerConfig = {
+      ...newServerSetting,
+      id: serverConfig.id,
+    };
     const localIconUrl = await saveServerIcon(newServerConfig.icon);
     if (!oldIcon || localIconUrl !== defaultIconSentinel) {
       newServerConfig.icon = localIconUrl;
@@ -165,6 +188,31 @@ export async function updateSavedServer(
     logger.log(error);
     Sentry.captureException(error);
     return serverConfig;
+  }
+}
+
+function ensureDomainIds(): void {
+  try {
+    const domains = storedServerSchema
+      .array()
+      .parse(database.getObject<unknown>("/domains"));
+
+    let changed = false;
+
+    const updatedDomains = domains.map((server) => {
+      if (server.id === undefined) {
+        changed = true;
+        server = addServerId(server);
+      }
+
+      return server;
+    });
+
+    if (changed) {
+      database.push("/domains", updatedDomains, true);
+    }
+  } catch (error: unknown) {
+    if (!(error instanceof DataError)) throw error;
   }
 }
 
@@ -192,6 +240,7 @@ function reloadDatabase(): void {
   }
 
   database = new JsonDB(domainJsonPath, true, true);
+  ensureDomainIds();
 }
 
 export function formatUrl(domain: string): string {

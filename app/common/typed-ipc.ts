@@ -1,5 +1,5 @@
 import type {DndSettings} from "./dnd-util.ts";
-import type {MenuProperties, ServerConfig} from "./types.ts";
+import type {MenuProperties, ServerSettings} from "./types.ts";
 
 export type MainMessage = {
   "clear-app-settings": () => void;
@@ -26,7 +26,7 @@ export type MainMessage = {
 };
 
 export type MainCall = {
-  "get-server-settings": (domain: string) => ServerConfig;
+  "get-server-settings": (domain: string) => ServerSettings;
   "is-online": (url: string) => boolean;
   "poll-clipboard": (key: Uint8Array, sig: Uint8Array) => string | undefined;
   "save-server-icon": (iconURL: string) => string | null;
