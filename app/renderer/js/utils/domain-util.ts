@@ -89,9 +89,13 @@ export function getDomain(index: number): ServerConfig {
   );
 }
 
-export function updateDomain(index: number, server: ServerConfig): void {
-  reloadDatabase();
-  serverConfigSchema.parse(server);
+export function getDomainById(id: string): ServerConfig | undefined {
+  return getDomains().find((server) => server.id === id);
+}
+
+export function updateDomainById(id: string, server: ServerConfig): void {
+  const index = getDomains().findIndex((domain) => domain.id === id);
+  assert.ok(index !== -1, `Domain with id ${id} not found`);
   database.push(`/domains[${index}]`, server, true);
 }
 
@@ -164,10 +168,10 @@ export async function saveServerIcon(iconURL: string): Promise<string> {
 
 export async function updateSavedServer(
   url: string,
-  index: number,
+  id: string,
 ): Promise<ServerConfig> {
   // Does not promise successful update
-  const serverConfig = getDomain(index);
+  const serverConfig = getDomainById(id)!;
   const oldIcon = serverConfig.icon;
   try {
     const newServerSetting = await checkDomain(url, true);
@@ -178,7 +182,7 @@ export async function updateSavedServer(
     const localIconUrl = await saveServerIcon(newServerConfig.icon);
     if (!oldIcon || localIconUrl !== defaultIconSentinel) {
       newServerConfig.icon = localIconUrl;
-      updateDomain(index, newServerConfig);
+      updateDomainById(id, newServerConfig);
       reloadDatabase();
     }
 

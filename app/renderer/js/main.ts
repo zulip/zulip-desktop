@@ -332,7 +332,7 @@ export class ServerManagerView {
         (async () => {
           const serverConfig = await DomainUtil.updateSavedServer(
             server.url,
-            i,
+            server.id,
           );
           tab.setLabel(serverConfig.alias);
           tab.setIcon(DomainUtil.iconAsUrl(serverConfig.icon));
@@ -1076,7 +1076,7 @@ export class ServerManagerView {
             const tab = this.tabs[index];
             if (tab instanceof ServerTab) tab.setLabel(realmName);
             domain.alias = realmName;
-            DomainUtil.updateDomain(index, domain);
+            DomainUtil.updateDomainById(domain.id, domain);
             // Update the realm name also on the Window menu
             ipcRenderer.send("update-menu", {
               tabs: this.tabsForIpc,
@@ -1098,7 +1098,7 @@ export class ServerManagerView {
               if (tab instanceof ServerTab)
                 tab.setIcon(DomainUtil.iconAsUrl(localIconPath));
               domain.icon = localIconPath;
-              DomainUtil.updateDomain(index, domain);
+              DomainUtil.updateDomainById(domain.id, domain);
             }
           }),
         );
