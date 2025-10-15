@@ -824,6 +824,14 @@ export class ServerManagerView {
       event.preventDefault();
       const template = [
         {
+          label: t.__("Paste Zulip URL"),
+          async click() {
+            const url = clipboard.readText();
+            await DomainUtil.addDomain({url, alias: url});
+            ipcRenderer.send("reload-full-app");
+          },
+        },
+        {
           label: t.__("Disconnect organization"),
           async click() {
             const {response} = await dialog.showMessageBox({
