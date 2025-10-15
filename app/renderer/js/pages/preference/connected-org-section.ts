@@ -48,11 +48,10 @@ export function initConnectedOrgSection({
   // Show noServerText if no servers are there otherwise hide it
   $existingServers.textContent = servers.length === 0 ? noServerText : "";
 
-  for (const [i, server] of servers.entries()) {
+  for (const server of servers) {
     initServerInfoForm({
       $root: $serverInfoContainer,
       server,
-      index: i,
       serverId: server.id,
       onChange: reloadApp,
     });

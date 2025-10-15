@@ -82,13 +82,6 @@ export function getDomains(): ServerConfig[] {
   }
 }
 
-export function getDomain(index: number): ServerConfig {
-  reloadDatabase();
-  return serverConfigSchema.parse(
-    database.getObject<unknown>(`/domains[${index}]`),
-  );
-}
-
 export function getDomainById(id: string): ServerConfig | undefined {
   return getDomains().find((server) => server.id === id);
 }
@@ -121,8 +114,13 @@ export function removeDomains(): void {
   reloadDatabase();
 }
 
-export function removeDomain(index: number): boolean {
-  if (EnterpriseUtil.isPresetOrg(getDomain(index).url)) {
+export function removeDomainById(id: string): boolean {
+  const index = getDomains().findIndex((domain) => domain.id === id);
+  if (index === -1) {
+    return false;
+  }
+
+  if (EnterpriseUtil.isPresetOrg(getDomainById(id)!.url)) {
     return false;
   }
 

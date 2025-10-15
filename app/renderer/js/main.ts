@@ -442,14 +442,14 @@ export class ServerManagerView {
   initServerActions(): void {
     const $serverImgs: NodeListOf<HTMLImageElement> =
       document.querySelectorAll(".server-icons");
-    for (const [index, $serverImg] of $serverImgs.entries()) {
-      this.addContextMenu($serverImg, index);
+    for (const $serverImg of $serverImgs) {
+      this.addContextMenu($serverImg);
       if ($serverImg.src === defaultIcon) {
-        this.displayInitialCharLogo($serverImg, index);
+        this.displayInitialCharLogo($serverImg);
       }
 
       $serverImg.addEventListener("error", () => {
-        this.displayInitialCharLogo($serverImg, index);
+        this.displayInitialCharLogo($serverImg);
       });
     }
   }
@@ -501,11 +501,7 @@ export class ServerManagerView {
     return tab instanceof ServerTab ? (await tab.webview).properties.url : "";
   }
 
-  displayInitialCharLogo($img: HTMLImageElement, index: number): void {
-    // The index parameter is needed because webview[data-tab-id] can
-    // increment beyond the size of the sidebar org array and throw an
-    // error
-
+  displayInitialCharLogo($img: HTMLImageElement): void {
     const $altIcon = document.createElement("div");
     const $parent = $img.parentElement!;
     const $container = $parent.parentElement!;
@@ -526,7 +522,7 @@ export class ServerManagerView {
     $img.remove();
     $parent.append($altIcon);
 
-    this.addContextMenu($altIcon, index);
+    this.addContextMenu($altIcon);
   }
 
   sidebarHoverEvent(
@@ -820,8 +816,8 @@ export class ServerManagerView {
     }
   }
 
-  async isLoggedIn(index: number): Promise<boolean> {
-    const tab = this.tabs[index];
+  async isLoggedIn(tabId: string): Promise<boolean> {
+    const tab = this.getTabById(tabId);
     if (!(tab instanceof ServerTab)) return false;
     const webview = await tab.webview;
     const url = webview.getWebContents().getURL();
@@ -839,9 +835,16 @@ export class ServerManagerView {
     return this.tabs.find((tab) => tab.properties.tabId === tabId);
   }
 
-  addContextMenu($serverImg: HTMLElement, index: number): void {
+  addContextMenu($serverImg: HTMLElement): void {
     $serverImg.addEventListener("contextmenu", async (event) => {
       event.preventDefault();
+      const tabElement = $serverImg.closest(".tab");
+      const tabId =
+        tabElement instanceof HTMLElement
+          ? tabElement.dataset.tabId
+          : undefined;
+      if (tabId === undefined) return;
+
       const template = [
         {
           label: t.__("Disconnect organization"),
@@ -855,11 +858,11 @@ export class ServerManagerView {
               ),
             });
             if (response === 0) {
-              if (DomainUtil.removeDomain(index)) {
+              if (DomainUtil.removeDomainById(tabId)) {
                 ipcRenderer.send("reload-full-app");
               } else {
                 const {title, content} = Messages.orgRemovalError(
-                  DomainUtil.getDomain(index).url,
+                  DomainUtil.getDomainById(tabId)!.url,
                 );
                 dialog.showErrorBox(title, content);
               }
@@ -868,11 +871,11 @@ export class ServerManagerView {
         },
         {
           label: t.__("Notification settings"),
-          enabled: await this.isLoggedIn(index),
+          enabled: await this.isLoggedIn(tabId),
           click: async () => {
             // Switch to tab whose icon was right-clicked
-            const tab = this.tabs[index];
-            await this.activateTab(tab.properties.tabId);
+            const tab = this.getTabById(tabId);
+            await this.activateTab(tabId);
             if (tab instanceof ServerTab)
               (await tab.webview).showNotificationSettings();
           },
@@ -880,7 +883,7 @@ export class ServerManagerView {
         {
           label: t.__("Copy Zulip URL"),
           click() {
-            clipboard.writeText(DomainUtil.getDomain(index).url);
+            clipboard.writeText(DomainUtil.getDomainById(tabId)!.url);
           },
         },
       ];
