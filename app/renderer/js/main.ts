@@ -77,7 +77,6 @@ export class ServerManagerView {
   $reloadTooltip: HTMLElement;
   $loadingTooltip: HTMLElement;
   $settingsTooltip: HTMLElement;
-  $serverIconTooltip: HTMLCollectionOf<HTMLElement>;
   $backTooltip: HTMLElement;
   $dndTooltip: HTMLElement;
   $sidebar: Element;
@@ -106,15 +105,6 @@ export class ServerManagerView {
     this.$loadingTooltip = $actionsContainer.querySelector("#loading-tooltip")!;
     this.$settingsTooltip =
       $actionsContainer.querySelector("#setting-tooltip")!;
-
-    // TODO: This should have been querySelector but the problem is that
-    // querySelector doesn't return elements not present in dom whereas somehow
-    // getElementsByClassName does. To fix this we need to call this after this.initTabs
-    // is called in this.init.
-    // eslint-disable-next-line unicorn/prefer-query-selector
-    this.$serverIconTooltip = document.getElementsByClassName(
-      "server-tooltip",
-    ) as HTMLCollectionOf<HTMLElement>;
     this.$backTooltip = $actionsContainer.querySelector("#back-tooltip")!;
     this.$dndTooltip = $actionsContainer.querySelector("#dnd-tooltip")!;
 
@@ -393,8 +383,8 @@ export class ServerManagerView {
       index,
       tabId,
       serverId: server.id,
-      onHover: this.onHover.bind(this, index),
-      onHoverOut: this.onHoverOut.bind(this, index),
+      onHover: this.onHover.bind(this, tabId),
+      onHoverOut: this.onHoverOut.bind(this, tabId),
       webview: WebView.create({
         $root: this.$webviewsContainer,
         rootWebContents,
@@ -546,20 +536,18 @@ export class ServerManagerView {
     });
   }
 
-  onHover(index: number): void {
-    // `this.$serverIconTooltip[index].textContent` already has realm name, so we are just
-    // removing the style.
-    this.$serverIconTooltip[index].removeAttribute("style");
+  onHover(tabId: string): void {
+    const tooltip = this.getServerTooltip(tabId)!;
+    tooltip.removeAttribute("style");
     // To handle position of servers' tooltip due to scrolling of list of organizations
     // This could not be handled using CSS, hence the top of the tooltip is made same
     // as that of its parent element.
-    const {top} =
-      this.$serverIconTooltip[index].parentElement!.getBoundingClientRect();
-    this.$serverIconTooltip[index].style.top = `${top}px`;
+    const {top} = tooltip.parentElement!.getBoundingClientRect();
+    tooltip.style.top = `${top}px`;
   }
 
-  onHoverOut(index: number): void {
-    this.$serverIconTooltip[index].style.display = "none";
+  onHoverOut(tabId: string): void {
+    this.getServerTooltip(tabId)!.style.display = "none";
   }
 
   async openFunctionalTab(tabProperties: {
@@ -833,6 +821,13 @@ export class ServerManagerView {
 
   getTabById(tabId: string): ServerOrFunctionalTab | undefined {
     return this.tabs.find((tab) => tab.properties.tabId === tabId);
+  }
+
+  getServerTooltip(tabId: string): HTMLElement | undefined {
+    const tooltipElement = this.$tabsContainer.querySelector(
+      `.tab[data-tab-id="${CSS.escape(tabId)}"] .server-tooltip`,
+    );
+    return tooltipElement instanceof HTMLElement ? tooltipElement : undefined;
   }
 
   addContextMenu($serverImg: HTMLElement): void {
