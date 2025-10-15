@@ -329,7 +329,7 @@ function getWindowSubmenu(
         checked: tab.index === activeTabIndex,
         click(_item, focusedWindow) {
           if (focusedWindow) {
-            sendAction("switch-server-tab", tab.index);
+            sendAction("switch-server-tab", tab.serverId!);
           }
         },
         type: "checkbox",
@@ -348,7 +348,7 @@ function getWindowSubmenu(
           if (focusedWindow) {
             sendAction(
               "switch-server-tab",
-              getNextServer(tabs, activeTabIndex!),
+              getNextServer(tabs, tabs[activeTabIndex!]),
             );
           }
         },
@@ -361,7 +361,7 @@ function getWindowSubmenu(
           if (focusedWindow) {
             sendAction(
               "switch-server-tab",
-              getPreviousServer(tabs, activeTabIndex!),
+              getPreviousServer(tabs, tabs[activeTabIndex!]),
             );
           }
         },
@@ -704,20 +704,22 @@ async function checkForUpdate(): Promise<void> {
   await appUpdater(true);
 }
 
-function getNextServer(tabs: TabData[], activeTabIndex: number): number {
+function getNextServer(tabs: TabData[], activeTab: TabData): string {
+  let {index} = activeTab;
   do {
-    activeTabIndex = (activeTabIndex + 1) % tabs.length;
-  } while (tabs[activeTabIndex]?.role !== "server");
+    index = (index + 1) % tabs.length;
+  } while (tabs[index]?.role !== "server");
 
-  return activeTabIndex;
+  return tabs[index].serverId!;
 }
 
-function getPreviousServer(tabs: TabData[], activeTabIndex: number): number {
+function getPreviousServer(tabs: TabData[], activeTab: TabData): string {
+  let {index} = activeTab;
   do {
-    activeTabIndex = (activeTabIndex - 1 + tabs.length) % tabs.length;
-  } while (tabs[activeTabIndex]?.role !== "server");
+    index = (index - 1 + tabs.length) % tabs.length;
+  } while (tabs[index]?.role !== "server");
 
-  return activeTabIndex;
+  return tabs[index].serverId!;
 }
 
 export function setMenu(properties: MenuProperties): void {

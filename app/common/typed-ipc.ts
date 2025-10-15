@@ -14,7 +14,7 @@ export type MainMessage = {
   "realm-name-changed": (serverURL: string, realmName: string) => void;
   "reload-full-app": () => void;
   "save-last-tab": (index: number) => void;
-  "switch-server-tab": (index: number) => void;
+  "switch-server-tab": (serverId: string) => void;
   "toggle-app": () => void;
   "toggle-badge-option": (newValue: boolean) => void;
   "toggle-menubar": (showMenubar: boolean) => void;
@@ -63,7 +63,7 @@ export type RendererMessage = {
   "set-idle": () => void;
   "show-keyboard-shortcuts": () => void;
   "show-notification-settings": () => void;
-  "switch-server-tab": (index: number) => void;
+  "switch-server-tab": (serverId: string) => void;
   "tab-devtools": () => void;
   "toggle-autohide-menubar": (
     autoHideMenubar: boolean,

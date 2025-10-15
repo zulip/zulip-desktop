@@ -22,7 +22,7 @@ type WebViewProperties = {
   $root: Element;
   rootWebContents: WebContents;
   index: number;
-  tabId: number;
+  tabId: string;
   url: string;
   role: TabRole;
   isActive: () => boolean;

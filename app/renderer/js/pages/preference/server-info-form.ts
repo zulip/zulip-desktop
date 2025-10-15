@@ -12,6 +12,7 @@ type ServerInfoFormProperties = {
   $root: Element;
   server: ServerConfig;
   index: number;
+  serverId: string;
   onChange: () => void;
 };
 
@@ -70,14 +71,26 @@ export function initServerInfoForm(properties: ServerInfoFormProperties): void {
   });
 
   $openServerButton.addEventListener("click", () => {
-    ipcRenderer.send("forward-message", "switch-server-tab", properties.index);
+    ipcRenderer.send(
+      "forward-message",
+      "switch-server-tab",
+      properties.serverId,
+    );
   });
 
   $serverInfoAlias.addEventListener("click", () => {
-    ipcRenderer.send("forward-message", "switch-server-tab", properties.index);
+    ipcRenderer.send(
+      "forward-message",
+      "switch-server-tab",
+      properties.serverId,
+    );
   });
 
   $serverIcon.addEventListener("click", () => {
-    ipcRenderer.send("forward-message", "switch-server-tab", properties.index);
+    ipcRenderer.send(
+      "forward-message",
+      "switch-server-tab",
+      properties.serverId,
+    );
   });
 }

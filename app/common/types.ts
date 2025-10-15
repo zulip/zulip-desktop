@@ -30,4 +30,6 @@ export type TabData = {
   page?: TabPage;
   label: string;
   index: number;
+  id: string;
+  serverId?: string;
 };

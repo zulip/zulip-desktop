@@ -86,7 +86,6 @@ export class ServerManagerView {
   activeTabIndex: number;
   tabs: ServerOrFunctionalTab[];
   functionalTabs: Map<TabPage, number>;
-  tabId: number;
   presetOrgs: string[];
   preferenceView?: PreferenceView;
   constructor() {
@@ -132,7 +131,6 @@ export class ServerManagerView {
     this.tabs = [];
     this.presetOrgs = [];
     this.functionalTabs = new Map();
-    this.tabId = 0;
   }
 
   async init(): Promise<void> {
@@ -375,7 +373,7 @@ export class ServerManagerView {
   }
 
   initServer(server: ServerConfig, index: number): ServerTab {
-    const tabId = this.gettabId();
+    const tabId = this.generateTabId();
     const tab: ServerTab = new ServerTab({
       role: "server",
       icon: DomainUtil.iconAsUrl(server.icon),
@@ -384,6 +382,7 @@ export class ServerManagerView {
       onClick: this.activateLastTab.bind(this, index),
       index,
       tabId,
+      serverId: server.id,
       onHover: this.onHover.bind(this, index),
       onHoverOut: this.onHoverOut.bind(this, index),
       webview: WebView.create({
@@ -483,10 +482,8 @@ export class ServerManagerView {
     this.toggleDndButton(dnd);
   }
 
-  gettabId(): number {
-    const currentIndex = this.tabId;
-    this.tabId++;
-    return currentIndex;
+  generateTabId(): string {
+    return DomainUtil.generateDomainId();
   }
 
   async getCurrentActiveServer(): Promise<string> {
@@ -574,7 +571,7 @@ export class ServerManagerView {
     const index = this.tabs.length;
     this.functionalTabs.set(tabProperties.page, index);
 
-    const tabId = this.gettabId();
+    const tabId = this.generateTabId();
     const $view = await tabProperties.makeView();
     this.$webviewsContainer.append($view);
 
@@ -669,6 +666,7 @@ export class ServerManagerView {
       page: tab.properties.page,
       label: tab.properties.label,
       index: tab.properties.index,
+      id: tab.properties.tabId,
     }));
   }
 
@@ -811,12 +809,19 @@ export class ServerManagerView {
     }
   }
 
-  async isLoggedIn(tabId: number): Promise<boolean> {
-    const tab = this.tabs[tabId];
+  async isLoggedIn(index: number): Promise<boolean> {
+    const tab = this.tabs[index];
     if (!(tab instanceof ServerTab)) return false;
     const webview = await tab.webview;
     const url = webview.getWebContents().getURL();
     return !(url.endsWith("/login/") || webview.loading);
+  }
+
+  getTabByServerId(serverId: string): ServerTab | undefined {
+    return this.tabs.find(
+      (tab): tab is ServerTab =>
+        tab instanceof ServerTab && tab.serverId === serverId,
+    );
   }
 
   addContextMenu($serverImg: HTMLElement, index: number): void {
@@ -1005,8 +1010,9 @@ export class ServerManagerView {
       ipcRenderer.send("reload-full-app");
     });
 
-    ipcRenderer.on("switch-server-tab", async (event, index: number) => {
-      await this.activateLastTab(index);
+    ipcRenderer.on("switch-server-tab", async (event, serverId: string) => {
+      const tab = this.getTabByServerId(serverId)!;
+      await this.activateLastTab(tab.properties.index);
     });
 
     ipcRenderer.on("open-org-tab", async () => {

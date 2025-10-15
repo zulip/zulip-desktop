@@ -9,19 +9,22 @@ import type WebView from "./webview.ts";
 
 export type ServerTabProperties = {
   webview: Promise<WebView>;
+  serverId: string;
 } & TabProperties;
 
 export default class ServerTab extends Tab {
   webview: Promise<WebView>;
+  serverId: string;
   $el: Element;
   $name: Element;
   $icon: HTMLImageElement;
   $badge: Element;
 
-  constructor({webview, ...properties}: ServerTabProperties) {
+  constructor({webview, serverId, ...properties}: ServerTabProperties) {
     super(properties);
 
     this.webview = webview;
+    this.serverId = serverId;
     this.$el = generateNodeFromHtml(this.templateHtml());
     this.properties.$root.append(this.$el);
     this.registerListeners();
@@ -84,7 +87,7 @@ export default class ServerTab extends Tab {
     const shownIndex = this.properties.index + 1;
 
     // Array index == Shown index - 1
-    ipcRenderer.send("switch-server-tab", shownIndex - 1);
+    ipcRenderer.send("switch-server-tab", this.serverId);
 
     return process.platform === "darwin"
       ? `⌘${shownIndex}`

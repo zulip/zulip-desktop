@@ -53,6 +53,7 @@ export function initConnectedOrgSection({
       $root: $serverInfoContainer,
       server,
       index: i,
+      serverId: server.id,
       onChange: reloadApp,
     });
   }
