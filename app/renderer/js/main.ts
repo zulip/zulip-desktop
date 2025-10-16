@@ -388,7 +388,6 @@ export class ServerManagerView {
       webview: WebView.create({
         $root: this.$webviewsContainer,
         rootWebContents,
-        index,
         tabId,
         url: server.url,
         role: "server",
@@ -410,8 +409,8 @@ export class ServerManagerView {
               this.loading.has((await tab.webview).properties.url),
           );
         },
-        onNetworkError: async (index: number) => {
-          await this.openNetworkTroubleshooting(index);
+        onNetworkError: async (tabId: string) => {
+          await this.openNetworkTroubleshooting(tabId);
         },
         onTitleChange: this.updateBadge.bind(this),
         preload: url.pathToFileURL(path.join(bundlePath, "preload.cjs")).href,
@@ -631,8 +630,8 @@ export class ServerManagerView {
     });
   }
 
-  async openNetworkTroubleshooting(index: number): Promise<void> {
-    const tab = this.tabs[index];
+  async openNetworkTroubleshooting(id: string): Promise<void> {
+    const tab = this.getTabById(id);
     if (!(tab instanceof ServerTab)) return;
     const webview = await tab.webview;
     const reconnectUtil = new ReconnectUtil(webview);
@@ -730,7 +729,9 @@ export class ServerManagerView {
       return;
     }
 
-    delete this.tabs[tab.properties.index]; // eslint-disable-line @typescript-eslint/no-array-delete
+    this.tabs = this.tabs.filter(
+      (tabObject) => tabObject.properties.tabId !== tabId,
+    );
     await tab.destroy();
     this.functionalTabs.delete(page);
 
@@ -1084,9 +1085,9 @@ export class ServerManagerView {
     ipcRenderer.on(
       "update-realm-name",
       (event, serverURL: string, realmName: string) => {
-        for (const [index, domain] of DomainUtil.getDomains().entries()) {
+        for (const domain of DomainUtil.getDomains()) {
           if (domain.url === serverURL) {
-            const tab = this.tabs[index];
+            const tab = this.getTabById(domain.id);
             if (tab instanceof ServerTab) tab.setLabel(realmName);
             domain.alias = realmName;
             DomainUtil.updateDomainById(domain.id, domain);
@@ -1104,10 +1105,10 @@ export class ServerManagerView {
       "update-realm-icon",
       async (event, serverURL: string, iconURL: string) => {
         await Promise.all(
-          DomainUtil.getDomains().map(async (domain, index) => {
+          DomainUtil.getDomains().map(async (domain) => {
             if (domain.url === serverURL) {
               const localIconPath = await DomainUtil.saveServerIcon(iconURL);
-              const tab = this.tabs[index];
+              const tab = this.getTabById(domain.id);
               if (tab instanceof ServerTab)
                 tab.setIcon(DomainUtil.iconAsUrl(localIconPath));
               domain.icon = localIconPath;

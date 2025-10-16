@@ -313,8 +313,6 @@ function getWindowSubmenu(
       type: "separator",
     });
     for (const tab of tabs) {
-      // Skip missing elements left by `delete this.tabs[index]` in
-      // ServerManagerView.
       if (tab === undefined) continue;
 
       // Do not add functional tab settings to list of windows in menu bar
