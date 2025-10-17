@@ -428,9 +428,11 @@ function createMainWindow(): BrowserWindow {
 
   ipcMain.on("update-menu", (_event, properties: MenuProperties) => {
     AppMenu.setMenu(properties);
-    if (properties.activeTabIndex !== undefined) {
-      const activeTab = properties.tabs[properties.activeTabIndex];
-      mainWindow.setTitle(`Zulip - ${activeTab.label}`);
+    if (properties.activeTabId !== undefined) {
+      const activeTab = properties.tabs.find(
+        (tab) => tab.id === properties.activeTabId,
+      );
+      mainWindow.setTitle(`Zulip - ${activeTab!.label}`);
     }
   });
 
@@ -452,8 +454,8 @@ function createMainWindow(): BrowserWindow {
     },
   );
 
-  ipcMain.on("save-last-tab", (_event, index: number) => {
-    ConfigUtil.setConfigItem("lastActiveTab", index);
+  ipcMain.on("save-last-tab", (_event, tabId: string) => {
+    ConfigUtil.setConfigItem("lastActiveTabId", tabId);
   });
 
   ipcMain.on("focus-this-webview", (event) => {

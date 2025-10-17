@@ -83,9 +83,9 @@ export class ServerManagerView {
   $sidebar: Element;
   $fullscreenPopup: Element;
   loading: Set<string>;
-  activeTabIndex: number;
+  activeTabId?: string;
   tabs: ServerOrFunctionalTab[];
-  functionalTabs: Map<TabPage, number>;
+  functionalTabs: Map<TabPage, string>;
   presetOrgs: string[];
   preferenceView?: PreferenceView;
   constructor() {
@@ -127,7 +127,7 @@ export class ServerManagerView {
     );
 
     this.loading = new Set();
-    this.activeTabIndex = -1;
+    this.activeTabId = undefined;
     this.tabs = [];
     this.presetOrgs = [];
     this.functionalTabs = new Map();
@@ -195,7 +195,7 @@ export class ServerManagerView {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       customCSS: false,
       silent: false,
-      lastActiveTab: 0,
+      lastActiveTabId: undefined,
       dnd: false,
       dndPreviousSettings: {
         showNotification: true,
@@ -343,18 +343,28 @@ export class ServerManagerView {
       }
 
       // Open last active tab
-      let lastActiveTab = ConfigUtil.getConfigItem("lastActiveTab", 0);
-      if (lastActiveTab >= servers.length) {
-        lastActiveTab = 0;
+      const firstTab = this.tabs[0];
+      let lastActiveTabId = ConfigUtil.getConfigItem(
+        "lastActiveTabId",
+        firstTab.properties.tabId,
+      )!;
+      const lastActiveTab = this.getTabById(lastActiveTabId);
+      // Set lastActiveTab to firstTab if lastActiveTab is undefined.
+      // It will be undefined if user disconnected the server for lastActiveTab.
+      if (
+        lastActiveTab === undefined ||
+        lastActiveTab.properties.index >= servers.length
+      ) {
+        lastActiveTabId = firstTab.properties.tabId;
       }
 
-      // `webview.load()` for lastActiveTab before the others
-      await this.activateTab(lastActiveTab);
+      // `webview.load()` for lastActiveTabId before the others
+      await this.activateTab(lastActiveTabId);
       await Promise.all(
         servers.map(async (server, i) => {
-          // After the lastActiveTab is activated, we load the others in the background
+          // After the lastActiveTabId is activated, we load the others in the background
           // without activating them, to prevent flashing of server icons
-          if (i === lastActiveTab) {
+          if (server.id === lastActiveTabId) {
             return;
           }
 
@@ -379,7 +389,7 @@ export class ServerManagerView {
       icon: DomainUtil.iconAsUrl(server.icon),
       label: server.alias,
       $root: this.$tabsContainer,
-      onClick: this.activateLastTab.bind(this, index),
+      onClick: this.activateLastTab.bind(this, tabId),
       index,
       tabId,
       serverId: server.id,
@@ -396,7 +406,7 @@ export class ServerManagerView {
           origin === server.url &&
           permission === "notifications" &&
           ConfigUtil.getConfigItem("showNotification", true),
-        isActive: () => index === this.activeTabIndex,
+        isActive: (): boolean => tabId === this.activeTabId,
         switchLoading: async (loading: boolean, url: string) => {
           if (loading) {
             this.loading.add(url);
@@ -404,7 +414,7 @@ export class ServerManagerView {
             this.loading.delete(url);
           }
 
-          const tab = this.tabs[this.activeTabIndex];
+          const tab = this.getTabById(this.activeTabId!);
           this.showLoading(
             tab instanceof ServerTab &&
               this.loading.has((await tab.webview).properties.url),
@@ -455,7 +465,7 @@ export class ServerManagerView {
       );
     });
     this.$reloadButton.addEventListener("click", async () => {
-      const tab = this.tabs[this.activeTabIndex];
+      const tab = this.getTabById(this.activeTabId!);
       if (tab instanceof ServerTab) (await tab.webview).reload();
     });
     this.$addServerButton.addEventListener("click", async () => {
@@ -465,7 +475,7 @@ export class ServerManagerView {
       await this.openSettings("General");
     });
     this.$backButton.addEventListener("click", async () => {
-      const tab = this.tabs[this.activeTabIndex];
+      const tab = this.getTabById(this.activeTabId!);
       if (tab instanceof ServerTab) (await tab.webview).back();
     });
 
@@ -487,7 +497,7 @@ export class ServerManagerView {
   }
 
   async getCurrentActiveServer(): Promise<string> {
-    const tab = this.tabs[this.activeTabIndex];
+    const tab = this.getTabById(this.activeTabId!);
     return tab instanceof ServerTab ? (await tab.webview).properties.url : "";
   }
 
@@ -569,9 +579,8 @@ export class ServerManagerView {
     }
 
     const index = this.tabs.length;
-    this.functionalTabs.set(tabProperties.page, index);
-
     const tabId = this.generateTabId();
+    this.functionalTabs.set(tabProperties.page, tabId);
     const $view = await tabProperties.makeView();
     this.$webviewsContainer.append($view);
 
@@ -584,9 +593,9 @@ export class ServerManagerView {
         $root: this.$tabsContainer,
         index,
         tabId,
-        onClick: this.activateTab.bind(this, index),
+        onClick: this.activateTab.bind(this, tabId),
         onDestroy: async () => {
-          await this.destroyFunctionalTab(tabProperties.page, index);
+          await this.destroyFunctionalTab(tabProperties.page, tabId);
           tabProperties.destroyView();
         },
         $view,
@@ -597,7 +606,7 @@ export class ServerManagerView {
     // closed when the functional tab DOM is ready, handled in webview.js
     this.$webviewsContainer.classList.remove("loaded");
 
-    await this.activateTab(this.functionalTabs.get(tabProperties.page)!);
+    await this.activateTab(tabId);
   }
 
   async openSettings(
@@ -649,11 +658,11 @@ export class ServerManagerView {
       .loadURL(new URL("app/renderer/network.html", bundleUrl).href);
   }
 
-  async activateLastTab(index: number): Promise<void> {
-    // Open all the tabs in background, also activate the tab based on the index
-    await this.activateTab(index);
+  async activateLastTab(tabId: string): Promise<void> {
+    // Open all the tabs in background, also activate the tab based on id.
+    await this.activateTab(tabId);
     // Save last active tab via main process to avoid JSON DB errors
-    ipcRenderer.send("save-last-tab", index);
+    ipcRenderer.send("save-last-tab", tabId);
   }
 
   // Returns this.tabs in an way that does
@@ -667,30 +676,33 @@ export class ServerManagerView {
       label: tab.properties.label,
       index: tab.properties.index,
       id: tab.properties.tabId,
+      serverId: tab instanceof ServerTab ? tab.serverId : undefined,
     }));
   }
 
-  async activateTab(index: number, hideOldTab = true): Promise<void> {
-    const tab = this.tabs[index];
+  async activateTab(id: string, hideOldTab = true): Promise<void> {
+    const tab = this.getTabById(id);
     if (!tab) {
       return;
     }
 
-    if (this.activeTabIndex !== -1) {
-      if (this.activeTabIndex === index) {
+    if (this.activeTabId) {
+      if (this.activeTabId === tab.properties.tabId) {
         return;
       }
+
+      const previousTab = this.getTabById(this.activeTabId)!;
 
       if (hideOldTab) {
         // If old tab is functional tab Settings, remove focus from the settings icon at sidebar bottom
         if (
-          this.tabs[this.activeTabIndex].properties.role === "function" &&
-          this.tabs[this.activeTabIndex].properties.page === "Settings"
+          previousTab.properties.role === "function" &&
+          previousTab.properties.page === "Settings"
         ) {
           this.$settingsButton.classList.remove("active");
         }
 
-        await this.tabs[this.activeTabIndex].deactivate();
+        await previousTab.deactivate();
       }
     }
 
@@ -704,7 +716,7 @@ export class ServerManagerView {
         .classList.add("disable");
     }
 
-    this.activeTabIndex = index;
+    this.activeTabId = tab.properties.tabId;
     await tab.activate();
 
     this.showLoading(
@@ -716,7 +728,7 @@ export class ServerManagerView {
       // JSON stringify this.tabs to avoid a crash
       // util.inspect is being used to handle circular references
       tabs: this.tabsForIpc,
-      activeTabIndex: this.activeTabIndex,
+      activeTabId: this.activeTabId,
       // Following flag controls whether a menu item should be enabled or not
       enableMenu: tab.properties.role === "server",
     });
@@ -727,20 +739,20 @@ export class ServerManagerView {
     this.$loadingIndicator.classList.toggle("hidden", !loading);
   }
 
-  async destroyFunctionalTab(page: TabPage, index: number): Promise<void> {
-    const tab = this.tabs[index];
+  async destroyFunctionalTab(page: TabPage, tabId: string): Promise<void> {
+    const tab = this.getTabById(tabId)!;
+
     if (tab instanceof ServerTab && (await tab.webview).loading) {
       return;
     }
 
+    delete this.tabs[tab.properties.index]; // eslint-disable-line @typescript-eslint/no-array-delete
     await tab.destroy();
-
-    delete this.tabs[index]; // eslint-disable-line @typescript-eslint/no-array-delete
     this.functionalTabs.delete(page);
 
     // Issue #188: If the functional tab was not focused, do not activate another tab.
-    if (this.activeTabIndex === index) {
-      await this.activateTab(0, false);
+    if (this.activeTabId === tabId) {
+      await this.activateTab(this.tabs[0].properties.tabId, false);
     }
   }
 
@@ -749,7 +761,7 @@ export class ServerManagerView {
     this.$webviewsContainer.classList.remove("loaded");
 
     // Clear global variables
-    this.activeTabIndex = -1;
+    this.activeTabId = undefined;
     this.tabs = [];
     this.functionalTabs.clear();
 
@@ -759,9 +771,8 @@ export class ServerManagerView {
   }
 
   async reloadView(): Promise<void> {
-    // Save and remember the index of last active tab so that we can use it later
-    const lastActiveTab = this.tabs[this.activeTabIndex].properties.index;
-    ConfigUtil.setConfigItem("lastActiveTab", lastActiveTab);
+    // Save and remember the id of last active tab so that we can use it later
+    ConfigUtil.setConfigItem("lastActiveTabId", this.activeTabId);
 
     // Destroy the current view and re-initiate it
     this.destroyView();
@@ -824,6 +835,10 @@ export class ServerManagerView {
     );
   }
 
+  getTabById(tabId: string): ServerOrFunctionalTab | undefined {
+    return this.tabs.find((tab) => tab.properties.tabId === tabId);
+  }
+
   addContextMenu($serverImg: HTMLElement, index: number): void {
     $serverImg.addEventListener("contextmenu", async (event) => {
       event.preventDefault();
@@ -856,8 +871,8 @@ export class ServerManagerView {
           enabled: await this.isLoggedIn(index),
           click: async () => {
             // Switch to tab whose icon was right-clicked
-            await this.activateTab(index);
             const tab = this.tabs[index];
+            await this.activateTab(tab.properties.tabId);
             if (tab instanceof ServerTab)
               (await tab.webview).showNotificationSettings();
           },
@@ -942,7 +957,7 @@ export class ServerManagerView {
 
     for (const [channel, listener] of webviewListeners) {
       ipcRenderer.on(channel, async () => {
-        const tab = this.tabs[this.activeTabIndex];
+        const tab = this.getTabById(this.activeTabId!);
         if (tab instanceof ServerTab) {
           const activeWebview = await tab.webview;
           if (activeWebview) listener(activeWebview);
@@ -1012,7 +1027,7 @@ export class ServerManagerView {
 
     ipcRenderer.on("switch-server-tab", async (event, serverId: string) => {
       const tab = this.getTabByServerId(serverId)!;
-      await this.activateLastTab(tab.properties.index);
+      await this.activateLastTab(tab.properties.tabId);
     });
 
     ipcRenderer.on("open-org-tab", async () => {
@@ -1050,7 +1065,7 @@ export class ServerManagerView {
         if (updateMenu) {
           ipcRenderer.send("update-menu", {
             tabs: this.tabsForIpc,
-            activeTabIndex: this.activeTabIndex,
+            activeTabId: this.activeTabId,
           });
         }
       },
@@ -1080,7 +1095,7 @@ export class ServerManagerView {
             // Update the realm name also on the Window menu
             ipcRenderer.send("update-menu", {
               tabs: this.tabsForIpc,
-              activeTabIndex: this.activeTabIndex,
+              activeTabId: this.activeTabId,
             });
           }
         }

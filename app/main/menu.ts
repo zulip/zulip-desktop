@@ -294,7 +294,7 @@ function getHelpSubmenu(): MenuItemConstructorOptions[] {
 
 function getWindowSubmenu(
   tabs: TabData[],
-  activeTabIndex?: number,
+  activeTabId?: string,
 ): MenuItemConstructorOptions[] {
   const initialSubmenu: MenuItemConstructorOptions[] = [
     {
@@ -326,7 +326,7 @@ function getWindowSubmenu(
         label: tab.label,
         accelerator:
           tab.role === "function" ? "" : `${shortcutKey} + ${tab.index + 1}`,
-        checked: tab.index === activeTabIndex,
+        checked: tab.id === activeTabId,
         click(_item, focusedWindow) {
           if (focusedWindow) {
             sendAction("switch-server-tab", tab.serverId!);
@@ -346,10 +346,7 @@ function getWindowSubmenu(
         enabled: tabs.length > 1,
         click(_item, focusedWindow) {
           if (focusedWindow) {
-            sendAction(
-              "switch-server-tab",
-              getNextServer(tabs, tabs[activeTabIndex!]),
-            );
+            sendAction("switch-server-tab", getNextServer(tabs, activeTabId!));
           }
         },
       },
@@ -361,7 +358,7 @@ function getWindowSubmenu(
           if (focusedWindow) {
             sendAction(
               "switch-server-tab",
-              getPreviousServer(tabs, tabs[activeTabIndex!]),
+              getPreviousServer(tabs, activeTabId!),
             );
           }
         },
@@ -375,7 +372,7 @@ function getWindowSubmenu(
 function getDarwinTpl(
   properties: MenuProperties,
 ): MenuItemConstructorOptions[] {
-  const {tabs, activeTabIndex, enableMenu = false} = properties;
+  const {tabs, activeTabId, enableMenu = false} = properties;
 
   return [
     {
@@ -525,7 +522,7 @@ function getDarwinTpl(
     },
     {
       label: t.__("Window"),
-      submenu: getWindowSubmenu(tabs, activeTabIndex),
+      submenu: getWindowSubmenu(tabs, activeTabId),
     },
     {
       label: t.__("Tools"),
@@ -540,7 +537,7 @@ function getDarwinTpl(
 }
 
 function getOtherTpl(properties: MenuProperties): MenuItemConstructorOptions[] {
-  const {tabs, activeTabIndex, enableMenu = false} = properties;
+  const {tabs, activeTabId, enableMenu = false} = properties;
   return [
     {
       label: t.__("File"),
@@ -673,7 +670,7 @@ function getOtherTpl(properties: MenuProperties): MenuItemConstructorOptions[] {
     },
     {
       label: t.__("Window"),
-      submenu: getWindowSubmenu(tabs, activeTabIndex),
+      submenu: getWindowSubmenu(tabs, activeTabId),
     },
     {
       label: t.__("Tools"),
@@ -704,7 +701,8 @@ async function checkForUpdate(): Promise<void> {
   await appUpdater(true);
 }
 
-function getNextServer(tabs: TabData[], activeTab: TabData): string {
+function getNextServer(tabs: TabData[], activeTabId: string): string {
+  const activeTab = tabs.find((tab) => tab.id === activeTabId)!;
   let {index} = activeTab;
   do {
     index = (index + 1) % tabs.length;
@@ -713,7 +711,8 @@ function getNextServer(tabs: TabData[], activeTab: TabData): string {
   return tabs[index].serverId!;
 }
 
-function getPreviousServer(tabs: TabData[], activeTab: TabData): string {
+function getPreviousServer(tabs: TabData[], activeTabId: string): string {
+  const activeTab = tabs.find((tab) => tab.id === activeTabId)!;
   let {index} = activeTab;
   do {
     index = (index - 1 + tabs.length) % tabs.length;
