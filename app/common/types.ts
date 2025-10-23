@@ -29,7 +29,7 @@ export type TabData = {
   role: TabRole;
   page?: TabPage;
   label: string;
-  index: number;
+  order: number;
   id: string;
   serverId?: string;
 };

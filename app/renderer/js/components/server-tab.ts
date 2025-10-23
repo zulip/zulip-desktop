@@ -80,13 +80,13 @@ export default class ServerTab extends Tab {
 
   generateShortcutText(): string {
     // Only provide shortcuts for server [0..9]
-    if (this.properties.index >= 9) {
+    if (this.properties.order >= 9) {
       return "";
     }
 
-    const shownIndex = this.properties.index + 1;
+    const shownIndex = this.properties.order + 1;
 
-    // Array index == Shown index - 1
+    // Array index == Shown order - 1
     ipcRenderer.send("switch-server-tab", this.serverId);
 
     return process.platform === "darwin"

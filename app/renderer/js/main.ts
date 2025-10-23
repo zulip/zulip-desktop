@@ -333,7 +333,7 @@ export class ServerManagerView {
       }
 
       // Open last active tab
-      const firstTab = this.tabs[0];
+      const firstTab = this.getTabByOrder(this.tabs, 0)!;
       let lastActiveTabId = ConfigUtil.getConfigItem(
         "lastActiveTabId",
         firstTab.properties.tabId,
@@ -343,7 +343,7 @@ export class ServerManagerView {
       // It will be undefined if user disconnected the server for lastActiveTab.
       if (
         lastActiveTab === undefined ||
-        lastActiveTab.properties.index >= servers.length
+        lastActiveTab.properties.order >= servers.length
       ) {
         lastActiveTabId = firstTab.properties.tabId;
       }
@@ -351,14 +351,14 @@ export class ServerManagerView {
       // `webview.load()` for lastActiveTabId before the others
       await this.activateTab(lastActiveTabId);
       await Promise.all(
-        servers.map(async (server, i) => {
+        servers.map(async (server) => {
           // After the lastActiveTabId is activated, we load the others in the background
           // without activating them, to prevent flashing of server icons
           if (server.id === lastActiveTabId) {
             return;
           }
 
-          const tab = this.tabs[i];
+          const tab = this.getTabByServerId(server.id);
           if (tab instanceof ServerTab) (await tab.webview).load();
         }),
       );
@@ -372,7 +372,7 @@ export class ServerManagerView {
     }
   }
 
-  initServer(server: ServerConfig, index: number): ServerTab {
+  initServer(server: ServerConfig, order: number): ServerTab {
     const tabId = this.generateTabId();
     const tab: ServerTab = new ServerTab({
       role: "server",
@@ -380,7 +380,7 @@ export class ServerManagerView {
       label: server.alias,
       $root: this.$tabsContainer,
       onClick: this.activateLastTab.bind(this, tabId),
-      index,
+      order,
       tabId,
       serverId: server.id,
       onHover: this.onHover.bind(this, tabId),
@@ -561,7 +561,7 @@ export class ServerManagerView {
       return;
     }
 
-    const index = this.tabs.length;
+    const order = this.tabs.length;
     const tabId = this.generateTabId();
     this.functionalTabs.set(tabProperties.page, tabId);
     const $view = await tabProperties.makeView();
@@ -574,7 +574,7 @@ export class ServerManagerView {
         label: tabProperties.label,
         page: tabProperties.page,
         $root: this.$tabsContainer,
-        index,
+        order,
         tabId,
         onClick: this.activateTab.bind(this, tabId),
         onDestroy: async () => {
@@ -657,10 +657,17 @@ export class ServerManagerView {
       role: tab.properties.role,
       page: tab.properties.page,
       label: tab.properties.label,
-      index: tab.properties.index,
+      order: tab.properties.order,
       id: tab.properties.tabId,
       serverId: tab instanceof ServerTab ? tab.serverId : undefined,
     }));
+  }
+
+  getTabByOrder(
+    tabs: ServerOrFunctionalTab[],
+    order: number,
+  ): ServerOrFunctionalTab | undefined {
+    return tabs.find((tab) => tab.properties.order === order);
   }
 
   async activateTab(id: string, hideOldTab = true): Promise<void> {
@@ -737,7 +744,10 @@ export class ServerManagerView {
 
     // Issue #188: If the functional tab was not focused, do not activate another tab.
     if (this.activeTabId === tabId) {
-      await this.activateTab(this.tabs[0].properties.tabId, false);
+      await this.activateTab(
+        this.getTabByOrder(this.tabs, 0)!.properties.tabId,
+        false,
+      );
     }
   }
 

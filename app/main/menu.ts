@@ -323,7 +323,7 @@ function getWindowSubmenu(
       initialSubmenu.push({
         label: tab.label,
         accelerator:
-          tab.role === "function" ? "" : `${shortcutKey} + ${tab.index + 1}`,
+          tab.role === "function" ? "" : `${shortcutKey} + ${tab.order + 1}`,
         checked: tab.id === activeTabId,
         click(_item, focusedWindow) {
           if (focusedWindow) {
@@ -699,24 +699,28 @@ async function checkForUpdate(): Promise<void> {
   await appUpdater(true);
 }
 
+function getTabByOrder(tabs: TabData[], order: number): TabData | undefined {
+  return tabs.find((tab) => tab.order === order);
+}
+
 function getNextServer(tabs: TabData[], activeTabId: string): string {
   const activeTab = tabs.find((tab) => tab.id === activeTabId)!;
-  let {index} = activeTab;
+  let {order} = activeTab;
   do {
-    index = (index + 1) % tabs.length;
-  } while (tabs[index]?.role !== "server");
+    order = (order + 1) % tabs.length;
+  } while (getTabByOrder(tabs, order)?.role !== "server");
 
-  return tabs[index].serverId!;
+  return getTabByOrder(tabs, order)!.serverId!;
 }
 
 function getPreviousServer(tabs: TabData[], activeTabId: string): string {
   const activeTab = tabs.find((tab) => tab.id === activeTabId)!;
-  let {index} = activeTab;
+  let {order} = activeTab;
   do {
-    index = (index - 1 + tabs.length) % tabs.length;
-  } while (tabs[index]?.role !== "server");
+    order = (order - 1) % tabs.length;
+  } while (getTabByOrder(tabs, order)?.role !== "server");
 
-  return tabs[index].serverId!;
+  return getTabByOrder(tabs, order)!.serverId!;
 }
 
 export function setMenu(properties: MenuProperties): void {
