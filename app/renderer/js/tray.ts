@@ -53,7 +53,6 @@ const trayIconSize = (): number => {
 
 //  Default config for Icon we might make it OS specific if needed like the size
 const config = {
-  pixelRatio: window.devicePixelRatio,
   unreadCount: 0,
   showUnreadCount: true,
   unreadColor: "#000000",
@@ -67,7 +66,7 @@ const config = {
 const renderCanvas = function (argument: number): HTMLCanvasElement {
   config.unreadCount = argument;
 
-  const size = config.size * config.pixelRatio;
+  const {size} = config;
   const padding = size * 0.05;
   const center = size / 2;
   const hasCount = config.showUnreadCount && config.unreadCount;
@@ -127,9 +126,7 @@ const renderNativeImage = function (argument: number): NativeImage {
   const pngData = nativeImage
     .createFromDataURL(canvas.toDataURL("image/png"))
     .toPNG();
-  return nativeImage.createFromBuffer(pngData, {
-    scaleFactor: config.pixelRatio,
-  });
+  return nativeImage.createFromBuffer(pngData);
 };
 
 function sendAction<Channel extends keyof RendererMessage>(
