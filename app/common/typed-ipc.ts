@@ -13,6 +13,7 @@ export type MainMessage = {
   "realm-icon-changed": (serverURL: string, iconURL: string) => void;
   "realm-name-changed": (serverURL: string, realmName: string) => void;
   "reload-full-app": () => void;
+  "show-downloaded-file-in-folder": (downloadId: string) => void;
   "save-last-tab": (index: number) => void;
   "switch-server-tab": (index: number) => void;
   "toggle-app": () => void;
@@ -59,6 +60,11 @@ export type RendererMessage = {
   "reload-proxy": (showAlert: boolean) => void;
   "reload-viewer": () => void;
   "render-taskbar-icon": (messageCount: number) => void;
+  "show-download-success": (
+    title: string,
+    description: string,
+    downloadId: string,
+  ) => void;
   "set-active": () => void;
   "set-idle": () => void;
   "show-keyboard-shortcuts": () => void;
