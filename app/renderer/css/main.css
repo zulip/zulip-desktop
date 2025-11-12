@@ -153,10 +153,6 @@ body {
   color: rgb(108 133 146 / 100%);
 }
 
-#back-action i {
-  transform: scaleY(-1);
-}
-
 .tab {
   position: relative;
   margin: 2px 0;
@@ -271,6 +267,10 @@ body {
   text-align: center;
   font-family: sans-serif;
   margin-bottom: 5px;
+}
+
+#back-action i {
+  transform: scaleY(-1);
 }
 
 .refresh {
@@ -403,6 +403,7 @@ webview.focus {
   top: 7px;
   right: 68px;
 }
+
 #dnd-tooltip {
   min-width: 220px;
   max-width: calc(100vw - 80px);
@@ -412,6 +413,7 @@ webview.focus {
   box-sizing: border-box;
   text-align: left;
 }
+
 #dnd-tooltip::after {
   left: -8px;
   right: auto;
