@@ -153,6 +153,10 @@ body {
   color: rgb(108 133 146 / 100%);
 }
 
+#back-action i {
+  transform: scaleY(-1);
+}
+
 .tab {
   position: relative;
   margin: 2px 0;
@@ -398,6 +402,19 @@ webview.focus {
   position: absolute;
   top: 7px;
   right: 68px;
+}
+#dnd-tooltip {
+  min-width: 220px;
+  max-width: calc(100vw - 80px);
+  width: auto;
+  white-space: nowrap;
+  padding: 6px 12px;
+  box-sizing: border-box;
+  text-align: left;
+}
+#dnd-tooltip::after {
+  left: -8px;
+  right: auto;
 }
 
 #add-server-tooltip,
