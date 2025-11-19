@@ -24,7 +24,6 @@
   "scripts": {
     "start": "vite",
     "watch-ts": "tsc -w",
-    "reinstall": "rimraf node_modules && npm install",
     "postinstall": "electron-builder install-app-deps",
     "lint-css": "stylelint \"app/**/*.css\"",
     "lint-html": "htmlhint \"app/**/*.html\"",
