@@ -159,16 +159,24 @@ export default class WebView {
     this.show();
   }
 
+  restoreZoomLevel(): void {
+    const savedZoom = this.getSavedZoomLevel();
+    this.getWebContents().zoomLevel = savedZoom;
+  }
+
   zoomIn(): void {
     this.getWebContents().zoomLevel += 0.5;
+    this.saveZoomLevel(this.getWebContents().zoomLevel);
   }
 
   zoomOut(): void {
     this.getWebContents().zoomLevel -= 0.5;
+    this.saveZoomLevel(this.getWebContents().zoomLevel);
   }
 
   zoomActualSize(): void {
     this.getWebContents().zoomLevel = 0;
+    this.saveZoomLevel(0);
   }
 
   logOut(): void {
@@ -229,6 +237,32 @@ export default class WebView {
     ipcRenderer.send("forward-to", this.webContentsId, channel, ...arguments_);
   }
 
+  private getZoomStorageKey(): string {
+    // Use single device-wide zoom level
+    return "zoom_level";
+  }
+
+  private getSavedZoomLevel(): number {
+    try {
+      const key = this.getZoomStorageKey();
+      const saved = localStorage.getItem(key);
+      if (!saved) return 0;
+      const parsed = Number(saved);
+      return Number.isNaN(parsed) ? 0 : parsed;
+    } catch {
+      return 0;
+    }
+  }
+
+  private saveZoomLevel(level: number): void {
+    try {
+      const key = this.getZoomStorageKey();
+      localStorage.setItem(key, String(level));
+    } catch (error) {
+      console.error("Failed to save zoom level to localStorage:", error);
+    }
+  }
+
   private registerListeners(): void {
     const webContents = this.getWebContents();
 
@@ -269,6 +303,7 @@ export default class WebView {
     this.$webview.addEventListener("dom-ready", () => {
       this.loading = false;
       this.properties.switchLoading(false, this.properties.url);
+      this.restoreZoomLevel();
       this.show();
     });
 
