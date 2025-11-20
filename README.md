@@ -1,7 +1,6 @@
 # Zulip Desktop Client
 
 [![Build Status](https://github.com/zulip/zulip-desktop/actions/workflows/node.js.yml/badge.svg)](https://github.com/zulip/zulip-desktop/actions/workflows/node.js.yml?query=branch%3Amain)
-[![Windows Build Status](https://ci.appveyor.com/api/projects/status/github/zulip/zulip-desktop?branch=main&svg=true)](https://ci.appveyor.com/project/zulip/zulip-desktop/branch/main)
 [![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/sindresorhus/xo)
 [![project chat](https://img.shields.io/badge/zulip-join_chat-brightgreen.svg)](https://chat.zulip.org)
 
