@@ -1,3 +1,0 @@
-# Installation instructions
-
-- [[Windows]]
