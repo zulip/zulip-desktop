@@ -73,6 +73,7 @@
       "description": "Zulip Desktop Client for Linux",
       "target": [
         "deb",
+        "rpm",
         "tar.xz",
         "AppImage",
         "snap"
@@ -89,6 +90,11 @@
         "./packaging/deb-apt.asc=/usr/share/keyrings/zulip-desktop.asc",
         "./packaging/deb-release-upgrades.cfg=/etc/update-manager/release-upgrades.d/zulip-desktop.cfg"
       ]
+    },
+    "rpm": {
+      "packageCategory": "net",
+      "synopsis": "Zulip Desktop App",
+      "afterInstall": "./packaging/rpm-after-install.sh"
     },
     "snap": {
       "synopsis": "Zulip Desktop App"
