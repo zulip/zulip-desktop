@@ -25,3 +25,15 @@ If you'd like to remove organizations and have admin access, you'll need to chan
 It also turns off automatic updates for every Zulip user on the same machine.
 
 Currently, we only support `presetOrganizations` and `autoUpdate` settings. We are working on other settings as well, and will update this page when we add support for more.
+## App language and spellchecker
+
+The Zulip desktop app follows the language setting configured in the Zulip web app for each user.  
+When a user changes their language in the Zulip web interface, the desktop app picks up the same language the next time the app is reloaded or restarted.
+
+The desktop client includes a multi-language spellchecker:
+
+- The default spellcheck language is based on the language selected in the user’s Zulip account.
+- The spellchecker can automatically detect the language being typed and switch dictionaries accordingly.
+- Users can enable additional spellcheck languages in the desktop app’s preferences, where available on their platform.
+
+For most enterprise deployments, no extra configuration is required: as long as users have the correct language set in Zulip, the desktop app will use the corresponding spellcheck and UI language.
