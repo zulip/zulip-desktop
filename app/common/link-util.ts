@@ -3,11 +3,17 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
+import * as ConfigUtil from "./config-util.ts";
 import {Html, html} from "./html.ts";
 import * as t from "./translation-util.ts";
 
+const whitelistedProtocols = ConfigUtil.getConfigItemWithoutSettingDefault(
+  "whitelistedProtocols",
+  ["http:", "https:", "mailto:", "tel:", "sip:"],
+);
+
 export async function openBrowser(url: URL): Promise<void> {
-  if (["http:", "https:", "mailto:"].includes(url.protocol)) {
+  if (whitelistedProtocols.includes(url.protocol)) {
     await shell.openExternal(url.href);
   } else {
     // For security, indirect links to non-whitelisted protocols
