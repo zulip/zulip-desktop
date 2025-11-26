@@ -622,6 +622,9 @@ export class ServerManagerView {
     });
     this.$settingsButton.classList.add("active");
     this.preferenceView!.handleNavigation(navigationItem);
+
+    // We always want to show the sidebar in case of the settings page.
+    this.toggleSidebar(true);
   }
 
   async openAbout(): Promise<void> {
@@ -714,6 +717,12 @@ export class ServerManagerView {
         this.loading.has((await tab.webview).properties.url),
     );
 
+    // We might be coming here from the settings page, which has the
+    // sidebar always enabled. We need to recheck that setting here
+    // and toggle the sidebar as needed.
+    const showSidebar = ConfigUtil.getConfigItem("showSidebar", true);
+    this.toggleSidebar(showSidebar);
+
     ipcRenderer.send("update-menu", {
       // JSON stringify this.tabs to avoid a crash
       // util.inspect is being used to handle circular references
@@ -793,6 +802,11 @@ export class ServerManagerView {
   }
 
   toggleSidebar(show: boolean): void {
+    // In case when user manually clicks on toggleSidebar.
+    if (this.tabs[this.activeTabIndex]?.properties?.page === "Settings") {
+      show = true;
+    }
+
     this.$sidebar.classList.toggle("sidebar-hide", !show);
   }
 
