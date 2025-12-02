@@ -1,9 +1,6 @@
 # Dependency directory
 /node_modules/
 
-# npm cache directory
-.npm
-
 # Compiled binary build directory
 /dist/
 /dist-electron/
@@ -11,9 +8,6 @@
 # Logs
 logs
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
 // osx garbage
 *.DS_Store

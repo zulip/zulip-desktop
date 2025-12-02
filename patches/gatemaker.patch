@@ -1,0 +1,13 @@
+diff --git a/electron-observer.js b/electron-observer.js
+index 993f390f83a374be61a7cf018cdef1ebb9c02415..57bf2868101af1be14408cec4a595322ebb3bb10 100644
+--- a/electron-observer.js
++++ b/electron-observer.js
+@@ -23,7 +23,7 @@ function sessionWillDownload(event, download) {
+ 
+ function downloadDone(event, state) {
+   if (state != "completed") return
+-  observer.emit("download-completed", event.sender)
++  observer.emit("download-completed", this)
+ }
+ 
+ module.exports = observer

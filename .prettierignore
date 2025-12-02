@@ -1,3 +1,5 @@
 /dist
 /dist-electron
+/pnpm-lock.yaml
+/pnpm-workspace.yaml
 /public/translations/*.json

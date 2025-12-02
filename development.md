@@ -9,17 +9,10 @@ To build and run the app from source, you'll need the following:
 
 - [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
   - Use our [Git Guide](https://zulip.readthedocs.io/en/latest/git/setup.html) to get started with Git and GitHub.
-- [Node.js](https://nodejs.org) >= v10.16.3
-  - [NPM](https://www.npmjs.com/get-npm) and
-    [node-gyp](https://github.com/nodejs/node-gyp#installation),
-    if they don't come bundled with your Node.js installation
-- [Python](https://www.python.org/downloads/release/python-2713/)
-  (v2.7.x recommended)
-- A C++ compiler compatible with C++11
-- Development headers for the libXext, libXtst, and libxkbfile libraries, which can be installed using apt on Ubuntu using
-  ```sh
-  $ sudo apt install libxext-dev libxtst-dev libxkbfile-dev libgconf-2-4
-  ```
+- [Node.js](https://nodejs.org) (latest LTS version)
+- [pnpm](https://pnpm.io/installation)
+- [Python](https://www.python.org/downloads/)
+- A C++ compiler
 
 ### Ubuntu/Linux and other Debian-based distributions
 
@@ -28,8 +21,9 @@ distribution, you can install all dependencies through the package
 manager (see [here][node-debian] for more on the first command):
 
 ```sh
-$ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-$ sudo apt install git nodejs python build-essential libxext-dev libxtst-dev libxkbfile-dev libgconf-2-4
+$ curl -sL https://deb.nodesource.com/setup_24.x | sudo -E bash -
+$ sudo apt install git nodejs python build-essential
+$ corepack enable
 ```
 
 [node-debian]: https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
@@ -40,8 +34,6 @@ On a system running MacOS, you can refer to [official nodejs docs][node-mac] to
 install nodejs. To ensure Node.js has been installed, run `node -v` in terminal to know your node version.
 
 [node-mac]: https://nodejs.org/en/download/package-manager/#macos
-
-If [NPM](https://www.npmjs.com/get-npm) and [node-gyp](https://github.com/nodejs/node-gyp#installation) don't come bundled with your Node.js installation, you will need to install them manually.
 
 ### Windows
 
@@ -66,19 +58,19 @@ $ cd zulip-desktop
 Install project dependencies:
 
 ```sh
-$ npm install
+$ pnpm install
 ```
 
 Start the app:
 
 ```sh
-$ npm start
+$ node --run start
 ```
 
 Run tests:
 
 ```sh
-$ npm test
+$ node --run test
 ```
 
 ## How to contribute?
@@ -92,8 +84,8 @@ You can read more about making contributions in our [Contributing Guide](./CONTR
 
 To package the app into an installer:
 
-```
-npm run dist
+```sh
+node --run dist
 ```
 
 This command will produce distributable packages or installers for the

@@ -29,7 +29,7 @@
     "lint-html": "htmlhint \"app/**/*.html\"",
     "lint-js": "xo",
     "prettier-non-js": "prettier --check --log-level=warn . \"!**/*.{cjs,js,ts}\"",
-    "test": "tsc && npm run lint-html && npm run lint-css && npm run lint-js && npm run prettier-non-js",
+    "test": "tsc && node --run lint-html && node --run lint-css && node --run lint-js && node --run prettier-non-js",
     "test-e2e": "vite build && tape \"tests/**/*.ts\"",
     "pack": "vite build && electron-builder --dir",
     "dist": "vite build && electron-builder",
@@ -144,8 +144,9 @@
     "Desktop app",
     "InstantMessaging"
   ],
+  "packageManager": "pnpm@10.24.0+sha512.01ff8ae71b4419903b65c60fb2dc9d34cf8bb6e06d03bde112ef38f7a34d6904c424ba66bea5cdcf12890230bf39f9580473140ed9c946fef328b6e5238a345a",
   "dependencies": {
-    "gatemaker": "https://github.com/andersk/gatemaker/archive/d31890ae1cb293faabcb1e4e465c673458f6eed2.tar.gz"
+    "gatemaker": "^1.0.0"
   },
   "devDependencies": {
     "@electron/remote": "^2.0.8",

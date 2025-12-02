@@ -1,0 +1,12 @@
+ignoredBuiltDependencies:
+  - '@swc/core'
+  - electron-winstaller
+  - esbuild
+  - fs-xattr
+  - unrs-resolver
+
+onlyBuiltDependencies:
+  - electron
+
+patchedDependencies:
+  gatemaker: patches/gatemaker.patch
