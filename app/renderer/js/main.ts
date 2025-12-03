@@ -961,20 +961,22 @@ export class ServerManagerView {
         permissionCallbackId: number,
       ) => {
         const grant =
-          webContentsId === null
-            ? origin === "null" && permission === "notifications"
-            : (
-                await Promise.all(
-                  this.tabs.map(async (tab) => {
-                    if (!(tab instanceof ServerTab)) return false;
-                    const webview = await tab.webview;
-                    return (
-                      webview.webContentsId === webContentsId &&
-                      webview.properties.hasPermission?.(origin, permission)
-                    );
-                  }),
-                )
-              ).some(Boolean);
+          permission === "fullscreen"
+            ? true
+            : webContentsId === null
+              ? origin === "null" && permission === "notifications"
+              : (
+                  await Promise.all(
+                    this.tabs.map(async (tab) => {
+                      if (!(tab instanceof ServerTab)) return false;
+                      const webview = await tab.webview;
+                      return (
+                        webview.webContentsId === webContentsId &&
+                        webview.properties.hasPermission?.(origin, permission)
+                      );
+                    }),
+                  )
+                ).some(Boolean);
         console.log(
           grant ? "Granted" : "Denied",
           "permissions request for",
