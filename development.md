@@ -29,7 +29,7 @@ manager (see [here][node-debian] for more on the first command):
 
 ```sh
 $ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-$ sudo apt install git nodejs python build-essential snapcraft libxext-dev libxtst-dev libxkbfile-dev libgconf-2-4
+$ sudo apt install git nodejs python build-essential libxext-dev libxtst-dev libxkbfile-dev libgconf-2-4
 ```
 
 [node-debian]: https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
