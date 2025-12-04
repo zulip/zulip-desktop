@@ -395,8 +395,9 @@ export class ServerManagerView {
         role: "server",
         hasPermission: (origin: string, permission: string) =>
           origin === server.url &&
-          permission === "notifications" &&
-          ConfigUtil.getConfigItem("showNotification", true),
+          (permission === "fullscreen" ||
+            (permission === "notifications" &&
+              ConfigUtil.getConfigItem("showNotification", true))),
         isActive: () => index === this.activeTabIndex,
         switchLoading: async (loading: boolean, url: string) => {
           if (loading) {
