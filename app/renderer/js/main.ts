@@ -1207,15 +1207,15 @@ window.addEventListener("load", async () => {
               <i class="material-icons">add</i>
             </div>
             <span id="add-server-tooltip" style="display: none"
-              >${t.__("Add Organization")}</span
+              >${t.__("Add organization")}</span
             >
           </div>
         </div>
         <div id="actions-container">
-          <div class="action-button" id="dnd-action">
-            <i class="material-icons md-48">notifications</i>
-            <span id="dnd-tooltip" style="display: none"
-              >${t.__("Do Not Disturb")}</span
+          <div class="action-button disable" id="back-action">
+            <i class="material-icons md-48">subdirectory_arrow_left</i>
+            <span id="back-tooltip" style="display: none"
+              >${t.__("Go back")}</span
             >
           </div>
           <div class="action-button hidden" id="reload-action">
@@ -1230,10 +1230,10 @@ window.addEventListener("load", async () => {
               >${t.__("Loading")}</span
             >
           </div>
-          <div class="action-button disable" id="back-action">
-            <i class="material-icons md-48">arrow_back</i>
-            <span id="back-tooltip" style="display: none"
-              >${t.__("Go Back")}</span
+          <div class="action-button" id="dnd-action">
+            <i class="material-icons md-48">notifications</i>
+            <span id="dnd-tooltip" style="display: none"
+              >${t.__("Do Not Disturb")}</span
             >
           </div>
           <div class="action-button" id="settings-action">
