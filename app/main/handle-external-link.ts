@@ -6,6 +6,7 @@ import {
   type WebContents,
   app,
 } from "electron/main";
+import {randomBytes} from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -14,6 +15,35 @@ import * as LinkUtil from "../common/link-util.ts";
 import * as t from "../common/translation-util.ts";
 
 import {send} from "./typed-ipc-main.ts";
+
+const maxTrackedDownloads = 50;
+
+type DownloadedFile = {
+  id: string;
+  filePath: string;
+};
+
+const downloadedFiles = new Map<string, DownloadedFile>();
+
+function trackDownloadedFile(filePath: string): DownloadedFile {
+  const downloadedFile: DownloadedFile = {
+    id: randomBytes(16).toString("hex"),
+    filePath,
+  };
+
+  downloadedFiles.set(downloadedFile.id, downloadedFile);
+
+  if (downloadedFiles.size > maxTrackedDownloads) {
+    const oldestDownloadedFileId = [...downloadedFiles.keys()][0];
+    downloadedFiles.delete(oldestDownloadedFileId);
+  }
+
+  return downloadedFile;
+}
+
+export function getDownloadedFilePath(downloadId: string): string | undefined {
+  return downloadedFiles.get(downloadId)?.filePath;
+}
 
 function isUploadsUrl(server: string, url: URL): boolean {
   return url.origin === server && url.pathname.startsWith("/user_uploads/");
@@ -125,9 +155,14 @@ export default function handleExternalLink(
       url: url.href,
       downloadPath,
       async completed(filePath: string, fileName: string) {
+        const notificationTitle = t.__("Downloaded {{{fileName}}}.", {
+          fileName,
+        });
+        const notificationBody = t.__("Click to open downloads folder.");
+        // Show native notification
         const downloadNotification = new Notification({
-          title: t.__("Download Complete"),
-          body: t.__("Click to show {{{fileName}}} in folder", {fileName}),
+          title: notificationTitle,
+          body: notificationBody,
           silent: true, // We'll play our own sound - ding.ogg
         });
         downloadNotification.on("click", () => {
@@ -135,6 +170,16 @@ export default function handleExternalLink(
           shell.showItemInFolder(filePath);
         });
         downloadNotification.show();
+        const {id: downloadId} = trackDownloadedFile(filePath);
+        // Event to show in-app notification in addition to the native
+        // notification.
+        send(
+          contents,
+          "show-download-success",
+          notificationTitle,
+          notificationBody,
+          downloadId,
+        );
 
         // Play sound to indicate download complete
         if (!ConfigUtil.getConfigItem("silent", false)) {
@@ -150,7 +195,7 @@ export default function handleExternalLink(
         if (state !== "cancelled") {
           if (ConfigUtil.getConfigItem("promptDownload", false)) {
             new Notification({
-              title: t.__("Download Complete"),
+              title: t.__("Download complete"),
               body: t.__("Download failed"),
             }).show();
           } else {
