@@ -8,5 +8,14 @@ ignoredBuiltDependencies:
 onlyBuiltDependencies:
   - electron
 
+overrides:
+  i18n>@messageformat/core: '-'
+
+packageExtensions:
+  i18n:
+    dependencies:
+      intl-messageformat: ^10.7.18
+
 patchedDependencies:
-  gatemaker: patches/gatemaker.patch
+  gatemaker: patches/gatemaker.patch # https://github.com/javan/gatemaker/pull/4
+  i18n: patches/i18n.patch # https://github.com/mashpie/i18n-node/pull/546, https://github.com/mashpie/i18n-node/pull/547

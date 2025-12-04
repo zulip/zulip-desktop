@@ -1,0 +1,72 @@
+diff --git a/i18n.js b/i18n.js
+index 950740589677df52c7e9b4c04249d83b4d1fe8df..c6221b0d73846f9f88f9f60228da0bc197058795 100644
+--- a/i18n.js
++++ b/i18n.js
+@@ -16,7 +16,7 @@ const debug = require('debug')('i18n:debug')
+ const warn = require('debug')('i18n:warn')
+ const error = require('debug')('i18n:error')
+ const Mustache = require('mustache')
+-const Messageformat = require('@messageformat/core')
++const IntlMessageFormat = require('intl-messageformat').default
+ const MakePlural = require('make-plural')
+ const parseInterval = require('math-interval-parser').default
+ 
+@@ -27,7 +27,7 @@ const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') /
+  * create constructor function
+  */
+ const i18n = function I18n(_OPTS = false) {
+-  const MessageformatInstanceForLocale = {}
++  const messageFormatCacheForLocale = new Map()
+   const PluralsForLocale = {}
+   let locales = {}
+   const api = {
+@@ -300,11 +300,12 @@ const i18n = function I18n(_OPTS = false) {
+   }
+ 
+   i18n.__mf = function i18nMessageformat(phrase) {
+-    let msg, mf, f
++    let msg, compiledFunctions, f
+     let targetLocale = defaultLocale
+     const argv = parseArgv(arguments)
+     const namedValues = argv[0]
+-    const args = argv[1]
++    if (argv[1].length > 0)
++      logWarn('i18n.__mf must be called with named values only')
+ 
+     // called like __({phrase: "Hello", locale: "en"})
+     if (typeof phrase === 'object') {
+@@ -328,24 +329,23 @@ const i18n = function I18n(_OPTS = false) {
+ 
+     // now head over to Messageformat
+     // and try to cache instance
+-    if (MessageformatInstanceForLocale[targetLocale]) {
+-      mf = MessageformatInstanceForLocale[targetLocale]
++    if (messageFormatCacheForLocale.has(targetLocale)) {
++      compiledFunctions = messageFormatCacheForLocale.get(targetLocale)
+     } else {
+-      mf = new Messageformat(targetLocale)
+-
+-      mf.compiledFunctions = {}
+-      MessageformatInstanceForLocale[targetLocale] = mf
++      compiledFunctions = new Map()
++      messageFormatCacheForLocale.set(targetLocale, compiledFunctions)
+     }
+ 
+     // let's try to cache that function
+-    if (mf.compiledFunctions[msg]) {
+-      f = mf.compiledFunctions[msg]
++    if (compiledFunctions.has(msg)) {
++      f = compiledFunctions.get(msg)
+     } else {
+-      f = mf.compile(msg)
+-      mf.compiledFunctions[msg] = f
++      const format = new IntlMessageFormat(msg, targetLocale)
++      f = format.format.bind(format)
++      compiledFunctions.set(msg, f)
+     }
+ 
+-    return postProcess(f(namedValues), namedValues, args)
++    return f(namedValues)
+   }
+ 
+   i18n.__l = function i18nTranslationList(phrase) {
