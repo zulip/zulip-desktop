@@ -3,7 +3,7 @@
 
 # Compiled binary build directory
 /dist/
-/dist-electron/
+/out/
 
 # Logs
 logs

@@ -2,5 +2,5 @@
   "version": "5.9.3",
   "productName": "ZulipTest",
   "type": "module",
-  "main": "../../dist-electron/index.cjs"
+  "main": "../../out/main/index.js"
 }

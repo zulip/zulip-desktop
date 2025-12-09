@@ -2,7 +2,7 @@
   "name": "zulip",
   "productName": "Zulip",
   "version": "5.12.2",
-  "main": "./dist-electron/index.cjs",
+  "main": "./out/main/index.js",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
   "copyright": "Kandra Labs, Inc.",
@@ -22,7 +22,8 @@
     "node": ">=18"
   },
   "scripts": {
-    "start": "vite",
+    "dev": "electron-vite dev",
+    "preview": "electron-vite preview",
     "watch-ts": "tsc -w",
     "postinstall": "electron-builder install-app-deps",
     "lint-css": "stylelint \"app/**/*.css\"",
@@ -30,10 +31,10 @@
     "lint-js": "xo",
     "prettier-non-js": "prettier --check --log-level=warn . \"!**/*.{cjs,js,ts}\"",
     "test": "tsc && node --run lint-html && node --run lint-css && node --run lint-js && node --run prettier-non-js",
-    "test-e2e": "vite build && tape \"tests/**/*.ts\"",
-    "pack": "vite build && electron-builder --dir",
-    "dist": "vite build && electron-builder",
-    "mas": "vite build && electron-builder --mac mas"
+    "test-e2e": "electron-vite build && tape \"tests/**/*.ts\"",
+    "pack": "electron-vite build && electron-builder --dir",
+    "dist": "electron-vite build && electron-builder",
+    "mas": "electron-vite build && electron-builder --mac mas"
   },
   "build": {
     "appId": "org.zulip.zulip-electron",
@@ -42,7 +43,7 @@
       "**/*.node"
     ],
     "files": [
-      "dist-electron/**/*"
+      "out/**/*"
     ],
     "copyright": "©2020 Kandra Labs, Inc.",
     "mac": {
@@ -170,6 +171,7 @@
     "electron-builder": "^26.0.12",
     "electron-log": "^5.0.3",
     "electron-updater": "^6.3.4",
+    "electron-vite": "^5.0.0",
     "electron-window-state": "^5.0.3",
     "escape-goat": "^4.0.0",
     "eslint-import-resolver-typescript": "^4.4.4",
@@ -185,8 +187,7 @@
     "stylelint-config-standard": "^39.0.0",
     "tape": "^5.2.2",
     "typescript": "^5.0.4",
-    "vite": "^5.0.11",
-    "vite-plugin-electron": "^0.28.0",
+    "vite": "npm:rolldown-vite@^7.2.10",
     "xo": "^1.2.1",
     "zod": "^4.1.5"
   },

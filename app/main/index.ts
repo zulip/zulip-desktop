@@ -87,7 +87,7 @@ function createMainWindow(): BrowserWindow {
     minWidth: 500,
     minHeight: 400,
     webPreferences: {
-      preload: path.join(bundlePath, "renderer.cjs"),
+      preload: path.join(bundlePath, "../preload/renderer.cjs"),
       sandbox: false,
       webviewTag: true,
     },

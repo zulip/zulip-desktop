@@ -64,7 +64,7 @@ $ pnpm install
 Start the app:
 
 ```sh
-$ node --run start
+$ node --run dev
 ```
 
 Run tests:
