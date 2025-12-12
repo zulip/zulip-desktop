@@ -2,6 +2,17 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.12.3 --2025-12-12
+
+**Enhancements**:
+
+- Adjusted text contrast in settings panel.
+- Updated translations.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 39.2.7.
+
 ### v5.12.2 --2025-09-01
 
 **Fixes**:
