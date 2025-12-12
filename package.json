@@ -145,14 +145,14 @@
     "Desktop app",
     "InstantMessaging"
   ],
-  "packageManager": "pnpm@10.24.0+sha512.01ff8ae71b4419903b65c60fb2dc9d34cf8bb6e06d03bde112ef38f7a34d6904c424ba66bea5cdcf12890230bf39f9580473140ed9c946fef328b6e5238a345a",
+  "packageManager": "pnpm@10.25.0+sha512.5e82639027af37cf832061bcc6d639c219634488e0f2baebe785028a793de7b525ffcd3f7ff574f5e9860654e098fe852ba8ac5dd5cefe1767d23a020a92f501",
   "dependencies": {
     "gatemaker": "^1.0.0"
   },
   "devDependencies": {
     "@electron/remote": "^2.0.8",
     "@sentry/core": "^10.1.0",
-    "@sentry/electron": "^6.1.0",
+    "@sentry/electron": "^7.5.0",
     "@types/adm-zip": "^0.5.0",
     "@types/auto-launch": "^5.0.2",
     "@types/backoff": "^2.5.2",
@@ -167,7 +167,7 @@
     "adm-zip": "^0.5.5",
     "auto-launch": "^5.0.5",
     "backoff": "^2.5.0",
-    "electron": "^37.2.5",
+    "electron": "^39.2.7",
     "electron-builder": "^26.0.12",
     "electron-log": "^5.0.3",
     "electron-updater": "^6.3.4",
