@@ -1,5 +1,6 @@
 {
 	"A new update {{{version}}} has been downloaded.": "È stato scaricato un nuovo aggiornamento {{{version}}}.",
+	"A new version {{{version}}} is available. Please update using your package manager.": "È disponibile una nuova versione {{{version}}}. Aggiornala tramite il tuo gestore pacchetti.",
 	"A new version {{{version}}} of Zulip Desktop is available.": "È disponibile una nuova versione {{{version}}} di Zulip Desktop.",
 	"About": "Di",
 	"About Zulip": "A proposito di Zulip",
@@ -61,7 +62,6 @@
 	"Error saving update notifications": "Errore durante il salvataggio delle notifiche di aggiornamento",
 	"Error: {{{error}}}\n\nThe latest version of Zulip Desktop is available at:\n{{{link}}}\nCurrent version: {{{version}}}": "Errore: {{{error}}} \n\nL'ultima versione di Zulip Desktop è disponibile all'indirizzo: \n{{{link}}} \nVersione corrente: {{{version}}}",
 	"Factory Reset": "Reset di fabbrica",
-	"Factory Reset Data": "Factory Reset Data",
 	"File": "File",
 	"Find accounts": "Trova account",
 	"Find accounts by email": "Trova account tramite email",
@@ -87,7 +87,6 @@
 	"Loading": "Caricamento",
 	"Log Out": "Esci",
 	"Log Out of Organization": "Esci dall'organizzazione",
-	"Look Up": "Look Up",
 	"Maintained by {{{link}}}Zulip{{{endLink}}}": "Gestito da {{{link}}}Zulip{{{endLink}}}",
 	"Manual Download": "Scaricamento manuale",
 	"Manual proxy configuration": "Configurazione proxy manuale",

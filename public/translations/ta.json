@@ -57,7 +57,7 @@
 	"Enable spellchecker (requires restart)": "எழுத்துப்பிழை சரிபார்ப்பை இயக்கு (மறுதொடக்கம் தேவை)",
 	"Error saving new organization": "புதிய அமைப்பைச் சேமிப்பதில் பிழை",
 	"Error saving update notifications": "புதுப்பிப்பு அறிவிப்புகளைச் சேமிப்பது பிழை",
-	"Error: {{{error}}}\n\nThe latest version of Zulip Desktop is available at:\n{{{link}}}\nCurrent version: {{{version}}}": "பிழை: {{{error}}} \n\nசூலிப் டெச்க்டாப்பின் அண்மைக் கால பதிப்பு இங்கு கிடைக்கிறது: \n{{{link}}} \nதற்போதைய பதிப்பு: {{{version}}}}",
+	"Error: {{{error}}}\n\nThe latest version of Zulip Desktop is available at:\n{{{link}}}\nCurrent version: {{{version}}}": "பிழை: {{{error}}} \n\nசூலிப் டெச்க்டாப்பின் அண்மைக் கால பதிப்பு இங்கு கிடைக்கிறது: \n{{{link}}} \nதற்போதைய பதிப்பு: {{{version}}}",
 	"Factory Reset": "தொழிற்சாலை மீட்டமைப்பு",
 	"Factory Reset Data": "தொழிற்சாலை மீட்டமைப்பு தரவு",
 	"File": "கோப்பு",
@@ -157,10 +157,10 @@
 	"Window": "ஜன்னல்",
 	"Window Shortcuts": "சாளர குறுக்குவழிகள்",
 	"Yes": "ஆம்",
-	"You are running the latest version of Zulip Desktop.\nVersion: {{{version}}}": "நீங்கள் சூலிப் டெச்க்டாப்பின் அண்மைக் கால பதிப்பை இயக்குகிறீர்கள். \nபதிப்பு: {{{version}}}}",
+	"You are running the latest version of Zulip Desktop.\nVersion: {{{version}}}": "நீங்கள் சூலிப் டெச்க்டாப்பின் அண்மைக் கால பதிப்பை இயக்குகிறீர்கள். \nபதிப்பு: {{{version}}}",
 	"You can select a maximum of 3 languages for spellchecking.": "எழுத்துப்பிழைக்கு அதிகபட்சம் 3 மொழிகளைத் தேர்ந்தெடுக்கலாம்.",
 	"Zoom In": "பெரிதாக்க",
 	"Zoom Out": "பெரிதாக்கு",
 	"keyboard shortcuts": "விசைப்பலகை குறுக்குவழிகள்",
-	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}}} காலாவதியான சூலிப் சேவையக பதிப்பை இயக்குகிறது {{{version}}}. இந்த பயன்பாட்டில் இது முழுமையாக வேலை செய்யாமல் போகலாம்."
+	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} காலாவதியான சூலிப் சேவையக பதிப்பை இயக்குகிறது {{{version}}}. இந்த பயன்பாட்டில் இது முழுமையாக வேலை செய்யாமல் போகலாம்."
 }

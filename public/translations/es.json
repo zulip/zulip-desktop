@@ -140,7 +140,6 @@
 	"The update will be downloaded in the background. You will be notified when it is ready to be installed.": "La actualización se descargará en segundo plano. Se notificará cuando esté lista para su instalación.",
 	"There was an error while saving the new organization. You may have to add your previous organizations again.": "Ocurrió un error mientras se guardaba la nueva organización. Se recomienda volver a agregar las organizaciones anteriores.",
 	"These desktop app shortcuts extend the Zulip webapp's": "Los atajos de la aplicación son los mismos que al utilizar Zulip en el navegador",
-	"Tip": "Tip",
 	"Toggle DevTools for Active Tab": "Activar o desactivar herramientas de desarrollador en la pestaña seleccionada",
 	"Toggle DevTools for Zulip App": "Activar o desactivar herramientas de desarrollador en toda la aplicación",
 	"Toggle Do Not Disturb": "Activar o desactivar no Molestar",
