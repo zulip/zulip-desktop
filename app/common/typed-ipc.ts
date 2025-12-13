@@ -73,6 +73,7 @@ export type RendererMessage = {
   "toggle-sidebar": (show: boolean) => void;
   "toggle-silent": (state: boolean) => void;
   "toggle-tray": (state: boolean) => void;
+  "toggle-tray-badge-count": (newValue: boolean) => void;
   toggletray: () => void;
   tray: (argument: number) => void;
   "update-realm-icon": (serverURL: string, iconURL: string) => void;
