@@ -1,4 +1,4 @@
-import {clipboard} from "electron/common";
+import {clipboard, shell} from "electron/common";
 import {
   BrowserWindow,
   type IpcMainEvent,
@@ -25,7 +25,9 @@ import type {MenuProperties} from "../common/types.ts";
 
 import {appUpdater, shouldQuitForUpdate} from "./autoupdater.ts";
 import * as BadgeSettings from "./badge-settings.ts";
-import handleExternalLink from "./handle-external-link.ts";
+import handleExternalLink, {
+  getDownloadedFilePath,
+} from "./handle-external-link.ts";
 import * as AppMenu from "./menu.ts";
 import {_getServerSettings, _isOnline, _saveServerIcon} from "./request.ts";
 import {sentryInit} from "./sentry.ts";
@@ -451,6 +453,13 @@ function createMainWindow(): BrowserWindow {
       send(page, "update-realm-icon", serverURL, iconURL);
     },
   );
+
+  ipcMain.on("show-downloaded-file-in-folder", (_event, downloadId: string) => {
+    const filePath = getDownloadedFilePath(downloadId);
+    if (filePath !== undefined) {
+      shell.showItemInFolder(filePath);
+    }
+  });
 
   ipcMain.on("save-last-tab", (_event, index: number) => {
     ConfigUtil.setConfigItem("lastActiveTab", index);
