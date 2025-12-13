@@ -21,7 +21,7 @@ export const configSchemata = {
   downloadsPath: z.string(),
   enableSpellchecker: z.boolean(),
   errorReporting: z.boolean(),
-  lastActiveTab: z.number(),
+  lastActiveTabId: z.string().optional(),
   promptDownload: z.boolean(),
   proxyBypass: z.string(),
   // eslint-disable-next-line @typescript-eslint/naming-convention

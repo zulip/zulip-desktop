@@ -43,7 +43,7 @@ export default class FunctionalTab extends Tab {
 
   templateHtml(): Html {
     return html`
-      <div class="tab functional-tab" data-tab-id="${this.properties.tabIndex}">
+      <div class="tab functional-tab" data-tab-id="${this.properties.tabId}">
         <div class="server-tab-badge close-button">
           <i class="material-icons">close</i>
         </div>

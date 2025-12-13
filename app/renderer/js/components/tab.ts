@@ -7,8 +7,8 @@ export type TabProperties = {
   label: string;
   $root: Element;
   onClick: () => void;
-  index: number;
-  tabIndex: number;
+  order: number;
+  tabId: string;
   onHover?: () => void;
   onHoverOut?: () => void;
   materialIcon?: string;

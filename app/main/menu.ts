@@ -294,7 +294,7 @@ function getHelpSubmenu(): MenuItemConstructorOptions[] {
 
 function getWindowSubmenu(
   tabs: TabData[],
-  activeTabIndex?: number,
+  activeTabId?: string,
 ): MenuItemConstructorOptions[] {
   const initialSubmenu: MenuItemConstructorOptions[] = [
     {
@@ -313,8 +313,6 @@ function getWindowSubmenu(
       type: "separator",
     });
     for (const tab of tabs) {
-      // Skip missing elements left by `delete this.tabs[index]` in
-      // ServerManagerView.
       if (tab === undefined) continue;
 
       // Do not add functional tab settings to list of windows in menu bar
@@ -325,11 +323,11 @@ function getWindowSubmenu(
       initialSubmenu.push({
         label: tab.label,
         accelerator:
-          tab.role === "function" ? "" : `${shortcutKey} + ${tab.index + 1}`,
-        checked: tab.index === activeTabIndex,
+          tab.role === "function" ? "" : `${shortcutKey} + ${tab.order + 1}`,
+        checked: tab.id === activeTabId,
         click(_item, focusedWindow) {
           if (focusedWindow) {
-            sendAction("switch-server-tab", tab.index);
+            sendAction("switch-server-tab", tab.serverId!);
           }
         },
         type: "checkbox",
@@ -346,10 +344,7 @@ function getWindowSubmenu(
         enabled: tabs.length > 1,
         click(_item, focusedWindow) {
           if (focusedWindow) {
-            sendAction(
-              "switch-server-tab",
-              getNextServer(tabs, activeTabIndex!),
-            );
+            sendAction("switch-server-tab", getNextServer(tabs, activeTabId!));
           }
         },
       },
@@ -361,7 +356,7 @@ function getWindowSubmenu(
           if (focusedWindow) {
             sendAction(
               "switch-server-tab",
-              getPreviousServer(tabs, activeTabIndex!),
+              getPreviousServer(tabs, activeTabId!),
             );
           }
         },
@@ -375,7 +370,7 @@ function getWindowSubmenu(
 function getDarwinTpl(
   properties: MenuProperties,
 ): MenuItemConstructorOptions[] {
-  const {tabs, activeTabIndex, enableMenu = false} = properties;
+  const {tabs, activeTabId, enableMenu = false} = properties;
 
   return [
     {
@@ -525,7 +520,7 @@ function getDarwinTpl(
     },
     {
       label: t.__("Window"),
-      submenu: getWindowSubmenu(tabs, activeTabIndex),
+      submenu: getWindowSubmenu(tabs, activeTabId),
     },
     {
       label: t.__("Tools"),
@@ -540,7 +535,7 @@ function getDarwinTpl(
 }
 
 function getOtherTpl(properties: MenuProperties): MenuItemConstructorOptions[] {
-  const {tabs, activeTabIndex, enableMenu = false} = properties;
+  const {tabs, activeTabId, enableMenu = false} = properties;
   return [
     {
       label: t.__("File"),
@@ -673,7 +668,7 @@ function getOtherTpl(properties: MenuProperties): MenuItemConstructorOptions[] {
     },
     {
       label: t.__("Window"),
-      submenu: getWindowSubmenu(tabs, activeTabIndex),
+      submenu: getWindowSubmenu(tabs, activeTabId),
     },
     {
       label: t.__("Tools"),
@@ -704,20 +699,28 @@ async function checkForUpdate(): Promise<void> {
   await appUpdater(true);
 }
 
-function getNextServer(tabs: TabData[], activeTabIndex: number): number {
-  do {
-    activeTabIndex = (activeTabIndex + 1) % tabs.length;
-  } while (tabs[activeTabIndex]?.role !== "server");
-
-  return activeTabIndex;
+function getTabByOrder(tabs: TabData[], order: number): TabData | undefined {
+  return tabs.find((tab) => tab.order === order);
 }
 
-function getPreviousServer(tabs: TabData[], activeTabIndex: number): number {
+function getNextServer(tabs: TabData[], activeTabId: string): string {
+  const activeTab = tabs.find((tab) => tab.id === activeTabId)!;
+  let {order} = activeTab;
   do {
-    activeTabIndex = (activeTabIndex - 1 + tabs.length) % tabs.length;
-  } while (tabs[activeTabIndex]?.role !== "server");
+    order = (order + 1) % tabs.length;
+  } while (getTabByOrder(tabs, order)?.role !== "server");
 
-  return activeTabIndex;
+  return getTabByOrder(tabs, order)!.serverId!;
+}
+
+function getPreviousServer(tabs: TabData[], activeTabId: string): string {
+  const activeTab = tabs.find((tab) => tab.id === activeTabId)!;
+  let {order} = activeTab;
+  do {
+    order = (order - 1) % tabs.length;
+  } while (getTabByOrder(tabs, order)?.role !== "server");
+
+  return getTabByOrder(tabs, order)!.serverId!;
 }
 
 export function setMenu(properties: MenuProperties): void {

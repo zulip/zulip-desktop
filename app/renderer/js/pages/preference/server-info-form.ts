@@ -11,7 +11,7 @@ import * as DomainUtil from "../../utils/domain-util.ts";
 type ServerInfoFormProperties = {
   $root: Element;
   server: ServerConfig;
-  index: number;
+  serverId: string;
   onChange: () => void;
 };
 
@@ -58,26 +58,39 @@ export function initServerInfoForm(properties: ServerInfoFormProperties): void {
       message: t.__("Are you sure you want to disconnect this organization?"),
     });
     if (response === 0) {
-      if (DomainUtil.removeDomain(properties.index)) {
+      if (DomainUtil.removeDomainById(properties.serverId)) {
         ipcRenderer.send("reload-full-app");
       } else {
-        const {title, content} = Messages.orgRemovalError(
-          DomainUtil.getDomain(properties.index).url,
-        );
-        dialog.showErrorBox(title, content);
+        const domain = DomainUtil.getDomainById(properties.serverId);
+        if (domain) {
+          const {title, content} = Messages.orgRemovalError(domain.url);
+          dialog.showErrorBox(title, content);
+        }
       }
     }
   });
 
   $openServerButton.addEventListener("click", () => {
-    ipcRenderer.send("forward-message", "switch-server-tab", properties.index);
+    ipcRenderer.send(
+      "forward-message",
+      "switch-server-tab",
+      properties.serverId,
+    );
   });
 
   $serverInfoAlias.addEventListener("click", () => {
-    ipcRenderer.send("forward-message", "switch-server-tab", properties.index);
+    ipcRenderer.send(
+      "forward-message",
+      "switch-server-tab",
+      properties.serverId,
+    );
   });
 
   $serverIcon.addEventListener("click", () => {
-    ipcRenderer.send("forward-message", "switch-server-tab", properties.index);
+    ipcRenderer.send(
+      "forward-message",
+      "switch-server-tab",
+      properties.serverId,
+    );
   });
 }
