@@ -328,6 +328,8 @@ export class ServerManagerView {
 
   async initTabs(): Promise<void> {
     const servers = DomainUtil.getDomains();
+    // Sync org URLs to main process for cross-org link handling
+    this.syncOrgUrlsToMain();
     if (servers.length > 0) {
       for (const [i, server] of servers.entries()) {
         const tab = this.initServer(server, i);
@@ -487,6 +489,12 @@ export class ServerManagerView {
     const currentIndex = this.tabIndex;
     this.tabIndex++;
     return currentIndex;
+  }
+
+  // Sync configured org URLs to main process for cross-org link handling
+  syncOrgUrlsToMain(): void {
+    const urls = DomainUtil.getDomains().map((server) => server.url);
+    ipcRenderer.send("update-org-urls", urls);
   }
 
   async getCurrentActiveServer(): Promise<string> {
@@ -1007,6 +1015,25 @@ export class ServerManagerView {
 
     ipcRenderer.on("switch-server-tab", async (event, index: number) => {
       await this.activateLastTab(index);
+    });
+
+    ipcRenderer.on("navigate-to-org-url", async (event, urlString: string) => {
+      // Handle cross-organization link navigation, no-op if the url doesn't
+      // point to a connected organization.
+      const url = new URL(urlString);
+      const servers = DomainUtil.getDomains();
+      const orgIndex = servers.findIndex(
+        (s) => new URL(s.url).origin === url.origin,
+      );
+
+      if (orgIndex !== -1) {
+        await this.activateTab(orgIndex);
+        const tab = this.tabs[orgIndex];
+        if (tab instanceof ServerTab) {
+          const webview = await tab.webview;
+          await webview.getWebContents().loadURL(urlString);
+        }
+      }
     });
 
     ipcRenderer.on("open-org-tab", async () => {

@@ -23,6 +23,7 @@ export type MainMessage = {
   "update-badge": (messageCount: number) => void;
   "update-menu": (properties: MenuProperties) => void;
   "update-taskbar-icon": (data: string, text: string) => void;
+  "update-org-urls": (urls: string[]) => void;
 };
 
 export type MainCall = {
@@ -78,6 +79,7 @@ export type RendererMessage = {
   "update-realm-icon": (serverURL: string, iconURL: string) => void;
   "update-realm-name": (serverURL: string, realmName: string) => void;
   "webview-reload": () => void;
+  "navigate-to-org-url": (url: string) => void;
   zoomActualSize: () => void;
   zoomIn: () => void;
   zoomOut: () => void;

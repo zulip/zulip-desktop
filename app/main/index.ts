@@ -27,6 +27,7 @@ import {appUpdater, shouldQuitForUpdate} from "./autoupdater.ts";
 import * as BadgeSettings from "./badge-settings.ts";
 import handleExternalLink from "./handle-external-link.ts";
 import * as AppMenu from "./menu.ts";
+import {updateOrgUrls} from "./org-url-cache.ts";
 import {_getServerSettings, _isOnline, _saveServerIcon} from "./request.ts";
 import {sentryInit} from "./sentry.ts";
 import {setAutoLaunch} from "./startup.ts";
@@ -454,6 +455,10 @@ function createMainWindow(): BrowserWindow {
 
   ipcMain.on("save-last-tab", (_event, index: number) => {
     ConfigUtil.setConfigItem("lastActiveTab", index);
+  });
+
+  ipcMain.on("update-org-urls", (_event, urls: string[]) => {
+    updateOrgUrls(urls);
   });
 
   ipcMain.on("focus-this-webview", (event) => {
