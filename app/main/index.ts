@@ -37,6 +37,13 @@ import "gatemaker/electron-setup.js"; // eslint-disable-line import-x/no-unassig
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const {GDK_BACKEND} = process.env;
 
+// Enable Wayland support with automatic platform detection on Linux
+// This fixes fullscreen rendering issues on Ubuntu 24.04+ with fractional scaling
+// See: https://github.com/electron/electron/issues/28436
+if (process.platform === "linux") {
+  app.commandLine.appendSwitch("ozone-platform-hint", "auto");
+}
+
 // Initialize sentry for main process
 sentryInit();
 
