@@ -659,6 +659,79 @@ export class ServerManagerView {
     ipcRenderer.send("save-last-tab", index);
   }
 
+  /**
+   * Handle zulip:// deep link: open URL immediately in the matching server tab.
+   * Format: zulip://{URL}. Normalizes \# and %23 to # (e.g. when opened from browser).
+   */
+  async handleDeepLink(rawUrl: string): Promise<void> {
+    if (!rawUrl.startsWith("zulip://")) {
+      return;
+    }
+
+    let urlPart = rawUrl.slice("zulip://".length).trim();
+    if (!urlPart) {
+      return;
+    }
+
+    // Restore colon lost when URL is passed through OS/browser (e.g. https// -> https://)
+    urlPart = urlPart
+      .replaceAll("https//", "https://")
+      .replaceAll("http//", "http://");
+
+    // When opened from browser: \# or %23 (encoded #) — normalize to #
+    urlPart = urlPart.replaceAll(String.raw`\#`, "#").replaceAll("%23", "#");
+
+    try {
+      urlPart = decodeURIComponent(urlPart);
+    } catch {
+      // Leave as-is if decoding fails (e.g. invalid sequence)
+    }
+
+    const fullUrl = DomainUtil.formatUrl(urlPart);
+    let targetOrigin: string;
+    try {
+      targetOrigin = new URL(fullUrl).origin.toLowerCase();
+    } catch {
+      logger.error("Invalid deep link URL:", rawUrl);
+
+      return;
+    }
+
+    const domains = DomainUtil.getDomains();
+    let targetHostname: string;
+    try {
+      targetHostname = new URL(fullUrl).hostname.toLowerCase();
+    } catch {
+      targetHostname = "";
+    }
+
+    const index = domains.findIndex((d) => {
+      try {
+        const origin = new URL(d.url).origin.toLowerCase();
+        const hostname = new URL(d.url).hostname.toLowerCase();
+
+        return origin === targetOrigin || hostname === targetHostname;
+      } catch {
+        const base = d.url.replace(/\/$/, "");
+
+        return fullUrl === base || fullUrl.startsWith(base + "/");
+      }
+    });
+
+    if (index === -1) {
+      await this.openSettings("AddServer");
+    } else {
+      await this.activateLastTab(index);
+
+      const tab = this.tabs[index];
+      if (tab instanceof ServerTab) {
+        const webview = await tab.webview;
+
+        void webview.getWebContents().loadURL(fullUrl);
+      }
+    }
+  }
+
   // Returns this.tabs in an way that does
   // not crash app when this.tabs is passed into
   // ipcRenderer. Something about webview, and properties.webview
@@ -870,6 +943,12 @@ export class ServerManagerView {
   }
 
   registerIpcs(): void {
+    // Register deep link listener first so we can receive links sent after "ready-for-deep-link"
+    ipcRenderer.on("open-deep-link", async (event, url: string) => {
+      await this.handleDeepLink(url);
+    });
+    ipcRenderer.send("ready-for-deep-link");
+
     const webviewListeners: Array<
       [WebviewListener, (webview: WebView) => void]
     > = [
