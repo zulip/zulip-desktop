@@ -24,3 +24,7 @@ config.gypi
 # tests/package.json
 
 .python-version
+
+# Playwright
+playwright-report/
+test-results/
