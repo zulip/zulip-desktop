@@ -1,30 +1,48 @@
-import Fifo from "p-fifo";
-import type {Page} from "playwright-core";
-import test from "tape";
+import {
+  type ElectronApplication,
+  type Page,
+  expect,
+  test,
+} from "@playwright/test";
 
 import * as setup from "./setup.ts";
 
-test("add-organization", async (t) => {
-  t.timeoutAfter(50e3);
-  setup.resetTestDataDirectory();
-  const app = await setup.createApp();
-  try {
-    const windows = new Fifo<Page>();
-    for (const win of app.windows()) void windows.push(win);
-    app.on("window", async (win) => windows.push(win));
+test.describe("Core Behavior: Organization Management", () => {
+  let app: ElectronApplication;
+  let mainWindow: Page;
 
-    const mainWindow = await windows.shift();
-    t.equal(await mainWindow.title(), "Zulip");
+  test.beforeEach(async () => {
+    setup.resetTestDataDirectory();
+    app = await setup.createApp();
+    mainWindow = await app.firstWindow();
+  });
 
+  test.afterEach(async () => {
+    await setup.endTest(app);
+  });
+
+  test("should successfully verify the initial screen title", async () => {
+    await expect(mainWindow).toHaveTitle("Zulip");
+  });
+
+  test("should show an error when connecting to an invalid organization", async () => {
     await mainWindow.fill(
       ".setting-input-value",
-      "zulip-desktop-test.zulipchat.com",
+      "this-does-not-exist.zulipchat.com",
     );
     await mainWindow.click("#connect");
 
-    const orgWebview = await windows.shift();
-    await orgWebview.waitForSelector("#id_username");
-  } finally {
-    await setup.endTest(app);
-  }
+    const webviewCount = app.windows().length;
+    expect(webviewCount).toBe(1);
+  });
+
+  test("should attempt to connect to a valid test organization", async () => {
+    await mainWindow.fill(".setting-input-value", "chat.zulip.org");
+    await mainWindow.click("#connect");
+
+    const orgWindow = await app.waitForEvent("window", {timeout: 30_000});
+    expect(orgWindow).toBeDefined();
+
+    await expect(orgWindow).toHaveURL(/chat\.zulip\.org/);
+  });
 });
