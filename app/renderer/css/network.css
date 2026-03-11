@@ -4,7 +4,7 @@ body {
   cursor: default;
   font-size: 14px;
   color: rgb(51 51 51 / 100%);
-  background: rgb(242 245 248 / 100%);  /* subtle off-white background */
+  background: rgb(242 245 248 / 100%);  
   user-select: none;
 }
 
@@ -14,8 +14,7 @@ img {
   height: auto;
   display: block;
   margin: 0 auto;
-  /* filter: drop-shadow(0 4px 12px rgb(0 0 0 / 15%));  lifts the image */
-  animation: float 3s ease-in-out infinite;           /* gentle float */
+  animation: float 3s ease-in-out infinite;
 }
 
 @keyframes float {
@@ -32,7 +31,7 @@ img {
   max-width: 520px;
   margin: 60px auto;
   padding: 40px 36px;
-  background: rgb(255 255 255 / 100%);   /* card effect */
+  background: rgb(255 255 255 / 100%);   
   border-radius: 12px;
   box-shadow: 0 4px 24px rgb(0 0 0 / 8%);
 }
@@ -83,14 +82,14 @@ img {
   line-height: 36px;
   text-align: center;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.1s ease;  /* smooth interaction */
+  transition: background 0.2s ease, transform 0.1s ease;  
 }
 
 .button:hover {
-  background: rgb(0 130 118 / 100%);   /* darkens instead of just fading */
-  transform: translateY(-1px);          /* subtle lift on hover */
+  background: rgb(0 130 118 / 100%);   
+  transform: translateY(-1px);
 }
 
 .button:active {
-  transform: translateY(0);             /* snaps back on click */
+  transform: translateY(0);   
 }
