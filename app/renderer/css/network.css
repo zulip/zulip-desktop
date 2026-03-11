@@ -53,7 +53,7 @@ img {
   font-size: 16px;
   text-align: left;
   margin: 8px 0 4px;
-  color: rgb(90 100 112 / 100%);   /* muted tone for hierarchy */
+  color: rgb(90 100 112 / 100%);  
 }
 
 #description {
@@ -63,7 +63,7 @@ img {
   margin: 0 0 24px;
   padding: 0;
   color: rgb(90 100 112 / 100%);
-  line-height: 1.8;                /* more breathing room between items */
+  line-height: 1.8;                
 }
 
 #buttons {
