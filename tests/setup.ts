@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import process from "node:process";
 
-import {type ElectronApplication, _electron} from "playwright-core";
+import {type ElectronApplication, _electron} from "@playwright/test";
 import z from "zod";
 
 const testsPackage = z
@@ -56,7 +56,6 @@ function getAppDataDirectory(): string {
     }
   }
 
-  console.log("Detected App Data Dir base:", base);
   return path.join(base, testsPackage.productName);
 }
 
