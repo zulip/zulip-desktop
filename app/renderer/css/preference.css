@@ -768,3 +768,38 @@ i.open-network-button {
   z-index: 9999;
   height: 0;
 }
+
+#new-server-url-input {
+  outline: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  float: left;
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: rgb(34 44 49 / 100%);
+  background: inherit;
+}
+
+#new-server-url-domain {
+  float: left;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: rgb(125 135 138 / 100%);
+}
+
+#new-server-url-input:focus + #new-server-url-domain {
+  color: rgb(34 44 49 / 100%);
+}
+
+#new-server-url-size-calc {
+  visibility: hidden;
+  height: 0;
+  position: absolute;
+  white-space: pre;
+  font-family: inherit;
+  font-size: inherit;
+}
