@@ -18,6 +18,7 @@ import * as remoteMain from "@electron/remote/main";
 import windowStateKeeper from "electron-window-state";
 
 import * as ConfigUtil from "../common/config-util.ts";
+import * as DNDUtil from "../common/dnd-util.ts";
 import {bundlePath, bundleUrl, publicPath} from "../common/paths.ts";
 import * as t from "../common/translation-util.ts";
 import type {RendererMessage} from "../common/typed-ipc.ts";
@@ -47,6 +48,7 @@ let mainWindow: BrowserWindow;
 let badgeCount: number;
 
 let isQuitting = false;
+let dndRevertTimeout: NodeJS.Timeout | null = null;
 
 // Load this file in main window
 const mainUrl = new URL("app/renderer/main.html", bundleUrl).href;
@@ -67,6 +69,23 @@ const toggleApp = (): void => {
     mainWindow.hide();
   }
 };
+
+function checkDndExpirationOnStartup(page: WebContents): void {
+  const expiration = ConfigUtil.getConfigItem("dndExpiration", null);
+  if (expiration !== null && Date.now() > expiration) {
+    const revert = DNDUtil.toggle();
+    send(page, "toggle-dnd", revert.dnd, revert.newSettings);
+    ConfigUtil.removeConfigItem("dndExpiration");
+  } else if (expiration !== null) {
+    const timeLeft = expiration - Date.now();
+    dndRevertTimeout = setTimeout(() => {
+      const revert = DNDUtil.toggle();
+      send(page, "toggle-dnd", revert.dnd, revert.newSettings);
+      ConfigUtil.removeConfigItem("dndExpiration");
+      dndRevertTimeout = null;
+    }, timeLeft);
+  }
+}
 
 function createMainWindow(): BrowserWindow {
   // Load the previous state with fallback to defaults
@@ -272,6 +291,7 @@ function createMainWindow(): BrowserWindow {
   const page = mainWindow.webContents;
 
   page.on("dom-ready", () => {
+    checkDndExpirationOnStartup(page);
     if (ConfigUtil.getConfigItem("startMinimized", false)) {
       mainWindow.hide();
     } else {
@@ -407,6 +427,36 @@ function createMainWindow(): BrowserWindow {
       listener: Channel,
       ...parameters: Parameters<RendererMessage[Channel]>
     ) => {
+      if (listener === "toggle-dnd-request") {
+        const [duration] = parameters as [number | undefined];
+        const result = DNDUtil.toggle();
+        send(page, "toggle-dnd", result.dnd, result.newSettings);
+
+        if (result.dnd && duration !== undefined && !Number.isNaN(duration)) {
+          if (dndRevertTimeout) clearTimeout(dndRevertTimeout);
+          const expirationTime = Date.now() + duration * 60 * 1000;
+          ConfigUtil.setConfigItem("dndExpiration", expirationTime);
+          dndRevertTimeout = setTimeout(
+            () => {
+              const revert = DNDUtil.toggle();
+              send(page, "toggle-dnd", revert.dnd, revert.newSettings);
+              ConfigUtil.removeConfigItem("dndExpiration");
+              dndRevertTimeout = null;
+            },
+            duration * 60 * 1000,
+          );
+        } else {
+          if (dndRevertTimeout) {
+            clearTimeout(dndRevertTimeout);
+            dndRevertTimeout = null;
+          }
+
+          ConfigUtil.removeConfigItem("dndExpiration");
+        }
+
+        return;
+      }
+
       send(page, listener, ...parameters);
     },
   );

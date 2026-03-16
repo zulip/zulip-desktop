@@ -17,6 +17,7 @@ export const configSchemata = {
   customCSS: z.string().or(z.literal(false)).nullable(),
   dnd: z.boolean(),
   dndPreviousSettings: z.object(dndSettingsSchemata).partial(),
+  dndExpiration: z.number().nullable().default(null),
   dockBouncing: z.boolean(),
   downloadsPath: z.string(),
   enableSpellchecker: z.boolean(),
