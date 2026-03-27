@@ -84,6 +84,7 @@ export class ServerManagerView {
   $fullscreenPopup: Element;
   loading: Set<string>;
   activeTabIndex: number;
+  previousActiveTabIndex: number;
   tabs: ServerOrFunctionalTab[];
   functionalTabs: Map<TabPage, number>;
   tabIndex: number;
@@ -129,6 +130,7 @@ export class ServerManagerView {
 
     this.loading = new Set();
     this.activeTabIndex = -1;
+    this.previousActiveTabIndex = -1;
     this.tabs = [];
     this.presetOrgs = [];
     this.functionalTabs = new Map();
@@ -467,7 +469,12 @@ export class ServerManagerView {
     });
     this.$backButton.addEventListener("click", async () => {
       const tab = this.tabs[this.activeTabIndex];
-      if (tab instanceof ServerTab) (await tab.webview).back();
+      if (tab instanceof ServerTab) {
+        (await tab.webview).back();
+      } else if (this.previousActiveTabIndex >= 0) {
+        await this.activateTab(this.previousActiveTabIndex);
+        this.previousActiveTabIndex = -1;
+      }
     });
 
     this.sidebarHoverEvent(this.$addServerButton, this.$addServerTooltip, true);
@@ -700,10 +707,22 @@ export class ServerManagerView {
       try {
         (await tab.webview).canGoBackButton();
       } catch {}
+    } else if (
+      (this.previousActiveTabIndex >= 0 &&
+        this.tabs[this.previousActiveTabIndex]) ||
+      this.activeTabIndex >= 0
+    ) {
+      document
+        .querySelector("#actions-container #back-action")!
+        .classList.remove("disable");
     } else {
       document
         .querySelector("#actions-container #back-action")!
         .classList.add("disable");
+    }
+
+    if (tab.properties.role === "function" && this.activeTabIndex >= 0) {
+      this.previousActiveTabIndex = this.activeTabIndex;
     }
 
     this.activeTabIndex = index;
