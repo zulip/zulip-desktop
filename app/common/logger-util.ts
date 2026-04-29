@@ -27,9 +27,13 @@ export default class Logger {
 
     // Trim log according to type of process
     if (process.type === "renderer") {
-      requestIdleCallback(async () => this.trimLog(file));
+      requestIdleCallback(() => {
+        void this.trimLog(file);
+      });
     } else {
-      process.nextTick(async () => this.trimLog(file));
+      process.nextTick(() => {
+        void this.trimLog(file);
+      });
     }
 
     const fileStream = fs.createWriteStream(file, {flags: "a"});

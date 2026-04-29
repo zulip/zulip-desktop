@@ -83,12 +83,12 @@ export function initNewServerForm({
     onChange();
   }
 
-  $saveServerButton.addEventListener("click", async () => {
-    await submitFormHandler();
+  $saveServerButton.addEventListener("click", () => {
+    void submitFormHandler();
   });
-  $newServerUrl.addEventListener("keypress", async (event) => {
+  $newServerUrl.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
-      await submitFormHandler();
+      void submitFormHandler();
     }
   });
 
@@ -97,8 +97,8 @@ export function initNewServerForm({
   const externalCreateNewOrgElement = $root.querySelector(
     "#open-create-org-link",
   )!;
-  externalCreateNewOrgElement.addEventListener("click", async () => {
-    await LinkUtil.openBrowser(new URL(link));
+  externalCreateNewOrgElement.addEventListener("click", () => {
+    void LinkUtil.openBrowser(new URL(link));
   });
 
   const networkSettingsId = $root.querySelector(".server-network-option")!;

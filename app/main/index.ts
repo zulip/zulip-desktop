@@ -297,10 +297,10 @@ function createMainWindow(): BrowserWindow {
     _isOnline(url, ses),
   );
 
-  page.once("did-frame-finish-load", async () => {
+  page.once("did-frame-finish-load", () => {
     // Initiate auto-updates on MacOS and Windows
     if (ConfigUtil.getConfigItem("autoUpdate", true)) {
-      await appUpdater();
+      void appUpdater();
     }
   });
 
@@ -434,8 +434,8 @@ function createMainWindow(): BrowserWindow {
     }
   });
 
-  ipcMain.on("toggleAutoLauncher", async (_event, AutoLaunchValue: boolean) => {
-    await setAutoLaunch(AutoLaunchValue);
+  ipcMain.on("toggleAutoLauncher", (_event, AutoLaunchValue: boolean) => {
+    void setAutoLaunch(AutoLaunchValue);
   });
 
   ipcMain.on(

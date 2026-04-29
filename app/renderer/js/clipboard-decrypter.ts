@@ -34,7 +34,7 @@ export class ClipboardDecrypterImplementation implements ClipboardDecrypter {
       let interval: NodeJS.Timeout | null = null;
       const startPolling = () => {
         interval ??= setInterval(poll, 1000);
-        void poll();
+        poll();
       };
 
       const stopPolling = () => {
@@ -44,14 +44,20 @@ export class ClipboardDecrypterImplementation implements ClipboardDecrypter {
         }
       };
 
-      const poll = async () => {
-        const plaintext = await ipcRenderer.invoke("poll-clipboard", key, sig);
-        if (plaintext === undefined) return;
+      const poll = () => {
+        void (async () => {
+          const plaintext = await ipcRenderer.invoke(
+            "poll-clipboard",
+            key,
+            sig,
+          );
+          if (plaintext === undefined) return;
 
-        window.removeEventListener("focus", startPolling);
-        window.removeEventListener("blur", stopPolling);
-        stopPolling();
-        resolve(plaintext);
+          window.removeEventListener("focus", startPolling);
+          window.removeEventListener("blur", stopPolling);
+          stopPolling();
+          resolve(plaintext);
+        })();
       };
 
       window.addEventListener("focus", startPolling);

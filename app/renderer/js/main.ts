@@ -381,7 +381,9 @@ export class ServerManagerView {
       icon: DomainUtil.iconAsUrl(server.icon),
       label: server.alias,
       $root: this.$tabsContainer,
-      onClick: this.activateLastTab.bind(this, index),
+      onClick: () => {
+        void this.activateLastTab(index);
+      },
       index,
       tabIndex,
       onHover: this.onHover.bind(this, index),
@@ -398,23 +400,27 @@ export class ServerManagerView {
           permission === "notifications" &&
           ConfigUtil.getConfigItem("showNotification", true),
         isActive: () => index === this.activeTabIndex,
-        switchLoading: async (loading: boolean, url: string) => {
-          if (loading) {
-            this.loading.add(url);
-          } else {
-            this.loading.delete(url);
-          }
+        switchLoading: (loading: boolean, url: string) => {
+          (async () => {
+            if (loading) {
+              this.loading.add(url);
+            } else {
+              this.loading.delete(url);
+            }
 
-          const tab = this.tabs[this.activeTabIndex];
-          this.showLoading(
-            tab instanceof ServerTab &&
-              this.loading.has((await tab.webview).properties.url),
-          );
+            const tab = this.tabs[this.activeTabIndex];
+            this.showLoading(
+              tab instanceof ServerTab &&
+                this.loading.has((await tab.webview).properties.url),
+            );
+          })();
         },
-        onNetworkError: async (index: number) => {
-          await this.openNetworkTroubleshooting(index);
+        onNetworkError: (index: number) => {
+          void this.openNetworkTroubleshooting(index);
         },
-        onTitleChange: this.updateBadge.bind(this),
+        onTitleChange: () => {
+          void this.updateBadge();
+        },
         preload: url.pathToFileURL(path.join(bundlePath, "preload.cjs")).href,
         unsupportedMessage: DomainUtil.getUnsupportedMessage(server),
       }),
@@ -455,19 +461,23 @@ export class ServerManagerView {
         dndUtil.newSettings,
       );
     });
-    this.$reloadButton.addEventListener("click", async () => {
-      const tab = this.tabs[this.activeTabIndex];
-      if (tab instanceof ServerTab) (await tab.webview).reload();
+    this.$reloadButton.addEventListener("click", () => {
+      (async () => {
+        const tab = this.tabs[this.activeTabIndex];
+        if (tab instanceof ServerTab) (await tab.webview).reload();
+      })();
     });
-    this.$addServerButton.addEventListener("click", async () => {
-      await this.openSettings("AddServer");
+    this.$addServerButton.addEventListener("click", () => {
+      void this.openSettings("AddServer");
     });
-    this.$settingsButton.addEventListener("click", async () => {
-      await this.openSettings("General");
+    this.$settingsButton.addEventListener("click", () => {
+      void this.openSettings("General");
     });
-    this.$backButton.addEventListener("click", async () => {
-      const tab = this.tabs[this.activeTabIndex];
-      if (tab instanceof ServerTab) (await tab.webview).back();
+    this.$backButton.addEventListener("click", () => {
+      (async () => {
+        const tab = this.tabs[this.activeTabIndex];
+        if (tab instanceof ServerTab) (await tab.webview).back();
+      })();
     });
 
     this.sidebarHoverEvent(this.$addServerButton, this.$addServerTooltip, true);
@@ -587,10 +597,14 @@ export class ServerManagerView {
         $root: this.$tabsContainer,
         index,
         tabIndex,
-        onClick: this.activateTab.bind(this, index),
-        onDestroy: async () => {
-          await this.destroyFunctionalTab(tabProperties.page, index);
-          tabProperties.destroyView();
+        onClick: () => {
+          void this.activateTab(index);
+        },
+        onDestroy: () => {
+          (async () => {
+            await this.destroyFunctionalTab(tabProperties.page, index);
+            tabProperties.destroyView();
+          })();
         },
         $view,
       }),
@@ -820,52 +834,54 @@ export class ServerManagerView {
   }
 
   addContextMenu($serverImg: HTMLElement, index: number): void {
-    $serverImg.addEventListener("contextmenu", async (event) => {
+    $serverImg.addEventListener("contextmenu", (event) => {
       event.preventDefault();
-      const template = [
-        {
-          label: t.__("Disconnect organization"),
-          async click() {
-            const {response} = await dialog.showMessageBox({
-              type: "warning",
-              buttons: [t.__("Yes"), t.__("No")],
-              defaultId: 0,
-              message: t.__(
-                "Are you sure you want to disconnect this organization?",
-              ),
-            });
-            if (response === 0) {
-              if (DomainUtil.removeDomain(index)) {
-                ipcRenderer.send("reload-full-app");
-              } else {
-                const {title, content} = Messages.orgRemovalError(
-                  DomainUtil.getDomain(index).url,
-                );
-                dialog.showErrorBox(title, content);
+      (async () => {
+        const template = [
+          {
+            label: t.__("Disconnect organization"),
+            async click() {
+              const {response} = await dialog.showMessageBox({
+                type: "warning",
+                buttons: [t.__("Yes"), t.__("No")],
+                defaultId: 0,
+                message: t.__(
+                  "Are you sure you want to disconnect this organization?",
+                ),
+              });
+              if (response === 0) {
+                if (DomainUtil.removeDomain(index)) {
+                  ipcRenderer.send("reload-full-app");
+                } else {
+                  const {title, content} = Messages.orgRemovalError(
+                    DomainUtil.getDomain(index).url,
+                  );
+                  dialog.showErrorBox(title, content);
+                }
               }
-            }
+            },
           },
-        },
-        {
-          label: t.__("Notification settings"),
-          enabled: await this.isLoggedIn(index),
-          click: async () => {
-            // Switch to tab whose icon was right-clicked
-            await this.activateTab(index);
-            const tab = this.tabs[index];
-            if (tab instanceof ServerTab)
-              (await tab.webview).showNotificationSettings();
+          {
+            label: t.__("Notification settings"),
+            enabled: await this.isLoggedIn(index),
+            click: async () => {
+              // Switch to tab whose icon was right-clicked
+              await this.activateTab(index);
+              const tab = this.tabs[index];
+              if (tab instanceof ServerTab)
+                (await tab.webview).showNotificationSettings();
+            },
           },
-        },
-        {
-          label: t.__("Copy Zulip URL"),
-          click() {
-            clipboard.writeText(DomainUtil.getDomain(index).url);
+          {
+            label: t.__("Copy Zulip URL"),
+            click() {
+              clipboard.writeText(DomainUtil.getDomain(index).url);
+            },
           },
-        },
-      ];
-      const contextMenu = Menu.buildFromTemplate(template);
-      contextMenu.popup({window: remote.getCurrentWindow()});
+        ];
+        const contextMenu = Menu.buildFromTemplate(template);
+        contextMenu.popup({window: remote.getCurrentWindow()});
+      })();
     });
   }
 
@@ -936,18 +952,20 @@ export class ServerManagerView {
     ];
 
     for (const [channel, listener] of webviewListeners) {
-      ipcRenderer.on(channel, async () => {
-        const tab = this.tabs[this.activeTabIndex];
-        if (tab instanceof ServerTab) {
-          const activeWebview = await tab.webview;
-          if (activeWebview) listener(activeWebview);
-        }
+      ipcRenderer.on(channel, () => {
+        (async () => {
+          const tab = this.tabs[this.activeTabIndex];
+          if (tab instanceof ServerTab) {
+            const activeWebview = await tab.webview;
+            if (activeWebview) listener(activeWebview);
+          }
+        })();
       });
     }
 
     ipcRenderer.on(
       "permission-request",
-      async (
+      (
         event,
         {
           webContentsId,
@@ -960,44 +978,50 @@ export class ServerManagerView {
         },
         permissionCallbackId: number,
       ) => {
-        const grant =
-          webContentsId === null
-            ? origin === "null" && permission === "notifications"
-            : (
-                await Promise.all(
-                  this.tabs.map(async (tab) => {
-                    if (!(tab instanceof ServerTab)) return false;
-                    const webview = await tab.webview;
-                    return (
-                      webview.webContentsId === webContentsId &&
-                      webview.properties.hasPermission?.(origin, permission)
-                    );
-                  }),
-                )
-              ).some(Boolean);
-        console.log(
-          grant ? "Granted" : "Denied",
-          "permissions request for",
-          permission,
-          "from",
-          origin,
-        );
-        ipcRenderer.send("permission-callback", permissionCallbackId, grant);
+        (async () => {
+          const grant =
+            webContentsId === null
+              ? origin === "null" && permission === "notifications"
+              : (
+                  await Promise.all(
+                    this.tabs.map(async (tab) => {
+                      if (!(tab instanceof ServerTab)) return false;
+                      const webview = await tab.webview;
+                      return (
+                        webview.webContentsId === webContentsId &&
+                        webview.properties.hasPermission?.(origin, permission)
+                      );
+                    }),
+                  )
+                ).some(Boolean);
+          console.log(
+            grant ? "Granted" : "Denied",
+            "permissions request for",
+            permission,
+            "from",
+            origin,
+          );
+          ipcRenderer.send("permission-callback", permissionCallbackId, grant);
+        })();
       },
     );
 
-    ipcRenderer.on("open-settings", async () => {
-      await this.openSettings();
+    ipcRenderer.on("open-settings", () => {
+      void this.openSettings();
     });
 
-    ipcRenderer.on("open-about", this.openAbout.bind(this));
+    ipcRenderer.on("open-about", () => {
+      void this.openAbout();
+    });
 
-    ipcRenderer.on("open-help", async () => {
+    ipcRenderer.on("open-help", () => {
       // Open help page of current active server
-      await LinkUtil.openBrowser(new URL("https://zulip.com/help/"));
+      void LinkUtil.openBrowser(new URL("https://zulip.com/help/"));
     });
 
-    ipcRenderer.on("reload-viewer", this.reloadView.bind(this));
+    ipcRenderer.on("reload-viewer", () => {
+      void this.reloadView();
+    });
 
     ipcRenderer.on("reload-current-viewer", this.reloadCurrentView.bind(this));
 
@@ -1005,42 +1029,45 @@ export class ServerManagerView {
       ipcRenderer.send("reload-full-app");
     });
 
-    ipcRenderer.on("switch-server-tab", async (event, index: number) => {
-      await this.activateLastTab(index);
+    ipcRenderer.on("switch-server-tab", (event, index: number) => {
+      void this.activateLastTab(index);
     });
 
-    ipcRenderer.on("open-org-tab", async () => {
-      await this.openSettings("AddServer");
+    ipcRenderer.on("open-org-tab", () => {
+      void this.openSettings("AddServer");
     });
 
-    ipcRenderer.on("reload-proxy", async (event, showAlert: boolean) => {
-      await this.loadProxy();
-      if (showAlert) {
-        await dialog.showMessageBox({
-          message: t.__("Proxy settings saved."),
-          buttons: [t.__("OK")],
-        });
-        ipcRenderer.send("reload-full-app");
-      }
+    ipcRenderer.on("reload-proxy", (event, showAlert: boolean) => {
+      (async () => {
+        await this.loadProxy();
+        if (showAlert) {
+          await dialog.showMessageBox({
+            message: t.__("Proxy settings saved."),
+            buttons: [t.__("OK")],
+          });
+          ipcRenderer.send("reload-full-app");
+        }
+      })();
     });
 
-    ipcRenderer.on("toggle-sidebar", async (event, show: boolean) => {
+    ipcRenderer.on("toggle-sidebar", (event, show: boolean) => {
       // Toggle the left sidebar
       this.toggleSidebar(show);
     });
 
-    ipcRenderer.on("toggle-silent", async (event, state: boolean) =>
-      Promise.all(
-        this.tabs.map(async (tab) => {
-          if (tab instanceof ServerTab)
+    ipcRenderer.on("toggle-silent", (event, state: boolean) => {
+      for (const tab of this.tabs) {
+        if (tab instanceof ServerTab) {
+          (async () => {
             (await tab.webview).getWebContents().setAudioMuted(state);
-        }),
-      ),
-    );
+          })();
+        }
+      }
+    });
 
     ipcRenderer.on(
       "toggle-autohide-menubar",
-      async (event, autoHideMenubar: boolean, updateMenu: boolean) => {
+      (event, autoHideMenubar: boolean, updateMenu: boolean) => {
         if (updateMenu) {
           ipcRenderer.send("update-menu", {
             tabs: this.tabsForIpc,
@@ -1052,7 +1079,7 @@ export class ServerManagerView {
 
     ipcRenderer.on(
       "toggle-dnd",
-      async (event, state: boolean, newSettings: Partial<DndSettings>) => {
+      (event, state: boolean, newSettings: Partial<DndSettings>) => {
         this.toggleDndButton(state);
         ipcRenderer.send(
           "forward-message",
@@ -1083,19 +1110,19 @@ export class ServerManagerView {
 
     ipcRenderer.on(
       "update-realm-icon",
-      async (event, serverURL: string, iconURL: string) => {
-        await Promise.all(
-          DomainUtil.getDomains().map(async (domain, index) => {
-            if (domain.url === serverURL) {
+      (event, serverURL: string, iconURL: string) => {
+        for (const [index, domain] of DomainUtil.getDomains().entries()) {
+          if (domain.url === serverURL) {
+            (async () => {
               const localIconPath = await DomainUtil.saveServerIcon(iconURL);
               const tab = this.tabs[index];
               if (tab instanceof ServerTab)
                 tab.setIcon(DomainUtil.iconAsUrl(localIconPath));
               domain.icon = localIconPath;
               DomainUtil.updateDomain(index, domain);
-            }
-          }),
-        );
+            })();
+          }
+        }
       },
     );
 
@@ -1108,9 +1135,9 @@ export class ServerManagerView {
       this.$fullscreenPopup.classList.remove("show");
     });
 
-    ipcRenderer.on("focus-webview-with-id", async (event, webviewId: number) =>
-      Promise.all(
-        this.tabs.map(async (tab) => {
+    ipcRenderer.on("focus-webview-with-id", (event, webviewId: number) => {
+      for (const tab of this.tabs) {
+        (async () => {
           if (
             tab instanceof ServerTab &&
             (await tab.webview).webContentsId === webviewId
@@ -1120,9 +1147,9 @@ export class ServerManagerView {
             )!;
             concurrentTab.click();
           }
-        }),
-      ),
-    );
+        })();
+      }
+    });
 
     ipcRenderer.on("render-taskbar-icon", (event, messageCount: number) => {
       // Create a canvas from unread message counts
@@ -1159,41 +1186,45 @@ export class ServerManagerView {
       );
     });
 
-    ipcRenderer.on("copy-zulip-url", async () => {
-      clipboard.writeText(await this.getCurrentActiveServer());
+    ipcRenderer.on("copy-zulip-url", () => {
+      (async () => {
+        clipboard.writeText(await this.getCurrentActiveServer());
+      })();
     });
 
-    ipcRenderer.on("new-server", async () => {
-      await this.openSettings("AddServer");
+    ipcRenderer.on("new-server", () => {
+      void this.openSettings("AddServer");
     });
 
-    ipcRenderer.on("set-active", async () =>
-      Promise.all(
-        this.tabs.map(async (tab) => {
-          if (tab instanceof ServerTab) (await tab.webview).send("set-active");
-        }),
-      ),
-    );
-
-    ipcRenderer.on("set-idle", async () =>
-      Promise.all(
-        this.tabs.map(async (tab) => {
-          if (tab instanceof ServerTab) (await tab.webview).send("set-idle");
-        }),
-      ),
-    );
-
-    ipcRenderer.on("open-network-settings", async () => {
-      await this.openSettings("Network");
+    ipcRenderer.on("set-active", () => {
+      for (const tab of this.tabs) {
+        if (tab instanceof ServerTab)
+          (async () => {
+            (await tab.webview).send("set-active");
+          })();
+      }
     });
 
-    ipcRenderer.on("play-ding-sound", async () => {
-      await dingSound.play();
+    ipcRenderer.on("set-idle", () => {
+      for (const tab of this.tabs) {
+        if (tab instanceof ServerTab)
+          (async () => {
+            (await tab.webview).send("set-idle");
+          })();
+      }
+    });
+
+    ipcRenderer.on("open-network-settings", () => {
+      void this.openSettings("Network");
+    });
+
+    ipcRenderer.on("play-ding-sound", () => {
+      void dingSound.play();
     });
   }
 }
 
-window.addEventListener("load", async () => {
+window.addEventListener("load", () => {
   document.body.innerHTML = html`
     <div id="content">
       <div class="popup">
@@ -1251,5 +1282,5 @@ window.addEventListener("load", async () => {
   `.html;
 
   const serverManagerView = new ServerManagerView();
-  await serverManagerView.init();
+  void serverManagerView.init();
 });

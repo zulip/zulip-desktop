@@ -502,8 +502,8 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
     const customCssButton = $root.querySelector(
       "#add-custom-css .custom-css-button",
     )!;
-    customCssButton.addEventListener("click", async () => {
-      await customCssDialog();
+    customCssButton.addEventListener("click", () => {
+      void customCssDialog();
     });
   }
 
@@ -543,8 +543,8 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
     const downloadFolder = $root.querySelector(
       "#download-folder .download-folder-button",
     )!;
-    downloadFolder.addEventListener("click", async () => {
-      await downloadFolderDialog();
+    downloadFolder.addEventListener("click", () => {
+      void downloadFolderDialog();
     });
   }
 
@@ -585,8 +585,8 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
     const factoryResetButton = $root.querySelector(
       "#factory-reset-option .factory-reset-button",
     )!;
-    factoryResetButton.addEventListener("click", async () => {
-      await factoryResetSettings();
+    factoryResetButton.addEventListener("click", () => {
+      void factoryResetSettings();
     });
   }
 

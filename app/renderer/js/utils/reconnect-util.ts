@@ -30,12 +30,14 @@ export default class ReconnectUtil {
 
   pollInternetAndReload(): void {
     this.fibonacciBackoff.backoff();
-    this.fibonacciBackoff.on("ready", async () => {
-      if (await this._checkAndReload()) {
-        this.fibonacciBackoff.reset();
-      } else {
-        this.fibonacciBackoff.backoff();
-      }
+    this.fibonacciBackoff.on("ready", () => {
+      (async () => {
+        if (await this._checkAndReload()) {
+          this.fibonacciBackoff.reset();
+        } else {
+          this.fibonacciBackoff.backoff();
+        }
+      })();
     });
   }
 

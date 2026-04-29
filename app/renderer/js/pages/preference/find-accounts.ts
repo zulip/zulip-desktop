@@ -41,8 +41,8 @@ export function initFindAccounts(properties: FindAccountsProperties): void {
     "input.setting-input-value",
   )!;
 
-  $findAccountsButton.addEventListener("click", async () => {
-    await findAccounts($serverUrlField.value);
+  $findAccountsButton.addEventListener("click", () => {
+    void findAccounts($serverUrlField.value);
   });
 
   $serverUrlField.addEventListener("click", () => {
@@ -51,9 +51,9 @@ export function initFindAccounts(properties: FindAccountsProperties): void {
     }
   });
 
-  $serverUrlField.addEventListener("keypress", async (event) => {
+  $serverUrlField.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
-      await findAccounts($serverUrlField.value);
+      void findAccounts($serverUrlField.value);
     }
   });
 

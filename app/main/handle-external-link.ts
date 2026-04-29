@@ -33,7 +33,7 @@ function downloadFile({
   failed(state: string): void;
 }) {
   contents.downloadURL(url);
-  contents.session.once("will-download", async (_event, item) => {
+  contents.session.once("will-download", (_event, item) => {
     if (ConfigUtil.getConfigItem("promptDownload", false)) {
       const showDialogOptions: SaveDialogOptions = {
         defaultPath: path.join(downloadPath, item.getFilename()),
@@ -88,9 +88,9 @@ function downloadFile({
     };
 
     item.on("updated", updatedListener);
-    item.once("done", async (_event, state) => {
+    item.once("done", (_event, state) => {
       if (state === "completed") {
-        await completed(item.getSavePath(), path.basename(item.getSavePath()));
+        void completed(item.getSavePath(), path.basename(item.getSavePath()));
       } else {
         console.log("Download failed state:", state);
         failed(state);
