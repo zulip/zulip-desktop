@@ -635,7 +635,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
       }
 
       languagePairs = new Map(
-        [...languagePairs].sort((a, b) => a[0].localeCompare(b[0])),
+        [...languagePairs].toSorted((a, b) => a[0].localeCompare(b[0])),
       );
 
       const tagField: HTMLInputElement = $root.querySelector(
