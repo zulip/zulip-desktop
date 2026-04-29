@@ -8,6 +8,7 @@ import url from "node:url";
 import {Menu, app, dialog, session} from "@electron/remote";
 import * as remote from "@electron/remote";
 import * as Sentry from "@sentry/electron/renderer";
+import assert from "minimalistic-assert";
 
 import type {Config} from "../../common/config-util.ts";
 import * as ConfigUtil from "../../common/config-util.ts";
@@ -77,7 +78,7 @@ export class ServerManagerView {
   $reloadTooltip: HTMLElement;
   $loadingTooltip: HTMLElement;
   $settingsTooltip: HTMLElement;
-  $serverIconTooltip: HTMLCollectionOf<HTMLElement>;
+  $serverIconTooltip: HTMLCollectionOf<Element>;
   $backTooltip: HTMLElement;
   $dndTooltip: HTMLElement;
   $sidebar: Element;
@@ -113,9 +114,7 @@ export class ServerManagerView {
     // getElementsByClassName does. To fix this we need to call this after this.initTabs
     // is called in this.init.
     // eslint-disable-next-line unicorn/prefer-query-selector
-    this.$serverIconTooltip = document.getElementsByClassName(
-      "server-tooltip",
-    ) as HTMLCollectionOf<HTMLElement>;
+    this.$serverIconTooltip = document.getElementsByClassName("server-tooltip");
     this.$backTooltip = $actionsContainer.querySelector("#back-tooltip")!;
     this.$dndTooltip = $actionsContainer.querySelector("#dnd-tooltip")!;
 
@@ -179,56 +178,56 @@ export class ServerManagerView {
   // In case, user doesn't visit these section, those values set to be null automatically
   // This will make sure the default settings are correctly set to either true or false
   initDefaultSettings(): void {
-    // Default settings which should be respected
-    const settingOptions: Partial<Config> = {
-      autoHideMenubar: false,
-      trayIcon: true,
-      useManualProxy: false,
-      useSystemProxy: false,
-      showSidebar: true,
-      badgeOption: true,
-      startAtLogin: false,
-      startMinimized: false,
-      enableSpellchecker: true,
+    const dndPreviousSettings: NonNullable<Config["dndPreviousSettings"]> = {
       showNotification: true,
-      autoUpdate: true,
-      betaUpdate: false,
-      errorReporting: true,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      customCSS: false,
       silent: false,
-      lastActiveTab: 0,
-      dnd: false,
-      dndPreviousSettings: {
-        showNotification: true,
-        silent: false,
-      },
-      downloadsPath: `${app.getPath("downloads")}`,
-      quitOnClose: false,
-      promptDownload: false,
     };
+
+    // Default settings which should be respected
+    const settingOptions: Array<
+      {[Key in keyof Config]: [Key, Config[Key]]}[keyof Config]
+    > = [
+      ["autoHideMenubar", false],
+      ["trayIcon", true],
+      ["useManualProxy", false],
+      ["useSystemProxy", false],
+      ["showSidebar", true],
+      ["badgeOption", true],
+      ["startAtLogin", false],
+      ["startMinimized", false],
+      ["enableSpellchecker", true],
+      ["showNotification", true],
+      ["autoUpdate", true],
+      ["betaUpdate", false],
+      ["errorReporting", true],
+      ["customCSS", false],
+      ["silent", false],
+      ["lastActiveTab", 0],
+      ["dnd", false],
+      ["dndPreviousSettings", dndPreviousSettings],
+      ["downloadsPath", `${app.getPath("downloads")}`],
+      ["quitOnClose", false],
+      ["promptDownload", false],
+    ];
 
     // Platform specific settings
 
     if (process.platform === "win32") {
       // Only available on Windows
-      settingOptions.flashTaskbarOnMessage = true;
-      settingOptions.dndPreviousSettings!.flashTaskbarOnMessage = true;
+      settingOptions.push(["flashTaskbarOnMessage", true]);
+      dndPreviousSettings.flashTaskbarOnMessage = true;
     }
 
     if (process.platform === "darwin") {
       // Only available on macOS
-      settingOptions.dockBouncing = true;
+      settingOptions.push(["dockBouncing", true]);
     }
 
     if (process.platform !== "darwin") {
-      settingOptions.autoHideMenubar = false;
-      settingOptions.spellcheckerLanguages = ["en-US"];
+      settingOptions.push(["spellcheckerLanguages", ["en-US"]]);
     }
 
-    for (const [setting, value] of Object.entries(settingOptions) as Array<
-      {[Key in keyof Config]: [Key, Config[Key]]}[keyof Config]
-    >) {
+    for (const [setting, value] of settingOptions) {
       // Give preference to defaults defined in global_config.json
       if (EnterpriseUtil.configItemExists(setting)) {
         ConfigUtil.setConfigItem(
@@ -554,6 +553,7 @@ export class ServerManagerView {
   }
 
   onHover(index: number): void {
+    assert(this.$serverIconTooltip[index] instanceof HTMLElement);
     // `this.$serverIconTooltip[index].textContent` already has realm name, so we are just
     // removing the style.
     this.$serverIconTooltip[index].removeAttribute("style");
@@ -566,6 +566,7 @@ export class ServerManagerView {
   }
 
   onHoverOut(index: number): void {
+    assert(this.$serverIconTooltip[index] instanceof HTMLElement);
     this.$serverIconTooltip[index].style.display = "none";
   }
 

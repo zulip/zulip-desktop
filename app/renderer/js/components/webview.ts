@@ -3,6 +3,7 @@ import fs from "node:fs";
 
 import * as remote from "@electron/remote";
 import {app, dialog} from "@electron/remote";
+import assert from "minimalistic-assert";
 
 import * as ConfigUtil from "../../../common/config-util.ts";
 import {type Html, html} from "../../../common/html.ts";
@@ -62,9 +63,8 @@ export default class WebView {
   }
 
   static async create(properties: WebViewProperties): Promise<WebView> {
-    const $pane = generateNodeFromHtml(
-      WebView.templateHtml(properties),
-    ) as HTMLElement;
+    const $pane = generateNodeFromHtml(WebView.templateHtml(properties));
+    assert($pane instanceof HTMLElement);
     properties.$root.append($pane);
 
     const $webview: HTMLElement = $pane.querySelector(":scope > webview")!;

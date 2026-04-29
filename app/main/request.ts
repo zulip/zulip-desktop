@@ -1,9 +1,7 @@
 import {type Session, app} from "electron/main";
 import fs from "node:fs";
 import path from "node:path";
-import {Readable} from "node:stream";
-import {pipeline} from "node:stream/promises";
-import type {ReadableStream} from "node:stream/web";
+import {Writable} from "node:stream";
 
 import * as Sentry from "@sentry/electron/main";
 import {z} from "zod";
@@ -90,10 +88,7 @@ export const _saveServerIcon = async (
     }
 
     const filePath = generateFilePath(url);
-    await pipeline(
-      Readable.fromWeb(response.body as ReadableStream<Uint8Array>),
-      fs.createWriteStream(filePath),
-    );
+    await response.body!.pipeTo(Writable.toWeb(fs.createWriteStream(filePath)));
     return filePath;
   } catch (error: unknown) {
     logger.log("Could not get server icon.");
