@@ -624,7 +624,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
           type: "language",
         }).of(locale.language);
         if (displayName === undefined) continue;
-        displayName = displayName.replace(/^./u, (firstChar) =>
+        displayName = displayName.replace(/^./v, (firstChar) =>
           firstChar.toLocaleUpperCase(locale),
         );
         if (locale.script !== undefined)

@@ -303,7 +303,7 @@ export default class WebView {
   }
 
   private getBadgeCount(title: string): number {
-    const messageCountInTitle = /^\((\d+)\)/.exec(title);
+    const messageCountInTitle = /^\((\d+)\)/v.exec(title);
     return messageCountInTitle ? Number(messageCountInTitle[1]) : 0;
   }
 

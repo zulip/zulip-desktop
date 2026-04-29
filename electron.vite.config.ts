@@ -10,7 +10,7 @@ export default defineConfig({
         input: {
           index: "app/main/index.ts",
         },
-        external: ["electron", /^electron\//, /^gatemaker\//],
+        external: ["electron", /^electron\//v, /^gatemaker\//v],
       },
     },
     resolve: {
@@ -30,7 +30,7 @@ export default defineConfig({
         output: {
           format: "cjs",
         },
-        external: ["electron", /^electron\//],
+        external: ["electron", /^electron\//v],
       },
       isolatedEntries: true,
     },
