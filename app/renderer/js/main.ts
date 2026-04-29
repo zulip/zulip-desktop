@@ -817,12 +817,7 @@ export class ServerManagerView {
       : t.__("Enable Do Not Disturb");
     const $dndIcon = this.$dndButton.querySelector("i")!;
     $dndIcon.textContent = alert ? "notifications_off" : "notifications";
-
-    if (alert) {
-      $dndIcon.classList.add("dnd-on");
-    } else {
-      $dndIcon.classList.remove("dnd-on");
-    }
+    $dndIcon.classList.toggle("dnd-on", alert);
   }
 
   async isLoggedIn(tabIndex: number): Promise<boolean> {
