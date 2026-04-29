@@ -66,7 +66,8 @@ export function getConfigItem<Key extends keyof EnterpriseConfig>(
   }
 
   const value = enterpriseSettings[key];
-  return value === undefined ? defaultValue : (value as EnterpriseConfig[Key]);
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+  return value === undefined ? defaultValue : value;
 }
 
 export function configItemExists(key: keyof EnterpriseConfig): boolean {
