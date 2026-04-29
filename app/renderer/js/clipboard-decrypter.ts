@@ -21,13 +21,12 @@ export type ClipboardDecrypter = {
 };
 
 export class ClipboardDecrypterImplementation implements ClipboardDecrypter {
-  version: number;
+  // At this time, the only version is 1.
+  version = 1;
   key: Uint8Array;
   pasted: Promise<string>;
 
   constructor(_: number) {
-    // At this time, the only version is 1.
-    this.version = 1;
     const {key, sig} = ipcRenderer.sendSync("new-clipboard-key");
     this.key = key;
     this.pasted = new Promise((resolve) => {
