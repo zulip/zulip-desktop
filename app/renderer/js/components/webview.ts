@@ -104,7 +104,6 @@ export default class WebView {
 
   badgeCount = 0;
   loading = true;
-  private customCss: string | false | null;
   private readonly $webviewsContainer: DOMTokenList;
   private readonly $unsupported: HTMLElement;
   private readonly $unsupportedMessage: HTMLElement;
@@ -117,7 +116,6 @@ export default class WebView {
     private readonly $webview: HTMLElement,
     readonly webContentsId: number,
   ) {
-    this.customCss = ConfigUtil.getConfigItem("customCSS", null);
     this.$webviewsContainer = document.querySelector(
       "#webviews-container",
     )!.classList;
@@ -322,12 +320,9 @@ export default class WebView {
     // Injecting preload css in webview to override some css rules
     (async () => this.getWebContents().insertCSS(preloadCss))();
 
-    // Get customCSS again from config util to avoid warning user again
     const customCss = ConfigUtil.getConfigItem("customCSS", null);
-    this.customCss = customCss;
     if (customCss) {
       if (!fs.existsSync(customCss)) {
-        this.customCss = null;
         ConfigUtil.setConfigItem("customCSS", null);
 
         const errorMessage = t.__("The custom CSS previously set is deleted.");
