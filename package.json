@@ -91,9 +91,16 @@
         "./packaging/deb-release-upgrades.cfg=/etc/update-manager/release-upgrades.d/zulip-desktop.cfg"
       ]
     },
-    "snap": {
-      "allowNativeWayland": true,
-      "synopsis": "Zulip Desktop App"
+    "snapcraft": {
+      "base": "core24",
+      "core24": {
+        "category": "Chat;GNOME;GTK;Network;InstantMessaging",
+        "description": "Zulip Desktop Client for Linux",
+        "plugs": [
+          "default",
+          "browser-support"
+        ]
+      }
     },
     "dmg": {
       "background": "build/dmg-background.tiff",
@@ -169,7 +176,7 @@
     "auto-launch": "^5.0.5",
     "backoff": "^2.5.0",
     "electron": "^39.2.7",
-    "electron-builder": "^26.0.12",
+    "electron-builder": "26.11.0",
     "electron-log": "^5.0.3",
     "electron-updater": "^6.3.4",
     "electron-vite": "^5.0.0",

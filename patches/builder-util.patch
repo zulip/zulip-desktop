@@ -1,0 +1,61 @@
+diff --git a/out/util.d.ts b/out/util.d.ts
+index 3638f1c0b0fc14fb8bcfe72781932e79fcf499cd..8000f451d49726f118c586ea8a43581a6e381325 100644
+--- a/out/util.d.ts
++++ b/out/util.d.ts
+@@ -37,6 +37,11 @@ export declare function isEmptyOrSpaces(s: string | Nullish): s is "" | Nullish;
+ export declare function isTokenCharValid(token: string): boolean;
+ export declare function getUserDefinedCacheDir(): Promise<string | undefined>;
+ export declare function addValue<K, T>(map: Map<K, Array<T>>, key: K, value: T): void;
++export declare function isArrayEqualRegardlessOfSort(a: Array<string>, b: Array<string>): boolean;
++/**
++ * Recursively removes all undefined and null values from an object
++ */
++export declare function removeNullish<T>(obj: T): T;
+ export declare function replaceDefault(inList: Array<string> | Nullish, defaultList: Array<string>): Array<string>;
+ export declare function getPlatformIconFileName(value: string | Nullish, isMac: boolean): string | null | undefined;
+ export declare function isPullRequest(): boolean | "" | undefined;
+diff --git a/out/util.js b/out/util.js
+index 5bf10046b346465c7307a04e9240a4b62ce9a154..4ed01ea72f09d52917407166bbdf4aa2a30f24be 100644
+--- a/out/util.js
++++ b/out/util.js
+@@ -27,6 +27,8 @@ exports.isEmptyOrSpaces = isEmptyOrSpaces;
+ exports.isTokenCharValid = isTokenCharValid;
+ exports.getUserDefinedCacheDir = getUserDefinedCacheDir;
+ exports.addValue = addValue;
++exports.isArrayEqualRegardlessOfSort = isArrayEqualRegardlessOfSort;
++exports.removeNullish = removeNullish;
+ exports.replaceDefault = replaceDefault;
+ exports.getPlatformIconFileName = getPlatformIconFileName;
+ exports.isPullRequest = isPullRequest;
+@@ -341,6 +343,31 @@ function addValue(map, key, value) {
+         list.push(value);
+     }
+ }
++function isArrayEqualRegardlessOfSort(a, b) {
++    a = a.slice();
++    b = b.slice();
++    a.sort();
++    b.sort();
++    return a.length === b.length && a.every((value, index) => value === b[index]);
++}
++/**
++ * Recursively removes all undefined and null values from an object
++ */
++function removeNullish(obj) {
++    if (obj === null || typeof obj !== "object") {
++        return obj;
++    }
++    if (Array.isArray(obj)) {
++        return obj.map(removeNullish);
++    }
++    const result = {};
++    for (const [key, value] of Object.entries(obj)) {
++        if (value != null) {
++            result[key] = removeNullish(value);
++        }
++    }
++    return result;
++}
+ function replaceDefault(inList, defaultList) {
+     if (inList == null || (inList.length === 1 && inList[0] === "default")) {
+         return defaultList;
