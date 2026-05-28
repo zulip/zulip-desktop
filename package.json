@@ -177,7 +177,7 @@
     "backoff": "^2.5.0",
     "electron": "^42.3.0",
     "electron-builder": "26.11.0",
-    "electron-log": "^5.0.3",
+    "electron-log": "^5.4.4",
     "electron-updater": "^6.3.4",
     "electron-vite": "^5.0.0",
     "electron-window-state": "^5.0.3",
