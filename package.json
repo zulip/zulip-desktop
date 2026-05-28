@@ -194,7 +194,7 @@
     "stylelint": "^17.12.0",
     "stylelint-config-standard": "^40.0.0",
     "tape": "^5.2.2",
-    "typescript": "^5.0.4",
+    "typescript": "^6.0.3",
     "vite": "^8.0.14",
     "xo": "^1.2.1",
     "zod": "^4.4.3"
