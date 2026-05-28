@@ -62,7 +62,7 @@ importers:
         specifier: ^0.3.4
         version: 0.3.7
       '@types/semver':
-        specifier: ^7.5.8
+        specifier: ^7.7.1
         version: 7.7.1
       '@types/tape':
         specifier: ^5.8.1
@@ -128,8 +128,8 @@ importers:
         specifier: ^3.8.3
         version: 3.8.3
       semver:
-        specifier: ^7.3.5
-        version: 7.7.3
+        specifier: ^7.8.1
+        version: 7.8.1
       stylelint:
         specifier: ^16.1.0
         version: 16.26.1(typescript@5.9.3)
@@ -4138,8 +4138,13 @@ packages:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
     hasBin: true
 
-  semver@7.7.3:
-    resolution: {integrity: sha512-SdsKMrI9TdgjdweUSR9MweHA4EJ8YxHn8DFaDisvhVlUOe4BF1tLD7GAj0lIqWVl+dPb/rExr0Btby5loQm20Q==}
+  semver@7.7.4:
+    resolution: {integrity: sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==}
+    engines: {node: '>=10'}
+    hasBin: true
+
+  semver@7.8.1:
+    resolution: {integrity: sha512-rkVq3IXh+4FDGch+KwzX3aV9W3kO54GyEgpvBzSyctDA6Xtd7RJQV1xmXbeQp5v7+VzLOfVqiutSE6GICgPFvg==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -4854,7 +4859,7 @@ snapshots:
       env-paths: 3.0.0
       graceful-fs: 4.2.11
       progress: 2.0.3
-      semver: 7.7.3
+      semver: 7.8.1
       sumchecker: 3.0.1
     optionalDependencies:
       undici: 7.26.0
@@ -4892,7 +4897,7 @@ snapshots:
       node-gyp: 11.5.0
       ora: 5.4.1
       read-binary-file-arch: 1.0.6
-      semver: 7.7.3
+      semver: 7.8.1
       tar: 7.5.15
       yargs: 17.7.2
     transitivePeerDependencies:
@@ -5352,7 +5357,7 @@ snapshots:
 
   '@npmcli/fs@4.0.0':
     dependencies:
-      semver: 7.7.3
+      semver: 7.8.1
 
   '@opentelemetry/api-logs@0.207.0':
     dependencies:
@@ -6048,7 +6053,7 @@ snapshots:
       '@typescript-eslint/visitor-keys': 8.49.0
       debug: 4.4.3
       minimatch: 9.0.5
-      semver: 7.7.3
+      semver: 7.8.1
       tinyglobby: 0.2.15
       ts-api-utils: 2.1.0(typescript@5.9.3)
       typescript: 5.9.3
@@ -6223,7 +6228,7 @@ snapshots:
       plist: 3.1.0
       proper-lockfile: 4.1.2
       resedit: 1.7.2
-      semver: 7.7.3
+      semver: 7.7.4
       tar: 7.5.15
       temp-file: 3.4.0
       tiny-async-pool: 1.3.0
@@ -6821,7 +6826,7 @@ snapshots:
       lazy-val: 1.0.5
       lodash.escaperegexp: 4.1.2
       lodash.isequal: 4.5.0
-      semver: 7.7.3
+      semver: 7.7.4
       tiny-typed-emitter: 2.1.0
     transitivePeerDependencies:
       - supports-color
@@ -7057,7 +7062,7 @@ snapshots:
   eslint-compat-utils@0.5.1(eslint@9.39.1(jiti@2.6.1)):
     dependencies:
       eslint: 9.39.1(jiti@2.6.1)
-      semver: 7.7.3
+      semver: 7.8.1
 
   eslint-config-prettier@10.1.8(eslint@9.39.1(jiti@2.6.1)):
     dependencies:
@@ -7150,7 +7155,7 @@ snapshots:
       eslint-import-context: 0.1.9(unrs-resolver@1.11.1)
       is-glob: 4.0.3
       minimatch: 10.1.1
-      semver: 7.7.3
+      semver: 7.8.1
       stable-hash-x: 0.2.0
       unrs-resolver: 1.11.1
     optionalDependencies:
@@ -7168,7 +7173,7 @@ snapshots:
       globals: 15.15.0
       globrex: 0.1.2
       ignore: 5.3.2
-      semver: 7.7.3
+      semver: 7.8.1
       ts-declaration-location: 1.0.7(typescript@5.9.3)
     transitivePeerDependencies:
       - typescript
@@ -7240,7 +7245,7 @@ snapshots:
       pluralize: 8.0.0
       regexp-tree: 0.1.27
       regjsparser: 0.12.0
-      semver: 7.7.3
+      semver: 7.8.1
       strip-indent: 4.1.1
 
   eslint-rule-docs@1.1.235: {}
@@ -7631,7 +7636,7 @@ snapshots:
       es6-error: 4.1.1
       matcher: 3.0.0
       roarr: 2.15.4
-      semver: 7.7.3
+      semver: 7.8.1
       serialize-error: 7.0.1
     optional: true
 
@@ -7943,7 +7948,7 @@ snapshots:
 
   is-bun-module@2.0.0:
     dependencies:
-      semver: 7.7.3
+      semver: 7.8.1
 
   is-callable@1.2.7: {}
 
@@ -8447,14 +8452,14 @@ snapshots:
 
   node-abi@4.31.0:
     dependencies:
-      semver: 7.7.3
+      semver: 7.8.1
 
   node-addon-api@1.7.2:
     optional: true
 
   node-api-version@0.2.1:
     dependencies:
-      semver: 7.7.3
+      semver: 7.8.1
 
   node-gyp@11.5.0:
     dependencies:
@@ -8464,7 +8469,7 @@ snapshots:
       make-fetch-happen: 14.0.3
       nopt: 8.1.0
       proc-log: 5.0.0
-      semver: 7.7.3
+      semver: 7.8.1
       tar: 7.5.15
       tinyglobby: 0.2.15
       which: 5.0.0
@@ -9031,7 +9036,9 @@ snapshots:
 
   semver@6.3.1: {}
 
-  semver@7.7.3: {}
+  semver@7.7.4: {}
+
+  semver@7.8.1: {}
 
   serialize-error@7.0.1:
     dependencies:
@@ -9100,7 +9107,7 @@ snapshots:
 
   simple-update-notifier@2.0.0:
     dependencies:
-      semver: 7.7.3
+      semver: 7.8.1
 
   slash@3.0.0: {}
 
