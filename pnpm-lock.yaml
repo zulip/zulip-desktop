@@ -68,11 +68,11 @@ importers:
         specifier: ^5.8.1
         version: 5.8.1
       '@types/yaireo__tagify':
-        specifier: ^4.3.2
+        specifier: ^4.27.0
         version: 4.27.0
       '@yaireo/tagify':
-        specifier: ^4.5.0
-        version: 4.35.6(prop-types@15.8.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        specifier: ^4.37.1
+        version: 4.37.1(prop-types@15.8.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       adm-zip:
         specifier: ^0.5.5
         version: 0.5.16
@@ -1529,9 +1529,9 @@ packages:
     engines: {node: '>=10.0.0'}
     deprecated: this version has critical issues, please update to the latest version
 
-  '@yaireo/tagify@4.35.6':
-    resolution: {integrity: sha512-+UsaVuU3osYwmiie8YrbMkpyEInet2el3t+8lKf9j27RsACESmOvM5QtI0MwmzFdjMSAGwqdp7UjRqOo8GJrnA==}
-    engines: {node: '>=16.15.0', npm: '>=9.0.0'}
+  '@yaireo/tagify@4.37.1':
+    resolution: {integrity: sha512-/+0ZZ55rd4sG5Nlop2QF9D2oo3kbRgn/KlsW6oN1MwKVS7DDB2mIrGnizk740M0qzXvQfE7JhbCeWDuC8+6kmA==}
+    engines: {node: '>=22', pnpm: '>=10'}
     peerDependencies:
       prop-types: '>15.5.7'
       react: '*'
@@ -6057,7 +6057,7 @@ snapshots:
 
   '@xmldom/xmldom@0.8.11': {}
 
-  '@yaireo/tagify@4.35.6(prop-types@15.8.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@yaireo/tagify@4.37.1(prop-types@15.8.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       prop-types: 15.8.1
       react: 19.2.3
