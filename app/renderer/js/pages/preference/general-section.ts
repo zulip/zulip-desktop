@@ -574,7 +574,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
       detail: clearAppDataMessage,
     });
     if (response === 0) {
-      await fs.promises.rmdir(getAppPath, {recursive: true});
+      await fs.promises.rm(getAppPath, {recursive: true});
       setTimeout(() => {
         ipcRenderer.send("clear-app-settings");
       }, 1000);
