@@ -10,7 +10,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
       inherit (pkgs) lib;
 
-      electron = pkgs.electron_39;
+      electron = pkgs.electron_42;
       pnpm = pkgs.pnpm_10_29_2;
 
       zulip = pkgs.stdenv.mkDerivation (finalAttrs: {
@@ -23,7 +23,7 @@
           inherit (finalAttrs) pname version src;
           inherit pnpm;
           fetcherVersion = 3;
-          hash = "sha256-zILcJjBuVxLzGDvgjY9wx2mv/e3DM4LzDEJHdhu5Ins=";
+          hash = "sha256-poC5iPvjrLqfBhOOlgqTpOCWqBoyRH26vQWJl439K4g=";
         };
 
         nativeBuildInputs = [
