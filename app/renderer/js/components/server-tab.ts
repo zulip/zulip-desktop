@@ -32,7 +32,7 @@ export default class ServerTab extends Tab {
 
   override async activate(): Promise<void> {
     await super.activate();
-    (await this.webview).load();
+    await (await this.webview).load();
   }
 
   override async deactivate(): Promise<void> {

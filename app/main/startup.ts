@@ -13,7 +13,7 @@ export const setAutoLaunch = async (
     return;
   }
 
-  const autoLaunchOption = ConfigUtil.getConfigItem(
+  const autoLaunchOption = await ConfigUtil.getConfigItem(
     "startAtLogin",
     AutoLaunchValue,
   );

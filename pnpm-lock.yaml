@@ -116,8 +116,8 @@ importers:
         specifier: ^1.58.1
         version: 1.58.1(@types/node@25.9.1)(i18next@26.3.0(typescript@6.0.3))(react-dom@19.2.3(react@19.2.6))(typescript@6.0.3)
       node-json-db:
-        specifier: ^1.3.0
-        version: 1.6.0
+        specifier: ^2.6.0
+        version: 2.6.0
       p-fifo:
         specifier: ^1.0.0
         version: 1.0.0
@@ -3550,11 +3550,6 @@ packages:
     resolution: {integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==}
     hasBin: true
 
-  mkdirp@1.0.4:
-    resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
-    engines: {node: '>=10'}
-    hasBin: true
-
   mock-property@1.1.0:
     resolution: {integrity: sha512-1/JjbLoGwv87xVsutkX0XJc0M0W4kb40cZl/K41xtTViBOD9JuFPKfyMNTrLJ/ivYAd0aPqu/vduamXO0emTFQ==}
     engines: {node: '>= 0.4'}
@@ -3612,8 +3607,8 @@ packages:
   node-int64@0.4.0:
     resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
 
-  node-json-db@1.6.0:
-    resolution: {integrity: sha512-Cpvuqejlx354aH5d1uqK9KB0/LOKslnexqgOrhgCqcvvzJ0I2hrAEA7eIct6hRqS9gxnuge+eXqd++za87tchA==}
+  node-json-db@2.6.0:
+    resolution: {integrity: sha512-LEk4blas9ySJfj4vfRBJWTVckydSlKrLbRAP/7o/WCzC1klmuHYIp8CoqdgHrDdoa6T21fj/CumuJpgM/zkopw==}
 
   node-releases@2.0.27:
     resolution: {integrity: sha512-nmh3lCkYZ3grZvqcCH+fjmQ7X+H0OeZgP40OierEaAptX4XofMh5kwNbWh7lBduUzCcV/8kZ+NDLCwm2iorIlA==}
@@ -8508,8 +8503,6 @@ snapshots:
     dependencies:
       minimist: 1.2.8
 
-  mkdirp@1.0.4: {}
-
   mock-property@1.1.0:
     dependencies:
       define-data-property: 1.1.4
@@ -8566,9 +8559,7 @@ snapshots:
 
   node-int64@0.4.0: {}
 
-  node-json-db@1.6.0:
-    dependencies:
-      mkdirp: 1.0.4
+  node-json-db@2.6.0: {}
 
   node-releases@2.0.27: {}
 

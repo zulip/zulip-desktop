@@ -112,7 +112,11 @@ function getToolsSubmenu(): MenuItemConstructorOptions[] {
   ];
 }
 
-function getViewSubmenu(): MenuItemConstructorOptions[] {
+async function getViewSubmenu(): Promise<MenuItemConstructorOptions[]> {
+  const autoHideMenubar = await ConfigUtil.getConfigItem(
+    "autoHideMenubar",
+    false,
+  );
   return [
     {
       label: t.__("Reload"),
@@ -230,21 +234,27 @@ function getViewSubmenu(): MenuItemConstructorOptions[] {
     {
       label: t.__("Toggle Sidebar"),
       accelerator: "CommandOrControl+Shift+S",
-      click(_item, focusedWindow) {
+      async click(_item, focusedWindow) {
         if (focusedWindow instanceof BrowserWindow) {
-          const newValue = !ConfigUtil.getConfigItem("showSidebar", true);
+          const newValue = !(await ConfigUtil.getConfigItem(
+            "showSidebar",
+            true,
+          ));
           send(focusedWindow.webContents, "toggle-sidebar", newValue);
-          ConfigUtil.setConfigItem("showSidebar", newValue);
+          await ConfigUtil.setConfigItem("showSidebar", newValue);
         }
       },
     },
     {
       label: t.__("Auto hide Menu bar"),
-      checked: ConfigUtil.getConfigItem("autoHideMenubar", false),
+      checked: autoHideMenubar,
       visible: process.platform !== "darwin",
-      click(_item, focusedWindow) {
+      async click(_item, focusedWindow) {
         if (focusedWindow instanceof BrowserWindow) {
-          const newValue = !ConfigUtil.getConfigItem("autoHideMenubar", false);
+          const newValue = !(await ConfigUtil.getConfigItem(
+            "autoHideMenubar",
+            false,
+          ));
           focusedWindow.autoHideMenuBar = newValue;
           focusedWindow.setMenuBarVisibility(!newValue);
           send(
@@ -253,7 +263,7 @@ function getViewSubmenu(): MenuItemConstructorOptions[] {
             newValue,
             false,
           );
-          ConfigUtil.setConfigItem("autoHideMenubar", newValue);
+          await ConfigUtil.setConfigItem("autoHideMenubar", newValue);
         }
       },
       type: "checkbox",
@@ -372,10 +382,11 @@ function getWindowSubmenu(
   return initialSubmenu;
 }
 
-function getDarwinTpl(
+async function getDarwinTpl(
   properties: MenuProperties,
-): MenuItemConstructorOptions[] {
+): Promise<MenuItemConstructorOptions[]> {
   const {tabs, activeTabIndex, enableMenu = false} = properties;
+  const viewSubmenu = await getViewSubmenu();
 
   return [
     {
@@ -393,8 +404,8 @@ function getDarwinTpl(
         {
           label: t.__("Toggle Do Not Disturb"),
           accelerator: "Cmd+Shift+M",
-          click() {
-            const dndUtil = DNDUtil.toggle();
+          async click() {
+            const dndUtil = await DNDUtil.toggle();
             sendAction("toggle-dnd", dndUtil.dnd, dndUtil.newSettings);
           },
         },
@@ -517,7 +528,7 @@ function getDarwinTpl(
     },
     {
       label: t.__("View"),
-      submenu: getViewSubmenu(),
+      submenu: viewSubmenu,
     },
     {
       label: t.__("History"),
@@ -539,8 +550,11 @@ function getDarwinTpl(
   ];
 }
 
-function getOtherTpl(properties: MenuProperties): MenuItemConstructorOptions[] {
+async function getOtherTpl(
+  properties: MenuProperties,
+): Promise<MenuItemConstructorOptions[]> {
   const {tabs, activeTabIndex, enableMenu = false} = properties;
+  const viewSubmenu = await getViewSubmenu();
   return [
     {
       label: t.__("File"),
@@ -560,8 +574,8 @@ function getOtherTpl(properties: MenuProperties): MenuItemConstructorOptions[] {
         {
           label: t.__("Toggle Do Not Disturb"),
           accelerator: "Ctrl+Shift+M",
-          click() {
-            const dndUtil = DNDUtil.toggle();
+          async click() {
+            const dndUtil = await DNDUtil.toggle();
             sendAction("toggle-dnd", dndUtil.dnd, dndUtil.newSettings);
           },
         },
@@ -665,7 +679,7 @@ function getOtherTpl(properties: MenuProperties): MenuItemConstructorOptions[] {
     },
     {
       label: t.__("View"),
-      submenu: getViewSubmenu(),
+      submenu: viewSubmenu,
     },
     {
       label: t.__("History"),
@@ -720,11 +734,10 @@ function getPreviousServer(tabs: TabData[], activeTabIndex: number): number {
   return activeTabIndex;
 }
 
-export function setMenu(properties: MenuProperties): void {
-  const tpl =
-    process.platform === "darwin"
-      ? getDarwinTpl(properties)
-      : getOtherTpl(properties);
+export async function setMenu(properties: MenuProperties): Promise<void> {
+  const tpl = await (process.platform === "darwin"
+    ? getDarwinTpl(properties)
+    : getOtherTpl(properties));
   const menu = Menu.buildFromTemplate(tpl);
   Menu.setApplicationMenu(menu);
 }

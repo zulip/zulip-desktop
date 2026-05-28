@@ -2,7 +2,7 @@ import {app, dialog} from "electron/main";
 import fs from "node:fs";
 import path from "node:path";
 
-import {JsonDB} from "node-json-db";
+import {Config, JsonDB} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors.js";
 
 import Logger from "../common/logger-util.ts";
@@ -16,33 +16,36 @@ let database: JsonDB;
 
 reloadDatabase();
 
-export function getUpdateItem(
+export async function getUpdateItem(
   key: string,
   defaultValue: true | null = null,
-): true | null {
+): Promise<true | null> {
   reloadDatabase();
   let value: unknown;
   try {
-    value = database.getObject<unknown>(`/${key}`);
+    value = await database.getObject<unknown>(`/${key}`);
   } catch (error: unknown) {
     if (!(error instanceof DataError)) throw error;
   }
 
   if (value !== true && value !== null) {
-    setUpdateItem(key, defaultValue);
+    await setUpdateItem(key, defaultValue);
     return defaultValue;
   }
 
   return value;
 }
 
-export function setUpdateItem(key: string, value: true | null): void {
-  database.push(`/${key}`, value, true);
+export async function setUpdateItem(
+  key: string,
+  value: true | null,
+): Promise<void> {
+  await database.push(`/${key}`, value, true);
   reloadDatabase();
 }
 
-export function removeUpdateItem(key: string): void {
-  database.delete(`/${key}`);
+export async function removeUpdateItem(key: string): Promise<void> {
+  await database.delete(`/${key}`);
   reloadDatabase();
 }
 
@@ -66,5 +69,5 @@ function reloadDatabase(): void {
     }
   }
 
-  database = new JsonDB(linuxUpdateJsonPath, true, true);
+  database = new JsonDB(new Config(linuxUpdateJsonPath, true, true));
 }

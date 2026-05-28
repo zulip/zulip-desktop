@@ -9,7 +9,9 @@ type NetworkSectionProperties = {
   $root: Element;
 };
 
-export function initNetworkSection({$root}: NetworkSectionProperties): void {
+export async function initNetworkSection({
+  $root,
+}: NetworkSectionProperties): Promise<void> {
   $root.innerHTML = html`
     <div class="settings-pane">
       <div class="title">${t.__("Proxy")}</div>
@@ -67,17 +69,19 @@ export function initNetworkSection({$root}: NetworkSectionProperties): void {
   const $proxySaveAction = $root.querySelector("#proxy-save-action")!;
   const $manualProxyBlock = $root.querySelector(".manual-proxy-block")!;
 
-  toggleManualProxySettings(ConfigUtil.getConfigItem("useManualProxy", false));
-  updateProxyOption();
+  toggleManualProxySettings(
+    await ConfigUtil.getConfigItem("useManualProxy", false),
+  );
+  await updateProxyOption();
 
-  $proxyPac.value = ConfigUtil.getConfigItem("proxyPAC", "");
-  $proxyRules.value = ConfigUtil.getConfigItem("proxyRules", "");
-  $proxyBypass.value = ConfigUtil.getConfigItem("proxyBypass", "");
+  $proxyPac.value = await ConfigUtil.getConfigItem("proxyPAC", "");
+  $proxyRules.value = await ConfigUtil.getConfigItem("proxyRules", "");
+  $proxyBypass.value = await ConfigUtil.getConfigItem("proxyBypass", "");
 
-  $proxySaveAction.addEventListener("click", () => {
-    ConfigUtil.setConfigItem("proxyPAC", $proxyPac.value);
-    ConfigUtil.setConfigItem("proxyRules", $proxyRules.value);
-    ConfigUtil.setConfigItem("proxyBypass", $proxyBypass.value);
+  $proxySaveAction.addEventListener("click", async () => {
+    await ConfigUtil.setConfigItem("proxyPAC", $proxyPac.value);
+    await ConfigUtil.setConfigItem("proxyRules", $proxyRules.value);
+    await ConfigUtil.setConfigItem("proxyBypass", $proxyBypass.value);
 
     ipcRenderer.send("forward-message", "reload-proxy", true);
   });
@@ -86,50 +90,56 @@ export function initNetworkSection({$root}: NetworkSectionProperties): void {
     $manualProxyBlock.classList.toggle("hidden", !option);
   }
 
-  function updateProxyOption(): void {
+  async function updateProxyOption(): Promise<void> {
     generateSettingOption({
       $element: $root.querySelector("#use-system-settings .setting-control")!,
-      value: ConfigUtil.getConfigItem("useSystemProxy", false),
-      clickHandler() {
-        const newValue = !ConfigUtil.getConfigItem("useSystemProxy", false);
-        const manualProxyValue = ConfigUtil.getConfigItem(
+      value: await ConfigUtil.getConfigItem("useSystemProxy", false),
+      async clickHandler() {
+        const newValue = !(await ConfigUtil.getConfigItem(
+          "useSystemProxy",
+          false,
+        ));
+        const manualProxyValue = await ConfigUtil.getConfigItem(
           "useManualProxy",
           false,
         );
         if (manualProxyValue && newValue) {
-          ConfigUtil.setConfigItem("useManualProxy", !manualProxyValue);
+          await ConfigUtil.setConfigItem("useManualProxy", !manualProxyValue);
           toggleManualProxySettings(!manualProxyValue);
         }
 
         if (!newValue) {
           // Remove proxy system proxy settings
-          ConfigUtil.setConfigItem("proxyRules", "");
+          await ConfigUtil.setConfigItem("proxyRules", "");
           ipcRenderer.send("forward-message", "reload-proxy", false);
         }
 
-        ConfigUtil.setConfigItem("useSystemProxy", newValue);
-        updateProxyOption();
+        await ConfigUtil.setConfigItem("useSystemProxy", newValue);
+        await updateProxyOption();
       },
     });
     generateSettingOption({
       $element: $root.querySelector("#use-manual-settings .setting-control")!,
-      value: ConfigUtil.getConfigItem("useManualProxy", false),
-      clickHandler() {
-        const newValue = !ConfigUtil.getConfigItem("useManualProxy", false);
-        const systemProxyValue = ConfigUtil.getConfigItem(
+      value: await ConfigUtil.getConfigItem("useManualProxy", false),
+      async clickHandler() {
+        const newValue = !(await ConfigUtil.getConfigItem(
+          "useManualProxy",
+          false,
+        ));
+        const systemProxyValue = await ConfigUtil.getConfigItem(
           "useSystemProxy",
           false,
         );
         toggleManualProxySettings(newValue);
         if (systemProxyValue && newValue) {
-          ConfigUtil.setConfigItem("useSystemProxy", !systemProxyValue);
+          await ConfigUtil.setConfigItem("useSystemProxy", !systemProxyValue);
         }
 
-        ConfigUtil.setConfigItem("proxyRules", "");
-        ConfigUtil.setConfigItem("useManualProxy", newValue);
+        await ConfigUtil.setConfigItem("proxyRules", "");
+        await ConfigUtil.setConfigItem("useManualProxy", newValue);
         // Reload app only when turning manual proxy off, hence !newValue
         ipcRenderer.send("forward-message", "reload-proxy", !newValue);
-        updateProxyOption();
+        await updateProxyOption();
       },
     });
   }

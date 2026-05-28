@@ -136,40 +136,46 @@ export class ServerManagerView {
   }
 
   async init(): Promise<void> {
-    initializeTray(this);
+    await initializeTray(this);
     await this.loadProxy();
-    this.initDefaultSettings();
-    this.initSidebar();
-    this.removeUaFromDisk();
+    await this.initDefaultSettings();
+    await this.initSidebar();
+    await this.removeUaFromDisk();
     if (EnterpriseUtil.hasConfigFile()) {
       await this.initPresetOrgs();
     }
 
     await this.initTabs();
-    this.initActions();
+    await this.initActions();
     this.registerIpcs();
   }
 
   async loadProxy(): Promise<void> {
     // To change proxyEnable to useManualProxy in older versions
-    const proxyEnabledOld = ConfigUtil.isConfigItemExists("useProxy");
+    const proxyEnabledOld = await ConfigUtil.isConfigItemExists("useProxy");
     if (proxyEnabledOld) {
-      const proxyEnableOldState = ConfigUtil.getConfigItem("useProxy", false);
+      const proxyEnableOldState = await ConfigUtil.getConfigItem(
+        "useProxy",
+        false,
+      );
       if (proxyEnableOldState) {
-        ConfigUtil.setConfigItem("useManualProxy", true);
+        await ConfigUtil.setConfigItem("useManualProxy", true);
       }
 
-      ConfigUtil.removeConfigItem("useProxy");
+      await ConfigUtil.removeConfigItem("useProxy");
     }
 
     await session.fromPartition("persist:webviewsession").setProxy(
-      ConfigUtil.getConfigItem("useSystemProxy", false)
+      (await ConfigUtil.getConfigItem("useSystemProxy", false))
         ? {mode: "system"}
-        : ConfigUtil.getConfigItem("useManualProxy", false)
+        : (await ConfigUtil.getConfigItem("useManualProxy", false))
           ? {
-              pacScript: ConfigUtil.getConfigItem("proxyPAC", ""),
-              proxyRules: ConfigUtil.getConfigItem("proxyRules", ""),
-              proxyBypassRules: ConfigUtil.getConfigItem("proxyBypass", ""),
+              pacScript: await ConfigUtil.getConfigItem("proxyPAC", ""),
+              proxyRules: await ConfigUtil.getConfigItem("proxyRules", ""),
+              proxyBypassRules: await ConfigUtil.getConfigItem(
+                "proxyBypass",
+                "",
+              ),
             }
           : {mode: "direct"},
     );
@@ -178,7 +184,7 @@ export class ServerManagerView {
   // Settings are initialized only when user clicks on General/Server/Network section settings
   // In case, user doesn't visit these section, those values set to be null automatically
   // This will make sure the default settings are correctly set to either true or false
-  initDefaultSettings(): void {
+  async initDefaultSettings(): Promise<void> {
     // Default settings which should be respected
     const settingOptions: Partial<Config> = {
       autoHideMenubar: false,
@@ -231,26 +237,29 @@ export class ServerManagerView {
     >) {
       // Give preference to defaults defined in global_config.json
       if (EnterpriseUtil.configItemExists(setting)) {
-        ConfigUtil.setConfigItem(
+        // eslint-disable-next-line no-await-in-loop
+        await ConfigUtil.setConfigItem(
           setting,
           EnterpriseUtil.getConfigItem(setting, value),
           true,
         );
-      } else if (!ConfigUtil.isConfigItemExists(setting)) {
-        ConfigUtil.setConfigItem(setting, value);
+        // eslint-disable-next-line no-await-in-loop
+      } else if (!(await ConfigUtil.isConfigItemExists(setting))) {
+        // eslint-disable-next-line no-await-in-loop
+        await ConfigUtil.setConfigItem(setting, value);
       }
     }
   }
 
-  initSidebar(): void {
-    const showSidebar = ConfigUtil.getConfigItem("showSidebar", true);
+  async initSidebar(): Promise<void> {
+    const showSidebar = await ConfigUtil.getConfigItem("showSidebar", true);
     this.toggleSidebar(showSidebar);
   }
 
   // Remove the stale UA string from the disk if the app is not freshly
   // installed.  This should be removed in a further release.
-  removeUaFromDisk(): void {
-    ConfigUtil.removeConfigItem("userAgent");
+  async removeUaFromDisk(): Promise<void> {
+    await ConfigUtil.removeConfigItem("userAgent");
   }
 
   async queueDomain(domain: string): Promise<boolean> {
@@ -276,12 +285,13 @@ export class ServerManagerView {
   async initPresetOrgs(): Promise<void> {
     // Read preset organizations from global_config.json and queues them
     // for addition to the app's domains
-    const preAddedDomains = DomainUtil.getDomains();
+    const preAddedDomains = await DomainUtil.getDomains();
     this.presetOrgs = EnterpriseUtil.getConfigItem("presetOrganizations", []);
     // Set to true if at least one new domain is added
     const domainPromises = [];
     for (const url of this.presetOrgs) {
-      if (DomainUtil.duplicateDomain(url)) {
+      // eslint-disable-next-line no-await-in-loop
+      if (await DomainUtil.duplicateDomain(url)) {
         continue;
       }
 
@@ -310,7 +320,8 @@ export class ServerManagerView {
       // Find all orgs that failed
       const failedDomains: string[] = [];
       for (const org of this.presetOrgs) {
-        if (DomainUtil.duplicateDomain(org)) {
+        // eslint-disable-next-line no-await-in-loop
+        if (await DomainUtil.duplicateDomain(org)) {
           continue;
         }
 
@@ -319,7 +330,7 @@ export class ServerManagerView {
 
       const {title, content} = Messages.enterpriseOrgError(failedDomains);
       dialog.showErrorBox(title, content);
-      if (DomainUtil.getDomains().length === 0) {
+      if ((await DomainUtil.getDomains()).length === 0) {
         // No orgs present, stop showing loading gif
         await this.openSettings("AddServer");
       }
@@ -327,7 +338,7 @@ export class ServerManagerView {
   }
 
   async initTabs(): Promise<void> {
-    const servers = DomainUtil.getDomains();
+    const servers = await DomainUtil.getDomains();
     if (servers.length > 0) {
       for (const [i, server] of servers.entries()) {
         const tab = this.initServer(server, i);
@@ -345,7 +356,7 @@ export class ServerManagerView {
       }
 
       // Open last active tab
-      let lastActiveTab = ConfigUtil.getConfigItem("lastActiveTab", 0);
+      let lastActiveTab = await ConfigUtil.getConfigItem("lastActiveTab", 0);
       if (lastActiveTab >= servers.length) {
         lastActiveTab = 0;
       }
@@ -361,7 +372,7 @@ export class ServerManagerView {
           }
 
           const tab = this.tabs[i];
-          if (tab instanceof ServerTab) (await tab.webview).load();
+          if (tab instanceof ServerTab) await (await tab.webview).load();
         }),
       );
       // Remove focus from the settings icon at sidebar bottom
@@ -393,10 +404,17 @@ export class ServerManagerView {
         tabIndex,
         url: server.url,
         role: "server",
-        hasPermission: (origin: string, permission: string) =>
-          origin === server.url &&
-          permission === "notifications" &&
-          ConfigUtil.getConfigItem("showNotification", true),
+        async hasPermission(origin: string, permission: string) {
+          const showNotification = await ConfigUtil.getConfigItem(
+            "showNotification",
+            true,
+          );
+          return (
+            origin === server.url &&
+            permission === "notifications" &&
+            showNotification
+          );
+        },
         isActive: () => index === this.activeTabIndex,
         switchLoading: async (loading: boolean, url: string) => {
           if (loading) {
@@ -424,8 +442,8 @@ export class ServerManagerView {
     return tab;
   }
 
-  initActions(): void {
-    this.initDndButton();
+  async initActions(): Promise<void> {
+    await this.initDndButton();
     this.initServerActions();
     this.initLeftSidebarEvents();
   }
@@ -446,8 +464,8 @@ export class ServerManagerView {
   }
 
   initLeftSidebarEvents(): void {
-    this.$dndButton.addEventListener("click", () => {
-      const dndUtil = DNDUtil.toggle();
+    this.$dndButton.addEventListener("click", async () => {
+      const dndUtil = await DNDUtil.toggle();
       ipcRenderer.send(
         "forward-message",
         "toggle-dnd",
@@ -478,8 +496,8 @@ export class ServerManagerView {
     this.sidebarHoverEvent(this.$dndButton, this.$dndTooltip);
   }
 
-  initDndButton(): void {
-    const dnd = ConfigUtil.getConfigItem("dnd", false);
+  async initDndButton(): Promise<void> {
+    const dnd = await ConfigUtil.getConfigItem("dnd", false);
     this.toggleDndButton(dnd);
   }
 
@@ -763,7 +781,7 @@ export class ServerManagerView {
   async reloadView(): Promise<void> {
     // Save and remember the index of last active tab so that we can use it later
     const lastActiveTab = this.tabs[this.activeTabIndex].properties.index;
-    ConfigUtil.setConfigItem("lastActiveTab", lastActiveTab);
+    await ConfigUtil.setConfigItem("lastActiveTab", lastActiveTab);
 
     // Destroy the current view and re-initiate it
     this.destroyView();
@@ -835,11 +853,11 @@ export class ServerManagerView {
               ),
             });
             if (response === 0) {
-              if (DomainUtil.removeDomain(index)) {
+              if (await DomainUtil.removeDomain(index)) {
                 ipcRenderer.send("reload-full-app");
               } else {
                 const {title, content} = Messages.orgRemovalError(
-                  DomainUtil.getDomain(index).url,
+                  (await DomainUtil.getDomain(index)).url,
                 );
                 dialog.showErrorBox(title, content);
               }
@@ -859,8 +877,8 @@ export class ServerManagerView {
         },
         {
           label: t.__("Copy Zulip URL"),
-          click() {
-            clipboard.writeText(DomainUtil.getDomain(index).url);
+          async click() {
+            clipboard.writeText((await DomainUtil.getDomain(index)).url);
           },
         },
       ];
@@ -1064,13 +1082,16 @@ export class ServerManagerView {
 
     ipcRenderer.on(
       "update-realm-name",
-      (event, serverURL: string, realmName: string) => {
-        for (const [index, domain] of DomainUtil.getDomains().entries()) {
+      async (event, serverURL: string, realmName: string) => {
+        for (const [index, domain] of (
+          await DomainUtil.getDomains()
+        ).entries()) {
           if (domain.url === serverURL) {
             const tab = this.tabs[index];
             if (tab instanceof ServerTab) tab.setLabel(realmName);
             domain.alias = realmName;
-            DomainUtil.updateDomain(index, domain);
+            // eslint-disable-next-line no-await-in-loop
+            await DomainUtil.updateDomain(index, domain);
             // Update the realm name also on the Window menu
             ipcRenderer.send("update-menu", {
               tabs: this.tabsForIpc,
@@ -1085,14 +1106,14 @@ export class ServerManagerView {
       "update-realm-icon",
       async (event, serverURL: string, iconURL: string) => {
         await Promise.all(
-          DomainUtil.getDomains().map(async (domain, index) => {
+          (await DomainUtil.getDomains()).map(async (domain, index) => {
             if (domain.url === serverURL) {
               const localIconPath = await DomainUtil.saveServerIcon(iconURL);
               const tab = this.tabs[index];
               if (tab instanceof ServerTab)
                 tab.setIcon(DomainUtil.iconAsUrl(localIconPath));
               domain.icon = localIconPath;
-              DomainUtil.updateDomain(index, domain);
+              await DomainUtil.updateDomain(index, domain);
             }
           }),
         );

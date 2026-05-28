@@ -58,11 +58,11 @@ export function initServerInfoForm(properties: ServerInfoFormProperties): void {
       message: t.__("Are you sure you want to disconnect this organization?"),
     });
     if (response === 0) {
-      if (DomainUtil.removeDomain(properties.index)) {
+      if (await DomainUtil.removeDomain(properties.index)) {
         ipcRenderer.send("reload-full-app");
       } else {
         const {title, content} = Messages.orgRemovalError(
-          DomainUtil.getDomain(properties.index).url,
+          (await DomainUtil.getDomain(properties.index)).url,
         );
         dialog.showErrorBox(title, content);
       }

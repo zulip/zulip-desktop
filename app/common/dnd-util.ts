@@ -18,8 +18,8 @@ type Toggle = {
   newSettings: Partial<DndSettings>;
 };
 
-export function toggle(): Toggle {
-  const dnd = !ConfigUtil.getConfigItem("dnd", false);
+export async function toggle(): Promise<Toggle> {
+  const dnd = !(await ConfigUtil.getConfigItem("dnd", false));
   const dndSettingList: SettingName[] = ["showNotification", "silent"];
   if (process.platform === "win32") {
     dndSettingList.push("flashTaskbarOnMessage");
@@ -33,7 +33,8 @@ export function toggle(): Toggle {
     // Iterate through the dndSettingList.
     for (const settingName of dndSettingList) {
       // Store the current value of setting.
-      oldSettings[settingName] = ConfigUtil.getConfigItem(
+      // eslint-disable-next-line no-await-in-loop
+      oldSettings[settingName] = await ConfigUtil.getConfigItem(
         settingName,
         settingName !== "silent",
       );
@@ -42,9 +43,9 @@ export function toggle(): Toggle {
     }
 
     // Store old value in oldSettings.
-    ConfigUtil.setConfigItem("dndPreviousSettings", oldSettings);
+    await ConfigUtil.setConfigItem("dndPreviousSettings", oldSettings);
   } else {
-    newSettings = ConfigUtil.getConfigItem("dndPreviousSettings", {
+    newSettings = await ConfigUtil.getConfigItem("dndPreviousSettings", {
       showNotification: true,
       silent: false,
       ...(process.platform === "win32" && {flashTaskbarOnMessage: true}),
@@ -52,9 +53,10 @@ export function toggle(): Toggle {
   }
 
   for (const settingName of dndSettingList) {
-    ConfigUtil.setConfigItem(settingName, newSettings[settingName]!);
+    // eslint-disable-next-line no-await-in-loop
+    await ConfigUtil.setConfigItem(settingName, newSettings[settingName]!);
   }
 
-  ConfigUtil.setConfigItem("dnd", dnd);
+  await ConfigUtil.setConfigItem("dnd", dnd);
   return {dnd, newSettings};
 }

@@ -179,7 +179,7 @@ const createTray = function (): void {
   }
 };
 
-export function initializeTray(serverManagerView: ServerManagerView) {
+export async function initializeTray(serverManagerView: ServerManagerView) {
   ipcRenderer.on("destroytray", () => {
     if (!tray) {
       return;
@@ -218,7 +218,7 @@ export function initializeTray(serverManagerView: ServerManagerView) {
     }
   });
 
-  function toggleTray(): void {
+  async function toggleTray(): Promise<void> {
     let state;
     if (tray) {
       state = false;
@@ -227,7 +227,7 @@ export function initializeTray(serverManagerView: ServerManagerView) {
         tray = null;
       }
 
-      ConfigUtil.setConfigItem("trayIcon", false);
+      await ConfigUtil.setConfigItem("trayIcon", false);
     } else {
       state = true;
       createTray();
@@ -237,7 +237,7 @@ export function initializeTray(serverManagerView: ServerManagerView) {
         tray!.setToolTip(`${unread} unread messages`);
       }
 
-      ConfigUtil.setConfigItem("trayIcon", true);
+      await ConfigUtil.setConfigItem("trayIcon", true);
     }
 
     serverManagerView.preferenceView?.handleToggleTray(state);
@@ -245,7 +245,7 @@ export function initializeTray(serverManagerView: ServerManagerView) {
 
   ipcRenderer.on("toggletray", toggleTray);
 
-  if (ConfigUtil.getConfigItem("trayIcon", true)) {
+  if (await ConfigUtil.getConfigItem("trayIcon", true)) {
     createTray();
   }
 }

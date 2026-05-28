@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import * as Sentry from "@sentry/core";
-import {JsonDB} from "node-json-db";
+import {JsonDB, Config as JsonDBConfig} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors.js";
 import type {z} from "zod";
 import {app, dialog} from "zulip:remote";
@@ -23,12 +23,12 @@ let database: JsonDB;
 
 reloadDatabase();
 
-export function getConfigItem<Key extends keyof Config>(
+export async function getConfigItem<Key extends keyof Config>(
   key: Key,
   defaultValue: Config[Key],
-): z.output<ConfigSchemata[Key]> {
+): Promise<z.output<ConfigSchemata[Key]>> {
   try {
-    database.reload();
+    await database.reload();
   } catch (error: unknown) {
     logger.error("Error while reloading settings.json: ");
     logger.error(error);
@@ -41,18 +41,20 @@ export function getConfigItem<Key extends keyof Config>(
         z.input<ConfigSchemata[Key]>
       >;
     } = configSchemata; // https://github.com/colinhacks/zod/issues/5154
-    return typedSchemata[key].parse(database.getObject<unknown>(`/${key}`));
+    return typedSchemata[key].parse(
+      await database.getObject<unknown>(`/${key}`),
+    );
   } catch (error: unknown) {
     if (!(error instanceof DataError)) throw error;
-    setConfigItem(key, defaultValue);
+    await setConfigItem(key, defaultValue);
     return defaultValue;
   }
 }
 
 // This function returns whether a key exists in the configuration file (settings.json)
-export function isConfigItemExists(key: string): boolean {
+export async function isConfigItemExists(key: string): Promise<boolean> {
   try {
-    database.reload();
+    await database.reload();
   } catch (error: unknown) {
     logger.error("Error while reloading settings.json: ");
     logger.error(error);
@@ -61,24 +63,24 @@ export function isConfigItemExists(key: string): boolean {
   return database.exists(`/${key}`);
 }
 
-export function setConfigItem<Key extends keyof Config>(
+export async function setConfigItem<Key extends keyof Config>(
   key: Key,
   value: Config[Key],
   override?: boolean,
-): void {
+): Promise<void> {
   if (EnterpriseUtil.configItemExists(key) && !override) {
     // If item is in global config and we're not trying to override
     return;
   }
 
   configSchemata[key].parse(value);
-  database.push(`/${key}`, value, true);
-  database.save();
+  await database.push(`/${key}`, value, true);
+  await database.save();
 }
 
-export function removeConfigItem(key: string): void {
-  database.delete(`/${key}`);
-  database.save();
+export async function removeConfigItem(key: string): Promise<void> {
+  await database.delete(`/${key}`);
+  await database.save();
 }
 
 function reloadDatabase(): void {
@@ -102,5 +104,5 @@ function reloadDatabase(): void {
     }
   }
 
-  database = new JsonDB(settingsJsonPath, true, true);
+  database = new JsonDB(new JsonDBConfig(settingsJsonPath, true, true));
 }

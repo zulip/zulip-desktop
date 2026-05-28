@@ -16,7 +16,7 @@ import * as SystemUtil from "../utils/system-util.ts";
 import {generateNodeFromHtml} from "./base.ts";
 import {contextMenu} from "./context-menu.ts";
 
-const shouldSilentWebview = ConfigUtil.getConfigItem("silent", false);
+// Resolved during WebView.create() and stashed in instance state.
 
 type WebViewProperties = {
   $root: Element;
@@ -30,7 +30,10 @@ type WebViewProperties = {
   onNetworkError: (index: number) => void;
   preload?: string;
   onTitleChange: () => void;
-  hasPermission?: (origin: string, permission: string) => boolean;
+  hasPermission?: (
+    origin: string,
+    permission: string,
+  ) => boolean | Promise<boolean>;
   unsupportedMessage?: string;
 };
 
@@ -99,7 +102,16 @@ export default class WebView {
       throw new TypeError("Failed to get WebContents ID");
     }
 
-    return new WebView(properties, $pane, $webview, webContentsId);
+    const initialCustomCss = await ConfigUtil.getConfigItem("customCSS", null);
+    const shouldSilentWebview = await ConfigUtil.getConfigItem("silent", false);
+    return new WebView(
+      properties,
+      $pane,
+      $webview,
+      webContentsId,
+      initialCustomCss,
+      shouldSilentWebview,
+    );
   }
 
   badgeCount = 0;
@@ -116,8 +128,10 @@ export default class WebView {
     private readonly $pane: HTMLElement,
     private readonly $webview: HTMLElement,
     readonly webContentsId: number,
+    initialCustomCss: string | false | null,
+    private readonly shouldSilentWebview: boolean,
   ) {
-    this.customCss = ConfigUtil.getConfigItem("customCSS", null);
+    this.customCss = initialCustomCss;
     this.$webviewsContainer = document.querySelector(
       "#webviews-container",
     )!.classList;
@@ -155,8 +169,8 @@ export default class WebView {
     this.$pane.classList.remove("active");
   }
 
-  load(): void {
-    this.show();
+  async load(): Promise<void> {
+    await this.show();
   }
 
   zoomIn(): void {
@@ -232,7 +246,7 @@ export default class WebView {
   private registerListeners(): void {
     const webContents = this.getWebContents();
 
-    if (shouldSilentWebview) {
+    if (this.shouldSilentWebview) {
       webContents.setAudioMuted(true);
     }
 
@@ -249,14 +263,14 @@ export default class WebView {
       this.canGoBackButton();
     });
 
-    webContents.on("page-favicon-updated", (_event, favicons) => {
+    webContents.on("page-favicon-updated", async (_event, favicons) => {
       // This returns a string of favicons URL. If there is a PM counts in unread messages then the URL would be like
       // https://chat.zulip.org/static/images/favicon/favicon-pms.png
       if (favicons[0].indexOf("favicon-pms") > 0 && app.dock !== undefined) {
         // This api is only supported on macOS
         app.dock.setBadge("●");
         // Bounce the dock
-        if (ConfigUtil.getConfigItem("dockBouncing", true)) {
+        if (await ConfigUtil.getConfigItem("dockBouncing", true)) {
           app.dock.bounce();
         }
       }
@@ -266,10 +280,10 @@ export default class WebView {
       contextMenu(webContents, event, menuParameters);
     });
 
-    this.$webview.addEventListener("dom-ready", () => {
+    this.$webview.addEventListener("dom-ready", async () => {
       this.loading = false;
       this.properties.switchLoading(false, this.properties.url);
-      this.show();
+      await this.show();
     });
 
     webContents.on("did-fail-load", (_event, _errorCode, errorDescription) => {
@@ -307,7 +321,7 @@ export default class WebView {
     return messageCountInTitle ? Number(messageCountInTitle[1]) : 0;
   }
 
-  private show(): void {
+  private async show(): Promise<void> {
     // Do not show WebView if another tab was selected and this tab should be in background.
     if (!this.properties.isActive()) {
       return;
@@ -323,12 +337,12 @@ export default class WebView {
     (async () => this.getWebContents().insertCSS(preloadCss))();
 
     // Get customCSS again from config util to avoid warning user again
-    const customCss = ConfigUtil.getConfigItem("customCSS", null);
+    const customCss = await ConfigUtil.getConfigItem("customCSS", null);
     this.customCss = customCss;
     if (customCss) {
       if (!fs.existsSync(customCss)) {
         this.customCss = null;
-        ConfigUtil.setConfigItem("customCSS", null);
+        await ConfigUtil.setConfigItem("customCSS", null);
 
         const errorMessage = t.__("The custom CSS previously set is deleted.");
         dialog.showErrorBox(t.__("Custom CSS file deleted"), errorMessage);

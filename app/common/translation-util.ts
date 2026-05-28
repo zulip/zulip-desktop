@@ -11,6 +11,9 @@ i18n.configure({
 });
 
 /* Fetches the current appLocale from settings.json */
-i18n.setLocale(ConfigUtil.getConfigItem("appLanguage", "en") ?? "en");
+// Fire-and-forget: i18n uses the default locale until the database resolves.
+void (async () => {
+  i18n.setLocale((await ConfigUtil.getConfigItem("appLanguage", "en")) ?? "en");
+})();
 
 export {__, __mf} from "i18n";

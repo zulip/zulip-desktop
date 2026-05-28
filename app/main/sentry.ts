@@ -9,8 +9,10 @@ export const sentryInit = (): void => {
     dsn: "https://628dc2f2864243a08ead72e63f94c7b1@o48127.ingest.sentry.io/204668",
 
     // Don't report errors in development or if disabled by the user.
-    beforeSend: (event) =>
-      app.isPackaged && getConfigItem("errorReporting", true) ? event : null,
+    beforeSend: async (event) =>
+      app.isPackaged && (await getConfigItem("errorReporting", true))
+        ? event
+        : null,
 
     // We should ignore this error since it's harmless and we know the reason behind this
     // This error mainly comes from the console logs.

@@ -41,7 +41,7 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
   autoUpdater.logger = updateLogger;
 
   // Handle auto updates for beta/pre releases
-  const isBetaUpdate = ConfigUtil.getConfigItem("betaUpdate", false);
+  const isBetaUpdate = await ConfigUtil.getConfigItem("betaUpdate", false);
 
   autoUpdater.allowPrerelease = isBetaUpdate;
 

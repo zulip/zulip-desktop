@@ -62,21 +62,21 @@ export class PreferenceView {
       }
 
       case "General": {
-        initGeneralSection({
+        void initGeneralSection({
           $root: this.$settingsContainer,
         });
         break;
       }
 
       case "Organizations": {
-        initConnectedOrgSection({
+        void initConnectedOrgSection({
           $root: this.$settingsContainer,
         });
         break;
       }
 
       case "Network": {
-        initNetworkSection({
+        void initNetworkSection({
           $root: this.$settingsContainer,
         });
         break;

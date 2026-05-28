@@ -102,8 +102,8 @@ function createMainWindow(): BrowserWindow {
   (async () => win.loadURL(mainUrl))();
 
   // Keep the app running in background on close event
-  win.on("close", (event) => {
-    if (ConfigUtil.getConfigItem("quitOnClose", false)) {
+  win.on("close", async (event) => {
+    if (await ConfigUtil.getConfigItem("quitOnClose", false)) {
       app.quit();
     }
 
@@ -199,7 +199,7 @@ function createMainWindow(): BrowserWindow {
 
   app.on("web-contents-created", (_event, contents: WebContents) => {
     contents.setWindowOpenHandler((details) => {
-      handleExternalLink(contents, details, page);
+      void handleExternalLink(contents, details, page);
       return {action: "deny"};
     });
   });
@@ -207,18 +207,18 @@ function createMainWindow(): BrowserWindow {
   const ses = session.fromPartition("persist:webviewsession");
   ses.setUserAgent(`ZulipElectron/${app.getVersion()} ${ses.getUserAgent()}`);
 
-  function configureSpellChecker() {
-    const enable = ConfigUtil.getConfigItem("enableSpellchecker", true);
+  async function configureSpellChecker() {
+    const enable = await ConfigUtil.getConfigItem("enableSpellchecker", true);
     if (enable && process.platform !== "darwin") {
       ses.setSpellCheckerLanguages(
-        ConfigUtil.getConfigItem("spellcheckerLanguages", null) ?? [],
+        (await ConfigUtil.getConfigItem("spellcheckerLanguages", null)) ?? [],
       );
     }
 
     ses.setSpellCheckerEnabled(enable);
   }
 
-  configureSpellChecker();
+  await configureSpellChecker();
   ipcMain.on("configure-spell-checker", configureSpellChecker);
 
   const clipboardSigKey = crypto.randomBytes(32);
@@ -257,22 +257,25 @@ function createMainWindow(): BrowserWindow {
     }
   });
 
-  AppMenu.setMenu({
+  await AppMenu.setMenu({
     tabs: [],
   });
   mainWindow = createMainWindow();
 
   // Auto-hide menu bar on Windows + Linux
   if (process.platform !== "darwin") {
-    const shouldHideMenu = ConfigUtil.getConfigItem("autoHideMenubar", false);
+    const shouldHideMenu = await ConfigUtil.getConfigItem(
+      "autoHideMenubar",
+      false,
+    );
     mainWindow.autoHideMenuBar = shouldHideMenu;
     mainWindow.setMenuBarVisibility(!shouldHideMenu);
   }
 
   const page = mainWindow.webContents;
 
-  page.on("dom-ready", () => {
-    if (ConfigUtil.getConfigItem("startMinimized", false)) {
+  page.on("dom-ready", async () => {
+    if (await ConfigUtil.getConfigItem("startMinimized", false)) {
       mainWindow.hide();
     } else {
       mainWindow.show();
@@ -299,7 +302,7 @@ function createMainWindow(): BrowserWindow {
 
   page.once("did-frame-finish-load", async () => {
     // Initiate auto-updates on MacOS and Windows
-    if (ConfigUtil.getConfigItem("autoUpdate", true)) {
+    if (await ConfigUtil.getConfigItem("autoUpdate", true)) {
       await appUpdater();
     }
   });
@@ -380,8 +383,8 @@ function createMainWindow(): BrowserWindow {
     toggleApp();
   });
 
-  ipcMain.on("toggle-badge-option", () => {
-    BadgeSettings.updateBadge(badgeCount, mainWindow);
+  ipcMain.on("toggle-badge-option", async () => {
+    await BadgeSettings.updateBadge(badgeCount, mainWindow);
   });
 
   ipcMain.on("toggle-menubar", (_event, showMenubar: boolean) => {
@@ -390,9 +393,9 @@ function createMainWindow(): BrowserWindow {
     send(page, "toggle-autohide-menubar", showMenubar, true);
   });
 
-  ipcMain.on("update-badge", (_event, messageCount: number) => {
+  ipcMain.on("update-badge", async (_event, messageCount: number) => {
     badgeCount = messageCount;
-    BadgeSettings.updateBadge(badgeCount, mainWindow);
+    await BadgeSettings.updateBadge(badgeCount, mainWindow);
     send(page, "tray", messageCount);
   });
 
@@ -426,8 +429,8 @@ function createMainWindow(): BrowserWindow {
     },
   );
 
-  ipcMain.on("update-menu", (_event, properties: MenuProperties) => {
-    AppMenu.setMenu(properties);
+  ipcMain.on("update-menu", async (_event, properties: MenuProperties) => {
+    await AppMenu.setMenu(properties);
     if (properties.activeTabIndex !== undefined) {
       const activeTab = properties.tabs[properties.activeTabIndex];
       mainWindow.setTitle(`Zulip - ${activeTab.label}`);
@@ -452,8 +455,8 @@ function createMainWindow(): BrowserWindow {
     },
   );
 
-  ipcMain.on("save-last-tab", (_event, index: number) => {
-    ConfigUtil.setConfigItem("lastActiveTab", index);
+  ipcMain.on("save-last-tab", async (_event, index: number) => {
+    await ConfigUtil.setConfigItem("lastActiveTab", index);
   });
 
   ipcMain.on("focus-this-webview", (event) => {

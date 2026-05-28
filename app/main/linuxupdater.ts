@@ -15,7 +15,9 @@ const logger = new Logger({
 
 export async function linuxUpdateNotification(session: Session): Promise<void> {
   let url = "https://api.github.com/repos/zulip/zulip-desktop/releases";
-  url = ConfigUtil.getConfigItem("betaUpdate", false) ? url : url + "/latest";
+  url = (await ConfigUtil.getConfigItem("betaUpdate", false))
+    ? url
+    : url + "/latest";
 
   try {
     const response = await session.fetch(url);
@@ -26,13 +28,13 @@ export async function linuxUpdateNotification(session: Session): Promise<void> {
 
     const data: unknown = await response.json();
     /* eslint-disable @typescript-eslint/naming-convention */
-    const latestVersion = ConfigUtil.getConfigItem("betaUpdate", false)
+    const latestVersion = (await ConfigUtil.getConfigItem("betaUpdate", false))
       ? z.array(z.object({tag_name: z.string()})).parse(data)[0].tag_name
       : z.object({tag_name: z.string()}).parse(data).tag_name;
     /* eslint-enable @typescript-eslint/naming-convention */
 
     if (semver.gt(latestVersion, app.getVersion())) {
-      const notified = LinuxUpdateUtil.getUpdateItem(latestVersion);
+      const notified = await LinuxUpdateUtil.getUpdateItem(latestVersion);
       if (notified === null) {
         new Notification({
           title: t.__("Zulip Update"),
@@ -41,7 +43,7 @@ export async function linuxUpdateNotification(session: Session): Promise<void> {
             {version: latestVersion},
           ),
         }).show();
-        LinuxUpdateUtil.setUpdateItem(latestVersion, true);
+        await LinuxUpdateUtil.setUpdateItem(latestVersion, true);
       }
     }
   } catch (error: unknown) {

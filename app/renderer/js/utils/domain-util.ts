@@ -3,7 +3,7 @@ import path from "node:path";
 
 import {app, dialog} from "@electron/remote";
 import * as Sentry from "@sentry/electron/renderer";
-import {JsonDB} from "node-json-db";
+import {Config, JsonDB} from "node-json-db";
 import {DataError} from "node-json-db/dist/lib/Errors.js";
 import {z} from "zod";
 
@@ -36,44 +36,47 @@ let database!: JsonDB;
 reloadDatabase();
 
 // Migrate from old schema
-try {
-  const oldDomain = database.getObject<unknown>("/domain");
-  if (typeof oldDomain === "string") {
-    (async () => {
+(async () => {
+  try {
+    const oldDomain = await database.getObject<unknown>("/domain");
+    if (typeof oldDomain === "string") {
       await addDomain({
         alias: "Zulip",
         url: oldDomain,
       });
-      database.delete("/domain");
-    })();
+      await database.delete("/domain");
+    }
+  } catch (error: unknown) {
+    if (!(error instanceof DataError)) throw error;
   }
-} catch (error: unknown) {
-  if (!(error instanceof DataError)) throw error;
-}
+})();
 
-export function getDomains(): ServerConfig[] {
+export async function getDomains(): Promise<ServerConfig[]> {
   reloadDatabase();
   try {
     return serverConfigSchema
       .array()
-      .parse(database.getObject<unknown>("/domains"));
+      .parse(await database.getObject<unknown>("/domains"));
   } catch (error: unknown) {
     if (!(error instanceof DataError)) throw error;
     return [];
   }
 }
 
-export function getDomain(index: number): ServerConfig {
+export async function getDomain(index: number): Promise<ServerConfig> {
   reloadDatabase();
   return serverConfigSchema.parse(
-    database.getObject<unknown>(`/domains[${index}]`),
+    await database.getObject<unknown>(`/domains[${index}]`),
   );
 }
 
-export function updateDomain(index: number, server: ServerConfig): void {
+export async function updateDomain(
+  index: number,
+  server: ServerConfig,
+): Promise<void> {
   reloadDatabase();
   serverConfigSchema.parse(server);
-  database.push(`/domains[${index}]`, server, true);
+  await database.push(`/domains[${index}]`, server, true);
 }
 
 export async function addDomain(server: {
@@ -85,42 +88,42 @@ export async function addDomain(server: {
     const localIconUrl = await saveServerIcon(server.icon);
     server.icon = localIconUrl;
     serverConfigSchema.parse(server);
-    database.push("/domains[]", server, true);
+    await database.push("/domains[]", server, true);
     reloadDatabase();
   } else {
     server.icon = defaultIconSentinel;
     serverConfigSchema.parse(server);
-    database.push("/domains[]", server, true);
+    await database.push("/domains[]", server, true);
     reloadDatabase();
   }
 }
 
-export function removeDomains(): void {
-  database.delete("/domains");
+export async function removeDomains(): Promise<void> {
+  await database.delete("/domains");
   reloadDatabase();
 }
 
-export function removeDomain(index: number): boolean {
-  if (EnterpriseUtil.isPresetOrg(getDomain(index).url)) {
+export async function removeDomain(index: number): Promise<boolean> {
+  if (EnterpriseUtil.isPresetOrg((await getDomain(index)).url)) {
     return false;
   }
 
-  database.delete(`/domains[${index}]`);
+  await database.delete(`/domains[${index}]`);
   reloadDatabase();
   return true;
 }
 
 // Check if domain is already added
-export function duplicateDomain(domain: string): boolean {
+export async function duplicateDomain(domain: string): Promise<boolean> {
   domain = formatUrl(domain);
-  return getDomains().some((server) => server.url === domain);
+  return (await getDomains()).some((server) => server.url === domain);
 }
 
 export async function checkDomain(
   domain: string,
   silent = false,
 ): Promise<ServerConfig> {
-  if (!silent && duplicateDomain(domain)) {
+  if (!silent && (await duplicateDomain(domain))) {
     // Do not check duplicate in silent mode
     throw new Error("This server has been added.");
   }
@@ -150,14 +153,14 @@ export async function updateSavedServer(
   index: number,
 ): Promise<ServerConfig> {
   // Does not promise successful update
-  const serverConfig = getDomain(index);
+  const serverConfig = await getDomain(index);
   const oldIcon = serverConfig.icon;
   try {
     const newServerConfig = await checkDomain(url, true);
     const localIconUrl = await saveServerIcon(newServerConfig.icon);
     if (!oldIcon || localIconUrl !== defaultIconSentinel) {
       newServerConfig.icon = localIconUrl;
-      updateDomain(index, newServerConfig);
+      await updateDomain(index, newServerConfig);
       reloadDatabase();
     }
 
@@ -193,7 +196,7 @@ function reloadDatabase(): void {
     }
   }
 
-  database = new JsonDB(domainJsonPath, true, true);
+  database = new JsonDB(new Config(domainJsonPath, true, true));
 }
 
 export function formatUrl(domain: string): string {

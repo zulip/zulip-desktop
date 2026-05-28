@@ -34,7 +34,7 @@ function downloadFile({
 }) {
   contents.downloadURL(url);
   contents.session.once("will-download", async (_event, item) => {
-    if (ConfigUtil.getConfigItem("promptDownload", false)) {
+    if (await ConfigUtil.getConfigItem("promptDownload", false)) {
       const showDialogOptions: SaveDialogOptions = {
         defaultPath: path.join(downloadPath, item.getFilename()),
       };
@@ -102,11 +102,11 @@ function downloadFile({
   });
 }
 
-export default function handleExternalLink(
+export default async function handleExternalLink(
   contents: WebContents,
   details: HandlerDetails,
   mainContents: WebContents,
-): void {
+): Promise<void> {
   let url: URL;
   try {
     url = new URL(details.url);
@@ -114,7 +114,7 @@ export default function handleExternalLink(
     return;
   }
 
-  const downloadPath = ConfigUtil.getConfigItem(
+  const downloadPath = await ConfigUtil.getConfigItem(
     "downloadsPath",
     `${app.getPath("downloads")}`,
   );
@@ -137,18 +137,18 @@ export default function handleExternalLink(
         downloadNotification.show();
 
         // Play sound to indicate download complete
-        if (!ConfigUtil.getConfigItem("silent", false)) {
+        if (!(await ConfigUtil.getConfigItem("silent", false))) {
           send(mainContents, "play-ding-sound");
         }
       },
-      failed(state: string) {
+      async failed(state: string) {
         // Automatic download failed, so show save dialog prompt and download
         // through webview
         // Only do this if it is the automatic download, otherwise show an error (so we aren't showing two save
         // prompts right after each other)
         // Check that the download is not cancelled by user
         if (state !== "cancelled") {
-          if (ConfigUtil.getConfigItem("promptDownload", false)) {
+          if (await ConfigUtil.getConfigItem("promptDownload", false)) {
             new Notification({
               title: t.__("Download Complete"),
               body: t.__("Download failed"),

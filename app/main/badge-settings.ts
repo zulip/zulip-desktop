@@ -6,9 +6,12 @@ import * as ConfigUtil from "../common/config-util.ts";
 
 import {send} from "./typed-ipc-main.ts";
 
-function showBadgeCount(messageCount: number, mainWindow: BrowserWindow): void {
+async function showBadgeCount(
+  messageCount: number,
+  mainWindow: BrowserWindow,
+): Promise<void> {
   if (process.platform === "win32") {
-    updateOverlayIcon(messageCount, mainWindow);
+    await updateOverlayIcon(messageCount, mainWindow);
   } else {
     app.badgeCount = messageCount;
   }
@@ -22,24 +25,24 @@ function hideBadgeCount(mainWindow: BrowserWindow): void {
   }
 }
 
-export function updateBadge(
+export async function updateBadge(
   badgeCount: number,
   mainWindow: BrowserWindow,
-): void {
-  if (ConfigUtil.getConfigItem("badgeOption", true)) {
-    showBadgeCount(badgeCount, mainWindow);
+): Promise<void> {
+  if (await ConfigUtil.getConfigItem("badgeOption", true)) {
+    await showBadgeCount(badgeCount, mainWindow);
   } else {
     hideBadgeCount(mainWindow);
   }
 }
 
-function updateOverlayIcon(
+async function updateOverlayIcon(
   messageCount: number,
   mainWindow: BrowserWindow,
-): void {
+): Promise<void> {
   if (!mainWindow.isFocused()) {
     mainWindow.flashFrame(
-      ConfigUtil.getConfigItem("flashTaskbarOnMessage", true),
+      await ConfigUtil.getConfigItem("flashTaskbarOnMessage", true),
     );
   }
 

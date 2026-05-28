@@ -11,12 +11,12 @@ type ConnectedOrgSectionProperties = {
   $root: Element;
 };
 
-export function initConnectedOrgSection({
+export async function initConnectedOrgSection({
   $root,
-}: ConnectedOrgSectionProperties): void {
+}: ConnectedOrgSectionProperties): Promise<void> {
   $root.textContent = "";
 
-  const servers = DomainUtil.getDomains();
+  const servers = await DomainUtil.getDomains();
   $root.innerHTML = html`
     <div class="settings-pane" id="server-settings-pane">
       <div class="page-title">${t.__("Connected organizations")}</div>
