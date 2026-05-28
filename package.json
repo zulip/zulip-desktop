@@ -188,7 +188,7 @@
     "i18next-cli": "^1.58.1",
     "node-json-db": "^1.3.0",
     "p-fifo": "^1.0.0",
-    "playwright-core": "^1.41.0-alpha-jan-9-2024",
+    "playwright-core": "^1.60.0",
     "prettier": "^3.0.3",
     "semver": "^7.3.5",
     "stylelint": "^16.1.0",
