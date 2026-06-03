@@ -6,8 +6,8 @@
 
 Desktop client for Zulip. Available for Mac, Linux, and Windows.
 
-![screenshot](https://i.imgur.com/s1o6TRA.png)
-![screenshot](https://i.imgur.com/vekKnW4.png)
+![screenshot](./docs/images/zulip-desktop-screenshot-light.webp)
+![screenshot](./docs/images/zulip-desktop-screenshot-dark.webp)
 
 # Download
 
