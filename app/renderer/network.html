@@ -1,35 +1,24 @@
-<!doctype html>
-<html lang="en" class="responsive desktop">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'none'; connect-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'"
-    />
-    <meta name="viewport" content="width=device-width" />
-    <title>Zulip - Network Troubleshooting</title>
-    <link
-      rel="stylesheet"
-      href="css/network.css"
-      type="text/css"
-      media="screen"
-    />
-  </head>
-  <body>
-    <div id="content">
-      <div id="picture"><img src="img/zulip_network.png" /></div>
-      <div id="title">We can't connect to this organization</div>
-      <div id="subtitle">This could be because</div>
-      <ul id="description">
-        <li>You're not online or your proxy is misconfigured.</li>
-        <li>There is no Zulip organization hosted at this URL.</li>
-        <li>This Zulip organization is temporarily unavailable.</li>
-        <li>This Zulip organization has been moved or deleted.</li>
-      </ul>
-      <div id="buttons">
-        <div id="reconnect" class="button">Reconnect</div>
-        <div id="settings" class="button">Settings</div>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zulip - Network Error</title>
+    <link rel="stylesheet" href="./css/network.css">
+</head>
+<body>
+    <div id="network-shell">
+        <div id="content">
+            <div id="title-main">Zulip</div>
+            <div id="subtitle">Unable to connect to the server</div>
+            <div id="description-box">
+                <p id="error-text">⚠️ We can't connect to this organization. This might be due to a network issue or proxy misconfiguration.</p>
+            </div>
+            <div id="buttons">
+                <button id="reconnect" class="button">Try Again</button>
+            </div>
+        </div>
     </div>
-  </body>
+    <script type="module" src="./js/network.ts"></script>
+</body>
 </html>

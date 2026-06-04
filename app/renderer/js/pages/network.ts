@@ -1,13 +1,17 @@
-import {ipcRenderer} from "../typed-ipc-renderer.ts";
+import { ipcRenderer } from 'electron';
 
-export function init(
-  $reconnectButton: Element,
-  $settingsButton: Element,
-): void {
-  $reconnectButton.addEventListener("click", () => {
-    ipcRenderer.send("forward-message", "reload-viewer");
-  });
-  $settingsButton.addEventListener("click", () => {
-    ipcRenderer.send("forward-message", "open-settings");
-  });
-}
+window.addEventListener('DOMContentLoaded', () => {
+    const errorTextField = document.getElementById('error-text');
+    const reconnectBtn = document.getElementById('reconnect');
+
+    // Listen for message from index.ts
+    ipcRenderer.on('update-message', (_event, message: string) => {
+        if (errorTextField) {
+            errorTextField.innerText = message;
+        }
+    });
+
+    reconnectBtn?.addEventListener('click', () => {
+        window.location.reload();
+    });
+});

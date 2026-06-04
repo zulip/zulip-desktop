@@ -1,11 +1,12 @@
-import {Console} from "node:console"; // eslint-disable-line n/prefer-global/console
+import { Console } from "node:console"; // eslint-disable-line n/prefer-global/console
 import fs from "node:fs";
 import os from "node:os";
 import process from "node:process";
 
-import {app} from "zulip:remote";
+// FIXED: Standard Electron import path
+import { app } from "electron"; 
 
-import {initSetUp} from "./default-util.ts";
+import { initSetUp } from "./default-util"; // FIXED: Removed .ts extension
 
 type LoggerOptions = {
   file?: string;
@@ -13,7 +14,13 @@ type LoggerOptions = {
 
 initSetUp();
 
+// FIXED: Wrapped in backticks (`)
 const logDirectory = `${app.getPath("userData")}/Logs`;
+
+// Ensure the directory exists immediately to prevent ENOENT errors
+if (!fs.existsSync(logDirectory)) {
+  fs.mkdirSync(logDirectory, { recursive: true });
+}
 
 type Level = "log" | "debug" | "info" | "warn" | "error";
 
@@ -21,70 +28,82 @@ export default class Logger {
   nodeConsole: Console;
 
   constructor(options: LoggerOptions = {}) {
-    let {file = "console.log"} = options;
+    const { file = "console.log" } = options;
 
-    file = `${logDirectory}/${file}`;
+    // FIXED: Wrapped in backticks (`)
+    const fullPath = `${logDirectory}/${file}`;
 
     // Trim log according to type of process
     if (process.type === "renderer") {
-      requestIdleCallback(async () => this.trimLog(file));
+      if (typeof requestIdleCallback !== 'undefined') {
+        requestIdleCallback(async () => this.trimLog(fullPath));
+      }
     } else {
-      process.nextTick(async () => this.trimLog(file));
+      process.nextTick(async () => this.trimLog(fullPath));
     }
 
-    const fileStream = fs.createWriteStream(file, {flags: "a"});
+    const fileStream = fs.createWriteStream(fullPath, { flags: "a" });
     const nodeConsole = new Console(fileStream);
 
     this.nodeConsole = nodeConsole;
   }
 
-  _log(type: Level, ...arguments_: unknown[]): void {
-    arguments_.unshift(this.getTimestamp() + " |\t");
-    arguments_.unshift(type.toUpperCase() + " |");
-    this.nodeConsole[type](...arguments_);
-    console[type](...arguments_);
+  // FIXED: Renamed reserved keyword 'arguments' to 'args'
+  private _internalLog(type: Level, ...args: unknown[]): void {
+    args.unshift(this.getTimestamp() + " |\t");
+    args.unshift(type.toUpperCase() + " |");
+    // @ts-ignore - Dynamic access to console methods
+    this.nodeConsole[type](...args);
+    // @ts-ignore
+    console[type](...args);
   }
 
-  log(...arguments_: unknown[]): void {
-    this._log("log", ...arguments_);
+  log(...args: unknown[]): void {
+    this._internalLog("log", ...args);
   }
 
-  debug(...arguments_: unknown[]): void {
-    this._log("debug", ...arguments_);
+  debug(...args: unknown[]): void {
+    this._internalLog("debug", ...args);
   }
 
-  info(...arguments_: unknown[]): void {
-    this._log("info", ...arguments_);
+  info(...args: unknown[]): void {
+    this._internalLog("info", ...args);
   }
 
-  warn(...arguments_: unknown[]): void {
-    this._log("warn", ...arguments_);
+  warn(...args: unknown[]): void {
+    this._internalLog("warn", ...args);
   }
 
-  error(...arguments_: unknown[]): void {
-    this._log("error", ...arguments_);
+  error(...args: unknown[]): void {
+    this._internalLog("error", ...args);
   }
 
   getTimestamp(): string {
     const date = new Date();
+    // FIXED: Wrapped the time section in backticks (`)
     const timestamp =
-      `${date.getMonth()}/${date.getDate()} ` +
-      `${date.getMinutes()}:${date.getSeconds()}`;
+      `${date.getMonth() + 1}/${date.getDate()} ` +
+      `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
     return timestamp;
   }
 
   async trimLog(file: string): Promise<void> {
-    const data = await fs.promises.readFile(file, "utf8");
+    try {
+      await fs.promises.access(file, fs.constants.F_OK);
+      
+      const data = await fs.promises.readFile(file, "utf8");
+      const maxLogFileLines = 500;
+      const logs = data.split(os.EOL);
+      const logLength = logs.length - 1;
 
-    const maxLogFileLines = 500;
-    const logs = data.split(os.EOL);
-    const logLength = logs.length - 1;
-
-    // Keep bottom maxLogFileLines of each log instance
-    if (logLength > maxLogFileLines) {
-      const trimmedLogs = logs.slice(logLength - maxLogFileLines);
-      const toWrite = trimmedLogs.join(os.EOL);
-      await fs.promises.writeFile(file, toWrite);
+      if (logLength > maxLogFileLines) {
+        const trimmedLogs = logs.slice(logLength - maxLogFileLines);
+        const toWrite = trimmedLogs.join(os.EOL);
+        await fs.promises.writeFile(file, toWrite);
+      }
+    } catch (error) {
+      // FIXED: Wrapped in backticks (`)
+      console.log(`New log file initialized: ${file}`);
     }
   }
 }

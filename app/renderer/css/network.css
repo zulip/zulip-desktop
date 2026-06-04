@@ -1,59 +1,70 @@
-html,
-body {
-  margin: 0;
-  cursor: default;
-  font-size: 14px;
-  color: rgb(51 51 51 / 100%);
-  background: rgb(255 255 255 / 100%);
-  user-select: none;
+html, body {
+    background-color: #f4f7f6 !important;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, system-ui, sans-serif;
+}
+
+#network-shell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #content {
-  display: flex;
-  flex-direction: column;
-  font-family: "Trebuchet MS", Helvetica, sans-serif;
-  margin: 100px 200px;
-  text-align: center;
+    background: white !important;
+    width: 480px;
+    padding: 40px;
+    border-radius: 12px;
+    border-top: 10px solid #009688; /* Zulip Teal */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    visibility: visible !important;
 }
 
-#title {
-  text-align: left;
-  font-size: 24px;
-  font-weight: bold;
-  margin: 20px 0;
+#title-main {
+    font-size: 28px;
+    font-weight: bold;
+    color: #009688;
+    margin-bottom: 5px;
 }
 
 #subtitle {
-  font-size: 20px;
-  text-align: left;
-  margin: 12px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
 }
 
-#description {
-  text-align: left;
-  font-size: 16px;
-  list-style-position: inside;
+#description-box {
+    background: #f9fafb;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    text-align: left;
 }
 
-#reconnect {
-  float: left;
-}
-
-#settings {
-  margin-left: 116px;
+#error-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #444;
+    white-space: pre-wrap;
+    margin: 0;
 }
 
 .button {
-  font-size: 16px;
-  background: rgb(0 150 136 / 100%);
-  color: rgb(255 255 255 / 100%);
-  width: 96px;
-  height: 32px;
-  border-radius: 5px;
-  line-height: 32px;
-  cursor: pointer;
-}
-
-.button:hover {
-  opacity: 0.8;
+    background-color: #009688;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
 }

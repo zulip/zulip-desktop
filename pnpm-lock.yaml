@@ -149,8 +149,8 @@ importers:
         specifier: ^1.2.1
         version: 1.2.3(@types/eslint@8.56.12)(@typescript-eslint/utils@8.49.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(typescript@5.9.3)
       zod:
-        specifier: ^4.1.5
-        version: 4.1.13
+        specifier: ^4.2.1
+        version: 4.2.1
 
 packages:
 
@@ -4536,8 +4536,8 @@ packages:
     resolution: {integrity: sha512-CzhO+pFNo8ajLM2d2IW/R93ipy99LWjtwblvC1RsoSUMZgyLbYFr221TnSNT7GjGdYui6P459mw9JH/g/zW2ug==}
     engines: {node: '>=18'}
 
-  zod@4.1.13:
-    resolution: {integrity: sha512-AvvthqfqrAhNH9dnfmrfKzX5upOdjUVJYFqNSlkmGf64gRaTzlPwz99IHYnVs28qYAybvAlBV+H7pn0saFY4Ig==}
+  zod@4.2.1:
+    resolution: {integrity: sha512-0wZ1IRqGGhMP76gLqz8EyfBXKk0J2qo2+H3fi4mcUP/KtTocoX08nmIAHl1Z2kJIZbZee8KOpBCSNPRgauucjw==}
 
 snapshots:
 
@@ -9505,4 +9505,4 @@ snapshots:
 
   yoctocolors@2.1.2: {}
 
-  zod@4.1.13: {}
+  zod@4.2.1: {}

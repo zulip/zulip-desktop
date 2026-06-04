@@ -81,4 +81,7 @@ export type RendererMessage = {
   zoomActualSize: () => void;
   zoomIn: () => void;
   zoomOut: () => void;
+  // --- ADDED FOR CUSTOM NETWORK ERROR DESIGN ---
+  "update-css": (cssPath: string) => void;
+  "update-message": (message: string) => void;
 };
