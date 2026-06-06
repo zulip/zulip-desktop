@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
-
 import {defineConfig} from "electron-vite";
 
 export default defineConfig({

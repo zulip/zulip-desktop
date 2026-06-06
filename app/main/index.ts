@@ -34,7 +34,6 @@ import {ipcMain, send} from "./typed-ipc-main.ts";
 
 import "gatemaker/electron-setup.js"; // eslint-disable-line import-x/no-unassigned-import
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 const {GDK_BACKEND} = process.env;
 
 // Initialize sentry for main process
