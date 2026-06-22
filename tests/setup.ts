@@ -46,8 +46,10 @@ function getAppDataDirectory(): string {
 
     case "win32": {
       base = process.env.APPDATA;
-      if (base === undefined)
+      if (base === undefined) {
         throw new Error("Missing APPDATA environment variable.");
+      }
+
       break;
     }
 

@@ -48,7 +48,9 @@ try {
     })();
   }
 } catch (error: unknown) {
-  if (!(error instanceof DataError)) throw error;
+  if (!(error instanceof DataError)) {
+    throw error;
+  }
 }
 
 export function getDomains(): ServerConfig[] {
@@ -58,7 +60,10 @@ export function getDomains(): ServerConfig[] {
       .array()
       .parse(database.getObject<unknown>("/domains"));
   } catch (error: unknown) {
-    if (!(error instanceof DataError)) throw error;
+    if (!(error instanceof DataError)) {
+      throw error;
+    }
+
     return [];
   }
 }
@@ -223,7 +228,9 @@ export function getUnsupportedMessage(
 }
 
 export function iconAsUrl(iconPath: string): string {
-  if (iconPath === defaultIconSentinel) return defaultIcon;
+  if (iconPath === defaultIconSentinel) {
+    return defaultIcon;
+  }
 
   try {
     return `data:application/octet-stream;base64,${fs.readFileSync(

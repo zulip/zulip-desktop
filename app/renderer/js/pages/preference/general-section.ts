@@ -623,14 +623,21 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         let displayName = new Intl.DisplayNames([locale], {
           type: "language",
         }).of(locale.language);
-        if (displayName === undefined) continue;
+        if (displayName === undefined) {
+          continue;
+        }
+
         displayName = displayName.replace(/^./v, (firstChar) =>
           firstChar.toLocaleUpperCase(locale),
         );
-        if (locale.script !== undefined)
+        if (locale.script !== undefined) {
           displayName += ` (${new Intl.DisplayNames([locale], {type: "script"}).of(locale.script)})`;
-        if (locale.region !== undefined)
+        }
+
+        if (locale.region !== undefined) {
           displayName += ` (${new Intl.DisplayNames([locale], {type: "region"}).of(locale.region)})`;
+        }
+
         languagePairs.set(displayName, l);
       }
 

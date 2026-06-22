@@ -43,7 +43,10 @@ export function getConfigItem<Key extends keyof Config>(
     } = configSchemata; // https://github.com/colinhacks/zod/issues/5154
     return typedSchemata[key].parse(database.getObject<unknown>(`/${key}`));
   } catch (error: unknown) {
-    if (!(error instanceof DataError)) throw error;
+    if (!(error instanceof DataError)) {
+      throw error;
+    }
+
     setConfigItem(key, defaultValue);
     return defaultValue;
   }

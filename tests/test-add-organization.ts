@@ -10,7 +10,10 @@ test("add-organization", async (t) => {
   const app = await setup.createApp();
   try {
     const windows = new Fifo<Page>();
-    for (const win of app.windows()) void windows.push(win);
+    for (const win of app.windows()) {
+      void windows.push(win);
+    }
+
     app.on("window", async (win) => windows.push(win));
 
     const mainWindow = await windows.shift();

@@ -234,7 +234,9 @@ function createMainWindow(): BrowserWindow {
     // Check that the key was generated here.
     const hmac = crypto.createHmac("sha256", clipboardSigKey);
     hmac.update(key);
-    if (!crypto.timingSafeEqual(sig, hmac.digest())) return;
+    if (!crypto.timingSafeEqual(sig, hmac.digest())) {
+      return;
+    }
 
     try {
       // Check that the data on the clipboard was encrypted to the key.

@@ -360,7 +360,9 @@ export class ServerManagerView {
           }
 
           const tab = this.tabs[i];
-          if (tab instanceof ServerTab) (await tab.webview).load();
+          if (tab instanceof ServerTab) {
+            (await tab.webview).load();
+          }
         }),
       );
       // Remove focus from the settings icon at sidebar bottom
@@ -463,7 +465,9 @@ export class ServerManagerView {
     this.$reloadButton.addEventListener("click", () => {
       (async () => {
         const tab = this.tabs[this.activeTabIndex];
-        if (tab instanceof ServerTab) (await tab.webview).reload();
+        if (tab instanceof ServerTab) {
+          (await tab.webview).reload();
+        }
       })();
     });
     this.$addServerButton.addEventListener("click", () => {
@@ -475,7 +479,9 @@ export class ServerManagerView {
     this.$backButton.addEventListener("click", () => {
       (async () => {
         const tab = this.tabs[this.activeTabIndex];
-        if (tab instanceof ServerTab) (await tab.webview).back();
+        if (tab instanceof ServerTab) {
+          (await tab.webview).back();
+        }
       })();
     });
 
@@ -658,7 +664,10 @@ export class ServerManagerView {
 
   async openNetworkTroubleshooting(index: number): Promise<void> {
     const tab = this.tabs[index];
-    if (!(tab instanceof ServerTab)) return;
+    if (!(tab instanceof ServerTab)) {
+      return;
+    }
+
     const webview = await tab.webview;
     const reconnectUtil = new ReconnectUtil(webview);
     reconnectUtil.pollInternetAndReload();
@@ -823,7 +832,10 @@ export class ServerManagerView {
 
   async isLoggedIn(tabIndex: number): Promise<boolean> {
     const tab = this.tabs[tabIndex];
-    if (!(tab instanceof ServerTab)) return false;
+    if (!(tab instanceof ServerTab)) {
+      return false;
+    }
+
     const webview = await tab.webview;
     const url = webview.getWebContents().getURL();
     return !(url.endsWith("/login/") || webview.loading);
@@ -864,8 +876,9 @@ export class ServerManagerView {
               // Switch to tab whose icon was right-clicked
               await this.activateTab(index);
               const tab = this.tabs[index];
-              if (tab instanceof ServerTab)
+              if (tab instanceof ServerTab) {
                 (await tab.webview).showNotificationSettings();
+              }
             },
           },
           {
@@ -953,7 +966,9 @@ export class ServerManagerView {
           const tab = this.tabs[this.activeTabIndex];
           if (tab instanceof ServerTab) {
             const activeWebview = await tab.webview;
-            if (activeWebview) listener(activeWebview);
+            if (activeWebview) {
+              listener(activeWebview);
+            }
           }
         })();
       });
@@ -981,7 +996,10 @@ export class ServerManagerView {
               : (
                   await Promise.all(
                     this.tabs.map(async (tab) => {
-                      if (!(tab instanceof ServerTab)) return false;
+                      if (!(tab instanceof ServerTab)) {
+                        return false;
+                      }
+
                       const webview = await tab.webview;
                       return (
                         webview.webContentsId === webContentsId &&
@@ -1091,7 +1109,10 @@ export class ServerManagerView {
         for (const [index, domain] of DomainUtil.getDomains().entries()) {
           if (domain.url === serverURL) {
             const tab = this.tabs[index];
-            if (tab instanceof ServerTab) tab.setLabel(realmName);
+            if (tab instanceof ServerTab) {
+              tab.setLabel(realmName);
+            }
+
             domain.alias = realmName;
             DomainUtil.updateDomain(index, domain);
             // Update the realm name also on the Window menu
@@ -1112,8 +1133,10 @@ export class ServerManagerView {
             (async () => {
               const localIconPath = await DomainUtil.saveServerIcon(iconURL);
               const tab = this.tabs[index];
-              if (tab instanceof ServerTab)
+              if (tab instanceof ServerTab) {
                 tab.setIcon(DomainUtil.iconAsUrl(localIconPath));
+              }
+
               domain.icon = localIconPath;
               DomainUtil.updateDomain(index, domain);
             })();
@@ -1194,19 +1217,21 @@ export class ServerManagerView {
 
     ipcRenderer.on("set-active", () => {
       for (const tab of this.tabs) {
-        if (tab instanceof ServerTab)
+        if (tab instanceof ServerTab) {
           (async () => {
             (await tab.webview).send("set-active");
           })();
+        }
       }
     });
 
     ipcRenderer.on("set-idle", () => {
       for (const tab of this.tabs) {
-        if (tab instanceof ServerTab)
+        if (tab instanceof ServerTab) {
           (async () => {
             (await tab.webview).send("set-idle");
           })();
+        }
       }
     });
 

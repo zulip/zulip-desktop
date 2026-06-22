@@ -295,8 +295,11 @@ export default class WebView {
     });
 
     webContents.on("zoom-changed", (event, zoomDirection) => {
-      if (zoomDirection === "in") this.zoomIn();
-      else if (zoomDirection === "out") this.zoomOut();
+      if (zoomDirection === "in") {
+        this.zoomIn();
+      } else if (zoomDirection === "out") {
+        this.zoomOut();
+      }
     });
   }
 

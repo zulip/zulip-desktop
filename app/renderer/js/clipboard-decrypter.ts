@@ -50,7 +50,9 @@ export class ClipboardDecrypterImplementation implements ClipboardDecrypter {
             key,
             sig,
           );
-          if (plaintext === undefined) return;
+          if (plaintext === undefined) {
+            return;
+          }
 
           window.removeEventListener("focus", startPolling);
           window.removeEventListener("blur", stopPolling);

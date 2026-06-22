@@ -25,7 +25,9 @@ export function getUpdateItem(
   try {
     value = database.getObject<unknown>(`/${key}`);
   } catch (error: unknown) {
-    if (!(error instanceof DataError)) throw error;
+    if (!(error instanceof DataError)) {
+      throw error;
+    }
   }
 
   if (value !== true && value !== null) {
