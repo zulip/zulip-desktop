@@ -33,8 +33,7 @@ const restrictedRendererImports = [
 
 const xoConfig: FlatXoConfig = [
   {
-    prettier: true,
-    space: true,
+    prettier: "compat",
     settings: {
       "import-x/resolver": "typescript",
       n: {
@@ -60,7 +59,6 @@ const xoConfig: FlatXoConfig = [
           requireDefaultForNonUnion: true,
         },
       ],
-      "arrow-body-style": "error",
       "import-x/no-extraneous-dependencies": [
         "error",
         {includeTypes: true, packageDir: import.meta.dirname},
