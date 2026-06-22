@@ -74,7 +74,7 @@ export default class WebView {
         () => {
           resolve();
         },
-        true,
+        {capture: true},
       );
     });
 
