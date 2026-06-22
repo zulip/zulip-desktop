@@ -64,8 +64,8 @@ const config = {
   thick: process.platform === "win32",
 };
 
-const renderCanvas = function (argument: number): HTMLCanvasElement {
-  config.unreadCount = argument;
+const renderCanvas = function (unreadCount: number): HTMLCanvasElement {
+  config.unreadCount = unreadCount;
 
   const size = config.size * config.pixelRatio;
   const padding = size * 0.05;
@@ -113,17 +113,12 @@ const renderCanvas = function (argument: number): HTMLCanvasElement {
   return canvas;
 };
 
-/**
- * Renders the tray icon as a native image
- * @param arg: Unread count
- * @return the native image
- */
-const renderNativeImage = function (argument: number): NativeImage {
+const renderNativeImage = function (unreadCount: number): NativeImage {
   if (process.platform === "win32") {
     return nativeImage.createFromPath(winUnreadTrayIconPath());
   }
 
-  const canvas = renderCanvas(argument);
+  const canvas = renderCanvas(unreadCount);
   const pngData = nativeImage
     .createFromDataURL(canvas.toDataURL("image/png"))
     .toPNG();
@@ -193,25 +188,25 @@ export function initializeTray(serverManagerView: ServerManagerView) {
     }
   });
 
-  ipcRenderer.on("tray", (_event, argument: number): void => {
+  ipcRenderer.on("tray", (_event, newUnreadCount: number): void => {
     if (!tray) {
       return;
     }
 
     // We don't want to create tray from unread messages on macOS since it already has dock badges.
     if (process.platform === "linux" || process.platform === "win32") {
-      if (argument === 0) {
-        unread = argument;
+      if (newUnreadCount === 0) {
+        unread = newUnreadCount;
         tray.setImage(iconPath());
         tray.setToolTip(t.__("No unread messages"));
       } else {
-        unread = argument;
-        const image = renderNativeImage(argument);
+        unread = newUnreadCount;
+        const image = renderNativeImage(newUnreadCount);
         tray.setImage(image);
         tray.setToolTip(
           t.__mf(
             "{number, plural, one {# unread message} other {# unread messages}}",
-            {number: `${argument}`},
+            {number: `${newUnreadCount}`},
           ),
         );
       }
