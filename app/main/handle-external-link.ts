@@ -51,14 +51,13 @@ function downloadFile({
         return `${baseName}-${getTimeStamp()}${fileExtension}`;
       };
 
-      const filePath = path.join(downloadPath, item.getFilename());
-
+      let filePath = path.join(downloadPath, item.getFilename());
       // Update the name and path of the file if it already exists
-      const updatedFilePath = path.join(downloadPath, formatFile(filePath));
-      const setFilePath: string = fs.existsSync(filePath)
-        ? updatedFilePath
-        : filePath;
-      item.setSavePath(setFilePath);
+      if (fs.existsSync(filePath)) {
+        filePath = path.join(downloadPath, formatFile(filePath));
+      }
+
+      item.setSavePath(filePath);
     }
 
     const updatedListener = (_event: Event, state: string): void => {

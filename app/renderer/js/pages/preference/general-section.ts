@@ -528,8 +528,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
   }
 
   function removeCustomCss(): void {
-    const removeCssButton = $root.querySelector("#css-delete-action")!;
-    removeCssButton.addEventListener("click", () => {
+    $root.querySelector("#css-delete-action")!.addEventListener("click", () => {
       ConfigUtil.setConfigItem("customCSS", "");
       ipcRenderer.send("forward-message", "hard-reload");
     });
@@ -579,7 +578,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
     const clearAppDataMessage = t.__(
       "When the application restarts, it will be as if you have just downloaded the Zulip app.",
     );
-    const getAppPath = path.join(app.getPath("appData"), app.name);
+    const appDataPath = path.join(app.getPath("appData"), app.name);
 
     const {response} = await dialog.showMessageBox({
       type: "warning",
@@ -589,7 +588,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
       detail: clearAppDataMessage,
     });
     if (response === 0) {
-      await fs.promises.rmdir(getAppPath, {recursive: true});
+      await fs.promises.rmdir(appDataPath, {recursive: true});
       setTimeout(() => {
         ipcRenderer.send("clear-app-settings");
       }, 1000);

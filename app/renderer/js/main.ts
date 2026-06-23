@@ -538,7 +538,7 @@ export class ServerManagerView {
   sidebarHoverEvent(
     SidebarButton: HTMLButtonElement,
     SidebarTooltip: HTMLElement,
-    addServer = false,
+    isAddServer = false,
   ): void {
     SidebarButton.addEventListener("mouseover", () => {
       SidebarTooltip.removeAttribute("style");
@@ -546,7 +546,7 @@ export class ServerManagerView {
       // This could not be handled using CSS, hence the top of the tooltip is made same
       // as that of its parent element.
       // This needs to handled only for the add server tooltip and not others.
-      if (addServer) {
+      if (isAddServer) {
         const {top} = SidebarButton.getBoundingClientRect();
         SidebarTooltip.style.top = `${top}px`;
       }
