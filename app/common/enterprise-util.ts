@@ -24,10 +24,10 @@ let configFile: boolean;
 reloadDatabase();
 
 function reloadDatabase(): void {
-  let enterpriseFile = "/etc/zulip-desktop-config/global_config.json";
-  if (process.platform === "win32") {
-    enterpriseFile = String.raw`C:\Program Files\Zulip-Desktop-Config\global_config.json`;
-  }
+  let enterpriseFile =
+    process.platform === "win32"
+      ? String.raw`C:\Program Files\Zulip-Desktop-Config\global_config.json`
+      : "/etc/zulip-desktop-config/global_config.json";
 
   enterpriseFile = path.resolve(enterpriseFile);
   if (fs.existsSync(enterpriseFile)) {
