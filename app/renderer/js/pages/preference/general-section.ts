@@ -662,7 +662,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         "input[name=spellcheck]",
       )!;
       const tagify = new Tagify(tagField, {
-        whitelist: [...languagePairs.keys()],
+        whitelist: languagePairs.keys().toArray(),
         enforceWhitelist: true,
         maxTags: 3,
         dropdown: {
