@@ -40,7 +40,7 @@ function downloadFile({
       };
       item.setSaveDialogOptions(showDialogOptions);
     } else {
-      const getTimeStamp = (): number => {
+      const getTimestamp = (): number => {
         const date = new Date();
         return date.getTime();
       };
@@ -48,7 +48,7 @@ function downloadFile({
       const formatFile = (filePath: string): string => {
         const fileExtension = path.extname(filePath);
         const baseName = path.basename(filePath, fileExtension);
-        return `${baseName}-${getTimeStamp()}${fileExtension}`;
+        return `${baseName}-${getTimestamp()}${fileExtension}`;
       };
 
       let filePath = path.join(downloadPath, item.getFilename());
