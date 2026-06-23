@@ -65,9 +65,9 @@ export function generateSelectHtml(
   idName?: string,
 ): Html {
   const optionsHtml = html``.join(
-    Object.keys(options).map(
-      (key) => html`
-        <option name="${key}" value="${key}">${options[key]}</option>
+    Object.entries(options).map(
+      ([key, text]) => html`
+        <option name="${key}" value="${key}">${text}</option>
       `,
     ),
   );
