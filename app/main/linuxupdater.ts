@@ -25,7 +25,7 @@ export async function linuxUpdateNotification(session: Session): Promise<void> {
     }
 
     const data: unknown = await response.json();
-    /* eslint-disable @typescript-eslint/naming-convention */
+    /* eslint-disable @typescript-eslint/naming-convention -- not our names */
     const latestVersion = ConfigUtil.getConfigItem("betaUpdate", false)
       ? z.array(z.object({tag_name: z.string()})).parse(data)[0].tag_name
       : z.object({tag_name: z.string()}).parse(data).tag_name;

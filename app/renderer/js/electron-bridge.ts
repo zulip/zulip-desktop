@@ -9,7 +9,7 @@ import {ipcRenderer} from "./typed-ipc-renderer.ts";
 
 type ListenerType = (...arguments_: unknown[]) => void;
 
-/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/naming-convention -- public API */
 export type ElectronBridge = {
   send_event: (eventName: string, ...arguments_: unknown[]) => boolean;
   on_event: (eventName: string, listener: ListenerType) => void;
@@ -43,7 +43,7 @@ export class BridgeEvent extends Event {
   }
 }
 
-/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/naming-convention -- public API */
 const electron_bridge: ElectronBridge = {
   send_event: (eventName: string, ...arguments_: unknown[]): boolean =>
     bridgeEvents.dispatchEvent(new BridgeEvent(eventName, arguments_)),

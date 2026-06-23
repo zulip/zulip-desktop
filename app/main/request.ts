@@ -47,7 +47,7 @@ export const _getServerSettings = async (
   }
 
   const data: unknown = await response.json();
-  /* eslint-disable @typescript-eslint/naming-convention */
+  /* eslint-disable @typescript-eslint/naming-convention -- not our names */
   const {
     realm_name,
     realm_uri,
