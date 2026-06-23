@@ -216,9 +216,7 @@ export class ServerManagerView {
       // Only available on Windows
       settingOptions.push(["flashTaskbarOnMessage", true]);
       dndPreviousSettings.flashTaskbarOnMessage = true;
-    }
-
-    if (process.platform === "darwin") {
+    } else if (process.platform === "darwin") {
       // Only available on macOS
       settingOptions.push(["dockBouncing", true]);
     }

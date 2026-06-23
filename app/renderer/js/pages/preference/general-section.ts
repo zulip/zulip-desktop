@@ -238,9 +238,8 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
   if (process.platform === "win32") {
     updateFlashTaskbar();
   }
-
   // Dock bounce on macOS
-  if (process.platform === "darwin") {
+  else if (process.platform === "darwin") {
     updateDockBouncing();
   }
 
