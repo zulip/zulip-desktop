@@ -63,7 +63,7 @@ export default class WebView {
   }
 
   static async create(properties: WebViewProperties): Promise<WebView> {
-    const $pane = generateNodeFromHtml(WebView.templateHtml(properties));
+    const $pane = generateNodeFromHtml(this.templateHtml(properties));
     assert($pane instanceof HTMLElement);
     properties.$root.append($pane);
 
