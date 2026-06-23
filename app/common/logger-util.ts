@@ -42,31 +42,24 @@ export default class Logger {
     this.nodeConsole = nodeConsole;
   }
 
-  _log(type: Level, ...arguments_: unknown[]): void {
-    arguments_.unshift(this.getTimestamp() + " |\t");
-    arguments_.unshift(type.toUpperCase() + " |");
-    this.nodeConsole[type](...arguments_);
-    console[type](...arguments_);
-  }
-
   log(...arguments_: unknown[]): void {
-    this._log("log", ...arguments_);
+    this.#log("log", ...arguments_);
   }
 
   debug(...arguments_: unknown[]): void {
-    this._log("debug", ...arguments_);
+    this.#log("debug", ...arguments_);
   }
 
   info(...arguments_: unknown[]): void {
-    this._log("info", ...arguments_);
+    this.#log("info", ...arguments_);
   }
 
   warn(...arguments_: unknown[]): void {
-    this._log("warn", ...arguments_);
+    this.#log("warn", ...arguments_);
   }
 
   error(...arguments_: unknown[]): void {
-    this._log("error", ...arguments_);
+    this.#log("error", ...arguments_);
   }
 
   getTimestamp(): string {
@@ -90,5 +83,12 @@ export default class Logger {
       const toWrite = trimmedLogs.join(os.EOL);
       await fs.promises.writeFile(file, toWrite);
     }
+  }
+
+  #log(type: Level, ...arguments_: unknown[]): void {
+    arguments_.unshift(this.getTimestamp() + " |\t");
+    arguments_.unshift(type.toUpperCase() + " |");
+    this.nodeConsole[type](...arguments_);
+    console[type](...arguments_);
   }
 }

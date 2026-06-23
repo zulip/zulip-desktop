@@ -32,7 +32,7 @@ export default class ReconnectUtil {
     this.fibonacciBackoff.backoff();
     this.fibonacciBackoff.on("ready", () => {
       (async () => {
-        if (await this._checkAndReload()) {
+        if (await this.#checkAndReload()) {
           this.fibonacciBackoff.reset();
         } else {
           this.fibonacciBackoff.backoff();
@@ -41,7 +41,7 @@ export default class ReconnectUtil {
     });
   }
 
-  async _checkAndReload(): Promise<boolean> {
+  async #checkAndReload(): Promise<boolean> {
     if (this.alreadyReloaded) {
       return true;
     }
