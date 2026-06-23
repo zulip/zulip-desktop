@@ -86,8 +86,7 @@ export default class Logger {
   }
 
   #log(type: Level, ...arguments_: unknown[]): void {
-    arguments_.unshift(this.getTimestamp() + " |\t");
-    arguments_.unshift(type.toUpperCase() + " |");
+    arguments_.unshift(type.toUpperCase() + " |", this.getTimestamp() + " |\t");
     this.nodeConsole[type](...arguments_);
     console[type](...arguments_);
   }
