@@ -205,7 +205,7 @@ export class ServerManagerView {
       ["lastActiveTab", 0],
       ["dnd", false],
       ["dndPreviousSettings", dndPreviousSettings],
-      ["downloadsPath", `${app.getPath("downloads")}`],
+      ["downloadsPath", app.getPath("downloads")],
       ["quitOnClose", false],
       ["promptDownload", false],
     ];

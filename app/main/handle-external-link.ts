@@ -116,7 +116,7 @@ export default function handleExternalLink(
 
   const downloadPath = ConfigUtil.getConfigItem(
     "downloadsPath",
-    `${app.getPath("downloads")}`,
+    app.getPath("downloads"),
   );
 
   if (isUploadsUrl(new URL(contents.getURL()).origin, url)) {
