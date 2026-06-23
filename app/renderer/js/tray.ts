@@ -189,6 +189,8 @@ export function initializeTray(serverManagerView: ServerManagerView) {
   });
 
   ipcRenderer.on("tray", (_event, newUnreadCount: number): void => {
+    unread = newUnreadCount;
+
     if (!tray) {
       return;
     }
@@ -196,11 +198,9 @@ export function initializeTray(serverManagerView: ServerManagerView) {
     // We don't want to create tray from unread messages on macOS since it already has dock badges.
     if (process.platform === "linux" || process.platform === "win32") {
       if (newUnreadCount === 0) {
-        unread = newUnreadCount;
         tray.setImage(iconPath());
         tray.setToolTip(t.__("No unread messages"));
       } else {
-        unread = newUnreadCount;
         const image = renderNativeImage(newUnreadCount);
         tray.setImage(image);
         tray.setToolTip(

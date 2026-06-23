@@ -591,9 +591,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
   }
 
   function initSpellChecker(): void {
+    const note: HTMLElement = $root.querySelector("#note")!;
     // The Electron API is a no-op on macOS and macOS default spellchecker is used.
     if (process.platform === "darwin") {
-      const note: HTMLElement = $root.querySelector("#note")!;
       note.append(t.__("On macOS, the OS spellchecker is used."));
       note.append(document.createElement("br"));
       note.append(
@@ -602,7 +602,6 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         ),
       );
     } else {
-      const note: HTMLElement = $root.querySelector("#note")!;
       note.append(
         t.__("You can select a maximum of 3 languages for spellchecking."),
       );
@@ -683,7 +682,6 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
       tagField.addEventListener("change", () => {
         if (tagField.value.length === 0) {
           ConfigUtil.setConfigItem("spellcheckerLanguages", []);
-          ipcRenderer.send("configure-spell-checker");
         } else {
           const data: unknown = JSON.parse(tagField.value);
           const spellLangs: string[] = z
@@ -691,8 +689,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
             .parse(data)
             .map((elt) => languagePairs.get(elt.value)!);
           ConfigUtil.setConfigItem("spellcheckerLanguages", spellLangs);
-          ipcRenderer.send("configure-spell-checker");
         }
+
+        ipcRenderer.send("configure-spell-checker");
       });
     }
 
