@@ -251,7 +251,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateTrayOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#tray-option .setting-control")!,
+      $element: $root.querySelector(":scope #tray-option .setting-control")!,
       value: ConfigUtil.getConfigItem("trayIcon", true),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("trayIcon", true);
@@ -264,7 +264,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateMenubarOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#menubar-option .setting-control")!,
+      $element: $root.querySelector(":scope #menubar-option .setting-control")!,
       value: ConfigUtil.getConfigItem("autoHideMenubar", false),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("autoHideMenubar", false);
@@ -277,7 +277,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateBadgeOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#badge-option .setting-control")!,
+      $element: $root.querySelector(":scope #badge-option .setting-control")!,
       value: ConfigUtil.getConfigItem("badgeOption", true),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("badgeOption", true);
@@ -290,7 +290,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateDockBouncing(): void {
     generateSettingOption({
-      $element: $root.querySelector("#dock-bounce-option .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #dock-bounce-option .setting-control",
+      )!,
       value: ConfigUtil.getConfigItem("dockBouncing", true),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("dockBouncing", true);
@@ -302,7 +304,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateFlashTaskbar(): void {
     generateSettingOption({
-      $element: $root.querySelector("#flash-taskbar-option .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #flash-taskbar-option .setting-control",
+      )!,
       value: ConfigUtil.getConfigItem("flashTaskbarOnMessage", true),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem(
@@ -317,7 +321,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function autoUpdateOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#autoupdate-option .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #autoupdate-option .setting-control",
+      )!,
       disabled: EnterpriseUtil.configItemExists("autoUpdate"),
       value: ConfigUtil.getConfigItem("autoUpdate", true),
       clickHandler() {
@@ -335,7 +341,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function betaUpdateOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#betaupdate-option .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #betaupdate-option .setting-control",
+      )!,
       value: ConfigUtil.getConfigItem("betaUpdate", false),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("betaUpdate", false);
@@ -349,7 +357,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateSilentOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#silent-option .setting-control")!,
+      $element: $root.querySelector(":scope #silent-option .setting-control")!,
       value: ConfigUtil.getConfigItem("silent", false),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("silent", true);
@@ -368,7 +376,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
   function showDesktopNotification(): void {
     generateSettingOption({
       $element: $root.querySelector(
-        "#show-notification-option .setting-control",
+        ":scope #show-notification-option .setting-control",
       )!,
       value: ConfigUtil.getConfigItem("showNotification", true),
       clickHandler() {
@@ -381,7 +389,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateSidebarOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#sidebar-option .setting-control")!,
+      $element: $root.querySelector(":scope #sidebar-option .setting-control")!,
       value: ConfigUtil.getConfigItem("showSidebar", true),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("showSidebar", true);
@@ -394,7 +402,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateStartAtLoginOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#startAtLogin-option .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #startAtLogin-option .setting-control",
+      )!,
       value: ConfigUtil.getConfigItem("startAtLogin", false),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("startAtLogin", false);
@@ -407,7 +417,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateQuitOnCloseOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#quitOnClose-option .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #quitOnClose-option .setting-control",
+      )!,
       value: ConfigUtil.getConfigItem("quitOnClose", false),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("quitOnClose", false);
@@ -420,7 +432,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
   function enableSpellchecker(): void {
     generateSettingOption({
       $element: $root.querySelector(
-        "#enable-spellchecker-option .setting-control",
+        ":scope #enable-spellchecker-option .setting-control",
       )!,
       value: ConfigUtil.getConfigItem("enableSpellchecker", true),
       clickHandler() {
@@ -442,7 +454,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
   function enableErrorReporting(): void {
     generateSettingOption({
       $element: $root.querySelector(
-        "#enable-error-reporting .setting-control",
+        ":scope #enable-error-reporting .setting-control",
       )!,
       value: ConfigUtil.getConfigItem("errorReporting", true),
       clickHandler() {
@@ -488,7 +500,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function minimizeOnStart(): void {
     generateSettingOption({
-      $element: $root.querySelector("#start-minimize-option .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #start-minimize-option .setting-control",
+      )!,
       value: ConfigUtil.getConfigItem("startMinimized", false),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("startMinimized", false);
@@ -500,7 +514,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function addCustomCss(): void {
     const customCssButton = $root.querySelector(
-      "#add-custom-css .custom-css-button",
+      ":scope #add-custom-css .custom-css-button",
     )!;
     customCssButton.addEventListener("click", () => {
       void customCssDialog();
@@ -541,7 +555,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function downloadFolder(): void {
     const downloadFolder = $root.querySelector(
-      "#download-folder .download-folder-button",
+      ":scope #download-folder .download-folder-button",
     )!;
     downloadFolder.addEventListener("click", () => {
       void downloadFolderDialog();
@@ -550,7 +564,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updatePromptDownloadOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#prompt-download .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #prompt-download .setting-control",
+      )!,
       value: ConfigUtil.getConfigItem("promptDownload", false),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("promptDownload", false);
@@ -583,7 +599,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function factoryReset(): void {
     const factoryResetButton = $root.querySelector(
-      "#factory-reset-option .factory-reset-button",
+      ":scope #factory-reset-option .factory-reset-button",
     )!;
     factoryResetButton.addEventListener("click", () => {
       void factoryResetSettings();
