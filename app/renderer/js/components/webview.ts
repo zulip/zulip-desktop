@@ -304,8 +304,8 @@ export default class WebView {
   }
 
   private getBadgeCount(title: string): number {
-    const messageCountInTitle = /^\((\d+)\)/v.exec(title);
-    return messageCountInTitle ? Number(messageCountInTitle[1]) : 0;
+    const messageCountInTitle = /^\((?<count>\d+)\)/v.exec(title);
+    return messageCountInTitle ? Number(messageCountInTitle.groups!.count) : 0;
   }
 
   private show(): void {
