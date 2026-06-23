@@ -18,7 +18,7 @@ const logger = new Logger({
 
 const generateFilePath = (url: string): string => {
   const directory = `${app.getPath("userData")}/server-icons`;
-  const extension = path.extname(url).split("?")[0];
+  const extension = path.extname(new URL(url).pathname);
 
   let hash = 5381;
   let {length} = url;
