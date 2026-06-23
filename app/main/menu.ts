@@ -723,10 +723,9 @@ function getPreviousServer(tabs: TabData[], activeTabIndex: number): number {
 }
 
 export function setMenu(properties: MenuProperties): void {
-  const tpl =
-    process.platform === "darwin"
-      ? getDarwinTpl(properties)
-      : getOtherTpl(properties);
+  const tpl = (process.platform === "darwin" ? getDarwinTpl : getOtherTpl)(
+    properties,
+  );
   const menu = Menu.buildFromTemplate(tpl);
   Menu.setApplicationMenu(menu);
 }
