@@ -654,7 +654,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         maxTags: 3,
         dropdown: {
           enabled: 0,
-          maxItems: Number.POSITIVE_INFINITY,
+          maxItems: Infinity,
           closeOnSelect: false,
           highlightFirst: true,
           position: "manual",
