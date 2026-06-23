@@ -46,6 +46,7 @@ const xoConfig: FlatXoConfig = [
         "error",
         {disallowTypeAnnotations: false},
       ],
+      "@typescript-eslint/member-ordering": "off",
       "@typescript-eslint/no-dynamic-delete": "off",
       "@typescript-eslint/no-restricted-types": "off",
       "@typescript-eslint/no-unused-vars": [

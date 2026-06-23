@@ -42,6 +42,12 @@ export default class Logger {
     this.nodeConsole = nodeConsole;
   }
 
+  #log(type: Level, ...arguments_: unknown[]): void {
+    arguments_.unshift(type.toUpperCase() + " |", this.getTimestamp() + " |\t");
+    this.nodeConsole[type](...arguments_);
+    console[type](...arguments_);
+  }
+
   log(...arguments_: unknown[]): void {
     this.#log("log", ...arguments_);
   }
@@ -83,11 +89,5 @@ export default class Logger {
       const toWrite = trimmedLogs.join(os.EOL);
       await fs.promises.writeFile(file, toWrite);
     }
-  }
-
-  #log(type: Level, ...arguments_: unknown[]): void {
-    arguments_.unshift(type.toUpperCase() + " |", this.getTimestamp() + " |\t");
-    this.nodeConsole[type](...arguments_);
-    console[type](...arguments_);
   }
 }

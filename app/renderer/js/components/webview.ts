@@ -102,13 +102,14 @@ export default class WebView {
     return new WebView(properties, $pane, $webview, webContentsId);
   }
 
-  badgeCount = 0;
-  loading = true;
   private readonly $webviewsContainer: DOMTokenList;
   private readonly $unsupported: HTMLElement;
   private readonly $unsupportedMessage: HTMLElement;
   private readonly $unsupportedDismiss: HTMLElement;
   private unsupportedDismissed = false;
+
+  badgeCount = 0;
+  loading = true;
 
   private constructor(
     readonly properties: WebViewProperties,
@@ -128,103 +129,6 @@ export default class WebView {
     )!;
 
     this.registerListeners();
-  }
-
-  destroy(): void {
-    this.$pane.remove();
-  }
-
-  getWebContents(): WebContents {
-    return remote.webContents.fromId(this.webContentsId)!;
-  }
-
-  showNotificationSettings(): void {
-    this.send("show-notification-settings");
-    this.focus();
-  }
-
-  focus(): void {
-    this.$webview.focus();
-    // Work around https://github.com/electron/electron/issues/31918
-    this.$webview.shadowRoot?.querySelector("iframe")?.focus();
-  }
-
-  hide(): void {
-    this.$pane.classList.remove("active");
-  }
-
-  load(): void {
-    this.show();
-  }
-
-  zoomIn(): void {
-    this.getWebContents().zoomLevel += 0.5;
-  }
-
-  zoomOut(): void {
-    this.getWebContents().zoomLevel -= 0.5;
-  }
-
-  zoomActualSize(): void {
-    this.getWebContents().zoomLevel = 0;
-  }
-
-  logOut(): void {
-    this.send("logout");
-  }
-
-  showKeyboardShortcuts(): void {
-    this.send("show-keyboard-shortcuts");
-    this.focus();
-  }
-
-  openDevTools(): void {
-    this.getWebContents().openDevTools();
-  }
-
-  back(): void {
-    if (this.getWebContents().navigationHistory.canGoBack()) {
-      this.getWebContents().navigationHistory.goBack();
-      this.focus();
-    }
-  }
-
-  canGoBackButton(): void {
-    const $backButton = document.querySelector(
-      "#actions-container #back-action",
-    )!;
-    $backButton.classList.toggle(
-      "disable",
-      !this.getWebContents().navigationHistory.canGoBack(),
-    );
-  }
-
-  forward(): void {
-    if (this.getWebContents().navigationHistory.canGoForward()) {
-      this.getWebContents().navigationHistory.goForward();
-    }
-  }
-
-  reload(): void {
-    this.hide();
-    // Shows the loading indicator till the webview is reloaded
-    this.$webviewsContainer.remove("loaded");
-    this.loading = true;
-    this.properties.switchLoading(true, this.properties.url);
-    this.getWebContents().reload();
-  }
-
-  setUnsupportedMessage(unsupportedMessage: string | undefined) {
-    this.$unsupported.hidden =
-      unsupportedMessage === undefined || this.unsupportedDismissed;
-    this.$unsupportedMessage.textContent = unsupportedMessage ?? "";
-  }
-
-  send<Channel extends keyof RendererMessage>(
-    channel: Channel,
-    ...arguments_: Parameters<RendererMessage[Channel]>
-  ): void {
-    ipcRenderer.send("forward-to", this.webContentsId, channel, ...arguments_);
   }
 
   private registerListeners(): void {
@@ -336,5 +240,102 @@ export default class WebView {
       (async () =>
         this.getWebContents().insertCSS(fs.readFileSync(customCss, "utf8")))();
     }
+  }
+
+  destroy(): void {
+    this.$pane.remove();
+  }
+
+  getWebContents(): WebContents {
+    return remote.webContents.fromId(this.webContentsId)!;
+  }
+
+  showNotificationSettings(): void {
+    this.send("show-notification-settings");
+    this.focus();
+  }
+
+  focus(): void {
+    this.$webview.focus();
+    // Work around https://github.com/electron/electron/issues/31918
+    this.$webview.shadowRoot?.querySelector("iframe")?.focus();
+  }
+
+  hide(): void {
+    this.$pane.classList.remove("active");
+  }
+
+  load(): void {
+    this.show();
+  }
+
+  zoomIn(): void {
+    this.getWebContents().zoomLevel += 0.5;
+  }
+
+  zoomOut(): void {
+    this.getWebContents().zoomLevel -= 0.5;
+  }
+
+  zoomActualSize(): void {
+    this.getWebContents().zoomLevel = 0;
+  }
+
+  logOut(): void {
+    this.send("logout");
+  }
+
+  showKeyboardShortcuts(): void {
+    this.send("show-keyboard-shortcuts");
+    this.focus();
+  }
+
+  openDevTools(): void {
+    this.getWebContents().openDevTools();
+  }
+
+  back(): void {
+    if (this.getWebContents().navigationHistory.canGoBack()) {
+      this.getWebContents().navigationHistory.goBack();
+      this.focus();
+    }
+  }
+
+  canGoBackButton(): void {
+    const $backButton = document.querySelector(
+      "#actions-container #back-action",
+    )!;
+    $backButton.classList.toggle(
+      "disable",
+      !this.getWebContents().navigationHistory.canGoBack(),
+    );
+  }
+
+  forward(): void {
+    if (this.getWebContents().navigationHistory.canGoForward()) {
+      this.getWebContents().navigationHistory.goForward();
+    }
+  }
+
+  reload(): void {
+    this.hide();
+    // Shows the loading indicator till the webview is reloaded
+    this.$webviewsContainer.remove("loaded");
+    this.loading = true;
+    this.properties.switchLoading(true, this.properties.url);
+    this.getWebContents().reload();
+  }
+
+  setUnsupportedMessage(unsupportedMessage: string | undefined) {
+    this.$unsupported.hidden =
+      unsupportedMessage === undefined || this.unsupportedDismissed;
+    this.$unsupportedMessage.textContent = unsupportedMessage ?? "";
+  }
+
+  send<Channel extends keyof RendererMessage>(
+    channel: Channel,
+    ...arguments_: Parameters<RendererMessage[Channel]>
+  ): void {
+    ipcRenderer.send("forward-to", this.webContentsId, channel, ...arguments_);
   }
 }
