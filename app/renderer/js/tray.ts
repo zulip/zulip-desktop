@@ -70,11 +70,12 @@ const renderCanvas = function (unreadCount: number): HTMLCanvasElement {
   const size = config.size * config.pixelRatio;
   const padding = size * 0.05;
   const center = size / 2;
-  const hasCount = config.showUnreadCount && config.unreadCount;
-  const color = config.unreadCount ? config.unreadColor : config.readColor;
-  const backgroundColor = config.unreadCount
-    ? config.unreadBackgroundColor
-    : config.readBackgroundColor;
+  const hasCount = config.showUnreadCount && config.unreadCount > 0;
+  const color = config.unreadCount > 0 ? config.unreadColor : config.readColor;
+  const backgroundColor =
+    config.unreadCount > 0
+      ? config.unreadBackgroundColor
+      : config.readBackgroundColor;
 
   const canvas = document.createElement("canvas");
   canvas.width = size;

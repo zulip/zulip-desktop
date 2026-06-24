@@ -42,8 +42,6 @@ sentryInit();
 
 let mainWindowState: windowStateKeeper.State;
 
-// Prevent window being garbage collected
-let mainWindow: BrowserWindow;
 let badgeCount: number;
 
 let isQuitting = false;
@@ -58,15 +56,6 @@ const appIcon = path.join(publicPath, "resources/Icon");
 
 const iconPath = (): string =>
   appIcon + (process.platform === "win32" ? ".ico" : ".png");
-
-// Toggle the app window
-const toggleApp = (): void => {
-  if (!mainWindow.isVisible() || mainWindow.isMinimized()) {
-    mainWindow.show();
-  } else {
-    mainWindow.hide();
-  }
-};
 
 function createMainWindow(): BrowserWindow {
   // Load the previous state with fallback to defaults
@@ -136,10 +125,8 @@ function createMainWindow(): BrowserWindow {
   });
 
   //  To destroy tray icon when navigate to a new URL
-  win.webContents.on("will-navigate", (event) => {
-    if (event) {
-      send(win.webContents, "destroytray");
-    }
+  win.webContents.on("will-navigate", () => {
+    send(win.webContents, "destroytray");
   });
 
   // Let us register listeners on the window, so we can update the state
@@ -175,13 +162,11 @@ function createMainWindow(): BrowserWindow {
   remoteMain.initialize();
 
   app.on("second-instance", () => {
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) {
-        mainWindow.restore();
-      }
-
-      mainWindow.show();
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore();
     }
+
+    mainWindow.show();
   });
 
   ipcMain.on(
@@ -262,7 +247,7 @@ function createMainWindow(): BrowserWindow {
   AppMenu.setMenu({
     tabs: [],
   });
-  mainWindow = createMainWindow();
+  const mainWindow = createMainWindow();
 
   // Auto-hide menu bar on Windows + Linux
   if (process.platform !== "darwin") {
@@ -379,7 +364,11 @@ function createMainWindow(): BrowserWindow {
   });
 
   ipcMain.on("toggle-app", () => {
-    toggleApp();
+    if (!mainWindow.isVisible() || mainWindow.isMinimized()) {
+      mainWindow.show();
+    } else {
+      mainWindow.hide();
+    }
   });
 
   ipcMain.on("toggle-badge-option", () => {

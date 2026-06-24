@@ -117,7 +117,8 @@ export const contextMenu = (
     },
   ];
 
-  if (properties.misspelledWord) {
+  console.log({word: properties.misspelledWord});
+  if (properties.misspelledWord !== "") {
     if (properties.dictionarySuggestions.length > 0) {
       const suggestions: MenuItemConstructorOptions[] =
         properties.dictionarySuggestions.map((suggestion: string) =>

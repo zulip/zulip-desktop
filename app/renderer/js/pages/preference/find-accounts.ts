@@ -8,7 +8,7 @@ type FindAccountsProperties = {
 };
 
 async function findAccounts(url: string): Promise<void> {
-  if (!url) {
+  if (url === "") {
     return;
   }
 

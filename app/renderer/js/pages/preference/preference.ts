@@ -106,7 +106,7 @@ export class PreferenceView {
   // Handle toggling and reflect changes in preference page
   private handleToggle(elementName: string, state = false): void {
     const inputSelector = `#${elementName} .action .switch input`;
-    const input: HTMLInputElement = this.$shadow.querySelector(inputSelector)!;
+    const input = this.$shadow.querySelector<HTMLInputElement>(inputSelector);
     if (input) {
       input.checked = state;
     }

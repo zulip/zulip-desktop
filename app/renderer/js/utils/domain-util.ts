@@ -86,11 +86,11 @@ export async function addDomain(server: {
   alias: string;
   icon?: string;
 }): Promise<void> {
-  if (server.icon) {
+  if (server.icon === undefined) {
+    server.icon = defaultIconSentinel;
+  } else {
     const localIconUrl = await saveServerIcon(server.icon);
     server.icon = localIconUrl;
-  } else {
-    server.icon = defaultIconSentinel;
   }
 
   serverConfigSchema.parse(server);
@@ -154,11 +154,10 @@ export async function updateSavedServer(
 ): Promise<ServerConfig> {
   // Does not promise successful update
   const serverConfig = getDomain(index);
-  const oldIcon = serverConfig.icon;
   try {
     const newServerConfig = await checkDomain(url, true);
     const localIconUrl = await saveServerIcon(newServerConfig.icon);
-    if (!oldIcon || localIconUrl !== defaultIconSentinel) {
+    if (localIconUrl !== defaultIconSentinel) {
       newServerConfig.icon = localIconUrl;
       updateDomain(index, newServerConfig);
       reloadDatabase();

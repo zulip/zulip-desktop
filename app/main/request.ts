@@ -23,7 +23,7 @@ const generateFilePath = (url: string): string => {
   let hash = 5381;
   let {length} = url;
 
-  while (length) {
+  while (length > 0) {
     // eslint-disable-next-line no-bitwise, unicorn/prefer-code-point
     hash = (hash * 33) ^ url.charCodeAt(--length);
   }

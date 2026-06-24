@@ -277,7 +277,7 @@ function getHelpSubmenu(): MenuItemConstructorOptions[] {
     },
     {
       label: t.__("Help Center"),
-      click(focusedWindow) {
+      click(_item, focusedWindow) {
         if (focusedWindow) {
           sendAction("open-help");
         }

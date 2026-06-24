@@ -489,7 +489,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
     // The next three lines set the selected language visible on the dropdown button
     let language = ConfigUtil.getConfigItem("appLanguage", "en");
     language =
-      language && langMenu.options.namedItem(language) ? language : "en";
+      language !== null && langMenu.options.namedItem(language)
+        ? language
+        : "en";
     langMenu.options.namedItem(language)!.selected = true;
 
     langMenu.addEventListener("change", () => {
@@ -521,7 +523,8 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
   }
 
   function showCustomCssPath(): void {
-    if (!ConfigUtil.getConfigItem("customCSS", null)) {
+    const customCss = ConfigUtil.getConfigItem("customCSS", null);
+    if (customCss === null || customCss === false) {
       const cssPath: HTMLElement = $root.querySelector("#remove-custom-css")!;
       cssPath.style.display = "none";
     }

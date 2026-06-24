@@ -324,7 +324,7 @@ export default class WebView {
     (async () => this.getWebContents().insertCSS(preloadCss))();
 
     const customCss = ConfigUtil.getConfigItem("customCSS", null);
-    if (customCss) {
+    if (customCss !== null && customCss !== false) {
       if (!fs.existsSync(customCss)) {
         ConfigUtil.setConfigItem("customCSS", null);
 

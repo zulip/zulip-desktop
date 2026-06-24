@@ -26,7 +26,7 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
     return;
   }
 
-  if (process.platform === "linux" && !process.env.APPIMAGE) {
+  if (process.platform === "linux" && !("APPIMAGE" in process.env)) {
     const ses = session.fromPartition("persist:webviewsession");
     await linuxUpdateNotification(ses);
     return;

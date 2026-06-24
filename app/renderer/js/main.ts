@@ -526,7 +526,7 @@ export class ServerManagerView {
       return;
     }
 
-    $altIcon.textContent = realmName.charAt(0) || "Z";
+    $altIcon.textContent = realmName === "" ? "Z" : realmName.charAt(0);
     $altIcon.classList.add("server-icon", "alt-icon");
 
     $img.remove();
@@ -803,7 +803,7 @@ export class ServerManagerView {
     let messageCountAll = 0;
     await Promise.all(
       this.tabs.map(async (tab) => {
-        if (tab && tab instanceof ServerTab && tab.updateBadge) {
+        if (tab instanceof ServerTab) {
           const count = (await tab.webview).badgeCount;
           messageCountAll += count;
           tab.updateBadge(count);
@@ -964,9 +964,7 @@ export class ServerManagerView {
           const tab = this.tabs[this.activeTabIndex];
           if (tab instanceof ServerTab) {
             const activeWebview = await tab.webview;
-            if (activeWebview) {
-              listener(activeWebview);
-            }
+            listener(activeWebview);
           }
         })();
       });
