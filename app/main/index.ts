@@ -419,8 +419,11 @@ function createMainWindow(): BrowserWindow {
 
   ipcMain.on("update-menu", (_event, properties: MenuProperties) => {
     AppMenu.setMenu(properties);
-    if (properties.activeTabIndex !== undefined) {
-      const activeTab = properties.tabs[properties.activeTabIndex];
+    let activeTab;
+    if (
+      properties.activeTabIndex !== undefined &&
+      (activeTab = properties.tabs[properties.activeTabIndex]) !== undefined
+    ) {
       mainWindow.setTitle(`Zulip - ${activeTab.label}`);
     }
   });

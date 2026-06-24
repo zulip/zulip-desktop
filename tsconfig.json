@@ -15,6 +15,7 @@
     "resolveJsonModule": true,
     "strict": true,
     "noImplicitOverride": true,
+    "noUncheckedIndexedAccess": true,
     "types": ["vite/client"]
   }
 }

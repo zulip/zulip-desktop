@@ -134,6 +134,10 @@ function sendAction<Channel extends keyof RendererMessage>(
 ): void {
   const win = BrowserWindow.getAllWindows()[0];
 
+  if (win === undefined) {
+    return;
+  }
+
   if (process.platform === "darwin") {
     win.restore();
   }

@@ -700,7 +700,8 @@ export class ServerManagerView {
       return;
     }
 
-    if (this.activeTabIndex !== -1) {
+    const oldTab = this.tabs[this.activeTabIndex];
+    if (oldTab !== undefined) {
       if (this.activeTabIndex === index) {
         return;
       }
@@ -708,13 +709,13 @@ export class ServerManagerView {
       if (hideOldTab) {
         // If old tab is functional tab Settings, remove focus from the settings icon at sidebar bottom
         if (
-          this.tabs[this.activeTabIndex].properties.role === "function" &&
-          this.tabs[this.activeTabIndex].properties.page === "Settings"
+          oldTab.properties.role === "function" &&
+          oldTab.properties.page === "Settings"
         ) {
           this.$settingsButton.classList.remove("active");
         }
 
-        await this.tabs[this.activeTabIndex].deactivate();
+        await oldTab.deactivate();
       }
     }
 
@@ -753,7 +754,10 @@ export class ServerManagerView {
 
   async destroyFunctionalTab(page: TabPage, index: number): Promise<void> {
     const tab = this.tabs[index];
-    if (tab instanceof ServerTab && (await tab.webview).loading) {
+    if (
+      tab === undefined ||
+      (tab instanceof ServerTab && (await tab.webview).loading)
+    ) {
       return;
     }
 
@@ -784,8 +788,11 @@ export class ServerManagerView {
 
   async reloadView(): Promise<void> {
     // Save and remember the index of last active tab so that we can use it later
-    const lastActiveTab = this.tabs[this.activeTabIndex].properties.index;
-    ConfigUtil.setConfigItem("lastActiveTab", lastActiveTab);
+    const tab = this.tabs[this.activeTabIndex];
+    if (tab !== undefined) {
+      const lastActiveTab = tab.properties.index;
+      ConfigUtil.setConfigItem("lastActiveTab", lastActiveTab);
+    }
 
     // Destroy the current view and re-initiate it
     this.destroyView();

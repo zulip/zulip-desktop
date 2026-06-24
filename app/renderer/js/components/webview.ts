@@ -154,7 +154,11 @@ export default class WebView {
     webContents.on("page-favicon-updated", (_event, favicons) => {
       // This returns a string of favicons URL. If there is a PM counts in unread messages then the URL would be like
       // https://chat.zulip.org/static/images/favicon/favicon-pms.png
-      if (favicons[0].indexOf("favicon-pms") > 0 && app.dock !== undefined) {
+      if (
+        favicons[0] !== undefined &&
+        favicons[0].indexOf("favicon-pms") > 0 &&
+        app.dock !== undefined
+      ) {
         // This api is only supported on macOS
         app.dock.setBadge("●");
         // Bounce the dock

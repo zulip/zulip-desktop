@@ -28,7 +28,9 @@ export async function linuxUpdateNotification(session: Session): Promise<void> {
     /* eslint-disable @typescript-eslint/naming-convention -- not our names */
     const latestVersion = (
       ConfigUtil.getConfigItem("betaUpdate", false)
-        ? z.array(z.object({tag_name: z.string()})).parse(data)[0]
+        ? z
+            .tuple([z.object({tag_name: z.string()})], z.unknown())
+            .parse(data)[0]
         : z.object({tag_name: z.string()}).parse(data)
     ).tag_name;
     /* eslint-enable @typescript-eslint/naming-convention */

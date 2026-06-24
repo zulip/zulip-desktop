@@ -16,7 +16,7 @@ export function html(
   template: TemplateStringsArray,
   ...values: unknown[]
 ): Html {
-  let outHtml = template[0];
+  let outHtml = template[0]!;
   for (const [index, value] of values.entries()) {
     outHtml += value instanceof Html ? value.html : htmlEscape(String(value));
     outHtml += template[index + 1];
