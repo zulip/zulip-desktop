@@ -10,7 +10,7 @@ import {z} from "zod";
 
 import Logger from "../common/logger-util.ts";
 import * as Messages from "../common/messages.ts";
-import type {ServerConfig} from "../common/types.ts";
+import type {ServerSettings} from "../common/types.ts";
 
 /* Request: domain-util */
 
@@ -42,7 +42,7 @@ const generateFilePath = (url: string): string => {
 export const _getServerSettings = async (
   domain: string,
   session: Session,
-): Promise<ServerConfig> => {
+): Promise<ServerSettings> => {
   const response = await session.fetch(domain + "/api/v1/server_settings");
   if (!response.ok) {
     throw new Error(Messages.invalidZulipServerError(domain));

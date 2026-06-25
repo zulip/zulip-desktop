@@ -1,5 +1,5 @@
 import type {DndSettings} from "./dnd-util.ts";
-import type {MenuProperties, ServerConfig} from "./types.ts";
+import type {MenuProperties, ServerSettings} from "./types.ts";
 
 export type MainMessage = {
   "clear-app-settings": () => void;
@@ -13,8 +13,8 @@ export type MainMessage = {
   "realm-icon-changed": (serverURL: string, iconURL: string) => void;
   "realm-name-changed": (serverURL: string, realmName: string) => void;
   "reload-full-app": () => void;
-  "save-last-tab": (index: number) => void;
-  "switch-server-tab": (index: number) => void;
+  "save-last-tab": (tabId: string) => void;
+  "switch-server-tab": (serverId: string) => void;
   "toggle-app": () => void;
   "toggle-badge-option": (newValue: boolean) => void;
   "toggle-menubar": (showMenubar: boolean) => void;
@@ -26,7 +26,7 @@ export type MainMessage = {
 };
 
 export type MainCall = {
-  "get-server-settings": (domain: string) => ServerConfig;
+  "get-server-settings": (domain: string) => ServerSettings;
   "is-online": (url: string) => boolean;
   "poll-clipboard": (key: Uint8Array, sig: Uint8Array) => string | undefined;
   "save-server-icon": (iconURL: string) => string | null;
@@ -63,7 +63,7 @@ export type RendererMessage = {
   "set-idle": () => void;
   "show-keyboard-shortcuts": () => void;
   "show-notification-settings": () => void;
-  "switch-server-tab": (index: number) => void;
+  "switch-server-tab": (serverId: string) => void;
   "tab-devtools": () => void;
   "toggle-autohide-menubar": (
     autoHideMenubar: boolean,
