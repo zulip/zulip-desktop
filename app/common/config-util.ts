@@ -35,13 +35,12 @@ export function getConfigItem<Key extends keyof Config>(
   }
 
   try {
-    const typedSchemata: {
-      [Key in keyof Config]: z.ZodType<
-        z.output<ConfigSchemata[Key]>,
-        z.input<ConfigSchemata[Key]>
-      >;
-    } = configSchemata; // https://github.com/colinhacks/zod/issues/5154
-    return typedSchemata[key].parse(database.getObject<unknown>(`/${key}`));
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion -- https://github.com/colinhacks/zod/issues/5154
+    const schema = configSchemata[key] as unknown as z.ZodType<
+      z.output<ConfigSchemata[Key]>,
+      z.input<ConfigSchemata[Key]>
+    >;
+    return schema.parse(database.getObject<unknown>(`/${key}`));
   } catch (error: unknown) {
     if (!(error instanceof DataError)) {
       throw error;

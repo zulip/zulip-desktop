@@ -33,7 +33,7 @@ function downloadFile({
   failed(state: string): void;
 }) {
   contents.downloadURL(url);
-  contents.session.once("will-download", (_event, item) => {
+  contents.session.once("will-download", (_downloadEvent, item) => {
     if (ConfigUtil.getConfigItem("promptDownload", false)) {
       const showDialogOptions: SaveDialogOptions = {
         defaultPath: path.join(downloadPath, item.getFilename()),

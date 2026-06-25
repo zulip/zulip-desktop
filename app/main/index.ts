@@ -295,7 +295,7 @@ function createMainWindow(): BrowserWindow {
     "certificate-error",
     (
       event,
-      webContents,
+      sourceWebContents,
       urlString,
       error,
       certificate,
@@ -317,7 +317,7 @@ function createMainWindow(): BrowserWindow {
   );
 
   ses.setPermissionRequestHandler(
-    (webContents, permission, callback, details) => {
+    (sourceWebContents, permission, callback, details) => {
       const {origin} = new URL(details.requestingUrl);
       const permissionCallbackId = nextPermissionCallbackId++;
       permissionCallbacks.set(permissionCallbackId, callback);
@@ -326,9 +326,9 @@ function createMainWindow(): BrowserWindow {
         "permission-request",
         {
           webContentsId:
-            webContents.id === mainWindow.webContents.id
+            sourceWebContents.id === mainWindow.webContents.id
               ? null
-              : webContents.id,
+              : sourceWebContents.id,
           origin,
           permission,
         },

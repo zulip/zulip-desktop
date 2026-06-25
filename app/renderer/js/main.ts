@@ -3,7 +3,7 @@ import "./zod-config.ts"; // eslint-disable-line import-x/no-unassigned-import
 import {clipboard} from "electron/common";
 import path from "node:path";
 import process from "node:process";
-import url from "node:url";
+import {pathToFileURL} from "node:url";
 
 import {Menu, app, dialog, session} from "@electron/remote";
 import * as remote from "@electron/remote";
@@ -407,20 +407,20 @@ export class ServerManagerView {
               this.loading.delete(url);
             }
 
-            const tab = this.tabs[this.activeTabIndex];
+            const activeTab = this.tabs[this.activeTabIndex];
             this.showLoading(
-              tab instanceof ServerTab &&
-                this.loading.has((await tab.webview).properties.url),
+              activeTab instanceof ServerTab &&
+                this.loading.has((await activeTab.webview).properties.url),
             );
           })();
         },
-        onNetworkError: (index: number) => {
+        onNetworkError: () => {
           void this.openNetworkTroubleshooting(index);
         },
         onTitleChange: () => {
           void this.updateBadge();
         },
-        preload: url.pathToFileURL(path.join(bundlePath, "preload.cjs")).href,
+        preload: pathToFileURL(path.join(bundlePath, "preload.cjs")).href,
         unsupportedMessage: DomainUtil.getUnsupportedMessage(server),
       }),
     });
@@ -1168,7 +1168,7 @@ export class ServerManagerView {
 
     ipcRenderer.on("render-taskbar-icon", (event, messageCount: number) => {
       // Create a canvas from unread message counts
-      function createOverlayIcon(messageCount: number): HTMLCanvasElement {
+      function createOverlayIcon(): HTMLCanvasElement {
         const canvas = document.createElement("canvas");
         canvas.height = 128;
         canvas.width = 128;
@@ -1196,7 +1196,7 @@ export class ServerManagerView {
 
       ipcRenderer.send(
         "update-taskbar-icon",
-        createOverlayIcon(messageCount).toDataURL(),
+        createOverlayIcon().toDataURL(),
         String(messageCount),
       );
     });

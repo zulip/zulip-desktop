@@ -28,7 +28,7 @@ type WebViewProperties = {
   role: TabRole;
   isActive: () => boolean;
   switchLoading: (loading: boolean, url: string) => void;
-  onNetworkError: (index: number) => void;
+  onNetworkError: () => void;
   preload?: string;
   onTitleChange: () => void;
   hasPermission?: (origin: string, permission: string) => boolean;
@@ -276,7 +276,7 @@ export default class WebView {
       if (hasConnectivityError) {
         console.error("error", errorDescription);
         if (!this.properties.url.includes("network.html")) {
-          this.properties.onNetworkError(this.properties.index);
+          this.properties.onNetworkError();
         }
       }
     });

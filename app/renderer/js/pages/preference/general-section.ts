@@ -555,10 +555,10 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
   }
 
   function downloadFolder(): void {
-    const downloadFolder = $root.querySelector(
+    const downloadFolderButton = $root.querySelector(
       ":scope #download-folder .download-folder-button",
     )!;
-    downloadFolder.addEventListener("click", () => {
+    downloadFolderButton.addEventListener("click", () => {
       void downloadFolderDialog();
     });
   }
