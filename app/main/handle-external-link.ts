@@ -13,6 +13,7 @@ import * as ConfigUtil from "../common/config-util.ts";
 import * as LinkUtil from "../common/link-util.ts";
 import * as t from "../common/translation-util.ts";
 
+import {isConfiguredOrgUrl} from "./org-url-cache.ts";
 import {send} from "./typed-ipc-main.ts";
 
 function isUploadsUrl(server: string, url: URL): boolean {
@@ -159,6 +160,9 @@ export default function handleExternalLink(
         }
       },
     });
+  } else if (isConfiguredOrgUrl(url)) {
+    // URL belongs to a configured organization - navigate there in-app
+    send(mainContents, "navigate-to-org-url", url.href);
   } else {
     (async () => LinkUtil.openBrowser(url))();
   }
