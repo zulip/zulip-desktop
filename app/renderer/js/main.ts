@@ -11,7 +11,6 @@ import * as Sentry from "@sentry/electron/renderer";
 
 import type {Config} from "../../common/config-util.ts";
 import * as ConfigUtil from "../../common/config-util.ts";
-import * as DNDUtil from "../../common/dnd-util.ts";
 import type {DndSettings} from "../../common/dnd-util.ts";
 import * as EnterpriseUtil from "../../common/enterprise-util.ts";
 import {html} from "../../common/html.ts";
@@ -446,15 +445,37 @@ export class ServerManagerView {
   }
 
   initLeftSidebarEvents(): void {
-    this.$dndButton.addEventListener("click", () => {
-      const dndUtil = DNDUtil.toggle();
-      ipcRenderer.send(
-        "forward-message",
-        "toggle-dnd",
-        dndUtil.dnd,
-        dndUtil.newSettings,
-      );
+    const $dndDropdown = document.querySelector<HTMLElement>("#dnd-dropdown")!;
+
+    $dndDropdown.addEventListener("mouseleave", () => {
+      $dndDropdown.classList.add("hidden");
+      this.$dndTooltip.classList.remove("hidden");
     });
+
+    this.$dndButton.addEventListener("click", () => {
+      const isDndOn = ConfigUtil.getConfigItem("dnd", false);
+      if (isDndOn) {
+        ipcRenderer.send("forward-message", "toggle-dnd-request", undefined);
+        return;
+      }
+
+      $dndDropdown.classList.toggle("hidden");
+      this.$dndTooltip.classList.add("hidden");
+    });
+
+    for (const item of document.querySelectorAll<HTMLElement>(
+      ".dnd-dropdown-item",
+    )) {
+      item.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const value = item.dataset.minutes;
+        const duration = value === "forever" ? undefined : Number(value);
+        ipcRenderer.send("forward-message", "toggle-dnd-request", duration);
+        $dndDropdown.classList.add("hidden");
+        this.$dndTooltip.classList.remove("hidden");
+      });
+    }
+
     this.$reloadButton.addEventListener("click", async () => {
       const tab = this.tabs[this.activeTabIndex];
       if (tab instanceof ServerTab) (await tab.webview).reload();
@@ -1217,6 +1238,23 @@ window.addEventListener("load", async () => {
             <span id="dnd-tooltip" style="display: none"
               >${t.__("Do Not Disturb")}</span
             >
+            <div id="dnd-dropdown" class="dnd-dropdown hidden">
+              <div class="dnd-dropdown-item" data-minutes="30">
+                ${t.__("30 minutes")}
+              </div>
+              <div class="dnd-dropdown-item" data-minutes="60">
+                ${t.__("1 hour")}
+              </div>
+              <div class="dnd-dropdown-item" data-minutes="180">
+                ${t.__("3 hours")}
+              </div>
+              <div class="dnd-dropdown-item" data-minutes="720">
+                ${t.__("12 hours")}
+              </div>
+              <div class="dnd-dropdown-item" data-minutes="forever">
+                ${t.__("Until I resume")}
+              </div>
+            </div>
           </div>
           <div class="action-button hidden" id="reload-action">
             <i class="material-icons md-48">refresh</i>
