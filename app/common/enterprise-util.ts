@@ -18,12 +18,20 @@ const logger = new Logger({
   file: "enterprise-util.log",
 });
 
-let enterpriseSettings: Partial<EnterpriseConfig>;
-let configFile: boolean;
+let isReloaded = false;
+let configFile = false;
+let isErrorShown = false;
+let enterpriseSettings: Partial<EnterpriseConfig> = {};
 
 reloadDatabase();
 
 function reloadDatabase(): void {
+  if (isReloaded) {
+    return;
+  }
+
+  isReloaded = true;
+
   let enterpriseFile = "/etc/zulip-desktop-config/global_config.json";
   if (process.platform === "win32") {
     enterpriseFile = String.raw`C:\Program Files\Zulip-Desktop-Config\global_config.json`;
@@ -40,10 +48,14 @@ function reloadDatabase(): void {
         .partial()
         .parse(data);
     } catch (error: unknown) {
-      dialog.showErrorBox(
-        "Error loading global_config",
-        "We encountered an error while reading global_config.json, please make sure the file contains valid JSON.",
-      );
+      if (!isErrorShown) {
+        dialog.showErrorBox(
+          "Error loading global_config",
+          "We encountered an error while reading global_config.json, please make sure the file contains valid JSON.",
+        );
+        isErrorShown = true;
+      }
+
       logger.log("Error while JSON parsing global_config.json: ");
       logger.log(error);
     }
@@ -60,7 +72,6 @@ export function getConfigItem<Key extends keyof EnterpriseConfig>(
   key: Key,
   defaultValue: EnterpriseConfig[Key],
 ): EnterpriseConfig[Key] {
-  reloadDatabase();
   if (!configFile) {
     return defaultValue;
   }
@@ -70,7 +81,6 @@ export function getConfigItem<Key extends keyof EnterpriseConfig>(
 }
 
 export function configItemExists(key: keyof EnterpriseConfig): boolean {
-  reloadDatabase();
   if (!configFile) {
     return false;
   }
