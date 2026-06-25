@@ -62,6 +62,16 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         </div>
         <div
           class="setting-row"
+          id="tray-badge-count-option"
+          style="display:${process.platform === "darwin" ? "" : "none"}"
+        >
+          <div class="setting-description">
+            ${t.__("Show unread count on tray icon")}
+          </div>
+          <div class="setting-control"></div>
+        </div>
+        <div
+          class="setting-row"
           id="dock-bounce-option"
           style="display:${process.platform === "darwin" ? "" : "none"}"
         >
@@ -213,6 +223,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   updateTrayOption();
   updateBadgeOption();
+  updateTrayBadgeCountOption();
   updateSilentOption();
   autoUpdateOption();
   betaUpdateOption();
@@ -284,6 +295,25 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         ConfigUtil.setConfigItem("badgeOption", newValue);
         ipcRenderer.send("toggle-badge-option", newValue);
         updateBadgeOption();
+      },
+    });
+  }
+
+  function updateTrayBadgeCountOption(): void {
+    generateSettingOption({
+      $element: $root.querySelector(
+        "#tray-badge-count-option .setting-control",
+      )!,
+      value: ConfigUtil.getConfigItem("trayBadgeCount", false),
+      clickHandler() {
+        const newValue = !ConfigUtil.getConfigItem("trayBadgeCount", false);
+        ConfigUtil.setConfigItem("trayBadgeCount", newValue);
+        ipcRenderer.send(
+          "forward-message",
+          "toggle-tray-badge-count",
+          newValue,
+        );
+        updateTrayBadgeCountOption();
       },
     });
   }

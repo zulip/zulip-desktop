@@ -33,6 +33,7 @@ export const configSchemata = {
   startAtLogin: z.boolean(),
   startMinimized: z.boolean(),
   trayIcon: z.boolean(),
+  trayBadgeCount: z.boolean(),
   useManualProxy: z.boolean(),
   useProxy: z.boolean(),
   useSystemProxy: z.boolean(),
