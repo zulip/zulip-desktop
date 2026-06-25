@@ -4,56 +4,102 @@ body {
   cursor: default;
   font-size: 14px;
   color: rgb(51 51 51 / 100%);
-  background: rgb(255 255 255 / 100%);
+  background: rgb(242 245 248 / 100%);
   user-select: none;
+}
+
+img {
+  max-width: 100%;
+  width: 320px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
 }
 
 #content {
   display: flex;
   flex-direction: column;
+  align-items: center;
   font-family: "Trebuchet MS", Helvetica, sans-serif;
-  margin: 100px 200px;
-  text-align: center;
+  max-width: 520px;
+  margin: 60px auto;
+  padding: 40px 36px;
+  background: rgb(255 255 255 / 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgb(0 0 0 / 8%);
+}
+
+#error-text {
+  width: 100%;
+  margin-top: 12px;
 }
 
 #title {
   text-align: left;
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
-  margin: 20px 0;
+  margin: 16px 0 8px;
+  color: rgb(32 45 58 / 100%);
 }
 
 #subtitle {
-  font-size: 20px;
+  font-size: 16px;
   text-align: left;
-  margin: 12px 0;
+  margin: 8px 0 4px;
+  color: rgb(90 100 112 / 100%);
 }
 
 #description {
   text-align: left;
-  font-size: 16px;
+  font-size: 14px;
   list-style-position: inside;
+  margin: 0 0 24px;
+  padding: 0;
+  color: rgb(90 100 112 / 100%);
+  line-height: 1.8;
 }
 
-#reconnect {
-  float: left;
-}
-
-#settings {
-  margin-left: 116px;
+#buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
 }
 
 .button {
-  font-size: 16px;
+  font-size: 14px;
   background: rgb(0 150 136 / 100%);
   color: rgb(255 255 255 / 100%);
-  width: 96px;
-  height: 32px;
-  border-radius: 5px;
-  line-height: 32px;
+  width: 110px;
+  height: 36px;
+  border-radius: 6px;
+  line-height: 36px;
+  text-align: center;
   cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease;
 }
 
 .button:hover {
-  opacity: 0.8;
+  background: rgb(0 130 118 / 100%);
+  transform: translateY(-1px);
+}
+
+.button:active {
+  transform: translateY(0);
 }
