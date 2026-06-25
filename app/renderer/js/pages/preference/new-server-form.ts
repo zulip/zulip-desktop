@@ -12,6 +12,10 @@ type NewServerFormProperties = {
   onChange: () => void;
 };
 
+// Subdomain names may only contain lowercase letters, digits, and hyphens.
+// See issue #1012: https://github.com/zulip/zulip-desktop/issues/1012
+const subdomainPattern = /^[a-z\d-]+$/;
+
 export function initNewServerForm({
   $root,
   onChange,
@@ -20,13 +24,17 @@ export function initNewServerForm({
     <div class="server-input-container">
       <div class="title">${t.__("Organization URL")}</div>
       <div class="add-server-info-row">
-        <input
-          class="setting-input-value"
-          autofocus
-          placeholder="${t.__(
-            "your-organization.zulipchat.com or zulip.your-organization.com",
-          )}"
-        />
+        <label class="setting-input-value" id="new-server-url-label">
+          <input
+            id="new-server-url-input"
+            autofocus
+            placeholder="${t.__(
+              "your-organization.zulipchat.com or zulip.your-organization.com",
+            )}"
+          />
+          <span id="new-server-url-domain"></span>
+          <span id="new-server-url-size-calc"></span>
+        </label>
       </div>
       <div class="server-center">
         <button id="connect">${t.__("Connect")}</button>
@@ -53,19 +61,38 @@ export function initNewServerForm({
       </div>
     </div>
   `);
+
   const $saveServerButton: HTMLButtonElement =
     $newServerForm.querySelector("#connect")!;
   $root.textContent = "";
   $root.append($newServerForm);
+
   const $newServerUrl: HTMLInputElement = $newServerForm.querySelector(
-    "input.setting-input-value",
+    "#new-server-url-input",
   )!;
+  const $serverDomain: HTMLSpanElement = $newServerForm.querySelector(
+    "#new-server-url-domain",
+  )!;
+  const $urlSizeCalc: HTMLSpanElement = $newServerForm.querySelector(
+    "#new-server-url-size-calc",
+  )!;
+
+  function autoComplete(url: string): string {
+    const trimmed = url.trim();
+    if (subdomainPattern.test(trimmed)) {
+      return `https://${trimmed}.zulipchat.com`;
+    }
+
+    return trimmed;
+  }
 
   async function submitFormHandler(): Promise<void> {
     $saveServerButton.textContent = t.__("Connecting…");
     let serverConfig;
     try {
-      serverConfig = await DomainUtil.checkDomain($newServerUrl.value.trim());
+      serverConfig = await DomainUtil.checkDomain(
+        autoComplete($newServerUrl.value),
+      );
     } catch (error: unknown) {
       $saveServerButton.textContent = t.__("Connect");
       await dialog.showMessageBox({
@@ -86,9 +113,24 @@ export function initNewServerForm({
   $saveServerButton.addEventListener("click", async () => {
     await submitFormHandler();
   });
+
   $newServerUrl.addEventListener("keypress", async (event) => {
     if (event.key === "Enter") {
       await submitFormHandler();
+    }
+  });
+
+  $newServerUrl.addEventListener("input", () => {
+    const url = $newServerUrl.value;
+    const isSubdomain = url.length > 0 && subdomainPattern.test(url);
+
+    if (isSubdomain) {
+      $urlSizeCalc.textContent = url;
+      $newServerUrl.style.width = `${$urlSizeCalc.offsetWidth}px`;
+      $serverDomain.textContent = ".zulipchat.com";
+    } else {
+      $newServerUrl.style.width = "";
+      $serverDomain.textContent = "";
     }
   });
 
