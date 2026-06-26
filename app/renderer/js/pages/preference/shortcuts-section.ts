@@ -229,7 +229,7 @@ export function initShortcutsSection({
   const link = "https://zulip.com/help/keyboard-shortcuts";
   const externalCreateNewOrgElement =
     $root.querySelector("#open-hotkeys-link")!;
-  externalCreateNewOrgElement.addEventListener("click", async () => {
-    await LinkUtil.openBrowser(new URL(link));
+  externalCreateNewOrgElement.addEventListener("click", () => {
+    void LinkUtil.openBrowser(new URL(link));
   });
 }

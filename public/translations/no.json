@@ -1,1 +1,24 @@
-{}
+{
+	"A new update {{{version}}} has been downloaded.": "En ny oppdatering {{{version}}} har blitt lastet ned.",
+	"A new version {{{version}}} of Zulip Desktop is available.": "En ny versjon {{{version}}} av Zulip Desktop er tilgjengelig.",
+	"About": "Om",
+	"About Zulip": "Om Zulip",
+	"Actual Size": "Faktisk størrelse",
+	"Add Organization": "Legg til organisasjon",
+	"Add a Zulip organization": "Legg til en Zulip-organisasjon",
+	"Add custom CSS": "Legg til tilpasset CSS",
+	"Add to Dictionary": "Legg til i ordboken",
+	"Advanced": "Avansert",
+	"Always start minimized": "Start alltid minimert",
+	"App Updates": "App-oppdateringer",
+	"App language (requires restart)": "App-språk (krever omstart)",
+	"Appearance": "Utseende",
+	"Application Shortcuts": "Programsnarveier",
+	"Are you sure you want to disconnect this organization?": "Er du sikker på at du vil koble fra denne organisasjonen?",
+	"Are you sure?": "Er du sikker?",
+	"Ask where to save files before downloading": "Spør hvor filer skal lagres før nedlasting",
+	"Auto hide Menu bar": "Skjul menylinjen automatisk",
+	"Auto hide menu bar (Press Alt key to display)": "Skjul menylinjen automatisk (trykk på Alt-tasten for å vise den)",
+	"Available under the {{{link}}}Apache 2.0 License{{{endLink}}}": "Tilgjengelig under {{{link}}}Apache 2.0-lisensen{{{endLink}}}",
+	"Back": "Tilbake"
+}

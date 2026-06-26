@@ -33,14 +33,14 @@ function downloadFile({
   failed(state: string): void;
 }) {
   contents.downloadURL(url);
-  contents.session.once("will-download", async (_event, item) => {
+  contents.session.once("will-download", (_downloadEvent, item) => {
     if (ConfigUtil.getConfigItem("promptDownload", false)) {
       const showDialogOptions: SaveDialogOptions = {
         defaultPath: path.join(downloadPath, item.getFilename()),
       };
       item.setSaveDialogOptions(showDialogOptions);
     } else {
-      const getTimeStamp = (): number => {
+      const getTimestamp = (): number => {
         const date = new Date();
         return date.getTime();
       };
@@ -48,17 +48,16 @@ function downloadFile({
       const formatFile = (filePath: string): string => {
         const fileExtension = path.extname(filePath);
         const baseName = path.basename(filePath, fileExtension);
-        return `${baseName}-${getTimeStamp()}${fileExtension}`;
+        return `${baseName}-${getTimestamp()}${fileExtension}`;
       };
 
-      const filePath = path.join(downloadPath, item.getFilename());
-
+      let filePath = path.join(downloadPath, item.getFilename());
       // Update the name and path of the file if it already exists
-      const updatedFilePath = path.join(downloadPath, formatFile(filePath));
-      const setFilePath: string = fs.existsSync(filePath)
-        ? updatedFilePath
-        : filePath;
-      item.setSavePath(setFilePath);
+      if (fs.existsSync(filePath)) {
+        filePath = path.join(downloadPath, formatFile(filePath));
+      }
+
+      item.setSavePath(filePath);
     }
 
     const updatedListener = (_event: Event, state: string): void => {
@@ -88,9 +87,9 @@ function downloadFile({
     };
 
     item.on("updated", updatedListener);
-    item.once("done", async (_event, state) => {
+    item.once("done", (_event, state) => {
       if (state === "completed") {
-        await completed(item.getSavePath(), path.basename(item.getSavePath()));
+        void completed(item.getSavePath(), path.basename(item.getSavePath()));
       } else {
         console.log("Download failed state:", state);
         failed(state);
@@ -116,7 +115,7 @@ export default function handleExternalLink(
 
   const downloadPath = ConfigUtil.getConfigItem(
     "downloadsPath",
-    `${app.getPath("downloads")}`,
+    app.getPath("downloads"),
   );
 
   if (isUploadsUrl(new URL(contents.getURL()).origin, url)) {

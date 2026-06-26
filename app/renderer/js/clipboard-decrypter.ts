@@ -21,20 +21,19 @@ export type ClipboardDecrypter = {
 };
 
 export class ClipboardDecrypterImplementation implements ClipboardDecrypter {
-  version: number;
+  // At this time, the only version is 1.
+  version = 1;
   key: Uint8Array;
   pasted: Promise<string>;
 
   constructor(_: number) {
-    // At this time, the only version is 1.
-    this.version = 1;
     const {key, sig} = ipcRenderer.sendSync("new-clipboard-key");
     this.key = key;
     this.pasted = new Promise((resolve) => {
       let interval: NodeJS.Timeout | null = null;
       const startPolling = () => {
         interval ??= setInterval(poll, 1000);
-        void poll();
+        poll();
       };
 
       const stopPolling = () => {
@@ -44,14 +43,22 @@ export class ClipboardDecrypterImplementation implements ClipboardDecrypter {
         }
       };
 
-      const poll = async () => {
-        const plaintext = await ipcRenderer.invoke("poll-clipboard", key, sig);
-        if (plaintext === undefined) return;
+      const poll = () => {
+        void (async () => {
+          const plaintext = await ipcRenderer.invoke(
+            "poll-clipboard",
+            key,
+            sig,
+          );
+          if (plaintext === undefined) {
+            return;
+          }
 
-        window.removeEventListener("focus", startPolling);
-        window.removeEventListener("blur", stopPolling);
-        stopPolling();
-        resolve(plaintext);
+          window.removeEventListener("focus", startPolling);
+          window.removeEventListener("blur", stopPolling);
+          stopPolling();
+          resolve(plaintext);
+        })();
       };
 
       window.addEventListener("focus", startPolling);

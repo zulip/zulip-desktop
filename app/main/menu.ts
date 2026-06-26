@@ -50,14 +50,14 @@ function getToolsSubmenu(): MenuItemConstructorOptions[] {
   return [
     {
       label: t.__("Check for Updates"),
-      async click() {
-        await checkForUpdate();
+      click() {
+        void checkForUpdate();
       },
     },
     {
       label: t.__("Release Notes"),
-      async click() {
-        await shell.openExternal(
+      click() {
+        void shell.openExternal(
           `https://github.com/zulip/zulip-desktop/releases/tag/v${app.getVersion()}`,
         );
       },
@@ -277,7 +277,7 @@ function getHelpSubmenu(): MenuItemConstructorOptions[] {
     },
     {
       label: t.__("Help Center"),
-      click(focusedWindow) {
+      click(_item, focusedWindow) {
         if (focusedWindow) {
           sendAction("open-help");
         }
@@ -285,8 +285,8 @@ function getHelpSubmenu(): MenuItemConstructorOptions[] {
     },
     {
       label: t.__("Report an Issue"),
-      async click() {
-        await shell.openExternal("https://zulip.com/help/contact-support");
+      click() {
+        void shell.openExternal("https://zulip.com/help/contact-support");
       },
     },
   ];
@@ -315,7 +315,9 @@ function getWindowSubmenu(
     for (const tab of tabs) {
       // Skip missing elements left by `delete this.tabs[index]` in
       // ServerManagerView.
-      if (tab === undefined) continue;
+      if (tab === undefined) {
+        continue;
+      }
 
       // Do not add functional tab settings to list of windows in menu bar
       if (tab.role === "function" && tab.page === "Settings") {
@@ -692,6 +694,9 @@ function sendAction<Channel extends keyof RendererMessage>(
   ...arguments_: Parameters<RendererMessage[Channel]>
 ): void {
   const win = BrowserWindow.getAllWindows()[0];
+  if (win === undefined) {
+    return;
+  }
 
   if (process.platform === "darwin") {
     win.restore();
@@ -721,10 +726,9 @@ function getPreviousServer(tabs: TabData[], activeTabIndex: number): number {
 }
 
 export function setMenu(properties: MenuProperties): void {
-  const tpl =
-    process.platform === "darwin"
-      ? getDarwinTpl(properties)
-      : getOtherTpl(properties);
+  const tpl = (process.platform === "darwin" ? getDarwinTpl : getOtherTpl)(
+    properties,
+  );
   const menu = Menu.buildFromTemplate(tpl);
   Menu.setApplicationMenu(menu);
 }

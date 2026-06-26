@@ -7,6 +7,7 @@ import {dialog} from "zulip:remote";
 
 import {enterpriseConfigSchemata} from "./config-schemata.ts";
 import Logger from "./logger-util.ts";
+import {exactPartial} from "./types.ts";
 
 type EnterpriseConfig = {
   [Key in keyof typeof enterpriseConfigSchemata]: z.output<
@@ -24,10 +25,10 @@ let configFile: boolean;
 reloadDatabase();
 
 function reloadDatabase(): void {
-  let enterpriseFile = "/etc/zulip-desktop-config/global_config.json";
-  if (process.platform === "win32") {
-    enterpriseFile = String.raw`C:\Program Files\Zulip-Desktop-Config\global_config.json`;
-  }
+  let enterpriseFile =
+    process.platform === "win32"
+      ? String.raw`C:\Program Files\Zulip-Desktop-Config\global_config.json`
+      : "/etc/zulip-desktop-config/global_config.json";
 
   enterpriseFile = path.resolve(enterpriseFile);
   if (fs.existsSync(enterpriseFile)) {
@@ -35,10 +36,9 @@ function reloadDatabase(): void {
     try {
       const file = fs.readFileSync(enterpriseFile, "utf8");
       const data: unknown = JSON.parse(file);
-      enterpriseSettings = z
-        .object(enterpriseConfigSchemata)
-        .partial()
-        .parse(data);
+      enterpriseSettings = exactPartial(
+        z.object(enterpriseConfigSchemata),
+      ).parse(data);
     } catch (error: unknown) {
       dialog.showErrorBox(
         "Error loading global_config",
@@ -66,7 +66,8 @@ export function getConfigItem<Key extends keyof EnterpriseConfig>(
   }
 
   const value = enterpriseSettings[key];
-  return value === undefined ? defaultValue : (value as EnterpriseConfig[Key]);
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+  return value === undefined ? defaultValue : value;
 }
 
 export function configItemExists(key: keyof EnterpriseConfig): boolean {

@@ -189,5 +189,7 @@
 	"Zulip Update": "Ενημέρωση Zulip",
 	"keyboard shortcuts": "συντομεύσεις πληκτρολογίου",
 	"your-organization.zulipchat.com or zulip.your-organization.com": "your-organization.zulipchat.com ή zulip.your-organization.com",
+	"{number, plural, one {# unread message} other {# unread messages}}": "{number, plural, one {# μη αναγνωσμένο μήνυμα} other {# μη αναγνωσμένα μηνύματα}}",
+	"{number, plural, one {Could not add # organization} other {Could not add # organizations}}": "{number, plural, one {Δεν ήταν δυνατή η προσθήκη # οργανισμού} other {Δεν ήταν δυνατή η προσθήκη # οργανισμών}}",
 	"{{{server}}} runs an outdated Zulip Server version {{{version}}}. It may not fully work in this app.": "{{{server}}} τρέχει μία παρωχημένη έκδοση του Zulip Server {{{version}}}. Ενδεχομένως να μη λειτουργεί πλήρως σε αυτή την εφαρμογή."
 }

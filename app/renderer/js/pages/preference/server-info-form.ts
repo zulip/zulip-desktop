@@ -50,23 +50,25 @@ export function initServerInfoForm(properties: ServerInfoFormProperties): void {
   const $openServerButton = $serverInfoForm.querySelector(".open-tab-button")!;
   properties.$root.append($serverInfoForm);
 
-  $deleteServerButton.addEventListener("click", async () => {
-    const {response} = await dialog.showMessageBox({
-      type: "warning",
-      buttons: [t.__("Yes"), t.__("No")],
-      defaultId: 0,
-      message: t.__("Are you sure you want to disconnect this organization?"),
-    });
-    if (response === 0) {
-      if (DomainUtil.removeDomain(properties.index)) {
-        ipcRenderer.send("reload-full-app");
-      } else {
-        const {title, content} = Messages.orgRemovalError(
-          DomainUtil.getDomain(properties.index).url,
-        );
-        dialog.showErrorBox(title, content);
+  $deleteServerButton.addEventListener("click", () => {
+    (async () => {
+      const {response} = await dialog.showMessageBox({
+        type: "warning",
+        buttons: [t.__("Yes"), t.__("No")],
+        defaultId: 0,
+        message: t.__("Are you sure you want to disconnect this organization?"),
+      });
+      if (response === 0) {
+        if (DomainUtil.removeDomain(properties.index)) {
+          ipcRenderer.send("reload-full-app");
+        } else {
+          const {title, content} = Messages.orgRemovalError(
+            DomainUtil.getDomain(properties.index).url,
+          );
+          dialog.showErrorBox(title, content);
+        }
       }
-    }
+    })();
   });
 
   $openServerButton.addEventListener("click", () => {

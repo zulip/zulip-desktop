@@ -22,11 +22,42 @@ export class PreferenceView {
     );
   }
 
-  readonly $view: HTMLElement;
   private readonly $shadow: ShadowRoot;
   private readonly $settingsContainer: Element;
   private readonly nav: Nav;
   private navigationItem: NavigationItem = "General";
+
+  private readonly handleToggleSidebar = (
+    _event: IpcRendererEvent,
+    state: boolean,
+  ) => {
+    this.handleToggle("sidebar-option", state);
+  };
+
+  private readonly handleToggleMenubar = (
+    _event: IpcRendererEvent,
+    state: boolean,
+  ) => {
+    this.handleToggle("menubar-option", state);
+  };
+
+  private readonly handleToggleDnd = (
+    _event: IpcRendererEvent,
+    _state: boolean,
+    newSettings: Partial<DndSettings>,
+  ) => {
+    this.handleToggle("show-notification-option", newSettings.showNotification);
+    this.handleToggle("silent-option", newSettings.silent);
+
+    if (process.platform === "win32") {
+      this.handleToggle(
+        "flash-taskbar-option",
+        newSettings.flashTaskbarOnMessage,
+      );
+    }
+  };
+
+  readonly $view: HTMLElement;
 
   private constructor(templateHtml: string) {
     this.$view = document.createElement("div");
@@ -40,7 +71,9 @@ export class PreferenceView {
 
     this.nav = new Nav({
       $root: $sidebarContainer,
-      onItemSelected: this.handleNavigation,
+      onItemSelected: (navigationItem) => {
+        this.handleNavigation(navigationItem);
+      },
     });
 
     ipcRenderer.on("toggle-sidebar", this.handleToggleSidebar);
@@ -50,7 +83,16 @@ export class PreferenceView {
     this.handleNavigation(this.navigationItem);
   }
 
-  handleNavigation = (navigationItem: NavigationItem): void => {
+  // Handle toggling and reflect changes in preference page
+  private handleToggle(elementName: string, state = false): void {
+    const inputSelector = `#${elementName} .action .switch input`;
+    const input = this.$shadow.querySelector<HTMLInputElement>(inputSelector);
+    if (input) {
+      input.checked = state;
+    }
+  }
+
+  handleNavigation(navigationItem: NavigationItem): void {
     this.navigationItem = navigationItem;
     this.nav.select(navigationItem);
     switch (navigationItem) {
@@ -91,7 +133,7 @@ export class PreferenceView {
     }
 
     location.hash = `#${navigationItem}`;
-  };
+  }
 
   handleToggleTray(state: boolean) {
     this.handleToggle("tray-option", state);
@@ -102,43 +144,4 @@ export class PreferenceView {
     ipcRenderer.off("toggle-autohide-menubar", this.handleToggleMenubar);
     ipcRenderer.off("toggle-dnd", this.handleToggleDnd);
   }
-
-  // Handle toggling and reflect changes in preference page
-  private handleToggle(elementName: string, state = false): void {
-    const inputSelector = `#${elementName} .action .switch input`;
-    const input: HTMLInputElement = this.$shadow.querySelector(inputSelector)!;
-    if (input) {
-      input.checked = state;
-    }
-  }
-
-  private readonly handleToggleSidebar = (
-    _event: IpcRendererEvent,
-    state: boolean,
-  ) => {
-    this.handleToggle("sidebar-option", state);
-  };
-
-  private readonly handleToggleMenubar = (
-    _event: IpcRendererEvent,
-    state: boolean,
-  ) => {
-    this.handleToggle("menubar-option", state);
-  };
-
-  private readonly handleToggleDnd = (
-    _event: IpcRendererEvent,
-    _state: boolean,
-    newSettings: Partial<DndSettings>,
-  ) => {
-    this.handleToggle("show-notification-option", newSettings.showNotification);
-    this.handleToggle("silent-option", newSettings.silent);
-
-    if (process.platform === "win32") {
-      this.handleToggle(
-        "flash-taskbar-option",
-        newSettings.flashTaskbarOnMessage,
-      );
-    }
-  };
 }

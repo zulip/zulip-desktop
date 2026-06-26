@@ -56,13 +56,13 @@ export function initNetworkSection({$root}: NetworkSectionProperties): void {
   `.html;
 
   const $proxyPac: HTMLInputElement = $root.querySelector(
-    "#proxy-pac-option .setting-input-value",
+    ":scope #proxy-pac-option .setting-input-value",
   )!;
   const $proxyRules: HTMLInputElement = $root.querySelector(
-    "#proxy-rules-option .setting-input-value",
+    ":scope #proxy-rules-option .setting-input-value",
   )!;
   const $proxyBypass: HTMLInputElement = $root.querySelector(
-    "#proxy-bypass-option .setting-input-value",
+    ":scope #proxy-bypass-option .setting-input-value",
   )!;
   const $proxySaveAction = $root.querySelector("#proxy-save-action")!;
   const $manualProxyBlock = $root.querySelector(".manual-proxy-block")!;
@@ -88,7 +88,9 @@ export function initNetworkSection({$root}: NetworkSectionProperties): void {
 
   function updateProxyOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#use-system-settings .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #use-system-settings .setting-control",
+      )!,
       value: ConfigUtil.getConfigItem("useSystemProxy", false),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("useSystemProxy", false);
@@ -112,7 +114,9 @@ export function initNetworkSection({$root}: NetworkSectionProperties): void {
       },
     });
     generateSettingOption({
-      $element: $root.querySelector("#use-manual-settings .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #use-manual-settings .setting-control",
+      )!,
       value: ConfigUtil.getConfigItem("useManualProxy", false),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("useManualProxy", false);

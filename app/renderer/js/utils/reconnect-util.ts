@@ -24,22 +24,7 @@ export default class ReconnectUtil {
     });
   }
 
-  async isOnline(): Promise<boolean> {
-    return ipcRenderer.invoke("is-online", this.url);
-  }
-
-  pollInternetAndReload(): void {
-    this.fibonacciBackoff.backoff();
-    this.fibonacciBackoff.on("ready", async () => {
-      if (await this._checkAndReload()) {
-        this.fibonacciBackoff.reset();
-      } else {
-        this.fibonacciBackoff.backoff();
-      }
-    });
-  }
-
-  async _checkAndReload(): Promise<boolean> {
+  async #checkAndReload(): Promise<boolean> {
     if (this.alreadyReloaded) {
       return true;
     }
@@ -64,5 +49,22 @@ export default class ReconnectUtil {
     }
 
     return false;
+  }
+
+  async isOnline(): Promise<boolean> {
+    return ipcRenderer.invoke("is-online", this.url);
+  }
+
+  pollInternetAndReload(): void {
+    this.fibonacciBackoff.backoff();
+    this.fibonacciBackoff.on("ready", () => {
+      (async () => {
+        if (await this.#checkAndReload()) {
+          this.fibonacciBackoff.reset();
+        } else {
+          this.fibonacciBackoff.backoff();
+        }
+      })();
+    });
   }
 }

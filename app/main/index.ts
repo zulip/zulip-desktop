@@ -34,7 +34,6 @@ import {ipcMain, send} from "./typed-ipc-main.ts";
 
 import "gatemaker/electron-setup.js"; // eslint-disable-line import-x/no-unassigned-import
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 const {GDK_BACKEND} = process.env;
 
 // Initialize sentry for main process
@@ -42,8 +41,6 @@ sentryInit();
 
 let mainWindowState: windowStateKeeper.State;
 
-// Prevent window being garbage collected
-let mainWindow: BrowserWindow;
 let badgeCount: number;
 
 let isQuitting = false;
@@ -76,15 +73,6 @@ const appIcon = path.join(publicPath, "resources/Icon");
 
 const iconPath = (): string =>
   appIcon + (process.platform === "win32" ? ".ico" : ".png");
-
-// Toggle the app window
-const toggleApp = (): void => {
-  if (!mainWindow.isVisible() || mainWindow.isMinimized()) {
-    mainWindow.show();
-  } else {
-    mainWindow.hide();
-  }
-};
 
 function createMainWindow(): BrowserWindow {
   // Load the previous state with fallback to defaults
@@ -154,10 +142,8 @@ function createMainWindow(): BrowserWindow {
   });
 
   //  To destroy tray icon when navigate to a new URL
-  win.webContents.on("will-navigate", (event) => {
-    if (event) {
-      send(win.webContents, "destroytray");
-    }
+  win.webContents.on("will-navigate", () => {
+    send(win.webContents, "destroytray");
   });
 
   // Let us register listeners on the window, so we can update the state
@@ -221,6 +207,8 @@ function createMainWindow(): BrowserWindow {
         send(mainWindow.webContents, "open-deep-link", deepLinkUrl);
       }
     }
+
+    mainWindow.show();
   });
 
   ipcMain.on(
@@ -273,7 +261,9 @@ function createMainWindow(): BrowserWindow {
     // Check that the key was generated here.
     const hmac = crypto.createHmac("sha256", clipboardSigKey);
     hmac.update(key);
-    if (!crypto.timingSafeEqual(sig, hmac.digest())) return;
+    if (!crypto.timingSafeEqual(sig, hmac.digest())) {
+      return;
+    }
 
     try {
       // Check that the data on the clipboard was encrypted to the key.
@@ -299,7 +289,7 @@ function createMainWindow(): BrowserWindow {
   AppMenu.setMenu({
     tabs: [],
   });
-  mainWindow = createMainWindow();
+  const mainWindow = createMainWindow();
 
   // Auto-hide menu bar on Windows + Linux
   if (process.platform !== "darwin") {
@@ -348,10 +338,10 @@ function createMainWindow(): BrowserWindow {
     _isOnline(url, ses),
   );
 
-  page.once("did-frame-finish-load", async () => {
+  page.once("did-frame-finish-load", () => {
     // Initiate auto-updates on MacOS and Windows
     if (ConfigUtil.getConfigItem("autoUpdate", true)) {
-      await appUpdater();
+      void appUpdater();
     }
   });
 
@@ -359,7 +349,7 @@ function createMainWindow(): BrowserWindow {
     "certificate-error",
     (
       event,
-      webContents,
+      sourceWebContents,
       urlString,
       error,
       certificate,
@@ -381,7 +371,7 @@ function createMainWindow(): BrowserWindow {
   );
 
   ses.setPermissionRequestHandler(
-    (webContents, permission, callback, details) => {
+    (sourceWebContents, permission, callback, details) => {
       const {origin} = new URL(details.requestingUrl);
       const permissionCallbackId = nextPermissionCallbackId++;
       permissionCallbacks.set(permissionCallbackId, callback);
@@ -390,9 +380,9 @@ function createMainWindow(): BrowserWindow {
         "permission-request",
         {
           webContentsId:
-            webContents.id === mainWindow.webContents.id
+            sourceWebContents.id === mainWindow.webContents.id
               ? null
-              : webContents.id,
+              : sourceWebContents.id,
           origin,
           permission,
         },
@@ -428,7 +418,11 @@ function createMainWindow(): BrowserWindow {
   });
 
   ipcMain.on("toggle-app", () => {
-    toggleApp();
+    if (!mainWindow.isVisible() || mainWindow.isMinimized()) {
+      mainWindow.show();
+    } else {
+      mainWindow.hide();
+    }
   });
 
   ipcMain.on("toggle-badge-option", () => {
@@ -479,14 +473,17 @@ function createMainWindow(): BrowserWindow {
 
   ipcMain.on("update-menu", (_event, properties: MenuProperties) => {
     AppMenu.setMenu(properties);
-    if (properties.activeTabIndex !== undefined) {
-      const activeTab = properties.tabs[properties.activeTabIndex];
+    let activeTab;
+    if (
+      properties.activeTabIndex !== undefined &&
+      (activeTab = properties.tabs[properties.activeTabIndex]) !== undefined
+    ) {
       mainWindow.setTitle(`Zulip - ${activeTab.label}`);
     }
   });
 
-  ipcMain.on("toggleAutoLauncher", async (_event, AutoLaunchValue: boolean) => {
-    await setAutoLaunch(AutoLaunchValue);
+  ipcMain.on("toggleAutoLauncher", (_event, AutoLaunchValue: boolean) => {
+    void setAutoLaunch(AutoLaunchValue);
   });
 
   ipcMain.on(

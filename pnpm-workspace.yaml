@@ -1,15 +1,15 @@
-ignoredBuiltDependencies:
-  - '@swc/core'
-  - electron-winstaller
-  - esbuild
-  - fs-xattr
-  - unrs-resolver
+allowBuilds:
+  '@swc/core': false
+  electron-winstaller: false
+  esbuild: false
+  fs-xattr: false
+  unrs-resolver: false
 
-onlyBuiltDependencies:
-  - electron
+minimumReleaseAge: 1440
 
 overrides:
   i18n>@messageformat/core: '-'
+  xo>eslint-config-xo: ^0.55.0
 
 packageExtensions:
   i18n:

@@ -238,9 +238,8 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
   if (process.platform === "win32") {
     updateFlashTaskbar();
   }
-
   // Dock bounce on macOS
-  if (process.platform === "darwin") {
+  else if (process.platform === "darwin") {
     updateDockBouncing();
   }
 
@@ -251,7 +250,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateTrayOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#tray-option .setting-control")!,
+      $element: $root.querySelector(":scope #tray-option .setting-control")!,
       value: ConfigUtil.getConfigItem("trayIcon", true),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("trayIcon", true);
@@ -264,7 +263,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateMenubarOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#menubar-option .setting-control")!,
+      $element: $root.querySelector(":scope #menubar-option .setting-control")!,
       value: ConfigUtil.getConfigItem("autoHideMenubar", false),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("autoHideMenubar", false);
@@ -277,7 +276,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateBadgeOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#badge-option .setting-control")!,
+      $element: $root.querySelector(":scope #badge-option .setting-control")!,
       value: ConfigUtil.getConfigItem("badgeOption", true),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("badgeOption", true);
@@ -290,7 +289,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateDockBouncing(): void {
     generateSettingOption({
-      $element: $root.querySelector("#dock-bounce-option .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #dock-bounce-option .setting-control",
+      )!,
       value: ConfigUtil.getConfigItem("dockBouncing", true),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("dockBouncing", true);
@@ -302,7 +303,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateFlashTaskbar(): void {
     generateSettingOption({
-      $element: $root.querySelector("#flash-taskbar-option .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #flash-taskbar-option .setting-control",
+      )!,
       value: ConfigUtil.getConfigItem("flashTaskbarOnMessage", true),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem(
@@ -317,7 +320,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function autoUpdateOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#autoupdate-option .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #autoupdate-option .setting-control",
+      )!,
       disabled: EnterpriseUtil.configItemExists("autoUpdate"),
       value: ConfigUtil.getConfigItem("autoUpdate", true),
       clickHandler() {
@@ -335,7 +340,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function betaUpdateOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#betaupdate-option .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #betaupdate-option .setting-control",
+      )!,
       value: ConfigUtil.getConfigItem("betaUpdate", false),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("betaUpdate", false);
@@ -349,7 +356,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateSilentOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#silent-option .setting-control")!,
+      $element: $root.querySelector(":scope #silent-option .setting-control")!,
       value: ConfigUtil.getConfigItem("silent", false),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("silent", true);
@@ -368,7 +375,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
   function showDesktopNotification(): void {
     generateSettingOption({
       $element: $root.querySelector(
-        "#show-notification-option .setting-control",
+        ":scope #show-notification-option .setting-control",
       )!,
       value: ConfigUtil.getConfigItem("showNotification", true),
       clickHandler() {
@@ -381,7 +388,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateSidebarOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#sidebar-option .setting-control")!,
+      $element: $root.querySelector(":scope #sidebar-option .setting-control")!,
       value: ConfigUtil.getConfigItem("showSidebar", true),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("showSidebar", true);
@@ -394,7 +401,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateStartAtLoginOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#startAtLogin-option .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #startAtLogin-option .setting-control",
+      )!,
       value: ConfigUtil.getConfigItem("startAtLogin", false),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("startAtLogin", false);
@@ -407,7 +416,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function updateQuitOnCloseOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#quitOnClose-option .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #quitOnClose-option .setting-control",
+      )!,
       value: ConfigUtil.getConfigItem("quitOnClose", false),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("quitOnClose", false);
@@ -420,7 +431,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
   function enableSpellchecker(): void {
     generateSettingOption({
       $element: $root.querySelector(
-        "#enable-spellchecker-option .setting-control",
+        ":scope #enable-spellchecker-option .setting-control",
       )!,
       value: ConfigUtil.getConfigItem("enableSpellchecker", true),
       clickHandler() {
@@ -442,7 +453,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
   function enableErrorReporting(): void {
     generateSettingOption({
       $element: $root.querySelector(
-        "#enable-error-reporting .setting-control",
+        ":scope #enable-error-reporting .setting-control",
       )!,
       value: ConfigUtil.getConfigItem("errorReporting", true),
       clickHandler() {
@@ -462,7 +473,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
     const {filePaths, canceled} =
       await dialog.showOpenDialog(showDialogOptions);
-    if (!canceled) {
+    if (!canceled && filePaths[0] !== undefined) {
       ConfigUtil.setConfigItem("customCSS", filePaths[0]);
       ipcRenderer.send("forward-message", "hard-reload");
     }
@@ -478,7 +489,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
     // The next three lines set the selected language visible on the dropdown button
     let language = ConfigUtil.getConfigItem("appLanguage", "en");
     language =
-      language && langMenu.options.namedItem(language) ? language : "en";
+      language !== null && langMenu.options.namedItem(language)
+        ? language
+        : "en";
     langMenu.options.namedItem(language)!.selected = true;
 
     langMenu.addEventListener("change", () => {
@@ -488,7 +501,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function minimizeOnStart(): void {
     generateSettingOption({
-      $element: $root.querySelector("#start-minimize-option .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #start-minimize-option .setting-control",
+      )!,
       value: ConfigUtil.getConfigItem("startMinimized", false),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("startMinimized", false);
@@ -500,23 +515,23 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function addCustomCss(): void {
     const customCssButton = $root.querySelector(
-      "#add-custom-css .custom-css-button",
+      ":scope #add-custom-css .custom-css-button",
     )!;
-    customCssButton.addEventListener("click", async () => {
-      await customCssDialog();
+    customCssButton.addEventListener("click", () => {
+      void customCssDialog();
     });
   }
 
   function showCustomCssPath(): void {
-    if (!ConfigUtil.getConfigItem("customCSS", null)) {
+    const customCss = ConfigUtil.getConfigItem("customCSS", null);
+    if (customCss === null || customCss === false) {
       const cssPath: HTMLElement = $root.querySelector("#remove-custom-css")!;
       cssPath.style.display = "none";
     }
   }
 
   function removeCustomCss(): void {
-    const removeCssButton = $root.querySelector("#css-delete-action")!;
-    removeCssButton.addEventListener("click", () => {
+    $root.querySelector("#css-delete-action")!.addEventListener("click", () => {
       ConfigUtil.setConfigItem("customCSS", "");
       ipcRenderer.send("forward-message", "hard-reload");
     });
@@ -530,7 +545,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
     const {filePaths, canceled} =
       await dialog.showOpenDialog(showDialogOptions);
-    if (!canceled) {
+    if (!canceled && filePaths[0] !== undefined) {
       ConfigUtil.setConfigItem("downloadsPath", filePaths[0]);
       const downloadFolderPath: HTMLElement = $root.querySelector(
         ".download-folder-path",
@@ -540,17 +555,19 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
   }
 
   function downloadFolder(): void {
-    const downloadFolder = $root.querySelector(
-      "#download-folder .download-folder-button",
+    const downloadFolderButton = $root.querySelector(
+      ":scope #download-folder .download-folder-button",
     )!;
-    downloadFolder.addEventListener("click", async () => {
-      await downloadFolderDialog();
+    downloadFolderButton.addEventListener("click", () => {
+      void downloadFolderDialog();
     });
   }
 
   function updatePromptDownloadOption(): void {
     generateSettingOption({
-      $element: $root.querySelector("#prompt-download .setting-control")!,
+      $element: $root.querySelector(
+        ":scope #prompt-download .setting-control",
+      )!,
       value: ConfigUtil.getConfigItem("promptDownload", false),
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("promptDownload", false);
@@ -564,7 +581,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
     const clearAppDataMessage = t.__(
       "When the application restarts, it will be as if you have just downloaded the Zulip app.",
     );
-    const getAppPath = path.join(app.getPath("appData"), app.name);
+    const appDataPath = path.join(app.getPath("appData"), app.name);
 
     const {response} = await dialog.showMessageBox({
       type: "warning",
@@ -574,7 +591,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
       detail: clearAppDataMessage,
     });
     if (response === 0) {
-      await fs.promises.rmdir(getAppPath, {recursive: true});
+      await fs.promises.rmdir(appDataPath, {recursive: true});
       setTimeout(() => {
         ipcRenderer.send("clear-app-settings");
       }, 1000);
@@ -583,17 +600,17 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   function factoryReset(): void {
     const factoryResetButton = $root.querySelector(
-      "#factory-reset-option .factory-reset-button",
+      ":scope #factory-reset-option .factory-reset-button",
     )!;
-    factoryResetButton.addEventListener("click", async () => {
-      await factoryResetSettings();
+    factoryResetButton.addEventListener("click", () => {
+      void factoryResetSettings();
     });
   }
 
   function initSpellChecker(): void {
+    const note: HTMLElement = $root.querySelector("#note")!;
     // The Electron API is a no-op on macOS and macOS default spellchecker is used.
     if (process.platform === "darwin") {
-      const note: HTMLElement = $root.querySelector("#note")!;
       note.append(t.__("On macOS, the OS spellchecker is used."));
       note.append(document.createElement("br"));
       note.append(
@@ -602,7 +619,6 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         ),
       );
     } else {
-      const note: HTMLElement = $root.querySelector("#note")!;
       note.append(
         t.__("You can select a maximum of 3 languages for spellchecking."),
       );
@@ -623,31 +639,38 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         let displayName = new Intl.DisplayNames([locale], {
           type: "language",
         }).of(locale.language);
-        if (displayName === undefined) continue;
-        displayName = displayName.replace(/^./u, (firstChar) =>
+        if (displayName === undefined) {
+          continue;
+        }
+
+        displayName = displayName.replace(/^./v, (firstChar) =>
           firstChar.toLocaleUpperCase(locale),
         );
-        if (locale.script !== undefined)
+        if (locale.script !== undefined) {
           displayName += ` (${new Intl.DisplayNames([locale], {type: "script"}).of(locale.script)})`;
-        if (locale.region !== undefined)
+        }
+
+        if (locale.region !== undefined) {
           displayName += ` (${new Intl.DisplayNames([locale], {type: "region"}).of(locale.region)})`;
+        }
+
         languagePairs.set(displayName, l);
       }
 
       languagePairs = new Map(
-        [...languagePairs].sort((a, b) => a[0].localeCompare(b[1])),
+        [...languagePairs].toSorted((a, b) => a[0].localeCompare(b[0])),
       );
 
       const tagField: HTMLInputElement = $root.querySelector(
         "input[name=spellcheck]",
       )!;
       const tagify = new Tagify(tagField, {
-        whitelist: [...languagePairs.keys()],
+        whitelist: languagePairs.keys().toArray(),
         enforceWhitelist: true,
         maxTags: 3,
         dropdown: {
           enabled: 0,
-          maxItems: Number.POSITIVE_INFINITY,
+          maxItems: Infinity,
           closeOnSelect: false,
           highlightFirst: true,
           position: "manual",
@@ -676,7 +699,6 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
       tagField.addEventListener("change", () => {
         if (tagField.value.length === 0) {
           ConfigUtil.setConfigItem("spellcheckerLanguages", []);
-          ipcRenderer.send("configure-spell-checker");
         } else {
           const data: unknown = JSON.parse(tagField.value);
           const spellLangs: string[] = z
@@ -684,8 +706,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
             .parse(data)
             .map((elt) => languagePairs.get(elt.value)!);
           ConfigUtil.setConfigItem("spellcheckerLanguages", spellLangs);
-          ipcRenderer.send("configure-spell-checker");
         }
+
+        ipcRenderer.send("configure-spell-checker");
       });
     }
 

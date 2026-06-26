@@ -25,10 +25,14 @@ export async function linuxUpdateNotification(session: Session): Promise<void> {
     }
 
     const data: unknown = await response.json();
-    /* eslint-disable @typescript-eslint/naming-convention */
-    const latestVersion = ConfigUtil.getConfigItem("betaUpdate", false)
-      ? z.array(z.object({tag_name: z.string()})).parse(data)[0].tag_name
-      : z.object({tag_name: z.string()}).parse(data).tag_name;
+    /* eslint-disable @typescript-eslint/naming-convention -- not our names */
+    const latestVersion = (
+      ConfigUtil.getConfigItem("betaUpdate", false)
+        ? z
+            .tuple([z.object({tag_name: z.string()})], z.unknown())
+            .parse(data)[0]
+        : z.object({tag_name: z.string()}).parse(data)
+    ).tag_name;
     /* eslint-enable @typescript-eslint/naming-convention */
 
     if (semver.gt(latestVersion, app.getVersion())) {

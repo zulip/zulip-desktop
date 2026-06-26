@@ -48,7 +48,9 @@ try {
     })();
   }
 } catch (error: unknown) {
-  if (!(error instanceof DataError)) throw error;
+  if (!(error instanceof DataError)) {
+    throw error;
+  }
 }
 
 export function getDomains(): ServerConfig[] {
@@ -58,7 +60,10 @@ export function getDomains(): ServerConfig[] {
       .array()
       .parse(database.getObject<unknown>("/domains"));
   } catch (error: unknown) {
-    if (!(error instanceof DataError)) throw error;
+    if (!(error instanceof DataError)) {
+      throw error;
+    }
+
     return [];
   }
 }
@@ -81,18 +86,16 @@ export async function addDomain(server: {
   alias: string;
   icon?: string;
 }): Promise<void> {
-  if (server.icon) {
+  if (server.icon === undefined) {
+    server.icon = defaultIconSentinel;
+  } else {
     const localIconUrl = await saveServerIcon(server.icon);
     server.icon = localIconUrl;
-    serverConfigSchema.parse(server);
-    database.push("/domains[]", server, true);
-    reloadDatabase();
-  } else {
-    server.icon = defaultIconSentinel;
-    serverConfigSchema.parse(server);
-    database.push("/domains[]", server, true);
-    reloadDatabase();
   }
+
+  serverConfigSchema.parse(server);
+  database.push("/domains[]", server, true);
+  reloadDatabase();
 }
 
 export function removeDomains(): void {
@@ -151,11 +154,10 @@ export async function updateSavedServer(
 ): Promise<ServerConfig> {
   // Does not promise successful update
   const serverConfig = getDomain(index);
-  const oldIcon = serverConfig.icon;
   try {
     const newServerConfig = await checkDomain(url, true);
     const localIconUrl = await saveServerIcon(newServerConfig.icon);
-    if (!oldIcon || localIconUrl !== defaultIconSentinel) {
+    if (localIconUrl !== defaultIconSentinel) {
       newServerConfig.icon = localIconUrl;
       updateDomain(index, newServerConfig);
       reloadDatabase();
@@ -223,7 +225,9 @@ export function getUnsupportedMessage(
 }
 
 export function iconAsUrl(iconPath: string): string {
-  if (iconPath === defaultIconSentinel) return defaultIcon;
+  if (iconPath === defaultIconSentinel) {
+    return defaultIcon;
+  }
 
   try {
     return `data:application/octet-stream;base64,${fs.readFileSync(

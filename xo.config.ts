@@ -33,16 +33,18 @@ const restrictedRendererImports = [
 
 const xoConfig: FlatXoConfig = [
   {
-    prettier: true,
-    space: true,
+    prettier: "compat",
+  },
+  {
+    files: ["**/*.{,c,m}[jt]s"],
     settings: {
-      "import-x/resolver": "typescript",
       n: {
         resolvePaths: [import.meta.dirname],
         typescriptExtensionMap: [],
       },
     },
     rules: {
+      "@stylistic/no-mixed-operators": "off",
       "@typescript-eslint/consistent-type-imports": [
         "error",
         {disallowTypeAnnotations: false},
@@ -53,6 +55,7 @@ const xoConfig: FlatXoConfig = [
         "error",
         {argsIgnorePattern: "^_", caughtErrors: "all"},
       ],
+      "@typescript-eslint/no-unsafe-type-assertion": "error",
       "@typescript-eslint/switch-exhaustiveness-check": [
         "error",
         {
@@ -60,7 +63,6 @@ const xoConfig: FlatXoConfig = [
           requireDefaultForNonUnion: true,
         },
       ],
-      "arrow-body-style": "error",
       "import-x/no-extraneous-dependencies": [
         "error",
         {includeTypes: true, packageDir: import.meta.dirname},
@@ -91,7 +93,6 @@ const xoConfig: FlatXoConfig = [
         "error",
         {alphabetize: {order: "asc"}, "newlines-between": "always"},
       ],
-      "import-x/unambiguous": "error",
       "no-restricted-imports": [
         "error",
         {
@@ -126,19 +127,18 @@ const xoConfig: FlatXoConfig = [
       "no-warning-comments": "off",
       "sort-imports": ["error", {ignoreDeclarationSort: true}],
       strict: "error",
+      "unicorn/consistent-boolean-name": "off",
+      "unicorn/max-nested-calls": "off",
       "unicorn/no-await-expression-member": "off",
-      "unicorn/prefer-module": "off",
+      "unicorn/no-return-array-push": "off",
+      "unicorn/no-top-level-side-effects": "off",
+      "unicorn/prefer-continue": "off",
+      "unicorn/prefer-early-return": "off",
       "unicorn/prefer-top-level-await": "off",
     },
   },
   {
-    files: ["**/*.d.ts"],
-    rules: {
-      "import-x/unambiguous": "off",
-    },
-  },
-  {
-    files: ["app/common/**"],
+    files: ["app/common/**/*.{,c,m}[jt]s"],
     rules: {
       "@typescript-eslint/no-restricted-imports": [
         "error",
@@ -147,7 +147,7 @@ const xoConfig: FlatXoConfig = [
     },
   },
   {
-    files: ["app/main/**"],
+    files: ["app/main/**/*.{,c,m}[jt]s"],
     rules: {
       "@typescript-eslint/no-restricted-imports": [
         "error",
@@ -156,12 +156,23 @@ const xoConfig: FlatXoConfig = [
     },
   },
   {
-    files: ["app/renderer/**"],
+    files: ["app/renderer/**/*.{,c,m}[jt]s"],
     rules: {
       "@typescript-eslint/no-restricted-imports": [
         "error",
         {paths: restrictedMainImports},
       ],
+    },
+  },
+  {
+    files: ["**/*.html"],
+    rules: {
+      "@html-eslint/attrs-newline": "off", // Incompatible with Prettier
+      "@html-eslint/indent": "off", // Incompatible with Prettier
+      "@html-eslint/no-extra-spacing-tags": "off", // Incompatible with Prettier
+      "@html-eslint/require-closing-tags": "off", // Incompatible with Prettier
+      "@html-eslint/require-meta-description": "off",
+      "@html-eslint/require-open-graph-protocol": "off",
     },
   },
 ];

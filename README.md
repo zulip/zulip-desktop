@@ -6,14 +6,14 @@
 
 Desktop client for Zulip. Available for Mac, Linux, and Windows.
 
-![screenshot](https://i.imgur.com/s1o6TRA.png)
-![screenshot](https://i.imgur.com/vekKnW4.png)
+![screenshot](./docs/images/zulip-desktop-screenshot-light.webp)
+![screenshot](./docs/images/zulip-desktop-screenshot-dark.webp)
 
-# Download
+## Download
 
 Please see the [installation guide](https://zulip.com/help/desktop-app-install-guide).
 
-# Features
+## Features
 
 - Sign in to multiple organizations
 - Desktop notifications with inline reply
@@ -21,7 +21,7 @@ Please see the [installation guide](https://zulip.com/help/desktop-app-install-g
 - Multi-language spell checker
 - Automatic updates
 
-# Reporting issues
+## Reporting issues
 
 This desktop client shares most of its code with the Zulip web app.
 Issues in an individual organization's Zulip window should be reported
@@ -30,11 +30,11 @@ project](https://github.com/zulip/zulip/issues/new). Other
 issues in the desktop app and its settings should be reported [in this
 project](https://github.com/zulip/zulip-desktop/issues/new).
 
-# Contribute
+## Contribute
 
 First, join us on the [Zulip community server](https://zulip.readthedocs.io/en/latest/contributing/chat-zulip-org.html)!
 Also see our [contribution guidelines](./CONTRIBUTING.md) and our [development guide](./development.md).
 
-# License
+## License
 
 Released under the [Apache-2.0](./LICENSE) license.

@@ -26,7 +26,7 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
     return;
   }
 
-  if (process.platform === "linux" && !process.env.APPIMAGE) {
+  if (process.platform === "linux" && !("APPIMAGE" in process.env)) {
     const ses = session.fromPartition("persist:webviewsession");
     await linuxUpdateNotification(ses);
     return;
@@ -49,7 +49,7 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
     "update-available",
     "update-not-available",
   ] as const;
-  autoUpdater.on("update-available", async (info: UpdateInfo) => {
+  autoUpdater.on("update-available", (info: UpdateInfo) => {
     if (updateFromMenu) {
       updateAvailable = true;
 
@@ -58,7 +58,7 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
         autoUpdater.removeAllListeners(event);
       }
 
-      await dialog.showMessageBox({
+      void dialog.showMessageBox({
         message: t.__(
           "A new version {{{version}}} of Zulip Desktop is available.",
           {version: info.version},
@@ -70,13 +70,13 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
     }
   });
 
-  autoUpdater.on("update-not-available", async () => {
+  autoUpdater.on("update-not-available", () => {
     if (updateFromMenu) {
       // Remove all autoUpdator listeners so that next time autoUpdator is manually called these
       // listeners don't trigger multiple times.
       autoUpdater.removeAllListeners();
 
-      await dialog.showMessageBox({
+      void dialog.showMessageBox({
         message: t.__("No updates available."),
         detail: t.__(
           "You are running the latest version of Zulip Desktop.\nVersion: {{{version}}}",
@@ -86,7 +86,7 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
     }
   });
 
-  autoUpdater.on("error", async (error: Error) => {
+  autoUpdater.on("error", (error: Error) => {
     if (updateFromMenu) {
       // Remove all autoUpdator listeners so that next time autoUpdator is manually called these
       // listeners don't trigger multiple times.
@@ -96,39 +96,43 @@ export async function appUpdater(updateFromMenu = false): Promise<void> {
         ? t.__("Unable to download the update.")
         : t.__("Unable to check for updates.");
       const link = "https://zulip.com/apps/";
-      const {response} = await dialog.showMessageBox({
-        type: "error",
-        buttons: [t.__("Manual Download"), t.__("Cancel")],
-        message: messageText,
-        detail: t.__(
-          "Error: {{{error}}}\n\nThe latest version of Zulip Desktop is available at:\n{{{link}}}\nCurrent version: {{{version}}}",
-          {error: error.message, link, version: app.getVersion()},
-        ),
-      });
-      if (response === 0) {
-        await shell.openExternal(link);
-      }
+      (async () => {
+        const {response} = await dialog.showMessageBox({
+          type: "error",
+          buttons: [t.__("Manual Download"), t.__("Cancel")],
+          message: messageText,
+          detail: t.__(
+            "Error: {{{error}}}\n\nThe latest version of Zulip Desktop is available at:\n{{{link}}}\nCurrent version: {{{version}}}",
+            {error: error.message, link, version: app.getVersion()},
+          ),
+        });
+        if (response === 0) {
+          await shell.openExternal(link);
+        }
+      })();
     }
   });
 
   // Ask the user if update is available
-  autoUpdater.on("update-downloaded", async (event: UpdateDownloadedEvent) => {
-    // Ask user to update the app
-    const {response} = await dialog.showMessageBox({
-      type: "question",
-      buttons: [t.__("Install and Relaunch"), t.__("Install Later")],
-      defaultId: 0,
-      message: t.__("A new update {{{version}}} has been downloaded.", {
-        version: event.version,
-      }),
-      detail: t.__(
-        "It will be installed the next time you restart the application.",
-      ),
-    });
-    if (response === 0) {
-      quitting = true;
-      autoUpdater.quitAndInstall();
-    }
+  autoUpdater.on("update-downloaded", (event: UpdateDownloadedEvent) => {
+    (async () => {
+      // Ask user to update the app
+      const {response} = await dialog.showMessageBox({
+        type: "question",
+        buttons: [t.__("Install and Relaunch"), t.__("Install Later")],
+        defaultId: 0,
+        message: t.__("A new update {{{version}}} has been downloaded.", {
+          version: event.version,
+        }),
+        detail: t.__(
+          "It will be installed the next time you restart the application.",
+        ),
+      });
+      if (response === 0) {
+        quitting = true;
+        autoUpdater.quitAndInstall();
+      }
+    })();
   });
   // Init for updates
   await autoUpdater.checkForUpdates();

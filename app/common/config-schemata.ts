@@ -1,5 +1,7 @@
 import {z} from "zod";
 
+import {exactPartial} from "./types.ts";
+
 export const dndSettingsSchemata = {
   showNotification: z.boolean(),
   silent: z.boolean(),
@@ -16,7 +18,7 @@ export const configSchemata = {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   customCSS: z.string().or(z.literal(false)).nullable(),
   dnd: z.boolean(),
-  dndPreviousSettings: z.object(dndSettingsSchemata).partial(),
+  dndPreviousSettings: exactPartial(z.object(dndSettingsSchemata)),
   dockBouncing: z.boolean(),
   downloadsPath: z.string(),
   enableSpellchecker: z.boolean(),

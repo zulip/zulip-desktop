@@ -1,9 +1,7 @@
 import {type Session, app} from "electron/main";
 import fs from "node:fs";
 import path from "node:path";
-import {Readable} from "node:stream";
-import {pipeline} from "node:stream/promises";
-import type {ReadableStream} from "node:stream/web";
+import {Writable} from "node:stream";
 
 import * as Sentry from "@sentry/electron/main";
 import {z} from "zod";
@@ -20,12 +18,12 @@ const logger = new Logger({
 
 const generateFilePath = (url: string): string => {
   const directory = `${app.getPath("userData")}/server-icons`;
-  const extension = path.extname(url).split("?")[0];
+  const extension = path.extname(new URL(url).pathname);
 
   let hash = 5381;
   let {length} = url;
 
-  while (length) {
+  while (length > 0) {
     // eslint-disable-next-line no-bitwise, unicorn/prefer-code-point
     hash = (hash * 33) ^ url.charCodeAt(--length);
   }
@@ -49,7 +47,7 @@ export const _getServerSettings = async (
   }
 
   const data: unknown = await response.json();
-  /* eslint-disable @typescript-eslint/naming-convention */
+  /* eslint-disable @typescript-eslint/naming-convention -- not our names */
   const {
     realm_name,
     realm_uri,
@@ -90,10 +88,7 @@ export const _saveServerIcon = async (
     }
 
     const filePath = generateFilePath(url);
-    await pipeline(
-      Readable.fromWeb(response.body as ReadableStream<Uint8Array>),
-      fs.createWriteStream(filePath),
-    );
+    await response.body!.pipeTo(Writable.toWeb(fs.createWriteStream(filePath)));
     return filePath;
   } catch (error: unknown) {
     logger.log("Could not get server icon.");

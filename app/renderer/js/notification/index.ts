@@ -19,7 +19,10 @@ export function newNotification(
   const notification = new Notification(title, {...options, silent: true});
   for (const type of ["click", "close", "error", "show"]) {
     notification.addEventListener(type, (event) => {
-      if (type === "click") ipcRenderer.send("focus-this-webview");
+      if (type === "click") {
+        ipcRenderer.send("focus-this-webview");
+      }
+
       if (!dispatch(type, event)) {
         event.preventDefault();
       }

@@ -3,6 +3,7 @@ import fs from "node:fs";
 
 import * as remote from "@electron/remote";
 import {app, dialog} from "@electron/remote";
+import assert from "minimalistic-assert";
 
 import * as ConfigUtil from "../../../common/config-util.ts";
 import {type Html, html} from "../../../common/html.ts";
@@ -27,11 +28,11 @@ type WebViewProperties = {
   role: TabRole;
   isActive: () => boolean;
   switchLoading: (loading: boolean, url: string) => void;
-  onNetworkError: (index: number) => void;
+  onNetworkError: () => void;
   preload?: string;
   onTitleChange: () => void;
   hasPermission?: (origin: string, permission: string) => boolean;
-  unsupportedMessage?: string;
+  unsupportedMessage?: string | undefined;
 };
 
 export default class WebView {
@@ -62,9 +63,8 @@ export default class WebView {
   }
 
   static async create(properties: WebViewProperties): Promise<WebView> {
-    const $pane = generateNodeFromHtml(
-      WebView.templateHtml(properties),
-    ) as HTMLElement;
+    const $pane = generateNodeFromHtml(this.templateHtml(properties));
+    assert($pane instanceof HTMLElement);
     properties.$root.append($pane);
 
     const $webview: HTMLElement = $pane.querySelector(":scope > webview")!;
@@ -74,7 +74,7 @@ export default class WebView {
         () => {
           resolve();
         },
-        true,
+        {capture: true},
       );
     });
 
@@ -102,14 +102,14 @@ export default class WebView {
     return new WebView(properties, $pane, $webview, webContentsId);
   }
 
-  badgeCount = 0;
-  loading = true;
-  private customCss: string | false | null;
   private readonly $webviewsContainer: DOMTokenList;
   private readonly $unsupported: HTMLElement;
   private readonly $unsupportedMessage: HTMLElement;
   private readonly $unsupportedDismiss: HTMLElement;
   private unsupportedDismissed = false;
+
+  badgeCount = 0;
+  loading = true;
 
   private constructor(
     readonly properties: WebViewProperties,
@@ -117,7 +117,6 @@ export default class WebView {
     private readonly $webview: HTMLElement,
     readonly webContentsId: number,
   ) {
-    this.customCss = ConfigUtil.getConfigItem("customCSS", null);
     this.$webviewsContainer = document.querySelector(
       "#webviews-container",
     )!.classList;
@@ -130,6 +129,121 @@ export default class WebView {
     )!;
 
     this.registerListeners();
+  }
+
+  private registerListeners(): void {
+    const webContents = this.getWebContents();
+
+    if (shouldSilentWebview) {
+      webContents.setAudioMuted(true);
+    }
+
+    webContents.on("page-title-updated", (_event, title) => {
+      this.badgeCount = this.getBadgeCount(title);
+      this.properties.onTitleChange();
+    });
+
+    this.$webview.addEventListener("did-navigate-in-page", () => {
+      this.canGoBackButton();
+    });
+
+    this.$webview.addEventListener("did-navigate", () => {
+      this.canGoBackButton();
+    });
+
+    webContents.on("page-favicon-updated", (_event, favicons) => {
+      // This returns a string of favicons URL. If there is a PM counts in unread messages then the URL would be like
+      // https://chat.zulip.org/static/images/favicon/favicon-pms.png
+      if (
+        favicons[0] !== undefined &&
+        favicons[0].indexOf("favicon-pms") > 0 &&
+        app.dock !== undefined
+      ) {
+        // This api is only supported on macOS
+        app.dock.setBadge("●");
+        // Bounce the dock
+        if (ConfigUtil.getConfigItem("dockBouncing", true)) {
+          app.dock.bounce();
+        }
+      }
+    });
+
+    webContents.addListener("context-menu", (event, menuParameters) => {
+      contextMenu(webContents, event, menuParameters);
+    });
+
+    this.$webview.addEventListener("dom-ready", () => {
+      this.loading = false;
+      this.properties.switchLoading(false, this.properties.url);
+      this.show();
+    });
+
+    webContents.on("did-fail-load", (_event, _errorCode, errorDescription) => {
+      const hasConnectivityError =
+        SystemUtil.connectivityError.includes(errorDescription);
+      if (hasConnectivityError) {
+        console.error("error", errorDescription);
+        if (!this.properties.url.includes("network.html")) {
+          this.properties.onNetworkError();
+        }
+      }
+    });
+
+    this.$webview.addEventListener("did-start-loading", () => {
+      this.properties.switchLoading(true, this.properties.url);
+    });
+
+    this.$webview.addEventListener("did-stop-loading", () => {
+      this.properties.switchLoading(false, this.properties.url);
+    });
+
+    this.$unsupportedDismiss.addEventListener("click", () => {
+      this.unsupportedDismissed = true;
+      this.$unsupported.hidden = true;
+    });
+
+    webContents.on("zoom-changed", (event, zoomDirection) => {
+      if (zoomDirection === "in") {
+        this.zoomIn();
+      } else if (zoomDirection === "out") {
+        this.zoomOut();
+      }
+    });
+  }
+
+  private getBadgeCount(title: string): number {
+    const messageCountInTitle = /^\((?<count>\d+)\)/v.exec(title);
+    return messageCountInTitle ? Number(messageCountInTitle.groups!.count) : 0;
+  }
+
+  private show(): void {
+    // Do not show WebView if another tab was selected and this tab should be in background.
+    if (!this.properties.isActive()) {
+      return;
+    }
+
+    // To show or hide the loading indicator in the active tab
+    this.$webviewsContainer.toggle("loaded", !this.loading);
+
+    this.$pane.classList.add("active");
+    this.focus();
+    this.properties.onTitleChange();
+    // Injecting preload css in webview to override some css rules
+    (async () => this.getWebContents().insertCSS(preloadCss))();
+
+    const customCss = ConfigUtil.getConfigItem("customCSS", null);
+    if (customCss !== null && customCss !== false) {
+      if (!fs.existsSync(customCss)) {
+        ConfigUtil.setConfigItem("customCSS", null);
+
+        const errorMessage = t.__("The custom CSS previously set is deleted.");
+        dialog.showErrorBox(t.__("Custom CSS file deleted"), errorMessage);
+        return;
+      }
+
+      (async () =>
+        this.getWebContents().insertCSS(fs.readFileSync(customCss, "utf8")))();
+    }
   }
 
   destroy(): void {
@@ -227,116 +341,5 @@ export default class WebView {
     ...arguments_: Parameters<RendererMessage[Channel]>
   ): void {
     ipcRenderer.send("forward-to", this.webContentsId, channel, ...arguments_);
-  }
-
-  private registerListeners(): void {
-    const webContents = this.getWebContents();
-
-    if (shouldSilentWebview) {
-      webContents.setAudioMuted(true);
-    }
-
-    webContents.on("page-title-updated", (_event, title) => {
-      this.badgeCount = this.getBadgeCount(title);
-      this.properties.onTitleChange();
-    });
-
-    this.$webview.addEventListener("did-navigate-in-page", () => {
-      this.canGoBackButton();
-    });
-
-    this.$webview.addEventListener("did-navigate", () => {
-      this.canGoBackButton();
-    });
-
-    webContents.on("page-favicon-updated", (_event, favicons) => {
-      // This returns a string of favicons URL. If there is a PM counts in unread messages then the URL would be like
-      // https://chat.zulip.org/static/images/favicon/favicon-pms.png
-      if (favicons[0].indexOf("favicon-pms") > 0 && app.dock !== undefined) {
-        // This api is only supported on macOS
-        app.dock.setBadge("●");
-        // Bounce the dock
-        if (ConfigUtil.getConfigItem("dockBouncing", true)) {
-          app.dock.bounce();
-        }
-      }
-    });
-
-    webContents.addListener("context-menu", (event, menuParameters) => {
-      contextMenu(webContents, event, menuParameters);
-    });
-
-    this.$webview.addEventListener("dom-ready", () => {
-      this.loading = false;
-      this.properties.switchLoading(false, this.properties.url);
-      this.show();
-    });
-
-    webContents.on("did-fail-load", (_event, _errorCode, errorDescription) => {
-      const hasConnectivityError =
-        SystemUtil.connectivityError.includes(errorDescription);
-      if (hasConnectivityError) {
-        console.error("error", errorDescription);
-        if (!this.properties.url.includes("network.html")) {
-          this.properties.onNetworkError(this.properties.index);
-        }
-      }
-    });
-
-    this.$webview.addEventListener("did-start-loading", () => {
-      this.properties.switchLoading(true, this.properties.url);
-    });
-
-    this.$webview.addEventListener("did-stop-loading", () => {
-      this.properties.switchLoading(false, this.properties.url);
-    });
-
-    this.$unsupportedDismiss.addEventListener("click", () => {
-      this.unsupportedDismissed = true;
-      this.$unsupported.hidden = true;
-    });
-
-    webContents.on("zoom-changed", (event, zoomDirection) => {
-      if (zoomDirection === "in") this.zoomIn();
-      else if (zoomDirection === "out") this.zoomOut();
-    });
-  }
-
-  private getBadgeCount(title: string): number {
-    const messageCountInTitle = /^\((\d+)\)/.exec(title);
-    return messageCountInTitle ? Number(messageCountInTitle[1]) : 0;
-  }
-
-  private show(): void {
-    // Do not show WebView if another tab was selected and this tab should be in background.
-    if (!this.properties.isActive()) {
-      return;
-    }
-
-    // To show or hide the loading indicator in the active tab
-    this.$webviewsContainer.toggle("loaded", !this.loading);
-
-    this.$pane.classList.add("active");
-    this.focus();
-    this.properties.onTitleChange();
-    // Injecting preload css in webview to override some css rules
-    (async () => this.getWebContents().insertCSS(preloadCss))();
-
-    // Get customCSS again from config util to avoid warning user again
-    const customCss = ConfigUtil.getConfigItem("customCSS", null);
-    this.customCss = customCss;
-    if (customCss) {
-      if (!fs.existsSync(customCss)) {
-        this.customCss = null;
-        ConfigUtil.setConfigItem("customCSS", null);
-
-        const errorMessage = t.__("The custom CSS previously set is deleted.");
-        dialog.showErrorBox(t.__("Custom CSS file deleted"), errorMessage);
-        return;
-      }
-
-      (async () =>
-        this.getWebContents().insertCSS(fs.readFileSync(customCss, "utf8")))();
-    }
   }
 }

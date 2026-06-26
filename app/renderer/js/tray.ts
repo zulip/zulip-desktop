@@ -64,17 +64,18 @@ const config = {
   thick: process.platform === "win32",
 };
 
-const renderCanvas = function (argument: number): HTMLCanvasElement {
-  config.unreadCount = argument;
+const renderCanvas = function (unreadCount: number): HTMLCanvasElement {
+  config.unreadCount = unreadCount;
 
   const size = config.size * config.pixelRatio;
   const padding = size * 0.05;
   const center = size / 2;
-  const hasCount = config.showUnreadCount && config.unreadCount;
-  const color = config.unreadCount ? config.unreadColor : config.readColor;
-  const backgroundColor = config.unreadCount
-    ? config.unreadBackgroundColor
-    : config.readBackgroundColor;
+  const hasCount = config.showUnreadCount && config.unreadCount > 0;
+  const color = config.unreadCount > 0 ? config.unreadColor : config.readColor;
+  const backgroundColor =
+    config.unreadCount > 0
+      ? config.unreadBackgroundColor
+      : config.readBackgroundColor;
 
   const canvas = document.createElement("canvas");
   canvas.width = size;
@@ -113,17 +114,12 @@ const renderCanvas = function (argument: number): HTMLCanvasElement {
   return canvas;
 };
 
-/**
- * Renders the tray icon as a native image
- * @param arg: Unread count
- * @return the native image
- */
-const renderNativeImage = function (argument: number): NativeImage {
+const renderNativeImage = function (unreadCount: number): NativeImage {
   if (process.platform === "win32") {
     return nativeImage.createFromPath(winUnreadTrayIconPath());
   }
 
-  const canvas = renderCanvas(argument);
+  const canvas = renderCanvas(unreadCount);
   const pngData = nativeImage
     .createFromDataURL(canvas.toDataURL("image/png"))
     .toPNG();
@@ -137,6 +133,10 @@ function sendAction<Channel extends keyof RendererMessage>(
   ...arguments_: Parameters<RendererMessage[Channel]>
 ): void {
   const win = BrowserWindow.getAllWindows()[0];
+
+  if (win === undefined) {
+    return;
+  }
 
   if (process.platform === "darwin") {
     win.restore();
@@ -193,25 +193,25 @@ export function initializeTray(serverManagerView: ServerManagerView) {
     }
   });
 
-  ipcRenderer.on("tray", (_event, argument: number): void => {
+  ipcRenderer.on("tray", (_event, newUnreadCount: number): void => {
+    unread = newUnreadCount;
+
     if (!tray) {
       return;
     }
 
     // We don't want to create tray from unread messages on macOS since it already has dock badges.
     if (process.platform === "linux" || process.platform === "win32") {
-      if (argument === 0) {
-        unread = argument;
+      if (newUnreadCount === 0) {
         tray.setImage(iconPath());
         tray.setToolTip(t.__("No unread messages"));
       } else {
-        unread = argument;
-        const image = renderNativeImage(argument);
+        const image = renderNativeImage(newUnreadCount);
         tray.setImage(image);
         tray.setToolTip(
           t.__mf(
             "{number, plural, one {# unread message} other {# unread messages}}",
-            {number: `${argument}`},
+            {number: `${newUnreadCount}`},
           ),
         );
       }

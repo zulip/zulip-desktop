@@ -2,6 +2,21 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.12.4 --2026-06-25
+
+**Enhancements**:
+
+- Updated translations, including new languages Estonian, Hebrew, Norwegian, and Norwegian Nynorsk.
+- The Linux Snap package has been updated with native Wayland support.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 42.5.0.
+
+**Fixes**:
+
+- Fixed sorting of languages in the spellchecker languages setting.
+
 ### v5.12.3 --2025-12-12
 
 **Enhancements**:
@@ -793,7 +808,7 @@ electron-updater - `v2.21.8`
 
 **Fixes**:
 
-- Add Zulip binary link to the bin. It was a regression we missed somehow. You can now start the app using `zulip` from a terminal [Linux]
+- Add Zulip binary link to the bin. It was a regression we missed somehow. You can now start the app using `zulip` from a terminal \[Linux]
 
 - Fix app settings overriding issue. This bug was unnoticed from `v1.4.0`. The bug was overriding the app settings which was pretty bad. Don't worry this works as expected now
 
@@ -823,7 +838,7 @@ electron-updater - `v2.21.8`
 
 - Add bots mention support to reply option
 
-- Show a notification when a new update available [Linux]
+- Show a notification when a new update available \[Linux]
 
 - Add back button in left-sidebar
 
@@ -865,7 +880,7 @@ electron-updater - `v2.21.8`
 
 **Enhancements**:
 
-- Reply from notifications [macOS]
+- Reply from notifications \[macOS]
 
 - Add a setting option to start the app in the background
 
@@ -873,9 +888,9 @@ electron-updater - `v2.21.8`
 
 - 32-bit AppImage installer
 
-- Automatically add apt-repo and GPG public keys on installing Debian file [Linux]
+- Automatically add apt-repo and GPG public keys on installing Debian file \[Linux]
 
-- Remove app data, config files etc on uninstalling Debian installer [Linux]
+- Remove app data, config files etc on uninstalling Debian installer \[Linux]
 
 - Add logger utility for debugging that makes easier to sharing the apps
 
@@ -890,7 +905,7 @@ electron-updater - `v2.21.8`
 
 - Reflect changes in the preference page (#362)
 
-- Set the default value of flash taskbar setting [Windows]
+- Set the default value of flash taskbar setting \[Windows]
 
 - Rename Zoom In keyboard shortcut
 
@@ -930,9 +945,9 @@ electron-updater - `v2.21.8`
 
 - Added setting option to enable/disable spellcheck
 
-- Added setting option to control Windows taskbar flashing [Windows]
+- Added setting option to control Windows taskbar flashing \[Windows]
 
-- Auto-updates for Linux [AppImage]
+- Auto-updates for Linux \[AppImage]
 
 - Better tray icons for retina display
 
@@ -962,7 +977,7 @@ electron-updater - `v2.21.8`
 
 - Redesigned setting page
 
-- Red dot over dock icon for PM [macOS]
+- Red dot over dock icon for PM \[macOS]
 
 - Show server-info on hovering the server icon
 
@@ -1006,11 +1021,11 @@ electron-updater - `v2.21.8`
 
 - Added back/forward option under `History` submenu
 
-- Added taskbar overlay icon [Windows]
+- Added taskbar overlay icon \[Windows]
 
 - Added `Window` submenu by which users can switch to other servers
 
-- Added flashing taskbar icon on incoming message [Windows]
+- Added flashing taskbar icon on incoming message \[Windows]
 
 - Option to hide the left sidebar
 
@@ -1026,7 +1041,7 @@ electron-updater - `v2.21.8`
 
 - Allow user to change installation directory
 
-- Fixed server-icon path error [Windows]
+- Fixed server-icon path error \[Windows]
 
 - Fixed server validation error
 
@@ -1075,13 +1090,13 @@ electron-updater - `v2.21.8`
 **Enhancements**:
 
 - New network error page. App will auto-reload once the network comes back
-- Quit shortcut - CTRL+Q [Windows]
+- Quit shortcut - CTRL+Q \[Windows]
 - Improved preferences
 
 **Fixes**:
 
 - Fixed power-monitor module error
-- Fixed code signing error [macOS]
+- Fixed code signing error \[macOS]
 
 <hr>
 
@@ -1092,7 +1107,7 @@ electron-updater - `v2.21.8`
 - Sign in to multiple teams
 - Windows 7 desktop notification support
 - Show badge count for each Zulip server
-- Toggle window on clicking tray icon [Windows]
+- Toggle window on clicking tray icon \[Windows]
 
 - Windows installer is properly code signed using [DigiCert](https://www.digicert.com/) certificate. You may get a warning regarding the certificate, please make it false positive
 
@@ -1153,8 +1168,8 @@ Minor improvements
 **Fixes**:
 
 - Windows installer error
-- Compile and build error in native node modules + spellchecker [Windows]
-- Missing icon on installing [Windows]
+- Compile and build error in native node modules + spellchecker \[Windows]
+- Missing icon on installing \[Windows]
 
 <hr>
 
