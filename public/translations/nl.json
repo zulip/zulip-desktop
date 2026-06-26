@@ -1,4 +1,7 @@
 {
+	"A new update {{{version}}} has been downloaded.": "Een nieuwe update {{{version}}} is gedownload.",
+	"A new version {{{version}}} is available. Please update using your package manager.": "Een nieuwe versie {{{version}}} is beschikbaar. Update via de pakketbeheerder.",
+	"A new version {{{version}}} of Zulip Desktop is available.": "Er is een nieuwe versie {{{version}}} van Zulip Desktop beschikbaar.",
 	"About": "Over",
 	"About Zulip": "Over Zulip",
 	"Actual Size": "Ware grootte",

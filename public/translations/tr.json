@@ -1,5 +1,6 @@
 {
 	"A new update {{{version}}} has been downloaded.": "Yeni bir güncelleme {{{version}}} indirildi.",
+	"A new version {{{version}}} is available. Please update using your package manager.": "Yeni bir sürüm {{{version}}} mevcuttur. Lütfen paket yöneticisi kullanarak güncelleyiniz.",
 	"A new version {{{version}}} of Zulip Desktop is available.": "Zulip Masaüstü'nün yeni bir sürümü {{{version}}} mevcut.",
 	"About": "Hakkında",
 	"About Zulip": "Zulip hakkında",
