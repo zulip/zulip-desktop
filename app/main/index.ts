@@ -257,6 +257,28 @@ function createMainWindow(): BrowserWindow {
 
   const page = mainWindow.webContents;
 
+  page.on("before-input-event", (event, input) => {
+    if (input.type !== "mouseUp") {
+      return;
+    }
+
+    if (!("button" in input)) {
+      return;
+    }
+
+    // Mouse back button
+    if (input.button === 3) {
+      void page.executeJavaScript("history.back()");
+      event.preventDefault();
+    }
+
+    // Mouse forward button
+    if (input.button === 4) {
+      void page.executeJavaScript("history.forward()");
+      event.preventDefault();
+    }
+  });
+
   page.on("dom-ready", () => {
     if (ConfigUtil.getConfigItem("startMinimized", false)) {
       mainWindow.hide();
