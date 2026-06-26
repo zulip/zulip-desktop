@@ -4,7 +4,7 @@ import path from "node:path";
 import process from "node:process";
 
 import * as remote from "@electron/remote";
-import {app, dialog, session} from "@electron/remote";
+import {app, dialog, nativeTheme, session} from "@electron/remote";
 import Tagify from "@yaireo/tagify";
 import {z} from "zod";
 
@@ -28,6 +28,10 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
     <div class="settings-pane">
       <div class="title">${t.__("Appearance")}</div>
       <div id="appearance-option-settings" class="settings-card">
+        <div class="setting-row" id="app-theme-option">
+          <div class="setting-description">${t.__("App Theme")}</div>
+          <div id="app-theme-div" class="app-theme-div"></div>
+        </div>
         <div class="setting-row" id="tray-option">
           <div class="setting-description">
             ${t.__("Show app icon in system tray")}
@@ -211,6 +215,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
     </div>
   `.html;
 
+  initAppTheme();
   updateTrayOption();
   updateBadgeOption();
   updateSilentOption();
@@ -247,6 +252,30 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
   // Auto hide menubar on Windows and Linux
   if (process.platform !== "darwin") {
     updateMenubarOption();
+  }
+
+  function initAppTheme(): void {
+    const themeDiv: HTMLSelectElement = $root.querySelector(".app-theme-div")!;
+    const themeOptions = {
+      system: t.__("Automatic"),
+      light: t.__("Light"),
+      dark: t.__("Dark"),
+    };
+    const themeListHtml = generateSelectHtml(themeOptions, "theme-menu");
+    themeDiv.innerHTML += themeListHtml.html;
+
+    const themeMenu: HTMLSelectElement = $root.querySelector(".theme-menu")!;
+
+    const currentTheme = ConfigUtil.getConfigItem("appTheme", "system");
+    themeMenu.options.namedItem(currentTheme)!.selected = true;
+
+    themeMenu.addEventListener("change", () => {
+      const newTheme = z
+        .enum(["system", "light", "dark"])
+        .parse(themeMenu.value);
+      ConfigUtil.setConfigItem("appTheme", newTheme);
+      nativeTheme.themeSource = newTheme;
+    });
   }
 
   function updateTrayOption(): void {
