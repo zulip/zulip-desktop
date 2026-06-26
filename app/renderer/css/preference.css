@@ -768,3 +768,6 @@ i.open-network-button {
   z-index: 9999;
   height: 0;
 }
+.tagify {
+    width: 400px;
+}
