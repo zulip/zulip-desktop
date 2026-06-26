@@ -53,7 +53,12 @@ const trayIconSize = (): number => {
 
 //  Default config for Icon we might make it OS specific if needed like the size
 const config = {
-  pixelRatio: window.devicePixelRatio,
+  // On Linux, Plasma's StatusNotifierItem host mis-renders tray pixmaps that
+  // carry a fractional scale factor (the badge comes out oversized and tiled
+  // under 125%/150% display scaling). Render at a fixed integer scale instead
+  // of the desktop's fractional devicePixelRatio so the output is deterministic
+  // and crisp regardless of the compositor's scaling.
+  pixelRatio: process.platform === "linux" ? 2 : window.devicePixelRatio,
   unreadCount: 0,
   showUnreadCount: true,
   unreadColor: "#000000",
@@ -123,8 +128,11 @@ const renderNativeImage = function (unreadCount: number): NativeImage {
   const pngData = nativeImage
     .createFromDataURL(canvas.toDataURL("image/png"))
     .toPNG();
+  // Hand Linux a plain 1x pixmap and let the panel scale it. Declaring a
+  // fractional scaleFactor here is what makes Plasma's tray draw the badge
+  // oversized and repeated; an integer scale renders correctly.
   return nativeImage.createFromBuffer(pngData, {
-    scaleFactor: config.pixelRatio,
+    scaleFactor: process.platform === "linux" ? 1 : config.pixelRatio,
   });
 };
 
