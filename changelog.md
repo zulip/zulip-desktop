@@ -2,6 +2,21 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.12.4 --2026-06-25
+
+**Enhancements**:
+
+- Updated translations, including new languages Estonian, Hebrew, Norwegian, and Norwegian Nynorsk.
+- The Linux Snap package has been updated with native Wayland support.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 42.5.0.
+
+**Fixes**:
+
+- Fixed sorting of languages in the spellchecker languages setting.
+
 ### v5.12.3 --2025-12-12
 
 **Enhancements**:
