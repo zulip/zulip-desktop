@@ -89,7 +89,7 @@ export class ServerManagerView {
   functionalTabs: Map<TabPage, number>;
   tabIndex: number;
   presetOrgs: string[];
-  preferenceView?: PreferenceView;
+  preferenceView?: PreferenceView | undefined;
   constructor() {
     this.$addServerButton = document.querySelector("#add-tab")!;
     this.$tabsContainer = document.querySelector("#tabs-container")!;

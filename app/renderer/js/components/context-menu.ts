@@ -141,9 +141,10 @@ export const contextMenu = (
     (menuItem) => menuItem.visible ?? true,
   );
   const menu = Menu.buildFromTemplate(filteredMenuTemplate);
+  const window = BrowserWindow.fromWebContents(webContents);
   menu.popup({
-    window: BrowserWindow.fromWebContents(webContents) ?? undefined,
-    frame: properties.frame ?? undefined,
+    ...(window !== null && {window}),
+    ...(properties.frame !== null && {frame: properties.frame}),
     x: properties.x,
     y: properties.y,
     sourceType: properties.menuSourceType,

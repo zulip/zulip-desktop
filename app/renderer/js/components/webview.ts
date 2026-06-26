@@ -32,7 +32,7 @@ type WebViewProperties = {
   preload?: string;
   onTitleChange: () => void;
   hasPermission?: (origin: string, permission: string) => boolean;
-  unsupportedMessage?: string;
+  unsupportedMessage?: string | undefined;
 };
 
 export default class WebView {

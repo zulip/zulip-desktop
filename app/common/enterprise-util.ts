@@ -7,6 +7,7 @@ import {dialog} from "zulip:remote";
 
 import {enterpriseConfigSchemata} from "./config-schemata.ts";
 import Logger from "./logger-util.ts";
+import {exactPartial} from "./types.ts";
 
 type EnterpriseConfig = {
   [Key in keyof typeof enterpriseConfigSchemata]: z.output<
@@ -35,10 +36,9 @@ function reloadDatabase(): void {
     try {
       const file = fs.readFileSync(enterpriseFile, "utf8");
       const data: unknown = JSON.parse(file);
-      enterpriseSettings = z
-        .object(enterpriseConfigSchemata)
-        .partial()
-        .parse(data);
+      enterpriseSettings = exactPartial(
+        z.object(enterpriseConfigSchemata),
+      ).parse(data);
     } catch (error: unknown) {
       dialog.showErrorBox(
         "Error loading global_config",
