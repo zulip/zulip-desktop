@@ -26,7 +26,7 @@ export const defaultIconSentinel = "../renderer/img/icon.png";
 const serverConfigSchema = z.object({
   url: z.url(),
   alias: z.string(),
-  icon: z.string(),
+  icon: z.string().default(defaultIconSentinel),
   zulipVersion: z.string().default("unknown"),
   zulipFeatureLevel: z.number().default(0),
 });
