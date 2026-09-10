@@ -651,7 +651,14 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         }
 
         if (locale.region !== undefined) {
-          displayName += ` (${new Intl.DisplayNames([locale], {type: "region"}).of(locale.region)})`;
+          let regionDisplay = new Intl.DisplayNames([locale], {
+            type: "region",
+          }).of(locale.region);
+          if (l.endsWith("-oxendict")) {
+            regionDisplay += " Oxford spelling";
+          }
+
+          displayName += ` (${regionDisplay})`;
         }
 
         languagePairs.set(displayName, l);
