@@ -73,7 +73,10 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         <div
           class="setting-row"
           id="flash-taskbar-option"
-          style="display:${process.platform === "win32" ? "" : "none"}"
+          style="display:${process.platform === "win32" ||
+          process.platform === "linux"
+            ? ""
+            : "none"}"
         >
           <div class="setting-description">
             ${t.__("Flash taskbar on new message")}
@@ -234,8 +237,8 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
 
   // Platform specific settings
 
-  // Flashing taskbar on Windows
-  if (process.platform === "win32") {
+  // Flashing taskbar on Windows and Linux
+  if (process.platform === "win32" || process.platform === "linux") {
     updateFlashTaskbar();
   }
   // Dock bounce on macOS

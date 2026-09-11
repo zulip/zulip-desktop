@@ -7,6 +7,15 @@ import * as ConfigUtil from "../common/config-util.ts";
 import {send} from "./typed-ipc-main.ts";
 
 function showBadgeCount(messageCount: number, mainWindow: BrowserWindow): void {
+  if (
+    (process.platform === "win32" || process.platform === "linux") &&
+    !mainWindow.isFocused()
+  ) {
+    mainWindow.flashFrame(
+      ConfigUtil.getConfigItem("flashTaskbarOnMessage", true),
+    );
+  }
+
   if (process.platform === "win32") {
     updateOverlayIcon(messageCount, mainWindow);
   } else {
@@ -37,12 +46,6 @@ function updateOverlayIcon(
   messageCount: number,
   mainWindow: BrowserWindow,
 ): void {
-  if (!mainWindow.isFocused()) {
-    mainWindow.flashFrame(
-      ConfigUtil.getConfigItem("flashTaskbarOnMessage", true),
-    );
-  }
-
   if (messageCount === 0) {
     mainWindow.setOverlayIcon(null, "");
   } else {

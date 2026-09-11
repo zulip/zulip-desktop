@@ -49,7 +49,7 @@ export class PreferenceView {
     this.handleToggle("show-notification-option", newSettings.showNotification);
     this.handleToggle("silent-option", newSettings.silent);
 
-    if (process.platform === "win32") {
+    if (process.platform === "win32" || process.platform === "linux") {
       this.handleToggle(
         "flash-taskbar-option",
         newSettings.flashTaskbarOnMessage,
