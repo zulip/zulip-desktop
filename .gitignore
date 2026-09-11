@@ -12,6 +12,7 @@ logs
 // osx garbage
 *.DS_Store
 .DS_Store
+.pnpm-store/
 
 # dotenv environment variables file
 .env

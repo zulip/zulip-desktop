@@ -46,6 +46,14 @@
       "out/**/*"
     ],
     "copyright": "©2020 Kandra Labs, Inc.",
+    "protocols": [
+      {
+        "name": "Zulip server URL",
+        "schemes": [
+          "zulip"
+        ]
+      }
+    ],
     "mac": {
       "category": "public.app-category.productivity",
       "icon": "build/icon-macos.png",

@@ -330,6 +330,55 @@ export default class WebView {
     this.getWebContents().reload();
   }
 
+  /**
+   * Navigate webview to url (e.g. deep link with #narrow/...).
+   * loadURL alone often does not update hash when the tab is already open.
+   */
+  async navigateTo(url: string): Promise<void> {
+    const webContents = this.getWebContents();
+    const webviewTag = this.$webview as Electron.WebviewTag;
+
+    const navigate = async (): Promise<void> => {
+      try {
+        const target = new URL(url);
+        const current = webContents.getURL();
+        if (current && !current.startsWith("about:")) {
+          const currentUrl = new URL(current);
+          if (
+            currentUrl.origin === target.origin &&
+            target.hash !== "" &&
+            target.hash !== currentUrl.hash
+          ) {
+            await webContents.executeJavaScript(
+              `window.location.replace(${JSON.stringify(url)})`,
+            );
+            this.focus();
+            return;
+          }
+        }
+      } catch {
+        // Fall through to full navigation.
+      }
+
+      await webviewTag.loadURL(url);
+      this.focus();
+    };
+
+    if (this.loading) {
+      await new Promise<void>((resolve) => {
+        this.$webview.addEventListener(
+          "dom-ready",
+          () => {
+            void navigate().then(resolve);
+          },
+          {once: true},
+        );
+      });
+    } else {
+      await navigate();
+    }
+  }
+
   setUnsupportedMessage(unsupportedMessage: string | undefined) {
     this.$unsupported.hidden =
       unsupportedMessage === undefined || this.unsupportedDismissed;
