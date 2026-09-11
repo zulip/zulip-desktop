@@ -91,7 +91,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         </div>
         <div class="setting-row" id="silent-option">
           <div class="setting-description">
-            ${t.__("Mute all sounds from Zulip")}
+            ${t.__("Mute notification sounds from Zulip")}
           </div>
           <div class="setting-control"></div>
         </div>
