@@ -18,6 +18,19 @@ ipcRenderer.on("show-notification-settings", () => {
   bridgeEvents.dispatchEvent(new BridgeEvent("show-notification-settings"));
 });
 
+ipcRenderer.on(
+  "show-download-success",
+  (_event, title: string, description: string, downloadId: string) => {
+    bridgeEvents.dispatchEvent(
+      new BridgeEvent("show-download-success", [
+        title,
+        description,
+        downloadId,
+      ]),
+    );
+  },
+);
+
 window.addEventListener("load", () => {
   if (!location.href.includes("app/renderer/network.html")) {
     return;

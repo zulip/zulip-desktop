@@ -103,6 +103,13 @@ bridgeEvents.addEventListener("realm_icon_url", (event) => {
   );
 });
 
+bridgeEvents.addEventListener("show-downloaded-file-in-folder", (event) => {
+  const [downloadId] = z
+    .tuple([z.string()])
+    .parse(z.instanceof(BridgeEvent).parse(event).arguments_);
+  ipcRenderer.send("show-downloaded-file-in-folder", downloadId);
+});
+
 // Set user as active and update the time of last activity
 ipcRenderer.on("set-active", () => {
   idle = false;
