@@ -1,4 +1,4 @@
-import {type Event, clipboard} from "electron/common";
+import {type Event} from "electron/common";
 import type {WebContents} from "electron/main";
 import type {
   ContextMenuParams,
@@ -9,6 +9,7 @@ import process from "node:process";
 import {BrowserWindow, Menu} from "@electron/remote";
 
 import {t} from "../../../common/translation-util.ts";
+import {ipcRenderer} from "../typed-ipc-renderer.ts";
 
 export const contextMenu = (
   webContents: WebContents,
@@ -89,13 +90,12 @@ export const contextMenu = (
           : t.__("Copy Link"),
       visible: isLink,
       click(_item) {
-        clipboard.write({
-          bookmark: properties.linkText,
-          text:
-            linkUrl?.protocol === "mailto:"
-              ? linkUrl.pathname
-              : properties.linkURL,
-        });
+        ipcRenderer.send(
+          "copy-text",
+          linkUrl?.protocol === "mailto:"
+            ? linkUrl.pathname
+            : properties.linkURL,
+        );
       },
     },
     {
@@ -109,10 +109,7 @@ export const contextMenu = (
       label: t.__("Copy Image URL"),
       visible: properties.mediaType === "image",
       click(_item) {
-        clipboard.write({
-          bookmark: properties.srcURL,
-          text: properties.srcURL,
-        });
+        ipcRenderer.send("copy-text", properties.srcURL);
       },
     },
   ];

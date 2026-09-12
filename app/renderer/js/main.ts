@@ -1,6 +1,5 @@
 import "./zod-config.ts"; // eslint-disable-line import-x/no-unassigned-import
 
-import {clipboard} from "electron/common";
 import path from "node:path";
 import process from "node:process";
 import {pathToFileURL} from "node:url";
@@ -889,7 +888,7 @@ export class ServerManagerView {
           {
             label: t.__("Copy Zulip URL"),
             click() {
-              clipboard.writeText(DomainUtil.getDomain(index).url);
+              ipcRenderer.send("copy-text", DomainUtil.getDomain(index).url);
             },
           },
         ];
@@ -1210,7 +1209,7 @@ export class ServerManagerView {
 
     ipcRenderer.on("copy-zulip-url", () => {
       (async () => {
-        clipboard.writeText(await this.getCurrentActiveServer());
+        ipcRenderer.send("copy-text", await this.getCurrentActiveServer());
       })();
     });
 

@@ -790,6 +790,7 @@ electron-updater - `v2.21.8`
 **Updated dependencies**:
 
 - Update electron-builder to `v20.8.1`
+
 <hr>
 
 ### v1.9.0 --2018-03-23

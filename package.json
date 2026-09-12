@@ -151,8 +151,9 @@
     "Desktop app",
     "InstantMessaging"
   ],
-  "packageManager": "pnpm@11.9.0+sha512.bd682d5d03fe525ef7c9fd6780c6884d1e756ac4c9c9fe00c538782824310dcf90e3ddc4f53835f06dfaebd5085e41855e0bcbb3b60de2ac5bbab89e5036f03b",
+  "packageManager": "pnpm@12.4.1+sha512.2e81e399d73fe8390dab25e06aa788ab7a5908248d2f5a370f82b481147a6a7a367bf8048f9a6fdb6460f21a66f0542dedb8b94ca2c8723596741920b1656d4c",
   "dependencies": {
+    "@typescript/native": "npm:typescript@latest",
     "gatemaker": "^1.0.0"
   },
   "devDependencies": {
@@ -171,10 +172,10 @@
     "@types/tape": "^5.8.1",
     "@types/yaireo__tagify": "^4.3.2",
     "@yaireo/tagify": "^4.5.0",
-    "adm-zip": "^0.5.5",
+    "adm-zip": "^0.6.0",
     "auto-launch": "^5.0.5",
     "backoff": "^2.5.0",
-    "electron": "^42.5.0",
+    "electron": "^44.3.0",
     "electron-builder": "^26.15.5",
     "electron-log": "^5.0.3",
     "electron-updater": "^6.3.4",
@@ -193,9 +194,9 @@
     "stylelint": "^17.13.0",
     "stylelint-config-standard": "^40.0.0",
     "tape": "^5.2.2",
-    "typescript": "^6.0.3",
+    "typescript": "npm:@typescript/typescript6@latest",
     "vite": "^8.1.0",
-    "xo": "^3.0.2",
+    "xo": "^4.0.0",
     "zod": "^4.1.5"
   },
   "prettier": {

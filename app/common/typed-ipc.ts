@@ -4,6 +4,7 @@ import type {MenuProperties, ServerConfig} from "./types.ts";
 export type MainMessage = {
   "clear-app-settings": () => void;
   "configure-spell-checker": () => void;
+  "copy-text": (text: string) => void;
   "fetch-user-agent": () => string;
   "focus-app": () => void;
   "focus-this-webview": () => void;

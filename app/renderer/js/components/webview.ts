@@ -51,9 +51,11 @@ export default class WebView {
         <webview
           data-tab-id="${properties.tabIndex}"
           src="${properties.url}"
-          ${properties.preload === undefined
-            ? html``
-            : html`preload="${properties.preload}"`}
+          ${
+            properties.preload === undefined
+              ? html``
+              : html`preload="${properties.preload}"`
+          }
           partition="persist:webviewsession"
           allowpopups
         >

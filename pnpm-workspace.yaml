@@ -9,12 +9,11 @@ minimumReleaseAge: 1440
 
 overrides:
   i18n>@messageformat/core: '-'
-  xo>eslint-config-xo: ^0.55.0
 
 packageExtensions:
   i18n:
     dependencies:
-      intl-messageformat: ^10.7.18
+      intl-messageformat: ^11.2.14
 
 patchedDependencies:
   gatemaker: patches/gatemaker.patch # https://github.com/javan/gatemaker/pull/4
