@@ -422,10 +422,6 @@ i.open-tab-button {
   align-items: flex-end;
 }
 
-#server-info-container {
-  /* min-height: calc(100% - 260px); */
-}
-
 #new-org-button {
   margin: 30px 0;
 }
