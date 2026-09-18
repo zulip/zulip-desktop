@@ -2,7 +2,7 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
-### v5.13.0 --2026-09-18
+### v5.13.1 --2026-09-18
 
 **Enhancements**:
 

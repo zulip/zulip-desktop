@@ -1,6 +1,6 @@
 {
   "name": "zulip",
-  "version": "5.13.0",
+  "version": "5.13.1",
   "private": true,
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
