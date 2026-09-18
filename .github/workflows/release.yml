@@ -1,0 +1,194 @@
+name: Release
+
+on:
+  push:
+    tags: ["v[0-9]*"]
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: release-${{ github.ref }}
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  # Whether this run is a real release, which also decides whether `prepare`
+  # validates the tag and creates the draft.  Any other run builds and signs
+  # everything but uploads nothing.  Both halves are load-bearing:
+  # workflow_dispatch can be aimed at a tag, and a push trigger could later be
+  # added for a branch.
+  PUBLISH: ${{ case(github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'), 'always', 'never') }}
+
+jobs:
+  prepare:
+    runs-on: ubuntu-slim
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check that the tag matches package.json
+        if: env.PUBLISH == 'always'
+        env:
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          version="$(node -p 'require("./package.json").version')"
+          if [ "$REF_NAME" != "v$version" ]; then
+            echo "::error::Tag $REF_NAME does not match package.json version $version."
+            exit 1
+          fi
+
+      # The build jobs run in parallel, so create the draft release up front
+      # rather than letting three copies of electron-builder race to create it.
+      - name: Create the draft release
+        if: env.PUBLISH == 'always'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          if gh release view "$REF_NAME" >/dev/null 2>&1; then
+            echo "Release $REF_NAME already exists."
+            exit 0
+          fi
+          awk -v heading="### $REF_NAME " '
+            index($0, heading) == 1 {found = 1; next}
+            found && /^### / {exit}
+            found {print}
+          ' changelog.md >notes.md
+          if [ ! -s notes.md ]; then
+            echo "::error::changelog.md has no entry for $REF_NAME."
+            exit 1
+          fi
+          gh release create "$REF_NAME" --draft --title="$REF_NAME" --notes-file=notes.md
+
+  linux:
+    needs: prepare
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          run_install: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: lts/*
+          # Release builds run rarely; a poisoned cache entry is not worth
+          # the saved minute.
+          package-manager-cache: false
+      - run: pnpm install --frozen-lockfile
+
+      # snapcraft's default LXD build environment can't work here: Docker sets
+      # the iptables FORWARD policy to DROP on the runner, so lxdbr0 has no
+      # network and LXD can't fetch a base image.  Build on the host instead,
+      # which snapcraft only supports as root.  Elevate just snapcraft, via a
+      # shim on PATH, rather than running the whole build as root.  The runner
+      # is Ubuntu 24.04, which is exactly what the core24 base targets.
+      - name: Set up snapcraft
+        run: |
+          sudo snap install snapcraft --classic
+          mkdir -p ~/.local/bin
+          printf '#!/bin/sh\nexec sudo -E /snap/bin/snapcraft "$@"\n' >~/.local/bin/snapcraft
+          chmod +x ~/.local/bin/snapcraft
+          echo "$HOME/.local/bin" >>"$GITHUB_PATH"
+
+      - run: node --run build
+
+      - name: Build and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: pnpm exec electron-builder --linux -c.snapcraft.core24.useDestructiveMode=true --publish="$PUBLISH"
+
+  macos:
+    needs: prepare
+    runs-on: macos-latest
+    # Holds the Developer ID signing secrets, so that they're readable only
+    # here rather than by every job in the repository.
+    environment: release-macos
+    permissions:
+      contents: write
+    # Notarizing both x64 and arm64 takes a while; a hung notarization
+    # should still surface well before this.
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          run_install: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: lts/*
+          # Release builds run rarely; a poisoned cache entry is not worth
+          # the saved minute.
+          package-manager-cache: false
+      - run: pnpm install --frozen-lockfile
+
+      - run: node --run build
+
+      # CSC_LINK is a .p12 holding both the Developer ID Application identity
+      # (for the app) and the Developer ID Installer identity (for the .pkg).
+      - name: Build and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
+        run: pnpm exec electron-builder --mac --publish="$PUBLISH"
+
+  windows:
+    needs: prepare
+    runs-on: windows-latest
+    # Bound to the federated credential on the code signing app registration;
+    # changing it breaks Azure authentication.  Kept separate from
+    # release-macos so that only this job's OIDC subject matches that
+    # credential.
+    environment: release-windows
+    permissions:
+      contents: write
+      # Kept to this job so the Linux and macOS runners can't request ID tokens.
+      id-token: write
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          run_install: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: lts/*
+          # Release builds run rarely; a poisoned cache entry is not worth
+          # the saved minute.
+          package-manager-cache: false
+      - run: pnpm install --frozen-lockfile
+
+      - run: node --run build
+
+      # Azure Trusted Signing authenticates with DefaultAzureCredential, which
+      # picks up this login. electron-builder signs each file in a fresh
+      # process, so it relies on the access token the Azure CLI caches here.
+      - uses: Azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          allow-no-subscriptions: true
+
+      - name: Build and publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: pnpm exec electron-builder --win --publish="$PUBLISH"

@@ -16,6 +16,7 @@
   "scripts": {
     "dev": "install-electron && electron-vite dev",
     "preview": "install-electron && electron-vite preview",
+    "build": "install-electron && electron-vite build",
     "watch-ts": "tsc -w",
     "postinstall": "electron-builder install-app-deps",
     "lint-css": "stylelint \"app/**/*.css\"",
@@ -23,10 +24,10 @@
     "lint-js": "xo .",
     "prettier": "prettier --check --log-level=warn .",
     "test": "tsc && node --run lint-html && node --run lint-css && node --run lint-js && node --run prettier",
-    "test-e2e": "install-electron && electron-vite build && tape \"tests/**/*.ts\"",
-    "pack": "install-electron && electron-vite build && electron-builder --dir",
-    "dist": "install-electron && electron-vite build && electron-builder",
-    "mas": "install-electron && electron-vite build && electron-builder --mac mas"
+    "test-e2e": "node --run build && tape \"tests/**/*.ts\"",
+    "pack": "node --run build && electron-builder --dir",
+    "dist": "node --run build && electron-builder",
+    "mas": "node --run build && electron-builder --mac=mas"
   },
   "dependencies": {
     "gatemaker": "^1.0.0"
@@ -84,6 +85,10 @@
       "out/**/*"
     ],
     "copyright": "©2020 Kandra Labs, Inc.",
+    "publish": {
+      "provider": "github",
+      "releaseType": "draft"
+    },
     "mac": {
       "category": "public.app-category.productivity",
       "icon": "build/icon-macos.png",
