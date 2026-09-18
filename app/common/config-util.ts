@@ -68,7 +68,7 @@ export function setConfigItem<Key extends keyof Config>(
   value: Config[Key],
   override?: boolean,
 ): void {
-  if (EnterpriseUtil.configItemExists(key) && !override) {
+  if (!override && EnterpriseUtil.configItemExists(key)) {
     // If item is in global config and we're not trying to override
     return;
   }
