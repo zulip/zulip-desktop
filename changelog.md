@@ -2,6 +2,26 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.13.0 --2026-09-18
+
+**Enhancements**:
+
+- Updated translations.
+- Added GitHub artifact attestations for binary builds.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 44.4.1.
+
+**Fixes**:
+
+- Fix broken internationalization.
+- Correctly distinguish “English (United Kingdom)” from “English (United Kingdom, Oxford English Dictionary spelling)” in spell checker language settings.
+
+**Removed features**:
+
+- Removed builds for Windows 32-bit, which is [no longer supported](https://www.electronjs.org/blog/electron-44-0#removed-windows-32-bit-and-linux-32-bit-arm-support) by Electron.
+
 ### v5.12.4 --2026-06-25
 
 **Enhancements**:
