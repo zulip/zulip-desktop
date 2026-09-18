@@ -20,10 +20,13 @@ type Toggle = {
 
 export function toggle(): Toggle {
   const dnd = !ConfigUtil.getConfigItem("dnd", false);
-  const dndSettingList: SettingName[] = ["showNotification", "silent"];
-  if (process.platform === "win32") {
-    dndSettingList.push("flashTaskbarOnMessage");
-  }
+  const dndSettingList: SettingName[] = [
+    "showNotification",
+    "silent",
+    ...(process.platform === "win32"
+      ? (["flashTaskbarOnMessage"] as const)
+      : []),
+  ];
 
   let newSettings: Partial<DndSettings>;
   if (dnd) {
