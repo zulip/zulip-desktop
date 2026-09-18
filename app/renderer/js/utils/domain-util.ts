@@ -203,11 +203,9 @@ export function formatUrl(domain: string): string {
     return domain;
   }
 
-  if (domain.startsWith("localhost:")) {
-    return `http://${domain}`;
-  }
-
-  return `https://${domain}`;
+  return domain.startsWith("localhost:")
+    ? `http://${domain}`
+    : `https://${domain}`;
 }
 
 export function getUnsupportedMessage(

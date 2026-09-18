@@ -72,11 +72,7 @@ export function getConfigItem<Key extends keyof EnterpriseConfig>(
 
 export function configItemExists(key: keyof EnterpriseConfig): boolean {
   reloadDatabase();
-  if (!configFile) {
-    return false;
-  }
-
-  return enterpriseSettings[key] !== undefined;
+  return configFile ? enterpriseSettings[key] !== undefined : false;
 }
 
 export function isPresetOrg(url: string): boolean {
