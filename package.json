@@ -7,17 +7,9 @@
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
   "copyright": "Kandra Labs, Inc.",
-  "author": {
-    "name": "Kandra Labs, Inc.",
-    "email": "support@zulip.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/zulip/zulip-desktop.git"
-  },
-  "bugs": {
-    "url": "https://github.com/zulip/zulip-desktop/issues"
-  },
+  "author": "Kandra Labs, Inc. <support@zulip.com>",
+  "repository": "github:zulip/zulip-desktop",
+  "bugs": "https://github.com/zulip/zulip-desktop/issues",
   "type": "module",
   "engines": {
     "node": ">=18"
