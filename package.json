@@ -2,6 +2,7 @@
   "name": "zulip",
   "productName": "Zulip",
   "version": "5.12.4",
+  "private": true,
   "main": "./out/main/index.js",
   "description": "Zulip Desktop App",
   "license": "Apache-2.0",
@@ -143,14 +144,6 @@
       "artifactName": "${productName}-Web-Setup-${version}.${ext}"
     }
   },
-  "keywords": [
-    "Zulip",
-    "Group Chat app",
-    "electron-app",
-    "electron",
-    "Desktop app",
-    "InstantMessaging"
-  ],
   "packageManager": "pnpm@11.9.0+sha512.bd682d5d03fe525ef7c9fd6780c6884d1e756ac4c9c9fe00c538782824310dcf90e3ddc4f53835f06dfaebd5085e41855e0bcbb3b60de2ac5bbab89e5036f03b",
   "dependencies": {
     "gatemaker": "^1.0.0"
