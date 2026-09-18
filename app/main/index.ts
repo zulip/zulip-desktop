@@ -41,9 +41,29 @@ sentryInit();
 
 let mainWindowState: windowStateKeeper.State;
 
+let mainWindow: BrowserWindow | undefined;
+
 let badgeCount: number;
 
 let isQuitting = false;
+
+// Deep link URL received before main window is ready (e.g. macOS open-url on cold start)
+let pendingDeepLinkUrl: string | null = null;
+// Renderer has registered the deep-link handler (so we can send immediately when app is already running)
+let rendererReadyForDeepLink = false;
+
+// Register open-url as early as possible so we don't miss the event on macOS cold start (before whenReady)
+app.on("open-url", (event, url) => {
+  event.preventDefault();
+  pendingDeepLinkUrl = url;
+  if (mainWindow?.webContents) {
+    mainWindow.show();
+    if (rendererReadyForDeepLink) {
+      send(mainWindow.webContents, "open-deep-link", url);
+      pendingDeepLinkUrl = null;
+    }
+  }
+});
 
 // Load this file in main window
 const mainUrl = new URL("app/renderer/main.html", bundleUrl).href;
@@ -144,6 +164,23 @@ function createMainWindow(): BrowserWindow {
 
   await app.whenReady();
 
+  // Capture deep link from argv early (Windows/Linux cold start) so we have it before dom-ready
+  if (process.platform !== "darwin") {
+    const argvUrl = process.argv.find((arg) => arg.startsWith("zulip://"));
+    if (argvUrl) {
+      pendingDeepLinkUrl = argvUrl;
+    }
+  }
+
+  // Register zulip:// protocol for deep links
+  if (process.platform === "win32" && process.defaultApp) {
+    app.setAsDefaultProtocolClient("zulip", process.execPath, [
+      path.resolve(process.argv[1] ?? ""),
+    ]);
+  } else {
+    app.setAsDefaultProtocolClient("zulip");
+  }
+
   if (process.env.GDK_BACKEND !== GDK_BACKEND) {
     console.warn(
       "Reverting GDK_BACKEND to work around https://github.com/electron/electron/issues/28436",
@@ -160,12 +197,20 @@ function createMainWindow(): BrowserWindow {
 
   remoteMain.initialize();
 
-  app.on("second-instance", () => {
-    if (mainWindow.isMinimized()) {
-      mainWindow.restore();
+  app.on("second-instance", (_event, commandLine: string[]) => {
+    const deepLinkUrl = commandLine.find((arg) => arg.startsWith("zulip://"));
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();
+      }
+
+      mainWindow.show();
+      if (deepLinkUrl) {
+        send(mainWindow.webContents, "open-deep-link", deepLinkUrl);
+      }
     }
 
-    mainWindow.show();
+    mainWindow?.show();
   });
 
   ipcMain.on(
@@ -178,7 +223,7 @@ function createMainWindow(): BrowserWindow {
 
   // This event is only available on macOS. Triggers when you click on the dock icon.
   app.on("activate", () => {
-    mainWindow.show();
+    mainWindow?.show();
   });
 
   app.on("web-contents-created", (_event, contents: WebContents) => {
@@ -250,7 +295,7 @@ function createMainWindow(): BrowserWindow {
   AppMenu.setMenu({
     tabs: [],
   });
-  const mainWindow = createMainWindow();
+  mainWindow = createMainWindow();
 
   // Auto-hide menu bar on Windows + Linux
   if (process.platform !== "darwin") {
@@ -263,9 +308,21 @@ function createMainWindow(): BrowserWindow {
 
   page.on("dom-ready", () => {
     if (ConfigUtil.getConfigItem("startMinimized", false)) {
-      mainWindow.hide();
+      mainWindow?.hide();
     } else {
-      mainWindow.show();
+      mainWindow?.show();
+    }
+  });
+
+  ipcMain.on("ready-for-deep-link", () => {
+    rendererReadyForDeepLink = true;
+    const urlToOpen = pendingDeepLinkUrl;
+    pendingDeepLinkUrl = null;
+    if (urlToOpen) {
+      // Defer so the renderer's listener is definitely attached before we send
+      setImmediate(() => {
+        send(page, "open-deep-link", urlToOpen);
+      });
     }
   });
 
@@ -329,7 +386,7 @@ function createMainWindow(): BrowserWindow {
         "permission-request",
         {
           webContentsId:
-            sourceWebContents.id === mainWindow.webContents.id
+            sourceWebContents.id === mainWindow?.webContents.id
               ? null
               : sourceWebContents.id,
           origin,
@@ -347,7 +404,7 @@ function createMainWindow(): BrowserWindow {
   // });
 
   ipcMain.on("focus-app", () => {
-    mainWindow.show();
+    mainWindow?.show();
   });
 
   ipcMain.on("quit-app", () => {
@@ -356,7 +413,7 @@ function createMainWindow(): BrowserWindow {
 
   // Reload full app not just webview, useful in debugging
   ipcMain.on("reload-full-app", () => {
-    mainWindow.reload();
+    mainWindow?.reload();
     send(page, "destroytray");
   });
 
@@ -367,31 +424,33 @@ function createMainWindow(): BrowserWindow {
   });
 
   ipcMain.on("toggle-app", () => {
-    if (!mainWindow.isVisible() || mainWindow.isMinimized()) {
-      mainWindow.show();
+    if (!mainWindow?.isVisible() || mainWindow?.isMinimized()) {
+      mainWindow?.show();
     } else {
-      mainWindow.hide();
+      mainWindow?.hide();
     }
   });
 
   ipcMain.on("toggle-badge-option", () => {
-    BadgeSettings.updateBadge(badgeCount, mainWindow);
+    mainWindow && BadgeSettings.updateBadge(badgeCount, mainWindow);
   });
 
   ipcMain.on("toggle-menubar", (_event, showMenubar: boolean) => {
-    mainWindow.autoHideMenuBar = showMenubar;
-    mainWindow.setMenuBarVisibility(!showMenubar);
-    send(page, "toggle-autohide-menubar", showMenubar, true);
+    if (mainWindow) {
+      mainWindow.autoHideMenuBar = showMenubar;
+      mainWindow.setMenuBarVisibility(!showMenubar);
+      send(page, "toggle-autohide-menubar", showMenubar, true);
+    }
   });
 
   ipcMain.on("update-badge", (_event, messageCount: number) => {
     badgeCount = messageCount;
-    BadgeSettings.updateBadge(badgeCount, mainWindow);
+    mainWindow && BadgeSettings.updateBadge(badgeCount, mainWindow);
     send(page, "tray", messageCount);
   });
 
   ipcMain.on("update-taskbar-icon", (_event, data: string, text: string) => {
-    BadgeSettings.updateTaskbarIcon(data, text, mainWindow);
+    mainWindow && BadgeSettings.updateTaskbarIcon(data, text, mainWindow);
   });
 
   ipcMain.on(
@@ -427,7 +486,7 @@ function createMainWindow(): BrowserWindow {
       properties.activeTabIndex !== undefined &&
       (activeTab = properties.tabs[properties.activeTabIndex]) !== undefined
     ) {
-      mainWindow.setTitle(`Zulip - ${activeTab.label}`);
+      mainWindow && mainWindow.setTitle(`Zulip - ${activeTab.label}`);
     }
   });
 
@@ -455,7 +514,7 @@ function createMainWindow(): BrowserWindow {
 
   ipcMain.on("focus-this-webview", (event) => {
     send(page, "focus-webview-with-id", event.sender.id);
-    mainWindow.show();
+    mainWindow?.show();
   });
 
   // Update user idle status for each realm after every 15s
