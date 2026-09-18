@@ -136,6 +136,10 @@
     },
     "snapcraft": {
       "base": "core24",
+      "publish": {
+        "provider": "github",
+        "releaseType": "draft"
+      },
       "core24": {
         "plugs": [
           "default",
