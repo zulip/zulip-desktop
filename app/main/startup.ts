@@ -30,7 +30,6 @@ export const setAutoLaunch = async (
   } else {
     app.setLoginItemSettings({
       openAtLogin: autoLaunchOption,
-      openAsHidden: false,
     });
   }
 };

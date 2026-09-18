@@ -75,7 +75,7 @@ body {
 }
 
 .material-icons {
-  font-family: "Material Icons";
+  font-family: "Material Icons"; /* eslint-disable-line css/font-family-fallbacks */
   font-weight: normal;
   font-style: normal;
 

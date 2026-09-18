@@ -47,9 +47,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         <div class="setting-row" id="sidebar-option">
           <div class="setting-description">
             ${t.__("Show sidebar")} (<span class="code"
-              >${process.platform === "darwin"
-                ? "Cmd+Shift+S"
-                : "Ctrl+Shift+S"}</span
+              >${
+                process.platform === "darwin" ? "Cmd+Shift+S" : "Ctrl+Shift+S"
+              }</span
             >)
           </div>
           <div class="setting-control"></div>

@@ -12,7 +12,7 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "pnpm@11.9.0+sha512.bd682d5d03fe525ef7c9fd6780c6884d1e756ac4c9c9fe00c538782824310dcf90e3ddc4f53835f06dfaebd5085e41855e0bcbb3b60de2ac5bbab89e5036f03b",
+  "packageManager": "pnpm@12.4.2+sha512.08adc6613180275c7c9edada39dcf08c9c61ad4e7eaf330a4f3461f102b0f907423454d117f98e72d47fef0616070644d7bffc973a6a57f5090a6d7c368b07c9",
   "scripts": {
     "dev": "install-electron && electron-vite dev",
     "preview": "install-electron && electron-vite preview",
@@ -20,7 +20,7 @@
     "postinstall": "electron-builder install-app-deps",
     "lint-css": "stylelint \"app/**/*.css\"",
     "lint-html": "htmlhint \"app/**/*.html\"",
-    "lint-js": "xo",
+    "lint-js": "xo .",
     "prettier": "prettier --check --log-level=warn .",
     "test": "tsc && node --run lint-html && node --run lint-css && node --run lint-js && node --run prettier",
     "test-e2e": "install-electron && electron-vite build && tape \"tests/**/*.ts\"",
@@ -29,29 +29,27 @@
     "mas": "install-electron && electron-vite build && electron-builder --mac mas"
   },
   "dependencies": {
+    "@typescript/native": "npm:typescript@latest",
     "gatemaker": "^1.0.0"
   },
   "devDependencies": {
     "@electron/remote": "^2.0.8",
     "@sentry/core": "^10.1.0",
     "@sentry/electron": "^7.5.0",
-    "@types/adm-zip": "^0.5.0",
     "@types/auto-launch": "^5.0.2",
     "@types/backoff": "^2.5.2",
     "@types/i18n": "^0.13.1",
     "@types/minimalistic-assert": "^1.0.3",
     "@types/node": "^24.13.2",
     "@types/p-fifo": "^1.0.2",
-    "@types/requestidlecallback": "^0.3.4",
     "@types/semver": "^7.5.8",
-    "@types/tape": "^5.8.1",
     "@types/yaireo__tagify": "^4.3.2",
     "@yaireo/tagify": "^4.5.0",
-    "adm-zip": "^0.5.5",
+    "adm-zip": "^0.6.1",
     "auto-launch": "^5.0.5",
     "backoff": "^2.5.0",
-    "electron": "^42.5.0",
-    "electron-builder": "^26.15.5",
+    "electron": "^44.4.1",
+    "electron-builder": "^26.16.1",
     "electron-log": "^5.0.3",
     "electron-updater": "^6.3.4",
     "electron-vite": "^6.0.0-beta.1",
@@ -69,9 +67,9 @@
     "stylelint": "^17.13.0",
     "stylelint-config-standard": "^40.0.0",
     "tape": "^5.2.2",
-    "typescript": "^6.0.3",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
     "vite": "^8.1.0",
-    "xo": "^3.0.2",
+    "xo": "^5.0.0",
     "zod": "^4.1.5"
   },
   "productName": "Zulip",
