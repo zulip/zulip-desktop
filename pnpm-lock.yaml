@@ -175,9 +175,6 @@ importers:
 
   .:
     dependencies:
-      '@typescript/native':
-        specifier: npm:typescript@latest
-        version: typescript@7.0.2
       gatemaker:
         specifier: ^1.0.0
         version: 1.0.0(patch_hash=e8cf438e55742e0511b755ea57b0195e3b2c54ad7f3e6878268d3249f88fb68a)
@@ -215,6 +212,9 @@ importers:
       '@types/yaireo__tagify':
         specifier: ^4.3.2
         version: 4.27.0
+      '@typescript/native':
+        specifier: npm:typescript@latest
+        version: typescript@7.0.2
       '@yaireo/tagify':
         specifier: ^4.5.0
         version: 4.38.0(prop-types@15.8.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
