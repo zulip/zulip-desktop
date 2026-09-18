@@ -8,7 +8,6 @@ import * as setup from "./setup.ts";
 
 test("new-org-link", async (t) => {
   t.timeoutAfter(50e3);
-  setup.resetTestDataDirectory();
   const app = await setup.createApp();
   try {
     const windows = new Fifo<Page>();
