@@ -2,6 +2,12 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.13.2 --2026-09-21
+
+**Fixes**:
+
+- Fix launch failure with Linux Snap package.
+
 ### v5.13.1 --2026-09-18
 
 **Enhancements**:
