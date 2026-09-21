@@ -17,8 +17,6 @@ import * as SystemUtil from "../utils/system-util.ts";
 import {generateNodeFromHtml} from "./base.ts";
 import {contextMenu} from "./context-menu.ts";
 
-const shouldSilentWebview = ConfigUtil.getConfigItem("silent", false);
-
 type WebViewProperties = {
   $root: Element;
   rootWebContents: WebContents;
@@ -135,10 +133,6 @@ export default class WebView {
 
   private registerListeners(): void {
     const webContents = this.getWebContents();
-
-    if (shouldSilentWebview) {
-      webContents.setAudioMuted(true);
-    }
 
     webContents.on("page-title-updated", (_event, title) => {
       this.badgeCount = this.getBadgeCount(title);
