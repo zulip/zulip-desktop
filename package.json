@@ -141,6 +141,9 @@
         "releaseType": "draft"
       },
       "core24": {
+        "extensions": [
+          "gnome"
+        ],
         "plugs": [
           "default",
           "browser-support"

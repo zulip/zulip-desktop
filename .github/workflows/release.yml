@@ -90,26 +90,22 @@ jobs:
           package-manager-cache: false
       - run: pnpm install --frozen-lockfile
 
-      # snapcraft's default LXD build environment can't work here: Docker sets
-      # the iptables FORWARD policy to DROP on the runner, so lxdbr0 has no
-      # network and LXD can't fetch a base image.  Build on the host instead,
-      # which snapcraft only supports as root.  Elevate just snapcraft, via a
-      # shim on PATH, rather than running the whole build as root.  The runner
-      # is Ubuntu 24.04, which is exactly what the core24 base targets.
+      # snapcraft must build in an isolated environment: in destructive mode it
+      # cannot resolve the gnome extension, and electron-builder responds by
+      # silently dropping it, yielding a snap that cannot start.  This action
+      # opens lxdbr0 through the runner's Docker firewall rules, which is what
+      # otherwise leaves LXD unable to reach the network, and puts the LXD
+      # socket in a group the runner is already in.
+      - uses: canonical/setup-lxd@8c6a87bfb56aa48f3fb9b830baa18562d8bfd4ee # v1
       - name: Set up snapcraft
-        run: |
-          sudo snap install snapcraft --classic
-          mkdir -p ~/.local/bin
-          printf '#!/bin/sh\nexec sudo -E /snap/bin/snapcraft "$@"\n' >~/.local/bin/snapcraft
-          chmod +x ~/.local/bin/snapcraft
-          echo "$HOME/.local/bin" >>"$GITHUB_PATH"
+        run: sudo snap install snapcraft --classic
 
       - run: node --run build
 
       - name: Build and publish
         env:
           GH_TOKEN: ${{ github.token }}
-        run: pnpm exec electron-builder --linux -c.snapcraft.core24.useDestructiveMode=true --publish="$PUBLISH"
+        run: pnpm exec electron-builder --linux -c.snapcraft.core24.useLXD=true --publish="$PUBLISH"
 
       - uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
