@@ -211,9 +211,12 @@ export class ServerManagerView {
 
     // Platform specific settings
 
-    if (process.platform === "win32") {
-      // Only available on Windows
-      settingOptions.push(["flashTaskbarOnMessage", true]);
+    if (process.platform === "win32" || process.platform === "linux") {
+      // Available on Windows and Linux
+      settingOptions.push([
+        "flashTaskbarOnMessage",
+        process.platform === "win32" || !ConfigUtil.getConfigItem("dnd", false),
+      ]);
       dndPreviousSettings.flashTaskbarOnMessage = true;
     } else if (process.platform === "darwin") {
       // Only available on macOS
