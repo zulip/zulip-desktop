@@ -41,10 +41,18 @@ install nodejs. To ensure Node.js has been installed, run `node -v` in terminal 
 
 [node-windows]: https://nodejs.org/en/download/package-manager/#windows
 
-- Also, install Windows-Build-Tools to compile native node modules by using
-  ```sh
-  $ npm install --global windows-build-tools
-  ```
+- To compile native node modules, install a C++ toolchain and Python 3:
+  - Install [Visual Studio][vs] (or the standalone Build Tools) and select the
+    **Desktop development with C++** workload.
+  - Install a real Python 3, e.g. `winget install Python.Python.3.12`. If
+    `python` resolves to the Microsoft Store stub, disable it under Settings →
+    Apps → Advanced app settings → App execution aliases.
+
+  Do not use the `windows-build-tools` npm package: it is deprecated, and its
+  installer for Visual Studio 2015 Build Tools and Python 2.7 fails on modern
+  Windows and Node.js versions.
+
+[vs]: https://visualstudio.microsoft.com/downloads/
 
 ## Download, build, and run
 
