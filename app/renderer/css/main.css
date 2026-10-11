@@ -300,11 +300,26 @@ body {
   z-index: 1;
 
   /* Spinner is released under loading.io free License: https://loading.io/license/#free-license */
-  background: rgb(255 255 255 / 100%) url("../img/ic_loading.svg") no-repeat;
+  background: var(--loading-bg, rgb(255 255 255 / 100%))
+    url("../img/ic_loading.svg") no-repeat;
   background-size: 60px 60px;
   background-position: center;
   width: 100%;
   height: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+  html,
+  body,
+  #main-container,
+  #webviews-container,
+  .webview-pane {
+    background-color: rgb(27 27 27 / 100%);
+  }
+
+  #webviews-container {
+    --loading-bg: rgb(27 27 27 / 100%);
+  }
 }
 
 /* When the active webview is loaded */

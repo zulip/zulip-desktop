@@ -5,6 +5,7 @@ import {
   app,
   clipboard,
   dialog,
+  nativeTheme,
   powerMonitor,
   session,
   webContents,
@@ -74,6 +75,7 @@ function createMainWindow(): BrowserWindow {
     height: mainWindowState.height,
     minWidth: 500,
     minHeight: 400,
+    backgroundColor: nativeTheme.shouldUseDarkColors ? "#1b1b1b" : "#ffffff",
     webPreferences: {
       preload: path.join(bundlePath, "../preload/renderer.cjs"),
       sandbox: false,
