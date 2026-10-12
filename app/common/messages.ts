@@ -1,4 +1,4 @@
-import * as t from "./translation-util.ts";
+import {t} from "./translation-util.ts";
 
 type DialogBoxError = {
   title: string;

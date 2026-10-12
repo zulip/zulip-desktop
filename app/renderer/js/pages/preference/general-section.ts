@@ -12,7 +12,7 @@ import supportedLocales from "../../../../../public/translations/supported-local
 import * as ConfigUtil from "../../../../common/config-util.ts";
 import * as EnterpriseUtil from "../../../../common/enterprise-util.ts";
 import {html} from "../../../../common/html.ts";
-import * as t from "../../../../common/translation-util.ts";
+import {t} from "../../../../common/translation-util.ts";
 import {ipcRenderer} from "../../typed-ipc-renderer.ts";
 
 import {generateSelectHtml, generateSettingOption} from "./base-section.ts";
@@ -47,9 +47,9 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         <div class="setting-row" id="sidebar-option">
           <div class="setting-description">
             ${t.__("Show sidebar")} (<span class="code"
-              >${process.platform === "darwin"
-                ? "Cmd+Shift+S"
-                : "Ctrl+Shift+S"}</span
+              >${
+                process.platform === "darwin" ? "Cmd+Shift+S" : "Ctrl+Shift+S"
+              }</span
             >)
           </div>
           <div class="setting-control"></div>
@@ -635,10 +635,11 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
       ).availableSpellCheckerLanguages;
       let languagePairs = new Map<string, string>();
       for (const l of availableLanguages) {
-        const locale = new Intl.Locale(l.replaceAll("_", "-"));
+        const locale = new Intl.Locale(l);
         let displayName = new Intl.DisplayNames([locale], {
           type: "language",
-        }).of(locale.language);
+          languageDisplay: "standard",
+        }).of(l);
         if (displayName === undefined) {
           continue;
         }
@@ -646,13 +647,6 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
         displayName = displayName.replace(/^./v, (firstChar) =>
           firstChar.toLocaleUpperCase(locale),
         );
-        if (locale.script !== undefined) {
-          displayName += ` (${new Intl.DisplayNames([locale], {type: "script"}).of(locale.script)})`;
-        }
-
-        if (locale.region !== undefined) {
-          displayName += ` (${new Intl.DisplayNames([locale], {type: "region"}).of(locale.region)})`;
-        }
 
         languagePairs.set(displayName, l);
       }

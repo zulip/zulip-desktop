@@ -2,7 +2,7 @@ import * as backoff from "backoff";
 
 import {html} from "../../../common/html.ts";
 import Logger from "../../../common/logger-util.ts";
-import * as t from "../../../common/translation-util.ts";
+import {t} from "../../../common/translation-util.ts";
 import type WebView from "../components/webview.ts";
 import {ipcRenderer} from "../typed-ipc-renderer.ts";
 

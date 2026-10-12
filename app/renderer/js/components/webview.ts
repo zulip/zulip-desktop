@@ -7,7 +7,7 @@ import assert from "minimalistic-assert";
 
 import * as ConfigUtil from "../../../common/config-util.ts";
 import {type Html, html} from "../../../common/html.ts";
-import * as t from "../../../common/translation-util.ts";
+import {t} from "../../../common/translation-util.ts";
 import type {RendererMessage} from "../../../common/typed-ipc.ts";
 import type {TabRole} from "../../../common/types.ts";
 import preloadCss from "../../css/preload.css?raw";
@@ -51,9 +51,11 @@ export default class WebView {
         <webview
           data-tab-id="${properties.tabIndex}"
           src="${properties.url}"
-          ${properties.preload === undefined
-            ? html``
-            : html`preload="${properties.preload}"`}
+          ${
+            properties.preload === undefined
+              ? html``
+              : html`preload="${properties.preload}"`
+          }
           partition="persist:webviewsession"
           allowpopups
         >

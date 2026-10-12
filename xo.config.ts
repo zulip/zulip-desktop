@@ -34,6 +34,10 @@ const restrictedRendererImports = [
 const xoConfig: FlatXoConfig = [
   {
     prettier: "compat",
+    rules: {
+      "package-json/no-install-scripts": "off",
+      "package-json/prefer-exports": "off",
+    },
   },
   {
     files: ["**/*.{,c,m}[jt]s"],
@@ -167,10 +171,6 @@ const xoConfig: FlatXoConfig = [
   {
     files: ["**/*.html"],
     rules: {
-      "@html-eslint/attrs-newline": "off", // Incompatible with Prettier
-      "@html-eslint/indent": "off", // Incompatible with Prettier
-      "@html-eslint/no-extra-spacing-tags": "off", // Incompatible with Prettier
-      "@html-eslint/require-closing-tags": "off", // Incompatible with Prettier
       "@html-eslint/require-meta-description": "off",
       "@html-eslint/require-open-graph-protocol": "off",
     },

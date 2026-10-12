@@ -1,9 +1,9 @@
-import {clipboard} from "electron/common";
 import {
   BrowserWindow,
   type IpcMainEvent,
   type WebContents,
   app,
+  clipboard,
   dialog,
   powerMonitor,
   session,
@@ -19,7 +19,7 @@ import windowStateKeeper from "electron-window-state";
 
 import * as ConfigUtil from "../common/config-util.ts";
 import {bundlePath, bundleUrl, publicPath} from "../common/paths.ts";
-import * as t from "../common/translation-util.ts";
+import {t} from "../common/translation-util.ts";
 import type {RendererMessage} from "../common/typed-ipc.ts";
 import type {MenuProperties} from "../common/types.ts";
 
@@ -250,6 +250,10 @@ function createMainWindow(): BrowserWindow {
   configureSpellChecker();
   ipcMain.on("configure-spell-checker", configureSpellChecker);
 
+  ipcMain.on("copy-text", (event, text: string) => {
+    void clipboard.writeText(text);
+  });
+
   const clipboardSigKey = crypto.randomBytes(32);
 
   ipcMain.on("new-clipboard-key", (event) => {
@@ -259,7 +263,7 @@ function createMainWindow(): BrowserWindow {
     event.returnValue = {key, sig: hmac.digest()};
   });
 
-  ipcMain.handle("poll-clipboard", (event, key, sig) => {
+  ipcMain.handle("poll-clipboard", async (event, key, sig) => {
     // Check that the key was generated here.
     const hmac = crypto.createHmac("sha256", clipboardSigKey);
     hmac.update(key);
@@ -269,7 +273,7 @@ function createMainWindow(): BrowserWindow {
 
     try {
       // Check that the data on the clipboard was encrypted to the key.
-      const data = Buffer.from(clipboard.readText(), "hex");
+      const data = Buffer.from(await clipboard.readText(), "hex");
       const iv = data.subarray(0, 12);
       const ciphertext = data.subarray(12, -16);
       const authTag = data.subarray(-16);

@@ -11,7 +11,7 @@ import path from "node:path";
 
 import * as ConfigUtil from "../common/config-util.ts";
 import * as LinkUtil from "../common/link-util.ts";
-import * as t from "../common/translation-util.ts";
+import {t} from "../common/translation-util.ts";
 
 import {send} from "./typed-ipc-main.ts";
 

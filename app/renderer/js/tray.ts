@@ -7,7 +7,7 @@ import {BrowserWindow, Menu, Tray} from "@electron/remote";
 
 import * as ConfigUtil from "../../common/config-util.ts";
 import {publicPath} from "../../common/paths.ts";
-import * as t from "../../common/translation-util.ts";
+import {t} from "../../common/translation-util.ts";
 import type {RendererMessage} from "../../common/typed-ipc.ts";
 
 import type {ServerManagerView} from "./main.ts";

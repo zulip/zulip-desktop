@@ -10,7 +10,7 @@ import Logger from "../common/logger-util.ts";
 import * as Messages from "../common/messages.ts";
 import type {ServerConfig} from "../common/types.ts";
 
-/* Request: domain-util */
+// Request: domain-util
 
 const logger = new Logger({
   file: "domain-util.log",
@@ -98,7 +98,7 @@ export const _saveServerIcon = async (
   }
 };
 
-/* Request: reconnect-util */
+// Request: reconnect-util
 
 export const _isOnline = async (
   url: string,

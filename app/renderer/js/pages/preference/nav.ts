@@ -1,5 +1,5 @@
 import {type Html, html} from "../../../../common/html.ts";
-import * as t from "../../../../common/translation-util.ts";
+import {t} from "../../../../common/translation-util.ts";
 import type {NavigationItem} from "../../../../common/types.ts";
 import {generateNodeFromHtml} from "../../components/base.ts";
 

@@ -5,7 +5,7 @@ import {z} from "zod";
 
 import * as ConfigUtil from "../common/config-util.ts";
 import Logger from "../common/logger-util.ts";
-import * as t from "../common/translation-util.ts";
+import {t} from "../common/translation-util.ts";
 
 import * as LinuxUpdateUtil from "./linux-update-util.ts";
 

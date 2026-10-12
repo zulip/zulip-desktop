@@ -1,5 +1,5 @@
 import {html} from "../../../../common/html.ts";
-import * as t from "../../../../common/translation-util.ts";
+import {t} from "../../../../common/translation-util.ts";
 
 import {reloadApp} from "./base-section.ts";
 import {initNewServerForm} from "./new-server-form.ts";

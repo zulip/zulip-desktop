@@ -16,11 +16,7 @@ export type MenuProperties = {
 };
 
 export type NavigationItem =
-  | "General"
-  | "Network"
-  | "AddServer"
-  | "Organizations"
-  | "Shortcuts";
+  "General" | "Network" | "AddServer" | "Organizations" | "Shortcuts";
 
 export type ServerConfig = {
   url: string;

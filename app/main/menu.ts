@@ -11,7 +11,7 @@ import AdmZip from "adm-zip";
 
 import * as ConfigUtil from "../common/config-util.ts";
 import * as DNDUtil from "../common/dnd-util.ts";
-import * as t from "../common/translation-util.ts";
+import {t} from "../common/translation-util.ts";
 import type {RendererMessage} from "../common/typed-ipc.ts";
 import type {MenuProperties, TabData} from "../common/types.ts";
 
@@ -313,14 +313,13 @@ function getWindowSubmenu(
       type: "separator",
     });
     for (const tab of tabs) {
-      // Skip missing elements left by `delete this.tabs[index]` in
-      // ServerManagerView.
-      if (tab === undefined) {
-        continue;
-      }
-
-      // Do not add functional tab settings to list of windows in menu bar
-      if (tab.role === "function" && tab.page === "Settings") {
+      if (
+        // Skip missing elements left by `delete this.tabs[index]` in
+        // ServerManagerView.
+        tab === undefined ||
+        // Do not add functional tab settings to list of windows in menu bar
+        (tab.role === "function" && tab.page === "Settings")
+      ) {
         continue;
       }
 

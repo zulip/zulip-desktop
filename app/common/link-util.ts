@@ -4,7 +4,7 @@ import os from "node:os";
 import path from "node:path";
 
 import {Html, html} from "./html.ts";
-import * as t from "./translation-util.ts";
+import {t} from "./translation-util.ts";
 
 export async function openBrowser(url: URL): Promise<void> {
   if (["http:", "https:", "mailto:"].includes(url.protocol)) {

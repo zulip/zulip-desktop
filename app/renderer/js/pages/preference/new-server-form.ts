@@ -2,7 +2,7 @@ import {dialog} from "@electron/remote";
 
 import {html} from "../../../../common/html.ts";
 import * as LinkUtil from "../../../../common/link-util.ts";
-import * as t from "../../../../common/translation-util.ts";
+import {t} from "../../../../common/translation-util.ts";
 import {generateNodeFromHtml} from "../../components/base.ts";
 import {ipcRenderer} from "../../typed-ipc-renderer.ts";
 import * as DomainUtil from "../../utils/domain-util.ts";

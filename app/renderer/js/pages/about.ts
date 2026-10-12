@@ -2,7 +2,7 @@ import {app} from "@electron/remote";
 
 import {Html, html} from "../../../common/html.ts";
 import {bundleUrl} from "../../../common/paths.ts";
-import * as t from "../../../common/translation-util.ts";
+import {t} from "../../../common/translation-util.ts";
 import {generateNodeFromHtml} from "../components/base.ts";
 
 export class AboutView {

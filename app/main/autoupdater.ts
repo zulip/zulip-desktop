@@ -10,7 +10,7 @@ import {
 } from "electron-updater";
 
 import * as ConfigUtil from "../common/config-util.ts";
-import * as t from "../common/translation-util.ts";
+import {t} from "../common/translation-util.ts";
 
 import {linuxUpdateNotification} from "./linuxupdater.ts"; // Required only in case of linux
 
