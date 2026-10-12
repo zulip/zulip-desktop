@@ -85,6 +85,14 @@
       "out/**/*"
     ],
     "copyright": "©2020 Kandra Labs, Inc.",
+    "protocols": [
+      {
+        "name": "Zulip server URL",
+        "schemes": [
+          "zulip"
+        ]
+      }
+    ],
     "publish": {
       "provider": "github",
       "releaseType": "draft"
