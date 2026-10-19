@@ -7,6 +7,7 @@ import {
   dialog,
   powerMonitor,
   session,
+  systemPreferences,
   webContents,
 } from "electron/main";
 import {Buffer} from "node:buffer";
@@ -28,6 +29,7 @@ import * as BadgeSettings from "./badge-settings.ts";
 import handleExternalLink from "./handle-external-link.ts";
 import * as AppMenu from "./menu.ts";
 import {_getServerSettings, _isOnline, _saveServerIcon} from "./request.ts";
+import {getLinuxSelectionColors} from "./selection-colors.ts";
 import {sentryInit} from "./sentry.ts";
 import {setAutoLaunch} from "./startup.ts";
 import {ipcMain, send} from "./typed-ipc-main.ts";
@@ -273,6 +275,25 @@ function createMainWindow(): BrowserWindow {
     event.returnValue = session
       .fromPartition("persist:webviewsession")
       .getUserAgent();
+  });
+
+  ipcMain.on("get-system-selection-colors", (event) => {
+    if (process.platform === "win32") {
+      event.returnValue = {
+        background: systemPreferences.getColor("highlight"),
+        color: systemPreferences.getColor("highlight-text"),
+      };
+    } else if (process.platform === "linux") {
+      event.returnValue = getLinuxSelectionColors() ?? {
+        background: "Highlight",
+        color: "HighlightText",
+      };
+    } else {
+      event.returnValue = {
+        background: "Highlight",
+        color: "HighlightText",
+      };
+    }
   });
 
   ipcMain.handle("get-server-settings", async (event, domain: string) =>
