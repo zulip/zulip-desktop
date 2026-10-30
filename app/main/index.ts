@@ -30,6 +30,11 @@ import * as AppMenu from "./menu.ts";
 import {_getServerSettings, _isOnline, _saveServerIcon} from "./request.ts";
 import {sentryInit} from "./sentry.ts";
 import {setAutoLaunch} from "./startup.ts";
+import {
+  setTrayEnabled,
+  setTrayUnreadIcon,
+  updateTrayUnreadCount,
+} from "./tray.ts";
 import {ipcMain, send} from "./typed-ipc-main.ts";
 
 import "gatemaker/electron-setup.js"; // eslint-disable-line import-x/no-unassigned-import
@@ -121,11 +126,6 @@ function createMainWindow(): BrowserWindow {
 
   win.on("leave-full-screen", () => {
     send(win.webContents, "leave-fullscreen");
-  });
-
-  //  To destroy tray icon when navigate to a new URL
-  win.webContents.on("will-navigate", () => {
-    send(win.webContents, "destroytray");
   });
 
   // Let us register listeners on the window, so we can update the state
@@ -259,6 +259,8 @@ function createMainWindow(): BrowserWindow {
     mainWindow.setMenuBarVisibility(!shouldHideMenu);
   }
 
+  setTrayEnabled(ConfigUtil.getConfigItem("trayIcon", true), mainWindow);
+
   const page = mainWindow.webContents;
 
   page.on("dom-ready", () => {
@@ -346,32 +348,15 @@ function createMainWindow(): BrowserWindow {
   // 	send(page, 'destroytray');
   // });
 
-  ipcMain.on("focus-app", () => {
-    mainWindow.show();
-  });
-
-  ipcMain.on("quit-app", () => {
-    app.quit();
-  });
-
   // Reload full app not just webview, useful in debugging
   ipcMain.on("reload-full-app", () => {
     mainWindow.reload();
-    send(page, "destroytray");
   });
 
   ipcMain.on("clear-app-settings", () => {
     mainWindowState.unmanage();
     app.relaunch();
     app.exit();
-  });
-
-  ipcMain.on("toggle-app", () => {
-    if (!mainWindow.isVisible() || mainWindow.isMinimized()) {
-      mainWindow.show();
-    } else {
-      mainWindow.hide();
-    }
   });
 
   ipcMain.on("toggle-badge-option", () => {
@@ -387,11 +372,22 @@ function createMainWindow(): BrowserWindow {
   ipcMain.on("update-badge", (_event, messageCount: number) => {
     badgeCount = messageCount;
     BadgeSettings.updateBadge(badgeCount, mainWindow);
-    send(page, "tray", messageCount);
+    updateTrayUnreadCount(messageCount, mainWindow);
   });
 
   ipcMain.on("update-taskbar-icon", (_event, data: string, text: string) => {
     BadgeSettings.updateTaskbarIcon(data, text, mainWindow);
+  });
+
+  ipcMain.on(
+    "update-tray-icon",
+    (_event, unreadCount: number, data: string) => {
+      setTrayUnreadIcon(unreadCount, data);
+    },
+  );
+
+  ipcMain.on("toggle-tray", (_event, showTray: boolean) => {
+    setTrayEnabled(showTray, mainWindow);
   });
 
   ipcMain.on(

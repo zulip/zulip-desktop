@@ -1,35 +1,7 @@
-import {type NativeImage, nativeImage} from "electron/common";
-import type {Tray as ElectronTray} from "electron/main";
-import path from "node:path";
 import process from "node:process";
-
-import {BrowserWindow, Menu, Tray} from "@electron/remote";
-
-import * as ConfigUtil from "../../common/config-util.ts";
-import {publicPath} from "../../common/paths.ts";
-import {t} from "../../common/translation-util.ts";
-import type {RendererMessage} from "../../common/typed-ipc.ts";
 
 import type {ServerManagerView} from "./main.ts";
 import {ipcRenderer} from "./typed-ipc-renderer.ts";
-
-let tray: ElectronTray | null = null;
-
-const appIcon = path.join(publicPath, "resources/tray/tray");
-
-const iconPath = (): string => {
-  if (process.platform === "linux") {
-    return appIcon + "linux.png";
-  }
-
-  return (
-    appIcon + (process.platform === "win32" ? "win.ico" : "macOSTemplate.png")
-  );
-};
-
-const winUnreadTrayIconPath = (): string => appIcon + "unread.ico";
-
-let unread = 0;
 
 const trayIconSize = (): number => {
   switch (process.platform) {
@@ -114,138 +86,16 @@ const renderCanvas = function (unreadCount: number): HTMLCanvasElement {
   return canvas;
 };
 
-const renderNativeImage = function (unreadCount: number): NativeImage {
-  if (process.platform === "win32") {
-    return nativeImage.createFromPath(winUnreadTrayIconPath());
-  }
-
-  const canvas = renderCanvas(unreadCount);
-  const pngData = nativeImage
-    .createFromDataURL(canvas.toDataURL("image/png"))
-    .toPNG();
-  return nativeImage.createFromBuffer(pngData, {
-    scaleFactor: config.pixelRatio,
-  });
-};
-
-function sendAction<Channel extends keyof RendererMessage>(
-  channel: Channel,
-  ...arguments_: Parameters<RendererMessage[Channel]>
-): void {
-  const win = BrowserWindow.getAllWindows()[0];
-
-  if (win === undefined) {
-    return;
-  }
-
-  if (process.platform === "darwin") {
-    win.restore();
-  }
-
-  ipcRenderer.send("forward-to", win.webContents.id, channel, ...arguments_);
-}
-
-const createTray = function (): void {
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: t.__("Zulip"),
-      click() {
-        ipcRenderer.send("focus-app");
-      },
-    },
-    {
-      label: t.__("Settings"),
-      click() {
-        ipcRenderer.send("focus-app");
-        sendAction("open-settings");
-      },
-    },
-    {
-      type: "separator",
-    },
-    {
-      label: t.__("Quit"),
-      click() {
-        ipcRenderer.send("quit-app");
-      },
-    },
-  ]);
-  tray = new Tray(iconPath());
-  tray.setContextMenu(contextMenu);
-  if (process.platform === "linux" || process.platform === "win32") {
-    tray.on("click", () => {
-      ipcRenderer.send("toggle-app");
-    });
-  }
-};
-
 export function initializeTray(serverManagerView: ServerManagerView) {
-  ipcRenderer.on("destroytray", () => {
-    if (!tray) {
-      return;
-    }
-
-    tray.destroy();
-    if (tray.isDestroyed()) {
-      tray = null;
-    } else {
-      throw new Error("Tray icon not properly destroyed.");
-    }
+  ipcRenderer.on("render-tray-icon", (_event, unreadCount: number) => {
+    ipcRenderer.send(
+      "update-tray-icon",
+      unreadCount,
+      renderCanvas(unreadCount).toDataURL(),
+    );
   });
 
-  ipcRenderer.on("tray", (_event, newUnreadCount: number): void => {
-    unread = newUnreadCount;
-
-    if (!tray) {
-      return;
-    }
-
-    // We don't want to create tray from unread messages on macOS since it already has dock badges.
-    if (process.platform === "linux" || process.platform === "win32") {
-      if (newUnreadCount === 0) {
-        tray.setImage(iconPath());
-        tray.setToolTip(t.__("No unread messages"));
-      } else {
-        const image = renderNativeImage(newUnreadCount);
-        tray.setImage(image);
-        tray.setToolTip(
-          t.__mf(
-            "{number, plural, one {# unread message} other {# unread messages}}",
-            {number: `${newUnreadCount}`},
-          ),
-        );
-      }
-    }
-  });
-
-  function toggleTray(): void {
-    let state;
-    if (tray) {
-      state = false;
-      tray.destroy();
-      if (tray.isDestroyed()) {
-        tray = null;
-      }
-
-      ConfigUtil.setConfigItem("trayIcon", false);
-    } else {
-      state = true;
-      createTray();
-      if (process.platform === "linux" || process.platform === "win32") {
-        const image = renderNativeImage(unread);
-        tray!.setImage(image);
-        tray!.setToolTip(`${unread} unread messages`);
-      }
-
-      ConfigUtil.setConfigItem("trayIcon", true);
-    }
-
+  ipcRenderer.on("toggle-tray", (_event, state: boolean) => {
     serverManagerView.preferenceView?.handleToggleTray(state);
-  }
-
-  ipcRenderer.on("toggletray", toggleTray);
-
-  if (ConfigUtil.getConfigItem("trayIcon", true)) {
-    createTray();
-  }
+  });
 }

@@ -255,7 +255,7 @@ export function initGeneralSection({$root}: GeneralSectionProperties): void {
       clickHandler() {
         const newValue = !ConfigUtil.getConfigItem("trayIcon", true);
         ConfigUtil.setConfigItem("trayIcon", newValue);
-        ipcRenderer.send("forward-message", "toggletray");
+        ipcRenderer.send("toggle-tray", newValue);
         updateTrayOption();
       },
     });

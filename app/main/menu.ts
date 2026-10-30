@@ -16,6 +16,7 @@ import type {RendererMessage} from "../common/typed-ipc.ts";
 import type {MenuProperties, TabData} from "../common/types.ts";
 
 import {appUpdater} from "./autoupdater.ts";
+import {setTrayEnabled} from "./tray.ts";
 import {send} from "./typed-ipc-main.ts";
 
 const appName = app.name;
@@ -223,7 +224,10 @@ function getViewSubmenu(): MenuItemConstructorOptions[] {
       label: t.__("Toggle Tray Icon"),
       click(_item, focusedWindow) {
         if (focusedWindow instanceof BrowserWindow) {
-          send(focusedWindow.webContents, "toggletray");
+          const newValue = !ConfigUtil.getConfigItem("trayIcon", true);
+          setTrayEnabled(newValue, focusedWindow);
+          send(focusedWindow.webContents, "toggle-tray", newValue);
+          ConfigUtil.setConfigItem("trayIcon", newValue);
         }
       },
     },
