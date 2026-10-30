@@ -85,6 +85,9 @@
       "out/**/*"
     ],
     "copyright": "©2020 Kandra Labs, Inc.",
+    "toolsets": {
+      "appimage": "1.0.3"
+    },
     "publish": {
       "provider": "github",
       "releaseType": "draft"
