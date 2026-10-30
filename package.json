@@ -74,6 +74,7 @@
     "zod": "^4.1.5"
   },
   "productName": "Zulip",
+  "desktopName": "org.zulip.Zulip.desktop",
   "copyright": "Kandra Labs, Inc.",
   "build": {
     "appId": "org.zulip.zulip-electron",
@@ -125,7 +126,8 @@
         "snap"
       ],
       "maintainer": "Akash Nimare <akash@zulip.com>",
-      "artifactName": "${productName}-${version}-${arch}.${ext}"
+      "artifactName": "${productName}-${version}-${arch}.${ext}",
+      "syncDesktopName": true
     },
     "deb": {
       "packageCategory": "net",
