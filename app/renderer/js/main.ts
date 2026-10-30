@@ -64,6 +64,9 @@ const dingSound = new Audio(
   new URL("resources/sounds/ding.ogg", bundleUrl).href,
 );
 
+// Web-app notification sounds, cached by URL for latency-free replay.
+const notificationSounds = new Map<string, HTMLAudioElement>();
+
 export class ServerManagerView {
   $addServerButton: HTMLButtonElement;
   $tabsContainer: Element;
@@ -1075,7 +1078,7 @@ export class ServerManagerView {
       for (const tab of this.tabs) {
         if (tab instanceof ServerTab) {
           (async () => {
-            (await tab.webview).getWebContents().setAudioMuted(state);
+            (await tab.webview).send("toggle-silent", state);
           })();
         }
       }
@@ -1243,6 +1246,20 @@ export class ServerManagerView {
 
     ipcRenderer.on("play-ding-sound", () => {
       void dingSound.play();
+    });
+
+    ipcRenderer.on("play-notification-sound", (event, url: string) => {
+      let audio = notificationSounds.get(url);
+      if (audio === undefined) {
+        audio = new Audio(url);
+        notificationSounds.set(url, audio);
+      }
+
+      void audio.play().catch(() => {
+        // Retry the fetch next time; fall back to the bundled ding.
+        notificationSounds.delete(url);
+        void dingSound.play();
+      });
     });
   }
 }
