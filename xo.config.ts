@@ -34,6 +34,9 @@ const restrictedRendererImports = [
 const xoConfig: FlatXoConfig = [
   {
     prettier: "compat",
+  },
+  {
+    files: ["package.json"],
     rules: {
       "package-json/no-install-scripts": "off",
       "package-json/prefer-exports": "off",

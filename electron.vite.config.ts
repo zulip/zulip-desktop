@@ -4,7 +4,7 @@ export default defineConfig({
   main: {
     build: {
       sourcemap: true,
-      rollupOptions: {
+      rolldownOptions: {
         input: {
           index: "app/main/index.ts",
         },
@@ -20,7 +20,7 @@ export default defineConfig({
   preload: {
     build: {
       sourcemap: "inline",
-      rollupOptions: {
+      rolldownOptions: {
         input: {
           preload: "app/renderer/js/preload.ts",
           renderer: "app/renderer/js/main.ts",
@@ -41,7 +41,7 @@ export default defineConfig({
   renderer: {
     build: {
       sourcemap: true,
-      rollupOptions: {
+      rolldownOptions: {
         input: {
           renderer: "app/renderer/main.html",
           network: "app/renderer/network.html",
