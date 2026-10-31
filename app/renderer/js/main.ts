@@ -19,6 +19,7 @@ import * as LinkUtil from "../../common/link-util.ts";
 import Logger from "../../common/logger-util.ts";
 import * as Messages from "../../common/messages.ts";
 import {bundlePath, bundleUrl} from "../../common/paths.ts";
+import {dataCollection} from "../../common/sentry-util.ts";
 import {t} from "../../common/translation-util.ts";
 import type {
   NavigationItem,
@@ -38,7 +39,7 @@ import {ipcRenderer} from "./typed-ipc-renderer.ts";
 import * as DomainUtil from "./utils/domain-util.ts";
 import ReconnectUtil from "./utils/reconnect-util.ts";
 
-Sentry.init({});
+Sentry.init({dataCollection});
 
 type WebviewListener =
   | "webview-reload"
