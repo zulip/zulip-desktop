@@ -98,7 +98,7 @@ jobs:
       # socket in a group the runner is already in.
       - uses: canonical/setup-lxd@8c6a87bfb56aa48f3fb9b830baa18562d8bfd4ee # v1
       - name: Set up snapcraft
-        run: sudo snap install snapcraft --classic
+        run: sudo snap install snapcraft --channel=8.x/stable --classic
 
       - run: node --run build
 
