@@ -2,6 +2,21 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.14.0 --2026-10-30
+
+**Enhancements**:
+
+- Updated translations.
+- The Linux AppImage no longer requires the end-of-life FUSE 2 library.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 45.1.0.
+
+**Fixes**:
+
+- Fixed garbled unread badge in the Linux tray icon at non-1x display scaling.
+
 ### v5.13.2 --2026-09-21
 
 **Fixes**:
