@@ -27,7 +27,6 @@ import type {
   TabData,
   TabPage,
 } from "../../common/types.js";
-import defaultIcon from "../img/icon.png";
 
 import FunctionalTab from "./components/functional-tab.ts";
 import ServerTab from "./components/server-tab.ts";
@@ -436,17 +435,11 @@ export class ServerManagerView {
   }
 
   initServerActions(): void {
-    const $serverImgs: NodeListOf<HTMLImageElement> =
-      document.querySelectorAll(".server-icons");
-    for (const [index, $serverImg] of $serverImgs.entries()) {
-      this.addContextMenu($serverImg, index);
-      if ($serverImg.src === defaultIcon) {
-        this.displayInitialCharLogo($serverImg, index);
-      }
-
-      $serverImg.addEventListener("error", () => {
-        this.displayInitialCharLogo($serverImg, index);
-      });
+    const $serverTabs: NodeListOf<HTMLElement> = document.querySelectorAll(
+      ".tab:not(.functional-tab) .server-tab",
+    );
+    for (const [index, $serverTab] of $serverTabs.entries()) {
+      this.addContextMenu($serverTab, index);
     }
   }
 
@@ -507,32 +500,12 @@ export class ServerManagerView {
     return tab instanceof ServerTab ? (await tab.webview).properties.url : "";
   }
 
-  displayInitialCharLogo($img: HTMLImageElement, index: number): void {
-    // The index parameter is needed because webview[data-tab-id] can
-    // increment beyond the size of the sidebar org array and throw an
-    // error
-
-    const $altIcon = document.createElement("div");
-    const $parent = $img.parentElement!;
-    const $container = $parent.parentElement!;
-    const webviewId = $container.dataset.tabId!;
-    const $webview = document.querySelector(
-      `webview[data-tab-id="${CSS.escape(webviewId)}"]`,
-    )!;
-    const realmName = $webview.getAttribute("name");
-
-    if (realmName === null) {
-      $img.src = defaultIcon;
-      return;
+  displayInitialCharLogo(_$img: HTMLImageElement, index: number): void {
+    const tab = this.tabs[index];
+    if (tab instanceof ServerTab) {
+      tab.$icon.style.display = "none";
+      tab.$altIcon.style.display = "";
     }
-
-    $altIcon.textContent = realmName === "" ? "Z" : realmName.charAt(0);
-    $altIcon.classList.add("server-icon", "alt-icon");
-
-    $img.remove();
-    $parent.append($altIcon);
-
-    this.addContextMenu($altIcon, index);
   }
 
   sidebarHoverEvent(
@@ -846,8 +819,8 @@ export class ServerManagerView {
     return !(url.endsWith("/login/") || webview.loading);
   }
 
-  addContextMenu($serverImg: HTMLElement, index: number): void {
-    $serverImg.addEventListener("contextmenu", (event) => {
+  addContextMenu($serverTab: HTMLElement, index: number): void {
+    $serverTab.addEventListener("contextmenu", (event) => {
       event.preventDefault();
       (async () => {
         const template = [

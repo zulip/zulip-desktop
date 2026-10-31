@@ -1,6 +1,7 @@
 import process from "node:process";
 
 import {type Html, html} from "../../../common/html.ts";
+import defaultIcon from "../../img/icon.png";
 import {ipcRenderer} from "../typed-ipc-renderer.ts";
 
 import {generateNodeFromHtml} from "./base.ts";
@@ -16,6 +17,7 @@ export default class ServerTab extends Tab {
   $el: Element;
   $name: Element;
   $icon: HTMLImageElement;
+  $altIcon: HTMLElement;
   $badge: Element;
 
   constructor({webview, ...properties}: ServerTabProperties) {
@@ -27,7 +29,52 @@ export default class ServerTab extends Tab {
     this.registerListeners();
     this.$name = this.$el.querySelector(".server-tooltip")!;
     this.$icon = this.$el.querySelector(".server-icons")!;
+    this.$altIcon = this.$el.querySelector(".alt-icon")!;
     this.$badge = this.$el.querySelector(".server-tab-badge")!;
+
+    this.initIcon();
+  }
+
+  override registerListeners(): void {
+    super.registerListeners();
+
+    this.$icon.addEventListener("load", () => {
+      if (!this.isDefaultIcon(this.properties.icon)) {
+        this.$icon.style.display = "";
+        this.$altIcon.style.display = "none";
+      }
+    });
+
+    this.$icon.addEventListener("error", () => {
+      this.$icon.style.display = "none";
+      this.$altIcon.style.display = "";
+    });
+  }
+
+  isDefaultIcon(icon?: string): boolean {
+    return (
+      icon === undefined ||
+      icon === "" ||
+      icon === defaultIcon ||
+      icon.endsWith("icon.png") ||
+      icon.endsWith("../renderer/img/icon.png")
+    );
+  }
+
+  getCharLogo(): string {
+    const label = this.properties.label.trim();
+    return label === "" ? "Z" : label.charAt(0).toUpperCase();
+  }
+
+  initIcon(): void {
+    if (
+      !this.isDefaultIcon(this.properties.icon) &&
+      this.$icon.complete &&
+      this.$icon.naturalWidth > 0
+    ) {
+      this.$icon.style.display = "";
+      this.$altIcon.style.display = "none";
+    }
   }
 
   override async activate(): Promise<void> {
@@ -53,7 +100,12 @@ export default class ServerTab extends Tab {
         </div>
         <div class="server-tab-badge"></div>
         <div class="server-tab">
-          <img class="server-icons" src="${this.properties.icon}" />
+          <div class="server-icon alt-icon">${this.getCharLogo()}</div>
+          <img
+            class="server-icons"
+            src="${this.properties.icon}"
+            style="display:none"
+          />
         </div>
         <div class="server-tab-shortcut">${this.generateShortcutText()}</div>
       </div>
@@ -63,11 +115,19 @@ export default class ServerTab extends Tab {
   setLabel(label: string): void {
     this.properties.label = label;
     this.$name.textContent = label;
+    this.$altIcon.textContent = this.getCharLogo();
   }
 
   setIcon(icon: string): void {
     this.properties.icon = icon;
-    this.$icon.src = icon;
+    if (this.isDefaultIcon(icon)) {
+      this.$icon.style.display = "none";
+      this.$altIcon.style.display = "";
+    } else {
+      this.$icon.style.display = "none";
+      this.$altIcon.style.display = "";
+      this.$icon.src = icon;
+    }
   }
 
   updateBadge(count: number): void {
