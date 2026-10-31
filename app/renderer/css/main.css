@@ -192,8 +192,10 @@ body {
   font-weight: 600;
   font-size: 22px;
   border: 2px solid rgb(34 44 49 / 100%);
-  margin-left: 17%;
+  margin: 0 auto;
   width: 35px;
+  height: 35px;
+  box-sizing: border-box;
   border-radius: 4px;
 }
 
