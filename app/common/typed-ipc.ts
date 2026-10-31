@@ -7,6 +7,7 @@ export type MainMessage = {
   "copy-text": (text: string) => void;
   "fetch-user-agent": () => string;
   "focus-this-webview": () => void;
+  "get-system-selection-colors": () => {background: string; color: string};
   "new-clipboard-key": () => {key: Uint8Array; sig: Uint8Array};
   "permission-callback": (permissionCallbackId: number, grant: boolean) => void;
   "realm-icon-changed": (serverURL: string, iconURL: string) => void;
