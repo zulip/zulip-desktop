@@ -27,7 +27,6 @@ import type {
   TabData,
   TabPage,
 } from "../../common/types.js";
-import defaultIcon from "../img/icon.png";
 
 import FunctionalTab from "./components/functional-tab.ts";
 import ServerTab from "./components/server-tab.ts";
@@ -436,17 +435,11 @@ export class ServerManagerView {
   }
 
   initServerActions(): void {
-    const $serverImgs: NodeListOf<HTMLImageElement> =
-      document.querySelectorAll(".server-icons");
-    for (const [index, $serverImg] of $serverImgs.entries()) {
-      this.addContextMenu($serverImg, index);
-      if ($serverImg.src === defaultIcon) {
-        this.displayInitialCharLogo($serverImg, index);
+    for (const [index, tab] of this.tabs.entries()) {
+      if (tab instanceof ServerTab) {
+        this.addContextMenu(tab.$icon, index);
+        this.addContextMenu(tab.$altIcon, index);
       }
-
-      $serverImg.addEventListener("error", () => {
-        this.displayInitialCharLogo($serverImg, index);
-      });
     }
   }
 
@@ -505,34 +498,6 @@ export class ServerManagerView {
   async getCurrentActiveServer(): Promise<string> {
     const tab = this.tabs[this.activeTabIndex];
     return tab instanceof ServerTab ? (await tab.webview).properties.url : "";
-  }
-
-  displayInitialCharLogo($img: HTMLImageElement, index: number): void {
-    // The index parameter is needed because webview[data-tab-id] can
-    // increment beyond the size of the sidebar org array and throw an
-    // error
-
-    const $altIcon = document.createElement("div");
-    const $parent = $img.parentElement!;
-    const $container = $parent.parentElement!;
-    const webviewId = $container.dataset.tabId!;
-    const $webview = document.querySelector(
-      `webview[data-tab-id="${CSS.escape(webviewId)}"]`,
-    )!;
-    const realmName = $webview.getAttribute("name");
-
-    if (realmName === null) {
-      $img.src = defaultIcon;
-      return;
-    }
-
-    $altIcon.textContent = realmName === "" ? "Z" : realmName.charAt(0);
-    $altIcon.classList.add("server-icon", "alt-icon");
-
-    $img.remove();
-    $parent.append($altIcon);
-
-    this.addContextMenu($altIcon, index);
   }
 
   sidebarHoverEvent(
