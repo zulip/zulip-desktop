@@ -28,3 +28,9 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: node --run test
+      - name: Run end-to-end tests on Linux
+        if: runner.os == 'Linux'
+        run: xvfb-run --auto-servernum node --run test-e2e
+      - name: Run end-to-end tests on Windows
+        if: runner.os == 'Windows'
+        run: node --run test-e2e
