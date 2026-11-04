@@ -10,6 +10,7 @@ export const dndSettingsSchemata = {
 
 export const configSchemata = {
   ...dndSettingsSchemata,
+  appTheme: z.enum(["system", "light", "dark"]),
   appLanguage: z.string().nullable(),
   autoHideMenubar: z.boolean(),
   autoUpdate: z.boolean(),
