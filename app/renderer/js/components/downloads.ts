@@ -269,7 +269,9 @@ export class DownloadsView {
     try {
       const error = await ipcRenderer.invoke("open-download", filePath);
       if (error) {
-        this.showError(t.__("Unable to open downloaded file:") + " " + error);
+        this.showError(
+          t.__("Unable to open downloaded file: {{{error}}}", {error}),
+        );
       }
     } catch (error: unknown) {
       logger.error("Unable to open downloaded file", error);
