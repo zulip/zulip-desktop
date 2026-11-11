@@ -16,12 +16,27 @@ export async function createApp(): Promise<ElectronApplication> {
   userDataPath = await fs.promises.mkdtemp(
     path.join(os.tmpdir(), "zulip-test-"),
   );
+  return launchApp();
+}
+
+function launchApp(): Promise<ElectronApplication> {
+  if (userDataPath === undefined) {
+    throw new Error("App was not created");
+  }
+
   return _electron.launch({
     args: [
       `--user-data-dir=${userDataPath}`,
       path.join(import.meta.dirname, ".."),
     ],
   });
+}
+
+export async function restartApp(
+  app: ElectronApplication,
+): Promise<ElectronApplication> {
+  await app.close();
+  return launchApp();
 }
 
 // Quit the app, end the test

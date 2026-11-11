@@ -25,6 +25,7 @@ import type {MenuProperties} from "../common/types.ts";
 
 import {appUpdater, shouldQuitForUpdate} from "./autoupdater.ts";
 import * as BadgeSettings from "./badge-settings.ts";
+import {initializeDownloads} from "./downloads.ts";
 import handleExternalLink from "./handle-external-link.ts";
 import * as AppMenu from "./menu.ts";
 import {_getServerSettings, _isOnline, _saveServerIcon} from "./request.ts";
@@ -262,6 +263,7 @@ function createMainWindow(): BrowserWindow {
   setTrayEnabled(ConfigUtil.getConfigItem("trayIcon", true), mainWindow);
 
   const page = mainWindow.webContents;
+  initializeDownloads(ses, page);
 
   page.on("dom-ready", () => {
     if (ConfigUtil.getConfigItem("startMinimized", false)) {

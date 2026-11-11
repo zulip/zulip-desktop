@@ -30,6 +30,7 @@ import type {
 import defaultIcon from "../img/icon.png";
 
 import FunctionalTab from "./components/functional-tab.ts";
+import {DownloadsView} from "./components/downloads.ts";
 import ServerTab from "./components/server-tab.ts";
 import WebView from "./components/webview.ts";
 import {AboutView} from "./pages/about.ts";
@@ -1305,6 +1306,7 @@ window.addEventListener("load", () => {
     </div>
   `.html;
 
+  new DownloadsView();
   const serverManagerView = new ServerManagerView();
   void serverManagerView.init();
 });

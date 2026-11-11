@@ -30,6 +30,12 @@ export const configSchemata = {
   proxyPAC: z.string(),
   proxyRules: z.string(),
   quitOnClose: z.boolean(),
+  recentDownloads: z
+    .object({
+      filePath: z.string(),
+      fileName: z.string(),
+    })
+    .array(),
   showSidebar: z.boolean(),
   spellcheckerLanguages: z.string().array().nullable(),
   startAtLogin: z.boolean(),

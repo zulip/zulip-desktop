@@ -1,5 +1,11 @@
 import type {DndSettings} from "./dnd-util.ts";
+import type {Config} from "./config-util.ts";
 import type {MenuProperties, ServerConfig} from "./types.ts";
+
+export type DownloadEntry = Config["recentDownloads"][number] & {
+  progress?: number | null;
+  highlighted?: boolean;
+};
 
 export type MainMessage = {
   "clear-app-settings": () => void;
@@ -26,15 +32,21 @@ export type MainMessage = {
 };
 
 export type MainCall = {
+  "clear-recent-downloads": () => void;
+  "delete-download": (filePath: string) => void;
+  "get-recent-downloads": () => DownloadEntry[];
   "get-server-settings": (domain: string) => ServerConfig;
   "is-online": (url: string) => boolean;
+  "open-download": (filePath: string) => string;
   "poll-clipboard": (key: Uint8Array, sig: Uint8Array) => string | undefined;
+  "reveal-download": (filePath: string) => void;
   "save-server-icon": (iconURL: string) => string | null;
 };
 
 export type RendererMessage = {
   back: () => void;
   "copy-zulip-url": () => void;
+  "downloads-updated": (downloads: DownloadEntry[], show: boolean) => void;
   "enter-fullscreen": () => void;
   focus: () => void;
   "focus-webview-with-id": (webviewId: number) => void;
@@ -63,6 +75,7 @@ export type RendererMessage = {
   "set-idle": () => void;
   "show-keyboard-shortcuts": () => void;
   "show-notification-settings": () => void;
+  "show-recent-downloads": () => void;
   "switch-server-tab": (index: number) => void;
   "tab-devtools": () => void;
   "toggle-autohide-menubar": (
