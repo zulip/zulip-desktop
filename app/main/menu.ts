@@ -116,6 +116,15 @@ function getToolsSubmenu(): MenuItemConstructorOptions[] {
 function getViewSubmenu(): MenuItemConstructorOptions[] {
   return [
     {
+      label: t.__("Recent Downloads"),
+      click() {
+        sendAction("show-recent-downloads");
+      },
+    },
+    {
+      type: "separator",
+    },
+    {
       label: t.__("Reload"),
       accelerator: "CommandOrControl+R",
       click(_item, focusedWindow) {

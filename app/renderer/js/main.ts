@@ -29,6 +29,7 @@ import type {
 } from "../../common/types.js";
 import defaultIcon from "../img/icon.png";
 
+import {DownloadsView} from "./components/downloads.ts";
 import FunctionalTab from "./components/functional-tab.ts";
 import ServerTab from "./components/server-tab.ts";
 import WebView from "./components/webview.ts";
@@ -1305,6 +1306,8 @@ window.addEventListener("load", () => {
     </div>
   `.html;
 
+  // eslint-disable-next-line no-new -- Registers the downloads panel and its event handlers.
+  new DownloadsView();
   const serverManagerView = new ServerManagerView();
   void serverManagerView.init();
 });

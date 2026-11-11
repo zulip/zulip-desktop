@@ -17,6 +17,12 @@ language. This happens when we've opened up a new language for people
 to contribute translations into in the Zulip project on Weblate,
 which we do when someone expresses interest in contributing them.
 
+When adding or changing UI messages, wrap them with `t.__` (or `t.__mf`
+for ICU messages) and run `pnpm exec i18next-cli extract` to update the
+English source catalog in `public/translations/en.json`. Use named
+placeholders instead of concatenating translated text with dynamic values,
+so translators can choose the word order.
+
 The locales for supported languages are stored in `public/translations/supported-locales.json`
 
 So, when a new language is added, update the `supported-locales` module.
