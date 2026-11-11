@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import {Buffer} from "node:buffer";
 import fs from "node:fs/promises";
 import http from "node:http";
 import path from "node:path";
@@ -12,7 +13,9 @@ async function setCustomCss(
   app: ElectronApplication,
   css: string | null,
 ): Promise<void> {
-  const userData = await app.evaluate(({app}) => app.getPath("userData"));
+  const userData = await app.evaluate(({app: electronApp}) =>
+    electronApp.getPath("userData"),
+  );
   const cssPath = path.join(userData, "downloads.css");
   if (css !== null) {
     await fs.writeFile(cssPath, css);
@@ -24,20 +27,18 @@ async function setCustomCss(
     throw new Error("Invalid test settings");
   }
 
-  await fs.writeFile(
-    settingsPath,
-    JSON.stringify({...settings, customCSS: css === null ? "" : cssPath}),
-  );
+  Reflect.set(settings, "customCSS", css === null ? "" : cssPath);
+  await fs.writeFile(settingsPath, JSON.stringify(settings));
 }
 
 async function download(
   app: ElectronApplication,
-  url: string,
+  downloadUrl: string,
   fileName: string,
-  cancel = false,
+  shouldCancel = false,
 ): Promise<string> {
-  const filePath = path.join(
-    await app.evaluate(({app}) => app.getPath("userData")),
+  const savePath = path.join(
+    await app.evaluate(({app: electronApp}) => electronApp.getPath("userData")),
     fileName,
   );
   return app.evaluate(
@@ -60,8 +61,21 @@ async function download(
         downloads.downloadURL(url);
       });
     },
-    {url, filePath, cancel},
+    {url: downloadUrl, filePath: savePath, cancel: shouldCancel},
   );
+}
+
+async function showRecentDownloads(app: ElectronApplication): Promise<void> {
+  await app.evaluate(({Menu}) => {
+    const item = Menu.getApplicationMenu()!
+      .items.flatMap((entry) => entry.submenu?.items ?? [])
+      .find((entry) => entry.label === "Recent Downloads");
+    if (item === undefined) {
+      throw new Error("Recent Downloads menu item was not found");
+    }
+
+    Reflect.apply(item.click, item, []);
+  });
 }
 
 async function waitForRevealCount(
@@ -70,14 +84,16 @@ async function waitForRevealCount(
 ): Promise<void> {
   const deadline = Date.now() + 5000;
   while (Date.now() < deadline) {
-    const revealedPaths: unknown = await app.evaluate(({shell}) =>
+    // eslint-disable-next-line no-await-in-loop -- Poll for the asynchronous reveal action.
+    const revealedPaths = await app.evaluate(({shell}): unknown =>
       Reflect.get(shell.showItemInFolder, "revealedPaths"),
     );
     if (Array.isArray(revealedPaths) && revealedPaths.length === count) {
       return;
     }
 
-    await new Promise((resolve) => {
+    // eslint-disable-next-line no-await-in-loop -- Space out sequential polling attempts.
+    await new Promise<void>((resolve) => {
       setTimeout(resolve, 20);
     });
   }
@@ -97,13 +113,9 @@ test("recent downloads popup", async (t) => {
   });
   let app = await setup.createApp();
   const showFromMenu = async () => {
-    await app.evaluate(({Menu}) => {
-      const item = Menu.getApplicationMenu()!
-        .items.flatMap((item) => item.submenu?.items ?? [])
-        .find((item) => item.label === "Recent Downloads")!;
-      item.click();
-    });
+    await showRecentDownloads(app);
   };
+
   try {
     await new Promise<void>((resolve, reject) => {
       server.once("error", reject);
@@ -190,7 +202,7 @@ test("recent downloads popup", async (t) => {
       await window.$eval(".download-row", (row) => {
         const bounds = row.getBoundingClientRect();
         return (
-          Number.parseFloat(getComputedStyle(row).borderTopWidth) > 0 &&
+          getComputedStyle(row).borderTopWidth !== "0px" &&
           [...row.querySelectorAll("button")].every((button) => {
             const buttonBounds = button.getBoundingClientRect();
             return (
@@ -217,7 +229,7 @@ test("recent downloads popup", async (t) => {
           file.right >= actionBounds.right &&
           file.left < actionBounds.left &&
           style.position === "absolute" &&
-          Number.parseFloat(style.borderTopWidth) > 0 &&
+          style.borderTopWidth !== "0px" &&
           ["rgb(255, 255, 255)", "rgb(34, 34, 34)"].includes(
             style.backgroundColor,
           )
@@ -244,8 +256,8 @@ test("recent downloads popup", async (t) => {
     await app.evaluate(({shell}) => {
       const revealedPaths: string[] = [];
       shell.showItemInFolder = Object.assign(
-        (filePath: string) => {
-          revealedPaths.push(filePath);
+        (revealedPath: string) => {
+          revealedPaths.push(revealedPath);
         },
         {revealedPaths},
       );
@@ -274,7 +286,7 @@ test("recent downloads popup", async (t) => {
     await revealButton.click();
     await waitForRevealCount(app, 1);
     t.deepEqual(
-      await app.evaluate(({shell}) =>
+      await app.evaluate(({shell}): unknown =>
         Reflect.get(shell.showItemInFolder, "revealedPaths"),
       ),
       [filePath],
@@ -292,7 +304,7 @@ test("recent downloads popup", async (t) => {
     await window.keyboard.press("Enter");
     await waitForRevealCount(app, 2);
     t.deepEqual(
-      await app.evaluate(({shell}) =>
+      await app.evaluate(({shell}): unknown =>
         Reflect.get(shell.showItemInFolder, "revealedPaths"),
       ),
       [filePath, filePath],
@@ -300,8 +312,8 @@ test("recent downloads popup", async (t) => {
     );
 
     await app.evaluate(({shell}, expectedPath) => {
-      shell.openPath = async (filePath) => {
-        if (filePath !== expectedPath) {
+      shell.openPath = async (requestedPath) => {
+        if (requestedPath !== expectedPath) {
           throw new Error("Wrong downloaded file opened");
         }
 
@@ -339,7 +351,7 @@ test("recent downloads popup", async (t) => {
     await window.locator(".reveal-download").first().click();
     await waitForRevealCount(app, 3);
     t.deepEqual(
-      await app.evaluate(({shell}) =>
+      await app.evaluate(({shell}): unknown =>
         Reflect.get(shell.showItemInFolder, "revealedPaths"),
       ),
       [filePath, filePath, path.join(path.dirname(filePath), "newest.txt")],
@@ -443,12 +455,17 @@ test("recent downloads are limited to 100 files", async (t) => {
   try {
     const window = await app.firstWindow();
     await window.waitForSelector("#connect");
-    const userData = await app.evaluate(({app}) => app.getPath("userData"));
+    const userData = await app.evaluate(({app: electronApp}) =>
+      electronApp.getPath("userData"),
+    );
     const settingsPath = path.join(userData, "config", "settings.json");
     const settings: unknown = JSON.parse(
       await fs.readFile(settingsPath, "utf8"),
     );
-    assert.ok(typeof settings === "object" && settings !== null);
+    if (typeof settings !== "object" || settings === null) {
+      throw new Error("Invalid test settings");
+    }
+
     const history = Array.from({length: 105}, (_, index) => ({
       filePath: path.join(userData, `previous-${index}.txt`),
       fileName: `previous-${index}.txt`,
@@ -460,30 +477,25 @@ test("recent downloads are limited to 100 files", async (t) => {
       JSON.stringify({...settings, recentDownloads: history}),
     );
     const readHistory = async (): Promise<unknown> => {
-      const settings: unknown = JSON.parse(
+      const savedSettings: unknown = JSON.parse(
         await fs.readFile(settingsPath, "utf8"),
       );
-      assert.ok(
-        typeof settings === "object" &&
-          settings !== null &&
-          "recentDownloads" in settings,
-      );
-      return settings.recentDownloads;
+      if (typeof savedSettings !== "object" || savedSettings === null) {
+        throw new Error("Invalid test settings");
+      }
+
+      assert.ok("recentDownloads" in savedSettings);
+      return savedSettings.recentDownloads;
     };
 
     app = await setup.restartApp(app);
     const restartedWindow = await app.firstWindow();
     await restartedWindow.waitForSelector("#connect");
-    await app.evaluate(({Menu}) => {
-      Menu.getApplicationMenu()!
-        .items.flatMap((item) => item.submenu?.items ?? [])
-        .find((item) => item.label === "Recent Downloads")!
-        .click();
-    });
+    await showRecentDownloads(app);
     await restartedWindow.waitForSelector(".download-file");
     t.deepEqual(
       await restartedWindow.locator(".download-file").allTextContents(),
-      history.slice(0, 100).map((download) => download.fileName),
+      history.slice(0, 100).map((entry) => entry.fileName),
       "existing oversized history displays only the newest 100 files",
     );
     t.deepEqual(
@@ -497,7 +509,10 @@ test("recent downloads are limited to 100 files", async (t) => {
       server.listen(0, "127.0.0.1", resolve);
     });
     const address = server.address();
-    assert.ok(address !== null && typeof address !== "string");
+    if (address === null || typeof address === "string") {
+      throw new Error("Test download server did not start");
+    }
+
     const completed = download(
       app,
       `http://127.0.0.1:${address.port}/file`,
@@ -526,7 +541,7 @@ test("recent downloads are limited to 100 files", async (t) => {
     ];
     t.deepEqual(
       await restartedWindow.locator(".download-file").allTextContents(),
-      expectedHistory.map((download) => download.fileName),
+      expectedHistory.map((entry) => entry.fileName),
       "a completed download evicts the oldest entry from the list",
     );
     t.deepEqual(
@@ -566,12 +581,7 @@ test("recent downloads are limited to 100 files", async (t) => {
     app = await setup.restartApp(app);
     const clearedWindow = await app.firstWindow();
     await clearedWindow.waitForSelector("#connect");
-    await app.evaluate(({Menu}) => {
-      Menu.getApplicationMenu()!
-        .items.flatMap((item) => item.submenu?.items ?? [])
-        .find((item) => item.label === "Recent Downloads")!
-        .click();
-    });
+    await showRecentDownloads(app);
     await clearedWindow.waitForSelector(".downloads-empty");
     t.equal(
       await clearedWindow.locator(".download-row").count(),
@@ -603,7 +613,7 @@ test("active download progress", async (t) => {
     responses.set(fileName, response);
     response.writeHead(200, {
       "Content-Type": "application/octet-stream",
-      ...(fileName === "unknown.txt" ? {} : {"Content-Length": "1000"}),
+      ...(fileName !== "unknown.txt" && {"Content-Length": "1000"}),
     });
     response.write(Buffer.alloc(100, "a"));
   });
@@ -618,8 +628,10 @@ test("active download progress", async (t) => {
       throw new Error("Test download server did not start");
     }
 
-    const userData = await app.evaluate(({app}) => app.getPath("userData"));
-    const startDownload = async (fileName: string, cancel = false) => {
+    const userData = await app.evaluate(({app: electronApp}) =>
+      electronApp.getPath("userData"),
+    );
+    const startDownload = async (fileName: string, shouldCancel = false) => {
       await app.evaluate(
         ({session}, {url, filePath, cancel}) => {
           const downloads = session.fromPartition("persist:webviewsession");
@@ -638,10 +650,11 @@ test("active download progress", async (t) => {
         {
           url: `http://127.0.0.1:${address.port}/${fileName}`,
           filePath: path.join(userData, fileName),
-          cancel,
+          cancel: shouldCancel,
         },
       );
     };
+
     let window = await app.firstWindow();
     await window.waitForSelector("#connect");
     await startDownload("slow.md");
@@ -681,12 +694,7 @@ test("active download progress", async (t) => {
       await window.isVisible("#downloads-panel"),
       "progress updates do not reopen a dismissed panel",
     );
-    await app.evaluate(({Menu}) => {
-      Menu.getApplicationMenu()!
-        .items.flatMap((item) => item.submenu?.items ?? [])
-        .find((item) => item.label === "Recent Downloads")!
-        .click();
-    });
+    await showRecentDownloads(app);
     await window.waitForSelector("#downloads-panel");
     t.equal(
       await window.textContent(".download-progress"),
@@ -741,12 +749,7 @@ test("active download progress", async (t) => {
       "the completed file stays highlighted",
     );
     await window.click("#close-downloads");
-    await app.evaluate(({Menu}) => {
-      Menu.getApplicationMenu()!
-        .items.flatMap((item) => item.submenu?.items ?? [])
-        .find((item) => item.label === "Recent Downloads")!
-        .click();
-    });
+    await showRecentDownloads(app);
     await window.waitForSelector("#downloads-panel");
     t.equal(
       await window.locator(".download-highlighted").count(),
@@ -795,12 +798,7 @@ test("active download progress", async (t) => {
     app = await setup.restartApp(app);
     window = await app.firstWindow();
     await window.waitForSelector("#connect");
-    await app.evaluate(({Menu}) => {
-      Menu.getApplicationMenu()!
-        .items.flatMap((item) => item.submenu?.items ?? [])
-        .find((item) => item.label === "Recent Downloads")!
-        .click();
-    });
+    await showRecentDownloads(app);
     await window.waitForSelector(".download-file");
     t.deepEqual(
       await window.locator(".download-file").allTextContents(),
@@ -858,10 +856,10 @@ test("delete downloaded files", async (t) => {
     await window.waitForFunction(
       () => document.querySelectorAll(".download-row").length === 2,
     );
-    const deleteButton = window.locator(".delete-download").first();
+    const trashButton = window.locator(".delete-download").first();
     await window.locator("#downloads-heading").hover();
     t.equal(
-      await deleteButton.evaluate(
+      await trashButton.evaluate(
         (element) => getComputedStyle(element.parentElement!).opacity,
       ),
       "0",
@@ -869,15 +867,15 @@ test("delete downloaded files", async (t) => {
     );
     await window.locator(".download-row").first().hover();
     t.equal(
-      await deleteButton.evaluate(
+      await trashButton.evaluate(
         (element) => getComputedStyle(element.parentElement!).opacity,
       ),
       "1",
       "trash icon appears on hover",
     );
-    t.equal(await deleteButton.getAttribute("aria-label"), "Delete delete.txt");
+    t.equal(await trashButton.getAttribute("aria-label"), "Delete delete.txt");
 
-    const confirmDeletion = async (response: number) => {
+    const confirmDeletion = async (selectedResponse: number) => {
       await app.evaluate(({dialog}, response) => {
         dialog.showMessageBox = async (
           ...args:
@@ -888,10 +886,11 @@ test("delete downloaded files", async (t) => {
           Reflect.set(dialog, "downloadDeletePrompt", options);
           return {response, checkboxChecked: false};
         };
-      }, response);
+      }, selectedResponse);
     };
+
     await confirmDeletion(1);
-    await deleteButton.click();
+    await trashButton.click();
     await app.evaluate(async ({dialog}) => {
       const deadline = Date.now() + 5000;
       while (!Reflect.has(dialog, "downloadDeletePrompt")) {
@@ -899,13 +898,14 @@ test("delete downloaded files", async (t) => {
           throw new Error("No deletion confirmation shown");
         }
 
-        await new Promise((resolve) => {
+        // eslint-disable-next-line no-await-in-loop -- Wait for the asynchronous confirmation dialog.
+        await new Promise<void>((resolve) => {
           setTimeout(resolve, 20);
         });
       }
     });
     t.deepEqual(
-      await app.evaluate(({dialog}) =>
+      await app.evaluate(({dialog}): unknown =>
         Reflect.get(dialog, "downloadDeletePrompt"),
       ),
       {
@@ -932,9 +932,9 @@ test("delete downloaded files", async (t) => {
 
     await confirmDeletion(0);
     await window.locator("#downloads-heading").hover();
-    await deleteButton.focus();
+    await trashButton.focus();
     t.equal(
-      await deleteButton.evaluate(
+      await trashButton.evaluate(
         (element) => getComputedStyle(element.parentElement!).opacity,
       ),
       "1",
@@ -976,12 +976,7 @@ test("delete downloaded files", async (t) => {
     app = await setup.restartApp(app);
     window = await app.firstWindow();
     await window.waitForSelector("#connect");
-    await app.evaluate(({Menu}) => {
-      Menu.getApplicationMenu()!
-        .items.flatMap((item) => item.submenu?.items ?? [])
-        .find((item) => item.label === "Recent Downloads")!
-        .click();
-    });
+    await showRecentDownloads(app);
     await window.waitForSelector(".download-file");
     t.deepEqual(
       await window.locator(".download-file").allTextContents(),
@@ -1031,13 +1026,15 @@ test("Markdown downloads use the standard file actions", async (t) => {
     t.deepEqual(
       await window
         .locator(".download-actions button")
-        .evaluateAll((buttons) => buttons.map((button) => button.className)),
+        .evaluateAll((buttons) =>
+          buttons.map((button) => button.getAttribute("class")),
+        ),
       ["reveal-download", "delete-download"],
       "Markdown files have only the standard download actions",
     );
     await app.evaluate(({shell}, expectedPath) => {
-      shell.openPath = async (filePath) => {
-        if (filePath !== expectedPath) {
+      shell.openPath = async (requestedPath) => {
+        if (requestedPath !== expectedPath) {
           throw new Error("Wrong downloaded file opened");
         }
 

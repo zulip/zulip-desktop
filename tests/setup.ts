@@ -19,7 +19,7 @@ export async function createApp(): Promise<ElectronApplication> {
   return launchApp();
 }
 
-function launchApp(): Promise<ElectronApplication> {
+async function launchApp(): Promise<ElectronApplication> {
   if (userDataPath === undefined) {
     throw new Error("App was not created");
   }

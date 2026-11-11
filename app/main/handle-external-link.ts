@@ -106,6 +106,7 @@ function downloadFile({
       item.removeListener("updated", updatedListener);
     });
   };
+
   contents.session.on("will-download", onDownload);
   try {
     contents.downloadURL(url);

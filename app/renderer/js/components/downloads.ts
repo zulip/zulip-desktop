@@ -61,7 +61,7 @@ export class DownloadsView {
         void this.clearDownloads();
       });
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && !this.panel.hidden) {
+      if (event.key === "Escape" && this.panel.hidden === false) {
         this.hide();
       }
     });
@@ -89,7 +89,7 @@ export class DownloadsView {
   }
 
   private async show(focus: boolean): Promise<void> {
-    if (this.panel.hidden) {
+    if (this.panel.hidden === true) {
       this.previousFocus = document.activeElement;
     }
 
@@ -101,7 +101,10 @@ export class DownloadsView {
     const revision = ++this.cssRevision;
     try {
       const cssPath = ConfigUtil.getConfigItem("customCSS", null);
-      const css = cssPath ? await fs.readFile(cssPath, "utf8") : "";
+      const css =
+        typeof cssPath === "string" && cssPath !== ""
+          ? await fs.readFile(cssPath, "utf8")
+          : "";
       if (revision === this.cssRevision) {
         this.customStyle.textContent = css;
       }
@@ -213,23 +216,23 @@ export class DownloadsView {
       void this.revealFile(download.filePath);
     });
     actions.append(revealButton);
-    const deleteButton = document.createElement("button");
-    deleteButton.type = "button";
-    deleteButton.className = "delete-download";
-    deleteButton.title = t.__("Delete file");
-    deleteButton.setAttribute(
+    const trashButton = document.createElement("button");
+    trashButton.type = "button";
+    trashButton.className = "delete-download";
+    trashButton.title = t.__("Delete file");
+    trashButton.setAttribute(
       "aria-label",
       t.__("Delete {{{fileName}}}", {fileName: download.fileName}),
     );
-    const deleteIcon = document.createElement("span");
-    deleteIcon.className = "material-icons download-icon";
-    deleteIcon.setAttribute("aria-hidden", "true");
-    deleteIcon.textContent = "delete";
-    deleteButton.append(deleteIcon);
-    deleteButton.addEventListener("click", () => {
+    const trashIcon = document.createElement("span");
+    trashIcon.className = "material-icons download-icon";
+    trashIcon.setAttribute("aria-hidden", "true");
+    trashIcon.textContent = "delete";
+    trashButton.append(trashIcon);
+    trashButton.addEventListener("click", () => {
       void this.deleteFile(download.filePath);
     });
-    actions.append(deleteButton);
+    actions.append(trashButton);
     item.append(actions);
     return item;
   }
@@ -268,7 +271,7 @@ export class DownloadsView {
     this.error.hidden = true;
     try {
       const error = await ipcRenderer.invoke("open-download", filePath);
-      if (error) {
+      if (error !== "") {
         this.showError(
           t.__("Unable to open downloaded file: {{{error}}}", {error}),
         );

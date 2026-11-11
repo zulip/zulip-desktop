@@ -1,5 +1,5 @@
-import type {DndSettings} from "./dnd-util.ts";
 import type {Config} from "./config-util.ts";
+import type {DndSettings} from "./dnd-util.ts";
 import type {MenuProperties, ServerConfig} from "./types.ts";
 
 export type DownloadEntry = Config["recentDownloads"][number] & {

@@ -36,18 +36,19 @@ export function initializeDownloads(
   >();
   let highlightedDownload: string | undefined;
   const getDownloads = (): DownloadEntry[] => {
-    const active = [...activeDownloads.values()]
+    const active = activeDownloads
+      .values()
       .filter((download) => download !== undefined)
-      .reverse();
+      .toArray()
+      .toReversed();
     return [
       ...active.map((download, index) => ({
         ...download,
         highlighted: index === 0,
       })),
       ...ConfigUtil.getConfigItem("recentDownloads", [])
-        .filter(
-          (download) =>
-            !active.some((item) => item.filePath === download.filePath),
+        .filter((download) =>
+          active.every((item) => item.filePath !== download.filePath),
         )
         .map((download) => ({
           ...download,
@@ -56,6 +57,7 @@ export function initializeDownloads(
         })),
     ].slice(0, RECENT_DOWNLOADS_LIMIT);
   };
+
   const notifyDownloads = (show: boolean): void => {
     if (!mainContents.isDestroyed()) {
       send(mainContents, "downloads-updated", getDownloads(), show);
@@ -67,14 +69,14 @@ export function initializeDownloads(
     filePath: string,
   ): void {
     if (
-      senderFrame !== mainContents.mainFrame ||
       typeof filePath !== "string" ||
-      !ConfigUtil.getConfigItem("recentDownloads", []).some(
-        (download) => download.filePath === filePath,
+      senderFrame !== mainContents.mainFrame ||
+      ConfigUtil.getConfigItem("recentDownloads", []).every(
+        (download) => download.filePath !== filePath,
       ) ||
-      [...activeDownloads.values()].some(
-        (download) => download?.filePath === filePath,
-      )
+      activeDownloads
+        .values()
+        .some((download) => download?.filePath === filePath)
     ) {
       throw new Error("Cannot access a file outside the download history");
     }
@@ -107,7 +109,7 @@ export function initializeDownloads(
     validateDownload(event.senderFrame, filePath);
 
     const error = await shell.openPath(filePath);
-    if (error) {
+    if (error !== "") {
       logger.error("Unable to open downloaded file", filePath, error);
     }
 
@@ -148,6 +150,7 @@ export function initializeDownloads(
       if (highlightedDownload === filePath) {
         highlightedDownload = undefined;
       }
+
       notifyDownloads(false);
     } catch (error: unknown) {
       logger.error("Unable to delete downloaded file", filePath, error);
@@ -174,7 +177,7 @@ export function initializeDownloads(
       }
 
       const filePath = item.getSavePath();
-      if (!filePath) {
+      if (filePath === "") {
         return;
       }
 
@@ -195,6 +198,7 @@ export function initializeDownloads(
       });
       notifyDownloads(previous === undefined);
     };
+
     item.on("updated", updateDownload);
     // Other will-download listeners may still need to choose the save path.
     queueMicrotask(updateDownload);
