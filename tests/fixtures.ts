@@ -2,8 +2,11 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
-import {test as base} from "@playwright/test";
-import {type ElectronApplication, type Page, _electron} from "playwright-core";
+import {
+  type ElectronApplication,
+  type Page,
+  test as base,
+} from "@playwright/test";
 
 type TestFixtures = {
   electronApp: ElectronApplication;
@@ -11,15 +14,12 @@ type TestFixtures = {
 };
 
 export const test = base.extend<TestFixtures>({
-  async electronApp({browserName}, use, testInfo) {
+  async electronApp({playwright}, use, testInfo) {
     const userDataPath = await fs.promises.mkdtemp(
-      path.join(
-        os.tmpdir(),
-        `zulip-test-${browserName}-${testInfo.workerIndex}-`,
-      ),
+      path.join(os.tmpdir(), "zulip-test-"),
     );
     try {
-      const electronApp = await _electron.launch({
+      const electronApp = await playwright._electron.launch({
         args: [
           `--user-data-dir=${userDataPath}`,
           path.join(import.meta.dirname, ".."),
@@ -27,9 +27,20 @@ export const test = base.extend<TestFixtures>({
       });
 
       try {
+        const {tracing} = electronApp.context();
+        await tracing.start({screenshots: true, snapshots: true});
         await use(electronApp);
       } finally {
-        await electronApp.close();
+        try {
+          const {tracing} = electronApp.context();
+          if (testInfo.status === testInfo.expectedStatus) {
+            await tracing.stop();
+          } else {
+            await tracing.stop({path: testInfo.outputPath("trace.zip")});
+          }
+        } finally {
+          await electronApp.close();
+        }
       }
     } finally {
       await fs.promises.rm(userDataPath, {recursive: true, force: true});

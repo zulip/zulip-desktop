@@ -15,7 +15,4 @@ export default defineConfig({
   retries: isCi ? 1 : 0,
   reporter: [["list"], ["html", {open: "never"}]],
   outputDir: "test-results",
-  use: {
-    trace: "on-first-retry",
-  },
 });
