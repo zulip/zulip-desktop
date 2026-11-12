@@ -71,7 +71,13 @@ Run tests:
 
 ```sh
 $ node --run test
+$ node --run test-e2e
 ```
+
+The end-to-end tests build and launch the Electron app. On Linux, run them
+under a virtual display with `xvfb-run --auto-servernum node --run test-e2e`.
+Playwright writes an HTML report to `playwright-report/` and traces for failed
+tests to `test-results/`. CI uploads both directories as workflow artifacts.
 
 ## How to contribute?
 
