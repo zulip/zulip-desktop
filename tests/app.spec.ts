@@ -1,7 +1,21 @@
 import {once} from "node:events";
 import {createServer} from "node:http";
 
+import {bindCreateOrganizationLink} from "../app/renderer/js/pages/preference/create-organization-link.ts";
+
 import {expect, test} from "./fixtures.ts";
+
+test("create organization link opens the expected URL", async () => {
+  const link = new EventTarget();
+  const openedUrls: URL[] = [];
+  bindCreateOrganizationLink(link, async (url) => {
+    openedUrls.push(url);
+  });
+
+  link.dispatchEvent(new Event("click"));
+
+  expect(openedUrls.map((url) => url.href)).toEqual(["https://zulip.com/new/"]);
+});
 
 test("app runs and create organization link is available", async ({
   mainWindow,

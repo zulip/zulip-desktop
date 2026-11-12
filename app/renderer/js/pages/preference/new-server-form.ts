@@ -7,6 +7,8 @@ import {generateNodeFromHtml} from "../../components/base.ts";
 import {ipcRenderer} from "../../typed-ipc-renderer.ts";
 import * as DomainUtil from "../../utils/domain-util.ts";
 
+import {bindCreateOrganizationLink} from "./create-organization-link.ts";
+
 type NewServerFormProperties = {
   $root: Element;
   onChange: () => void;
@@ -93,13 +95,10 @@ export function initNewServerForm({
   });
 
   // Open create new org link in default browser
-  const link = "https://zulip.com/new/";
   const externalCreateNewOrgElement = $root.querySelector(
     "#open-create-org-link",
   )!;
-  externalCreateNewOrgElement.addEventListener("click", () => {
-    void LinkUtil.openBrowser(new URL(link));
-  });
+  bindCreateOrganizationLink(externalCreateNewOrgElement, LinkUtil.openBrowser);
 
   const networkSettingsId = $root.querySelector(".server-network-option")!;
   networkSettingsId.addEventListener("click", () => {
