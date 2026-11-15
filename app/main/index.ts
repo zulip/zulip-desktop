@@ -18,6 +18,7 @@ import * as remoteMain from "@electron/remote/main";
 import windowStateKeeper from "electron-window-state";
 
 import * as ConfigUtil from "../common/config-util.ts";
+import * as DNDUtil from "../common/dnd-util.ts";
 import {bundlePath, bundleUrl, publicPath} from "../common/paths.ts";
 import {t} from "../common/translation-util.ts";
 import type {RendererMessage} from "../common/typed-ipc.ts";
@@ -25,6 +26,7 @@ import type {MenuProperties} from "../common/types.ts";
 
 import {appUpdater, shouldQuitForUpdate} from "./autoupdater.ts";
 import * as BadgeSettings from "./badge-settings.ts";
+import {parseCommandLine, printHelp} from "./cli.ts";
 import handleExternalLink from "./handle-external-link.ts";
 import * as AppMenu from "./menu.ts";
 import {_getServerSettings, _isOnline, _saveServerIcon} from "./request.ts";
@@ -137,9 +139,31 @@ function createMainWindow(): BrowserWindow {
 }
 
 (async () => {
-  if (!app.requestSingleInstanceLock()) {
+  const cliOptions = parseCommandLine(process.argv);
+  if (cliOptions.help) {
+    printHelp();
+    app.exit(0);
+    return;
+  }
+
+  if (cliOptions.version) {
+    console.log(`Zulip Desktop ${app.getVersion()}`);
+    app.exit(0);
+    return;
+  }
+
+  const additionalData = {argv: process.argv};
+  if (!app.requestSingleInstanceLock(additionalData)) {
     app.quit();
     return;
+  }
+
+  if (cliOptions.dnd !== undefined) {
+    if (cliOptions.dnd === "toggle") {
+      DNDUtil.toggle();
+    } else {
+      DNDUtil.set(cliOptions.dnd);
+    }
   }
 
   await app.whenReady();
@@ -159,14 +183,6 @@ function createMainWindow(): BrowserWindow {
   app.setAppUserModelId("org.zulip.zulip-electron");
 
   remoteMain.initialize();
-
-  app.on("second-instance", () => {
-    if (mainWindow.isMinimized()) {
-      mainWindow.restore();
-    }
-
-    mainWindow.show();
-  });
 
   ipcMain.on(
     "permission-callback",
@@ -263,8 +279,50 @@ function createMainWindow(): BrowserWindow {
 
   const page = mainWindow.webContents;
 
+  app.on(
+    "second-instance",
+    (_event, commandLine, _workingDirectory, instanceAdditionalData) => {
+      let rawArgv: readonly string[] = commandLine;
+      if (
+        typeof instanceAdditionalData === "object" &&
+        instanceAdditionalData !== null &&
+        "argv" in instanceAdditionalData &&
+        Array.isArray(instanceAdditionalData.argv)
+      ) {
+        rawArgv = instanceAdditionalData.argv.filter(
+          (arg): arg is string => typeof arg === "string",
+        );
+      }
+
+      const instanceCliOptions = parseCommandLine(rawArgv);
+
+      if (instanceCliOptions.dnd !== undefined) {
+        const dndUtil =
+          instanceCliOptions.dnd === "toggle"
+            ? DNDUtil.toggle()
+            : DNDUtil.set(instanceCliOptions.dnd);
+        send(page, "toggle-dnd", dndUtil.dnd, dndUtil.newSettings);
+      }
+
+      const shouldShow =
+        instanceCliOptions.focus ?? instanceCliOptions.dnd === undefined;
+
+      if (shouldShow) {
+        if (mainWindow.isMinimized()) {
+          mainWindow.restore();
+        }
+
+        mainWindow.show();
+      }
+    },
+  );
+
   page.on("dom-ready", () => {
-    if (ConfigUtil.getConfigItem("startMinimized", false)) {
+    if (
+      cliOptions.focus === false ||
+      (cliOptions.focus !== true &&
+        ConfigUtil.getConfigItem("startMinimized", false))
+    ) {
       mainWindow.hide();
     } else {
       mainWindow.show();
