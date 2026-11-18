@@ -233,7 +233,10 @@ export class ServerManagerView {
           EnterpriseUtil.getConfigItem(setting, value),
           true,
         );
-      } else if (!ConfigUtil.isConfigItemExists(setting)) {
+      } else if (
+        !ConfigUtil.isConfigItemExists(setting) ||
+        ConfigUtil.getConfigItem(setting, value) === null
+      ) {
         ConfigUtil.setConfigItem(setting, value);
       }
     }
