@@ -1,5 +1,6 @@
 import type {WebContents} from "electron/main";
 import fs from "node:fs";
+import process from "node:process";
 
 import * as remote from "@electron/remote";
 import {app, dialog} from "@electron/remote";
@@ -231,7 +232,21 @@ export default class WebView {
     this.focus();
     this.properties.onTitleChange();
     // Injecting preload css in webview to override some css rules
-    (async () => this.getWebContents().insertCSS(preloadCss))();
+    let selectionCss = "";
+    if (process.platform !== "darwin") {
+      const {background, color} = ipcRenderer.sendSync(
+        "get-system-selection-colors",
+      );
+      selectionCss = `::selection { background-color: ${background} !important; color: ${color} !important; }`;
+    }
+
+    const webContents = this.getWebContents();
+    (async () => {
+      await webContents.insertCSS(preloadCss);
+      if (selectionCss !== "") {
+        await webContents.insertCSS(selectionCss, {cssOrigin: "user"});
+      }
+    })();
 
     const customCss = ConfigUtil.getConfigItem("customCSS", null);
     if (customCss !== null && customCss !== false) {

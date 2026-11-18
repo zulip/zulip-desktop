@@ -1,5 +1,10 @@
 /* Override css rules */
 
+::selection {
+  background-color: Highlight !important;
+  color: HighlightText !important;
+}
+
 .portico-wrap > .header {
   display: none;
 }
