@@ -1,6 +1,7 @@
 import process from "node:process";
 
 import {type Html, html} from "../../../common/html.ts";
+import defaultIcon from "../../img/icon.png";
 import {ipcRenderer} from "../typed-ipc-renderer.ts";
 
 import {generateNodeFromHtml} from "./base.ts";
@@ -11,11 +12,15 @@ export type ServerTabProperties = {
   webview: Promise<WebView>;
 } & TabProperties;
 
+// The first character of the realm name, shown in place of a missing icon.
+const initialOf = (label: string): string => [...label][0] ?? "Z";
+
 export default class ServerTab extends Tab {
   webview: Promise<WebView>;
   $el: Element;
   $name: Element;
   $icon: HTMLImageElement;
+  $altIcon: HTMLElement;
   $badge: Element;
 
   constructor({webview, ...properties}: ServerTabProperties) {
@@ -27,7 +32,18 @@ export default class ServerTab extends Tab {
     this.registerListeners();
     this.$name = this.$el.querySelector(".server-tooltip")!;
     this.$icon = this.$el.querySelector(".server-icons")!;
+    this.$altIcon = this.$el.querySelector(".alt-icon")!;
     this.$badge = this.$el.querySelector(".server-tab-badge")!;
+
+    // Show the icon only once it has loaded, and the initial of the realm
+    // name otherwise, so that a missing or invalid icon never appears as a
+    // broken image.
+    this.$icon.addEventListener("load", () => {
+      this.showIcon(this.properties.icon !== defaultIcon);
+    });
+    this.$icon.addEventListener("error", () => {
+      this.showIcon(false);
+    });
   }
 
   override async activate(): Promise<void> {
@@ -53,7 +69,10 @@ export default class ServerTab extends Tab {
         </div>
         <div class="server-tab-badge"></div>
         <div class="server-tab">
-          <img class="server-icons" src="${this.properties.icon}" />
+          <div class="server-icon alt-icon">
+            ${initialOf(this.properties.label)}
+          </div>
+          <img class="server-icons" src="${this.properties.icon}" hidden />
         </div>
         <div class="server-tab-shortcut">${this.generateShortcutText()}</div>
       </div>
@@ -63,11 +82,17 @@ export default class ServerTab extends Tab {
   setLabel(label: string): void {
     this.properties.label = label;
     this.$name.textContent = label;
+    this.$altIcon.textContent = initialOf(label);
   }
 
   setIcon(icon: string): void {
     this.properties.icon = icon;
     this.$icon.src = icon;
+  }
+
+  showIcon(show: boolean): void {
+    this.$icon.hidden = !show;
+    this.$altIcon.hidden = show;
   }
 
   updateBadge(count: number): void {
