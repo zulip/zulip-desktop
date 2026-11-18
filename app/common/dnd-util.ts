@@ -23,7 +23,7 @@ export function toggle(): Toggle {
   const dndSettingList: SettingName[] = [
     "showNotification",
     "silent",
-    ...(process.platform === "win32"
+    ...(process.platform === "win32" || process.platform === "linux"
       ? (["flashTaskbarOnMessage"] as const)
       : []),
   ];
@@ -50,8 +50,16 @@ export function toggle(): Toggle {
     newSettings = ConfigUtil.getConfigItem("dndPreviousSettings", {
       showNotification: true,
       silent: false,
-      ...(process.platform === "win32" && {flashTaskbarOnMessage: true}),
+      ...((process.platform === "win32" || process.platform === "linux") && {
+        flashTaskbarOnMessage: true,
+      }),
     });
+    if (
+      process.platform === "linux" &&
+      newSettings.flashTaskbarOnMessage === undefined
+    ) {
+      newSettings.flashTaskbarOnMessage = true;
+    }
   }
 
   for (const settingName of dndSettingList) {
