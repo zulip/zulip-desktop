@@ -13,7 +13,7 @@ export type DndSettings = {
 
 type SettingName = keyof DndSettings;
 
-type Toggle = {
+export type Toggle = {
   dnd: boolean;
   newSettings: Partial<DndSettings>;
 };
@@ -60,4 +60,28 @@ export function toggle(): Toggle {
 
   ConfigUtil.setConfigItem("dnd", dnd);
   return {dnd, newSettings};
+}
+
+export function set(targetDnd: boolean): Toggle {
+  const currentDnd = ConfigUtil.getConfigItem("dnd", false);
+  if (targetDnd === currentDnd) {
+    const dndSettingList: SettingName[] = [
+      "showNotification",
+      "silent",
+      ...(process.platform === "win32"
+        ? (["flashTaskbarOnMessage"] as const)
+        : []),
+    ];
+    const currentSettings: Partial<DndSettings> = {};
+    for (const settingName of dndSettingList) {
+      currentSettings[settingName] = ConfigUtil.getConfigItem(
+        settingName,
+        settingName !== "silent",
+      );
+    }
+
+    return {dnd: targetDnd, newSettings: currentSettings};
+  }
+
+  return toggle();
 }
