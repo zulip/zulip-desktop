@@ -109,11 +109,7 @@ export class ServerManagerView {
     this.$settingsTooltip =
       $actionsContainer.querySelector("#setting-tooltip")!;
 
-    // TODO: This should have been querySelector but the problem is that
-    // querySelector doesn't return elements not present in dom whereas somehow
-    // getElementsByClassName does. To fix this we need to call this after this.initTabs
-    // is called in this.init.
-    // eslint-disable-next-line unicorn/prefer-query-selector
+    // eslint-disable-next-line unicorn/prefer-query-selector -- getElementsByClassName returns a live collection, unlike querySelectorAll
     this.$serverIconTooltip = document.getElementsByClassName("server-tooltip");
     this.$backTooltip = $actionsContainer.querySelector("#back-tooltip")!;
     this.$dndTooltip = $actionsContainer.querySelector("#dnd-tooltip")!;
@@ -763,7 +759,8 @@ export class ServerManagerView {
 
     await tab.destroy();
 
-    delete this.tabs[index]; // eslint-disable-line @typescript-eslint/no-array-delete
+    // eslint-disable-next-line @typescript-eslint/no-array-delete, @typescript-eslint/no-dynamic-delete
+    delete this.tabs[index];
     this.functionalTabs.delete(page);
 
     // Issue #188: If the functional tab was not focused, do not activate another tab.
