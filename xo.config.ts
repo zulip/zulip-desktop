@@ -132,6 +132,7 @@ const xoConfig: FlatXoConfig = [
         },
       ],
       "no-warning-comments": "off",
+      "node-test/prefer-equality-assertion": "off", // https://github.com/sindresorhus/eslint-node-test/issues/41
       "sort-imports": ["error", {ignoreDeclarationSort: true}],
       strict: "error",
       "unicorn/consistent-boolean-name": "off",
