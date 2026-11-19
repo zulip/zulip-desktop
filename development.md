@@ -7,7 +7,7 @@ in order to contribute to developing it.
 
 To build and run the app from source, you'll need the following:
 
-- [Git](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
   - Use our [Git Guide](https://zulip.readthedocs.io/en/latest/git/setup.html) to get started with Git and GitHub.
 - [Node.js](https://nodejs.org) (latest LTS version)
 - [pnpm](https://pnpm.io/installation)
@@ -26,20 +26,20 @@ $ sudo apt install git nodejs python build-essential
 $ corepack enable
 ```
 
-[node-debian]: https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions
+[node-debian]: https://nodejs.org/en/download/package-manager
 
 ### MacOS
 
 On a system running MacOS, you can refer to [official nodejs docs][node-mac] to
 install nodejs. To ensure Node.js has been installed, run `node -v` in terminal to know your node version.
 
-[node-mac]: https://nodejs.org/en/download/package-manager/#macos
+[node-mac]: https://nodejs.org/en/download
 
 ### Windows
 
 - Download Node.js for Windows and install it. You can refer to the official docs [here][node-windows] to do so. To ensure Node.js has been installed, run `node -v` in Git Bash to know your node version.
 
-[node-windows]: https://nodejs.org/en/download/package-manager/#windows
+[node-windows]: https://nodejs.org/en/download
 
 - Also, install Windows-Build-Tools to compile native node modules by using
   ```sh
