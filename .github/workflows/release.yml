@@ -17,7 +17,8 @@ defaults:
 env:
   # Whether this run is a real release, which also decides whether `prepare`
   # validates the tag and creates the draft.  Any other run builds and signs
-  # everything but uploads nothing.  Both halves are load-bearing:
+  # everything but publishes nothing, keeping the binaries only as short-lived
+  # workflow artifacts.  Both halves are load-bearing:
   # workflow_dispatch can be aimed at a tag, and a push trigger could later be
   # added for a branch.
   PUBLISH: ${{ case(github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'), 'always', 'never') }}
@@ -115,6 +116,22 @@ jobs:
             dist/*.snap
             dist/*.tar.xz
 
+      # A run that publishes nothing keeps its signed binaries briefly, so that
+      # they can be installed and tested before the release is tagged.
+      - uses: actions/upload-artifact@v7.0.2
+        if: env.PUBLISH == 'never'
+        with:
+          name: linux
+          path: |
+            dist/*.AppImage
+            dist/*.deb
+            dist/*.snap
+            dist/*.tar.xz
+          if-no-files-found: error
+          retention-days: 7
+          # The installers are already compressed.
+          compression-level: 0
+
   macos:
     needs: prepare
     runs-on: macos-latest
@@ -163,6 +180,21 @@ jobs:
             dist/*.dmg
             dist/*.pkg
             dist/*.zip
+
+      # A run that publishes nothing keeps its signed binaries briefly, so that
+      # they can be installed and tested before the release is tagged.
+      - uses: actions/upload-artifact@v7.0.2
+        if: env.PUBLISH == 'never'
+        with:
+          name: macos
+          path: |
+            dist/*.dmg
+            dist/*.pkg
+            dist/*.zip
+          if-no-files-found: error
+          retention-days: 7
+          # The installers are already compressed.
+          compression-level: 0
 
   windows:
     needs: prepare
@@ -214,3 +246,18 @@ jobs:
             dist/*.msi
             dist/nsis-web/*.exe
             dist/nsis-web/*.7z
+
+      # A run that publishes nothing keeps its signed binaries briefly, so that
+      # they can be installed and tested before the release is tagged.
+      - uses: actions/upload-artifact@v7.0.2
+        if: env.PUBLISH == 'never'
+        with:
+          name: windows
+          path: |
+            dist/*.msi
+            dist/nsis-web/*.exe
+            dist/nsis-web/*.7z
+          if-no-files-found: error
+          retention-days: 7
+          # The installers are already compressed.
+          compression-level: 0
