@@ -12,7 +12,7 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "pnpm@12.16.1+sha512.091d1dee7927575661b25dab3c2ae31cafc1c54d6b71ed6a6600cf0c1cb10434a447eae14015f1b23e2e6bedeed79df94a932e2164d2832280dce3fb32f656d1",
+  "packageManager": "pnpm@12.23.0+sha512.02da94ffaf133f46074322afe552f90d40b5f71ae259aefbccdacc5085b1d617e98d65e0131f5748b9b67445978ee5055d7d59a473f1eef0d504854fefcd5975",
   "scripts": {
     "dev": "install-electron && electron-vite dev",
     "preview": "install-electron && electron-vite preview",
@@ -65,8 +65,8 @@
     "playwright-core": "^1.41.0-alpha-jan-9-2024",
     "prettier": "^3.0.3",
     "semver": "^7.3.5",
-    "stylelint": "^17.13.0",
-    "stylelint-config-standard": "^40.0.0",
+    "stylelint": "^18.1.0",
+    "stylelint-config-standard": "^41.1.0",
     "tape": "^5.2.2",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "vite": "^8.1.0",

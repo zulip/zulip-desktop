@@ -66,7 +66,6 @@ export function getConfigItem<Key extends keyof EnterpriseConfig>(
   }
 
   const value = enterpriseSettings[key];
-  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
   return value === undefined ? defaultValue : value;
 }
 
