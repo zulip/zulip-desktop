@@ -1,0 +1,14 @@
+diff --git a/templates/linux/after-install.tpl b/templates/linux/after-install.tpl
+index 2bb3d32d9df96a4bf0245670613f20459b32fb46..3288c94d9302d60dff69619e2b94646c20eb1ccb 100644
+--- a/templates/linux/after-install.tpl
++++ b/templates/linux/after-install.tpl
+@@ -11,7 +11,8 @@ else
+ fi
+ 
+ # Check if user namespaces are supported by the kernel and working with a quick test:
+-if ! { [[ -L /proc/self/ns/user ]] && unshare --user true; }; then
++if ! { [[ -L /proc/self/ns/user ]] && hash setpriv 2>/dev/null &&
++    setpriv --reuid=65534 --regid=65534 --clear-groups unshare --user true; }; then
+     # Use SUID chrome-sandbox only on systems without user namespaces:
+     chmod 4755 '/opt/${sanitizedProductName}/chrome-sandbox' || true
+ else
