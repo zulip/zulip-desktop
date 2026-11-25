@@ -132,8 +132,8 @@
     "deb": {
       "packageCategory": "net",
       "synopsis": "Zulip Desktop App",
-      "afterInstall": "./packaging/deb-after-install.sh",
       "fpm": [
+        "--before-install=./packaging/deb-before-install.sh",
         "./packaging/deb-apt.sources=/etc/apt/sources.list.d/zulip-desktop.sources",
         "./packaging/deb-apt.asc=/usr/share/keyrings/zulip-desktop.asc",
         "./packaging/deb-release-upgrades.cfg=/etc/update-manager/release-upgrades.d/zulip-desktop.cfg"
