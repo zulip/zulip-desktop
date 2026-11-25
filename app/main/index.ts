@@ -5,6 +5,7 @@ import {
   app,
   clipboard,
   dialog,
+  nativeTheme,
   powerMonitor,
   session,
   webContents,
@@ -159,6 +160,8 @@ function createMainWindow(): BrowserWindow {
   app.setAppUserModelId("org.zulip.zulip-electron");
 
   remoteMain.initialize();
+
+  nativeTheme.themeSource = ConfigUtil.getConfigItem("appTheme", "system");
 
   app.on("second-instance", () => {
     if (mainWindow.isMinimized()) {
