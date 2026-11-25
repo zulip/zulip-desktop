@@ -2,6 +2,20 @@
 
 All notable changes to the Zulip desktop app are documented in this file.
 
+### v5.14.3 --2026-11-25
+
+**Enhancements**:
+
+- Updated translations, including a new translation for Croatian.
+
+**Dependencies**:
+
+- Upgraded all dependencies, including Electron 45.4.1.
+
+**Fixes**:
+
+- Install the AppArmor profile correctly in the Debian package.
+
 ### v5.14.2 --2026-10-30
 
 **Enhancements**:
