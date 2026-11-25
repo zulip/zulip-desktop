@@ -30,3 +30,12 @@ jobs:
       - run: node --run test
       - name: Run end-to-end tests
         run: ${{ runner.os == 'Linux' && 'xvfb-run --auto-servernum ' || '' }}node --run test-e2e
+      - name: Upload Playwright reports
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: playwright-report-${{ matrix.os }}
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
