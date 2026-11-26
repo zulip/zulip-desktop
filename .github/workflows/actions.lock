@@ -9,6 +9,7 @@ workflows:
     '.github/workflows/node.js.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/setup-node@v7.1.0'
+        - 'actions/upload-artifact@v7.0.2'
         - 'pnpm/action-setup@v6.1.1'
     '.github/workflows/release.yml':
         - 'actions/attest-build-provenance@v4.2.2'
