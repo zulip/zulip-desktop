@@ -7,6 +7,7 @@ import {
   dialog,
   powerMonitor,
   session,
+  systemPreferences,
   webContents,
 } from "electron/main";
 import {Buffer} from "node:buffer";
@@ -275,6 +276,15 @@ function createMainWindow(): BrowserWindow {
     event.returnValue = session
       .fromPartition("persist:webviewsession")
       .getUserAgent();
+  });
+
+  ipcMain.on("get-system-selection-colors", (event) => {
+    if (process.platform === "win32") {
+      event.returnValue = {
+        background: systemPreferences.getColor("highlight"),
+        color: systemPreferences.getColor("highlight-text"),
+      };
+    }
   });
 
   ipcMain.handle("get-server-settings", async (event, domain: string) =>

@@ -1,5 +1,6 @@
 import type {WebContents} from "electron/main";
 import fs from "node:fs";
+import process from "node:process";
 
 import * as remote from "@electron/remote";
 import {app, dialog} from "@electron/remote";
@@ -177,6 +178,16 @@ export default class WebView {
     this.$webview.addEventListener("dom-ready", () => {
       this.loading = false;
       this.properties.switchLoading(false, this.properties.url);
+      if (process.platform === "win32") {
+        const {background, color} = ipcRenderer.sendSync(
+          "get-system-selection-colors",
+        );
+        void this.getWebContents().insertCSS(
+          `::selection { background-color: ${background} !important; color: ${color} !important; }`,
+          {cssOrigin: "user"},
+        );
+      }
+
       this.show();
     });
 
