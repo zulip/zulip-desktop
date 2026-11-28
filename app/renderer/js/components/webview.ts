@@ -178,6 +178,16 @@ export default class WebView {
     this.$webview.addEventListener("dom-ready", () => {
       this.loading = false;
       this.properties.switchLoading(false, this.properties.url);
+      if (process.platform === "win32") {
+        const {background, color} = ipcRenderer.sendSync(
+          "get-system-selection-colors",
+        );
+        void this.getWebContents().insertCSS(
+          `::selection { background-color: ${background} !important; color: ${color} !important; }`,
+          {cssOrigin: "user"},
+        );
+      }
+
       this.show();
     });
 
@@ -232,21 +242,7 @@ export default class WebView {
     this.focus();
     this.properties.onTitleChange();
     // Injecting preload css in webview to override some css rules
-    let selectionCss = "";
-    if (process.platform !== "darwin") {
-      const {background, color} = ipcRenderer.sendSync(
-        "get-system-selection-colors",
-      );
-      selectionCss = `::selection { background-color: ${background} !important; color: ${color} !important; }`;
-    }
-
-    const webContents = this.getWebContents();
-    (async () => {
-      await webContents.insertCSS(preloadCss);
-      if (selectionCss !== "") {
-        await webContents.insertCSS(selectionCss, {cssOrigin: "user"});
-      }
-    })();
+    (async () => this.getWebContents().insertCSS(preloadCss))();
 
     const customCss = ConfigUtil.getConfigItem("customCSS", null);
     if (customCss !== null && customCss !== false) {
